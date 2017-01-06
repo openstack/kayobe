@@ -1,0 +1,15 @@
+ansible PTY allocation request failed
+=====================================
+
+In /var/log/secure: Unable to open pty: No such file or directory
+none            /dev/pts        devpts        gid=5,mode=620    0 0
+
+Kolla patches
+=============
+
+See bootstrap_kolla.sh.
+
+Ironic inspector
+================
+
+Failed to start due to iptables error.
