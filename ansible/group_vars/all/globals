@@ -1,0 +1,11 @@
+---
+# Kayobe global configuration.
+
+###############################################################################
+# Miscellaneous configuration.
+
+# Path to Kayobe configuration directory.
+kayobe_config_path: "{{ lookup('env', 'KAYOBE_CONFIG_PATH') | default('/etc/kayobe') }}"
+
+# Path in which to cache downloaded images.
+image_cache_path: "{{ ansible_user_dir ~ '/kayobe-image-cache' }}"

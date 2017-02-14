@@ -1,0 +1,11 @@
+--- /usr/share/kolla/ansible/roles/ironic/templates/ironic-conductor.json.j2.old        2017-01-06 14:28:35.048365453 +0000
++++ /usr/share/kolla/ansible/roles/ironic/templates/ironic-conductor.json.j2    2017-01-06 14:28:44.858467071 +0000
+@@ -20,7 +20,7 @@
+             "recurse": true
+         },
+         {
+-            "path": "/tftpboot"
++            "path": "/tftpboot",
+             "owner": "ironic:ironic",
+             "recurse": true
+         }

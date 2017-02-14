@@ -1,0 +1,10 @@
+---
+- name: Ensure Swift partitions exist
+  command: parted /dev/{{ item }} -s -- mklabel gpt mkpart KOLLA_SWIFT_DATA 1 -1
+  with_items: "{{ swift_block_devices }}"
+  become: True
+
+- name: Ensure Swift XFS file systems exist
+  command: mkfs.xfs -f -L d{{ swift_block_devices.index(item) }} /dev/{{ item }}{% if item.startswith('loop') %}p{% endif %}1
+  with_items: "{{ swift_block_devices }}"
+  become: True

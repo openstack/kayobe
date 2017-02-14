@@ -1,0 +1,5 @@
+---
+- name: Ensure docker is configured
+  hosts: docker
+  roles:
+    - role: docker

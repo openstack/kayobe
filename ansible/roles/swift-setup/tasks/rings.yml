@@ -1,0 +1,75 @@
+---
+- name: Ensure Swift ring build directory exists
+  file:
+    path: "{{ swift_ring_build_path }}"
+    state: directory
+  delegate_to: "{{ swift_ring_build_host }}"
+  run_once: True
+
+- name: Ensure Swift rings are created
+  command: >
+    docker run
+      --rm
+      -v {{ swift_ring_build_path }}/:{{ kolla_config_path }}/config/swift/
+      {{ swift_image }}
+      swift-ring-builder {{ kolla_config_path }}/config/swift/{{ item }}.builder create
+        {{ swift_part_power }}
+        {{ swift_replication_count }}
+        {{ swift_min_part_hours }}
+  with_items: "{{ swift_service_names }}"
+  delegate_to: "{{ swift_ring_build_host }}"
+  run_once: True
+
+- name: Ensure devices are added to Swift rings
+  command: >
+    docker run
+      --rm
+      -v {{ swift_ring_build_path }}/:{{ kolla_config_path }}/config/swift/
+      {{ swift_image }}
+      swift-ring-builder {{ kolla_config_path }}/config/swift/{{ item[0] }}.builder add
+        --region {{ swift_region }}
+        --zone {{ swift_zone }}
+        --ip {{ internal_net_name | net_ip }}
+        --port {{ swift_service_ports[item[0]] }}
+        --device {{ item[1] }}
+        --weight 100
+  with_nested:
+    - "{{ swift_service_names }}"
+    - "{{ swift_block_devices }}"
+  delegate_to: "{{ swift_ring_build_host }}"
+
+- name: Ensure Swift rings are rebalanced
+  command: >
+    docker run
+      --rm
+      -v {{ swift_ring_build_path }}/:{{ kolla_config_path }}/config/swift/
+      {{ swift_image }}
+      swift-ring-builder {{ kolla_config_path }}/config/swift/{{ item }}.builder rebalance
+  with_items: "{{ swift_service_names }}"
+  delegate_to: "{{ swift_ring_build_host }}"
+  run_once: True
+
+- name: Ensure Swift ring files are copied
+  local_action:
+    module: copy
+    src: "{{ swift_ring_build_path }}/{{ item[0] }}.{{ item[1] }}"
+    dest: "{{ kolla_config_path }}/config/swift/{{ item[0] }}.{{ item[1] }}"
+    remote_src: True
+    owner: kolla
+    group: kolla
+    mode: 0644
+  with_nested:
+    - "{{ swift_service_names }}"
+    - - ring.gz
+      - builder
+  delegate_to: "{{ swift_ring_build_host }}"
+  become: True
+  run_once: True
+
+- name: Remove Swift ring build directory from build host
+  file:
+    path: "{{ swift_ring_build_path }}"
+    state: absent
+  delegate_to: "{{ swift_ring_build_host }}"
+  become: True
+  run_once: True

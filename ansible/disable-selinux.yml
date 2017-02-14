@@ -1,0 +1,5 @@
+---
+- name: Disable SELinux and reboot if required
+  hosts: controllers:seed
+  roles:
+    - role: disable-selinux

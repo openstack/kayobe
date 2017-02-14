@@ -1,0 +1,56 @@
+---
+- name: Ensure required packages are installed
+  yum:
+    name: "{{ item }}"
+    state: installed
+  become: True
+  with_items:
+    - libselinux-python
+
+- name: Ensure SELinux is disabled
+  selinux:
+    state: disabled
+  register: selinux_result
+  become: True
+
+- name: Set a fact to determine whether we are running locally
+  set_fact:
+    is_local: "{{ lookup('pipe', 'hostname') in [ansible_hostname, ansible_nodename] }}"
+  when: "{{ selinux_result | changed }}"
+
+# Any SSH connection errors cause ansible to fail the task. We therefore
+# perform a manual SSH connection and allow the command to fail.
+- name: Reboot the system to apply SELinux changes (remote)
+  local_action:
+    # Use -tt to force a pseudo tty.
+    module: >
+      command
+      ssh -tt {{ ansible_user }}@{{ ansible_host | default(inventory_hostname) }}
+      sudo shutdown -r now "Applying SELinux changes"
+  register: reboot_result
+  failed_when:
+    - "{{ reboot_result | failed }}"
+    - "{{ 'closed by remote host' not in reboot_result.stderr }}"
+  when:
+    - "{{ selinux_result | changed }}"
+    - "{{ not is_local | bool }}"
+
+- name: Reboot the system to apply SELinux changes (local)
+  command: shutdown -r now "Applying SELinux changes"
+  become: True
+  when:
+    - "{{ selinux_result | changed }}"
+    - "{{ is_local | bool }}"
+
+# If we're running this locally we won't get here.
+- name: Wait for the system to boot up (remote)
+  local_action:
+    module: wait_for
+    host: "{{ ansible_host | default(inventory_hostname) }}"
+    port: 22
+    state: started
+    # Wait for 10 seconds before polling to ensure the node has shutdown.
+    delay: 10
+  when:
+    - "{{ selinux_result | changed }}"
+    - "{{ not is_local | bool }}"

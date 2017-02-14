@@ -1,0 +1,34 @@
+---
+###############################################################################
+# Seed node VM configuration.
+
+# Name of the seed VM.
+#seed_vm_name:
+
+# Memory in MB.
+#seed_vm_memory_mb:
+
+# Number of vCPUs.
+#seed_vm_vcpus:
+
+# List of volumes.
+#seed_vm_volumes:
+
+# List of network interfaces.
+#seed_vm_interfaces:
+
+# Name of the storage pool for the seed VM volumes.
+#seed_vm_pool:
+
+# Capacity of the seed VM root volume.
+#seed_vm_root_capacity:
+
+# Format of the seed VM root volume.
+#seed_vm_root_format:
+
+# Base image for the seed VM root volume.
+#seed_vm_root_image:
+
+###############################################################################
+# Dummy variable to allow Ansible to accept this file.
+workaround_ansible_issue_8743: yes

@@ -1,0 +1,6 @@
+---
+- src: ahuffman.resolv
+- src: jriguera.configdrive
+- src: MichaelRigart.interfaces
+- src: resmo.ntp
+- src: yatesr.timezone

@@ -1,0 +1,27 @@
+DEVICE={{ item.device }}
+TYPE=veth
+PEER_DEVICE={{ item.peer_device }}
+{% if item.bootproto == 'static' %}
+BOOTPROTO=none
+{% if item.address is defined %}
+IPADDR={{ item.address }}
+{% endif %}
+{% if item.netmask is defined %}
+NETMASK={{ item.netmask }}
+{% endif %}
+{% if item.gateway is defined %}
+GATEWAY={{ item.gateway }}
+{% endif %}
+{% endif %}
+{% if item.bootproto == 'dhcp' %}
+BOOTPROTO=dhcp
+{% endif %}
+{% if item.onboot is defined %}
+ONBOOT={{ item.onboot }}
+{% endif %}
+{% if item.bridge is defined %}
+BRIDGE={{ item.bridge }}
+{% endif %}
+{% if ansible_distribution_major_version | int >= 7 %}
+NM_CONTROLLED=no
+{% endif %}

@@ -1,0 +1,5 @@
+---
+- name: Ensure configuration management host is bootstrapped
+  hosts: config-mgmt
+  roles:
+    - role: bootstrap

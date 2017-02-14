@@ -1,0 +1,34 @@
+---
+###############################################################################
+# Kolla configuration.
+
+# Path to Kolla configuration directory.
+kolla_config_path: "{{ lookup('env', 'KOLLA_CONFIG_PATH') | default('/etc/kolla') }}"
+
+# Path to Kolla node custom configuration directory.
+kolla_node_custom_config_path: "{{ kolla_config_path }}/config"
+
+# Kolla base container image distribution.
+kolla_base_distro: "centos"
+
+# Kolla installation type: binary or source.
+kolla_install_type: "binary"
+
+# Kolla OpenStack release version. This should be a Docker image tag.
+kolla_openstack_release: "3.0.2"
+
+# Whether TLS is enabled for the external API endpoints.
+kolla_enable_tls_external: "no"
+
+# Path to external API certificate.
+kolla_external_fqdn_cert:
+
+# Whether debug logging is enabled.
+kolla_openstack_logging_debug: "False"
+
+###############################################################################
+# Kolla feature flag configuration.
+
+kolla_enable_glance: "yes"
+kolla_enable_ironic: "yes"
+kolla_enable_swift: "yes"

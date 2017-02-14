@@ -1,0 +1,11 @@
+--- /usr/share/kolla/ansible/roles/ironic/templates/ironic-api.json.j2.old      2017-01-06 13:56:52.881061188 +0000
++++ /usr/share/kolla/ansible/roles/ironic/templates/ironic-api.json.j2  2017-01-06 14:00:21.757338271 +0000
+@@ -10,7 +10,7 @@
+     ],
+     "permissions": [
+         {
+-            "path": "/var/log/kolla/ironic"
++            "path": "/var/log/kolla/ironic",
+             "owner": "ironic:ironic",
+             "recurse": true
+         }

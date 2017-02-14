@@ -1,0 +1,34 @@
+---
+# List of names of block devices to use for Swift.
+swift_block_devices: []
+
+# Docker image to use to build rings.
+swift_image:
+
+# Host on which to build rings.
+swift_ring_build_host:
+
+# Path in which to build ring files.
+swift_ring_build_path: /tmp/swift-rings
+
+# Ports on which Swift services listen.
+swift_service_ports:
+  object: 6000
+  account: 6001
+  container: 6002
+
+# Base-2 logarithm of the number of partitions.
+# i.e. num_partitions=2^<swift_part_power>.
+swift_part_power:
+
+# Object replication count.
+swift_replication_count:
+
+# Minimum time in hours between moving a given partition.
+swift_min_part_hours:
+
+# ID of the region for this Swift service.
+swift_region:
+
+# ID of the zone for this Swift service.
+swift_zone:

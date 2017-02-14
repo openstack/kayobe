@@ -1,0 +1,26 @@
+---
+- name: Ensure Kolla OpenStack components are configured
+  hosts: config-mgmt
+  pre_tasks:
+    - name: Check whether Kolla extra Glance configuration file exists
+      stat:
+        path: "{{ kayobe_config_path }}/kolla/config/glance.conf"
+      register: glance_stat
+
+    - name: Read the Kolla extra Glance configuration file
+      set_fact:
+        kolla_extra_glance: "{{ lookup('template', '{{ kayobe_config_path }}/kolla/config/glance.conf') }}"
+      when: glance_stat.stat.exists
+
+    - name: Check whether Kolla extra Ironic configuration file exists
+      stat:
+        path: "{{ kayobe_config_path }}/kolla/config/ironic.conf"
+      register: ironic_stat
+
+    - name: Read the Kolla extra Ironic configuration file
+      set_fact:
+        kolla_extra_ironic: "{{ lookup('template', '{{ kayobe_config_path }}/kolla/config/ironic.conf') }}"
+      when: ironic_stat.stat.exists
+
+  roles:
+    - role: kolla-openstack

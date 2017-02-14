@@ -1,0 +1,54 @@
+---
+###############################################################################
+# Seed node VM configuration.
+
+# Name of the seed VM.
+seed_vm_name: "{{ inventory_hostname }}"
+
+# Memory in MB.
+seed_vm_memory_mb: "{{ 16 * 1024 }}"
+
+# Number of vCPUs.
+seed_vm_vcpus: 4
+
+# List of volumes.
+seed_vm_volumes:
+  - "{{ seed_vm_root_volume }}"
+  - "{{ seed_vm_data_volume }}"
+
+# Root volume.
+seed_vm_root_volume:
+  name: "{{ seed_vm_name }}-root"
+  pool: "{{ seed_vm_pool }}"
+  capacity: "{{ seed_vm_root_capacity }}"
+  format: "{{ seed_vm_root_format }}"
+  image: "{{ seed_vm_root_image }}"
+
+# Data volume.
+seed_vm_data_volume:
+  name: "{{ seed_vm_name }}-data"
+  pool: "{{ seed_vm_pool }}"
+  capacity: "{{ seed_vm_data_capacity }}"
+  format: "{{ seed_vm_data_format }}"
+
+# List of network interfaces.
+seed_vm_interfaces:
+  - network: default
+
+# Name of the storage pool for the seed VM volumes.
+seed_vm_pool: default
+
+# Capacity of the seed VM root volume.
+seed_vm_root_capacity: 50G
+
+# Format of the seed VM root volume.
+seed_vm_root_format: qcow2
+
+# Base image for the seed VM root volume.
+seed_vm_root_image:
+
+# Capacity of the seed VM data volume.
+seed_vm_data_capacity: 100G
+
+# Format of the seed VM data volume.
+seed_vm_data_format: qcow2

@@ -1,0 +1,9 @@
+---
+- name: Ensure IP addresses are allocated
+  local_action:
+    module: ip_allocation
+    allocation_file: "{{ ip_allocation_filename }}"
+    hostname: "{{ ip_allocation_hostname }}"
+    net_name: "{{ item.net_name }}"
+    cidr: "{{ item.cidr }}"
+  with_items: "{{ ip_allocations }}"

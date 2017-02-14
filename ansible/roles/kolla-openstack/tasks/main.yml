@@ -1,0 +1,24 @@
+---
+- name: Ensure the Kolla OpenStack configuration directores exist
+  file:
+    path: "{{ kolla_node_custom_config_path }}/{{ item.name }}"
+    state: directory
+    owner: kolla
+    group: kolla
+    mode: 0755
+  become: True
+  with_items:
+    - { name: swift, enabled: "{{ kolla_enable_swift }}" }
+  when: "{{ item.enabled | bool }}"
+
+- name: Ensure the Kolla OpenStack configuration files exist
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ kolla_node_custom_config_path }}/{{ item.dest }}"
+    owner: kolla
+    group: kolla
+    mode: 0644
+  become: True
+  with_items:
+    - { src: glance.conf.j2, dest: glance.conf, enabled: "{{ kolla_enable_glance }}" }
+    - { src: ironic.conf.j2, dest: ironic.conf, enabled: "{{ kolla_enable_ironic }}" }

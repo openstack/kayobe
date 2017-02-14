@@ -1,0 +1,35 @@
+---
+- name: Ensure Kolla is configured
+  hosts: config-mgmt
+  vars:
+    controller_host: "{{ groups['controllers'][0] | default() }}"
+    seed_host: "{{ groups['seed'][0] | default() }}"
+  pre_tasks:
+    - name: Check whether a Kolla extra globals configuration file exists
+      stat:
+        path: "{{ kayobe_config_path ~ '/kolla/globals.yml' }}"
+      register: globals_stat
+
+    - name: Read the Kolla extra globals configuration file
+      set_fact:
+        kolla_extra_globals: "{{ lookup('template', kayobe_config_path ~ '/kolla/globals.yml') | from_yaml }}"
+      when: globals_stat.stat.exists
+  roles:
+    - role: kolla
+
+    - role: kolla-build
+
+    - role: kolla-ansible
+      kolla_internal_vip_address: "{{ internal_net_name | net_vip_address }}"
+      kolla_internal_fqdn: "{{ internal_net_name | net_fqdn or kolla_internal_vip_address }}"
+      kolla_external_vip_address: "{{ external_net_name | net_vip_address }}"
+      kolla_external_fqdn: "{{ external_net_name | net_fqdn or kolla_external_vip_address }}"
+      kolla_network_interface: "{% if controller_host %}{{ internal_net_name | net_interface(controller_host) | replace('-', '_') }}{% endif %}"
+      kolla_external_vip_interface: "{% if controller_host %}{{ external_net_name | net_interface(controller_host) | replace('-', '_') }}{% endif %}"
+      kolla_api_interface: "{% if controller_host %}{{ internal_net_name | net_interface(controller_host) | replace('-', '_') }}{% endif %}"
+      kolla_storage_interface: "{% if controller_host %}{{ storage_net_name | net_interface(controller_host) | replace('-', '_') }}{% endif %}"
+      kolla_cluster_interface: "{% if controller_host %}{{ storage_mgmt_net_name | net_interface(controller_host) | replace('-', '_') }}{% endif %}"
+      kolla_neutron_bridge_name: "{% if controller_host %}{{ hostvars[controller_host]['neutron_bridge_name'] }}{% endif %}"
+      kolla_neutron_external_interface: "{% if controller_host %}{{ hostvars[controller_host]['neutron_external_interface'] }}{% endif %}"
+      kolla_bifrost_network_interface: "{% if seed_host %}{{ provision_oc_net_name | net_interface(seed_host) | replace('-', '_') }}{% endif %}"
+      kolla_provision_interface: "{% if controller_host %}{{ provision_wl_net_name | net_interface(controller_host) | replace('-', '_') }}{% endif %}"

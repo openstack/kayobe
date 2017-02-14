@@ -1,0 +1,15 @@
+---
+# Kayobe global configuration.
+
+###############################################################################
+# Miscellaneous configuration.
+
+# Path to Kayobe configuration.
+#kayobe_config_path:
+
+# Path in which to cache downloaded images.
+#image_cache_path:
+
+###############################################################################
+# Dummy variable to allow Ansible to accept this file.
+workaround_ansible_issue_8743: yes

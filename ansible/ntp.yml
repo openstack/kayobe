@@ -1,0 +1,8 @@
+---
+- name: Ensure NTP is installed and configured
+  hosts: seed:controllers
+  roles:
+    - role: yatesr.timezone
+      become: True
+    - role: resmo.ntp
+      become: True

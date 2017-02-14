@@ -1,0 +1,21 @@
+---
+###############################################################################
+# DNS.
+
+# List of DNS nameservers.
+resolv_nameservers:
+  - 8.8.8.8
+  - 8.8.4.4
+
+# DNS domain suffix.
+#resolv_domain:
+
+# List of DNS search suffixes.
+#resolv_search:
+
+# List of IP address and netmask pairs to sort addresses returned by
+# gethostbyname.
+#resolv_sortlist:
+
+# List of DNS options.
+#resolv_options:

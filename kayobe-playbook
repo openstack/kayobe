@@ -1,0 +1,20 @@
+#!/bin/bash
+
+KAYOBE_CONFIG_PATH=${KAYOBE_CONFIG_PATH:-/etc/kayobe}
+
+# Ansible fails silently if the inventory does not exist.
+test -e ${KAYOBE_CONFIG_PATH}/inventory
+
+# Execute a Kayobe playbook.
+exec ansible-playbook \
+  -i ${KAYOBE_CONFIG_PATH}/inventory \
+  -e @${KAYOBE_CONFIG_PATH}/bifrost.yml \
+  -e @${KAYOBE_CONFIG_PATH}/dns.yml \
+  -e @${KAYOBE_CONFIG_PATH}/globals.yml \
+  -e @${KAYOBE_CONFIG_PATH}/kolla.yml \
+  -e @${KAYOBE_CONFIG_PATH}/networks.yml \
+  -e @${KAYOBE_CONFIG_PATH}/network-allocation.yml \
+  -e @${KAYOBE_CONFIG_PATH}/ntp.yml \
+  -e @${KAYOBE_CONFIG_PATH}/seed-vm.yml \
+  -e @${KAYOBE_CONFIG_PATH}/swift.yml \
+  $@

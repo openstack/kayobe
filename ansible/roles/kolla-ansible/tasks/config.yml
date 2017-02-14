@@ -1,0 +1,34 @@
+---
+- name: Ensure the Kolla configuration directores exist
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  become: True
+  with_items:
+    - "{{ kolla_config_path }}/inventory"
+    - "{{ kolla_node_custom_config_path }}"
+
+- name: Ensure the Kolla configuration files exist
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ kolla_config_path }}/{{ item.dest }}"
+    mode: 0644
+  become: True
+  with_items:
+    - { src: seed.j2, dest: inventory/seed }
+    - { src: overcloud.j2, dest: inventory/overcloud }
+    - { src: globals.yml.j2, dest: globals.yml }
+
+- name: Check whether the Kolla passwords file exists
+  stat:
+    path: "{{ kolla_config_path }}/passwords.yml"
+  register: kolla_passwords_stat
+
+- name: Generate Kolla passwords
+  shell: >
+    cp {{ kolla_install_dir }}/etc_examples/kolla/passwords.yml {{ kolla_config_path }}/passwords.yml.generated
+    && {{ kolla_venv }}/bin/kolla-genpwd -p {{ kolla_config_path }}/passwords.yml.generated
+    && mv {{ kolla_config_path }}/passwords.yml.generated {{ kolla_config_path }}/passwords.yml
+  become: True
+  when: not kolla_passwords_stat.stat.exists

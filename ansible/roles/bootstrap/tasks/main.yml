@@ -1,0 +1,39 @@
+---
+- name: Ensure required packages are installed
+  yum:
+    name: "{{ item }}"
+    state: installed
+  become: True
+  with_items:
+    - git
+    - vim
+
+- name: Check whether an SSH key exists
+  stat:
+    path: "{{ ansible_user_dir }}/.ssh/id_rsa"
+  register: ssh_key_stat
+
+- name: Generate an SSH key
+  command: ssh-keygen -t rsa -N '' -f {{ ansible_user_dir }}/.ssh/id_rsa
+  when: not ssh_key_stat.stat.exists
+
+- name: Ensure SSH public key is in authorized keys
+  authorized_key:
+    user: "{{ ansible_user_id }}"
+    key: "{{ lookup('file', ansible_user_dir ~ '/.ssh/id_rsa.pub') }}"
+
+- name: Scan for SSH keys
+  command: ssh-keyscan {{ item }}
+  with_items:
+    - localhost
+    - 127.0.0.1
+  register: keyscan_result
+  changed_when: False
+
+- name: Ensure SSH keys are in known hosts
+  known_hosts:
+    host: "{{ item[0].item }}"
+    key: "{{ item[1] }}"
+  with_subelements:
+    - "{{ keyscan_result.results }}"
+    - stdout_lines

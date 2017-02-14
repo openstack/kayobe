@@ -1,0 +1,6 @@
+---
+- name: Ensure Kolla hosts are configured
+  hosts: seed:controllers
+  roles:
+    - role: kolla-host
+      kolla_authorized_key: "{{ lookup('file', lookup('env', 'HOME') ~ '/.ssh/id_rsa.pub') }}"

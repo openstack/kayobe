@@ -1,0 +1,35 @@
+---
+# Kayobe configuration for Bifrost.
+
+###############################################################################
+# Diskimage-builder configuration.
+
+# DIB base OS element.
+kolla_bifrost_dib_os_element: "centos7"
+
+# List of DIB elements.
+kolla_bifrost_dib_elements:
+  - "serial-console"
+  - "vm"
+
+# DIB init element.
+kolla_bifrost_dib_init_element: "cloud-init-datasources"
+
+# DIB environment variables.
+kolla_bifrost_dib_env_vars:
+  DIB_CLOUD_INIT_DATASOURCES: "ConfigDrive"
+
+# List of DIB packages to install.
+kolla_bifrost_dib_packages: []
+
+###############################################################################
+# Ironic configuration.
+
+# Whether to enable ipmitool-based drivers.
+kolla_bifrost_enable_ipmitool_drivers: true
+
+###############################################################################
+# Inventory configuration.
+
+# Server inventory for Bifrost.
+kolla_bifrost_servers: {}

@@ -1,0 +1,3 @@
+---
+# SSH public key to be authorized by the Kolla host.
+kolla_authorized_key:

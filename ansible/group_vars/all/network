@@ -1,0 +1,10 @@
+---
+###############################################################################
+# Network roles.
+
+# Network role to network name mappings.
+provision_oc_net_name: 'provision_oc_net'
+provision_wl_net_name: 'provision_wl_net'
+external_net_name: 'external_net'
+storage_net_name: 'storage_net'
+storage_mgmt_net_name: 'storage_mgmt_net'

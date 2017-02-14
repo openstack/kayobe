@@ -1,0 +1,3 @@
+---
+# List of virtual interfaces to configure.
+veth_interfaces: []

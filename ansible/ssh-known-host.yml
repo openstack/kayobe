@@ -1,0 +1,7 @@
+---
+- name: Ensure known hosts are configured
+  hosts: all
+  gather_facts: no
+  roles:
+    - role: ssh-known-host
+

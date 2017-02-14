@@ -13,3 +13,13 @@ ansible/*.retry
 # Others
 .DS_Store
 .vimrc
+
+# Ansible Galaxy roles
+ansible/roles/ahuffman.resolv/
+ansible/roles/jriguera.configdrive/
+ansible/roles/MichaelRigart.interfaces/
+ansible/roles/resmo.ntp/
+ansible/roles/yatesr.timezone/
+
+# Virtualenv
+ansible/kolla-venv

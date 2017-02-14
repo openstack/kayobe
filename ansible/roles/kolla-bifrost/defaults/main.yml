@@ -1,0 +1,46 @@
+---
+# Directory where Kolla custom configuration files will be installed.
+kolla_node_custom_config_path:
+
+# DIB image OS element.
+kolla_bifrost_dib_os_element:
+
+# List of DIB image elements.
+kolla_bifrost_dib_elements: []
+
+# DIB image init element.
+kolla_bifrost_dib_init_element:
+
+# DIB image environment variables.
+kolla_bifrost_dib_env_vars: {}
+
+# List of DIB image packages.
+kolla_bifrost_dib_packages: []
+
+# List of Ironic drivers to enable.
+kolla_bifrost_enabled_drivers: []
+
+# Whether to enable the Ironic PXE drivers.
+kolla_bifrost_enable_pxe_drivers: false
+
+# List of Ironic PXE drivers to enable if kolla_bifrost_enable_pxe_drivers.
+kolla_bifrost_pxe_drivers: []
+
+# IP address range for DHCP.
+kolla_bifrost_dhcp_pool_start:
+kolla_bifrost_dhcp_pool_end:
+
+# Default route provided to nodes via DHCP.
+kolla_bifrost_dnsmasq_router:
+
+# List of DNS servers provided to nodes via DHCP.
+kolla_bifrost_dnsmasq_dns_servers: []
+
+# DNS domain provided to nodes via DHCP.
+kolla_bifrost_domain:
+
+# Server inventory to be configured in {{ kolla_node_custom_config_path }}/bifrost/servers.yml.
+kolla_bifrost_servers: {}
+
+# Free form extra configuration to append to {{ kolla_node_custom_config_path }}/bifrost/bifrost.yml.
+kolla_bifrost_extra_globals:

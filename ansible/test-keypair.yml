@@ -1,0 +1,24 @@
+---
+- name: Ensure user SSH keypair is registered with Nova
+  hosts: seed[0]
+  vars:
+    openstack_auth:
+      auth_url: "{{ lookup('env', 'OS_AUTH_URL') }}"
+      username: "{{ lookup('env', 'OS_USERNAME') }}"
+      password: "{{ lookup('env', 'OS_PASSWORD') }}"
+      project_name: "{{ lookup('env', 'OS_PROJECT_NAME') }}"
+      project_domain_name: "{{ lookup('env', 'OS_PROJECT_DOMAIN_NAME') }}"
+      user_domain_name: "{{ lookup('env', 'OS_USER_DOMAIN_NAME') }}"
+    public_key_file: "{{ ansible_user_dir }}/.ssh/id_rsa.pub"
+  tasks:
+    - name: Ensure OpenStack shade module is installed
+      pip:
+        name: shade
+      become: True
+
+    - name: Ensure a test SSH key pair is registered with Nova
+      os_keypair:
+        auth: "{{ openstack_auth }}"
+        name: test
+        public_key_file: "{{ public_key_file }}"
+        state: present

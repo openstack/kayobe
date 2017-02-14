@@ -1,0 +1,12 @@
+---
+# Directory where Kolla config files will be installed.
+kolla_config_path:
+
+# Valid options are [ centos, fedora, oraclelinux, ubuntu ]
+kolla_base_distro:
+
+# Valid options are [ binary, source ]
+kolla_install_type:
+
+# Valid option is Docker repository tag
+kolla_openstack_release:

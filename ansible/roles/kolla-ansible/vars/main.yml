@@ -1,0 +1,42 @@
+---
+kolla_install_dir: "{{ kolla_venv }}/share/kolla"
+
+# List of features supported by Kolla as enable_* flags.
+kolla_feature_flags:
+  - aodh
+  - barbican
+  - ceilometer
+  - central_logging
+  - ceph
+  - ceph_rgw
+  - cinder
+  - cinder_backend_iscsi
+  - cinder_backend_lvm
+  - cloudkitty
+  - congress
+  - etcd
+  - gnocchi
+  - grafana
+  - heat
+  - horizon
+  - influxdb
+  - ironic
+  - kuryr
+  - magnum
+  - manila
+  - mistral
+  - mongodb
+  - murano
+  - multipathd
+  - neutron_dvr
+  - neutron_lbaas
+  - neutron_qos
+  - neutron_agent_ha
+  - neutron_vpnaas
+  - rally
+  - sahara
+  - senlin
+  - swift
+  - telegraf
+  - tempest
+  - watcher

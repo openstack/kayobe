@@ -1,0 +1,22 @@
+---
+- hosts: all
+  gather_facts: "{{ gather_facts | default(False) }}"
+  vars:
+    dump_config_path: /tmp/kayobe-dump-config
+  tasks:
+    - name: Create configuration dump directory
+      file:
+        path: "{{ dump_config_path }}"
+        state: directory
+
+    - name: Write host config to file
+      local_action:
+        module: copy
+        content: "{{ hostvars[inventory_hostname] | to_nice_yaml }}"
+        dest: "{{ dump_config_path }}/{{ inventory_hostname }}.yml"
+
+    - name: Write merged config to file
+      local_action:
+        module: copy
+        content: "{{ hostvars | merge_config | to_nice_yaml }}"
+        dest: "{{ dump_config_path }}/merged.yml

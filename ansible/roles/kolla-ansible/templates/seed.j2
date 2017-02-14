@@ -1,0 +1,17 @@
+# {{ ansible_managed }}
+
+# Simple inventory for bootstrapping Kolla seed node.
+[seed]
+{% for seed in groups['seed'] %}
+{% set seed_hv=hostvars[seed] %}
+{{ seed }}{% if "ansible_host" in seed_hv %}    ansible_host={{ seed_hv["ansible_host"] }}{% endif %}
+{% endfor %}
+
+[seed:vars]
+ansible_user=kolla
+
+[baremetal:children]
+seed
+
+[bifrost:children]
+seed
