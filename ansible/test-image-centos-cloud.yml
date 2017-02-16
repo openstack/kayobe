@@ -8,7 +8,6 @@
       project_name: "{{ lookup('env', 'OS_PROJECT_NAME') }}"
       project_domain_name: "{{ lookup('env', 'OS_PROJECT_DOMAIN_NAME') }}"
       user_domain_name: "{{ lookup('env', 'OS_USER_DOMAIN_NAME') }}"
-    image_download_dir: "{{ ansible_user_dir }}/images"
   tasks:
     - name: Ensure OpenStack shade module is installed
       pip:
@@ -17,13 +16,13 @@
 
     - name: Ensure image download directory exists
       file:
-        path: "{{ image_download_dir }}"
+        path: "{{ image_cache_path }}"
         state: directory
 
     - name: Ensure CentOS 7 cloud image is downloaded
       get_url:
         url: http://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud.qcow2
-        dest: "{{ image_download_dir }}/CentOS-7-x86_64-GenericCloud.qcow2"
+        dest: "{{ image_cache_path }}/CentOS-7-x86_64-GenericCloud.qcow2"
 
     - name: Ensure test deployment image is registered with Glance
       os_image:
@@ -32,4 +31,4 @@
         container_format: bare
         disk_format: qcow2
         state: present
-        filename: "{{ image_download_dir }}/CentOS-7-x86_64-GenericCloud.qcow2"
+        filename: "{{ image_cache_path }}/CentOS-7-x86_64-GenericCloud.qcow2"

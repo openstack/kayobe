@@ -1,5 +1,5 @@
 ---
-- hosts: seed[0]
+- hosts: seed
   vars:
     openstack_auth:
       auth_url: "{{ lookup('env', 'OS_AUTH_URL') }}"
@@ -8,23 +8,41 @@
       project_name: "{{ lookup('env', 'OS_PROJECT_NAME') }}"
       project_domain_name: "{{ lookup('env', 'OS_PROJECT_DOMAIN_NAME') }}"
       user_domain_name: "{{ lookup('env', 'OS_USER_DOMAIN_NAME') }}"
-    image_download_dir: "{{ ansible_user_dir }}/images"
+    shade_venv: "{{ ansible_env['PWD'] }}/shade-venv"
+    test_image_cache_path: "{{ ansible_env['PWD'] }}/images"
   tasks:
+    - name: Ensure pip is installed
+      pip:
+        name: pip
+        state: latest
+        virtualenv: "{{ shade_venv }}"
+
     - name: Ensure OpenStack shade module is installed
       pip:
         name: shade
-      become: True
+        virtualenv: "{{ shade_venv }}"
 
     - name: Ensure image download directory exists
       file:
-        path: "{{ image_download_dir }}"
+        path: "{{ test_image_cache_path }}"
         state: directory
+
+    - name: Ensure unzip package is installed
+      yum:
+        name: unzip
+        state: installed
 
     - name: Ensure Ironic CoreOS IPA deploy images are downloaded
       unarchive:
         src: http://tarballs.openstack.org/ironic-python-agent/coreos/ipa-coreos-stable-newton.tar.gz
-        dest: "{{ image_download_dir }}"
+        dest: "{{ test_image_cache_path }}"
         remote_src: yes
+
+    # Note that setting this via a play or task variable seems to not
+    # evaluate the Jinja variable reference, so we use set_fact.
+    - name: Update the Ansible python interpreter fact to point to the shade virtualenv
+      set_fact:
+        ansible_python_interpreter: "{{ shade_venv }}/bin/python"
 
     - name: Ensure Ironic CoreOS IPA deploy images are registered with Glance
       os_image:
@@ -33,7 +51,7 @@
         container_format: "{{ item.format }}"
         disk_format: "{{ item.format }}"
         state: present
-        filename: "{{ image_download_dir }}/imagebuild/coreos/UPLOAD/{{ item.filename }}"
+        filename: "{{ test_image_cache_path }}/imagebuild/coreos/UPLOAD/{{ item.filename }}"
       with_items:
         - { name: ipa.initrd, filename: coreos_production_pxe_image-oem-stable-newton.cpio.gz, format: ari }
         - { name: ipa.vmlinuz, filename: coreos_production_pxe-stable-newton.vmlinuz, format: aki }
@@ -52,7 +70,8 @@
         auth: "{{ openstack_auth }}"
         name: provision-subnet
         network_name: provision-net
-        cidr: "{{ provision_net_cidr }}"
-        allocation_pool_start: "{{ provision_net_allocation_pool_start | default(omit) }}"
-        allocation_pool_end: "{{ provision_net_allocation_pool_end | default(omit) }}"
+        cidr: "{{ provision_wl_net_name | net_cidr }}"
+        gateway_ip: "{{ provision_wl_net_name | net_gateway | default(omit) }}"
+        allocation_pool_start: "{{ provision_wl_net_name | net_allocation_pool_start | default(omit) }}"
+        allocation_pool_end: "{{ provision_wl_net_name | net_allocation_pool_end | default(omit) }}"
         state: present
