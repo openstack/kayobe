@@ -14,6 +14,7 @@ function run_playbook {
         -e @${KAYOBE_CONFIG_PATH}/networks.yml \
         -e @${KAYOBE_CONFIG_PATH}/network-allocation.yml \
         -e @${KAYOBE_CONFIG_PATH}/ntp.yml \
+        -e @${KAYOBE_CONFIG_PATH}/ssh.yml \
         -e @${KAYOBE_CONFIG_PATH}/swift.yml \
         $@
 }

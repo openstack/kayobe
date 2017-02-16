@@ -17,7 +17,7 @@
       configdrive_uuid: "{{ seed_host | to_uuid }}"
       configdrive_fqdn: "{{ seed_host }}"
       configdrive_name: "{{ seed_host }}"
-      configdrive_ssh_public_key: "{{ lookup('file', '{{ ansible_user_dir }}/.ssh/id_rsa.pub') }}"
+      configdrive_ssh_public_key: "{{ lookup('file', ssh_public_key_path) }}"
       configdrive_config_dir: "{{ image_cache_path }}"
       configdrive_volume_path: "{{ image_cache_path }}"
       configdrive_config_dir_delete: True

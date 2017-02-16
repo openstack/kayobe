@@ -3,4 +3,4 @@
   hosts: seed:controllers
   roles:
     - role: kolla-host
-      kolla_authorized_key: "{{ lookup('file', lookup('env', 'HOME') ~ '/.ssh/id_rsa.pub') }}"
+      kolla_authorized_key: "{{ lookup('file', ssh_public_key_path) }}"
