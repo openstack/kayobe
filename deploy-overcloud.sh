@@ -33,6 +33,7 @@ function run_kolla_ansible {
 }
 
 function configure_os {
+    run_playbook ansible/ip-allocation.yml -l controllers
     run_playbook ansible/ssh-known-host.yml -l controllers
     run_playbook ansible/disable-selinux.yml -l controllers
     run_playbook ansible/network.yml -l controllers

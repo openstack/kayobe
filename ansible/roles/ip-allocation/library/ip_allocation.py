@@ -57,6 +57,8 @@ def update_allocation(module, allocations):
     net_name = module.params['net_name']
     hostname = module.params['hostname']
     cidr = module.params['cidr']
+    allocation_pool_start = module.params['allocation_pool_start']
+    allocation_pool_end = module.params['allocation_pool_end']
     network = netaddr.IPNetwork(cidr)
     result = {
         'changed': False,
@@ -70,8 +72,13 @@ def update_allocation(module, allocations):
             (network, ", ".join("%s: %s" % (hn, ip) for hn, ip in invalid_allocations.items())))
     if hostname not in net_allocations:
         result['changed'] = True
-        ips = netaddr.IPSet(net_allocations.values())
-        free_ips = netaddr.IPSet([network]) - ips
+        allocated_ips = netaddr.IPSet(net_allocations.values())
+        if allocation_pool_start and allocation_pool_end:
+            allocation_pool = netaddr.IPRange(allocation_pool_start, allocation_pool_end)
+            allocation_pool = netaddr.IPSet(allocation_pool)
+        else:
+            allocation_pool = netaddr.IPSet([network])
+        free_ips = allocation_pool - allocated_ips
         for free_cidr in free_ips.iter_cidrs():
             ip = free_cidr[0]
             break
@@ -98,6 +105,8 @@ def main():
             net_name=dict(required=True, type='str'),
             hostname=dict(required=True, type='str'),
             cidr=dict(required=True, type='str'),
+            allocation_pool_start=dict(required=False, type='str'),
+            allocation_pool_end=dict(required=False, type='str'),
             allocation_file=dict(required=True, type='str'),
         ),
         supports_check_mode=True,

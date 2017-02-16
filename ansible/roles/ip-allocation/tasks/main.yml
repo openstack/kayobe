@@ -6,4 +6,6 @@
     hostname: "{{ ip_allocation_hostname }}"
     net_name: "{{ item.net_name }}"
     cidr: "{{ item.cidr }}"
+    allocation_pool_start: "{{ item.allocation_pool_start | default(omit) }}"
+    allocation_pool_end: "{{ item.allocation_pool_end | default(omit) }}"
   with_items: "{{ ip_allocations }}"
