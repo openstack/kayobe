@@ -56,6 +56,7 @@
 #kolla_enable_etcd:
 #kolla_enable_gnocchi:
 #kolla_enable_grafana:
+#kolla_enable_haproxy:
 #kolla_enable_heat:
 #kolla_enable_horizon:
 #kolla_enable_influxdb:

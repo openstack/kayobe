@@ -17,6 +17,7 @@ kolla_feature_flags:
   - etcd
   - gnocchi
   - grafana
+  - haproxy
   - heat
   - horizon
   - influxdb
