@@ -1,0 +1,37 @@
+---
+# Variables:
+# - dump_path: Path to directory to store variable dumps (optional)
+# - dump_facts: Whether to include gathered facts in the dump (optional)
+# - dump_hosts: Group/host specifier for hosts to dump (optional)
+# - dump_var_name: Name of the option to dump (optional)
+
+- name: Dump configuration from one or more hosts
+  hosts: "{{ dump_hosts | default('all') }}"
+  gather_facts: "{{ dump_facts | default(False) }}"
+  vars:
+    dump_path: /tmp/kayobe-dump-config
+  tasks:
+    - name: Create configuration dump directory
+      file:
+        path: "{{ dump_path }}"
+        state: directory
+
+    - name: Write host config to file
+      local_action:
+        module: copy
+        content: "{{ hostvars[inventory_hostname] | to_nice_yaml }}"
+        dest: "{{ dump_path }}/{{ inventory_hostname }}.yml"
+      when: "{{ dump_var_name is not defined }}"
+
+    - name: Write host variable to file
+      local_action:
+        module: copy
+        content: "{{ hostvars[inventory_hostname][dump_var_name] | to_nice_yaml }}"
+        dest: "{{ dump_path }}/{{ inventory_hostname }}.yml"
+      when: "{{ dump_var_name is defined }}"
+
+#    - name: Write merged config to file
+#      local_action:
+#        module: copy
+#        content: "{{ hostvars | merge_config | to_nice_yaml }}"
+#        dest: "{{ dump_path }}/merged.yml

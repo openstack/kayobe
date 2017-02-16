@@ -1,0 +1,14 @@
+---
+- name: Ensure required packages are installed
+  yum:
+    name: "{{ item }}"
+    state: installed
+  become: True
+  with_items:
+    - vim
+
+- name: Ensure Kolla user has authorized our SSH key
+  authorized_key:
+    user: kolla
+    key: "{{ kolla_authorized_key }}"
+  become: True

@@ -1,0 +1,17 @@
+---
+- name: Scan for SSH keys
+  local_action:
+    module: command ssh-keyscan {{ item }}
+  with_items:
+    - "{{ ansible_host|default(inventory_hostname) }}"
+  register: keyscan_result
+  changed_when: False
+
+- name: Ensure SSH keys are in known hosts
+  local_action:
+    module: known_hosts
+    host: "{{ item[0].item }}"
+    key: "{{ item[1] }}"
+  with_subelements:
+    - "{{ keyscan_result.results }}"
+    - stdout_lines

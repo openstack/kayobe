@@ -1,0 +1,3 @@
+---
+# User with which to access the seed VM via SSH.
+ansible_user: "{{ kayobe_ansible_user }}"

@@ -1,0 +1,13 @@
+---
+# Path to file in which to store IP allocations.
+ip_allocation_filename:
+
+# Name of host to allocate IPs for.
+ip_allocation_hostname:
+
+# List of IP allocations. Each item should be a dict with the following items:
+# net_name: Name of the network
+# cidr: CIDR representation of the IP subnet
+# allocation_pool_start: First IP address in the allocation pool (optional)
+# allocation_pool_end: Last IP address in the allocation pool (optional)
+ip_allocations:

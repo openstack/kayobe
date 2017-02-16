@@ -1,0 +1,6 @@
+---
+# Virtualenv directory where Kolla will be installed.
+kolla_venv: "{{ ansible_env['PWD'] }}/kolla-venv"
+
+# Directory where Kolla config files will be installed.
+kolla_config_path:

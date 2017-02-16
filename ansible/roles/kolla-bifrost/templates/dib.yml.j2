@@ -1,0 +1,12 @@
+---
+# Diskimage-builder element for base OS.
+dib_os_element: "{{ kolla_bifrost_dib_os_element }}"
+
+# List of DIB image elements.
+dib_elements: "{{ (kolla_bifrost_dib_elements + [kolla_bifrost_dib_init_element]) | join(' ') }}"
+
+# DIB image environment variables.
+dib_env_vars: "{{ kolla_bifrost_dib_env_vars }}"
+
+# List of DIB image packages.
+dib_packages: "{{ kolla_bifrost_dib_packages | join(',') }}"

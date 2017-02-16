@@ -1,0 +1,47 @@
+---
+- name: Ensure networking is configured
+  hosts: seed:controllers
+  pre_tasks:
+    - name: Ensure NetworkManager is disabled
+      service:
+        name: NetworkManager
+        state: stopped
+        enabled: no
+      become: True
+      register: nm_result
+      failed_when:
+        - "{{ nm_result | failed }}"
+        # Ugh, Ansible's service module doesn't handle uninstalled services.
+        - "{{ 'Could not find the requested service' not in nm_result.msg }}"
+
+  roles:
+    - role: ahuffman.resolv
+      become: True
+
+    - role: MichaelRigart.interfaces
+      interfaces_ether_interfaces: >
+        {{ network_interfaces |
+           net_select_ethers |
+           map('net_interface_obj') |
+           list }}
+      interfaces_bridge_interfaces: >
+        {{ network_interfaces |
+           net_select_bridges |
+           map('net_bridge_obj') |
+           list }}
+      become: True
+
+- name: Ensure controller workload provisioning network is configured
+  hosts: controllers
+  roles:
+    # Configure a virtual ethernet patch link to connect the workload provision
+    # network bridge to the Neutron OVS bridge.
+    - role: veth
+      veth_interfaces:
+        - device: "{{ 'patch-' ~ provision_wl_net_name | net_interface }}"
+          bootproto: "static"
+          bridge: "{{ provision_wl_net_name | net_interface }}"
+          peer_device: "{{ 'patch-' ~ neutron_bridge_name }}"
+          peer_bootproto: "static"
+          onboot: yes
+      when: "{{ provision_wl_net_name in network_interfaces }}"

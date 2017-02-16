@@ -1,0 +1,6 @@
+---
+# List of names of Swift services.
+swift_service_names:
+  - object
+  - account
+  - container

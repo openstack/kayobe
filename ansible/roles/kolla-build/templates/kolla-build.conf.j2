@@ -1,0 +1,15 @@
+# {{ ansible_managed }}
+
+[DEFAULT]
+
+# Base container image distribution.
+base={{ kolla_base_distro }}
+
+# Method of OpenStack install. Valid options are [ binary, source ]
+type={{ kolla_install_type }}
+
+# Docker image tag to apply.
+tag={{ kolla_openstack_release }}
+
+# Path to a file containing template overrides.
+template_override={{ kolla_config_path }}/template-override.j2

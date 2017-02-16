@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Take down a virtual ethernet device pair.
+
+. /etc/init.d/functions
+
+cd /etc/sysconfig/network-scripts
+. ./network-functions
+
+[ -f ../network ] && . ../network
+
+CONFIG=${1}
+
+need_config "${CONFIG}"
+
+source_config
+
+./ifdown-eth ${CONFIG} ${2}
+./ifdown-eth ifcfg-${PEER_DEVICE} ${2}

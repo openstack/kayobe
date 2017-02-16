@@ -1,0 +1,10 @@
+---
+- name: Ensure the Kolla build configuration files exist
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ kolla_config_path }}/{{ item.dest }}"
+    mode: 0644
+  become: True
+  with_items:
+    - { src: kolla-build.conf.j2, dest: kolla-build.conf }
+    - { src: template-override.j2.j2, dest: template-override.j2 }

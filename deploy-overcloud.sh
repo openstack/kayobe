@@ -2,68 +2,63 @@
 
 set -e
 
-###########################################################
-# Overcloud
-
-function configure_overcloud_network {
-    echo "TODO: configure overcloud network"
+function run_playbook {
+    KAYOBE_CONFIG_PATH=${KAYOBE_CONFIG_PATH:-/etc/kayobe}
+    # Ansible fails silently if the inventory does not exist.
+    test -e ${KAYOBE_CONFIG_PATH}/inventory
+    ansible-playbook \
+        -i ${KAYOBE_CONFIG_PATH}/inventory \
+        -e @${KAYOBE_CONFIG_PATH}/controllers.yml \
+        -e @${KAYOBE_CONFIG_PATH}/dns.yml \
+        -e @${KAYOBE_CONFIG_PATH}/globals.yml \
+        -e @${KAYOBE_CONFIG_PATH}/kolla.yml \
+        -e @${KAYOBE_CONFIG_PATH}/networks.yml \
+        -e @${KAYOBE_CONFIG_PATH}/network-allocation.yml \
+        -e @${KAYOBE_CONFIG_PATH}/ntp.yml \
+        -e @${KAYOBE_CONFIG_PATH}/ssh.yml \
+        -e @${KAYOBE_CONFIG_PATH}/swift.yml \
+        $@
 }
 
-function configure_overcloud_bios_and_raid {
-    echo "TODO: configure overcloud BIOS and RAID"
+function run_kolla_ansible {
+    export KOLLA_CONFIG_PATH=${KOLLA_CONFIG_PATH:-/etc/kolla}
+    # Ansible fails silently if the inventory does not exist.
+    test -e ${KOLLA_CONFIG_PATH}/inventory/overcloud
+    KOLLA_VENV=$(pwd)/ansible/kolla-venv
+    source ${KOLLA_VENV}/bin/activate
+    kolla-ansible \
+        --configdir ${KOLLA_CONFIG_PATH} \
+        --passwords ${KOLLA_CONFIG_PATH}/passwords.yml \
+        -i ${KOLLA_CONFIG_PATH}/inventory/overcloud \
+        $@
+    deactivate
 }
 
-function deploy_overcloud_servers {
-    # Deploy servers with Bifrost
-    kolla-ansible deploy-servers -i /etc/kolla/inventory/seed
+function configure_os {
+    ansible_user=$(./kayobe-config-dump -e dump_hosts=controllers[0] -e dump_var_name=kayobe_ansible_user | head -n -1)
+    run_playbook ansible/ip-allocation.yml -l controllers
+    run_playbook ansible/ssh-known-host.yml -l controllers
+    run_playbook ansible/kayobe-ansible-user.yml -l controllers
+    run_playbook ansible/disable-selinux.yml -l controllers
+    run_playbook ansible/network.yml -l controllers
+    run_playbook ansible/ntp.yml -l controllers
+    run_kolla_ansible bootstrap-servers -e ansible_user=${ansible_user}
+    run_playbook ansible/kolla-host.yml -l controllers
+    run_playbook ansible/docker.yml -l controllers
 }
 
-function configure_overcloud_os {
-    #ansible controllers -b -i /etc/kolla/inventory/overcloud -m yum -a 'name=[epel-release, centos-release-openstack-newton]'
-    #ansible controllers -b -i /etc/kolla/inventory/overcloud -m yum -a 'name=[python-pip, vim]'
-
-    # Disable SELiunx
-    ansible controllers -b -i /etc/kolla/inventory/overcloud -m selinux -a 'state=disabled'
-    ansible controllers -b -i /etc/kolla/inventory/overcloud -m command -a 'reboot -f' &
-
-    # Wait for nodes to come back up
-    echo "Waiting for overcloud nodes to come back up"
-    while true ; do
-        ansible controllers -i /etc/kolla/inventory/overcloud -m command -a 'hostname' && break
-    done
-}
-
-function bootstrap_overcloud_kolla {
-    # TODO
-    # Bootstrap seed node
-    kolla-ansible bootstrap-servers -i /etc/kolla/inventory/overcloud
-    ansible controllers -i /etc/kolla/inventory/overcloud -m command -a 'docker ps'
-    ansible controllers -b -i /etc/kolla/inventory/overcloud -m service -a 'name=ntpd state=started enabled=yes'
-}
-
-function configure_overcloud_docker {
-    echo "TODO: configure overcloud docker"
-}
-
-function pull_overcloud_images {
-    kolla-ansible pull -i /etc/kolla/inventory/overcloud
-}
-
-function deploy_overcloud_services {
-    kolla-ansible prechecks -i /etc/kolla/inventory/overcloud
-    kolla-ansible deploy -i /etc/kolla/inventory/overcloud
-    kolla-ansible post-deploy -i /etc/kolla/inventory/overcloud
+function deploy_services {
+    run_playbook ansible/kolla-openstack.yml
+    run_playbook ansible/swift-setup.yml
+    run_kolla_ansible pull
+    run_kolla_ansible prechecks
+    run_kolla_ansible deploy
+    run_kolla_ansible post-deploy -e node_config_directory=${KOLLA_CONFIG_PATH}
 }
 
 function deploy_overcloud {
-    configure_overcloud_network
-    configure_overcloud_bios_and_raid
-    deploy_overcloud_servers
-    configure_overcloud_os
-    bootstrap_overcloud_kolla
-    configure_overcloud_docker
-    pull_overcloud_images
-    deploy_overcloud_services
+    configure_os
+    deploy_services
 }
 
 ###########################################################

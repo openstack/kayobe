@@ -1,0 +1,16 @@
+---
+###############################################################################
+# OpenStack Swift configuration.
+
+# Base-2 logarithm of the number of partitions.
+# i.e. num_partitions=2^<swift_part_power>.
+swift_part_power: 10
+
+# Object replication count.
+swift_replication_count: "{{ [groups['controllers'] | length, 3] | min }}"
+
+# Minimum time in hours between moving a given partition.
+swift_min_part_hours: 1
+
+# Number of Swift Zones.
+swift_num_zones: 5

@@ -1,0 +1,22 @@
+# {{ ansible_managed }}
+
+[DEFAULT]
+enabled_drivers = {{ ironic_drivers | join(',') }}
+
+[conductor]
+{% raw %}
+api_url = {{ internal_protocol }}://{{ hostvars[inventory_hostname]['ansible_' + provision_interface | replace('-', '_')]['ipv4']['address'] }}:{{ ironic_api_port }}
+{% endraw %}
+
+[pxe]
+{% raw %}
+tftp_server = {{ hostvars[inventory_hostname]['ansible_' + provision_interface | replace('-', '_')]['ipv4']['address'] }}
+{% endraw %}
+
+{% if kolla_extra_ironic %}
+#######################
+# Extra configuration
+#######################
+
+{{ kolla_extra_ironic }}
+{% endif %}

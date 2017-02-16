@@ -1,0 +1,38 @@
+# {{ ansible_managed }}
+
+{% if kolla_enable_swift | bool %}
+[glance_store]
+
+default_store=swift
+stores=swift
+{% raw %}
+swift_store_user=service:{{ glance_keystone_user }}
+swift_store_key={{ glance_keystone_password }}
+swift_store_auth_version=2
+swift_store_auth_address={{ internal_protocol }}://{{ kolla_internal_fqdn }}:{{ keystone_public_port }}/v2.0
+{% endraw %}
+swift_store_endpoint_type=internalURL
+swift_store_create_container_on_put=True
+
+#swift_store_config_file=/etc/glance/glance-api.conf
+#default_swift_reference=swift_store_ref
+
+#[swift_store_ref]
+#{% raw %}
+#user=service:{{ glance_keystone_user }}
+#key={{ glance_keystone_password }}
+#auth_version=2
+#auth_address={{ internal_protocol }}://{{ kolla_internal_fqdn }}:{{ keystone_public_port }}/v2.0
+#user_domain_id=default
+#project_domain_id=default
+#{% endraw %}
+
+{% endif %}
+
+{% if kolla_extra_glance %}
+#######################
+# Extra configuration
+#######################
+
+{{ kolla_extra_glance }}
+{% endif %}

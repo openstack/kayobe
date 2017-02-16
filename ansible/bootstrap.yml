@@ -1,0 +1,7 @@
+---
+- name: Ensure configuration management host is bootstrapped
+  hosts: config-mgmt
+  roles:
+    - role: bootstrap
+      bootstrap_ssh_key_type: "{{ ssh_key_type }}"
+      bootstrap_ssh_private_key_path: "{{ ssh_private_key_path }}"

@@ -1,0 +1,34 @@
+---
+- hosts: seed[0]
+  vars:
+    openstack_auth:
+      auth_url: "{{ lookup('env', 'OS_AUTH_URL') }}"
+      username: "{{ lookup('env', 'OS_USERNAME') }}"
+      password: "{{ lookup('env', 'OS_PASSWORD') }}"
+      project_name: "{{ lookup('env', 'OS_PROJECT_NAME') }}"
+      project_domain_name: "{{ lookup('env', 'OS_PROJECT_DOMAIN_NAME') }}"
+      user_domain_name: "{{ lookup('env', 'OS_USER_DOMAIN_NAME') }}"
+  tasks:
+    - name: Ensure OpenStack shade module is installed
+      pip:
+        name: shade
+      become: True
+
+    - name: Ensure image download directory exists
+      file:
+        path: "{{ image_cache_path }}"
+        state: directory
+
+    - name: Ensure CentOS 7 cloud image is downloaded
+      get_url:
+        url: http://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud.qcow2
+        dest: "{{ image_cache_path }}/CentOS-7-x86_64-GenericCloud.qcow2"
+
+    - name: Ensure test deployment image is registered with Glance
+      os_image:
+        auth: "{{ openstack_auth }}"
+        name: centos7
+        container_format: bare
+        disk_format: qcow2
+        state: present
+        filename: "{{ image_cache_path }}/CentOS-7-x86_64-GenericCloud.qcow2"

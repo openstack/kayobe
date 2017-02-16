@@ -1,0 +1,18 @@
+#!/bin/bash
+
+dump_dir=$(mktemp -d)
+
+# Execute the dump-config.yml playbook.
+./kayobe-playbook \
+    ansible/dump-config.yml \
+    -e dump_path=${dump_dir} \
+    $@ \
+    > /dev/null
+
+result=$?
+
+if [[ $result -eq 0 ]]; then
+    cat ${dump_dir}/*.yml
+fi
+rm -rf ${dump_dir}
+exit $result

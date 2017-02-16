@@ -1,0 +1,17 @@
+---
+# Directory where Kolla custom configuration files will be installed.
+kolla_node_custom_config_path:
+
+# List of enabled Ironic drivers.
+ironic_drivers:
+  - agent_ssh
+  - agent_ipmitool
+  - pxe_ssh
+  - pxe_ipmitool
+
+# Free form extra configuration to append to glance-api.conf and
+# glance-registry.conf.
+kolla_extra_glance:
+
+# Free form extra configuration to append to ironic.conf.
+kolla_extra_ironic:

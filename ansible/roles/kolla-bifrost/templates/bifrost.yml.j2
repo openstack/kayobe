@@ -1,0 +1,35 @@
+---
+# List of enabled Ironic drivers.
+enabled_drivers: "{{ kolla_bifrost_enabled_drivers | join(',') }}"
+
+# Whether to enable legacy PXE/iscsi drivers.
+enable_pxe_drivers: {{ kolla_bifrost_enable_pxe_drivers | bool }}
+
+# List of legacy PXE/iscsi drivers to enable.
+pxe_drivers: "{{ kolla_bifrost_pxe_drivers | join(',') }}"
+
+# IP address range for DHCP.
+dhcp_pool_start: "{{ kolla_bifrost_dhcp_pool_start }}"
+dhcp_pool_end: "{{ kolla_bifrost_dhcp_pool_end }}"
+
+{% if kolla_bifrost_dnsmasq_router %}
+# Default route provided to nodes via DHCP.
+dnsmasq_router: "{{ kolla_bifrost_dnsmasq_router }}"
+{% endif %}
+
+{% if kolla_bifrost_dnsmasq_dns_servers %}
+# DNS servers provided to nodes via DHCP.
+dnsmasq_dns_servers: "{{ kolla_bifrost_dnsmasq_dns_servers | join(',') }}"
+{% endif %}
+
+{% if kolla_bifrost_domain %}
+# DNS domain provided to nodes via DHCP.
+domain: "{{ kolla_bifrost_domain }}"
+{% endif %}
+
+{% if kolla_bifrost_extra_globals %}
+###############################################################################
+# Extra configuration
+
+{{ kolla_bifrost_extra_globals|to_nice_yaml }}
+{% endif %}

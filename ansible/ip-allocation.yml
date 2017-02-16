@@ -1,0 +1,26 @@
+---
+- name: Ensure IP addresses are allocated
+  hosts: seed:controllers
+  gather_facts: no
+  pre_tasks:
+    - name: Initialise the IP allocations fact
+      set_fact:
+        ip_allocations: []
+
+    - name: Update the IP allocations fact with IP allocation requests
+      set_fact:
+        ip_allocations: >
+          {{
+            ip_allocations +
+            [{
+              'net_name': item,
+              'cidr': item|net_cidr,
+              'allocation_pool_start': item|net_allocation_pool_start,
+              'allocation_pool_end': item|net_allocation_pool_end
+            }]
+          }}
+      with_items: "{{ network_interfaces }}"
+  roles:
+    - role: ip-allocation
+      ip_allocation_filename: "{{ kayobe_config_path }}/network-allocation.yml"
+      ip_allocation_hostname: "{{ inventory_hostname }}"

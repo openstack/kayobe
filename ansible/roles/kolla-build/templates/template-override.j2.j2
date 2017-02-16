@@ -1,0 +1,11 @@
+# {{ ansible_managed }}
+
+{% raw %}
+{% extends parent_template %}
+
+# Disable troublesome keys
+{% set base_yum_repo_keys_override=['http://yum.mariadb.org/RPM-GPG-KEY-MariaDB'] %}
+
+# Disable repos with troublesome keys
+{% set base_yum_repo_files_override=['MariaDB.repo'] %}
+{% endraw %}
