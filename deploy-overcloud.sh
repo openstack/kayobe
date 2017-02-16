@@ -53,7 +53,7 @@ function deploy_services {
     run_kolla_ansible pull
     run_kolla_ansible prechecks
     run_kolla_ansible deploy
-    run_kolla_ansible post-deploy
+    run_kolla_ansible post-deploy -e node_config_directory=${KOLLA_CONFIG_PATH}
 }
 
 function deploy_overcloud {
