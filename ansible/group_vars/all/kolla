@@ -1,5 +1,18 @@
 ---
 ###############################################################################
+# Kolla installation.
+
+# Type of Kolla control installation. One of 'binary' or 'source'.
+kolla_ctl_install_type: source
+
+# URL of Kolla source code repository if type is 'source'.
+kolla_source_url: "https://github.com/stackhpc/kolla"
+
+# Version (branch, tag, etc.) of Kolla source code repository if type is
+# 'source'.
+kolla_source_version: "stackhpc-{{ kolla_openstack_release }}"
+
+###############################################################################
 # Kolla configuration.
 
 # Path to Kolla configuration directory.

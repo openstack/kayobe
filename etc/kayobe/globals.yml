@@ -10,6 +10,9 @@
 # Path in which to cache downloaded images.
 #image_cache_path:
 
+# Path on which to checkout source code repositories.
+#source_checkout_path:
+
 ###############################################################################
 # Dummy variable to allow Ansible to accept this file.
 workaround_ansible_issue_8743: yes

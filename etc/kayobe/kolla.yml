@@ -2,6 +2,19 @@
 # Kayobe Kolla configuration.
 
 ###############################################################################
+# Kolla installation.
+
+# Type of Kolla control installation. One of 'binary' or 'source'.
+#kolla_ctl_install_type:
+
+# URL of Kolla source code repository if type is 'source'.
+#kolla_source_url:
+
+# Version (branch, tag, etc.) of Kolla source code repository if type is
+# 'source'.
+#kolla_source_version:
+
+###############################################################################
 # Kolla configuration.
 
 # Path to Kolla configuration directory.
