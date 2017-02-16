@@ -9,6 +9,7 @@ test -e ${KAYOBE_CONFIG_PATH}/inventory
 exec ansible-playbook \
   -i ${KAYOBE_CONFIG_PATH}/inventory \
   -e @${KAYOBE_CONFIG_PATH}/bifrost.yml \
+  -e @${KAYOBE_CONFIG_PATH}/controllers.yml \
   -e @${KAYOBE_CONFIG_PATH}/dns.yml \
   -e @${KAYOBE_CONFIG_PATH}/globals.yml \
   -e @${KAYOBE_CONFIG_PATH}/kolla.yml \

@@ -52,3 +52,7 @@ seed_vm_data_capacity: 100G
 
 # Format of the seed VM data volume.
 seed_vm_data_format: qcow2
+
+# User with which to access the seed VM via SSH during bootstrap, in order to
+# setup the Kayobe user account.
+seed_vm_bootstrap_user: "{{ lookup('env', 'USER') }}"

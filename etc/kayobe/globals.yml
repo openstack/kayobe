@@ -13,6 +13,10 @@
 # Path on which to checkout source code repositories.
 #source_checkout_path:
 
+# User with which to access seed and controller nodes. This user will be
+# created if it does not exist.
+#kayobe_ansible_user:
+
 ###############################################################################
 # Dummy variable to allow Ansible to accept this file.
 workaround_ansible_issue_8743: yes

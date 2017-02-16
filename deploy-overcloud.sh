@@ -8,8 +8,9 @@ function run_playbook {
     test -e ${KAYOBE_CONFIG_PATH}/inventory
     ansible-playbook \
         -i ${KAYOBE_CONFIG_PATH}/inventory \
-        -e @${KAYOBE_CONFIG_PATH}/globals.yml \
+        -e @${KAYOBE_CONFIG_PATH}/controllers.yml \
         -e @${KAYOBE_CONFIG_PATH}/dns.yml \
+        -e @${KAYOBE_CONFIG_PATH}/globals.yml \
         -e @${KAYOBE_CONFIG_PATH}/kolla.yml \
         -e @${KAYOBE_CONFIG_PATH}/networks.yml \
         -e @${KAYOBE_CONFIG_PATH}/network-allocation.yml \
@@ -34,12 +35,14 @@ function run_kolla_ansible {
 }
 
 function configure_os {
+    ansible_user=$(./kayobe-config-dump -e dump_hosts=controllers[0] -e dump_var_name=kayobe_ansible_user | head -n -1)
     run_playbook ansible/ip-allocation.yml -l controllers
     run_playbook ansible/ssh-known-host.yml -l controllers
+    run_playbook ansible/kayobe-ansible-user.yml -l controllers
     run_playbook ansible/disable-selinux.yml -l controllers
     run_playbook ansible/network.yml -l controllers
     run_playbook ansible/ntp.yml -l controllers
-    run_kolla_ansible bootstrap-servers -e ansible_user=${USER}
+    run_kolla_ansible bootstrap-servers -e ansible_user=${ansible_user}
     run_playbook ansible/kolla-host.yml -l controllers
     run_playbook ansible/docker.yml -l controllers
 }
