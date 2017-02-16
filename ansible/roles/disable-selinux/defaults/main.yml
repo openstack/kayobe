@@ -1,0 +1,4 @@
+---
+# Number of seconds to wait for hosts to become accessible via SSH after being
+# rebooted.
+disable_selinux_reboot_timeout:
