@@ -1,6 +1,22 @@
 ---
+# Path to directory for source code checkouts.
+source_checkout_path:
+
+# Type of Kolla control installation. One of 'binary' or 'source'.
+kolla_ctl_install_type:
+
+# URL of Kolla source code repository if type is 'source'.
+kolla_source_url:
+
+# Version (branch, tag, etc.) of Kolla source code repository if type is
+# 'source'.
+kolla_source_version:
+
 # Virtualenv directory where Kolla will be installed.
 kolla_venv: "{{ ansible_env['PWD'] }}/kolla-venv"
 
 # Directory where Kolla config files will be installed.
 kolla_config_path:
+
+# Kolla OpenStack release version. This should be a Docker image tag.
+kolla_openstack_release:

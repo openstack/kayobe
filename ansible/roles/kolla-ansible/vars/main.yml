@@ -1,5 +1,12 @@
 ---
-kolla_install_dir: "{{ kolla_venv }}/share/kolla"
+# kolla-ansible was bundled with kolla prior to Ocata (4.0.0).
+kolla_ansible_is_standalone: "{{ kolla_ansible_source_version | version_compare('4.0.0', '>=') }}"
+
+# Name of the kolla-ansible python module.
+kolla_ansible_module: "{% if kolla_ansible_is_standalone | bool %}kolla-ansible{% else %}kolla{% endif %}"
+
+# Path to Kolla Ansible installation directory.
+kolla_ansible_install_dir: "{{ kolla_venv }}/share/{{ kolla_ansible_module }}"
 
 # List of features supported by Kolla as enable_* flags.
 kolla_feature_flags:

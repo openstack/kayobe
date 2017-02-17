@@ -12,6 +12,13 @@ kolla_source_url: "https://github.com/stackhpc/kolla"
 # 'source'.
 kolla_source_version: "stackhpc-{{ kolla_openstack_release }}"
 
+# URL of Kolla Ansible source code repository if type is 'source'.
+kolla_ansible_source_url: "https://github.com/stackhpc/kolla-ansible"
+
+# Version (branch, tag, etc.) of Kolla Ansible source code repository if type
+# is 'source'.
+kolla_ansible_source_version: "stackhpc-{{ kolla_openstack_release }}"
+
 ###############################################################################
 # Kolla configuration.
 
@@ -45,3 +52,23 @@ kolla_openstack_logging_debug: "False"
 kolla_enable_glance: "yes"
 kolla_enable_ironic: "yes"
 kolla_enable_swift: "yes"
+
+###############################################################################
+# Passwords and credentials.
+
+# Dictionary containing default custom passwords to add or override in the
+# Kolla passwords file.
+kolla_ansible_default_custom_passwords:
+  # SSH key authorized in hosts deployed by Bifrost.
+  bifrost_ssh_key:
+    private_key: "{{ lookup('file', ssh_private_key_path) }}"
+    public_key: "{{ lookup('file', ssh_public_key_path) }}"
+  # SSH key authorized by kolla user on Kolla hosts during
+  # kolla-ansible bootstrap-servers.
+  kolla_ssh_key:
+    private_key: "{{ lookup('file', ssh_private_key_path) }}"
+    public_key: "{{ lookup('file', ssh_public_key_path) }}"
+
+# Dictionary containing custom passwords to add or override in the Kolla
+# passwords file.
+kolla_ansible_custom_passwords: "{{ kolla_ansible_default_custom_passwords }}"
