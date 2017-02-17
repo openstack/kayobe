@@ -7,6 +7,9 @@
 # DIB base OS element.
 kolla_bifrost_dib_os_element: "centos7"
 
+# DIB image OS release.
+kolla_bifrost_dib_os_release: "GenericCloud"
+
 # List of DIB elements.
 kolla_bifrost_dib_elements:
   - "serial-console"

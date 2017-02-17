@@ -5,6 +5,9 @@ kolla_node_custom_config_path:
 # DIB image OS element.
 kolla_bifrost_dib_os_element:
 
+# DIB image OS release.
+kolla_bifrost_dib_os_release:
+
 # List of DIB image elements.
 kolla_bifrost_dib_elements: []
 
