@@ -86,9 +86,19 @@
       retries: 60
       delay: 1
 
-    # Generate an inventory file for the seed VM. Note that this host will not
-    # be accessible to this instance of Ansible - another process should be
-    # started.
+    - name: Ensure the inventory contains a group variables directory for the seed
+      local_action:
+        module: file
+        path: "{{ item.path }}"
+        state: directory
+      become: "{{ item.become | bool }}"
+      with_items:
+        - { path: "{{ kayobe_config_path }}/inventory/group_vars/seed", become: False }
+        - { path: "{{ kolla_config_path }}/inventory/group_vars/seed", become: True }
+
+    # Generate inventory group variable files for the seed VM. Note that this
+    # host will not be accessible to this instance of Ansible - another process
+    # should be started.
     - name: Ensure the inventory contains a group variables file for the seed
       local_action:
         module: copy
@@ -98,7 +108,11 @@
           # Ansible inventory file for the Kayobe seed VM.
           # This host will provide the Bifrost undercloud.
           ansible_host: "{{ ifaddr_result.stdout_lines[0] | ipaddr('address') }}"
-        dest: "{{ kayobe_config_path }}/inventory/group_vars/seed/ansible-host"
+        dest: "{{ item.path }}"
+      become: "{{ item.become | bool }}"
+      with_items:
+        - { path: "{{ kayobe_config_path }}/inventory/group_vars/seed/ansible-host", become: False }
+        - { path: "{{ kolla_config_path }}/inventory/group_vars/seed/ansible-host", become: True }
 
     - name: Wait for SSH access to the seed VM
       local_action:
