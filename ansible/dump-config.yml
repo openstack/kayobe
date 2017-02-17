@@ -6,13 +6,16 @@
 # - dump_var_name: Name of the option to dump (optional)
 
 - name: Dump configuration from one or more hosts
-  hosts: "{{ dump_hosts | default('all') }}"
-  gather_facts: "{{ dump_facts | default(False) }}"
+  hosts: "{{ dump_hosts }}"
+  gather_facts: "{{ dump_facts }}"
   vars:
     dump_path: /tmp/kayobe-dump-config
+    dump_facts: no
+    dump_hosts: all
   tasks:
     - name: Create configuration dump directory
-      file:
+      local_action:
+        module: file
         path: "{{ dump_path }}"
         state: directory
 
