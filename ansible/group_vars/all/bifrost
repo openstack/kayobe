@@ -12,6 +12,7 @@ kolla_bifrost_dib_os_release: "GenericCloud"
 
 # List of DIB elements.
 kolla_bifrost_dib_elements:
+  - "disable-selinux"
   - "serial-console"
   - "vm"
 
