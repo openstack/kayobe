@@ -16,19 +16,6 @@ CONFIG_PATH_ENV = "KAYOBE_CONFIG_PATH"
 LOG = logging.getLogger(__name__)
 
 
-def galaxy_install(role_file, roles_path):
-    """Install Ansible roles via Ansible Galaxy."""
-    cmd = ["ansible-galaxy", "install"]
-    cmd += ["--roles-path", roles_path]
-    cmd += ["--role-file", role_file]
-    try:
-        subprocess.check_call(cmd)
-    except subprocess.CalledProcessError as e:
-        LOG.error("Failed to install Ansible roles from %s via Ansible "
-                  "Galaxy: returncode %d", role_file, e.returncode)
-        sys.exit(e.returncode)
-
-
 def add_args(parser):
     """Add arguments required for running Ansible playbooks to a parser."""
     default_config_path = os.getenv(CONFIG_PATH_ENV, DEFAULT_CONFIG_PATH)
@@ -53,9 +40,9 @@ def add_args(parser):
     parser.add_argument("-l", "--limit", metavar="SUBSET",
                         help="further limit selected hosts to an additional "
                              "pattern")
-    parser.add_argument("-t", "--tags", metavar="TAGS", action="append",
+    parser.add_argument("-t", "--tags", metavar="TAGS",
                         help="only run plays and tasks tagged with these "
-                        "values")
+                             "values")
 
 
 def _get_inventory_path(parsed_args):
@@ -75,7 +62,7 @@ def _validate_args(parsed_args, playbooks):
         sys.exit(1)
 
     inventory = _get_inventory_path(parsed_args)
-    result = utils.is_readable_file(inventory)
+    result = utils.is_readable_dir(inventory)
     if not result["result"]:
         LOG.error("Kayobe inventory %s is invalid: %s",
                   inventory, result["message"])
@@ -89,18 +76,27 @@ def _validate_args(parsed_args, playbooks):
             sys.exit(1)
 
 
+def _get_vars_files(config_path):
+    """Return a list of Kayobe Ansible configuration variable files."""
+    vars_files = []
+    for vars_file in os.listdir(config_path):
+        abs_path = os.path.join(config_path, vars_file)
+        if utils.is_readable_file(abs_path):
+            root, ext = os.path.splitext(vars_file)
+            if ext in (".yml", ".yaml", ".json"):
+                vars_files.append(abs_path)
+    return vars_files
+
+
 def build_args(parsed_args, playbooks,
                extra_vars=None, limit=None, tags=None):
     """Build arguments required for running Ansible playbooks."""
     cmd = ["ansible-playbook"]
     inventory = _get_inventory_path(parsed_args)
     cmd += ["--inventory", inventory]
-    for vars_file in os.listdir(parsed_args.config_path):
-        abs_path = os.path.join(parsed_args.config_path, vars_file)
-        if os.path.isfile(abs_path):
-            root, ext = os.path.splitext(vars_file)
-            if ext in (".yml", ".yaml", ".json"):
-                cmd += ["-e", "@%s" % abs_path]
+    vars_files = _get_vars_files(parsed_args.config_path)
+    for vars_file in vars_files:
+        cmd += ["-e", "@%s" % vars_file]
     if parsed_args.extra_vars:
         for extra_var in parsed_args.extra_vars:
             cmd += ["-e", extra_var]
@@ -141,7 +137,7 @@ def run_playbook(parsed_args, playbook, *args, **kwargs):
 
 
 def config_dump(parsed_args, host=None, hosts=None, var_name=None,
-                facts=False, extra_vars=None):
+                facts=None, extra_vars=None):
     dump_dir = tempfile.mkdtemp()
     try:
         if not extra_vars:

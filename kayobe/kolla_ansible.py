@@ -26,16 +26,16 @@ def add_args(parser):
                         help="path to Kolla configuration. "
                              "(default=$%s or %s)" %
                              (CONFIG_PATH_ENV, DEFAULT_CONFIG_PATH))
-    parser.add_argument("--kolla-extra-vars", metavar="EXTRA_VARS",
+    parser.add_argument("-ke", "--kolla-extra-vars", metavar="EXTRA_VARS",
                         action="append",
                         help="set additional variables as key=value or "
                              "YAML/JSON for Kolla Ansible")
-    parser.add_argument("--kolla-inventory", metavar="INVENTORY",
+    parser.add_argument("-ki", "--kolla-inventory", metavar="INVENTORY",
                         help="specify inventory host path "
                              "(default=$%s/inventory or %s/inventory) or "
                              "comma-separated host list for Kolla Ansible" %
                              (CONFIG_PATH_ENV, DEFAULT_CONFIG_PATH))
-    parser.add_argument("--kolla-tags", metavar="TAGS", action="append",
+    parser.add_argument("-kt", "--kolla-tags", metavar="TAGS",
                         help="only run plays and tasks tagged with these "
                              "values in Kolla Ansible")
     parser.add_argument("--kolla-venv", metavar="VENV", default=default_venv,
@@ -79,12 +79,13 @@ def build_args(parsed_args, command, inventory_filename, extra_vars=None,
     """Build arguments required for running Kolla Ansible."""
     venv_activate = os.path.join(parsed_args.kolla_venv, "bin", "activate")
     cmd = ["source", venv_activate, "&&"]
-    cmd = ["kolla-ansible", command]
+    cmd += ["kolla-ansible", command]
     inventory = _get_inventory_path(parsed_args, inventory_filename)
     cmd += ["--inventory", inventory]
-    cmd += ["--configdir", parsed_args.kolla_config_path]
-    cmd += ["--passwords",
-            os.path.join(parsed_args.kolla_config_path, "passwords.yml")]
+    if parsed_args.kolla_config_path != DEFAULT_CONFIG_PATH:
+        cmd += ["--configdir", parsed_args.kolla_config_path]
+        cmd += ["--passwords",
+                os.path.join(parsed_args.kolla_config_path, "passwords.yml")]
     if parsed_args.kolla_extra_vars:
         for extra_var in parsed_args.kolla_extra_vars:
             cmd += ["-e", extra_var]

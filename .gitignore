@@ -23,3 +23,12 @@ ansible/roles/yatesr.timezone/
 
 # Virtualenv
 ansible/kolla-venv
+
+# Tox
+.tox/
+
+# Python build artifacts
+kayobe
+
+# Python build artifacts
+kayobe.egg-info

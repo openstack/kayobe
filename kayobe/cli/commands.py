@@ -47,7 +47,7 @@ class ControlHostBootstrap(KayobeAnsibleMixin, Command):
             self.app.LOG.error("%s is not currently supported", linux_distname)
             sys.exit(1)
         utils.yum_install(["ansible"])
-        ansible.galaxy_install("ansible/requirements.yml", "ansible/roles")
+        utils.galaxy_install("ansible/requirements.yml", "ansible/roles")
         playbooks = ["ansible/%s.yml" % playbook for playbook in
                      "bootstrap", "kolla"]
         ansible.run_playbooks(parsed_args, playbooks)
