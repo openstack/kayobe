@@ -27,10 +27,20 @@ dnsmasq_dns_servers: "{{ kolla_bifrost_dnsmasq_dns_servers | join(',') }}"
 domain: "{{ kolla_bifrost_domain }}"
 {% endif %}
 
+{% if kolla_bifrost_inspector_processing_hooks %}
+# Comma-separated list of inspector processing plugins.
+inspector_processing_hooks: "{{ kolla_bifrost_inspector_processing_hooks | join(',') }}"
+{% endif %}
+
 {% if kolla_bifrost_inspector_port_addition %}
 # Which MAC addresses to add as ports during introspection. One of 'all',
 # 'active' or 'pxe'.
 inspector_port_addition: "{{ kolla_bifrost_inspector_port_addition }}"
+{% endif %}
+
+{% if kolla_bifrost_inspector_extra_kernel_options %}
+# Extra kernel parameters for the inspector default PXE configuration.
+inspector_extra_kernel_options: "{{ kolla_bifrost_inspector_extra_kernel_options | join(' ') }}"
 {% endif %}
 
 {% if kolla_bifrost_extra_globals %}
