@@ -1,0 +1,50 @@
+---
+- name: Ensure required packages are installed
+  yum:
+    name: "{{ item }}"
+    state: installed
+  become: True
+  with_items:
+    - python-devel
+    - python-pip
+    - python-virtualenv
+
+- name: Ensure the latest version of pip is installed
+  pip:
+    name: "{{ item.name }}"
+    state: latest
+    virtualenv: "{{ ironic_inspector_venv }}"
+  with_items:
+    - { name: pip }
+
+- name: Ensure required Python packages are installed
+  pip:
+    name: "{{ item.name }}"
+    version: "{{ item.version | default(omit) }}"
+    state: present
+    virtualenv: "{{ ironic_inspector_venv }}"
+  with_items:
+    - name: python-ironic-inspector-client
+    - name: shade
+
+- name: Set a fact to ensure Ansible uses the python interpreter in the virtualenv
+  set_fact:
+    ansible_python_interpreter: "{{ ironic_inspector_venv }}/bin/python"
+
+- name: Ensure introspection rules exist
+  os_ironic_inspector_rule:
+    auth_type: "{{ ironic_inspector_auth_type }}"
+    auth: "{{ ironic_inspector_auth }}"
+    conditions: "{{ item.conditions }}"
+    actions: "{{ item.actions }}"
+    description: "{{ item.description | default(omit) }}"
+    uuid: "{{ item.uuid | default(item.description | to_uuid) | default(omit) }}"
+    state: present
+    inspector_url: "{{ ironic_inspector_url }}"
+  with_items: "{{ ironic_inspector_rules }}"
+
+# This variable is unset before we set it, and it does not appear to be
+# possible to unset a variable in Ansible.
+- name: Set a fact to reset the Ansible python interpreter
+  set_fact:
+    ansible_python_interpreter: /usr/bin/python

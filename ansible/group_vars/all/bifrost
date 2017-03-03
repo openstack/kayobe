@@ -33,6 +33,16 @@ kolla_bifrost_dib_packages: []
 kolla_bifrost_enable_ipmitool_drivers: true
 
 ###############################################################################
+# Ironic Inspector configuration.
+
+# Which MAC addresses to add as ports during introspection. One of 'all',
+# 'active' or 'pxe'.
+kolla_bifrost_inspector_port_addition: "all"
+
+# List of introspection rules for Bifrost's Ironic Inspector service.
+kolla_bifrost_inspector_rules: []
+
+###############################################################################
 # Inventory configuration.
 
 # Server inventory for Bifrost.

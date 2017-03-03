@@ -1,0 +1,16 @@
+---
+# Path to a directory in which to create a virtualenv.
+ironic_inspector_venv:
+
+# Authentication type.
+ironic_inspector_auth_type:
+
+# Authentication information.
+ironic_inspector_auth: {}
+
+# URL of Ironic Inspector API endpoint.
+ironic_inspector_url:
+
+# List of rules which should exist. See the Inspector rules API for details of
+# parameters available for rules.
+ironic_inspector_rules: []
