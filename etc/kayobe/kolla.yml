@@ -33,6 +33,9 @@
 # Kolla installation type: binary or source.
 #kolla_install_type:
 
+# Docker namespace to use for Kolla images.
+#kolla_docker_namespace:
+
 # Kolla OpenStack release version. This should be a Docker image tag.
 #kolla_openstack_release:
 

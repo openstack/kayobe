@@ -8,5 +8,8 @@ kolla_base_distro:
 # Valid options are [ binary, source ]
 kolla_install_type:
 
+# Docker namespace to use for Kolla images.
+kolla_docker_namespace:
+
 # Valid option is Docker repository tag
 kolla_openstack_release:

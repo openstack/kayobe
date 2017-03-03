@@ -34,6 +34,9 @@ kolla_base_distro: "centos"
 # Kolla installation type: binary or source.
 kolla_install_type: "binary"
 
+# Docker namespace to use for Kolla images.
+kolla_docker_namespace: "kolla"
+
 # Kolla OpenStack release version. This should be a Docker image tag.
 kolla_openstack_release: "3.0.2"
 

@@ -52,7 +52,7 @@ node_custom_config: "{{ kolla_node_custom_config_path }}"
 ### Example: Private repository with authentication
 
 #docker_registry: "172.16.0.10:4000"
-#docker_namespace: "companyname"
+docker_namespace: "{{ kolla_docker_namespace }}"
 #docker_registry_username: "sam"
 #docker_registry_password: "correcthorsebatterystaple"
 
