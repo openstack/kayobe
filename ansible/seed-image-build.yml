@@ -1,0 +1,26 @@
+---
+- name: Ensure Kolla container images are built for seed services
+  hosts: seed
+  vars:
+    # Set this to True to push images to the registry when built.
+    push_images: False
+    image_regex_map:
+      - regex: bifrost
+        enabled: True
+    image_regexes: "{{ image_regex_map | selectattr('enabled') | map(attribute='regex') | list }}"
+  tasks:
+    - name: Ensure custom Kolla images are built
+      shell: >
+        source kolla-venv/bin/activate &&
+        kolla-build \
+        --config-dir {{ kolla_config_path }} \
+        --type {{ item.type }} \
+        --namespace {{ item.namespace }} \
+        --tag {{ item.tag }} \
+        {% if push_images | bool %}--push{% endif %} \
+        {{ item.regex }}
+      with_items:
+        - type: source
+          namespace: "{{ kolla_docker_namespace }}"
+          tag: "{{ kolla_openstack_release }}"
+          regex: "{{ image_regexes | join(' ') }}"
