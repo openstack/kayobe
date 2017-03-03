@@ -21,6 +21,12 @@
   with_items:
     - { name: pip }
 
+- name: Ensure source code checkout path exists
+  file:
+    path: "{{ source_checkout_path }}"
+    state: directory
+    recurse: True
+
 - name: Ensure Kolla source code checkout exists
   git:
     repo: "{{ kolla_source_url }}"

@@ -16,3 +16,20 @@ tag={{ kolla_openstack_release }}
 
 # Path to a file containing template overrides.
 template_override={{ kolla_config_path }}/template-override.j2
+
+{% for source_name, source_def in kolla_sources.items() %}
+[{{ source_name }}]
+{% if source_def.type is defined %}
+# Type of source for {{ source_name }}.
+type = {{ source_def.type }}
+{% endif %}
+{% if source_def.location is defined %}
+# Location of source for {{ source_name }}.
+location = {{ source_def.location }}
+{% endif %}
+{% if source_def.reference is defined %}
+# Reference of source for {{ source_name }}.
+reference = {{ source_def.reference }}
+{% endif %}
+
+{% endfor %}
