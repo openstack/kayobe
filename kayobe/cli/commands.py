@@ -129,15 +129,11 @@ class SeedVMProvision(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
         ansible.run_playbook(parsed_args, "ansible/seed-vm.yml")
 
 
-class SeedDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
-    """Deploy the seed node services."""
+class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
+    """Configure the seed node host OS."""
 
     def take_action(self, parsed_args):
-        self.app.LOG.debug("Deploying seed services")
-        self._configure_os(parsed_args)
-        self._deploy_bifrost(parsed_args)
-
-    def _configure_os(self, parsed_args):
+        self.app.LOG.debug("Configuring seed host OS")
         ansible_user = ansible.config_dump(parsed_args, host="seed",
                                            var_name="kayobe_ansible_user")
         playbooks = ["ansible/%s.yml" % playbook for playbook in
@@ -150,13 +146,19 @@ class SeedDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
                      "kolla-host", "docker"]
         ansible.run_playbooks(parsed_args, playbooks, limit="seed")
 
-    def _deploy_bifrost(self, parsed_args):
+
+class SeedServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
+    """Deploy the seed services."""
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Deploying seed services")
         ansible.run_playbook(parsed_args, "ansible/kolla-bifrost.yml")
         # FIXME: Do this via configuration.
         extra_vars = {"kolla_install_type": "source",
                       "docker_namespace": "stackhpc"}
         kolla_ansible.run_seed(parsed_args, "deploy-bifrost",
                                extra_vars=extra_vars)
+        ansible.run_playbook(parsed_args, "ansible/seed-introspection-rules.yml")
 
 
 class OvercloudProvision(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
@@ -179,15 +181,11 @@ class OvercloudProvision(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
         kolla_ansible.run_seed(parsed_args, "deploy-servers")
 
 
-class OvercloudDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
-    """Deploy the overcloud services."""
+class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
+    """Configure the overcloud host OS."""
 
     def take_action(self, parsed_args):
-        self.app.LOG.debug("Deploying overcloud services")
-        self._configure_os(parsed_args)
-        self._deploy_services(parsed_args)
-
-    def _configure_os(self, parsed_args):
+        self.app.LOG.debug("Configuring overcloud host OS")
         ansible_user = ansible.config_dump(parsed_args, host="controllers[0]",
                                            var_name="kayobe_ansible_user")
         playbooks = ["ansible/%s.yml" % playbook for playbook in
@@ -200,7 +198,12 @@ class OvercloudDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
                      "kolla-host", "docker"]
         ansible.run_playbooks(parsed_args, playbooks, limit="controllers")
 
-    def _deploy_services(self, parsed_args):
+
+class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
+    """Deploy the overcloud services."""
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Deploying overcloud services")
         playbooks = ["ansible/%s.yml" % playbook for playbook in
                      "kolla-openstack", "swift-setup"]
         ansible.run_playbooks(parsed_args, playbooks)

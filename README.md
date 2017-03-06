@@ -112,9 +112,13 @@ address of the VM.
 At this point the seed services need to be deployed on the seed VM. These
 services include Docker and the Kolla `bifrost-deploy` container. This command
 will also build the image to be used to deploy the overcloud nodes using Disk
-Image Builder (DIB). To deploy the seed services:
+Image Builder (DIB). To configure the seed host OS:
 
-    (kayobe-venv) $ kayobe seed deploy
+    (kayobe-venv) $ kayobe seed host configure
+
+To deploy the seed services in containers:
+
+    (kayobe-venv) $ kayobe seed service deploy
 
 After this command has completed the seed services will be active. For SSH
 access to the seed VM, first determine the seed VM's IP address:
@@ -143,10 +147,14 @@ the seed. An inventory of servers should be configured using the
 
     (kayobe-venv) $ kayobe overcloud provision
 
-After this command has completed the overcloud nodes have should been
-provisioned with an OS image. To deploy the overcloud services:
+After this command has completed the overcloud nodes should have been
+provisioned with an OS image. To configure the overcloud hosts' OS:
 
-    (kayobe-venv) $ kayobe overcloud deploy
+    (kayobe-venv) $ kayobe overcloud host configure
+
+To deploy the overcloud services in containers:
+
+    (kayobe-venv) $ kayobe overcloud service deploy
 
 Once this command has completed the overcloud nodes should have OpenStack
 services running in Docker containers. Kolla writes out an environment file
