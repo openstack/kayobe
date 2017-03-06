@@ -1,0 +1,88 @@
+---
+###############################################################################
+# Ironic inspector configuration.
+
+# Ironic inspector IPMI username to set.
+inspector_ipmi_username:
+
+# Ironic inspector IPMI password to set.
+inspector_ipmi_password:
+
+# Ironic inspector deployment kernel location.
+inspector_deploy_kernel:
+
+# Ironic inspector deployment ramdisk location.
+inspector_deploy_ramdisk:
+
+###############################################################################
+# Ironic inspector introspection rules configuration.
+
+# Inspector rules use python string formatting. To escape a curly bracket we
+# repeat it, but this also happens to be the Jinja2 variable start sequence.
+# These variables make escaping rules slightly less hairy.
+inspector_rule_escaped_left_curly: "{{ '{{' | replace('{{', '{{ \"{{\" }}') }}"
+inspector_rule_escaped_right_curly: "{{ '}}' | replace('}}', '{{ \"}}\" }}') }}"
+
+# Ironic inspector rule to set IPMI credentials.
+inspector_rule_ipmi_credentials:
+  description: "Set IPMI driver_info if no credentials"
+  conditions:
+    - field: "node://driver_info.ipmi_username"
+      op: "is-empty"
+    - field: "node://driver_info.ipmi_password"
+      op: "is-empty"
+  actions:
+    - action: "set-attribute"
+      path: "driver_info/ipmi_username"
+      value: "{{ inspector_ipmi_username }}"
+    - action: "set-attribute"
+      path: "driver_info/ipmi_password"
+      value: "{{ inspector_ipmi_password }}"
+
+# Ironic inspector rule to set deployment kernel.
+inspector_rule_deploy_kernel:
+  description: "Set deploy kernel"
+  conditions:
+    - field: "node://driver_info.deploy_kernel"
+      op: "is-empty"
+  actions:
+    - action: "set-attribute"
+      path: "driver_info/deploy_kernel"
+      value: "{{ inspector_deploy_kernel }}"
+
+# Ironic inspector rule to set deployment ramdisk.
+inspector_rule_deploy_ramdisk:
+  description: "Set deploy ramdisk"
+  conditions:
+    - field: "node://driver_info.deploy_ramdisk"
+      op: "is-empty"
+  actions:
+    - action: "set-attribute"
+      path: "driver_info/deploy_ramdisk"
+      value: "{{ inspector_deploy_ramdisk }}"
+
+# Ironic inspector rule to set serial root device hint.
+inspector_rule_root_hint_serial:
+  description: "Set serial root device hint"
+  conditions:
+    - field: "node://properties.root_device"
+      op: "is-empty"
+    - field: "data://root_disk.serial"
+      op: "is-empty"
+      invert: True
+  actions:
+    - action: "set-attribute"
+      path: "properties/root_device"
+      #value: "{{ '{{' | replace('{{', '{{ \"{{\" }}') }}\"serial\": \"{data[root_disk][serial]}\"{{ '}}' | replace('}}', '{{ \"}}\" }}') }}"
+      # We need to suppoly a JSON encoded object of root device hints, escaping
+      # the curly brackets.
+      value: "{{ inspector_rule_escaped_left_curly }}\"serial\": \"{data[root_disk][serial]}\"{{ inspector_rule_escaped_right_curly }}"
+
+# Ironic inspector rule to save introspection data to the node.
+inspector_rule_save_data:
+  description: "Save introspection data to Ironic node"
+  conditions: []
+  actions:
+    - action: "set-attribute"
+      path: "extra/introspection_data"
+      value: "{data}"

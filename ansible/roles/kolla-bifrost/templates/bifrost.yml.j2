@@ -43,6 +43,16 @@ inspector_port_addition: "{{ kolla_bifrost_inspector_port_addition }}"
 inspector_extra_kernel_options: "{{ kolla_bifrost_inspector_extra_kernel_options | join(' ') }}"
 {% endif %}
 
+{% if kolla_bifrost_ipa_kernel_upstream_url %}
+# URL of Ironic Python Agent (IPA) kernel image.
+ipa_kernel_upstream_url: "{{ kolla_bifrost_ipa_kernel_upstream_url }}"
+{% endif %}
+
+{% if kolla_bifrost_ipa_ramdisk_upstream_url %}
+# URL of Ironic Python Agent (IPA) ramdisk image.
+ipa_ramdisk_upstream_url: "{{ kolla_bifrost_ipa_ramdisk_upstream_url }}"
+{% endif %}
+
 {% if kolla_bifrost_extra_globals %}
 ###############################################################################
 # Extra configuration

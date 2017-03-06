@@ -68,7 +68,8 @@ def _build_client(module):
     session = cloud.cloud_config.get_session()
     client = ironic_inspector_client.v1.ClientV1(
         inspector_url=module.params['inspector_url'],
-        session=session, region_name=module.params['region_name'])
+        session=session, region_name=module.params['region_name'],
+        api_version=ironic_inspector_client.v1.MAX_API_VERSION)
     return client
 
 
