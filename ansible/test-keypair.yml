@@ -1,28 +1,12 @@
 ---
 - name: Ensure user SSH keypair is registered with Nova
-  hosts: seed
+  hosts: controllers[0]
   vars:
-    openstack_auth:
-      auth_url: "{{ lookup('env', 'OS_AUTH_URL') }}"
-      username: "{{ lookup('env', 'OS_USERNAME') }}"
-      password: "{{ lookup('env', 'OS_PASSWORD') }}"
-      project_name: "{{ lookup('env', 'OS_PROJECT_NAME') }}"
-      project_domain_name: "{{ lookup('env', 'OS_PROJECT_DOMAIN_NAME') }}"
-      user_domain_name: "{{ lookup('env', 'OS_USER_DOMAIN_NAME') }}"
     public_key_path: "{{ ssh_public_key_path }}"
     shade_venv: "{{ ansible_env['PWD'] }}/shade-venv"
+  roles:
+    - role: shade
   tasks:
-    - name: Ensure pip is installed
-      pip:
-        name: pip
-        state: latest
-        virtualenv: "{{ shade_venv }}"
-
-    - name: Ensure OpenStack shade module is installed
-      pip:
-        name: shade
-        virtualenv: "{{ shade_venv }}"
-
     # Note that setting this via a play or task variable seems to not
     # evaluate the Jinja variable reference, so we use set_fact.
     - name: Update the Ansible python interpreter fact to point to the shade virtualenv

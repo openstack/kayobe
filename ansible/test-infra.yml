@@ -1,27 +1,12 @@
 ---
-- hosts: seed
+- name: Ensure test infrastructure is registered
+  hosts: controllers[0]
   vars:
-    openstack_auth:
-      auth_url: "{{ lookup('env', 'OS_AUTH_URL') }}"
-      username: "{{ lookup('env', 'OS_USERNAME') }}"
-      password: "{{ lookup('env', 'OS_PASSWORD') }}"
-      project_name: "{{ lookup('env', 'OS_PROJECT_NAME') }}"
-      project_domain_name: "{{ lookup('env', 'OS_PROJECT_DOMAIN_NAME') }}"
-      user_domain_name: "{{ lookup('env', 'OS_USER_DOMAIN_NAME') }}"
     shade_venv: "{{ ansible_env['PWD'] }}/shade-venv"
     test_image_cache_path: "{{ ansible_env['PWD'] }}/images"
+  roles:
+    - role: shade
   tasks:
-    - name: Ensure pip is installed
-      pip:
-        name: pip
-        state: latest
-        virtualenv: "{{ shade_venv }}"
-
-    - name: Ensure OpenStack shade module is installed
-      pip:
-        name: shade
-        virtualenv: "{{ shade_venv }}"
-
     - name: Ensure image download directory exists
       file:
         path: "{{ test_image_cache_path }}"

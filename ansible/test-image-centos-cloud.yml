@@ -1,19 +1,11 @@
 ---
-- hosts: seed[0]
+- name: Ensure CentOS cloud image is registered with Glance
+  hosts: controllers[0]
   vars:
-    openstack_auth:
-      auth_url: "{{ lookup('env', 'OS_AUTH_URL') }}"
-      username: "{{ lookup('env', 'OS_USERNAME') }}"
-      password: "{{ lookup('env', 'OS_PASSWORD') }}"
-      project_name: "{{ lookup('env', 'OS_PROJECT_NAME') }}"
-      project_domain_name: "{{ lookup('env', 'OS_PROJECT_DOMAIN_NAME') }}"
-      user_domain_name: "{{ lookup('env', 'OS_USER_DOMAIN_NAME') }}"
+    shade_venv: "{{ ansible_env['PWD'] }}/shade-venv"
+  roles:
+    - role: shade
   tasks:
-    - name: Ensure OpenStack shade module is installed
-      pip:
-        name: shade
-      become: True
-
     - name: Ensure image download directory exists
       file:
         path: "{{ image_cache_path }}"
@@ -23,6 +15,12 @@
       get_url:
         url: http://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud.qcow2
         dest: "{{ image_cache_path }}/CentOS-7-x86_64-GenericCloud.qcow2"
+
+    # Note that setting this via a play or task variable seems to not
+    # evaluate the Jinja variable reference, so we use set_fact.
+    - name: Update the Ansible python interpreter fact to point to the shade virtualenv
+      set_fact:
+        ansible_python_interpreter: "{{ shade_venv }}/bin/python"
 
     - name: Ensure test deployment image is registered with Glance
       os_image:

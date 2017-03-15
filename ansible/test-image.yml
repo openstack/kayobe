@@ -1,14 +1,7 @@
 ---
 - name: Ensure user images are built and registered with Glance
-  hosts: seed
+  hosts: controllers[0]
   vars:
-    openstack_auth:
-      auth_url: "{{ lookup('env', 'OS_AUTH_URL') }}"
-      username: "{{ lookup('env', 'OS_USERNAME') }}"
-      password: "{{ lookup('env', 'OS_PASSWORD') }}"
-      project_name: "{{ lookup('env', 'OS_PROJECT_NAME') }}"
-      project_domain_name: "{{ lookup('env', 'OS_PROJECT_DOMAIN_NAME') }}"
-      user_domain_name: "{{ lookup('env', 'OS_USER_DOMAIN_NAME') }}"
     image_build_dir: "{{ ansible_user_dir }}/images/dib"
     image_name: centos7
     image_os_element: centos7
@@ -24,23 +17,14 @@
     image_extra_elements: []
     image_elements: "{{ image_base_elements + (image_whole_disk_elements if image_is_whole_disk|bool else image_partition_elements) + image_extra_elements }}"
     shade_venv: "{{ ansible_env['PWD'] }}/shade-venv"
+  roles:
+    - role: shade
   tasks:
     - name: Ensure diskimage-builder package is installed
       yum:
         name: diskimage-builder
         state: installed
       become: True
-
-    - name: Ensure pip is installed
-      pip:
-        name: pip
-        state: latest
-        virtualenv: "{{ shade_venv }}"
-
-    - name: Ensure OpenStack shade module is installed
-      pip:
-        name: shade
-        virtualenv: "{{ shade_venv }}"
 
     - name: Ensure image build directory exists
       file:
