@@ -1,10 +1,24 @@
 ---
 ###############################################################################
-# Network roles.
-
 # Network role to network name mappings.
+
+# Name of the network used by the seed to provision the bare metal overcloud
+# hosts.
 provision_oc_net_name: 'provision_oc_net'
+
+# Name of the network used by the overcloud hosts to provision the bare metal
+# workload hosts.
 provision_wl_net_name: 'provision_wl_net'
+
+# Name of the network used to expose the internal OpenStack API endpoints.
+internal_net_name: 'internal_net'
+
+# Name of the network used to expose the external OpenStack API endpoints and
+# to provide external network access via Neutron.
 external_net_name: 'external_net'
+
+# Name of the network used to carry storage data traffic.
 storage_net_name: 'storage_net'
+
+# Name of the network used to carry storage management traffic.
 storage_mgmt_net_name: 'storage_mgmt_net'
