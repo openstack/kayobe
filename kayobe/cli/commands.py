@@ -244,6 +244,6 @@ class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
         for command in ["pull", "prechecks", "deploy"]:
             kolla_ansible.run_overcloud(parsed_args, command)
         # FIXME: Fudge to work around incorrect configuration path.
-        extra_vars = {"node_config_directory": parsed_args.config_path}
+        extra_vars = {"node_config_directory": parsed_args.kolla_config_path}
         kolla_ansible.run_overcloud(parsed_args, "post-deploy",
                                     extra_vars=extra_vars)
