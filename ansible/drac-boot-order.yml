@@ -1,0 +1,27 @@
+---
+- name: Ensure that controller boot order is configured
+  hosts: controllers
+  gather_facts: no
+  vars:
+    ansible_host: "{{ ipmi_address }}"
+    ansible_user: "{{ ipmi_username }}"
+    ansible_ssh_pass: "{{ ipmi_password }}"
+    drac_pxe_interface: 3
+    drac_interfaces: [1, 2, 3, 4]
+  tasks:
+    - name: Ensure NIC boot protocol is configured
+      raw: "racadm set Nic.NICConfig.{{ item }}.LegacyBootProto {% if item == drac_pxe_interface %}PXE{% else %}NONE{% endif %}"
+      with_items: "{{ drac_interfaces }}"
+
+    - name: Ensure NIC configuration jobs are created
+      raw: "racadm jobqueue create NIC.Integrated.1-{{ item }}-1 -s TIME_NOW"
+      with_items: "{{ drac_interfaces }}"
+
+    - name: Ensure BIOS boot sequence is configured
+      raw: "racadm set BIOS.BiosBootSettings.bootseq NIC.Integrated.1-{{ drac_pxe_interface }}-1,HardDisk.List.1-1,Optical.SATAEmbedded.J-1"
+
+    - name: Ensure BIOS configuration job is created
+      raw: "racadm jobqueue create BIOS.Setup.1-1"
+
+    - name: Ensure server is rebooted
+      raw: "racadm serveraction powercycle"

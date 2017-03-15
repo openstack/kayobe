@@ -4,4 +4,6 @@
 - src: MichaelRigart.interfaces
 - src: mrlesmithjr.manage-lvm
 - src: resmo.ntp
+- src: stackhpc.drac
+- src: stackhpc.drac-facts
 - src: yatesr.timezone

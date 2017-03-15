@@ -1,0 +1,25 @@
+---
+- name: Ensure that controller BIOS are configured
+  hosts: controllers
+  gather_facts: no
+  roles:
+    # The role simply pulls in the drac_facts module.
+    - role: stackhpc.drac-facts
+  tasks:
+    - name: Gather facts via DRAC
+      local_action:
+        module: drac_facts
+        address: "{{ ipmi_address }}"
+        username: "{{ ipmi_username }}"
+        password: "{{ ipmi_password }}"
+      register: result
+
+    - name: Display results
+      debug:
+        var: result
+
+    - name: Write facts to a file
+      local_action:
+        module: copy
+        content: "{{ result }}"
+        dest: "/tmp/drac-facts-{{ inventory_hostname }}.json"

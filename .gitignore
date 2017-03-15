@@ -19,6 +19,8 @@ ansible/roles/ahuffman.resolv/
 ansible/roles/jriguera.configdrive/
 ansible/roles/mrlesmithjr.manage-lvm/
 ansible/roles/MichaelRigart.interfaces/
+ansible/roles/stackhpc.drac/
+ansible/roles/stackhpc.drac-facts/
 ansible/roles/resmo.ntp/
 ansible/roles/yatesr.timezone/
 

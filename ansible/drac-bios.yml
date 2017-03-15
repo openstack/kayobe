@@ -1,0 +1,31 @@
+---
+- name: Ensure that controller BIOS are configured
+  hosts: controllers
+  gather_facts: no
+  vars:
+    bios_config:
+      OneTimeBootMode: "OneTimeBootSeq"
+      OneTimeBootSeqDev: NIC.Integrated.1-1-1
+  roles:
+    - role: stackhpc.drac
+      drac_address: "{{ ipmi_address }}"
+      drac_username: "{{ ipmi_username }}"
+      drac_password: "{{ ipmi_password }}"
+      drac_bios_config: "{{ bios_config }}"
+      drac_reboot: True
+
+  tasks:
+    - name: Ensure BIOS configuration is applied
+      command: "racadm {{ item }}"
+      with_items:
+        - set Nic.NICConfig.1.LegacyBootProto NONE
+        - jobqueue create NIC.Integrated.1-1-1 -s TIME_NOW
+        - set Nic.NICConfig.2.LegacyBootProto NONE
+        - jobqueue create NIC.Integrated.1-2-1 -s TIME_NOW
+        - set Nic.NICConfig.3.LegacyBootProto PXE
+        - jobqueue create NIC.Integrated.1-3-1 -s TIME_NOW
+        - set Nic.NICConfig.4.LegacyBootProto NONE
+        - jobqueue create NIC.Integrated.1-4-1 -s TIME_NOW
+        - set BIOS.BiosBootSettings.bootseq NIC.Integrated.1-3-1,HardDisk.List.1-1,Optical.SATAEmbedded.J-1
+        - jobqueue create BIOS.Setup.1-1
+        - serveraction powercycle
