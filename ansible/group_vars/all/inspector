@@ -48,20 +48,12 @@ inspector_ipmi_username:
 # Ironic inspector IPMI password to set.
 inspector_ipmi_password:
 
-# Ironic inspector deployment kernel location.
-inspector_deploy_kernel:
-
-# Ironic inspector deployment ramdisk location.
-inspector_deploy_ramdisk:
+# Ironic inspector network interface name on which to check for an LLDP switch
+# port description to use as the node's name.
+inspector_lldp_switch_port_interface:
 
 ###############################################################################
 # Ironic inspector introspection rules configuration.
-
-# Inspector rules use python string formatting. To escape a curly bracket we
-# repeat it, but this also happens to be the Jinja2 variable start sequence.
-# These variables make escaping rules slightly less hairy.
-inspector_rule_escaped_left_curly: "{{ '{{' | replace('{{', '{{ \"{{\" }}') }}"
-inspector_rule_escaped_right_curly: "{{ '}}' | replace('}}', '{{ \"}}\" }}') }}"
 
 # Ironic inspector rule to set IPMI credentials.
 inspector_rule_ipmi_credentials:
@@ -74,10 +66,10 @@ inspector_rule_ipmi_credentials:
   actions:
     - action: "set-attribute"
       path: "driver_info/ipmi_username"
-      value: "{{ inspector_ipmi_username }}"
+      value: "{{ inspector_rule_var_ipmi_username }}"
     - action: "set-attribute"
       path: "driver_info/ipmi_password"
-      value: "{{ inspector_ipmi_password }}"
+      value: "{{ inspector_rule_var_ipmi_password }}"
 
 # Ironic inspector rule to set deployment kernel.
 inspector_rule_deploy_kernel:
@@ -88,7 +80,7 @@ inspector_rule_deploy_kernel:
   actions:
     - action: "set-attribute"
       path: "driver_info/deploy_kernel"
-      value: "{{ inspector_deploy_kernel }}"
+      value: "{{ inspector_rule_var_deploy_kernel }}"
 
 # Ironic inspector rule to set deployment ramdisk.
 inspector_rule_deploy_ramdisk:
@@ -99,7 +91,7 @@ inspector_rule_deploy_ramdisk:
   actions:
     - action: "set-attribute"
       path: "driver_info/deploy_ramdisk"
-      value: "{{ inspector_deploy_ramdisk }}"
+      value: "{{ inspector_rule_var_deploy_ramdisk }}"
 
 # Ironic inspector rule to set local boot capability
 inspector_rule_local_boot:
@@ -149,18 +141,18 @@ inspector_rule_set_pxe_interface_mac:
       path: "extra/pxe_interface_mac"
       value: "{data[boot_interface]}"
 
-# Ironic inspector rule to set the node's name from eno3's LLDP switch port
-# description.
-inspector_rule_eno3_lldp_switch_port_desc_to_name:
-  description: "Set node name from LLDP switch port description"
+# Ironic inspector rule to set the node's name from an interface's LLDP switch
+# port description.
+inspector_rule_lldp_switch_port_desc_to_name:
+  description: "Set node name from {{ inspector_rule_var_lldp_switch_port_interface }} LLDP switch port description"
   conditions:
-    - field: "data://all_interfaces.eno3.lldp_processed.switch_port_description"
+    - field: "data://all_interfaces.{{ inspector_rule_var_lldp_switch_port_interface }}.lldp_processed.switch_port_description"
       op: "is-empty"
       invert: True
   actions:
     - action: "set-attribute"
       path: "name"
-      value: "{data[all_interfaces][eno3][lldp_processed][switch_port_description]}"
+      value: "{data[all_interfaces][{{ inspector_rule_var_lldp_switch_port_interface }}][lldp_processed][switch_port_description]}"
 
 # Ironic inspector rule to save introspection data to the node.
 inspector_rule_save_data:
@@ -170,3 +162,20 @@ inspector_rule_save_data:
     - action: "set-attribute"
       path: "extra/introspection_data"
       value: "{data}"
+
+# List of default ironic inspector rules.
+inspector_rules_default:
+  - "{{ inspector_rule_ipmi_credentials }}"
+  - "{{ inspector_rule_deploy_kernel }}"
+  - "{{ inspector_rule_deploy_ramdisk }}"
+  - "{{ inspector_rule_local_boot }}"
+  - "{{ inspector_rule_root_hint_init }}"
+  - "{{ inspector_rule_root_hint_serial }}"
+  - "{{ inspector_rule_set_pxe_interface_mac }}"
+  - "{{ inspector_rule_lldp_switch_port_desc_to_name }}"
+
+# List of additional ironic inspector rules.
+inspector_rules_extra: []
+
+# List of all ironic inspector rules.
+inspector_rules: "{{ inspector_rules_default + inspector_rules_extra }}"
