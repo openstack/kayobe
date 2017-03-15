@@ -9,6 +9,11 @@ from kayobe import kolla_ansible
 from kayobe import utils
 
 
+def _build_playbook_list(*playbooks):
+    """Return a list of names of playbook files given their basenames."""
+    return ["ansible/%s.yml" % playbook for playbook in playbooks]
+
+
 class KayobeAnsibleMixin(object):
     """Mixin class for commands running Kayobe Ansible playbooks."""
 
@@ -54,8 +59,7 @@ class ControlHostBootstrap(KayobeAnsibleMixin, Command):
             sys.exit(1)
         utils.yum_install(["ansible"])
         utils.galaxy_install("ansible/requirements.yml", "ansible/roles")
-        playbooks = ["ansible/%s.yml" % playbook for playbook in
-                     "bootstrap", "kolla"]
+        playbooks = _build_playbook_list("bootstrap", "kolla")
         ansible.run_playbooks(parsed_args, playbooks)
 
 
@@ -141,14 +145,13 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
         self.app.LOG.debug("Configuring seed host OS")
         ansible_user = ansible.config_dump(parsed_args, host="seed",
                                            var_name="kayobe_ansible_user")
-        playbooks = ["ansible/%s.yml" % playbook for playbook in
-                     "ip-allocation", "ssh-known-host", "kayobe-ansible-user",
-                     "disable-selinux", "network", "ntp", "lvm"]
+        playbooks = _build_playbook_list(
+            "ip-allocation", "ssh-known-host", "kayobe-ansible-user",
+             "disable-selinux", "network", "ntp", "lvm")
         ansible.run_playbooks(parsed_args, playbooks, limit="seed")
         kolla_ansible.run_seed(parsed_args, "bootstrap-servers",
                                extra_vars={"ansible_user": ansible_user})
-        playbooks = ["ansible/%s.yml" % playbook for playbook in
-                     "kolla-host", "docker"]
+        playbooks = _build_playbook_list("kolla-host", "docker")
         ansible.run_playbooks(parsed_args, playbooks, limit="seed")
 
 
@@ -218,14 +221,13 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
         self.app.LOG.debug("Configuring overcloud host OS")
         ansible_user = ansible.config_dump(parsed_args, host="controllers[0]",
                                            var_name="kayobe_ansible_user")
-        playbooks = ["ansible/%s.yml" % playbook for playbook in
-                     "ip-allocation", "ssh-known-host", "kayobe-ansible-user",
-                     "disable-selinux", "network", "ntp", "lvm"]
+        playbooks = _build_playbook_list(
+            "ip-allocation", "ssh-known-host", "kayobe-ansible-user",
+            "disable-selinux", "network", "ntp", "lvm")
         ansible.run_playbooks(parsed_args, playbooks, limit="controllers")
         kolla_ansible.run_overcloud(parsed_args, "bootstrap-servers",
                                     extra_vars={"ansible_user": ansible_user})
-        playbooks = ["ansible/%s.yml" % playbook for playbook in
-                     "kolla-host", "docker"]
+        playbooks = _build_playbook_list("kolla-host", "docker")
         ansible.run_playbooks(parsed_args, playbooks, limit="controllers")
 
 
@@ -234,8 +236,7 @@ class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Deploying overcloud services")
-        playbooks = ["ansible/%s.yml" % playbook for playbook in
-                     "kolla-openstack", "swift-setup"]
+        playbooks = _build_playbook_list("kolla-openstack", "swift-setup")
         ansible.run_playbooks(parsed_args, playbooks)
         for command in ["pull", "prechecks", "deploy"]:
             kolla_ansible.run_overcloud(parsed_args, command)
