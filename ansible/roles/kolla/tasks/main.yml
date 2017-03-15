@@ -8,7 +8,6 @@
     - gcc
     - libffi-devel
     - openssl-devel
-    - patch
     - python-devel
     - python-pip
     - python-virtualenv

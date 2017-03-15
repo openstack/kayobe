@@ -5,6 +5,9 @@
     state: installed
   become: True
   with_items:
+    - gcc
+    - libffi-devel
+    - openssl-devel
     - python-devel
     - python-pip
     - python-virtualenv
