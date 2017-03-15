@@ -1,6 +1,16 @@
 ---
 - name: Ensure LVM configuration is applied
   hosts: seed:controllers
+  pre_tasks:
+    - name: Fail if the LVM physical disks have not been configured
+      fail:
+        msg: >
+          The physical disk list has not been configured for volume
+          {{ item.vgname }}. Ensure that each volume group in 'lvm_groups'
+          has a valid 'disks' list.
+      with_items: "{{ lvm_groups | default([]) }}"
+      when:
+        - "{{ not item.disks | default([]) or 'changeme' in item.disks | default([]) }}"
   roles:
     - role: mrlesmithjr.manage-lvm
       manage_lvm: True
