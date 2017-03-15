@@ -1,0 +1,30 @@
+---
+- name: Ensure required packages are installed
+  yum:
+    name: "{{ item }}"
+    state: installed
+  become: True
+  with_items:
+    - gcc
+    - libffi-devel
+    - openssl-devel
+    - python-devel
+    - python-pip
+    - python-virtualenv
+
+- name: Ensure the latest version of pip is installed
+  pip:
+    name: "{{ item.name }}"
+    state: latest
+    virtualenv: "{{ shade_venv }}"
+  with_items:
+    - { name: pip }
+
+- name: Ensure required Python packages are installed
+  pip:
+    name: "{{ item.name }}"
+    version: "{{ item.version | default(omit) }}"
+    state: present
+    virtualenv: "{{ shade_venv }}"
+  with_items:
+    - name: shade

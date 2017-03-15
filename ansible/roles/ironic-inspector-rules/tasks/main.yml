@@ -1,25 +1,4 @@
 ---
-- name: Ensure required packages are installed
-  yum:
-    name: "{{ item }}"
-    state: installed
-  become: True
-  with_items:
-    - gcc
-    - libffi-devel
-    - openssl-devel
-    - python-devel
-    - python-pip
-    - python-virtualenv
-
-- name: Ensure the latest version of pip is installed
-  pip:
-    name: "{{ item.name }}"
-    state: latest
-    virtualenv: "{{ ironic_inspector_venv }}"
-  with_items:
-    - { name: pip }
-
 - name: Ensure required Python packages are installed
   pip:
     name: "{{ item.name }}"
@@ -28,7 +7,6 @@
     virtualenv: "{{ ironic_inspector_venv }}"
   with_items:
     - name: python-ironic-inspector-client
-    - name: shade
 
 - name: Set a fact to ensure Ansible uses the python interpreter in the virtualenv
   set_fact:

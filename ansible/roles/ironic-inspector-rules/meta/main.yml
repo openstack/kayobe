@@ -1,0 +1,4 @@
+---
+dependencies:
+  - role: shade
+    shade_venv: "{{ ironic_inspector_venv }}"
