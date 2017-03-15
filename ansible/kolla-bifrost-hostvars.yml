@@ -1,0 +1,46 @@
+---
+# Update the Bifrost inventory with the IP allocation and other variables.
+
+- name: Ensure the Bifrost controller inventory is initialised
+  hosts: seed
+  gather_facts: no
+  tasks:
+    - name: Ensure the Bifrost host variables directory exists
+      file:
+        path: "/etc/kolla/bifrost/inventory/host_vars"
+        state: directory
+      become: True
+
+    - name: Ensure the Bifrost inventory exists
+      file:
+        path: "/etc/kolla/bifrost/inventory/bifrost_inventory.py"
+        src: "/bifrost/playbooks/inventory/bifrost_inventory.py"
+        state: link
+        # This file should only exist within the bifrost_deploy container.
+        force: True
+      become: True
+
+- name: Ensure the Bifrost controller inventory is populated
+  hosts: controllers
+  gather_facts: no
+  vars:
+    seed_host: "{{ groups['seed'][0] }}"
+    bifrost_hostvars:
+      # Also supports vlan_id and network_mtu.
+      addressing_mode: static
+      ipv4_interface_mac: "{% raw %}{{ extra.pxe_interface_mac | default }}{% endraw %}"
+      ipv4_address: "{{ provision_oc_net_name | net_ip }}"
+      ipv4_subnet_mask: "{{ provision_oc_net_name | net_cidr | ipaddr('netmask') }}"
+      ipv4_gateway: "{{ provision_oc_net_name | net_gateway }}"
+      ipv4_nameserver: "{{ resolv_nameservers[0] }}"
+  tasks:
+    - name: Ensure the Bifrost host variable files exist
+      copy:
+        content: |
+          ---
+          # This file is managed via Ansible. Do not edit.
+          # Bifrost host variables for {{ inventory_hostname }}
+          {{ bifrost_hostvars | to_nice_yaml }}
+        dest: "/etc/kolla/bifrost/inventory/host_vars/{{ inventory_hostname }}"
+      delegate_to: "{{ seed_host }}"
+      become: True

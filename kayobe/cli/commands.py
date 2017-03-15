@@ -166,8 +166,32 @@ class SeedServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
         ansible.run_playbook(parsed_args, "ansible/seed-introspection-rules.yml")
 
 
-class OvercloudProvision(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
+class OvercloudInventoryDiscover(KayobeAnsibleMixin, Command):
+    """Discover the overcloud inventory from the seed's Ironic service."""
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Discovering overcloud inventory")
+        # Run the inventory discovery playbook separately, else the discovered
+        # hosts will not be present in the following playbooks in which they
+        # are used to populate other inventories.
+        ansible.run_playbook(parsed_args,
+                             "ansible/overcloud-inventory-discover.yml")
+        # Now populate the Kolla Ansible and Bifrost inventories.
+        ansible.run_playbook(parsed_args, "ansible/kolla-bifrost-hostvars.yml")
+        ansible.run_playbook(parsed_args, "ansible/kolla-ansible.yml",
+                             tags="config")
+
+
+class OvercloudProvision(KayobeAnsibleMixin, Command):
     """Provision the overcloud."""
+
+    def get_parser(self, prog_name):
+        parser = super(OvercloudProvision, self).get_parser(prog_name)
+        group = parser.add_argument_group("Bifrost")
+        group.add_argument("-bl", "--bifrost-limit", metavar="SUBSET",
+                            help="further limit selected hosts to an "
+                                 "additional pattern")
+        return parser
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Provisioning overcloud")
@@ -183,7 +207,12 @@ class OvercloudProvision(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
 
     def _deploy_servers(self, parsed_args):
         self.app.LOG.debug("Deploying overcloud servers via Bifrost")
-        kolla_ansible.run_seed(parsed_args, "deploy-servers")
+        extra_vars = {}
+        if parsed_args.bifrost_limit:
+            extra_vars["bifrost_limit"] = parsed_args.bifrost_limit
+        ansible.run_playbook(parsed_args,
+                             "ansible/kolla-bifrost-provision.yml",
+                             extra_vars=extra_vars)
 
 
 class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, Command):

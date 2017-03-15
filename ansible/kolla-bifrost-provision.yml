@@ -1,0 +1,67 @@
+---
+# Use bifrost to provision the overcloud nodes with a base OS.
+
+- name: Ensure the Bifrost controller inventory is provisioned
+  hosts: seed
+  vars:
+    # Allow the set of hosts to be limited.
+    bifrost_limit:
+  gather_facts: no
+  tasks:
+    - name: Ensure the Bifrost controller inventory is managed
+      command: >
+        docker exec bifrost_deploy
+        bash -c '. env-vars &&
+        export BIFROST_INVENTORY_SOURCE=ironic &&
+        ansible baremetal -vvvv
+        --connection local
+        --inventory /etc/bifrost/inventory/
+        -e @/etc/bifrost/bifrost.yml
+        -e @/etc/bifrost/dib.yml
+        {% if bifrost_limit %}--limit {{ bifrost_limit }}{% endif %}
+        -m command
+        -a "ironic node-set-provision-state {% raw %}{{ inventory_hostname }}{% endraw %} manage"'
+
+    - name: Ensure the Bifrost controller inventory is provided
+      command: >
+        docker exec bifrost_deploy
+        bash -c '. env-vars &&
+        export BIFROST_INVENTORY_SOURCE=ironic &&
+        ansible baremetal -vvvv
+        --connection local
+        --inventory /etc/bifrost/inventory/
+        -e @/etc/bifrost/bifrost.yml
+        -e @/etc/bifrost/dib.yml
+        {% if bifrost_limit %}--limit {{ bifrost_limit }}{% endif %}
+        -m command
+        -a "ironic node-set-provision-state {% raw %}{{ inventory_hostname }}{% endraw %} provide"'
+
+    - name: Ensure the Bifrost controller inventory is provisioned
+      command: >
+        docker exec bifrost_deploy
+        bash -c '. env-vars &&
+        export BIFROST_INVENTORY_SOURCE=ironic &&
+        ansible-playbook -vvvv
+        /bifrost/playbooks/deploy-dynamic.yaml
+        --inventory /etc/bifrost/inventory/
+        -e @/etc/bifrost/bifrost.yml
+        -e @/etc/bifrost/dib.yml
+        {% if bifrost_limit %}--limit {{ bifrost_limit }}{% endif %}'
+
+- name: Wait for the controller hosts to be available
+  hosts: controllers
+  gather_facts: no
+  vars:
+    # Set to False to avoid waiting for the controllers to be accessible via
+    # SSH.
+    wait: True
+    wait_timeout: 600
+  tasks:
+    - name: Wait for SSH access to the controllers
+      local_action:
+        module: wait_for
+        host: "{{ ansible_host }}"
+        port: 22
+        state: started
+        timeout: "{{ wait_timeout }}"
+      when: "{{ wait | bool }}"
