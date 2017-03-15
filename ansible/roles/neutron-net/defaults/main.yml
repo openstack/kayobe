@@ -1,0 +1,41 @@
+---
+# Path to virtualenv in which to install shade and its dependencies.
+neutron_net_venv:
+
+# Authentication type compatible with the 'os_network' Ansible module's
+# auth_type argument.
+neutron_net_openstack_auth_type:
+
+# Authentication parameters compatible with the 'os_network' Ansible module's
+# auth argument.
+neutron_net_openstack_auth: {}
+
+# Name of the Neutron network.
+neutron_net_name:
+
+# Provider type of the Neutron network.
+neutron_net_type:
+
+# Prpvider physical network of the Neutron network.
+neutron_net_physical_network:
+
+# Provider segmentation ID of the Neutron network.
+neutron_net_segmentation_id:
+
+# Whether the Neutron network is shared.
+neutron_net_shared:
+
+# Name of the Neutron subnet.
+neutron_net_subnet_name:
+
+# CIDR representation of the Neutron subnet's IP network.
+neutron_net_cidr:
+
+# IP address of the Neutron subnet's gateway.
+neutron_net_gateway_ip:
+
+# Start of the Neutron subnet's IP allocation pool.
+neutron_net_allocation_pool_start:
+
+# End of the Neutron subnet's IP allocation pool.
+neutron_net_allocation_pool_end:

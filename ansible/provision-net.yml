@@ -1,0 +1,23 @@
+---
+- name: Ensure provisioning network and subnet are registered in neutron
+  # Only required to run on a single host.
+  hosts: controllers[0]
+  vars:
+    venv: "{{ ansible_env.PWD }}/shade-venv"
+  roles:
+    - role: neutron-net
+      neutron_net_venv: "{{ venv }}"
+      neutron_net_openstack_auth_type: "{{ openstack_auth_type }}"
+      neutron_net_openstack_auth: "{{ openstack_auth }}"
+      # Network configuration.
+      neutron_net_name: "provision-net"
+      neutron_net_type: "flat"
+      neutron_net_physical_network: "physnet1"
+      neutron_net_segmentation_id:
+      neutron_net_shared: True
+      # Subnet configuration.
+      neutron_net_subnet_name: "provision-subnet"
+      neutron_net_cidr: "{{ provision_wl_net_name | net_cidr }}"
+      neutron_net_gateway_ip: "{{ provision_wl_net_name | net_gateway }}"
+      neutron_net_allocation_pool_start: "{{ provision_wl_net_name | net_allocation_pool_start }}"
+      neutron_net_allocation_pool_end: "{{ provision_wl_net_name | net_allocation_pool_end }}"
