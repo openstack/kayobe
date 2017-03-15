@@ -1,62 +1,8 @@
 ---
-- name: Ensure required packages are installed
-  yum:
-    name: "{{ item }}"
-    state: installed
-  become: True
-  with_items:
-    - gcc
-    - libffi-devel
-    - openssl-devel
-    - python-devel
-    - python-pip
-    - python-virtualenv
+- include: install.yml
+  tags:
+    - install
 
-- name: Ensure the latest version of pip is installed
-  pip:
-    name: "{{ item.name }}"
-    state: latest
-    virtualenv: "{{ kolla_venv }}"
-  with_items:
-    - { name: pip }
-
-- name: Ensure source code checkout path exists
-  file:
-    path: "{{ source_checkout_path }}"
-    state: directory
-    recurse: True
-
-- name: Ensure Kolla source code checkout exists
-  git:
-    repo: "{{ kolla_source_url }}"
-    dest: "{{ source_checkout_path }}/kolla"
-    version: "{{ kolla_source_version }}"
-  when: "{{ kolla_ctl_install_type == 'source' }}"
-
-- name: Ensure required Python packages are installed
-  pip:
-    name: "{{ item.name }}"
-    version: "{{ item.version | default(omit) }}"
-    state: present
-    virtualenv: "{{ kolla_venv }}"
-  with_items:
-    # Intall Kolla from source.
-    - name: "{{ source_checkout_path }}/kolla"
-      install: "{{ kolla_ctl_install_type == 'source' }}"
-    # Intall Kolla from PyPI.
-    - name: "kolla"
-      version: "{{ kolla_openstack_release }}"
-      install: "{{ kolla_ctl_install_type == 'binary' }}"
-    # Required for kolla-genpwd.
-    - name: PyYAML
-      version: "3.12"
-  when: "{{ item.install | default(True) | bool }}"
-
-- name: Ensure the Kolla configuration directores exist
-  file:
-    path: "{{ item }}"
-    state: directory
-    mode: 0755
-  become: True
-  with_items:
-    - "{{ kolla_config_path }}"
+- include: config.yml
+  tags:
+    - config

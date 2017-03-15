@@ -1,0 +1,9 @@
+---
+- name: Ensure the Kolla configuration directores exist
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  become: True
+  with_items:
+    - "{{ kolla_config_path }}"

@@ -1,35 +1,4 @@
 ---
-- name: Ensure the Kolla OpenStack configuration directores exist
-  file:
-    path: "{{ kolla_node_custom_config_path }}/{{ item.name }}"
-    state: directory
-    mode: 0755
-  become: True
-  with_items:
-    - { name: ironic, enabled: "{{ kolla_enable_ironic }}" }
-    - { name: swift, enabled: "{{ kolla_enable_swift }}" }
-  when: "{{ item.enabled | bool }}"
-
-- name: Ensure the Kolla OpenStack configuration files exist
-  template:
-    src: "{{ item.src }}"
-    dest: "{{ kolla_node_custom_config_path }}/{{ item.dest }}"
-    mode: 0644
-  become: True
-  with_items:
-    - { src: glance.conf.j2, dest: glance.conf, enabled: "{{ kolla_enable_glance }}" }
-    - { src: ironic.conf.j2, dest: ironic.conf, enabled: "{{ kolla_enable_ironic }}" }
-    - { src: ironic-dnsmasq.conf.j2, dest: ironic/ironic-dnsmasq.conf, enabled: "{{ kolla_enable_ironic }}" }
-    - { src: ironic-inspector.conf.j2, dest: ironic-inspector.conf, enabled: "{{ kolla_enable_ironic }}" }
-    - { src: pxelinux.default.j2, dest: ironic/pxelinux.default, enabled: "{{ kolla_enable_ironic }}" }
-  when: "{{ item.enabled | bool }}"
-
-- name: Ensure the ironic inspector kernel and ramdisk exist
-  get_url:
-    url: "{{ item.url }}"
-    dest: "{{ kolla_node_custom_config_path }}/ironic/{{ item.dest }}"
-  become: True
-  with_items:
-    - { url: "{{ kolla_inspector_ipa_kernel_upstream_url }}", dest: "ironic-agent.kernel" }
-    - { url: "{{ kolla_inspector_ipa_ramdisk_upstream_url }}", dest: "ironic-agent.initramfs" }
-  when: "{{ kolla_enable_ironic | bool }}"
+- include: config.yml
+  tags:
+    - config
