@@ -50,3 +50,14 @@
     - name: PyYAML
       version: "3.12"
   when: "{{ item.install | default(True) | bool }}"
+
+# This is a workaround for the lack of a python package for libselinux-python
+# on PyPI. Without using --system-site-packages to create the virtualenv, it
+# seems difficult to ensure the selinux python module is available. It is a
+# dependency for Ansible when selinux is enabled.
+- name: Ensure selinux Python package is linked into the virtualenv
+  file:
+    src: "/usr/lib64/python2.7/site-packages/selinux"
+    dest: "{{ kolla_venv }}/lib/python2.7/site-packages/selinux"
+    state: link
+  when: "{{ ansible_selinux.mode != 'disabled' }}"
