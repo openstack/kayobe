@@ -1,0 +1,6 @@
+---
+###############################################################################
+# Controller node LVM configuration.
+
+# List of LVM volume groups.
+lvm_groups: []

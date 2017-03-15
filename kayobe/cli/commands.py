@@ -138,7 +138,7 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
                                            var_name="kayobe_ansible_user")
         playbooks = ["ansible/%s.yml" % playbook for playbook in
                      "ip-allocation", "ssh-known-host", "kayobe-ansible-user",
-                     "disable-selinux", "network", "ntp"]
+                     "disable-selinux", "network", "ntp", "lvm"]
         ansible.run_playbooks(parsed_args, playbooks, limit="seed")
         kolla_ansible.run_seed(parsed_args, "bootstrap-servers",
                                extra_vars={"ansible_user": ansible_user})
@@ -190,7 +190,7 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
                                            var_name="kayobe_ansible_user")
         playbooks = ["ansible/%s.yml" % playbook for playbook in
                      "ip-allocation", "ssh-known-host", "kayobe-ansible-user",
-                     "disable-selinux", "network", "ntp"]
+                     "disable-selinux", "network", "ntp", "lvm"]
         ansible.run_playbooks(parsed_args, playbooks, limit="controllers")
         kolla_ansible.run_overcloud(parsed_args, "bootstrap-servers",
                                     extra_vars={"ansible_user": ansible_user})
@@ -211,5 +211,5 @@ class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
             kolla_ansible.run_overcloud(parsed_args, command)
         # FIXME: Fudge to work around incorrect configuration path.
         extra_vars = {"node_config_directory": parsed_args.config_path}
-        kolla_ansible.run_overcloud(parsed_args, command,
+        kolla_ansible.run_overcloud(parsed_args, "post-deploy",
                                     extra_vars=extra_vars)

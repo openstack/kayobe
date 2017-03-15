@@ -1,0 +1,6 @@
+---
+###############################################################################
+# Seed node LVM configuration.
+
+# List of LVM volume groups.
+lvm_groups: "{{ seed_lvm_groups }}"

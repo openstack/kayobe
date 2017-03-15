@@ -2,5 +2,6 @@
 - src: ahuffman.resolv
 - src: jriguera.configdrive
 - src: MichaelRigart.interfaces
+- src: mrlesmithjr.manage-lvm
 - src: resmo.ntp
 - src: yatesr.timezone

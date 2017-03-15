@@ -1,0 +1,10 @@
+---
+- name: Ensure LVM configuration is applied
+  hosts: seed:controllers
+  roles:
+    - role: mrlesmithjr.manage-lvm
+      manage_lvm: True
+      become: True
+      when:
+        - "{{ lvm_groups is defined}}"
+        - "{{ lvm_groups | length > 0 }}"
