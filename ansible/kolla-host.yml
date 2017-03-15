@@ -4,3 +4,18 @@
   roles:
     - role: kolla-host
       kolla_authorized_key: "{{ lookup('file', ssh_public_key_path) }}"
+
+- name: Ensure Kolla host services are configured
+  hosts: controllers
+  tasks:
+    - name: Ensure host iSCSI services are stopped and disabled
+      service:
+        name: "{{ item }}"
+        state: stopped
+        enabled: no
+      become: True
+      with_items:
+        - iscsid.socket
+        - iscsiuio.socket
+        - iscsid.service
+      when: "{{ kolla_enable_ironic | bool }}"
