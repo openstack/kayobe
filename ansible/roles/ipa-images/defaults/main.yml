@@ -1,0 +1,26 @@
+---
+# Path to virtualenv in which to install shade and its dependencies.
+ipa_images_venv:
+
+# Authentication type compatible with the 'os_image' Ansible module's
+# auth_type argument.
+ipa_images_openstack_auth_type:
+
+# Authentication parameters compatible with the 'os_image' Ansible module's
+# auth argument.
+ipa_images_openstack_auth: {}
+
+# Path to directory in which to store downloaded images.
+ipa_images_cache_path:
+
+# Name of Ironic deployment kernel image to register in Glance.
+ipa_images_kernel_name:
+
+# URL of Ironic deployment kernel image to download.
+ipa_images_kernel_url:
+
+# Name of Ironic deployment ramdisk image to register in Glance.
+ipa_images_ramdisk_name:
+
+# URL of Ironic deployment ramdisk image to download.
+ipa_images_ramdisk_url:

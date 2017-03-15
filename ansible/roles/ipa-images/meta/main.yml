@@ -1,0 +1,4 @@
+---
+dependencies:
+  - role: shade
+    shade_venv: "{{ ipa_images_venv }}"

@@ -1,0 +1,24 @@
+---
+# Ironic Python Agent (IPA) configuration.
+
+###############################################################################
+# Ironic Python Agent (IPA) images configuration.
+
+# Name of Ironic deployment kernel image to register in Glance.
+ipa_images_kernel_name: "ipa.vmlinuz"
+
+# URL of Ironic deployment kernel image to download.
+ipa_images_kernel_url: "https://tarballs.openstack.org/ironic-python-agent/coreos/files/coreos_production_pxe-stable-ocata.vmlinuz"
+
+# Name of Ironic deployment ramdisk image to register in Glance.
+ipa_images_ramdisk_name: "ipa.initramfs"
+
+# URL of Ironic deployment ramdisk image to download.
+ipa_images_ramdisk_url: "https://tarballs.openstack.org/ironic-python-agent/coreos/files/coreos_production_pxe_image-oem-stable-ocata.cpio.gz"
+
+###############################################################################
+# Ironic Python Agent (IPA) deployment configuration.
+
+# List of extra kernel parameters for the inspector default PXE configuration.
+ipa_kernel_options_collect_lldp:
+  - "ipa-collect-lldp=1"

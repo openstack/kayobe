@@ -1,0 +1,31 @@
+---
+###############################################################################
+# OpenStack authentication configuration.
+
+# Overcloud authentication type. This should be a string compatible with the
+# 'auth_type' argument of most 'os_*' Ansible modules.
+openstack_auth_type: "password"
+
+# Overcloud authentication parameters. This should be a dict providing items
+# compatible with the 'auth' argument of most 'os_*' Ansible modules.
+# By default we pull these from the environment of the shell executing Ansible.
+openstack_auth:
+  project_domain_name: "{{ lookup('env', 'OS_PROJECT_DOMAIN_NAME') }}"
+  user_domain_name: "{{ lookup('env', 'OS_USER_DOMAIN_NAME') }}"
+  project_name: "{{ lookup('env', 'OS_PROJECT_NAME') }}"
+  username: "{{ lookup('env', 'OS_USERNAME') }}"
+  password: "{{ lookup('env', 'OS_PASSWORD') }}"
+  auth_url: "{{ lookup('env', 'OS_AUTH_URL') }}"
+
+# Overcloud authentication environment variables. These should be compatible
+# with the openstack client.
+# By default we pull these from the environment of the shell executing Ansible.
+openstack_auth_env:
+  OS_PROJECT_DOMAIN_NAME: "{{ lookup('env', 'OS_PROJECT_DOMAIN_NAME') }}"
+  OS_USER_DOMAIN_NAME: "{{ lookup('env', 'OS_USER_DOMAIN_NAME') }}"
+  OS_PROJECT_NAME: "{{ lookup('env', 'OS_PROJECT_NAME') }}"
+  OS_USERNAME: "{{ lookup('env', 'OS_USERNAME') }}"
+  OS_PASSWORD: "{{ lookup('env', 'OS_PASSWORD') }}"
+  OS_AUTH_URL: "{{ lookup('env', 'OS_AUTH_URL') }}"
+  OS_INTERFACE: "{{ lookup('env', 'OS_INTERFACE') }}"
+  OS_IDENTITY_API_VERSION: "{{ lookup('env', 'OS_IDENTITY_API_VERSION') }}"

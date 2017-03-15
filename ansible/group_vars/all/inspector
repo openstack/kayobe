@@ -3,14 +3,13 @@
 # Ironic inspector PXE configuration.
 
 # List of extra kernel parameters for the inspector default PXE configuration.
-inspector_extra_kernel_options:
-  - "ipa-collect-lldp=1"
+inspector_extra_kernel_options: "{{ ipa_kernel_options_collect_lldp }}"
 
 # URL of Ironic Python Agent (IPA) kernel image.
-inspector_ipa_kernel_upstream_url: "https://tarballs.openstack.org/ironic-python-agent/coreos/files/coreos_production_pxe-stable-ocata.vmlinuz"
+inspector_ipa_kernel_upstream_url: "{{ ipa_images_kernel_url }}"
 
 # URL of Ironic Python Agent (IPA) ramdisk image.
-inspector_ipa_ramdisk_upstream_url: "https://tarballs.openstack.org/ironic-python-agent/coreos/files/coreos_production_pxe_image-oem-stable-ocata.cpio.gz"
+inspector_ipa_ramdisk_upstream_url: "{{ ipa_images_ramdisk_url }}"
 
 ###############################################################################
 # Ironic inspector processing configuration.
