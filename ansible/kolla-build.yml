@@ -1,0 +1,6 @@
+---
+- name: Ensure Kolla is installed and configured
+  hosts: seed:controllers
+  roles:
+    - role: kolla
+    - role: kolla-build

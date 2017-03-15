@@ -116,6 +116,13 @@ Image Builder (DIB). To configure the seed host OS:
 
     (kayobe-venv) $ kayobe seed host configure
 
+It is possible to use prebuilt container images from an image registry such as
+Dockerhub. In some cases it may be necessary to build images locally either to
+apply local image customisation or to use a downstream version of Kolla. To
+build images locally:
+
+    (kayobe-venv) $ kayobe seed container image build
+
 To deploy the seed services in containers:
 
     (kayobe-venv) $ kayobe seed service deploy
@@ -152,6 +159,13 @@ provisioned with an OS image. To configure the overcloud hosts' OS:
 
     (kayobe-venv) $ kayobe overcloud host configure
 
+It is possible to use prebuilt container images from an image registry such as
+Dockerhub. In some cases it may be necessary to build images locally either to
+apply local image customisation or to use a downstream version of Kolla. To
+build images locally:
+
+    (kayobe-venv) $ kayobe overcloud container image build
+
 To deploy the overcloud services in containers:
 
     (kayobe-venv) $ kayobe overcloud service deploy
@@ -166,11 +180,11 @@ that can be used to access the OpenStack services:
 
 To run an arbitrary Kayobe playbook:
 
-    (kayobe-venv) $ kayobe playbook run
+    (kayobe-venv) $ kayobe playbook run <playbook> [<playbook>]
 
 To execute a Kolla Ansible command:
 
-    (kayobe-venv) $ kayobe kolla ansible run
+    (kayobe-venv) $ kayobe kolla ansible run <command>
 
 To dump Kayobe configuration for one or more hosts:
 

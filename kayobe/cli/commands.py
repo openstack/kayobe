@@ -165,6 +165,27 @@ class SeedServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
         ansible.run_playbook(parsed_args, "ansible/seed-introspection-rules.yml")
 
 
+class SeedContainerImageBuild(KayobeAnsibleMixin, Command):
+    """Build the seed container images."""
+
+    def get_parser(self, prog_name):
+        parser = super(SeedContainerImageBuild, self).get_parser(
+            prog_name)
+        group = parser.add_argument_group("Container Image Build")
+        group.add_argument("--push", action="store_true",
+                           help="whether to push images to a registry after "
+                                "building")
+        return parser
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Building seed container images")
+        playbooks = _build_playbook_list(
+            "kolla-build", "container-image-build")
+        extra_vars = {"push_images": parsed_args.push}
+        ansible.run_playbooks(parsed_args, playbooks, limit="seed",
+                              extra_vars=extra_vars)
+
+
 class OvercloudInventoryDiscover(KayobeAnsibleMixin, Command):
     """Discover the overcloud inventory from the seed's Ironic service."""
 
@@ -244,3 +265,24 @@ class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
         extra_vars = {"node_config_directory": parsed_args.kolla_config_path}
         kolla_ansible.run_overcloud(parsed_args, "post-deploy",
                                     extra_vars=extra_vars)
+
+
+class OvercloudContainerImageBuild(KayobeAnsibleMixin, Command):
+    """Build the overcloud container images."""
+
+    def get_parser(self, prog_name):
+        parser = super(OvercloudContainerImageBuild, self).get_parser(
+            prog_name)
+        group = parser.add_argument_group("Container Image Build")
+        group.add_argument("--push", action="store_true",
+                           help="whether to push images to a registry after "
+                                "building")
+        return parser
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Building overcloud container images")
+        playbooks = _build_playbook_list(
+            "kolla-build", "container-image-build")
+        extra_vars = {"push_images": parsed_args.push}
+        ansible.run_playbooks(parsed_args, playbooks, limit="controllers",
+                              extra_vars=extra_vars)

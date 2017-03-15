@@ -1,0 +1,36 @@
+---
+- name: Ensure Kolla container images are built
+  hosts: seed:controllers
+  vars:
+    # Set this to True to push images to the registry when built.
+    push_images: False
+    kolla_venv: "{{ ansible_env['PWD'] }}/kolla-venv"
+    kolla_build_log_path: "/var/log/kolla-build.log"
+  tasks:
+    - name: Display the regexes for container images that will be built
+      debug:
+        msg: >
+          Building container images of type
+          '{{ item.type | default(kolla_install_type) }}' matching
+          '{{ item.regexes }}'. Build logs will be appended to
+          {{ kolla_build_log_path }}.
+      with_items: "{{ container_image_sets }}"
+
+    - name: Ensure Kolla build log file exists
+      file:
+        path: "{{ kolla_build_log_path }}"
+        state: touch
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+      become: True
+
+    - name: Ensure Kolla container images are built
+      shell: >
+        set -o pipefail &&
+        source {{ kolla_venv }}/bin/activate &&
+        kolla-build \
+        --config-dir {{ kolla_config_path }} \
+        {% if item.type is defined %}--type {{ item.type }}{% endif %} \
+        {% if push_images | bool %}--push{% endif %} \
+        {{ item.regexes }} | tee --append {{ kolla_build_log_path }}
+      with_items: "{{ container_image_sets }}"

@@ -55,6 +55,83 @@ kolla_sources:
     reference: "{{ kolla_bifrost_source_version }}"
 
 ###############################################################################
+# Kolla image build configuration.
+
+# List of regular expressions matching names of container images to build for
+# the seed.
+seed_container_image_regex_map:
+  - regex: bifrost
+    enabled: True
+
+# List of regular expressions matching names of container images to build for
+# the seed.
+seed_container_image_regexes: "{{ seed_container_image_regex_map | selectattr('enabled') | map(attribute='regex') | list }}"
+
+# List of container image sets for the seed. This is used when building
+# container images to determine which images to build.
+seed_container_image_sets:
+  - type: source
+    regexes: "{{ seed_container_image_regexes | join(' ') }}"
+
+# List of regular expressions matching names of container images to build for
+# controllers.
+controller_container_image_regex_map:
+  - regex: cinder
+    enabled: True
+  - regex: cron
+    enabled: True
+  - regex: dnsmasq
+    enabled: True
+  - regex: fluentd
+    enabled: True
+  - regex: glance
+    enabled: "{{ kolla_enable_glance | bool }}"
+  - regex: haproxy
+    enabled: True
+  - regex: heat
+    enabled: True
+  - regex: horizon
+    enabled: True
+  - regex: ironic
+    enabled: "{{ kolla_enable_ironic | bool }}"
+  - regex: iscsid
+    enabled: True
+  - regex: keepalived
+    enabled: True
+  - regex: keystone
+    enabled: True
+  - regex: kolla-toolbox
+    enabled: True
+  - regex: mariadb
+    enabled: True
+  - regex: memcached
+    enabled: True
+  - regex: neutron-server
+    enabled: True
+  # Neutron SFC agent not currently supported on CentOS binary builds.
+  - regex: "neutron-\\(dhcp\\|l3\\|metadata\\|openvswitch\\)-agent"
+    enabled: True
+  - regex: nova
+    enabled: True
+  - regex: openvswitch
+    enabled: True
+  - regex: rabbitmq
+    enabled: True
+  - regex: swift
+    enabled: "{{ kolla_enable_swift | bool }}"
+  - regex: tgtd
+    enabled: True
+
+# List of regular expressions matching names of container images to build for
+# controllers.
+controller_container_image_regexes: "{{ controller_container_image_regex_map | selectattr('enabled') | map(attribute='regex') | list }}"
+
+# List of container image sets for controllers. This is used when building
+# container images to determine which images to build.
+controller_container_image_sets:
+  - regexes: "{{ controller_container_image_regexes | join(' ') }}"
+
+###############################################################################
 # Kolla-ansible configuration.
 
 # Whether TLS is enabled for the external API endpoints.
