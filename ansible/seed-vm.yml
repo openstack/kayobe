@@ -94,7 +94,6 @@
       become: "{{ item.become | bool }}"
       with_items:
         - { path: "{{ kayobe_config_path }}/inventory/group_vars/seed", become: False }
-        - { path: "{{ kolla_config_path }}/inventory/group_vars/seed", become: True }
 
     # Generate inventory group variable files for the seed VM. Note that this
     # host will not be accessible to this instance of Ansible - another process
@@ -112,7 +111,6 @@
       become: "{{ item.become | bool }}"
       with_items:
         - { path: "{{ kayobe_config_path }}/inventory/group_vars/seed/ansible-host", become: False }
-        - { path: "{{ kolla_config_path }}/inventory/group_vars/seed/ansible-host", become: True }
 
     - name: Wait for SSH access to the seed VM
       local_action:
