@@ -97,6 +97,18 @@ inspector_rule_root_hint_serial:
       path: "properties/root_device/serial"
       value: "{data[root_disk][serial]}"
 
+# Ironic inspector rule to set the interface on which the node PXE booted.
+inspector_rule_set_pxe_interface_mac:
+  description: "Set node PXE interface MAC address"
+  conditions:
+    - field: "data://boot_interface"
+      op: "is-empty"
+      invert: True
+  actions:
+    - action: "set-attribute"
+      path: "extra/pxe_interface_mac"
+      value: "{data[boot_interface]}"
+
 # Ironic inspector rule to set the node's name from eno3's LLDP switch port
 # description.
 inspector_rule_eno3_lldp_switch_port_desc_to_name:

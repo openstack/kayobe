@@ -72,6 +72,7 @@ kolla_bifrost_inspector_rules:
   - "{{ inspector_rule_local_boot }}"
   - "{{ inspector_rule_root_hint_init }}"
   - "{{ inspector_rule_root_hint_serial }}"
+  - "{{ inspector_rule_set_pxe_interface_mac }}"
   - "{{ inspector_rule_eno3_lldp_switch_port_desc_to_name }}"
 
 # Ironic inspector IPMI username to set.
