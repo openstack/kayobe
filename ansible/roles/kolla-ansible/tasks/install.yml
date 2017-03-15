@@ -42,6 +42,10 @@
     - name: "kolla-ansible"
       version: "{{ kolla_openstack_release }}"
       install: "{{ kolla_ctl_install_type == 'binary' }}"
+    # On CentOS 7.3 Jinja2==2.7, but kolla-ansible requires 2.8. Install
+    # Ansible to ensure we pull in and use a later Jinja2.
+    - name: "ansible"
+      version: "2.2"
     # Required for kolla-genpwd.
     - name: PyYAML
       version: "3.12"
