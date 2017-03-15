@@ -1,5 +1,9 @@
 ---
 - include: install.yml
   when: "{{ kolla_ansible_is_standalone | bool }}"
+  tags:
+    - install
 
 - include: config.yml
+  tags:
+    - config
