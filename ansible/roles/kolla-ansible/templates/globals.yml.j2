@@ -247,6 +247,14 @@ tempest_floating_network_name:
 # tempest_flavor_ref_alt_id: "{% raw %}{{ tempest_flavor_ref_id }}{% endraw %}"
 
 
+#####################################
+# Bifrost - Bare Metal Provisioning
+#####################################
+
+# The Bifrost deployment image only supports a source installation.
+bifrost_deploy_image: "{% raw %}{{ docker_registry ~ '/' if docker_registry else '' }}{{ docker_namespace }}/{{ kolla_base_distro }}-source-bifrost-deploy{% endraw %}"
+
+
 {% if kolla_extra_globals %}
 #######################
 # Extra configuration

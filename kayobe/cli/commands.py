@@ -158,11 +158,7 @@ class SeedServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
     def take_action(self, parsed_args):
         self.app.LOG.debug("Deploying seed services")
         ansible.run_playbook(parsed_args, "ansible/kolla-bifrost.yml")
-        # FIXME: Do this via configuration.
-        extra_vars = {"kolla_install_type": "source",
-                      "docker_namespace": "stackhpc"}
-        kolla_ansible.run_seed(parsed_args, "deploy-bifrost",
-                               extra_vars=extra_vars)
+        kolla_ansible.run_seed(parsed_args, "deploy-bifrost")
         ansible.run_playbook(parsed_args, "ansible/seed-introspection-rules.yml")
 
 
