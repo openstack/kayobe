@@ -61,22 +61,54 @@ inspector_rule_deploy_ramdisk:
       path: "driver_info/deploy_ramdisk"
       value: "{{ inspector_deploy_ramdisk }}"
 
+# Ironic inspector rule to set local boot capability
+inspector_rule_local_boot:
+  description: "Set local boot capability"
+  conditions: []
+  actions:
+    - action: "set-capability"
+      name: "boot_option"
+      value: "local"
+
+# Ironic inspector rule to initialise root device hints.
+inspector_rule_root_hint_init:
+  description: "Initialise root device hint"
+  conditions:
+    - field: "node://properties.root_device"
+      op: "is-empty"
+  actions:
+    # Inspector can't combine references to introspection data with non-string
+    # types, see https://bugs.launchpad.net/ironic-inspector/+bug/1670768. We
+    # must therefore first set the root_device property to an empty dict, then
+    # update the fields within it.
+    - action: "set-attribute"
+      path: "properties/root_device"
+      value: {}
+
 # Ironic inspector rule to set serial root device hint.
 inspector_rule_root_hint_serial:
   description: "Set serial root device hint"
   conditions:
-    - field: "node://properties.root_device"
-      op: "is-empty"
     - field: "data://root_disk.serial"
       op: "is-empty"
       invert: True
   actions:
     - action: "set-attribute"
-      path: "properties/root_device"
-      #value: "{{ '{{' | replace('{{', '{{ \"{{\" }}') }}\"serial\": \"{data[root_disk][serial]}\"{{ '}}' | replace('}}', '{{ \"}}\" }}') }}"
-      # We need to suppoly a JSON encoded object of root device hints, escaping
-      # the curly brackets.
-      value: "{{ inspector_rule_escaped_left_curly }}\"serial\": \"{data[root_disk][serial]}\"{{ inspector_rule_escaped_right_curly }}"
+      path: "properties/root_device/serial"
+      value: "{data[root_disk][serial]}"
+
+# Ironic inspector rule to set the node's name from eno3's LLDP switch port
+# description.
+inspector_rule_eno3_lldp_switch_port_desc_to_name:
+  description: "Set node name from LLDP switch port description"
+  conditions:
+    - field: "data://all_interfaces.eno3.lldp_processed.switch_port_description"
+      op: "is-empty"
+      invert: True
+  actions:
+    - action: "set-attribute"
+      path: "name"
+      value: "{data[all_interfaces][eno3][lldp_processed][switch_port_description]}"
 
 # Ironic inspector rule to save introspection data to the node.
 inspector_rule_save_data:
