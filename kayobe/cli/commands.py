@@ -15,8 +15,11 @@ class KayobeAnsibleMixin(object):
     def get_parser(self, prog_name):
         parser = super(KayobeAnsibleMixin, self).get_parser(prog_name)
         group = parser.add_argument_group("Kayobe Ansible")
-        ansible.add_args(group)
+        self.add_kayobe_ansible_args(group)
         return parser
+
+    def add_kayobe_ansible_args(self, group):
+        ansible.add_args(group)
 
 
 class KollaAnsibleMixin(object):
@@ -25,8 +28,11 @@ class KollaAnsibleMixin(object):
     def get_parser(self, prog_name):
         parser = super(KollaAnsibleMixin, self).get_parser(prog_name)
         group = parser.add_argument_group("Kolla Ansible")
-        kolla_ansible.add_args(group)
+        self.add_kolla_ansible_args(group)
         return parser
+
+    def add_kolla_ansible_args(self, group):
+        kolla_ansible.add_args(group)
 
 
 class ControlHostBootstrap(KayobeAnsibleMixin, Command):
@@ -88,12 +94,10 @@ class ConfigurationDump(KayobeAnsibleMixin, Command):
 class PlaybookRun(KayobeAnsibleMixin, Command):
     """Run a Kayobe Ansible playbook."""
 
-    def get_parser(self, prog_name):
-        parser = super(PlaybookRun, self).get_parser(prog_name)
-        group = parser.add_argument_group("Kayobe Ansible")
+    def add_kayobe_ansible_args(self, group):
+        super(PlaybookRun, self).add_kayobe_ansible_args(group)
         group.add_argument("playbook", nargs="+",
                            help="name of the playbook(s) to run")
-        return parser
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Running Kayobe playbook(s)")
@@ -103,9 +107,8 @@ class PlaybookRun(KayobeAnsibleMixin, Command):
 class KollaAnsibleRun(KollaAnsibleMixin, Command):
     """Run a Kolla Ansible command."""
 
-    def get_parser(self, prog_name):
-        parser = super(KollaAnsibleRun, self).get_parser(prog_name)
-        group = parser.add_argument_group("Kolla Ansible")
+    def add_kolla_ansible_args(self, group):
+        super(KollaAnsibleRun, self).add_kolla_ansible_args(group)
         group.add_argument("--kolla-inventory-filename", default="overcloud",
                            choices=["seed", "overcloud"],
                            help="name of the kolla-ansible inventory file, "
@@ -113,7 +116,6 @@ class KollaAnsibleRun(KollaAnsibleMixin, Command):
                                 "overcloud)")
         group.add_argument("command",
                            help="name of the kolla-ansible command to run")
-        return parser
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Running Kolla Ansible command")
