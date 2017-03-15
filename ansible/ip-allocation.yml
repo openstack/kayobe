@@ -24,3 +24,5 @@
     - role: ip-allocation
       ip_allocation_filename: "{{ kayobe_config_path }}/network-allocation.yml"
       ip_allocation_hostname: "{{ inventory_hostname }}"
+      # Use serial=1 to avoid races between allocations for different hosts.
+      serial: 1
