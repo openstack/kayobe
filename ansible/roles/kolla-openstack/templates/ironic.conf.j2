@@ -8,6 +8,9 @@ enabled_drivers = {{ ironic_drivers | join(',') }}
 api_url = {{ internal_protocol }}://{{ hostvars[inventory_hostname]['ansible_' + provision_interface | replace('-', '_')]['ipv4']['address'] }}:{{ ironic_api_port }}
 {% endraw %}
 
+[agent]
+deploy_logs_local_path = /var/log/kolla/ironic/deploy
+
 [pxe]
 {% raw %}
 tftp_server = {{ hostvars[inventory_hostname]['ansible_' + provision_interface | replace('-', '_')]['ipv4']['address'] }}

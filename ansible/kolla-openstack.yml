@@ -2,25 +2,40 @@
 - name: Ensure Kolla OpenStack components are configured
   hosts: config-mgmt
   pre_tasks:
-    - name: Check whether Kolla extra Glance configuration file exists
+    - name: Check whether Kolla extra configuration files exist
       stat:
-        path: "{{ kayobe_config_path }}/kolla/config/glance.conf"
-      register: glance_stat
+        path: "{{ kayobe_config_path }}/kolla/config/{{ item.file }}"
+      register: stat_result
+      with_items:
+        - { name: glance, file: glance.conf }
+        - { name: inspector, file: ironic-inspector.conf }
+        - { name: ironic, file: ironic.conf }
 
-    - name: Read the Kolla extra Glance configuration file
+    - name: Initialise a fact containing extra configuration
       set_fact:
-        kolla_extra_glance: "{{ lookup('template', '{{ kayobe_config_path }}/kolla/config/glance.conf') }}"
-      when: glance_stat.stat.exists
+        kolla_extra_config: {}
 
-    - name: Check whether Kolla extra Ironic configuration file exists
-      stat:
-        path: "{{ kayobe_config_path }}/kolla/config/ironic.conf"
-      register: ironic_stat
-
-    - name: Read the Kolla extra Ironic configuration file
+    - name: Update a fact containing extra configuration
       set_fact:
-        kolla_extra_ironic: "{{ lookup('template', '{{ kayobe_config_path }}/kolla/config/ironic.conf') }}"
-      when: ironic_stat.stat.exists
+        kolla_extra_config: "{{ kolla_extra_config | combine({item.item.name: lookup('template', '{{ item.stat.path }}')}) }}"
+      with_items: "{{ stat_result.results }}"
+      when: "{{ item.stat.exists }}"
 
   roles:
     - role: kolla-openstack
+      # Ironic inspector configuration.
+      kolla_inspector_manage_firewall: "{{ inspector_manage_firewall }}"
+      kolla_inspector_processing_hooks: "{{ inspector_processing_hooks }}"
+      kolla_inspector_port_addition: "{{ inspector_port_addition }}"
+      kolla_inspector_enable_discovery: "{{ inspector_enable_discovery }}"
+      kolla_inspector_discovery_enroll_node_driver: "{{ inspector_discovery_enroll_node_driver }}"
+      kolla_inspector_extra_kernel_options: "{{ inspector_extra_kernel_options }}"
+      kolla_inspector_ipa_kernel_upstream_url: "{{ inspector_ipa_kernel_upstream_url }}"
+      kolla_inspector_ipa_ramdisk_upstream_url: "{{ inspector_ipa_ramdisk_upstream_url }}"
+      # Ironic inspector's dnsmasq configuration.
+      kolla_inspector_dhcp_pool_start: "{{ inspection_net_name | net_allocation_pool_start }}"
+      kolla_inspector_dhcp_pool_end: "{{ inspection_net_name | net_allocation_pool_end }}"
+      # Extra free-form user-provided configuration.
+      kolla_extra_glance: "{{ kolla_extra_config.glance | default }}"
+      kolla_extra_inspector: "{{ kolla_extra_config.inspector | default }}"
+      kolla_extra_ironic: "{{ kolla_extra_config.ironic | default }}"

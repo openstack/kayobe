@@ -45,24 +45,14 @@ kolla_bifrost_enable_ipmitool_drivers: true
 # Ironic Inspector configuration.
 
 # List of of inspector processing plugins.
-kolla_bifrost_inspector_processing_hooks:
-  - root_disk_selection
-  - scheduler
-  - validate_interfaces
-  - ramdisk_error
-  - capabilities
-  - pci_devices
-  - raid_device
-  - local_link_connection
-  - lldp_basic
+kolla_bifrost_inspector_processing_hooks: "{{ inspector_processing_hooks }}"
 
 # Which MAC addresses to add as ports during introspection. One of 'all',
 # 'active' or 'pxe'.
-kolla_bifrost_inspector_port_addition: "all"
+kolla_bifrost_inspector_port_addition: "{{ inspector_port_addition }}"
 
 # List of extra kernel parameters for the inspector default PXE configuration.
-kolla_bifrost_inspector_extra_kernel_options:
-  - "ipa-collect-lldp=1"
+kolla_bifrost_inspector_extra_kernel_options: "{{ inspector_extra_kernel_options }}"
 
 # List of introspection rules for Bifrost's Ironic Inspector service.
 kolla_bifrost_inspector_rules:
@@ -91,10 +81,10 @@ kolla_bifrost_inspector_deploy_ramdisk: "http://{{ provision_oc_net_name | net_i
 # Ironic Python Agent (IPA) configuration.
 
 # URL of Ironic Python Agent (IPA) kernel image.
-kolla_bifrost_ipa_kernel_upstream_url: "https://tarballs.openstack.org/ironic-python-agent/coreos/files/coreos_production_pxe-stable-ocata.vmlinuz"
+kolla_bifrost_ipa_kernel_upstream_url: "{{ inspector_ipa_kernel_upstream_url }}"
 
 # URL of Ironic Python Agent (IPA) ramdisk image.
-kolla_bifrost_ipa_ramdisk_upstream_url: "https://tarballs.openstack.org/ironic-python-agent/coreos/files/coreos_production_pxe_image-oem-stable-ocata.cpio.gz"
+kolla_bifrost_ipa_ramdisk_upstream_url: "{{ inspector_ipa_ramdisk_upstream_url }}"
 
 ###############################################################################
 # Inventory configuration.

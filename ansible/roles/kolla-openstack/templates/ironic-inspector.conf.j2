@@ -1,0 +1,41 @@
+[DEFAULT]
+
+[firewall]
+# Whether inspector should manage the firewall.
+manage_firewall = {{ kolla_inspector_manage_firewall }}
+
+[processing]
+{% if kolla_inspector_processing_hooks %}
+# Comma-separated list of inspector processing plugins.
+processing_hooks = {{ kolla_inspector_processing_hooks | join(',') }}
+{% endif %}
+
+{% if kolla_inspector_port_addition %}
+# Which MAC addresses to add as ports during introspection. One of 'all',
+# 'active' or 'pxe'.
+add_ports = {{ kolla_inspector_port_addition }}
+{% endif %}
+
+# Keep only those ports that were found during inspection.
+keep_ports = present
+
+# Store logs returned by the inspection ramdisk.
+ramdisk_logs_dir = /var/log/kolla/ironic
+always_store_ramdisk_logs = True
+
+{% if kolla_inspector_enable_discovery %}
+# Enable discovery when nodes do not exist in Ironic.
+node_not_found_hook = enroll
+
+[discovery]
+# The driver with which to enroll newly discovered nodes in Ironic.
+enroll_node_driver = {{ kolla_inspector_discovery_enroll_node_driver }}
+{% endif %}
+
+{% if kolla_extra_inspector %}
+#######################
+# Extra configuration
+#######################
+
+{{ kolla_extra_inspector }}
+{% endif %}
