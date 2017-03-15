@@ -1,4 +1,16 @@
 ---
+# Path to directory for source code checkouts.
+source_checkout_path:
+
+# Virtualenv directory where Bifrost will be installed.
+kolla_bifrost_venv:
+
+# URL of Bifrost source code repository.
+kolla_bifrost_source_url:
+
+# Version (branch, tag, etc.) of Bifrost source code repository.
+kolla_bifrost_source_version:
+
 # Directory where Kolla custom configuration files will be installed.
 kolla_node_custom_config_path:
 

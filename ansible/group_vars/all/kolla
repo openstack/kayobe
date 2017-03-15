@@ -51,8 +51,8 @@ kolla_openstack_release: "4.0.0.0rc1"
 kolla_sources:
   bifrost-base:
     type: "git"
-    location: "https://github.com/stackhpc/bifrost"
-    reference: "stackhpc-3.0.0"
+    location: "{{ kolla_bifrost_source_url }}"
+    reference: "{{ kolla_bifrost_source_version }}"
 
 ###############################################################################
 # Kolla-ansible configuration.

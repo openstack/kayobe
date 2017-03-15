@@ -2,6 +2,15 @@
 # Kayobe configuration for Bifrost.
 
 ###############################################################################
+# Bifrost installation.
+
+# URL of Bifrost source code repository.
+kolla_bifrost_source_url: "https://github.com/stackhpc/bifrost"
+
+# Version (branch, tag, etc.) of Bifrost source code repository.
+kolla_bifrost_source_version: "stackhpc-3.0.0"
+
+###############################################################################
 # Diskimage-builder configuration.
 
 # DIB base OS element.
