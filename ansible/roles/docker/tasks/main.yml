@@ -5,3 +5,22 @@
     groups: docker
     append: yes
   become: True
+
+- name: Check whether docker storage is in loopback mode
+  command: docker info
+  register: docker_info
+  changed_when: False
+  become: True
+
+- name: Fail when loopback-mode containers or images exist
+  fail:
+    msg: >
+      Not configuring docker storage in direct-lvm mode as loopback-backed
+      containers or images exist.
+  when:
+    - "{{ 'Data loop file' in docker_info.stdout }}"
+    - "{{ 'Images: 0' not in docker_info.stdout }}"
+    - "{{ 'Containers: 0' not in docker_info.stdout }}"
+
+- include: storage.yml
+  when: "{{ 'Data loop file' in docker_info.stdout }}"

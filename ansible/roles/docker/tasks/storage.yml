@@ -1,0 +1,61 @@
+---
+- name: Ensure the docker daemon is stopped
+  service:
+    name: docker
+    state: stopped
+  become: True
+
+- name: Ensure loopback storage state is absent
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "/var/lib/docker/devicemapper"
+    - "/var/lib/docker/images"
+    - "/var/lib/docker/containers"
+  become: True
+
+- name: Ensure the docker storage data and metadata volumes exist
+  lvol:
+    vg: "{{ docker_storage_volume_group }}"
+    lv: "{{ item.name }}"
+    size: "{{ item.size }}"
+    shrink: no
+    state: present
+  with_items:
+    - name: "{{ docker_storage_volume_thinpool }}"
+      size: "{{ docker_storage_volume_thinpool_size }}"
+    - name: "{{ docker_storage_volume_thinpool_meta }}"
+      size: "{{ docker_storage_volume_thinpool_meta_size }}"
+  become: True
+
+- name: Ensure the docker storage volume is converted to a thinpool
+  command: >
+    lvconvert -y --zero n -c 512K 
+    --thinpool {{ docker_storage_volume_group }}/{{ docker_storage_volume_thinpool }}
+    --poolmetadata {{ docker_storage_volume_group }}/{{ docker_storage_volume_thinpool_meta }}
+  become: True
+
+- name: Ensure the docker storage metadata profile exists
+  template:
+    src: docker-thinpool.profile.j2
+    dest: /etc/lvm/profile/docker-thinpool.profile
+  become: True
+
+- name: Ensure the docker storage metadata profile is applied
+  command: >
+    lvchange --metadataprofile docker-thinpool
+    {{ docker_storage_volume_group }}/{{ docker_storage_volume_thinpool }}
+  become: True
+
+- name: Ensure the docker daemon configuration file exists
+  template:
+    src: daemon.json.j2
+    dest: /etc/docker/daemon.json
+  become: True
+
+- name: Ensure the docker daemon is running
+  service:
+    name: docker
+    state: started
+  become: True
