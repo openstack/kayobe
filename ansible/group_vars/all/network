@@ -22,3 +22,24 @@ storage_net_name: 'storage_net'
 
 # Name of the network used to carry storage management traffic.
 storage_mgmt_net_name: 'storage_mgmt_net'
+
+# Name of the network used to perform hardware introspection on the bare metal
+# workload hosts.
+inspection_net_name: 'inspection_net'
+
+###############################################################################
+# Network interface naming conventions.
+
+# Suffix for Open vSwitch bridge names.
+network_bridge_suffix_ovs: '-ovs'
+
+# Prefix for virtual patch interface names.
+network_patch_prefix: 'p-'
+
+# Suffix for virtual patch link interface names when connected towards the
+# physical interface.
+network_patch_suffix_phy: '-phy'
+
+# Suffix for virtual patch link interface names when connected towards the
+# OVS bridge.
+network_patch_suffix_ovs: '-ovs'

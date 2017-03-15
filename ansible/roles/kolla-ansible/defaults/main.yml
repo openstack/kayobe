@@ -81,10 +81,11 @@ kolla_cluster_interface:
 # though an IP address can exist on this interface, it will be unusable in most
 # configurations. It is recommended this interface not be configured with any IP
 # addresses for that reason.
-kolla_neutron_external_interface:
+# This should be a list of names of interfaces.
+kolla_neutron_external_interfaces: []
 
-# Name of the Neutron external bridge.
-kolla_neutron_bridge_name:
+# List of names of Neutron bridges.
+kolla_neutron_bridge_names: []
 
 # This is the interface to use for Bifrost bare metal provisioning of the
 # control plane.
@@ -94,6 +95,8 @@ kolla_bifrost_network_interface:
 # standard kolla variable.
 kolla_provision_interface:
 
+# Interface on which the inspector dnsmasq service listens.
+kolla_inspector_dnsmasq_interface:
 
 ####################
 # TLS options

@@ -25,6 +25,10 @@
 # Name of the network used to carry storage management traffic.
 #storage_mgmt_net_name:
 
+# Name of the network used to perform hardware introspection on the bare metal
+# workload hosts.
+#inspection_net_name:
+
 ###############################################################################
 # Network definitions.
 
@@ -73,6 +77,23 @@
 # storage_mgmt_net_allocation_pool_end:
 # storage_mgmt_net_gateway:
 # storage_mgmt_net_vlan:
+
+###############################################################################
+# Network virtual patch link configuration.
+
+# Suffix for Open vSwitch bridge names.
+#network_bridge_suffix_ovs:
+
+# Prefix for virtual patch interface names.
+#network_patch_prefix:
+
+# Suffix for virtual patch link interface names when connected towards the
+# physical interface.
+#network_patch_suffix_phy:
+
+# Suffix for virtual patch link interface names when connected towards the
+# OVS bridge.
+#network_patch_suffix_ovs:
 
 ###############################################################################
 # Dummy variable to allow Ansible to accept this file.

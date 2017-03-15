@@ -18,12 +18,3 @@ controller_default_network_interfaces: >
 
 # List of extra networks to which controller nodes are attached.
 controller_extra_network_interfaces: []
-
-###############################################################################
-# Kolla networking.
-
-# Name of the Neutron OVS bridge for the provisioning network.
-neutron_bridge_name: "br-ex"
-
-# External network interface for Neutron.
-neutron_external_interface: "{{ 'patch-' ~ neutron_bridge_name }}"

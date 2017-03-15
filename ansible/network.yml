@@ -2,6 +2,26 @@
 - name: Ensure networking is configured
   hosts: seed:controllers
   pre_tasks:
+    - block:
+        - name: Validate network interface configuration
+          fail:
+            msg: >
+              Network interface validation failed - no interface configured for
+              {{ item }}. This should be configured via '{{ item }}_interface'.
+          with_items: "{{ network_interfaces | net_select_ethers | list }}"
+          when: "{{ not item | net_interface }}"
+
+        - name: Validate bridge interface configuration
+          fail:
+            msg: >
+              Bridge interface validation failed - no interface configured for
+              {{ item }}. This should be configured via '{{ item }}_interface'.
+          with_items: "{{ network_interfaces | net_select_bridges | list }}"
+          when: "{{ not item | net_interface }}"
+      tags:
+        - config
+        - config-validation
+
     - name: Ensure NetworkManager is disabled
       service:
         name: NetworkManager
@@ -17,6 +37,8 @@
   roles:
     - role: ahuffman.resolv
       become: True
+      tags:
+        - config
 
     - role: MichaelRigart.interfaces
       interfaces_ether_interfaces: >
@@ -30,18 +52,38 @@
            map('net_bridge_obj') |
            list }}
       become: True
+      tags:
+        - config
 
-- name: Ensure controller workload provisioning network is configured
+- name: Ensure controller workload OVS patch links exist
   hosts: controllers
   roles:
     # Configure a virtual ethernet patch link to connect the workload provision
     # network bridge to the Neutron OVS bridge.
     - role: veth
       veth_interfaces:
-        - device: "{{ 'patch-' ~ provision_wl_net_name | net_interface }}"
+        - device: "{{ network_patch_prefix ~ provision_wl_net_name | net_interface ~ network_patch_suffix_phy }}"
           bootproto: "static"
           bridge: "{{ provision_wl_net_name | net_interface }}"
-          peer_device: "{{ 'patch-' ~ neutron_bridge_name }}"
+          peer_device: "{{ network_patch_prefix ~ provision_wl_net_name | net_interface ~ network_patch_suffix_ovs }}"
           peer_bootproto: "static"
           onboot: yes
       when: "{{ provision_wl_net_name in network_interfaces }}"
+      tags:
+        - config
+
+    # Configure a virtual ethernet patch link to connect the external network
+    # bridge to the Neutron OVS bridge.
+    - role: veth
+      veth_interfaces:
+        - device: "{{ network_patch_prefix ~ external_net_name | net_interface ~ network_patch_suffix_phy }}"
+          bootproto: "static"
+          bridge: "{{ external_net_name | net_interface }}"
+          peer_device: "{{ network_patch_prefix ~ external_net_name | net_interface ~ network_patch_suffix_ovs }}"
+          peer_bootproto: "static"
+          onboot: yes
+      when:
+        - "{{ external_net_name in network_interfaces }}"
+        - "{{ external_net_name != provision_wl_net_name }}"
+      tags:
+        - config
