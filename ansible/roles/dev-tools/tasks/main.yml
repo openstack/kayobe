@@ -1,0 +1,7 @@
+---
+- name: Ensure required packages are installed
+  yum:
+    name: "{{ item }}"
+    state: installed
+  become: True
+  with_items: "{{ dev_tools_packages }}"

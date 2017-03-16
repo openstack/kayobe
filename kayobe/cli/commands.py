@@ -147,7 +147,7 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
                                            var_name="kayobe_ansible_user")
         playbooks = _build_playbook_list(
             "ip-allocation", "ssh-known-host", "kayobe-ansible-user",
-             "disable-selinux", "network", "ntp", "lvm")
+            "dev-tools", "disable-selinux", "network", "ntp", "lvm")
         ansible.run_playbooks(parsed_args, playbooks, limit="seed")
         kolla_ansible.run_seed(parsed_args, "bootstrap-servers",
                                extra_vars={"ansible_user": ansible_user})
@@ -244,7 +244,7 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
                                            var_name="kayobe_ansible_user")
         playbooks = _build_playbook_list(
             "ip-allocation", "ssh-known-host", "kayobe-ansible-user",
-            "disable-selinux", "network", "ntp", "lvm")
+            "dev-tools", "disable-selinux", "network", "ntp", "lvm")
         ansible.run_playbooks(parsed_args, playbooks, limit="controllers")
         kolla_ansible.run_overcloud(parsed_args, "bootstrap-servers",
                                     extra_vars={"ansible_user": ansible_user})

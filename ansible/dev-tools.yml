@@ -1,0 +1,5 @@
+---
+- name: Ensure development tools are installed
+  hosts: seed:controllers
+  roles:
+    - role: dev-tools
