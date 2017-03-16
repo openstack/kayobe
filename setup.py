@@ -44,6 +44,7 @@ setup(
             'overcloud_inventory_discover = kayobe.cli.commands:OvercloudInventoryDiscover',
             'overcloud_service_deploy = kayobe.cli.commands:OvercloudServiceDeploy',
             'overcloud_provision = kayobe.cli.commands:OvercloudProvision',
+            'physical_network_configure = kayobe.cli.commands:PhysicalNetworkConfigure',
             'playbook_run = kayobe.cli.commands:PlaybookRun',
             'seed_container_image_build = kayobe.cli.commands:SeedContainerImageBuild',
             'seed_host_configure = kayobe.cli.commands:SeedHostConfigure',

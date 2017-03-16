@@ -1,0 +1,26 @@
+---
+# Switch configuration depends on the type of switch, so groups hosts by their
+# switch type and apply tasks/roles to the relevant groups.
+
+- name: Group hosts by their switch type
+  hosts: switches
+  gather_facts: no
+  tasks:
+    - name: Group hosts by their switch type
+      group_by:
+        key: "switches_of_type_{{ switch_type }}"
+
+- name: Ensure DellOS6 physical network devices are configured
+  hosts: switches_of_type_dellos6
+  gather_facts: no
+  tasks:
+    - name: Ensure DellOS6 switch interfaces are configured
+      local_action:
+        module: dellos6_config
+        provider: "{{ switch_dellos6_provider }}"
+        lines: >
+          {{ ['description ' ~ item.value.description] +
+             item.value.config | default([]) }}
+        parents:
+          - "interface {{ item.key }}"
+      with_dict: "{{ switch_interface_config }}"

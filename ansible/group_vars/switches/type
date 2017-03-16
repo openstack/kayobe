@@ -1,0 +1,7 @@
+---
+###############################################################################
+# Switch type configuration.
+
+# This configures the type of switch, which is used to determine how the switch
+# will be configured.
+switch_type:
