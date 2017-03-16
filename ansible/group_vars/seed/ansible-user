@@ -1,3 +1,7 @@
 ---
-# User with which to access the seed VM via SSH.
+# User with which to access the seed via SSH.
 ansible_user: "{{ kayobe_ansible_user }}"
+
+# User with which to access the seed before the kayobe_ansible_user account has
+# been created.
+bootstrap_user: "{{ seed_bootstrap_user }}"

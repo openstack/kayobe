@@ -1,5 +1,12 @@
 ---
 ###############################################################################
+# Seed node configuration.
+
+# User with which to access the seed via SSH during bootstrap, in order to
+# setup the Kayobe user account.
+seed_bootstrap_user: "{{ lookup('env', 'USER') }}"
+
+###############################################################################
 # Seed node LVM configuration.
 
 # List of seed volume groups. See mrlesmithjr.manage-lvm role for format.

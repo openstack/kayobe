@@ -149,6 +149,8 @@ class SeedVMProvision(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Provisioning seed VM")
+        ansible.run_playbook(parsed_args, "ansible/ip-allocation.yml",
+                             limit="seed")
         ansible.run_playbook(parsed_args, "ansible/seed-vm.yml")
         # Now populate the Kolla Ansible inventory.
         ansible.run_playbook(parsed_args, "ansible/kolla-ansible.yml",

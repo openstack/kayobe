@@ -2,31 +2,29 @@
 - name: Ensure the Kayobe Ansible user account exists
   hosts: seed:controllers
   vars:
-    ansible_user: "{{ seed_vm_bootstrap_user if inventory_hostname in groups['seed'] else controller_bootstrap_user }}"
+    ansible_user: "{{ bootstrap_user }}"
   tasks:
-    - name: Ensure the Kayobe Ansible group exists
-      group:
-        name: "{{ kayobe_ansible_user }}"
-        state: present
-      become: True
+    - block:
+        - name: Ensure the Kayobe Ansible group exists
+          group:
+            name: "{{ kayobe_ansible_user }}"
+            state: present
 
-    - name: Ensure the Kayobe Ansible user account exists
-      user:
-        name: "{{ kayobe_ansible_user }}"
-        group: "{{ kayobe_ansible_user }}"
-        comment: "Kayobe Ansible SSH access"
-        state: present
-      become: True
+        - name: Ensure the Kayobe Ansible user account exists
+          user:
+            name: "{{ kayobe_ansible_user }}"
+            group: "{{ kayobe_ansible_user }}"
+            comment: "Kayobe Ansible SSH access"
+            state: present
 
-    - name: Ensure the Kayobe Ansible user has passwordless sudo
-      copy:
-        content: "{{ kayobe_ansible_user }} ALL=(ALL) NOPASSWD: ALL"
-        dest: "/etc/sudoers.d/kayobe-ansible-user"
-        mode: 0440
-      become: True
+        - name: Ensure the Kayobe Ansible user has passwordless sudo
+          copy:
+            content: "{{ kayobe_ansible_user }} ALL=(ALL) NOPASSWD: ALL"
+            dest: "/etc/sudoers.d/kayobe-ansible-user"
+            mode: 0440
 
-    - name: Ensure the Kayobe Ansible user has authorized our SSH key
-      authorized_key:
-        user: "{{ kayobe_ansible_user }}"
-        key: "{{ lookup('file', ssh_public_key_path) }}"
+        - name: Ensure the Kayobe Ansible user has authorized our SSH key
+          authorized_key:
+            user: "{{ kayobe_ansible_user }}"
+            key: "{{ lookup('file', ssh_public_key_path) }}"
       become: True
