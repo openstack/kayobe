@@ -3,8 +3,7 @@
   file:
     path: "{{ kolla_node_custom_config_path }}/{{ item.name }}"
     state: directory
-    mode: 0755
-  become: True
+    mode: 0750
   with_items:
     - { name: ironic, enabled: "{{ kolla_enable_ironic }}" }
     - { name: swift, enabled: "{{ kolla_enable_swift }}" }
@@ -14,8 +13,7 @@
   template:
     src: "{{ item.src }}"
     dest: "{{ kolla_node_custom_config_path }}/{{ item.dest }}"
-    mode: 0644
-  become: True
+    mode: 0640
   with_items:
     - { src: glance.conf.j2, dest: glance.conf, enabled: "{{ kolla_enable_glance }}" }
     - { src: ironic.conf.j2, dest: ironic.conf, enabled: "{{ kolla_enable_ironic }}" }
@@ -28,7 +26,7 @@
   get_url:
     url: "{{ item.url }}"
     dest: "{{ kolla_node_custom_config_path }}/ironic/{{ item.dest }}"
-  become: True
+    mode: 0640
   with_items:
     - { url: "{{ kolla_inspector_ipa_kernel_upstream_url }}", dest: "ironic-agent.kernel" }
     - { url: "{{ kolla_inspector_ipa_ramdisk_upstream_url }}", dest: "ironic-agent.initramfs" }

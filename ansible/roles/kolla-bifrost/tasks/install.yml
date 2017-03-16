@@ -12,6 +12,21 @@
     - python-pip
     - python-virtualenv
 
+- name: Ensure source code checkout path exists
+  file:
+    path: "{{ source_checkout_path }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    recurse: True
+  become: True
+
+- name: Ensure Bifrost source code checkout exists
+  git:
+    repo: "{{ kolla_bifrost_source_url }}"
+    dest: "{{ source_checkout_path }}/bifrost"
+    version: "{{ kolla_bifrost_source_version }}"
+
 - name: Ensure the latest version of pip is installed
   pip:
     name: "{{ item.name }}"
@@ -19,18 +34,6 @@
     virtualenv: "{{ kolla_bifrost_venv }}"
   with_items:
     - { name: pip }
-
-- name: Ensure source code checkout path exists
-  file:
-    path: "{{ source_checkout_path }}"
-    state: directory
-    recurse: True
-
-- name: Ensure Bifrost source code checkout exists
-  git:
-    repo: "{{ kolla_bifrost_source_url }}"
-    dest: "{{ source_checkout_path }}/bifrost"
-    version: "{{ kolla_bifrost_source_version }}"
 
 - name: Ensure required Python packages are installed
   pip:

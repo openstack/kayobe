@@ -3,7 +3,9 @@
   file:
     path: "{{ item }}"
     state: directory
-    mode: 0755
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: 0750
   become: True
   with_items:
     - "{{ kolla_config_path }}"
@@ -14,8 +16,7 @@
   template:
     src: "{{ item.src }}"
     dest: "{{ kolla_config_path }}/{{ item.dest }}"
-    mode: 0644
-  become: True
+    mode: 0640
   with_items:
     - { src: seed.j2, dest: inventory/seed }
     - { src: overcloud.j2, dest: inventory/overcloud }
@@ -29,9 +30,9 @@
 - name: Generate Kolla passwords
   shell: >
     cp {{ kolla_ansible_install_dir }}/etc_examples/kolla/passwords.yml {{ kolla_config_path }}/passwords.yml.generated
+    && chmod 640 {{ kolla_config_path }}/passwords.yml.generated
     && {{ kolla_venv }}/bin/kolla-genpwd -p {{ kolla_config_path }}/passwords.yml.generated
     && mv {{ kolla_config_path }}/passwords.yml.generated {{ kolla_config_path }}/passwords.yml
-  become: True
   when: not kolla_passwords_stat.stat.exists
 
 - name: Read the Kolla passwords file
@@ -44,5 +45,4 @@
   copy:
     content: "{{ passwords_result.content | b64decode | from_yaml | combine(kolla_ansible_custom_passwords) | to_nice_yaml }}"
     dest: "{{ kolla_config_path }}/passwords.yml"
-  become: True
   when: "{{ kolla_ansible_custom_passwords }}"

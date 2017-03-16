@@ -3,7 +3,9 @@
   file:
     path: "{{ item }}"
     state: directory
-    mode: 0755
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: 0750
   become: True
   with_items:
     - "{{ kolla_config_path }}"

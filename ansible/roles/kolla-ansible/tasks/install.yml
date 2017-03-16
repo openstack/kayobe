@@ -13,13 +13,15 @@
     - python-pip
     - python-virtualenv
 
-- name: Ensure the latest version of pip is installed
-  pip:
-    name: "{{ item.name }}"
-    state: latest
-    virtualenv: "{{ kolla_venv }}"
-  with_items:
-    - { name: pip }
+- name: Ensure source code checkout path exists
+  file:
+    path: "{{ source_checkout_path }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    recurse: True
+  become: True
+  when: "{{ kolla_ctl_install_type == 'source' }}"
 
 - name: Ensure Kolla Ansible source code checkout exists
   git:
@@ -27,6 +29,14 @@
     dest: "{{ source_checkout_path }}/kolla-ansible"
     version: "{{ kolla_ansible_source_version }}"
   when: "{{ kolla_ctl_install_type == 'source' }}"
+
+- name: Ensure the latest version of pip is installed
+  pip:
+    name: "{{ item.name }}"
+    state: latest
+    virtualenv: "{{ kolla_venv }}"
+  with_items:
+    - { name: pip }
 
 - name: Ensure required Python packages are installed
   pip:
