@@ -71,6 +71,9 @@ def net_vlan(context, name, inventory_hostname=None):
     return net_attr(context, name, 'vlan', inventory_hostname)
 
 
+net_mtu = _make_attr_filter('mtu')
+
+
 @jinja2.contextfilter
 def net_bridge_ports(context, name, inventory_hostname=None):
     return net_attr(context, name, 'bridge_ports', inventory_hostname)
@@ -88,12 +91,14 @@ def net_interface_obj(context, name, inventory_hostname=None):
     netmask = str(netaddr.IPNetwork(cidr).netmask)
     gateway = net_gateway(context, name, inventory_hostname)
     vlan = net_vlan(context, name, inventory_hostname)
+    mtu = net_mtu(context, name, inventory_hostname)
     interface = {
         'device': device,
         'address': ip,
         'netmask': netmask,
         'gateway': gateway,
         'vlan': vlan,
+        'mtu': mtu,
         'bootproto': 'static',
         'onboot': 'yes',
     }
@@ -113,6 +118,7 @@ def net_bridge_obj(context, name, inventory_hostname=None):
     netmask = str(netaddr.IPNetwork(cidr).netmask)
     gateway = net_gateway(context, name, inventory_hostname)
     vlan = net_vlan(context, name, inventory_hostname)
+    mtu = net_mtu(context, name, inventory_hostname)
     ports = net_bridge_ports(context, name, inventory_hostname)
     interface = {
         'device': device,
@@ -120,6 +126,7 @@ def net_bridge_obj(context, name, inventory_hostname=None):
         'netmask': netmask,
         'gateway': gateway,
         'vlan': vlan,
+        'mtu': mtu,
         'ports': ports,
         'bootproto': 'static',
         'onboot': 'yes',
@@ -186,6 +193,7 @@ class FilterModule(object):
             'net_allocation_pool_start': net_allocation_pool_start,
             'net_allocation_pool_end': net_allocation_pool_end,
             'net_vlan': net_vlan,
+            'net_mtu': net_mtu,
             'net_interface_obj': net_interface_obj,
             'net_bridge_obj': net_bridge_obj,
             'net_is_ether': net_is_ether,
