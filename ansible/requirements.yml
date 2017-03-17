@@ -1,10 +1,10 @@
 ---
 - src: ahuffman.resolv
 - src: jriguera.configdrive
-# Use our fork until the VLAN and MTU fix PRs are merged.
+# Use our fork until the VLAN and MTU and bounce fix PRs are merged.
 #- src: MichaelRigart.interfaces
 - src: https://github.com/stackhpc/ansible-role-interfaces
-  version: support-mtu
+  version: bounce-bridge-ports-together
   name: MichaelRigart.interfaces
 - src: mrlesmithjr.manage-lvm
 - src: resmo.ntp
