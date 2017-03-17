@@ -224,14 +224,6 @@ class OvercloudInventoryDiscover(KayobeAnsibleMixin, Command):
 class OvercloudProvision(KayobeAnsibleMixin, Command):
     """Provision the overcloud."""
 
-    def get_parser(self, prog_name):
-        parser = super(OvercloudProvision, self).get_parser(prog_name)
-        group = parser.add_argument_group("Bifrost")
-        group.add_argument("-bl", "--bifrost-limit", metavar="SUBSET",
-                            help="further limit selected hosts to an "
-                                 "additional pattern")
-        return parser
-
     def take_action(self, parsed_args):
         self.app.LOG.debug("Provisioning overcloud")
         self._configure_network(parsed_args)
@@ -246,12 +238,8 @@ class OvercloudProvision(KayobeAnsibleMixin, Command):
 
     def _deploy_servers(self, parsed_args):
         self.app.LOG.debug("Deploying overcloud servers via Bifrost")
-        extra_vars = {}
-        if parsed_args.bifrost_limit:
-            extra_vars["bifrost_limit"] = parsed_args.bifrost_limit
         ansible.run_playbook(parsed_args,
-                             "ansible/kolla-bifrost-provision.yml",
-                             extra_vars=extra_vars)
+                             "ansible/kolla-bifrost-provision.yml")
 
 
 class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, Command):

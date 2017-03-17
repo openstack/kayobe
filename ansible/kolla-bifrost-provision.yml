@@ -4,8 +4,9 @@
 - name: Ensure the Bifrost controller inventory is provisioned
   hosts: seed
   vars:
-    # Allow the set of hosts to be limited.
-    bifrost_limit:
+    # Allow the set of hosts to be limited by the --limit argument to kayobe or
+    # a reduced inventory and pass this on to Bifrost.
+    bifrost_limit: "{{ groups['controllers'] | join(':') }}"
     # Set to False to avoid waiting for the controllers to become active.
     wait_active: True
     wait_active_timeout: 600
