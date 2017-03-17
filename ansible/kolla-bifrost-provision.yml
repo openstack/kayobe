@@ -6,6 +6,10 @@
   vars:
     # Allow the set of hosts to be limited.
     bifrost_limit:
+    # Set to False to avoid waiting for the controllers to become active.
+    wait_active: True
+    wait_active_timeout: 600
+    wait_active_interval: 10
   gather_facts: no
   tasks:
     - name: Ensure the Bifrost controller inventory is managed
@@ -48,14 +52,36 @@
         -e @/etc/bifrost/dib.yml
         {% if bifrost_limit %}--limit {{ bifrost_limit }}{% endif %}'
 
+    - name: Wait for the Bifrost controller inventory to become active
+      command: >
+        docker exec bifrost_deploy
+        bash -c '. env-vars &&
+        export OS_URL=$IRONIC_URL &&
+        export OS_TOKEN=$OS_AUTH_TOKEN &&
+        export BIFROST_INVENTORY_SOURCE=ironic &&
+        ansible baremetal
+        --connection local
+        --inventory /etc/bifrost/inventory/
+        -e @/etc/bifrost/bifrost.yml
+        -e @/etc/bifrost/dib.yml
+        {% if bifrost_limit %}--limit {{ bifrost_limit }}{% endif %}
+        -m command
+        -a "openstack baremetal node show {% raw %}{{ inventory_hostname }}{% endraw %} -f value -c provision_state"'
+      register: provision_state
+      until: "{{ provision_state.stdout_lines[1] in ['active', 'deploy failed'] }}"
+      retries: "{{ wait_active_timeout // wait_active_interval }}"
+      delay: "{{ wait_active_interval }}"
+      when: "{{ wait_active | bool }}"
+      changed_when: False
+
 - name: Wait for the controller hosts to be available
   hosts: controllers
   gather_facts: no
   vars:
     # Set to False to avoid waiting for the controllers to be accessible via
     # SSH.
-    wait: True
-    wait_timeout: 600
+    wait_ssh: True
+    wait_ssh_timeout: 600
   tasks:
     - name: Wait for SSH access to the controllers
       local_action:
@@ -63,5 +89,5 @@
         host: "{{ ansible_host }}"
         port: 22
         state: started
-        timeout: "{{ wait_timeout }}"
-      when: "{{ wait | bool }}"
+        timeout: "{{ wait_ssh_timeout }}"
+      when: "{{ wait_ssh | bool }}"
