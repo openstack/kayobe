@@ -10,8 +10,33 @@
     wait_active: True
     wait_active_timeout: 600
     wait_active_interval: 10
+    provisionable_states:
+      - enroll
+      - manageable
+      - available
   gather_facts: no
   tasks:
+    - name: Check the Bifrost controller inventory provision state
+      command: >
+        docker exec bifrost_deploy
+        bash -c '. env-vars &&
+        export OS_URL=$IRONIC_URL &&
+        export OS_TOKEN=$OS_AUTH_TOKEN &&
+        export BIFROST_INVENTORY_SOURCE=ironic &&
+        ansible baremetal
+        --connection local
+        --inventory /etc/bifrost/inventory/
+        -e @/etc/bifrost/bifrost.yml
+        -e @/etc/bifrost/dib.yml
+        {% if bifrost_limit %}--limit {{ bifrost_limit }}{% endif %}
+        -m command
+        -a "openstack baremetal node show {% raw %}{{ inventory_hostname }}{% endraw %} -f value -c provision_state"'
+      register: provision_state
+      changed_when: False
+      failed_when: >
+        {{ provision_state | failed or
+           provision_state.stdout_lines[1] not in provisionable_states }}
+
     - name: Ensure the Bifrost controller inventory is managed
       command: >
         docker exec bifrost_deploy
@@ -25,6 +50,7 @@
         {% if bifrost_limit %}--limit {{ bifrost_limit }}{% endif %}
         -m command
         -a "ironic node-set-provision-state {% raw %}{{ inventory_hostname }}{% endraw %} manage"'
+      when: "{{ provision_state.stdout_lines[1] == 'enroll' }}"
 
     - name: Ensure the Bifrost controller inventory is provided
       command: >
@@ -39,6 +65,7 @@
         {% if bifrost_limit %}--limit {{ bifrost_limit }}{% endif %}
         -m command
         -a "ironic node-set-provision-state {% raw %}{{ inventory_hostname }}{% endraw %} provide"'
+      when: "{{ provision_state.stdout_lines[1] == 'manageable' }}"
 
     - name: Ensure the Bifrost controller inventory is provisioned
       command: >
