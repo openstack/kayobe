@@ -24,3 +24,16 @@
 
 - include: storage.yml
   when: "{{ 'Data loop file' in docker_info.stdout }}"
+
+- name: Read Docker daemon config file
+  slurp:
+    src: /etc/docker/daemon.json
+  register: docker_daemon_conf
+  become: True
+
+- name: Parse Docker daemon config JSON
+  set_fact:
+    docker_daemon_json: "{{ docker_daemon_conf['content'] | b64decode | from_json }}"
+
+- include: config.yml
+  when: "{{ docker_daemon_json['mtu'] }} != 1450 or {{ docker_daemon_json['storage-driver'] }} != 'devicemapper'"
