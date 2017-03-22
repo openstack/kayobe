@@ -56,6 +56,13 @@ def net_mask(context, name, inventory_hostname=None):
     cidr = net_cidr(context, name, inventory_hostname)
     return str(netaddr.IPNetwork(cidr).netmask) if cidr is not None else None
 
+
+@jinja2.contextfilter
+def net_prefix(context, name, inventory_hostname=None):
+    cidr = net_cidr(context, name, inventory_hostname)
+    return str(netaddr.IPNetwork(cidr).prefixlen) if cidr is not None else None
+
+
 @jinja2.contextfilter
 def net_gateway(context, name, inventory_hostname=None):
     return net_attr(context, name, 'gateway', inventory_hostname)
@@ -195,6 +202,7 @@ class FilterModule(object):
             'net_interface': net_interface,
             'net_cidr': net_cidr,
             'net_mask': net_mask,
+            'net_prefix': net_prefix,
             'net_gateway': net_gateway,
             'net_allocation_pool_start': net_allocation_pool_start,
             'net_allocation_pool_end': net_allocation_pool_end,
