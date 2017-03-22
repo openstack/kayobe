@@ -2,6 +2,13 @@
 # Switch configuration.
 
 ###############################################################################
+# Global configuration.
+
+# Global configuration. A list of configuration lines to be applied at the
+# global level.
+switch_config: []
+
+###############################################################################
 # Interface configuration.
 
 # Interface configuration. Dict mapping switch interface names to configuration

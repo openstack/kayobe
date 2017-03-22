@@ -4,9 +4,9 @@
 ###############################################################################
 # Authentication configuration.
 
-# For DellOS6 switches, this defines a 'provider' argument to the dellos6_*
+# For DellOS switches, this defines a 'provider' argument to the dellos_*
 # modules.
-switch_dellos6_provider:
+switch_dellos_provider:
   host: "{{ ansible_host }}"
   username: "{{ ansible_user }}"
   password: "{{ ansible_ssh_pass }}"

@@ -10,17 +10,13 @@
       group_by:
         key: "switches_of_type_{{ switch_type }}"
 
-- name: Ensure DellOS6 physical network devices are configured
-  hosts: switches_of_type_dellos6
+- name: Ensure DellOS physical switches are configured
+  hosts: switches_of_type_dellos6:switches_of_type_dellos9
   gather_facts: no
-  tasks:
-    - name: Ensure DellOS6 switch interfaces are configured
-      local_action:
-        module: dellos6_config
-        provider: "{{ switch_dellos6_provider }}"
-        lines: >
-          {{ ['description ' ~ item.value.description] +
-             item.value.config | default([]) }}
-        parents:
-          - "interface {{ item.key }}"
-      with_dict: "{{ switch_interface_config }}"
+  roles:
+    - role: dell-switch
+      dell_switch_delegate_to: localhost
+      dell_switch_type: "{{ switch_type }}"
+      dell_switch_provider: "{{ switch_dellos_provider }}"
+      dell_switch_config: "{{ switch_config }}"
+      dell_switch_interface_config: "{{ switch_interface_config }}"
