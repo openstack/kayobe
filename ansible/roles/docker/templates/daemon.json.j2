@@ -1,6 +1,6 @@
 {
   "storage-driver": "devicemapper",
-  "mtu": {{ external_net_name | net_mtu }},
+  "mtu": {{ docker_daemon_mtu }},
   "storage-opts": [
     "dm.thinpooldev=/dev/mapper/{{ docker_storage_volume_group | replace('-', '--') }}-{{ docker_storage_volume_thinpool | replace('-', '--') }}",
     "dm.use_deferred_removal=true",
