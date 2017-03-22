@@ -5,4 +5,3 @@
     dest: /etc/docker/daemon.json
   become: True
   notify: restart docker service
-
