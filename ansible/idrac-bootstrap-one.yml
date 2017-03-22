@@ -1,0 +1,190 @@
+---
+# This is a tasks file used by the idrac-bootstrap.yml playbook to support
+# bootstrapping the network configuration of a single iDRAC.
+# We use the following procedure to configure the iDRAC:
+# 1. Check whether the required IP is already reachable. Skip remaining tasks
+#    if so.
+# 2. Configure the switch interface to which the iDRAC is attached as an
+#    access port on the bootstrap VLAN.
+# 3. Clear the ARP cache on the controller in the bootstrap network namespace.
+# 4. Check whether the iDRAC default IP address is reachable.
+# 5. Enable IPMI on the iDRAC.
+# 6. Configure networking for the iDRAC.
+# 7. Configure the switch interface to which the iDRAC is attached as an
+#    access port on the iDRAC management VLAN.
+
+- name: Check whether we can ping the iDRAC's configured IP address
+  command: "ping -c 1 {{ idrac_network_ip }}"
+  run_once: True
+  # We use this convoluted method to allow a delegate_to with a variable host.
+  # See http://www.elmund.io/configuration%20management/2015/07/23/ansible-delegate_to-and-variables/.
+  with_items:
+    - "{{ idrac_bootstrap_controller }}"
+  loop_control:
+    loop_var: delegate_host
+  delegate_to: "{{ delegate_host }}"
+  register: ping_result
+  changed_when: False
+  failed_when: False
+
+- name: Set a fact about whether the iDRAC requires bootstrapping
+  set_fact:
+    idrac_bootstrap_required: "{{ ping_result.results[0].rc != 0 }}"
+  run_once: True
+
+- name: Display the result of the ping
+  debug:
+    msg: >
+      The iDRAC on switch port with description {{ idrac_port_description }}
+      and configured IP address {{ idrac_network_ip }} was
+      {{ 'un' if idrac_bootstrap_required else '' }}reachable. The iDRAC will
+      {{ '' if idrac_bootstrap_required else 'not ' }}be bootstrapped.
+  run_once: True
+
+# The tasks in this block are only executed when the bootstrap is required.
+- block:
+    - name: Ensure DellOS6 switch interface is a member of the bootstrap VLAN
+      dellos6_config:
+        provider: "{{ dell_switch_provider }}"
+        lines:
+          - "switchport access vlan {{ idrac_bootstrap_vlan }}"
+        parents:
+          - "interface {{ switch_interface_name }}"
+      delegate_to: localhost
+      when: "{{ switch_type == 'dellos6' }}"
+
+    # The tasks in this block are delegated to the controller.
+    - block:
+        - name: Ensure the iDRAC default IP address is removed from the controller's ARP cache
+          command: >
+            ip netns exec {{ idrac_bootstrap_net_namespace }}
+            arp -d {{ idrac_default_ip }}
+          become: True
+          with_items:
+            - "{{ idrac_bootstrap_controller }}"
+          loop_control:
+            loop_var: delegate_host
+          delegate_to: "{{ delegate_host }}"
+          register: arp_result
+          failed_when:
+            - "{{ arp_result | failed }}"
+            - "{{ 'No ARP entry for ' ~ idrac_default_ip not in arp_result.stdout }}"
+
+        # Ansible's until keyword seems to not work nicely with failed_when, causing
+        # the task to fail even though we have specified failed_when: False.
+        - name: Check whether we can ping the iDRAC's default IP address
+          shell: |
+            max_attempts=3
+            interval=5
+            for attempt in $(seq $max_attempts); do
+              ip netns exec {{ idrac_bootstrap_net_namespace }} \
+              ping -c 1 {{ idrac_default_ip }}
+              ping_rc=$?
+              if [[ $ping_rc -eq 0 ]] || [[ $attempt -eq $max_attempts ]]; then
+                break
+              fi
+              sleep $interval
+            done
+            exit $ping_rc
+          become: True
+          with_items:
+            - "{{ idrac_bootstrap_controller }}"
+          loop_control:
+            loop_var: delegate_host
+          delegate_to: "{{ delegate_host }}"
+          register: ping_result
+          changed_when: False
+          failed_when: False
+
+        - name: Initialise a fact about whether iDRAC bootstrap failed
+          set_fact:
+            idrac_bootstrap_failure: {}
+
+        - name: Set a fact about whether the iDRAC default IP was reachable
+          set_fact:
+            idrac_bootstrap_failure: "{{ ping_result.results[0] }}"
+          when: "{{ ping_result.results[0].rc != 0 }}"
+
+        - name: Ensure IPMI is enabled on the iDRAC
+          command: >
+            ip netns exec {{ idrac_bootstrap_net_namespace }}
+            /opt/dell/srvadmin/bin/idracadm7
+            -r {{ idrac_default_ip }} -u {{ idrac_default_username }} -p {{ idrac_default_password }}
+            set iDRAC.IPMILan.Enable 1
+          become: True
+          with_items:
+            - "{{ idrac_bootstrap_controller }}"
+          loop_control:
+            loop_var: delegate_host
+          delegate_to: "{{ delegate_host }}"
+          when: "{{ not idrac_bootstrap_failure }}"
+          register: racadm_ipmi_enable
+          failed_when: False
+
+        - name: Set a fact about whether enabling IPMI on the iDRAC failed
+          set_fact:
+            idrac_bootstrap_failure: "{{ racadm_ipmi_enable.results[0] }}"
+          when:
+            - "{{ not idrac_bootstrap_failure }}"
+            - "{{ racadm_ipmi_enable.results[0].rc != 0 }}"
+
+        - name: Ensure the iDRAC IP address is configured
+          command: >
+            ip netns exec {{ idrac_bootstrap_net_namespace }}
+            /opt/dell/srvadmin/bin/idracadm7
+            -r {{ idrac_default_ip }} -u {{ idrac_default_username }} -p {{ idrac_default_password }}
+            setniccfg -s {{ idrac_network_ip }} {{ idrac_network_netmask }} {{ idrac_network_gateway }}
+          become: True
+          with_items:
+            - "{{ idrac_bootstrap_controller }}"
+          loop_control:
+            loop_var: delegate_host
+          delegate_to: "{{ delegate_host }}"
+          when:
+            - "{{ not idrac_bootstrap_failure }}"
+          register: racadm_setniccfg
+          failed_when: False
+
+        - name: Set a fact about whether setting network configuration on the iDRAC failed
+          set_fact:
+            idrac_bootstrap_failure: "{{ racadm_setniccfg.results[0] }}"
+          when:
+            - "{{ not idrac_bootstrap_failure }}"
+            - "{{ racadm_setniccfg.results[0].rc != 0 }}"
+
+        - name: Append the iDRAC to the successful list on success
+          set_fact:
+            idrac_bootstrap_success: >
+              {{ idrac_bootstrap_success + [idrac_port_description] }}
+          when: "{{ not idrac_bootstrap_failure }}"
+
+        - name: Append the iDRAC to the failed list on failure
+          set_fact:
+            idrac_bootstrap_failed: >
+              {{ idrac_bootstrap_failed +
+                 [{"port description": idrac_port_description,
+                   "failure": idrac_bootstrap_failure}] }}
+          when: "{{ idrac_bootstrap_failure }}"
+      run_once: True
+
+  # Ensure we reconfigure the switch interface.
+  always:
+    - name: Ensure DellOS6 switch iDRAC interface is a member of the management VLAN
+      dellos6_config:
+        provider: "{{ dell_switch_provider }}"
+        lines:
+          - "switchport access vlan {{ idrac_network_vlan }}"
+        parents:
+          - "interface {{ switch_interface_name }}"
+      delegate_to: localhost
+      when:
+        - "{{ switch_type == 'dellos6' }}"
+
+  when: "{{ idrac_bootstrap_required }}"
+
+- name: Append the iDRAC to the unchanged list when unchanged
+  set_fact:
+    idrac_bootstrap_unchanged: >
+      {{ idrac_bootstrap_unchanged + [idrac_port_description] }}
+  run_once: True
+  when: "{{ not idrac_bootstrap_required }}"

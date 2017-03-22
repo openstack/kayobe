@@ -1,0 +1,219 @@
+---
+# This playbook is intended to bootstrap network configuration of the iDRACs on
+# a set of Dell servers. By default, iDRACs have a known static IP address
+# configured. Since all iDRACs have the same default IP address, we need a way
+# to isolate a single iDRAC while we set its network configuration. We do this
+# using a temporary VLAN accessible from one of the controllers.
+#
+# We use the following procedure:
+# 1. Create a VLAN interface on the controller node with IP in the iDRAC
+#    default subnet.
+# 2. Create the temporary bootstrap VLAN on the switch, accessible by the
+#    controller and trunked to all switches within the network.
+# 3. For each iDRAC switch port in turn, flip to the temporary VLAN and
+#    configure the iDRAC's IP address, before returning the port to the iDRAC
+#    management VLAN.
+# 4. Remove the temporary bootstrap VLAN from the switch.
+# 5. Remove the VLAN interface on the controller node.
+
+- name: Ensure the iDRAC switches are supported
+  hosts: "{{ idrac_bootstrap_switch_group }}"
+  gather_facts: no
+  vars:
+    supported_switch_types:
+      - dellos6
+  tasks:
+    - name: Ensure switch type is supported
+      fail:
+        msg: >
+          The iDRAC bootstrap process currently only supports DellOS6 switches.
+      when: "{{ switch_type not in supported_switch_types }}"
+
+# 1. Create a VLAN interface on the controller node with IP in the iDRAC
+#    default subnet.
+- name: Ensure the controller bootstrap network is configured
+  hosts: controllers[0]
+  tasks:
+    # Install Dell server admin tools.
+    - block:
+        - name: Ensure wget is installed
+          yum:
+            name: wget
+            state: installed
+
+        - name: Ensure Dell srvadmin repository is installed
+          shell: "wget -q -O - http://linux.dell.com/repo/hardware/latest/bootstrap.cgi | bash"
+
+        - name: Ensure Dell srvadmin-idrac7 package is installed
+          yum:
+            name: srvadmin-idrac7
+            state: installed
+
+        # Configure access to the temporary network on a controller.
+        - block:
+            # Clear any previous state.
+            - name: Ensure iDRAC bootstrap network namespace is deleted from the controller
+              command: "ip netns delete {{ idrac_bootstrap_net_namespace }}"
+              args:
+                removes: "/var/run/netns/{{ idrac_bootstrap_net_namespace }}"
+
+            - name: Ensure iDRAC bootstrap network namespace exists on controller
+              command: "ip netns add {{ idrac_bootstrap_net_namespace }}"
+
+            - name: Ensure bootstrap VLAN interface exists on the controller
+              command: "ip link add link {{ idrac_bootstrap_controller_interface }} name {{ idrac_bootstrap_controller_vlan_interface }} type vlan id {{ idrac_bootstrap_vlan }}"
+
+            - name: Ensure bootstrap VLAN interface is in network namespace
+              command: "ip link set {{ idrac_bootstrap_controller_vlan_interface }} netns {{ idrac_bootstrap_net_namespace }}"
+
+            - name: Ensure the bootstrap VLAN interface is active
+              command: "ip netns exec {{ idrac_bootstrap_net_namespace }} ip link set {{ idrac_bootstrap_controller_vlan_interface }} up"
+
+            - name: Ensure the bootstrap VLAN interface IP address is configured
+              command: "ip netns exec {{ idrac_bootstrap_net_namespace }} ip address add {{ idrac_bootstrap_controller_ip }}/24 dev {{ idrac_bootstrap_controller_vlan_interface }}"
+          rescue:
+            - name: Rescue | Ensure the bootstrap network namespace is removed from the controller
+              command: "ip netns delete {{ idrac_bootstrap_net_namespace }}"
+
+            - name: Rescue | Fail playbook execution on error
+              fail:
+                msg: >
+                  Failed to configure access to temporary iDRAC bootstrap
+                  network on controller.
+      become: True
+
+# 2. Create the temporary bootstrap VLAN on the switch, accessible by the
+#    controller and trunked to all switches within the network.
+- name: Ensure the bootstrap VLAN is configured on switches
+  hosts: "{{ idrac_bootstrap_switch_group }}"
+  gather_facts: no
+  vars:
+    switch_interface_config_bootstrap_trunk:
+      config:
+        - "switchport trunk allowed vlan add {{ idrac_bootstrap_vlan }}"
+    # Initialise the switch interface configuration.
+    switch_interface_config_bootstrap: {}
+  pre_tasks:
+    - name: Update facts about switch trunk interfaces
+      set_fact:
+        switch_interface_config_bootstrap: >
+          {{ switch_interface_config_bootstrap | combine({item.key: switch_interface_config_bootstrap_trunk}) }}
+      with_dict: "{{ switch_interface_config }}"
+      when: >
+        {{ item.value.description == groups['controllers'][0] or
+           item.value.description | replace('-trunk', '') in groups[idrac_bootstrap_switch_group] }}
+
+  roles:
+    # Configure bootstrap VLAN on the switch and add controller and trunk
+    # interfaces to it.
+    - role: dell-switch
+      dell_switch_delegate_to: localhost
+      dell_switch_type: "{{ switch_type }}"
+      dell_switch_provider: "{{ switch_dellos_provider }}"
+      dell_switch_config:
+        - "vlan {{ idrac_bootstrap_vlan }}"
+      dell_switch_interface_config: "{{ switch_interface_config_bootstrap }}"
+      when: "{{ switch_interface_config_bootstrap != {} }}"
+
+# 3. For each iDRAC switch port in turn, flip to the temporary VLAN and
+#    configure the iDRAC's IP address, before returning the port to the iDRAC
+#    management VLAN.
+- name: Ensure iDRACs are bootstrapped
+  hosts: "{{ idrac_bootstrap_switch_group }}"
+  gather_facts: no
+  # This is a separate play so that we can apply the serial keyword.
+  serial: 1
+  tasks:
+    - name: Initialise facts containing successful, unchanged and failed iDRACs
+      set_fact:
+        idrac_bootstrap_success: []
+        idrac_bootstrap_unchanged: []
+        idrac_bootstrap_failed: []
+
+    # Iterate over each switch port with an iDRAC attached in turn.
+    - name: Ensure iDRACs are (sequentially) bootstrapped
+      include: idrac-bootstrap-one.yml
+      vars:
+        dell_switch_delegate_to: localhost
+        dell_switch_type: "{{ switch_type }}"
+        dell_switch_provider: "{{ switch_dellos_provider }}"
+        switch_interface_name: "{{ item.key }}"
+        idrac_port_description: "{{ item.value.description }}"
+        idrac_network_ip: "{{ idrac_network_ips[idrac_port_description] }}"
+        idrac_bootstrap_controller: "{{ hostvars[groups['controllers'][0]].ansible_host }}"
+      with_dict: "{{ switch_interface_config }}"
+      when: "{{ item.value.description in idrac_network_ips }}"
+
+# 4. Remove the temporary bootstrap VLAN from the switch.
+- name: Ensure the bootstrap VLAN is removed from switches
+  hosts: "{{ idrac_bootstrap_switch_group }}"
+  gather_facts: no
+  vars:
+    switch_interface_config_bootstrap_trunk:
+      config:
+        - "switchport trunk allowed vlan remove {{ idrac_bootstrap_vlan }}"
+    # Initialise the switch interface configuration.
+    switch_interface_config_bootstrap: {}
+  pre_tasks:
+    - name: Update facts about switch trunk interfaces
+      set_fact:
+        switch_interface_config_bootstrap: >
+          {{ switch_interface_config_bootstrap | combine({item.key: switch_interface_config_bootstrap_trunk}) }}
+      with_dict: "{{ switch_interface_config }}"
+      when: >
+        {{ item.value.description == groups['controllers'][0] or
+           item.value.description | replace('-trunk', '') in groups[idrac_bootstrap_switch_group] }}
+  roles:
+    # Remove bootstrap VLAN from the switch and remove controller and trunk
+    # interfaces from it.
+    - role: dell-switch
+      dell_switch_delegate_to: localhost
+      dell_switch_type: "{{ switch_type }}"
+      dell_switch_provider: "{{ switch_dellos_provider }}"
+      dell_switch_config:
+        - "no vlan {{ idrac_bootstrap_vlan }}"
+      dell_switch_interface_config: "{{ switch_interface_config_bootstrap }}"
+      when: "{{ switch_interface_config_bootstrap != {} }}"
+
+# 5. Remove the VLAN interface on the controller node.
+- name: Ensure the controller bootstrap network is cleaned up
+  hosts: controllers[0]
+  tasks:
+    # This should also delete the network interface within the namespace.
+    - name: Ensure the bootstrap network namespace is removed from the controller
+      command: "ip netns delete {{ idrac_bootstrap_net_namespace }}"
+      become: True
+
+- name: Display the results of the iDRAC bootstrap procedure
+  hosts: "{{ idrac_bootstrap_switch_group }}"
+  gather_facts: no
+  tasks:
+    - name: Display a list of failed iDRACs
+      set_fact:
+        idrac_bootstrap_failed_port_descriptions: "{{ idrac_bootstrap_failed | map(attribute='port description') | list }}"
+      when: "{{ idrac_bootstrap_failed | length > 0 }}"
+
+    - name: Display a list of successfully bootstrapped iDRACs
+      debug:
+        var: idrac_bootstrap_success
+
+    - name: Display a list of iDRACs that did not require bootstrapping
+      debug:
+        var: idrac_bootstrap_unchanged
+
+    - name: Display a list of failed iDRACs
+      debug:
+        var: idrac_bootstrap_failed_port_descriptions
+      when: "{{ idrac_bootstrap_failed | length > 0 }}"
+
+    - name: Display a list of failed iDRACs with debug output for the failed tasks
+      debug:
+        var: idrac_bootstrap_failed
+      when: "{{ idrac_bootstrap_failed | length > 0 }}"
+
+    - name: Fail if there were any iDRAC bootstrapping failures
+      fail:
+        msg: >
+          One or more iDRACs failed to bootstrap, see the list above for
+          details.
+      when: "{{ idrac_bootstrap_failed | length > 0 }}"
