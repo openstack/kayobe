@@ -52,6 +52,11 @@ def net_cidr(context, name, inventory_hostname=None):
 
 
 @jinja2.contextfilter
+def net_mask(context, name, inventory_hostname=None):
+    cidr = net_cidr(context, name, inventory_hostname)
+    return str(netaddr.IPNetwork(cidr).netmask) if cidr is not None else None
+
+@jinja2.contextfilter
 def net_gateway(context, name, inventory_hostname=None):
     return net_attr(context, name, 'gateway', inventory_hostname)
 
@@ -88,7 +93,7 @@ def net_interface_obj(context, name, inventory_hostname=None):
             (name, inventory_hostname))
     ip = net_ip(context, name, inventory_hostname)
     cidr = net_cidr(context, name, inventory_hostname)
-    netmask = str(netaddr.IPNetwork(cidr).netmask)
+    netmask = net_mask(context, name, inventory_hostname)
     gateway = net_gateway(context, name, inventory_hostname)
     vlan = net_vlan(context, name, inventory_hostname)
     mtu = net_mtu(context, name, inventory_hostname)
@@ -115,7 +120,7 @@ def net_bridge_obj(context, name, inventory_hostname=None):
             (name, inventory_hostname))
     ip = net_ip(context, name, inventory_hostname)
     cidr = net_cidr(context, name, inventory_hostname)
-    netmask = str(netaddr.IPNetwork(cidr).netmask)
+    netmask = net_mask(context, name, inventory_hostname)
     gateway = net_gateway(context, name, inventory_hostname)
     vlan = net_vlan(context, name, inventory_hostname)
     mtu = net_mtu(context, name, inventory_hostname)
@@ -164,7 +169,7 @@ def net_configdrive_network_device(context, name, inventory_hostname=None):
             (name, inventory_hostname))
     ip = net_ip(context, name, inventory_hostname)
     cidr = net_cidr(context, name, inventory_hostname)
-    netmask = str(netaddr.IPNetwork(cidr).netmask) if cidr is not None else None
+    netmask = net_mask(context, name, inventory_hostname)
     gateway = net_gateway(context, name, inventory_hostname)
     bootproto = 'static' if ip is not None else 'dhcp'
     interface = {
@@ -189,6 +194,7 @@ class FilterModule(object):
             'net_ip': net_ip,
             'net_interface': net_interface,
             'net_cidr': net_cidr,
+            'net_mask': net_mask,
             'net_gateway': net_gateway,
             'net_allocation_pool_start': net_allocation_pool_start,
             'net_allocation_pool_end': net_allocation_pool_end,
