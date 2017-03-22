@@ -160,12 +160,24 @@ class SeedVMProvision(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
 class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
     """Configure the seed node host OS."""
 
+    def get_parser(self, prog_name):
+        parser = super(SeedHostConfigure, self).get_parser(prog_name)
+        group = parser.add_argument_group("Host Configuration")
+        group.add_argument("--wipe-disks", action='store_true',
+                           help="wipe partition and LVM data from all disks "
+                                "that are not mounted. Warning: this can "
+                                "result in the loss of data")
+        return parser
+
     def take_action(self, parsed_args):
         self.app.LOG.debug("Configuring seed host OS")
         ansible_user = ansible.config_dump(parsed_args, host="seed",
                                            var_name="kayobe_ansible_user")
         playbooks = _build_playbook_list(
-            "ip-allocation", "ssh-known-host", "kayobe-ansible-user",
+            "ip-allocation", "ssh-known-host", "kayobe-ansible-user")
+        if parsed_args.wipe_disks:
+            playbooks += _build_playbook_list("disk-wipe")
+        playbooks += _build_playbook_list(
             "dev-tools", "disable-selinux", "network", "ntp", "lvm")
         ansible.run_playbooks(parsed_args, playbooks, limit="seed")
         kolla_ansible.run_seed(parsed_args, "bootstrap-servers",
@@ -245,12 +257,24 @@ class OvercloudProvision(KayobeAnsibleMixin, Command):
 class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
     """Configure the overcloud host OS."""
 
+    def get_parser(self, prog_name):
+        parser = super(OvercloudHostConfigure, self).get_parser(prog_name)
+        group = parser.add_argument_group("Host Configuration")
+        group.add_argument("--wipe-disks", action='store_true',
+                           help="wipe partition and LVM data from all disks "
+                                "that are not mounted. Warning: this can "
+                                "result in the loss of data")
+        return parser
+
     def take_action(self, parsed_args):
         self.app.LOG.debug("Configuring overcloud host OS")
         ansible_user = ansible.config_dump(parsed_args, host="controllers[0]",
                                            var_name="kayobe_ansible_user")
         playbooks = _build_playbook_list(
-            "ip-allocation", "ssh-known-host", "kayobe-ansible-user",
+            "ip-allocation", "ssh-known-host", "kayobe-ansible-user")
+        if parsed_args.wipe_disks:
+            playbooks += _build_playbook_list("disk-wipe")
+        playbooks += _build_playbook_list(
             "dev-tools", "disable-selinux", "network", "ntp", "lvm")
         ansible.run_playbooks(parsed_args, playbooks, limit="controllers")
         kolla_ansible.run_overcloud(parsed_args, "bootstrap-servers",

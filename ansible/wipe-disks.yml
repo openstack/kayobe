@@ -1,0 +1,12 @@
+---
+# Warning! This play can result in lost data. Take care when developing and
+# using it.
+
+# Initialisation task to be applied on first boot of a system to initalise
+# disks. We search for block devices that are not currently mounted, then wipe
+# any LVM or file system state from them.
+
+- name: Ensure that all unmounted block devices are wiped
+  hosts: seed:controllers
+  roles:
+    - role: wipe-disks

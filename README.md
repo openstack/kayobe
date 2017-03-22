@@ -116,6 +116,12 @@ Image Builder (DIB). To configure the seed host OS:
 
     (kayobe-venv) $ kayobe seed host configure
 
+If the seed host uses disks that have been in use in a previous installation,
+it may be necessary to wipe partition and LVM data from those disks. To wipe
+all disks that are not mounted during host configuration:
+
+    (kayobe-venv) $ kayobe seed host configure --wipe-disks
+
 It is possible to use prebuilt container images from an image registry such as
 Dockerhub. In some cases it may be necessary to build images locally either to
 apply local image customisation or to use a downstream version of Kolla. To
@@ -158,6 +164,12 @@ After this command has completed the overcloud nodes should have been
 provisioned with an OS image. To configure the overcloud hosts' OS:
 
     (kayobe-venv) $ kayobe overcloud host configure
+
+If the controller hosts use disks that have been in use in a previous
+installation, it may be necessary to wipe partition and LVM data from those
+disks. To wipe all disks that are not mounted during host configuration:
+
+    (kayobe-venv) $ kayobe overcloud host configure --wipe-disks
 
 It is possible to use prebuilt container images from an image registry such as
 Dockerhub. In some cases it may be necessary to build images locally either to

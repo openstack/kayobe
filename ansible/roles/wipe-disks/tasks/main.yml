@@ -1,0 +1,60 @@
+---
+# Warning! These tasks can result in lost data. Take care when developing and
+# using them.
+
+# Initialisation tasks to be applied on first boot of a system to initalise
+# disks. We search for block devices that are not currently mounted, then wipe
+# any LVM or file system state from them.
+
+- name: Ensure LVM2 is installed
+  yum:
+    name: lvm2
+    state: present
+  become: True
+
+- name: Check for unmounted block devices
+  shell: >
+    lsblk -i -o NAME,MOUNTPOINT   | awk \
+        '/^ *[|`]-/ && NF > 1 { mounts[master_dev] = mounts[master_dev] $2 " " }
+         /^sd/ && NF == 1     { master_dev = $1; mounts[master_dev] = "" }
+         END                  { for (dev in mounts) if (mounts[dev] == "") print dev }'
+  register: unmounted_devices
+  changed_when: False
+
+- name: Ensure that all unmounted block devices have LVM state removed
+  shell: |
+    set -e
+    if pvs /dev/{{ item }} >/dev/null 2>&1
+    then
+        echo "Found PV on /dev/{{ item }}"
+        vg=$(pvs --noheadings -o vg_name /dev/{{ item }})
+        if [[ -n $vg ]] && [[ $vg != "    " ]]
+        then
+            echo "Found VG $vg on PV /dev/{{ item }}"
+            lvs --noheadings -o lv_name $vg | while read lv
+            do
+                if [[ -n $lv ]] && [[ $lv != "    " ]]
+                then
+                    echo "Found LV $lv on VG $vg. Removing"
+                    lvremove -yf ${vg}/${lv}
+                fi
+            done
+            vgremove -f $vg
+        fi
+        pvremove -yff /dev/{{ item }}
+    fi
+  with_items: "{{ unmounted_devices.stdout_lines }}"
+  become: True
+
+- name: Ensure that all unmounted block devices have filesystems wiped
+  command: "wipefs -f /dev/{{ item }}"
+  with_items: "{{ unmounted_devices.stdout_lines }}"
+  become: True
+  # The command can fail in some cases which are valid, so ignore the
+  # result.
+  failed_when: False
+
+- name: Ensure that all unmounted block device headers are zeroed
+  command: "dd if=/dev/zero of=/dev/{{ item }} bs=1M count=100"
+  with_items: "{{ unmounted_devices.stdout_lines }}"
+  become: True
