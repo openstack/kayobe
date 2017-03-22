@@ -25,7 +25,7 @@ setup(
     download_url='https://github.com/stackhpc/kayobe/tarball/master',
 
     provides=[],
-    install_requires=['cliff'],
+    install_requires=open('requirements.txt', 'rt').read().split(),
 
     namespace_packages=[],
     packages=find_packages(),
