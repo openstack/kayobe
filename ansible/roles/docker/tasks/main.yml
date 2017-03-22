@@ -6,7 +6,7 @@
     append: yes
   become: True
 
-- name: Check Docker state with systemd
+- name: Ensure Docker daemon is started
   service:
     name: docker
     state: started
