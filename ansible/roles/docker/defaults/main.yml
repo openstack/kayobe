@@ -20,3 +20,6 @@ docker_storage_thinpool_autoextend_threshold: 80
 
 # Percentage by which to extend thin-provisioned docker storage volumes.
 docker_storage_thinpool_autoextend_percent: 20
+
+# MTU to pass through to containers not using net=host
+docker_daemon_mtu: 1500

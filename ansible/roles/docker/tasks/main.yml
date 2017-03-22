@@ -6,6 +6,12 @@
     append: yes
   become: True
 
+- name: Ensure Docker daemon is started
+  service:
+    name: docker
+    state: started
+  become: True
+
 - name: Check whether docker storage is in loopback mode
   command: docker info
   register: docker_info
@@ -24,3 +30,5 @@
 
 - include: storage.yml
   when: "{{ 'Data loop file' in docker_info.stdout }}"
+
+- include: config.yml
