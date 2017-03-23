@@ -1,0 +1,12 @@
+# {{ ansible_managed }}
+
+# This file provides dnsmasq configuration for Dell Switches using Bare Metal
+# Provisioning (BMP).
+
+{% for image in dell_switch_bmp_images %}
+# Match entry for Dell Switch BMP image {{ image.dest }}.
+dhcp-match=set:{{ image.tag }},{{ image.match }}
+# Boot entry for Dell Switch BMP image {{ image.dest }}.
+dhcp-boot=tag:{{ image.tag }},{{ dell_switch_bmp_http_base_url }}/{{ image.dest | basename }}
+
+{% endfor %}

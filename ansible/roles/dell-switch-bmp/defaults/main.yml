@@ -1,0 +1,16 @@
+---
+# List of images to provide a BMP configuration for.
+# Each item should be a dict with the following keys:
+# url: URL of the image to download.
+# dest: Name of the file to download the image to.
+# match: dnsmasq match rule to match hosts against.
+# tag: dnsmasq tag to apply to matching hosts.
+# checksum: optional checksum of image, in format required for Ansible's
+#           get_url module.
+dell_switch_bmp_images: []
+
+# Base URL of HTTP server.
+dell_switch_bmp_http_base_url:
+
+# Path to HTTP server base directory.
+dell_switch_bmp_httpboot_path: "/httpboot"

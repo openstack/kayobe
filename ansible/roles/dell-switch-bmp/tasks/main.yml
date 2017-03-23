@@ -1,0 +1,22 @@
+---
+- name: Ensure dnsmasq configuration is present
+  template:
+    src: dell-switch-bmp.conf.j2
+    dest: /etc/kolla/bifrost/dell-switch-bmp.conf
+  notify:
+    - Copy dnsmasq configuration
+    - Restart bifrost dnsmasq
+  become: True
+
+- name: Ensure Dell BMP installer images are downloaded
+  get_url:
+    url: "{{ item.url }}"
+    dest: "/etc/kolla/bifrost/{{ item.dest }}"
+    # If no checksum is provided, download images every time to ensure changes
+    # are pulled.
+    force: "{{ omit if item.checksum is defined else 'yes' }}"
+    checksum: "{{ item.checksum | default(omit) }}"
+  with_items: "{{ dell_switch_bmp_images }}"
+  notify:
+    - Copy Dell switch BMP images
+  become: True

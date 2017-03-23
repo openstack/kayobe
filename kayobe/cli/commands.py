@@ -193,7 +193,9 @@ class SeedServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
         self.app.LOG.debug("Deploying seed services")
         ansible.run_playbook(parsed_args, "ansible/kolla-bifrost.yml")
         kolla_ansible.run_seed(parsed_args, "deploy-bifrost")
-        ansible.run_playbook(parsed_args, "ansible/seed-introspection-rules.yml")
+        playbooks = _build_playbook_list(
+            "seed-introspection-rules", "dell-switch-bmp")
+        ansible.run_playbooks(parsed_args, playbooks)
 
 
 class SeedContainerImageBuild(KayobeAnsibleMixin, Command):

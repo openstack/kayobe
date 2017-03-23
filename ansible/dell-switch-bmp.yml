@@ -1,0 +1,11 @@
+---
+# This playbook will configure a Bare Metal Provisioning (BMP) environment for
+# Dell switches on the seed node so that they can be network booted.
+
+- name: Ensure that a Bare Metal Provisioning (BMP) environment is configured for Dell switches on the seed
+  hosts: seed
+  roles:
+    - role: dell-switch-bmp
+      # This is the Nginx web server on the seed node.
+      dell_switch_bmp_http_base_url: "http://{{ provision_oc_net_name | net_ip }}:8080"
+      when: "{{ dell_switch_bmp_images }}"
