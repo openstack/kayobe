@@ -6,11 +6,17 @@ kolla_node_custom_config_path:
 # Ironic configuration.
 
 # List of enabled Ironic drivers.
-ironic_drivers:
+kolla_ironic_drivers:
   - agent_ssh
   - agent_ipmitool
   - pxe_ssh
   - pxe_ipmitool
+
+# Name or UUID of the Neutron network to use for cleaning.
+kolla_ironic_cleaning_network:
+
+# Name or UUID of the Neutron network to use for provisioning.
+kolla_ironic_provisioning_network:
 
 # Free form extra configuration to append to ironic.conf.
 kolla_extra_ironic:

@@ -1,7 +1,7 @@
 # {{ ansible_managed }}
 
 [DEFAULT]
-enabled_drivers = {{ ironic_drivers | join(',') }}
+enabled_drivers = {{ kolla_ironic_drivers | join(',') }}
 
 [conductor]
 {% raw %}
@@ -10,6 +10,10 @@ api_url = {{ internal_protocol }}://{{ hostvars[inventory_hostname]['ansible_' +
 
 [agent]
 deploy_logs_local_path = /var/log/kolla/ironic/deploy
+
+[neutron]
+cleaning_network = {{ kolla_ironic_cleaning_network }}
+provisioning_network = {{ kolla_ironic_provisioning_network }}
 
 [pxe]
 {% raw %}

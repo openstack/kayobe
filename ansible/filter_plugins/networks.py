@@ -158,6 +158,11 @@ def net_is_bridge(context, name, inventory_hostname=None):
 
 
 @jinja2.contextfilter
+def net_is_vlan(context, name, inventory_hostname=None):
+    return net_vlan(context, name) is not None
+
+
+@jinja2.contextfilter
 def net_select_ethers(context, names):
     return [name for name in names if net_is_ether(context, name)]
 
@@ -165,6 +170,16 @@ def net_select_ethers(context, names):
 @jinja2.contextfilter
 def net_select_bridges(context, names):
     return [name for name in names if net_is_bridge(context, name)]
+
+
+@jinja2.contextfilter
+def net_select_vlans(context, names):
+    return [name for name in names if net_is_vlan(context, name)]
+
+
+@jinja2.contextfilter
+def net_reject_vlans(context, names):
+    return [name for name in names if not net_is_vlan(context, name)]
 
 
 @jinja2.contextfilter
@@ -212,7 +227,10 @@ class FilterModule(object):
             'net_bridge_obj': net_bridge_obj,
             'net_is_ether': net_is_ether,
             'net_is_bridge': net_is_bridge,
+            'net_is_vlan': net_is_vlan,
             'net_select_ethers': net_select_ethers,
             'net_select_bridges': net_select_bridges,
+            'net_select_vlans': net_select_vlans,
+            'net_reject_vlans': net_reject_vlans,
             'net_configdrive_network_device': net_configdrive_network_device,
         }

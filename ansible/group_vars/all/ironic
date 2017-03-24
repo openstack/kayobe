@@ -1,0 +1,16 @@
+---
+###############################################################################
+# Ironic configuration.
+
+# List of enabled Ironic drivers.
+kolla_ironic_drivers:
+  - agent_ssh
+  - agent_ipmitool
+  - pxe_ssh
+  - pxe_ipmitool
+
+# Name of the Neutron network to use for cleaning.
+kolla_ironic_cleaning_network: 'provision-net'
+
+# Name of the Neutron network to use for provisioning.
+kolla_ironic_provisioning_network: 'provision-net'

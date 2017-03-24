@@ -1,0 +1,16 @@
+---
+###############################################################################
+# Ironic configuration.
+
+# List of enabled Ironic drivers.
+#kolla_ironic_drivers:
+
+# Name of the Neutron network to use for cleaning.
+#kolla_ironic_cleaning_network:
+
+# Name of the Neutron network to use for provisioning.
+#kolla_ironic_provisioning_network:
+
+###############################################################################
+# Dummy variable to allow Ansible to accept this file.
+workaround_ansible_issue_8743: yes

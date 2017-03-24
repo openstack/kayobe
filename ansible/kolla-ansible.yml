@@ -52,24 +52,35 @@
             kolla_cluster_interface: "{{ storage_mgmt_net_name | net_interface(controller_host) | replace('-', '_') }}"
             kolla_provision_interface: "{{ provision_wl_net_name | net_interface(controller_host) | replace('-', '_') }}"
             kolla_inspector_dnsmasq_interface: "{{ provision_wl_net_name | net_interface(controller_host) | replace('-', '_') }}"
+            # Initialise the following lists.
+            kolla_neutron_bridge_names: []
+            kolla_neutron_external_interfaces: []
+            kolla_neutron_bridge_interfaces: []
 
-        - name: Set facts containing the Neutron bridge and interface names for the provisioning network
+        # When these networks are VLANs, we need to use the underlying tagged
+        # bridge interface rather than the untagged interface. We therefore
+        # strip the .<vlan> suffix of the interface name. We use a union here
+        # as a single tagged interface may be shared between these networks.
+        - name: Set a fact containing the bridges to be patched to the Neutron OVS bridges
           set_fact:
-            kolla_neutron_bridge_names:
-              - "{{ provision_wl_net_name | net_interface(controller_host) ~ network_bridge_suffix_ovs }}"
-            kolla_neutron_external_interfaces:
-              - "{{ network_patch_prefix ~ provision_wl_net_name | net_interface(controller_host) ~ network_patch_suffix_ovs }}"
+            kolla_neutron_bridge_interfaces: >
+              {{ kolla_neutron_bridge_interfaces |
+                 union([item | net_interface(controller_host) | replace('.' ~ item | net_vlan(controller_host) | default('!nomatch!'), '')]) |
+                 list }}
+          with_items:
+            - "{{ provision_wl_net_name }}"
+            - "{{ external_net_name }}"
+          when: "{{ item in hostvars[controller_host].network_interfaces }}"
 
-        - name: Update facts containing the Neutron bridge and interface names for the external network
+        - name: Set facts containing the Neutron bridge and interface names
           set_fact:
             kolla_neutron_bridge_names: >
               {{ kolla_neutron_bridge_names +
-                 [external_net_name | net_interface(controller_host) ~ network_bridge_suffix_ovs] }}
+                 [item ~ network_bridge_suffix_ovs] }}
             kolla_neutron_external_interfaces: >
-              {{ kolla_neutron_external_interfaces +
-                 [network_patch_prefix ~ external_net_name | net_interface(controller_host) ~ network_patch_suffix_ovs] }}
-          when:
-            - "{{ provision_wl_net_name != external_net_name }}"
+              {{ kolla_neutron_bridge_names +
+                 [network_patch_prefix ~ item ~ network_patch_suffix_ovs] }}
+          with_items: "{{ kolla_neutron_bridge_interfaces }}"
 
         - name: Validate controller Kolla Ansible network configuration
           fail:
