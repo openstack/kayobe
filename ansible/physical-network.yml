@@ -14,6 +14,8 @@
   hosts: switches_of_type_dellos6:switches_of_type_dellos9
   gather_facts: no
   roles:
+    - role: ssh-known-host
+
     - role: dell-switch
       dell_switch_delegate_to: localhost
       dell_switch_type: "{{ switch_type }}"
