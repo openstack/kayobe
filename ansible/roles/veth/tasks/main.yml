@@ -18,7 +18,7 @@
     dest: "{{ network_scripts_dir }}/ifcfg-{{ item.device }}"
     owner: root
     group: root
-    mode: 0755
+    mode: 0644
   with_items: "{{ veth_interfaces }}"
   become: True
   register: veth_result
@@ -29,7 +29,7 @@
     dest: "{{ network_scripts_dir }}/ifcfg-{{ item.peer_device }}"
     owner: root
     group: root
-    mode: 0755
+    mode: 0644
   with_items: "{{ veth_interfaces }}"
   become: True
   register: peer_result
