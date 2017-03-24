@@ -40,6 +40,7 @@ setup(
             'configuration_dump = kayobe.cli.commands:ConfigurationDump',
             'kolla_ansible_run = kayobe.cli.commands:KollaAnsibleRun',
             'overcloud_container_image_build = kayobe.cli.commands:OvercloudContainerImageBuild',
+            'overcloud_deprovision = kayobe.cli.commands:OvercloudDeprovision',
             'overcloud_host_configure = kayobe.cli.commands:OvercloudHostConfigure',
             'overcloud_inventory_discover = kayobe.cli.commands:OvercloudInventoryDiscover',
             'overcloud_service_deploy = kayobe.cli.commands:OvercloudServiceDeploy',

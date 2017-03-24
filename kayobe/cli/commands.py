@@ -256,6 +256,15 @@ class OvercloudProvision(KayobeAnsibleMixin, Command):
                              "ansible/overcloud-provision.yml")
 
 
+class OvercloudDeprovision(KayobeAnsibleMixin, Command):
+    """Deprovision the overcloud."""
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Deprovisioning overcloud")
+        ansible.run_playbook(parsed_args,
+                             "ansible/overcloud-deprovision.yml")
+
+
 class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
     """Configure the overcloud host OS."""
 

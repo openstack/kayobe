@@ -1,0 +1,131 @@
+---
+# Use bifrost to deprovision the overcloud nodes.
+
+- name: Ensure the overcloud controllers are deprovisioned
+  hosts: controllers
+  vars:
+    # Set to False to avoid waiting for the controllers to become active.
+    wait_available: True
+    wait_available_timeout: 600
+    wait_available_interval: 10
+    # List of states from which we can get to available.
+    deprovisionable_states:
+      - available
+      - active
+      - error
+      - wait call-back
+      - deploying
+    # List of valid states while a node is being deprovisioned.
+    deleting_states:
+      # The API is asynchronous, so allow the initial state.
+      - active
+      - deleting
+      - cleaning
+      - clean wait
+    # Retries to use when using Ironic API and hitting node locked errors.
+    ironic_retries: 6
+    ironic_retry_interval: 5
+  gather_facts: no
+  tasks:
+    - name: Check the ironic node's initial provision state
+      command: >
+        docker exec bifrost_deploy
+        bash -c '. env-vars &&
+        export OS_URL=$IRONIC_URL &&
+        export OS_TOKEN=$OS_AUTH_TOKEN &&
+        export BIFROST_INVENTORY_SOURCE=ironic &&
+        ansible baremetal
+        --connection local
+        --inventory /etc/bifrost/inventory/
+        -e @/etc/bifrost/bifrost.yml
+        -e @/etc/bifrost/dib.yml
+        --limit {{ inventory_hostname }}
+        -m command
+        -a "openstack baremetal node show {% raw %}{{ inventory_hostname }}{% endraw %} -f value -c provision_state"'
+      register: show_result
+      changed_when: False
+      # We use this convoluted construct to work around Ansible's limitations
+      # in evaluation of the delegate_to keyword.
+      delegate_to: "{{ item }}"
+      with_items:
+        - "{{ hostvars[groups['seed'][0]].ansible_host }}"
+
+    - name: Set a fact containing the ironic node's initial provision state
+      set_fact:
+        initial_provision_state: "{{ show_result.results[0].stdout_lines[1] }}"
+
+    - name: Fail if the ironic node is in an unexpected provision state
+      fail:
+        msg: >
+          Ironic node for {{ inventory_hostname }} is in an unexpected
+          initial provision state: {{ initial_provision_state }}. Expected
+          states are: {{ deprovisionable_states | join(',') }}.
+      when: "{{ initial_provision_state not in deprovisionable_states }}"
+
+    - name: Ensure the the ironic node is deprovisioned
+      command: >
+        docker exec bifrost_deploy
+        bash -c '. env-vars &&
+        export BIFROST_INVENTORY_SOURCE=ironic &&
+        ansible baremetal -vvvv
+        --connection local
+        --inventory /etc/bifrost/inventory/
+        -e @/etc/bifrost/bifrost.yml
+        -e @/etc/bifrost/dib.yml
+        --limit {{ inventory_hostname }}
+        -m command
+        -a "ironic node-set-provision-state {% raw %}{{ inventory_hostname }}{% endraw %} deleted"'
+      register: delete_result
+      until: "{{ delete_result | success or 'is locked by host' in delete_result.stdout }}"
+      retries: "{{ ironic_retries }}"
+      delay: "{{ ironic_retry_interval }}"
+      when: "{{ initial_provision_state != 'available' }}"
+      delegate_to: "{{ item }}"
+      with_items:
+        - "{{ hostvars[groups['seed'][0]].ansible_host }}"
+
+    - name: Wait for the ironic node to become available
+      command: >
+        docker exec bifrost_deploy
+        bash -c '. env-vars &&
+        export OS_URL=$IRONIC_URL &&
+        export OS_TOKEN=$OS_AUTH_TOKEN &&
+        export BIFROST_INVENTORY_SOURCE=ironic &&
+        ansible baremetal
+        --connection local
+        --inventory /etc/bifrost/inventory/
+        -e @/etc/bifrost/bifrost.yml
+        -e @/etc/bifrost/dib.yml
+        --limit {{ inventory_hostname }}
+        -m command
+        -a "openstack baremetal node show {% raw %}{{ inventory_hostname }}{% endraw %} -f value -c provision_state"'
+      register: show_result
+      # Wait until the node is no longer in one of the deleting states.
+      until: "{{ not show_result.stdout_lines[1:] | intersect(deleting_states) }}"
+      retries: "{{ wait_available_timeout // wait_available_interval }}"
+      delay: "{{ wait_available_interval }}"
+      when:
+        - "{{ wait_available | bool }}"
+        - "{{ initial_provision_state != 'available' }}"
+      changed_when: False
+      delegate_to: "{{ item }}"
+      with_items:
+        - "{{ hostvars[groups['seed'][0]].ansible_host }}"
+
+    - name: Set a fact containing the ironic node's final provision state
+      set_fact:
+        final_provision_state: "{{ show_result.results[0].stdout_lines[1] }}"
+      when:
+        - "{{ wait_available | bool }}"
+        - "{{ initial_provision_state != 'available' }}"
+
+    - name: Fail if the ironic node is not available
+      fail:
+        msg: >
+          Ironic node for {{ inventory_hostname }} is in an unexpected
+          provision state after deprovisioning.  Ironic provision state:
+          {{ final_provision_state }}. Expected: available.
+      when:
+        - "{{ wait_available | bool }}"
+        - "{{ initial_provision_state != 'available' }}"
+        - "{{ final_provision_state != 'available' }}"
