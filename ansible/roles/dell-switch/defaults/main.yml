@@ -6,7 +6,7 @@ dell_switch_delegate_to:
 dell_switch_type:
 
 # Authentication provider information.
-dell_switch_provider: 
+dell_switch_provider:
 
 # List of configuration lines to apply to the switch.
 dell_switch_config: []
