@@ -253,7 +253,7 @@ class OvercloudProvision(KayobeAnsibleMixin, Command):
     def _deploy_servers(self, parsed_args):
         self.app.LOG.debug("Deploying overcloud servers via Bifrost")
         ansible.run_playbook(parsed_args,
-                             "ansible/kolla-bifrost-provision.yml")
+                             "ansible/overcloud-provision.yml")
 
 
 class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, Command):

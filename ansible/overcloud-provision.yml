@@ -1,0 +1,193 @@
+---
+# Use bifrost to provision the overcloud nodes with a base OS.
+
+- name: Ensure the overcloud controllers are provisioned
+  hosts: controllers
+  vars:
+    # Set to False to avoid waiting for the controllers to become active.
+    wait_active: True
+    wait_active_timeout: 600
+    wait_active_interval: 10
+    # Set to False to avoid waiting for the controllers to be accessible via
+    # SSH.
+    wait_ssh: True
+    wait_ssh_timeout: 600
+    # List of states from which we can get to active.
+    provisionable_states:
+      - enroll
+      - manageable
+      - available
+      - active
+    # List of valid states while a node is being provisioned.
+    deploying_states:
+      # The API is asynchronous, so allow the initial state.
+      - available
+      - deploying
+      - wait call-back
+    # List of hosts to limit Bifrost deploy-dynamic.yaml playbook to.
+    bifrost_limit: []
+    # Retries to use when using Ironic API and hitting node locked errors.
+    ironic_retries: 6
+    ironic_retry_interval: 5
+  gather_facts: no
+  tasks:
+    - name: Check the ironic node's initial provision state
+      command: >
+        docker exec bifrost_deploy
+        bash -c '. env-vars &&
+        export OS_URL=$IRONIC_URL &&
+        export OS_TOKEN=$OS_AUTH_TOKEN &&
+        export BIFROST_INVENTORY_SOURCE=ironic &&
+        ansible baremetal
+        --connection local
+        --inventory /etc/bifrost/inventory/
+        -e @/etc/bifrost/bifrost.yml
+        -e @/etc/bifrost/dib.yml
+        --limit {{ inventory_hostname }}
+        -m command
+        -a "openstack baremetal node show {% raw %}{{ inventory_hostname }}{% endraw %} -f value -c provision_state"'
+      register: show_result
+      changed_when: False
+      # We use this convoluted construct to work around Ansible's limitations
+      # in evaluation of the delegate_to keyword.
+      delegate_to: "{{ item }}"
+      with_items:
+        - "{{ hostvars[groups['seed'][0]].ansible_host }}"
+
+    - name: Set a fact containing the ironic node's initial provision state
+      set_fact:
+        initial_provision_state: "{{ show_result.results[0].stdout_lines[1] }}"
+
+    - name: Fail if the ironic node is in an unexpected provision state
+      fail:
+        msg: >
+          Ironic node for {{ inventory_hostname }} is in an unexpected
+          initial provision state: {{ initial_provision_state }}. Expected
+          states are: {{ provisionable_states | join(',') }}.
+      when: "{{ initial_provision_state not in provisionable_states }}"
+
+    - name: Ensure the ironic node is manageable
+      command: >
+        docker exec bifrost_deploy
+        bash -c '. env-vars &&
+        export BIFROST_INVENTORY_SOURCE=ironic &&
+        ansible baremetal -vvvv
+        --connection local
+        --inventory /etc/bifrost/inventory/
+        -e @/etc/bifrost/bifrost.yml
+        -e @/etc/bifrost/dib.yml
+        --limit {{ inventory_hostname }}
+        -m command
+        -a "ironic node-set-provision-state {% raw %}{{ inventory_hostname }}{% endraw %} manage"'
+      register: manage_result
+      until: "{{ manage_result | success or 'is locked by host' in manage_result.stdout }}"
+      retries: "{{ ironic_retries }}"
+      delay: "{{ ironic_retry_interval }}"
+      when: "{{ initial_provision_state == 'enroll' }}"
+      delegate_to: "{{ item }}"
+      with_items:
+        - "{{ hostvars[groups['seed'][0]].ansible_host }}"
+
+    - name: Ensure the ironic node is available
+      command: >
+        docker exec bifrost_deploy
+        bash -c '. env-vars &&
+        export BIFROST_INVENTORY_SOURCE=ironic &&
+        ansible baremetal -vvvv
+        --connection local
+        --inventory /etc/bifrost/inventory/
+        -e @/etc/bifrost/bifrost.yml
+        -e @/etc/bifrost/dib.yml
+        --limit {{ inventory_hostname }}
+        -m command
+        -a "ironic node-set-provision-state {% raw %}{{ inventory_hostname }}{% endraw %} provide"'
+      register: provide_result
+      until: "{{ provide_result | success or 'is locked by host' in provide_result.stdout }}"
+      retries: "{{ ironic_retries }}"
+      delay: "{{ ironic_retry_interval }}"
+      when: "{{ initial_provision_state in ['enroll', 'manageable'] }}"
+      delegate_to: "{{ item }}"
+      with_items:
+        - "{{ hostvars[groups['seed'][0]].ansible_host }}"
+
+    - name: Set a fact containing the bifrost host list
+      set_fact:
+        bifrost_limit: "{{ bifrost_limit + [item] }}"
+      with_items: "{{ play_hosts }}"
+      when: "{{ hostvars[item].initial_provision_state != 'active' }}"
+      run_once: True
+
+    - name: Ensure the ironic nodes are provisioned
+      command: >
+        docker exec bifrost_deploy
+        bash -c '. env-vars &&
+        export BIFROST_INVENTORY_SOURCE=ironic &&
+        ansible-playbook -vvvv
+        /bifrost/playbooks/deploy-dynamic.yaml
+        --inventory /etc/bifrost/inventory/
+        -e @/etc/bifrost/bifrost.yml
+        -e @/etc/bifrost/dib.yml
+        --limit {{ bifrost_limit | join(':') }}'
+      when: "{{ bifrost_limit }}"
+      delegate_to: "{{ item }}"
+      with_items:
+        - "{{ hostvars[groups['seed'][0]].ansible_host }}"
+      # We execute this only once, allowing the Bifrost Ansible to handle
+      # multiple controllers.
+      run_once: True
+
+    - name: Wait for the Bifrost controller inventory to become active
+      command: >
+        docker exec bifrost_deploy
+        bash -c '. env-vars &&
+        export OS_URL=$IRONIC_URL &&
+        export OS_TOKEN=$OS_AUTH_TOKEN &&
+        export BIFROST_INVENTORY_SOURCE=ironic &&
+        ansible baremetal
+        --connection local
+        --inventory /etc/bifrost/inventory/
+        -e @/etc/bifrost/bifrost.yml
+        -e @/etc/bifrost/dib.yml
+        --limit {{ inventory_hostname }}
+        -m command
+        -a "openstack baremetal node show {% raw %}{{ inventory_hostname }}{% endraw %} -f value -c provision_state"'
+      register: show_result
+      # Wait until the node is no longer in one of the deploying states.
+      until: "{{ not show_result.stdout_lines[1:] | intersect(deploying_states) }}"
+      retries: "{{ wait_active_timeout // wait_active_interval }}"
+      delay: "{{ wait_active_interval }}"
+      when:
+        - "{{ wait_active | bool }}"
+        - "{{ initial_provision_state != 'active' }}"
+      changed_when: False
+      delegate_to: "{{ item }}"
+      with_items:
+        - "{{ hostvars[groups['seed'][0]].ansible_host }}"
+
+    - name: Set a fact containing the final provision state
+      set_fact:
+        final_provision_state: "{{ show_result.results[0].stdout_lines[1] }}"
+      when:
+        - "{{ wait_active | bool }}"
+        - "{{ initial_provision_state != 'active' }}"
+
+    - name: Fail if any of the controllers are not available
+      fail:
+        msg: >
+          Ironic node for {{ inventory_hostname }} is in an unexpected
+          provision state after provisioning.  Ironic provision state:
+          {{ final_provision_state }}. Expected: active.
+      when:
+        - "{{ wait_active | bool }}"
+        - "{{ initial_provision_state != 'active' }}"
+        - "{{ final_provision_state != 'active' }}"
+
+    - name: Wait for SSH access to the controllers
+      local_action:
+        module: wait_for
+        host: "{{ ansible_host }}"
+        port: 22
+        state: started
+        timeout: "{{ wait_ssh_timeout }}"
+      when:
+        - "{{ wait_ssh | bool }}"
