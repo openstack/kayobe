@@ -24,6 +24,7 @@
     network_name: "{{ neutron_net_name }}"
     cidr: "{{ neutron_net_cidr }}"
     gateway_ip: "{{ neutron_net_gateway_ip | default(omit) }}"
+    no_gateway_ip: "{{ not neutron_net_gateway_ip }}"
     allocation_pool_start: "{{ neutron_net_allocation_pool_start | default(omit) }}"
     allocation_pool_end: "{{ neutron_net_allocation_pool_end | default(omit) }}"
     state: present
