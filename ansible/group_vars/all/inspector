@@ -162,8 +162,35 @@ inspector_rule_var_lldp_switch_port_interface:
 inspector_rule_lldp_switch_port_desc_to_name:
   description: "Set node name from {{ inspector_rule_var_lldp_switch_port_interface }} LLDP switch port description"
   conditions:
+    # Check for the existence of the switch_port_description field.
+    - field: "data://all_interfaces.{{ inspector_rule_var_lldp_switch_port_interface }}"
+      op: "is-empty"
+      invert: True
+    - field: "data://all_interfaces.{{ inspector_rule_var_lldp_switch_port_interface }}.lldp_processed"
+      op: "is-empty"
+      invert: True
     - field: "data://all_interfaces.{{ inspector_rule_var_lldp_switch_port_interface }}.lldp_processed.switch_port_description"
       op: "is-empty"
+      invert: True
+    # Filter out switch port descriptions using the switch's interface names.
+    # On some switches (including Dell Network OS 9.10(0.1)), the port
+    # description TLV is sent but contains the interface name rather than the
+    # interface's description.
+    - field: "data://all_interfaces.{{inspector_rule_var_lldp_switch_port_interface}}.lldp_processed.switch_port_description"
+      op: "matches"
+      value: "^GigabitEthernet ([0-9/]*)$"
+      invert: True
+    - field: "data://all_interfaces.{{inspector_rule_var_lldp_switch_port_interface}}.lldp_processed.switch_port_description"
+      op: "matches"
+      value: "^TenGigabitEthernet ([0-9/]*)$"
+      invert: True
+    - field: "data://all_interfaces.{{inspector_rule_var_lldp_switch_port_interface}}.lldp_processed.switch_port_description"
+      op: "matches"
+      value: "^fortyGigE ([0-9/]*)$"
+      invert: True
+    - field: "data://all_interfaces.{{inspector_rule_var_lldp_switch_port_interface}}.lldp_processed.switch_port_description"
+      op: "matches"
+      value: "^Port-channel ([0-9/]*)$"
       invert: True
   actions:
     - action: "set-attribute"
@@ -195,3 +222,19 @@ inspector_rules_extra: []
 
 # List of all ironic inspector rules.
 inspector_rules: "{{ inspector_rules_default + inspector_rules_extra }}"
+
+###############################################################################
+# Dell switch LLDP workaround configuration.
+
+# Some Dell switch OSs (including Dell Network OS 9.10(0.1)) do not support
+# sending interface port description TLVs correctly. Instead of sending the
+# interface description, they send the interface name (e.g. TenGigabitEthernet
+# 1/1/1). This breaks the discovery process which relies on Ironic node
+# introspection data containing the node's name in the interface port
+# description. We work around this here by creating an introspection rule for
+# each ironic node that matches against the switch system and the relevant
+# interface name, then sets the node's name appropriately.
+
+# Ansible group containing switch hosts to which the workaround should be
+# applied.
+inspector_dell_switch_lldp_workaround_group:

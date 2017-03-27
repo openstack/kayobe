@@ -1,0 +1,91 @@
+---
+# Some Dell switch OSs (including Dell Network OS 9.10(0.1)) do not support
+# sending interface port description TLVs correctly. Instead of sending the
+# interface description, they send the interface name (e.g. TenGigabitEthernet
+# 1/1/1). This breaks the discovery process which relies on Ironic node
+# introspection data containing the node's name in the interface port
+# description. We work around this here by creating an introspection rule for
+# each ironic node that matches against the switch system and the relevant
+# interface name, then sets the node's name appropriately.
+
+- name: Group controller hosts in systems requiring the workaround
+  hosts: controllers
+  tasks:
+    - name: Group controller hosts in systems requiring the Dell switch LLDP workaround
+      group_by:
+        key: "controllers_require_workaround_{{ groups[inspector_dell_switch_lldp_workaround_group] | default([]) | length > 0 }}"
+
+- name: Ensure introspection rules for Dell switch LLDP workarounds are registered in Ironic Inspector
+  # Only required to run on a single host.
+  hosts: controllers_require_workaround_True[0]
+  vars:
+    venv: "{{ ansible_env.PWD }}/shade-venv"
+    all_switch_interfaces: []
+    ironic_inspector_rules: []
+    # This rule template is used in a with_subelements loop.
+    inspector_interface_mapping_rule:
+      description: "Set {{ item.1.1.description }} node name from {{ inspector_rule_var_lldp_switch_port_interface }} LLDP switch port description"
+      conditions:
+        - field: "data://all_interfaces.{{ inspector_rule_var_lldp_switch_port_interface }}"
+          op: "is-empty"
+          invert: True
+        - field: "data://all_interfaces.{{ inspector_rule_var_lldp_switch_port_interface }}.lldp_processed"
+          op: "is-empty"
+          invert: True
+        - field: "data://all_interfaces.{{ inspector_rule_var_lldp_switch_port_interface }}.lldp_processed.switch_port_description"
+          op: "is-empty"
+          invert: True
+        - field: "data://all_interfaces.{{ inspector_rule_var_lldp_switch_port_interface }}.lldp_processed.switch_system_name"
+          op: "is-empty"
+          invert: True
+        # Match against the interface name.
+        - field: "data://all_interfaces.{{ inspector_rule_var_lldp_switch_port_interface }}.lldp_processed.switch_port_description"
+          op: "eq"
+          # Our interface names may be of a shortened form e.g. Te1/1/1, but
+          # the port description will contain the full interface name. Use a
+          # regex to expand to the full form.
+          value: "{{ item.1.0 | regex_replace('^Te([a-zA-z ]*)([0-9/]+)$', 'TenGigabitEthernet \\2') }}"
+        # Match against the switch system name.
+        - field: "data://all_interfaces.{{ inspector_rule_var_lldp_switch_port_interface }}.lldp_processed.switch_system_name"
+          op: "eq"
+          value: "{{ item.0.host }}"
+      actions:
+        - action: "set-attribute"
+          path: "name"
+          value: "{{ item.1.1.description }}"
+    inspector_rule_var_lldp_switch_port_interface: "{{ inspector_lldp_switch_port_interface }}"
+
+  pre_tasks:
+    # We build up the rules using a 2-step process. First we build a list of
+    # relevant switch hosts and their interface configuration (in list form).
+    # This allows us to use with_subelements in the next task to iterate over
+    # the interfaces for each switch.
+    - name: Update a fact containing switch interface configuration
+      set_fact:
+        all_switch_interfaces: >
+          {{ all_switch_interfaces +
+             [{'host': item.key,
+               'interface_config': item.value.switch_interface_config.items()}] }}
+      with_dict: "{{ hostvars }}"
+      when: "{{ item.key in groups[inspector_dell_switch_lldp_workaround_group] }}"
+
+    - name: Update a fact containing Ironic Inspector rules
+      set_fact:
+        ironic_inspector_rules: >
+          {{ ironic_inspector_rules +
+             [inspector_interface_mapping_rule] }}
+      with_subelements:
+        - "{{ all_switch_interfaces }}"
+        - interface_config
+      when:
+        - "{{ item.1.1.description is defined }}"
+        # Ignore VLAN interfaces.
+        - "{{ 'vlan' not in item.1.0 }}"
+        # Ignore trunk links.
+        - "{{ '-trunk' not in item.1.1.description }}"
+  
+  roles:
+    - role: ironic-inspector-rules
+      ironic_inspector_venv: "{{ venv }}"
+      ironic_inspector_auth_type: "{{ openstack_auth_type }}"
+      ironic_inspector_auth: "{{ openstack_auth }}"
