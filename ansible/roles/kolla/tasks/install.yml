@@ -1,5 +1,5 @@
 ---
-- name: Pull in EPEL Repo
+- name: Ensure EPEL repo is installed
   yum:
     name: epel-release
     state: installed
