@@ -1,0 +1,4 @@
+---
+dependencies:
+  - role: shade
+    shade_venv: "{{ test_project_venv }}"

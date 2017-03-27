@@ -1,0 +1,9 @@
+# {{ ansible_managed }}
+# This is an openrc environment file for OpenStack user {{ item.name }} in
+# project {{ test_project_name }}.
+{% for name, value in test_project_auth.items() %}
+export OS_{{ name | upper }}={{ value }}
+{% endfor %}
+{% for name, value in test_project_environment.items() %}
+export {{ name }}={{ value }}
+{% endfor %}

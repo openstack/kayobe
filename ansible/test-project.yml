@@ -1,0 +1,43 @@
+---
+- name: Ensure a test project exists
+  hosts: controllers[0]
+  vars:
+    venv: "{{ ansible_env.PWD }}/shade-venv"
+    # Dict of quotas to set for the test project.
+    test_project_quotas:
+      cores: -1
+      floating_ips: -1
+      injected_files: -1
+      injected_file_size: -1
+      instances: -1
+      key_pairs: -1
+      fixed_ips: -1
+      ram: -1
+      secgroup_rules: -1
+      secgroups: -1
+
+  pre_tasks:
+    - name: Read the SSH public key on the controller
+      slurp:
+        src: "{{ ansible_env.PWD ~ '/.ssh/id_rsa.pub' }}"
+      register: ssh_public_key
+
+  roles:
+    - role: test-project
+      test_project_venv: "{{ venv }}"
+      test_project_auth_type: "{{ openstack_auth_type }}"
+      test_project_admin_auth: "{{ openstack_auth }}"
+      test_project_openrc_directory: "{{ kayobe_config_path }}"
+      test_project_public_key: "{{ ssh_public_key.content | b64decode }}"
+
+    - role: openstackclient
+      openstackclient_venv: "{{ venv }}"
+
+  post_tasks:
+    - name: Ensure quotas are set
+      shell: >
+        source {{ venv }}/bin/activate &&
+        openstack quota set {{ test_project_name }}
+        {% for name, value in test_project_quotas.items() %} --{{ name | replace('_', '-') }}={{ value }}{% endfor %}
+      when: "{{ test_project_quotas }}"
+      environment: "{{ openstack_auth_env }}"
