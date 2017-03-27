@@ -55,6 +55,12 @@ inspector_lldp_switch_port_interface:
 ###############################################################################
 # Ironic inspector introspection rules configuration.
 
+# IPMI username referenced by inspector rule.
+inspector_rule_var_ipmi_username:
+
+# IPMI password referenced by inspector rule.
+inspector_rule_var_ipmi_password:
+
 # Ironic inspector rule to set IPMI credentials.
 inspector_rule_ipmi_credentials:
   description: "Set IPMI driver_info if no credentials"
@@ -71,6 +77,9 @@ inspector_rule_ipmi_credentials:
       path: "driver_info/ipmi_password"
       value: "{{ inspector_rule_var_ipmi_password }}"
 
+# Deployment kernel referenced by inspector rule.
+inspector_rule_var_deploy_kernel:
+
 # Ironic inspector rule to set deployment kernel.
 inspector_rule_deploy_kernel:
   description: "Set deploy kernel"
@@ -81,6 +90,9 @@ inspector_rule_deploy_kernel:
     - action: "set-attribute"
       path: "driver_info/deploy_kernel"
       value: "{{ inspector_rule_var_deploy_kernel }}"
+
+# Deployment ramdisk referenced by inspector rule.
+inspector_rule_var_deploy_ramdisk:
 
 # Ironic inspector rule to set deployment ramdisk.
 inspector_rule_deploy_ramdisk:
@@ -140,6 +152,10 @@ inspector_rule_set_pxe_interface_mac:
     - action: "set-attribute"
       path: "extra/pxe_interface_mac"
       value: "{data[boot_interface]}"
+
+# Name of network interface to use for LLDP referenced by switch port
+# description rule.
+inspector_rule_var_lldp_switch_port_interface:
 
 # Ironic inspector rule to set the node's name from an interface's LLDP switch
 # port description.
