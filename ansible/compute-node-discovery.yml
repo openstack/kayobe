@@ -1,0 +1,51 @@
+---
+- name: Ensure compute nodes are present in the Ansible inventory
+  hosts: config-mgmt
+  gather_facts: no
+  tasks:
+    - name: Add hosts for the compute nodes
+      add_host:
+        name: "{{ item.key }}"
+        groups: compute
+      with_dict: "{{ idrac_network_ips }}"
+      # Don't add hosts that already exist.
+      when:
+        - "{{ item.key not in groups['all'] }}"
+        - "{{ item.key | replace('-idrac', '') not in groups['all'] }}"
+      run_once: True
+
+- name: Ensure compute nodes are PXE booted
+  hosts: compute
+  gather_facts: no
+  tasks:
+    - name: Set a fact containing the compute node IPMI address
+      set_fact:
+        ipmi_username: "{{ inspector_ipmi_username }}"
+        ipmi_password: "{{ inspector_ipmi_password }}"
+        ipmi_address: "{{ idrac_network_ips[inventory_hostname] }}"
+
+    - name: Ensure compute nodes are powered off
+      command: ipmitool -U {{ ipmi_username }} -P {{ ipmi_password }} -H {{ ipmi_address }} -I lanplus chassis power off
+      delegate_to: "{{ item }}"
+      with_items:
+        - "{{ hostvars[groups['controllers'][0]].ansible_host }}"
+
+    - name: Pause to prevent overwhelming BMCs
+      pause:
+        seconds: 5
+
+    - name: Ensure compute nodes are set to boot via PXE
+      command: ipmitool -U {{ ipmi_username }} -P {{ ipmi_password }} -H {{ ipmi_address }} -I lanplus chassis bootdev pxe
+      delegate_to: "{{ item }}"
+      with_items:
+        - "{{ hostvars[groups['controllers'][0]].ansible_host }}"
+
+    - name: Pause to prevent overwhelming BMCs
+      pause:
+        seconds: 5
+
+    - name: Ensure compute nodes are powered on
+      command: ipmitool -U {{ ipmi_username }} -P {{ ipmi_password }} -H {{ ipmi_address }} -I lanplus chassis power on
+      delegate_to: "{{ item }}"
+      with_items:
+        - "{{ hostvars[groups['controllers'][0]].ansible_host }}"
