@@ -16,18 +16,14 @@ Role Variables
 
 `dell_switch_bmp_images` is a list of images to provide a BMP configuration
 for, and defaults to an empty list.  Each item should be a dict with the
-following keys:
-`url`
-    URL of the image to download.
-`dest`
-    Name of the file to download the image to.
-`match`
-    dnsmasq match rule to match hosts against.
-`tag`
-    dnsmasq tag to apply to matching hosts.
-`checksum`
-    optional checksum of image, in format required for Ansible's `get_url`
-    module.
+following items:
+
+- `url` - URL of the image to download.
+- `dest`- name of the file to download the image to.
+- `match` - dnsmasq match rule to match hosts against.
+- `tag` - dnsmasq tag to apply to matching hosts.
+- `checksum` - optional checksum of image, in format required for Ansible's
+  `get_url` module.
 
 `dell_switch_bmp_http_base_url` is the base URL of HTTP server.
 
