@@ -1,10 +1,10 @@
 Ironic Inspector Rules
 ======================
 
-This role provides a module, `ironic_inspector_rules`, which may be
-used to configure introspection rules in OpenStack ironic inspector.
-It installs required python dependencies in a virtualenv, and uses
-the `ironic_inspector_rules` module to configure a set of rules.
+This role provides a module, `os_ironic_inspector_rule`, which may be
+used to configure an introspection rule in OpenStack ironic inspector.
+The role installs required python dependencies in a virtualenv, and uses
+the `os_ironic_inspector_rule` module to configure a set of rules.
 
 Requirements
 ------------
