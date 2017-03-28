@@ -28,10 +28,9 @@ and defaults to an empty list.
 `dell_switch_interface_config` contains interface configuration. It is a dict
 mapping switch interface names to configuration dicts. Each dict may contain
 the following items:
-`description`
-    A description to apply to the interface.
-`config`
-    A list of per-interface configuration.
+
+- `description` - a description to apply to the interface.
+- `config` - a list of per-interface configuration.
 
 Dependencies
 ------------
@@ -41,8 +40,8 @@ None
 Example Playbook
 ----------------
 
-The following playbook configures hosts in the `dell-switches` group.  It
-assumes host variables for each switch holding the host, username and
+The following playbook configures hosts in the `dellos9-switches` group.
+It assumes host variables for each switch holding the host, username and
 passwords.  It applies global configuration for LLDP, and enables two
 10G ethernet interfaces as switchports.
 
