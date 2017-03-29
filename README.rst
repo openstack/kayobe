@@ -4,14 +4,14 @@ Kayobe
 
 Deployment of Scientific OpenStack using OpenStack kolla.
 
-Kayobe is a tool for automating deployment of Scientific OpenStack onto a set
-of bare metal servers.  Kayobe is composed of Ansible playbooks, a python
-module, and makes heavy use of the OpenStack kolla project.  Kayobe aims to
-complement the kolla-ansible project, providing an opinionated yet highly
+Kayobe is an open source tool for automating deployment of Scientific OpenStack
+onto a set of bare metal servers.  Kayobe is composed of Ansible playbooks, a
+python module, and makes heavy use of the OpenStack kolla project.  Kayobe aims
+to complement the kolla-ansible project, providing an opinionated yet highly
 configurable OpenStack deployment and automation of many operational
 procedures.
 
-* Documentation: https://github.com/stackhpc/kayobe/tree/master/docs
+* Documentation: https://github.com/stackhpc/kayobe/tree/master/doc
 * Source: https://github.com/stackhpc/kayobe
 * Bugs: https://github.com/stackhpc/kayobe/issues
 
@@ -30,4 +30,13 @@ Features
   using `OpenStack ironic <https://docs.openstack.org/developer/ironic/>`_ and
   `ironic inspector <https://docs.openstack.org/developer/ironic-inspector/>`_
 
-Plus more to follow...
+In the near future we aim to add support for the following:
+
+* Big data on bare metal using `OpenStack sahara
+  <https://docs.openstack.org/developer/sahara/>`_
+* Containerised workloads on bare metal using `OpenStack magnum
+  <https://docs.openstack.org/developer/magnum/>`_
+* Control plane and workload monitoring and log aggregation using `OpenStack
+  monasca <https://wiki.openstack.org/wiki/Monasca>`_
+* Virtualised compute using `OpenStack nova
+  <https://docs.openstack.org/developer/nova/>`_
