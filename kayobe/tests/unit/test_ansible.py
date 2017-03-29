@@ -151,7 +151,7 @@ class TestCase(unittest.TestCase):
         parsed_args = parser.parse_args([])
         mock_run.side_effect = subprocess.CalledProcessError(1, "dummy")
         self.assertRaises(SystemExit,
-                          ansible.run_playbooks, parsed_args, "command")
+                          ansible.run_playbooks, parsed_args, ["command"])
 
     @mock.patch.object(shutil, 'rmtree')
     @mock.patch.object(utils, 'read_yaml_file')
