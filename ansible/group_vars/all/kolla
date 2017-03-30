@@ -38,7 +38,7 @@ kolla_install_type: "binary"
 kolla_docker_namespace: "stackhpc"
 
 # Kolla OpenStack release version. This should be a Docker image tag.
-kolla_openstack_release: "4.0.0.0rc1"
+kolla_openstack_release: "4.0.0.1"
 
 # Dict mapping names of sources to their definitions for
 # kolla_install_type=source. See kolla.common.config for details.
