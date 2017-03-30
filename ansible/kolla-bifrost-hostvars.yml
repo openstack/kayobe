@@ -31,7 +31,10 @@
       ipv4_interface_mac: "{% raw %}{{ extra.pxe_interface_mac | default }}{% endraw %}"
       ipv4_address: "{{ provision_oc_net_name | net_ip }}"
       ipv4_subnet_mask: "{{ provision_oc_net_name | net_cidr | ipaddr('netmask') }}"
-      ipv4_gateway: "{{ provision_oc_net_name | net_gateway }}"
+      # If the provisioning network does not have a gateway defined, use the
+      # seed as a gateway to allow external access until other networks have
+      # been configured.
+      ipv4_gateway: "{{ provision_oc_net_name | net_gateway or provision_oc_net_name | net_ip(seed_host) }}"
       ipv4_nameserver: "{{ resolv_nameservers[0] }}"
   tasks:
     - name: Ensure the Bifrost host variable files exist
@@ -44,5 +47,5 @@
         dest: "/etc/kolla/bifrost/inventory/host_vars/{{ inventory_hostname }}"
       delegate_to: "{{ item }}"
       with_items:
-        - "{{ hostvars[groups['seed'][0]].ansible_host }}"
+        - "{{ hostvars[seed_host].ansible_host }}"
       become: True

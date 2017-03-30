@@ -1,0 +1,12 @@
+---
+# iptables -t nat -A POSTROUTING -o {{ interface }} -j SNAT --to-source {{ source_ip }}
+- name: Ensure SNAT iptables rules exist
+  iptables:
+    action: append
+    table: nat
+    chain: POSTROUTING
+    out_interface: "{{ item.interface }}"
+    jump: SNAT
+    to_source: "{{ item.source_ip }}"
+  with_items: "{{ snat_rules }}"
+  become: True

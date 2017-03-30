@@ -1,0 +1,11 @@
+---
+- name: Ensure IP routing sysctls are set
+  sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    sysctl_set: "yes"
+  with_items:
+    - { name: "net.ipv4.ip_forward", value: 1}
+    - { name: "net.ipv4.conf.all.rp_filter", value: 0}
+    - { name: "net.ipv4.conf.default.rp_filter", value: 0}
+  become: True

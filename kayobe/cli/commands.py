@@ -178,7 +178,8 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
         if parsed_args.wipe_disks:
             playbooks += _build_playbook_list("wipe-disks")
         playbooks += _build_playbook_list(
-            "dev-tools", "disable-selinux", "network", "ntp", "lvm")
+            "dev-tools", "disable-selinux", "network", "ip-routing", "snat",
+            "ntp", "lvm")
         ansible.run_playbooks(parsed_args, playbooks, limit="seed")
         kolla_ansible.run_seed(parsed_args, "bootstrap-servers",
                                extra_vars={"ansible_user": ansible_user})

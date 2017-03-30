@@ -1,0 +1,11 @@
+---
+# Enable SNAT using iptables.
+
+- name: Ensure SNAT is configured
+  hosts: seed:controllers
+  vars:
+    snat_rules:
+      - interface: "{{ ansible_default_ipv4.interface }}"
+        source_ip: "{{ ansible_default_ipv4.address }}"
+  roles:
+    - role: snat
