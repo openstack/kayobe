@@ -37,7 +37,7 @@ inspector_port_addition: "all"
 inspector_enable_discovery: True
 
 # The Ironic driver with which to register newly discovered nodes.
-inspector_discovery_enroll_node_driver: "agent_ipmitool"
+inspector_discovery_enroll_node_driver: "ipmi"
 
 ###############################################################################
 # Ironic inspector configuration.

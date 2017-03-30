@@ -3,19 +3,44 @@
 [DEFAULT]
 enabled_drivers = {{ kolla_ironic_drivers | join(',') }}
 
+{% if kolla_ironic_enabled_hardware_types %}
+enabled_hardware_types: {{ kolla_ironic_enabled_hardware_types | join(',') }}
+{% endif %}
+
+{# Add configuration of enabled and default dynamic driver interfaces. #}
+{% set interfaces=['boot', 'console', 'deploy', 'inspect', 'management',
+                   'network', 'power', 'raid', 'storage', 'vendor'] %}
+{% for interface in interfaces %}
+{% if hostvars[inventory_hostname]['kolla_ironic_enabled_' ~ interface ~ '_interfaces'] | default %}
+{{ 'enabled_' ~ interface ~ '_interfaces' }} = {{ hostvars[inventory_hostname]['kolla_ironic_enabled_' ~ interface ~ '_interfaces'] | join(',') }}
+{% endif %}
+{% if hostvars[inventory_hostname]['kolla_ironic_default_' ~ interface ~ '_interface'] | default %}
+{{ 'default_' ~ interface ~ '_interface' }} = {{ hostvars[inventory_hostname]['kolla_ironic_default_' ~ interface ~ '_interface'] }}
+{% endif %}
+{% endfor %}
+
+[agent]
+deploy_logs_local_path = /var/log/kolla/ironic/deploy
+
 [conductor]
 {% raw %}
 api_url = {{ internal_protocol }}://{{ hostvars[inventory_hostname]['ansible_' + provision_interface | replace('-', '_')]['ipv4']['address'] }}:{{ ironic_api_port }}
 {% endraw %}
 
-[agent]
-deploy_logs_local_path = /var/log/kolla/ironic/deploy
+[deploy]
+{% if kolla_ironic_default_boot_option %}
+default_boot_option = {{ kolla_ironic_default_boot_option }}
+{% endif %}
 
 [neutron]
 cleaning_network = {{ kolla_ironic_cleaning_network }}
 provisioning_network = {{ kolla_ironic_provisioning_network }}
 
 [pxe]
+{% if kolla_ironic_pxe_append_params %}
+pxe_append_params = {{ kolla_ironic_pxe_append_params | join(',') }}
+{% endif %}
+
 {% raw %}
 tftp_server = {{ hostvars[inventory_hostname]['ansible_' + provision_interface | replace('-', '_')]['ipv4']['address'] }}
 {% endraw %}
