@@ -23,3 +23,6 @@ kolla_openstack_release:
 #     location: https://github.com/openstack/ironic
 #     reference: master
 kolla_sources: {}
+
+# Dict mapping Jinja2 block names in kolla's Docker images to their contents.
+kolla_build_blocks: {}

@@ -3,3 +3,10 @@
 {% raw %}
 {% extends parent_template %}
 {% endraw %}
+
+{% for block_name, block_contents in kolla_build_blocks.items() %}
+{{ '{% block ' ~ block_name ~ ' %}' }}
+{{ block_contents }}
+{{ '{% endblock %}' }}
+
+{% endfor %}
