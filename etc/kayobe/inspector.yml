@@ -17,7 +17,13 @@
 # Whether inspector should manage the firewall.
 #inspector_manage_firewall:
 
-# List of of inspector processing plugins.
+# List of of default inspector processing plugins.
+#inspector_processing_hooks_default:
+
+# List of of additional inspector processing plugins.
+#inspector_processing_hooks_extra:
+
+# List of of additional inspector processing plugins.
 #inspector_processing_hooks:
 
 # Which MAC addresses to add as ports during introspection. One of 'all',
