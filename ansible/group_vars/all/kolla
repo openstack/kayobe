@@ -151,6 +151,7 @@ kolla_openstack_logging_debug: "False"
 
 kolla_enable_glance: "yes"
 kolla_enable_ironic: "yes"
+kolla_enable_neutron: "yes"
 kolla_enable_swift: "yes"
 
 ###############################################################################

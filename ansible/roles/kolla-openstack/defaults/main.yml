@@ -3,7 +3,20 @@
 kolla_node_custom_config_path:
 
 ###############################################################################
+# Glance configuration.
+
+# Whether to enable Glance.
+kolla_enable_glance:
+
+# Free form extra configuration to append to glance-api.conf and
+# glance-registry.conf.
+kolla_extra_glance:
+
+###############################################################################
 # Ironic configuration.
+
+# Whether to enable Ironic.
+kolla_enable_ironic:
 
 # List of enabled Ironic drivers.
 kolla_ironic_drivers:
@@ -144,8 +157,50 @@ kolla_inspector_dhcp_pool_start:
 kolla_inspector_dhcp_pool_end:
 
 ###############################################################################
-# Glance configuration.
+# Neutron configuration.
 
-# Free form extra configuration to append to glance-api.conf and
-# glance-registry.conf.
-kolla_extra_glance:
+# Whether to enable Neutron.
+kolla_enable_neutron:
+
+# List of Neutron ML2 mechanism drivers to use.
+kolla_neutron_ml2_mechanism_drivers: []
+
+# List of Neutron ML2 type drivers to use.
+kolla_neutron_ml2_type_drivers: []
+
+# List of Neutron ML2 tenant network types to use.
+kolla_neutron_ml2_tenant_network_types: []
+
+# List of Neutron ML2 network VLAN ranges to use. Each item should be a dict
+# containing the following items:
+# physical_network: The physical network
+# range: Range of allowed VLANs on this physical network (min:max, (optional)
+kolla_neutron_ml2_network_vlan_ranges: []
+
+# List of switches to configure for use by genericswitch ML2 mechanism driver.
+# Each item should be a dict containing the following items;
+# name: Hostname of the switch
+# ip: IP address on which to reach the switch
+# username: SSH username
+# password: SSH password (optional)
+# key_file: SSH key file (optional)
+# secret: SSH secret (optional)
+kolla_neutron_ml2_generic_switches: []
+
+# List of Ansible hosts representing switches to configure for use by
+# genericswitch ML2 mechanism driver. These switches will be appended to
+# kolla_neutron_ml2_generic_switches and their configuration will be determined
+# by the following host variables:
+# name: inventory_hostname
+# ip: ansible_host
+# username: ansible_user
+# password: ansible_ssh_password
+# key_file: not currently supported
+# secret: not currently supported
+kolla_neutron_ml2_generic_switch_hosts: []
+
+# Free form extra configuration to append to neutron.conf.
+kolla_extra_neutron:
+
+# Free form extra configuration to append to ml2_conf.ini.
+kolla_extra_neutron_ml2:

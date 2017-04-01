@@ -1,0 +1,44 @@
+# {{ ansible_managed }}
+
+[ml2]
+{% if kolla_neutron_ml2_mechanism_drivers %}
+mechanism_drivers = {{ kolla_neutron_ml2_mechanism_drivers | join(',') }}
+{% endif %}
+
+{% if kolla_neutron_ml2_type_drivers %}
+type_drivers = {{ kolla_neutron_ml2_type_drivers | join(',') }}
+{% endif %}
+
+{% if kolla_neutron_ml2_tenant_network_types %}
+tenant_network_types = {{ kolla_neutron_ml2_tenant_network_types | join(',') }}
+{% endif %}
+
+[ml2_type_vlan]
+{% if kolla_neutron_ml2_network_vlan_ranges %}
+network_vlan_ranges = {% for vnr in kolla_neutron_ml2_network_vlan_ranges %}{{ vnr.physical_network }}{% if vnr.range is defined %}:{{ vnr.range }}{% endif %}{% if not loop.last %},{% endif %}{% endfor %}
+{% endif %}
+
+{% for switch in kolla_neutron_ml2_generic_switches %}
+[genericswitch:{{ switch.name }}]
+device_type = {{ switch.device_type }}
+ip = {{ switch.ip }}
+username = {{ switch.username }}
+{% if switch.password is defined %}
+password = {{ switch.password }}
+{% endif %}
+{% if switch.key_file is defined %}
+key_file = {{ switch.key_file }}
+{% endif %}
+{% if switch.secret is defined %}
+secret = {{ switch.secret }}
+{% endif %}
+
+{% endfor %}
+
+{% if kolla_extra_neutron_ml2 %}
+#######################
+# Extra configuration
+#######################
+
+{{ kolla_extra_neutron_ml2 }}
+{% endif %}
