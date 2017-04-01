@@ -44,6 +44,8 @@
 # provision_wl_net_cidr:
 # provision_wl_net_allocation_pool_start:
 # provision_wl_net_allocation_pool_end:
+# provision_wl_net_neutron_allocation_pool_start:
+# provision_wl_net_neutron_allocation_pool_end:
 # provision_wl_net_gateway:
 # provision_wl_net_vlan:
 # provision_wl_net_mtu:
@@ -64,6 +66,8 @@
 # external_net_cidr:
 # external_net_allocation_pool_start:
 # external_net_allocation_pool_end:
+# external_net_neutron_allocation_pool_start:
+# external_net_neutron_allocation_pool_end:
 # external_net_gateway:
 # external_net_vlan:
 # external_net_mtu:

@@ -19,5 +19,5 @@
       neutron_net_subnet_name: "{{ kolla_ironic_provisioning_network }}"
       neutron_net_cidr: "{{ provision_wl_net_name | net_cidr }}"
       neutron_net_gateway_ip: "{{ provision_wl_net_name | net_gateway }}"
-      neutron_net_allocation_pool_start: "{{ provision_wl_net_name | net_allocation_pool_start }}"
-      neutron_net_allocation_pool_end: "{{ provision_wl_net_name | net_allocation_pool_end }}"
+      neutron_net_allocation_pool_start: "{{ provision_wl_net_name | net_neutron_allocation_pool_start }}"
+      neutron_net_allocation_pool_end: "{{ provision_wl_net_name | net_neutron_allocation_pool_end }}"
