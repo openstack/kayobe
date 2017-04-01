@@ -17,7 +17,19 @@
 - name: Ensure compute nodes are PXE booted
   hosts: compute
   gather_facts: no
+  vars:
+    delegate_host: "{{ groups['controllers'][0] }}"
   tasks:
+    - name: Ensure ipmitool is installed
+      yum:
+        name: ipmitool
+        state: installed
+      become: True
+      run_once: True
+      delegate_to: "{{ item }}"
+      with_items:
+        - "{{ hostvars[delegate_host].ansible_host }}"
+
     - name: Set a fact containing the compute node IPMI address
       set_fact:
         ipmi_username: "{{ inspector_ipmi_username }}"
@@ -28,7 +40,7 @@
       command: ipmitool -U {{ ipmi_username }} -P {{ ipmi_password }} -H {{ ipmi_address }} -I lanplus chassis power off
       delegate_to: "{{ item }}"
       with_items:
-        - "{{ hostvars[groups['controllers'][0]].ansible_host }}"
+        - "{{ hostvars[delegate_host].ansible_host }}"
 
     - name: Pause to prevent overwhelming BMCs
       pause:
@@ -38,7 +50,7 @@
       command: ipmitool -U {{ ipmi_username }} -P {{ ipmi_password }} -H {{ ipmi_address }} -I lanplus chassis bootdev pxe
       delegate_to: "{{ item }}"
       with_items:
-        - "{{ hostvars[groups['controllers'][0]].ansible_host }}"
+        - "{{ hostvars[delegate_host].ansible_host }}"
 
     - name: Pause to prevent overwhelming BMCs
       pause:
@@ -48,4 +60,4 @@
       command: ipmitool -U {{ ipmi_username }} -P {{ ipmi_password }} -H {{ ipmi_address }} -I lanplus chassis power on
       delegate_to: "{{ item }}"
       with_items:
-        - "{{ hostvars[groups['controllers'][0]].ansible_host }}"
+        - "{{ hostvars[delegate_host].ansible_host }}"
