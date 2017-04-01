@@ -1,5 +1,6 @@
 import logging
 import os
+import six
 import subprocess
 import sys
 
@@ -83,5 +84,9 @@ def run_command(cmd, quiet=False, **kwargs):
     if quiet:
         kwargs["stdout"] = subprocess.PIPE
         kwargs["stderr"] = subprocess.PIPE
-    LOG.debug("Running command: %s", " ".join(cmd))
+    if isinstance(cmd, six.string_types):
+        cmd_string = cmd
+    else:
+        cmd_string = " ".join(cmd)
+    LOG.debug("Running command: %s", cmd_string)
     subprocess.check_call(cmd, **kwargs)

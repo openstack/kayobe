@@ -4,9 +4,18 @@
   vars:
     # Set this to True to push images to the registry when built.
     push_images: False
+    # Set this variable to a space-separated list of regexes to override the
+    # default set of images.
+    container_image_regexes: ""
     kolla_venv: "{{ ansible_env['PWD'] }}/kolla-venv"
     kolla_build_log_path: "/var/log/kolla-build.log"
   tasks:
+    - name: Set the container image sets to build if images regexes specified
+      set_fact:
+        container_image_sets:
+          - regexes: "{{ container_image_regexes }}"
+      when: "{{ container_image_regexes != '' }}"
+
     - name: Display the regexes for container images that will be built
       debug:
         msg: >

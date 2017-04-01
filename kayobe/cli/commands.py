@@ -209,6 +209,9 @@ class SeedContainerImageBuild(KayobeAnsibleMixin, Command):
         group.add_argument("--push", action="store_true",
                            help="whether to push images to a registry after "
                                 "building")
+        group.add_argument("regex", nargs='*',
+                           help="regular expression matching names of images "
+                                "to build. Builds all images if unspecified")
         return parser
 
     def take_action(self, parsed_args):
@@ -216,6 +219,9 @@ class SeedContainerImageBuild(KayobeAnsibleMixin, Command):
         playbooks = _build_playbook_list(
             "kolla-build", "container-image-build")
         extra_vars = {"push_images": parsed_args.push}
+        if parsed_args.regex:
+            regexes = " ".join(parsed_args.regex)
+            extra_vars["container_image_regexes"] = regexes
         ansible.run_playbooks(parsed_args, playbooks, limit="seed",
                               extra_vars=extra_vars)
 
@@ -302,12 +308,20 @@ class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
         self.app.LOG.debug("Deploying overcloud services")
         playbooks = _build_playbook_list("kolla-openstack", "swift-setup")
         ansible.run_playbooks(parsed_args, playbooks)
-        for command in ["pull", "prechecks", "deploy"]:
+        for command in ["prechecks", "deploy"]:
             kolla_ansible.run_overcloud(parsed_args, command)
         # FIXME: Fudge to work around incorrect configuration path.
         extra_vars = {"node_config_directory": parsed_args.kolla_config_path}
         kolla_ansible.run_overcloud(parsed_args, "post-deploy",
                                     extra_vars=extra_vars)
+
+
+class OvercloudContainerImagePull(KollaAnsibleMixin, Command):
+    """Pull the overcloud container images from a registry."""
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Pulling overcloud container images")
+        kolla_ansible.run_overcloud(parsed_args, "pull")
 
 
 class OvercloudContainerImageBuild(KayobeAnsibleMixin, Command):
@@ -320,6 +334,9 @@ class OvercloudContainerImageBuild(KayobeAnsibleMixin, Command):
         group.add_argument("--push", action="store_true",
                            help="whether to push images to a registry after "
                                 "building")
+        group.add_argument("regex", nargs='*',
+                           help="regular expression matching names of images "
+                                "to build. Builds all images if unspecified")
         return parser
 
     def take_action(self, parsed_args):
@@ -327,5 +344,20 @@ class OvercloudContainerImageBuild(KayobeAnsibleMixin, Command):
         playbooks = _build_playbook_list(
             "kolla-build", "container-image-build")
         extra_vars = {"push_images": parsed_args.push}
+        if parsed_args.regex:
+            regexes = " ".join(parsed_args.regex)
+            extra_vars["container_image_regexes"] = regexes
         ansible.run_playbooks(parsed_args, playbooks, limit="controllers",
                               extra_vars=extra_vars)
+
+
+class OvercloudPostConfigure(KayobeAnsibleMixin, Command):
+    """Perform post-deployment configuration."""
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Performing post-deployment configuration")
+        playbooks = _build_playbook_list(
+            "ipa-images", "overcloud-introspection-rules",
+            "overcloud-introspection-rules-dell-lldp-workaround",
+            "provision-net")
+        ansible.run_playbooks(parsed_args, playbooks)
