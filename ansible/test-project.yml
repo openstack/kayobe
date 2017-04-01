@@ -15,11 +15,23 @@
       ram: -1
       secgroup_rules: -1
       secgroups: -1
+    test_ssh_private_key_path: "{{ ansible_env.PWD ~ '/.ssh/id_rsa' }}"
+    test_ssh_public_key_path: "{{ test_ssh_private_key_path ~ '.pub' }}"
+    test_ssh_key_type: rsa
 
   pre_tasks:
+    - name: Check whether an SSH key exists on the controller
+      stat:
+        path: "{{ test_ssh_private_key_path }}"
+      register: ssh_key_stat
+
+    - name: Generate an SSH key on the controller
+      command: ssh-keygen -t {{ test_ssh_key_type }} -N '' -f {{ test_ssh_private_key_path }}
+      when: not ssh_key_stat.stat.exists
+
     - name: Read the SSH public key on the controller
       slurp:
-        src: "{{ ansible_env.PWD ~ '/.ssh/id_rsa.pub' }}"
+        src: "{{ test_ssh_public_key_path }}"
       register: ssh_public_key
 
   roles:
