@@ -124,6 +124,7 @@ class TestCase(unittest.TestCase):
             "extra_vars": {"ev_name2": "ev_value2"},
             "limit": "group2:host2",
             "tags": "tag3,tag4",
+            "verbose_level": 0,
         }
         ansible.run_playbooks(parsed_args, ["playbook1.yml", "playbook2.yml"],
                               **kwargs)
@@ -179,7 +180,7 @@ class TestCase(unittest.TestCase):
                                          extra_vars={
                                              "dump_path": dump_dir,
                                          },
-                                         quiet=True)
+                                         quiet=True, verbose_level=None)
         mock_rmtree.assert_called_once_with(dump_dir)
         mock_listdir.assert_called_once_with(dump_dir)
         mock_read.assert_has_calls([

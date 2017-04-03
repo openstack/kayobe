@@ -88,11 +88,13 @@ class TestCase(unittest.TestCase):
         kwargs = {
             "extra_vars": {"ev_name2": "ev_value2"},
             "tags": "tag3,tag4",
+            "verbose_level": 1
         }
         kolla_ansible.run(parsed_args, "command", "overcloud", **kwargs)
         expected_cmd = [
             "source", "ansible/kolla-venv/bin/activate", "&&",
             "kolla-ansible", "command",
+            "-v",
             "--inventory", "/etc/kolla/inventory/overcloud",
             "-e", "ev_name1=ev_value1",
             "-e", "ev_name2=ev_value2",

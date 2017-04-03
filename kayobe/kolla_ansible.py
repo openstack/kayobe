@@ -75,11 +75,13 @@ def _validate_args(parsed_args, inventory_filename):
 
 
 def build_args(parsed_args, command, inventory_filename, extra_vars=None,
-               tags=None):
+               tags=None, verbose_level=None):
     """Build arguments required for running Kolla Ansible."""
     venv_activate = os.path.join(parsed_args.kolla_venv, "bin", "activate")
     cmd = ["source", venv_activate, "&&"]
     cmd += ["kolla-ansible", command]
+    if verbose_level:
+        cmd += ["-" + "v" * verbose_level]
     inventory = _get_inventory_path(parsed_args, inventory_filename)
     cmd += ["--inventory", inventory]
     if parsed_args.kolla_config_path != DEFAULT_CONFIG_PATH:
@@ -99,12 +101,13 @@ def build_args(parsed_args, command, inventory_filename, extra_vars=None,
 
 
 def run(parsed_args, command, inventory_filename, extra_vars=None,
-        tags=None, quiet=False):
+        tags=None, quiet=False, verbose_level=None):
     """Run a Kolla Ansible command."""
     _validate_args(parsed_args, inventory_filename)
     cmd = build_args(parsed_args, command,
                      inventory_filename=inventory_filename,
-                     extra_vars=extra_vars, tags=tags)
+                     extra_vars=extra_vars, tags=tags,
+                     verbose_level=verbose_level)
     try:
         utils.run_command(" ".join(cmd), quiet=quiet, shell=True)
     except subprocess.CalledProcessError as e:

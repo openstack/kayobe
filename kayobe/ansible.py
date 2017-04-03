@@ -89,9 +89,11 @@ def _get_vars_files(config_path):
 
 
 def build_args(parsed_args, playbooks,
-               extra_vars=None, limit=None, tags=None):
+               extra_vars=None, limit=None, tags=None, verbose_level=None):
     """Build arguments required for running Ansible playbooks."""
     cmd = ["ansible-playbook"]
+    if verbose_level:
+        cmd += ["-" + "v" * verbose_level]
     inventory = _get_inventory_path(parsed_args)
     cmd += ["--inventory", inventory]
     vars_files = _get_vars_files(parsed_args.config_path)
@@ -118,11 +120,13 @@ def build_args(parsed_args, playbooks,
 
 
 def run_playbooks(parsed_args, playbooks,
-                  extra_vars=None, limit=None, tags=None, quiet=False):
+                  extra_vars=None, limit=None, tags=None, quiet=False,
+                  verbose_level=None):
     """Run a Kayobe Ansible playbook."""
     _validate_args(parsed_args, playbooks)
     cmd = build_args(parsed_args, playbooks,
-                     extra_vars=extra_vars, limit=limit, tags=tags)
+                     extra_vars=extra_vars, limit=limit, tags=tags,
+                     verbose_level=verbose_level)
     try:
         utils.run_command(cmd, quiet=quiet)
     except subprocess.CalledProcessError as e:
@@ -137,7 +141,7 @@ def run_playbook(parsed_args, playbook, *args, **kwargs):
 
 
 def config_dump(parsed_args, host=None, hosts=None, var_name=None,
-                facts=None, extra_vars=None):
+                facts=None, extra_vars=None, verbose_level=None):
     dump_dir = tempfile.mkdtemp()
     try:
         if not extra_vars:
@@ -150,7 +154,8 @@ def config_dump(parsed_args, host=None, hosts=None, var_name=None,
         if facts is not None:
             extra_vars["dump_facts"] = facts
         run_playbook(parsed_args, "ansible/dump-config.yml",
-                     extra_vars=extra_vars, quiet=True)
+                     extra_vars=extra_vars, quiet=True,
+                     verbose_level=verbose_level)
         hostvars = {}
         for path in os.listdir(dump_dir):
             LOG.debug("Found dump file %s", path)
