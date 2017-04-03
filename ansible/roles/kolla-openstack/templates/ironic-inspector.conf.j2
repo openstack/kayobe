@@ -10,14 +10,16 @@ manage_firewall = {{ kolla_inspector_manage_firewall }}
 processing_hooks = {{ kolla_inspector_processing_hooks | join(',') }}
 {% endif %}
 
-{% if kolla_inspector_port_addition %}
+{% if kolla_inspector_add_ports %}
 # Which MAC addresses to add as ports during introspection. One of 'all',
 # 'active' or 'pxe'.
-add_ports = {{ kolla_inspector_port_addition }}
+add_ports = {{ kolla_inspector_add_ports }}
 {% endif %}
 
+{% if kolla_inspector_keep_ports %}
 # Keep only those ports that were found during inspection.
 keep_ports = present
+{% endif %}
 
 # Store logs returned by the inspection ramdisk.
 ramdisk_logs_dir = /var/log/kolla/ironic

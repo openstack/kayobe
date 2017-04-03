@@ -49,7 +49,7 @@ kolla_bifrost_inspector_processing_hooks: "{{ inspector_processing_hooks }}"
 
 # Which MAC addresses to add as ports during introspection. One of 'all',
 # 'active' or 'pxe'.
-kolla_bifrost_inspector_port_addition: "{{ inspector_port_addition }}"
+kolla_bifrost_inspector_port_addition: "{{ inspector_add_ports }}"
 
 # List of extra kernel parameters for the inspector default PXE configuration.
 kolla_bifrost_inspector_extra_kernel_options: "{{ inspector_extra_kernel_options }}"

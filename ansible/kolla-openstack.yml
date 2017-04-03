@@ -64,7 +64,8 @@
       # Ironic inspector configuration.
       kolla_inspector_manage_firewall: "{{ inspector_manage_firewall }}"
       kolla_inspector_processing_hooks: "{{ inspector_processing_hooks }}"
-      kolla_inspector_port_addition: "{{ inspector_port_addition }}"
+      kolla_inspector_add_ports: "{{ inspector_add_ports }}"
+      kolla_inspector_keep_ports: "{{ inspector_keep_ports }}"
       kolla_inspector_enable_discovery: "{{ inspector_enable_discovery }}"
       kolla_inspector_discovery_enroll_node_driver: "{{ inspector_discovery_enroll_node_driver }}"
       kolla_inspector_extra_kernel_options: "{{ inspector_extra_kernel_options }}"
