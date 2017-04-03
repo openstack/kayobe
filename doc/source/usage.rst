@@ -151,10 +151,14 @@ modules.  Currently Dell Network OS 6 and Dell Network OS 9 switches are
 supported but this could easily be extended.  To provision the physical
 network::
 
-    (kayobe-venv) $ kayobe physical network configure --group <group>
+    (kayobe-venv) $ kayobe physical network configure --group <group> [--enable-discovery]
 
 The ``--group`` argument is used to specify an Ansible group containing
 the switches to be configured.
+
+The ``--enable-discovery`` argument enables a one-time configuration of ports
+attached to baremetal compute nodes to support hardware discovery via ironic
+inspector.
 
 Seed
 ====

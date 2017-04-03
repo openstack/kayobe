@@ -17,3 +17,8 @@ switch_config: []
 # Generally this should be configured on a per-switch basis via a host_vars
 # file.
 switch_interface_config: {}
+
+# Interface configuration for hardware discovery. After discovery Neutron owns
+# the configuration of these ports. Has the same format as
+# switch_interface_config.
+switch_interface_config_discovery: {}

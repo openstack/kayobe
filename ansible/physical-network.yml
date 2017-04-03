@@ -5,10 +5,19 @@
 - name: Group hosts by their switch type
   hosts: switches
   gather_facts: no
+  vars:
+    # Set this variable to True to configure of network for hardware discovery.
+    physical_network_enable_discovery: False
   tasks:
     - name: Group hosts by their switch type
       group_by:
         key: "switches_of_type_{{ switch_type }}"
+
+    - name: Add discovery interface configuration when performing discovery
+      set_fact:
+        switch_interface_config: >
+          {{ switch_interface_config | combine(switch_interface_config_discovery) }}
+      when: "{{ physical_network_enable_discovery | bool }}"
 
 - name: Ensure DellOS physical switches are configured
   hosts: switches_of_type_dellos6:switches_of_type_dellos9

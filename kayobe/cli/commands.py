@@ -136,12 +136,17 @@ class PhysicalNetworkConfigure(KayobeAnsibleMixin, Command):
         group = parser.add_argument_group("Physical Networking")
         group.add_argument("--group", required=True,
                            help="the Ansible group to apply configuration to")
+        group.add_argument("--enable-discovery", action="store_true",
+                           help="configure the network for hardware discovery")
         return parser
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Configuring a physical network")
+        extra_vars = {}
+        if parsed_args.enable_discovery:
+            extra_vars["physical_network_enable_discovery"] = True
         ansible.run_playbook(parsed_args, "ansible/physical-network.yml",
-                             limit=parsed_args.group)
+                             limit=parsed_args.group, extra_vars=extra_vars)
 
 
 class SeedVMProvision(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
