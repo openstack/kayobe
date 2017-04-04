@@ -1,0 +1,144 @@
+---
+# Use bifrost to inspect the overcloud nodes' hardware.
+
+- name: Ensure the overcloud controller hardware is inspected
+  hosts: controllers
+  vars:
+    # Set to False to avoid waiting for the controllers to become active.
+    wait_inspected: True
+    wait_inspected_timeout: 600
+    wait_inspected_interval: 10
+    # List of states from which we can get to inspecting.
+    inspectable_states:
+      - enroll
+      - manageable
+      - available
+      - inspect failed
+    # List of valid states while a node is being inspected.
+    inspecting_states:
+      - inspecting
+    # Retries to use when using Ironic API and hitting node locked errors.
+    ironic_retries: 6
+    ironic_retry_interval: 5
+  gather_facts: no
+  tasks:
+    - name: Check the ironic node's initial provision state
+      command: >
+        docker exec bifrost_deploy
+        bash -c '. env-vars &&
+        export OS_URL=$IRONIC_URL &&
+        export OS_TOKEN=$OS_AUTH_TOKEN &&
+        export BIFROST_INVENTORY_SOURCE=ironic &&
+        ansible baremetal
+        --connection local
+        --inventory /etc/bifrost/inventory/
+        -e @/etc/bifrost/bifrost.yml
+        -e @/etc/bifrost/dib.yml
+        --limit {{ inventory_hostname }}
+        -m command
+        -a "openstack baremetal node show {% raw %}{{ inventory_hostname }}{% endraw %} -f value -c provision_state"'
+      register: show_result
+      changed_when: False
+      # We use this convoluted construct to work around Ansible's limitations
+      # in evaluation of the delegate_to keyword.
+      delegate_to: "{{ item }}"
+      with_items:
+        - "{{ hostvars[groups['seed'][0]].ansible_host }}"
+
+    - name: Set a fact containing the ironic node's initial provision state
+      set_fact:
+        initial_provision_state: "{{ show_result.results[0].stdout_lines[1] }}"
+
+    - name: Fail if the ironic node is in an unexpected provision state
+      fail:
+        msg: >
+          Ironic node for {{ inventory_hostname }} is in an unexpected
+          initial provision state: {{ initial_provision_state }}. Expected
+          states are: {{ inspectable_states | join(',') }}.
+      when: "{{ initial_provision_state not in inspectable_states }}"
+
+    - name: Ensure the ironic node is manageable
+      command: >
+        docker exec bifrost_deploy
+        bash -c '. env-vars &&
+        export BIFROST_INVENTORY_SOURCE=ironic &&
+        ansible baremetal -vvvv
+        --connection local
+        --inventory /etc/bifrost/inventory/
+        -e @/etc/bifrost/bifrost.yml
+        -e @/etc/bifrost/dib.yml
+        --limit {{ inventory_hostname }}
+        -m command
+        -a "ironic node-set-provision-state {% raw %}{{ inventory_hostname }}{% endraw %} manage"'
+      register: manage_result
+      until: "{{ manage_result | success or 'is locked by host' in manage_result.stdout }}"
+      retries: "{{ ironic_retries }}"
+      delay: "{{ ironic_retry_interval }}"
+      when: "{{ initial_provision_state != 'manageable' }}"
+      delegate_to: "{{ item }}"
+      with_items:
+        - "{{ hostvars[groups['seed'][0]].ansible_host }}"
+
+    - name: Ensure the ironic node is inspected
+      command: >
+        docker exec bifrost_deploy
+        bash -c '. env-vars &&
+        export BIFROST_INVENTORY_SOURCE=ironic &&
+        ansible baremetal -vvvv
+        --connection local
+        --inventory /etc/bifrost/inventory/
+        -e @/etc/bifrost/bifrost.yml
+        -e @/etc/bifrost/dib.yml
+        --limit {{ inventory_hostname }}
+        -m command
+        -a "ironic node-set-provision-state {% raw %}{{ inventory_hostname }}{% endraw %} inspect"'
+      register: provide_result
+      until: "{{ provide_result | success or 'is locked by host' in provide_result.stdout }}"
+      retries: "{{ ironic_retries }}"
+      delay: "{{ ironic_retry_interval }}"
+      delegate_to: "{{ item }}"
+      with_items:
+        - "{{ hostvars[groups['seed'][0]].ansible_host }}"
+
+    - name: Wait for the ironic node to be inspected
+      command: >
+        docker exec bifrost_deploy
+        bash -c '. env-vars &&
+        export OS_URL=$IRONIC_URL &&
+        export OS_TOKEN=$OS_AUTH_TOKEN &&
+        export BIFROST_INVENTORY_SOURCE=ironic &&
+        ansible baremetal
+        --connection local
+        --inventory /etc/bifrost/inventory/
+        -e @/etc/bifrost/bifrost.yml
+        -e @/etc/bifrost/dib.yml
+        --limit {{ inventory_hostname }}
+        -m command
+        -a "openstack baremetal node show {% raw %}{{ inventory_hostname }}{% endraw %} -f value -c provision_state"'
+      register: show_result
+      # Wait until the node is no longer in one of the inspecting states.
+      until: "{{ not show_result.stdout_lines[1:] | intersect(inspecting_states) }}"
+      retries: "{{ wait_inspected_timeout // wait_inspected_interval }}"
+      delay: "{{ wait_inspected_interval }}"
+      when:
+        - "{{ wait_inspected | bool }}"
+      changed_when: False
+      delegate_to: "{{ item }}"
+      with_items:
+        - "{{ hostvars[groups['seed'][0]].ansible_host }}"
+
+    - name: Set a fact containing the final provision state
+      set_fact:
+        final_provision_state: "{{ show_result.results[0].stdout_lines[1] }}"
+      when:
+        - "{{ wait_inspected | bool }}"
+
+    - name: Fail if any of the controllers are not manageable
+      fail:
+        msg: >
+          Ironic node for {{ inventory_hostname }} is in an unexpected
+          provision state after inspecting.  Ironic provision state:
+          {{ final_provision_state }}. Expected: manageable.
+      when:
+        - "{{ wait_inspected | bool }}"
+        - "{{ final_provision_state != 'manageable' }}"

@@ -302,6 +302,15 @@ class OvercloudBIOSRAIDConfigure(KayobeAnsibleMixin, Command):
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
 
+class OvercloudHardwareInspect(KayobeAnsibleMixin, Command):
+    """Inspect the overcloud hardware using ironic inspector."""
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Inspecting overcloud")
+        playbooks = _build_playbook_list("overcloud-hardware-inspect")
+        self.run_kayobe_playbooks(parsed_args, playbooks)
+
+
 class OvercloudProvision(KayobeAnsibleMixin, Command):
     """Provision the overcloud."""
 

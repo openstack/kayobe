@@ -299,6 +299,12 @@ RAID::
 
     (kayobe-venv) $ kayobe overcloud bios raid configure
 
+After configuring the nodes' RAID volumes it may be necessary to perform
+hardware inspection of the nodes to reconfigure the ironic nodes' scheduling
+properties and root device hints.  To perform manual hardware inspection::
+
+    (kayobe-venv) $ kayobe overcloud hardware inspect
+
 Provisioning
 ------------
 
