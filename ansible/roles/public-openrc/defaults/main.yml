@@ -1,0 +1,6 @@
+---
+# Path to kolla configuration directory.
+public_openrc_kolla_config_path:
+
+# URL of public keystone API to use for authentication.
+public_openrc_auth_url:

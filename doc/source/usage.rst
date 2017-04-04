@@ -369,15 +369,22 @@ Interacting with the Control Plane
 ----------------------------------
 
 Kolla-ansible writes out an environment file that can be used to access the
-OpenStack services::
+OpenStack admin endpoints as the admin user::
 
     $ source ${KOLLA_CONFIG_PATH:-/etc/kolla}/admin-openrc.sh
+
+Kayobe also generates an environment file that can be used to access the
+OpenStack public endpoints as the admin user which may be required if the
+admin endpoints are not available from the control host::
+
+    $ source ${KOLLA_CONFIG_PATH:-/etc/kolla}/public-openrc.sh
 
 Performing Post-deployment Configuration
 ----------------------------------------
 
 To perform post deployment configuration of the overcloud services::
 
+    (kayobe-venv) $ source ${KOLLA_CONFIG_PATH:-/etc/kolla}/admin-openrc.sh
     (kayobe-venv) $ kayobe overcloud post configure
 
 This will perform the following tasks:

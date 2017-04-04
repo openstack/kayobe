@@ -1,0 +1,11 @@
+# {{ ansible_managed }}
+
+{% for line in (admin_openrc.content | b64decode).splitlines() %}
+{% if "export OS_AUTH_URL" in line %}
+export OS_AUTH_URL={{ public_openrc_auth_url }}
+{% elif "export OS_INTERFACE" in line %}
+export OS_INTERFACE=public
+{% else %}
+{{ line }}
+{% endif %}
+{% endfor %}

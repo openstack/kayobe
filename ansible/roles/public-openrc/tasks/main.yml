@@ -1,0 +1,10 @@
+---
+- name: Read the admin OpenStack API environment file
+  slurp:
+    src: "{{ kolla_config_path }}/admin-openrc.sh"
+  register: admin_openrc
+
+- name: Ensure a public OpenStack API environment file exists
+  template:
+    src: public-openrc.sh.j2
+    dest: "{{ public_openrc_kolla_config_path }}/public-openrc.sh"
