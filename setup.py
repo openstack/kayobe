@@ -25,7 +25,8 @@ setup(
     download_url='https://github.com/stackhpc/kayobe/tarball/master',
 
     provides=[],
-    install_requires=open('requirements.txt', 'rt').read().split(),
+    install_requires=open('requirements.txt', 'rt').read().splitlines(),
+
 
     namespace_packages=[],
     packages=find_packages(),
