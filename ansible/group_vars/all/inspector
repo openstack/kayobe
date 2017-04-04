@@ -3,7 +3,9 @@
 # Ironic inspector PXE configuration.
 
 # List of extra kernel parameters for the inspector default PXE configuration.
-inspector_extra_kernel_options: "{{ ipa_kernel_options_collect_lldp }}"
+inspector_extra_kernel_options: >
+  {{ ipa_kernel_options_collect_lldp +
+     ipa_kernel_options_inspection_collectors_all }}
 
 # URL of Ironic Python Agent (IPA) kernel image.
 inspector_ipa_kernel_upstream_url: "{{ ipa_images_kernel_url }}"

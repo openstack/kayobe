@@ -19,6 +19,16 @@ ipa_images_ramdisk_url: "https://tarballs.openstack.org/ironic-python-agent/core
 ###############################################################################
 # Ironic Python Agent (IPA) deployment configuration.
 
-# List of extra kernel parameters for the inspector default PXE configuration.
+# List of extra kernel parameters to enable LLDP collection.
 ipa_kernel_options_collect_lldp:
   - "ipa-collect-lldp=1"
+
+# List of extra kernel parameters to enable all inspector collectors.
+# NOTE: extra-hardware is not currently included as it requires a ramdisk
+#       with the hardware python module installed.
+ipa_kernel_options_inspection_collectors_all:
+  - "ipa-inspection-collectors=default,logs,pci-devices"
+
+# List of extra kernel parameters to enable all inspector benchmarks.
+ipa_kernel_options_inspection_benchmarks_all:
+  - "ipa-inspection-benchmarks=cpu,disk,mem"
