@@ -39,15 +39,15 @@ class KayobeAnsibleMixin(object):
 
     def run_kayobe_playbooks(self, *args, **kwargs):
         kwargs.update(self._get_verbosity_args())
-        ansible.run_playbooks(*args, **kwargs)
+        return ansible.run_playbooks(*args, **kwargs)
 
     def run_kayobe_playbook(self, *args, **kwargs):
         kwargs.update(self._get_verbosity_args())
-        ansible.run_playbook(*args, **kwargs)
+        return ansible.run_playbook(*args, **kwargs)
 
     def run_kayobe_config_dump(self, *args, **kwargs):
         kwargs.update(self._get_verbosity_args())
-        ansible.config_dump(*args, **kwargs)
+        return ansible.config_dump(*args, **kwargs)
 
 
 class KollaAnsibleMixin(object):
@@ -75,15 +75,15 @@ class KollaAnsibleMixin(object):
 
     def run_kolla_ansible(self, *args, **kwargs):
         kwargs.update(self._get_verbosity_args())
-        kolla_ansible.run(*args, **kwargs)
+        return kolla_ansible.run(*args, **kwargs)
 
     def run_kolla_ansible_overcloud(self, *args, **kwargs):
         kwargs.update(self._get_verbosity_args())
-        kolla_ansible.run_overcloud(*args, **kwargs)
+        return kolla_ansible.run_overcloud(*args, **kwargs)
 
     def run_kolla_ansible_seed(self, *args, **kwargs):
         kwargs.update(self._get_verbosity_args())
-        kolla_ansible.run_seed(*args, **kwargs)
+        return kolla_ansible.run_seed(*args, **kwargs)
 
 
 class ControlHostBootstrap(KayobeAnsibleMixin, Command):
