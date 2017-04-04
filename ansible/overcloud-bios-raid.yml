@@ -1,8 +1,29 @@
 ---
+# Perform configuration of the overcloud nodes' BIOS and RAID. Nodes should be
+# registered with the seed's ironic service but not active. The BIOS and RAID
+# is configured out of band using the ansible stackhpc.drac role. As such, only
+# Dell servers with iDRACs are currently supported. During configuration, we
+# set the ironic nodes' to maintenance mode to prevent ironic from managing
+# their power states.
+
 - name: Group controller hosts by their BMC type
   hosts: controllers
   gather_facts: no
+  vars:
+    # List of BMC types supporting BIOS and RAID configuration.
+    supported_bmc_types:
+      - idrac
   tasks:
+    - name: Fail if controller has BIOS and/or RAID configuration and BMC type is not supported
+      fail:
+        msg: >
+          Controller has BIOS and/or RAID configuration but BMC type
+          {% if bmc_type is undefined %}is not defined{% else %}{{ bmc_type }}
+          is not supported{% endif %}.
+      when:
+        - "{{ controller_bios_config or controller_raid_config }}"
+        - "{{ bmc_type is undefined or bmc_type not in supported_bmc_types }}"
+
     - name: Group controller hosts by their BMC type
       group_by:
         key: "controllers_with_bmcs_of_type_{{ bmc_type | default('unknown') }}"

@@ -136,7 +136,7 @@
       # multiple controllers.
       run_once: True
 
-    - name: Wait for the Bifrost controller inventory to become active
+    - name: Wait for the ironic node to become active
       command: >
         docker exec bifrost_deploy
         bash -c '. env-vars &&
