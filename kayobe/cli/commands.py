@@ -293,25 +293,22 @@ class OvercloudInventoryDiscover(KayobeAnsibleMixin, Command):
                                  tags="config")
 
 
+class OvercloudBIOSRAIDConfigure(KayobeAnsibleMixin, Command):
+    """Configure BIOS and RAID for the overcloud hosts."""
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Configure overcloud BIOS and RAID")
+        playbooks = _build_playbook_list("overcloud-bios-raid")
+        self.run_kayobe_playbooks(parsed_args, playbooks)
+
+
 class OvercloudProvision(KayobeAnsibleMixin, Command):
     """Provision the overcloud."""
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Provisioning overcloud")
-        self._configure_network(parsed_args)
-        self._configure_bios_and_raid(parsed_args)
-        self._deploy_servers(parsed_args)
-
-    def _configure_network(self, parsed_args):
-        self.app.LOG.debug("TODO: configure overcloud network")
-
-    def _configure_bios_and_raid(self, parsed_args):
-        self.app.LOG.debug("TODO: configure overcloud BIOS and RAID")
-
-    def _deploy_servers(self, parsed_args):
-        self.app.LOG.debug("Deploying overcloud servers via Bifrost")
-        self.run_kayobe_playbook(parsed_args,
-                                 "ansible/overcloud-provision.yml")
+        playbooks = _build_playbook_list("overcloud-provision")
+        self.run_kayobe_playbooks(parsed_args, playbooks)
 
 
 class OvercloudDeprovision(KayobeAnsibleMixin, Command):
@@ -319,8 +316,8 @@ class OvercloudDeprovision(KayobeAnsibleMixin, Command):
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Deprovisioning overcloud")
-        self.run_kayobe_playbook(parsed_args,
-                                 "ansible/overcloud-deprovision.yml")
+        playbooks = _build_playbook_list("overcloud-deprovision")
+        self.run_kayobe_playbooks(parsed_args, playbooks)
 
 
 class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, Command):

@@ -7,6 +7,36 @@
 controller_bootstrap_user: "{{ lookup('env', 'USER') }}"
 
 ###############################################################################
+# Controller node BIOS configuration.
+
+# Dict of controller BIOS options. Format is same as that used by stackhpc.drac
+# role.
+controller_bios_config: "{{ controller_bios_config_default | combine(controller_bios_config_extra) }}"
+
+# Dict of default controller BIOS options. Format is same as that used by
+# stackhpc.drac role.
+controller_bios_config_default: {}
+
+# Dict of additional controller BIOS options. Format is same as that used by
+# stackhpc.drac role.
+controller_bios_config_extra: {}
+
+###############################################################################
+# Controller node RAID configuration.
+
+# List of controller RAID volumes. Format is same as that used by stackhpc.drac
+# role.
+controller_raid_config: "{{ controller_raid_config_default + controller_raid_config_extra }}"
+
+# List of default controller RAID volumes. Format is same as that used by
+# stackhpc.drac role.
+controller_raid_config_default: []
+
+# List of additional controller RAID volumes. Format is same as that used by
+# stackhpc.drac role.
+controller_raid_config_extra: []
+
+###############################################################################
 # Controller node LVM configuration.
 
 # List of controller volume groups. See mrlesmithjr.manage-lvm role for

@@ -285,6 +285,20 @@ to add them to the Kayobe and bifrost Ansible inventories::
 
     (kayobe-venv) $ kayobe overcloud inventory discover
 
+BIOS and RAID Configuration
+---------------------------
+
+.. note::
+
+   BIOS and RAID configuration may require one or more power cycles of the
+   hardware to complete the operation.  These will be performed automatically.
+
+Configuration of BIOS settings and RAID volumes is currently performed out of
+band as a separate task from hardware provisioning.  To configure the BIOS and
+RAID::
+
+    (kayobe-venv) $ kayobe overcloud bios raid configure
+
 Provisioning
 ------------
 

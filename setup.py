@@ -40,6 +40,7 @@ setup(
             'control_host_bootstrap = kayobe.cli.commands:ControlHostBootstrap',
             'configuration_dump = kayobe.cli.commands:ConfigurationDump',
             'kolla_ansible_run = kayobe.cli.commands:KollaAnsibleRun',
+            'overcloud_bios_raid_configure = kayobe.cli.commands:OvercloudBIOSRAIDConfigure',
             'overcloud_container_image_build = kayobe.cli.commands:OvercloudContainerImageBuild',
             'overcloud_container_image_pull = kayobe.cli.commands:OvercloudContainerImagePull',
             'overcloud_deprovision = kayobe.cli.commands:OvercloudDeprovision',

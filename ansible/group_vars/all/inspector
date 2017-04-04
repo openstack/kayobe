@@ -19,13 +19,11 @@ inspector_manage_firewall: False
 
 # List of of default inspector processing plugins.
 inspector_processing_hooks_default:
-  - root_disk_selection
+  - ramdisk_error
   - scheduler
   - validate_interfaces
-  - ramdisk_error
   - capabilities
   - pci_devices
-  - raid_device
   - local_link_connection
   - lldp_basic
 
