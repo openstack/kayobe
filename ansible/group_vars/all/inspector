@@ -53,10 +53,10 @@ inspector_discovery_enroll_node_driver: "ipmi"
 # Ironic inspector configuration.
 
 # Ironic inspector IPMI username to set.
-inspector_ipmi_username:
+inspector_ipmi_username: "{{ ipmi_username }}"
 
 # Ironic inspector IPMI password to set.
-inspector_ipmi_password:
+inspector_ipmi_password: "{{ ipmi_password }}"
 
 # Ironic inspector network interface name on which to check for an LLDP switch
 # port description to use as the node's name.
