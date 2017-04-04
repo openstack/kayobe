@@ -326,6 +326,21 @@ locally::
 
     (kayobe-venv) $ kayobe overcloud container image build
 
+Pulling Container Images
+------------------------
+
+.. note::
+
+   It is possible to build container images locally avoiding the need for an
+   image registry such as Dockerhub.  In this case, this step can be skipped.
+
+In most cases suitable prebuilt kolla images will be available on Dockerhub.
+The `stackhpc account <https://hub.docker.com/r/stackhpc/>`_ provides image
+repositories suitable for use with kayobe and will be used by default.  To
+pull images from the configured image registry::
+
+    (kayobe-venv) $ kayobe overcloud container image pull
+
 Deploying Containerised Services
 --------------------------------
 
@@ -344,8 +359,33 @@ OpenStack services::
 
     $ source ${KOLLA_CONFIG_PATH:-/etc/kolla}/admin-openrc.sh
 
+Performing Post-deployment Configuration
+----------------------------------------
+
+To perform post deployment configuration of the overcloud services::
+
+    (kayobe-venv) $ kayobe overcloud post configure
+
+This will perform the following tasks:
+
+- Register Ironic Python Agent (IPA) images with glance
+- Register introspection rules with ironic inspector
+- Register a provisioning network and subnet with neutron
+
 Other Useful Commands
 =====================
+
+Deprovisioning
+--------------
+
+.. note::
+
+   This step will power down the overcloud hosts and delete their nodes'
+   instance state from the seed's ironic service.
+
+To deprovision the overcloud::
+
+    (kayobe-venv) $ kayobe overcloud deprovision
 
 Running Kayobe Playbooks on Demand
 ----------------------------------
