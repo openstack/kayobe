@@ -207,6 +207,68 @@ inspector_rule_lldp_switch_port_desc_to_name:
       path: "name"
       value: "{data[all_interfaces][{{ inspector_rule_var_lldp_switch_port_interface }}][lldp_processed][switch_port_description]}"
 
+# Ironic inspector rule to initialise system vendor data in the node's metadata.
+inspector_rule_save_system_vendor_init:
+  description: "Intiialise system vendor data in Ironic node metadata"
+  conditions:
+    - field: "data://inventory.system_vendor"
+      op: "is-empty"
+      invert: True
+    - field: "node://extra.system_vendor"
+      op: "is-empty"
+  actions:
+    - action: "set-attribute"
+      path: "extra/system_vendor"
+      value: {}
+
+# Ironic inspector rule to save system vendor manufacturer data in the node's
+# metadata.
+inspector_rule_save_system_vendor_manufacturer:
+  description: "Save system vendor manufacturer data in Ironic node metadata"
+  conditions:
+    - field: "data://inventory.system_vendor"
+      op: "is-empty"
+      invert: True
+    - field: "data://inventory.system_vendor.manufacturer"
+      op: "is-empty"
+      invert: True
+  actions:
+    - action: "set-attribute"
+      path: "extra/system_vendor/manufacturer"
+      value: "{data[inventory][system_vendor][manufacturer]}"
+
+# Ironic inspector rule to save system vendor serial number in the node's
+# metadata.
+inspector_rule_save_system_vendor_serial_number:
+  description: "Save system vendor serial number in Ironic node metadata"
+  conditions:
+    - field: "data://inventory.system_vendor"
+      op: "is-empty"
+      invert: True
+    - field: "data://inventory.system_vendor.serial_number"
+      op: "is-empty"
+      invert: True
+  actions:
+    - action: "set-attribute"
+      path: "extra/system_vendor/serial_number"
+      value: "{data[inventory][system_vendor][serial_number]}"
+
+# Ironic inspector rule to save system vendor product name in the node's
+# metadata.
+inspector_rule_save_system_vendor_product_name:
+  description: "Save system vendor product name in Ironic node metadata"
+  conditions:
+    - field: "data://inventory.system_vendor"
+      op: "is-empty"
+      invert: True
+    - field: "data://inventory.system_vendor.product_name"
+      op: "is-empty"
+      invert: True
+  actions:
+    - action: "set-attribute"
+      path: "extra/system_vendor/product_name"
+      value: "{data[inventory][system_vendor][product_name]}"
+
 # Ironic inspector rule to save introspection data to the node.
 inspector_rule_save_data:
   description: "Save introspection data to Ironic node"
@@ -226,6 +288,10 @@ inspector_rules_default:
   - "{{ inspector_rule_root_hint_serial }}"
   - "{{ inspector_rule_set_pxe_interface_mac }}"
   - "{{ inspector_rule_lldp_switch_port_desc_to_name }}"
+  - "{{ inspector_rule_save_system_vendor_init }}"
+  - "{{ inspector_rule_save_system_vendor_manufacturer }}"
+  - "{{ inspector_rule_save_system_vendor_serial_number }}"
+  - "{{ inspector_rule_save_system_vendor_product_name }}"
 
 # List of additional ironic inspector rules.
 inspector_rules_extra: []

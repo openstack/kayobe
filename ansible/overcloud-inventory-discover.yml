@@ -30,6 +30,8 @@
           {% for host in ironic_inventory.baremetal.hosts %}
           {% set hostvars=ironic_inventory._meta.hostvars[host] %}
           {% set ipmi_address=hostvars.driver_info.ipmi_address | default %}
-          {{ host }} ipmi_address={{ ipmi_address }}
+          {% set system_vendor=hostvars.extra.system_vendor | default %}
+          {% set bmc_type=system_vendor | bmc_type_from_system_vendor %}
+          {{ host }} ipmi_address={{ ipmi_address }} bmc_type={{ bmc_type }}
           {% endfor %}
         dest: "{{ kayobe_config_path }}/inventory/controllers"
