@@ -15,6 +15,7 @@
       - error
       - wait call-back
       - deploying
+      - deploy failed
     # List of valid states while a node is being deprovisioned.
     deleting_states:
       # The API is asynchronous, so allow the initial state.
