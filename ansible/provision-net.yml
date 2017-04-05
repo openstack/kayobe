@@ -4,6 +4,20 @@
   hosts: controllers[0]
   vars:
     venv: "{{ ansible_env.PWD }}/shade-venv"
+  pre_tasks:
+    - name: Validate OpenStack password authentication parameters
+      fail:
+        msg: >
+          Required OpenStack authentication parameter {{ item }} is
+          {% if item in openstack_auth %}empty{% else %}not present{% endif %}
+          in openstack_auth. Have you sourced the environment file?
+      when:
+        - "{{ openstack_auth_type == 'password' }}"
+        - "{{ item not in openstack_auth or not openstack_auth[item] }}"
+      with_items: "{{ openstack_auth_password_required_params }}"
+      tags:
+        - config-validation
+
   roles:
     - role: neutron-net
       neutron_net_venv: "{{ venv }}"

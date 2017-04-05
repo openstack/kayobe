@@ -29,3 +29,11 @@ openstack_auth_env:
   OS_AUTH_URL: "{{ lookup('env', 'OS_AUTH_URL') }}"
   OS_INTERFACE: "{{ lookup('env', 'OS_INTERFACE') }}"
   OS_IDENTITY_API_VERSION: "{{ lookup('env', 'OS_IDENTITY_API_VERSION') }}"
+
+# List of parameters required in openstack_auth when openstack_auth_type is
+# password.
+openstack_auth_password_required_params:
+  - "project_name"
+  - "username"
+  - "password"
+  - "auth_url"
