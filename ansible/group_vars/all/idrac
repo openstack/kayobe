@@ -30,6 +30,9 @@ idrac_bootstrap_vlan:
 # Name of network namespace on controller to use for bootstrapping iDRACs.
 idrac_bootstrap_net_namespace: idrac-bootstrap
 
+# Controller group to use for bootstrapping iDRACs.
+idrac_bootstrap_controller_group:
+
 # Base network interface on controller to use for bootstrapping iDRACs.
 idrac_bootstrap_controller_interface:
 

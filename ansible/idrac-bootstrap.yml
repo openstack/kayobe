@@ -32,7 +32,7 @@
 # 1. Create a VLAN interface on the controller node with IP in the iDRAC
 #    default subnet.
 - name: Ensure the controller bootstrap network is configured
-  hosts: controllers[0]
+  hosts: "{{ idrac_bootstrap_controller_group ~ '[0]' }}"
   tasks:
     # Install Dell server admin tools.
     - block:
@@ -100,8 +100,8 @@
           {{ switch_interface_config_bootstrap | combine({item.key: switch_interface_config_bootstrap_trunk}) }}
       with_dict: "{{ switch_interface_config }}"
       when: >
-        {{ item.value.description == groups['controllers'][0] or
-           item.value.description | replace('-trunk', '') in groups[idrac_bootstrap_switch_group] }}
+        {{ item.value.description | default == groups[idrac_bootstrap_controller_group][0] or
+           item.value.description | default | replace('-trunk', '') in groups[idrac_bootstrap_switch_group] }}
 
   roles:
     # Configure bootstrap VLAN on the switch and add controller and trunk
@@ -140,9 +140,9 @@
         switch_interface_name: "{{ item.key }}"
         idrac_port_description: "{{ item.value.description }}"
         idrac_network_ip: "{{ idrac_network_ips[idrac_port_description] }}"
-        idrac_bootstrap_controller: "{{ hostvars[groups['controllers'][0]].ansible_host }}"
+        idrac_bootstrap_controller: "{{ hostvars[groups[idrac_bootstrap_controller_group][0]].ansible_host }}"
       with_dict: "{{ switch_interface_config }}"
-      when: "{{ item.value.description in idrac_network_ips }}"
+      when: "{{ item.value.description | default in idrac_network_ips }}"
 
 # 4. Remove the temporary bootstrap VLAN from the switch.
 - name: Ensure the bootstrap VLAN is removed from switches
@@ -161,8 +161,8 @@
           {{ switch_interface_config_bootstrap | combine({item.key: switch_interface_config_bootstrap_trunk}) }}
       with_dict: "{{ switch_interface_config }}"
       when: >
-        {{ item.value.description == groups['controllers'][0] or
-           item.value.description | replace('-trunk', '') in groups[idrac_bootstrap_switch_group] }}
+        {{ item.value.description | default == groups[idrac_bootstrap_controller_group][0] or
+           item.value.description | default | replace('-trunk', '') in groups[idrac_bootstrap_switch_group] }}
   roles:
     # Remove bootstrap VLAN from the switch and remove controller and trunk
     # interfaces from it.
@@ -177,7 +177,7 @@
 
 # 5. Remove the VLAN interface on the controller node.
 - name: Ensure the controller bootstrap network is cleaned up
-  hosts: controllers[0]
+  hosts: "{{ idrac_bootstrap_controller_group ~ '[0]' }}"
   tasks:
     # This should also delete the network interface within the namespace.
     - name: Ensure the bootstrap network namespace is removed from the controller
