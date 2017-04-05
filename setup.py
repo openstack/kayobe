@@ -50,6 +50,8 @@ setup(
             'overcloud_post_configure = kayobe.cli.commands:OvercloudPostConfigure',
             'overcloud_provision = kayobe.cli.commands:OvercloudProvision',
             'overcloud_service_deploy = kayobe.cli.commands:OvercloudServiceDeploy',
+            'overcloud_service_reconfigure = kayobe.cli.commands:OvercloudServiceReconfigure',
+            'overcloud_service_upgrade = kayobe.cli.commands:OvercloudServiceUpgrade',
             'physical_network_configure = kayobe.cli.commands:PhysicalNetworkConfigure',
             'playbook_run = kayobe.cli.commands:PlaybookRun',
             'seed_container_image_build = kayobe.cli.commands:SeedContainerImageBuild',

@@ -378,6 +378,38 @@ class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
 
+class OvercloudServiceReconfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
+                                  Command):
+    """Reconfigure the overcloud services."""
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Reconfiguring overcloud services")
+        playbooks = _build_playbook_list("kolla-ansible", "kolla-openstack",
+                                         "swift-setup")
+        self.run_kayobe_playbooks(parsed_args, playbooks)
+        for command in ["prechecks", "reconfigure"]:
+            self.run_kolla_ansible_overcloud(parsed_args, command)
+        # FIXME: Fudge to work around incorrect configuration path.
+        extra_vars = {"node_config_directory": parsed_args.kolla_config_path}
+        self.run_kolla_ansible_overcloud(parsed_args, "post-deploy",
+                                         extra_vars=extra_vars)
+        # Create an environment file for accessing the public API as the admin
+        # user.
+        playbooks = _build_playbook_list("public-openrc")
+        self.run_kayobe_playbooks(parsed_args, playbooks)
+
+
+class OvercloudServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
+    """Upgrade the overcloud services."""
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Upgrading overcloud services")
+        playbooks = _build_playbook_list("kolla-ansible", "kolla-openstack")
+        self.run_kayobe_playbooks(parsed_args, playbooks)
+        for command in ["prechecks", "upgrade"]:
+            self.run_kolla_ansible_overcloud(parsed_args, command)
+
+
 class OvercloudContainerImagePull(KollaAnsibleMixin, Command):
     """Pull the overcloud container images from a registry."""
 
