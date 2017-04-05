@@ -72,8 +72,8 @@
       kolla_inspector_ipa_kernel_upstream_url: "{{ inspector_ipa_kernel_upstream_url }}"
       kolla_inspector_ipa_ramdisk_upstream_url: "{{ inspector_ipa_ramdisk_upstream_url }}"
       # Ironic inspector's dnsmasq configuration.
-      kolla_inspector_dhcp_pool_start: "{{ inspection_net_name | net_allocation_pool_start }}"
-      kolla_inspector_dhcp_pool_end: "{{ inspection_net_name | net_allocation_pool_end }}"
+      kolla_inspector_dhcp_pool_start: "{{ inspection_net_name | net_inspection_allocation_pool_start }}"
+      kolla_inspector_dhcp_pool_end: "{{ inspection_net_name | net_inspection_allocation_pool_end }}"
       # Extra free-form user-provided configuration.
       kolla_extra_glance: "{{ kolla_extra_config.glance | default }}"
       kolla_extra_inspector: "{{ kolla_extra_config.inspector | default }}"

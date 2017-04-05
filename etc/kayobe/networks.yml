@@ -36,6 +36,8 @@
 # provision_oc_net_cidr:
 # provision_oc_net_allocation_pool_start:
 # provision_oc_net_allocation_pool_end:
+# provision_oc_net_inspection_allocation_pool_start:
+# provision_oc_net_inspection_allocation_pool_end:
 # provision_oc_net_gateway:
 # provision_oc_net_vlan:
 # provision_oc_net_mtu:
@@ -44,6 +46,8 @@
 # provision_wl_net_cidr:
 # provision_wl_net_allocation_pool_start:
 # provision_wl_net_allocation_pool_end:
+# provision_wl_net_inspection_allocation_pool_start:
+# provision_wl_net_inspection_allocation_pool_end:
 # provision_wl_net_neutron_allocation_pool_start:
 # provision_wl_net_neutron_allocation_pool_end:
 # provision_wl_net_gateway:
