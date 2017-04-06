@@ -1,0 +1,58 @@
+---
+# This playbook queries the bare metal compute node inventory in ironic and
+# creates flavors in nova for each unique combination of scheduling properties
+# (ram, disk, cpus). More complex flavor registration must currently be
+# performed manually.
+
+- name: Determine a list of baremetal flavors to register in nova
+  hosts: controllers[0]
+  vars:
+    venv: "{{ ansible_env.PWD }}/shade-venv"
+    flavor_base_name: baremetal-
+  roles:
+    - role: openstackclient
+      openstackclient_venv: "{{ venv }}"
+
+  tasks:
+    - name: Get a list of ironic nodes
+      shell: >
+        source {{ venv }}/bin/activate &&
+        openstack baremetal node list --fields name extra properties -f json
+      register: ironic_node_list
+      changed_when: False
+      environment: "{{ openstack_auth_env }}"
+
+    - name: Set facts containing the ironic nodes and initialise lists
+      set_fact:
+        ironic_nodes: "{{ ironic_node_list.stdout | from_json }}"
+        ironic_node_flavor_properties: []
+        nova_flavors: []
+
+    - name: Set a fact containing the ironic node properties
+      set_fact:
+        # Extra_specs required for CPU archiecture but not currently supported
+        # by ansible. Will be added in 2.3.
+        # At that point, add "'cpu_arch': item.Properties.cpu_arch,".
+        ironic_node_flavor_properties: >
+          {{ ironic_node_flavor_properties  +
+             [{'vcpus': item.Properties.cpus,
+               'ram': item.Properties.memory_mb,
+               'disk': item.Properties.local_gb}] }}
+      with_items: "{{ ironic_nodes }}"
+
+    - name: Set a fact containing a list of flavors to register in nova
+      set_fact:
+        nova_flavors: >
+          {{ nova_flavors +
+             [item.1 | combine({'name': flavor_base_name ~ item.0})] }}
+      with_indexed_items: "{{ ironic_node_flavor_properties | unique | sort }}"
+
+- name: Ensure baremetal compute node flavors are registered
+  hosts: controllers[0]
+  vars:
+    venv: "{{ ansible_env.PWD }}/shade-venv"
+  roles:
+    - role: nova-flavors
+      nova_flavors_venv: "{{ venv }}"
+      nova_flavors_auth_type: "{{ openstack_auth_type }}"
+      nova_flavors_auth: "{{ openstack_auth }}"
