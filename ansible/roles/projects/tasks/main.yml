@@ -1,0 +1,115 @@
+---
+- name: Set a fact to ensure Ansible uses the python interpreter in the virtualenv
+  set_fact:
+    ansible_python_interpreter: "{{ projects_venv }}/bin/python"
+
+- name: Ensure the test project exists
+  os_project:
+    auth_type: "{{ projects_auth_type }}"
+    auth: "{{ projects_admin_auth }}"
+    name: "{{ item.name }}"
+    description: "{{ item.description }}"
+    domain_id: "{{ item.project_domain }}"
+    state: present
+    enabled: True
+    wait: yes
+  with_items: "{{ projects }}"
+  environment: "{{ projects_environment }}"
+
+- name: Ensure test project users exist
+  os_user:
+    auth_type: "{{ projects_auth_type }}"
+    auth: "{{ projects_admin_auth }}"
+    name: "{{ item.1.name }}"
+    password: "{{ item.1.password }}"
+    default_project: "{{ item.0.name }}"
+    domain: "{{ item.0.project_domain }}"
+    state: present
+    enabled: True
+    wait: yes
+  with_subelements:
+    - "{{ projects }}"
+    - users
+  environment: "{{ projects_environment }}"
+
+- name: Initiliase a fact containing flattened user roles
+  set_fact:
+    projects_user_roles: []
+
+- name: Update a fact containing flattened user roles
+  set_fact:
+    projects_user_roles: >
+      {{ projects_user_roles +
+         [{'project': item.0.name,
+           'name': item.1.name,
+           'roles': item.1.roles}] }}
+  with_subelements:
+    - "{{ projects }}"
+    - users
+        
+- name: Ensure test project users have required roles
+  os_user_role:
+    auth_type: "{{ projects_auth_type }}"
+    auth: "{{ projects_admin_auth }}"
+    user: "{{ item.0.name }}"
+    project: "{{ item.0.project }}"
+    role: "{{ item.1 }}"
+    state: present
+  with_subelements:
+    - "{{ projects_user_roles }}"
+    - roles
+  environment: "{{ projects_environment }}"
+
+- name: Ensure SSH keypairs are registered
+  os_keypair:
+    auth_type: "{{ projects_auth_type }}"
+    auth: "{{ projects_admin_auth | combine(projects_user_auth_overrides) }}"
+    name: "{{ item.1.name }}"
+    public_key_file: "{{ item.1.public_key_file | default(omit) }}"
+    public_key: "{{ item.1.public_key | default(omit) }}"
+    state: present
+  with_subelements:
+    - "{{ projects }}"
+    - keypairs
+  environment: "{{ projects_environment }}"
+  vars:
+    # Authentication option overrides for non-admin user as used by os_*
+    # modules' 'auth' argument.
+    projects_user_auth_overrides:
+      project_domain_name: "{{ item.0.project_domain }}"
+      user_domain_name: "{{ item.0.user_domain }}"
+      project_name: "{{ item.0.name }}"
+      username: "{{ item.0.users[0].name }}"
+      password: "{{ item.0.users[0].password }}"
+
+# This variable is unset before we set it, and it does not appear to be
+# possible to unset a variable in Ansible.
+- name: Set a fact to reset the Ansible python interpreter
+  set_fact:
+    ansible_python_interpreter: /usr/bin/python
+
+# The os_quota module is not available in Ansible 2.2. It will be added in
+# Ansible 2.3, at which point we should use it here.
+- name: Ensure quotas are set
+  shell: >
+    source {{ projects_venv }}/bin/activate &&
+    openstack
+    {% for auth_name, auth_value in projects_admin_auth.items() %}
+    --os-{{ auth_name | replace('_', '-') }}='{{ auth_value }}'
+    {% endfor %}
+    quota set {{ item.name }}
+    {% for name, value in item.quotas.items() %} --{{ name | replace('_', '-') }}={{ value }}{% endfor %}
+  when: "{{ item.quotas }}"
+  with_items: "{{ projects }}"
+  environment: "{{ projects_environment }}"
+
+- name: Ensure openrc environment file exists
+  local_action:
+    module: template
+    src: openrc.j2
+    dest: "{{ item.1.openrc_file }}"
+    mode: 0600
+  with_subelements:
+    - "{{ projects }}"
+    - users
+  when: "{{ item.openrc_file is defined }}"

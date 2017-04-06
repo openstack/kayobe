@@ -1,0 +1,7 @@
+---
+dependencies:
+  - role: shade
+    shade_venv: "{{ projects_venv }}"
+
+  - role: openstackclient
+    openstackclient_venv: "{{ projects_venv }}"

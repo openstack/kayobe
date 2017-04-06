@@ -48,21 +48,22 @@
       register: ssh_public_key
 
   roles:
-    - role: test-project
-      test_project_venv: "{{ venv }}"
-      test_project_auth_type: "{{ openstack_auth_type }}"
-      test_project_admin_auth: "{{ openstack_auth }}"
-      test_project_openrc_directory: "{{ kayobe_config_path }}"
-      test_project_public_key: "{{ ssh_public_key.content | b64decode }}"
-
-    - role: openstackclient
-      openstackclient_venv: "{{ venv }}"
-
-  post_tasks:
-    - name: Ensure quotas are set
-      shell: >
-        source {{ venv }}/bin/activate &&
-        openstack quota set {{ test_project_name }}
-        {% for name, value in test_project_quotas.items() %} --{{ name | replace('_', '-') }}={{ value }}{% endfor %}
-      when: "{{ test_project_quotas }}"
-      environment: "{{ openstack_auth_env }}"
+    - role: projects
+      projects_venv: "{{ venv }}"
+      projects_auth_type: "{{ openstack_auth_type }}"
+      projects_admin_auth: "{{ openstack_auth }}"
+      projects:
+        - name: test-project
+          description: Kayobe test project
+          project_domain: default
+          user_domain: default
+          users:
+            - name: test-user
+              password: test-password
+              roles:
+                - admin
+              openrc_file: "{{ kayobe_config_path }}/test-user-openrc.sh"
+          keypairs:
+            - name: test-keypair
+              public_key: "{{ ssh_public_key.content | b64decode }}"
+          quotas: "{{ test_project_quotas }}"
