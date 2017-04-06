@@ -31,8 +31,8 @@ def yum_install(packages):
     try:
         run_command(cmd)
     except subprocess.CalledProcessError as e:
-        print ("Failed to install packages %s via Yum: returncode %d" %
-               (", ".join(packages), e.returncode))
+        print("Failed to install packages %s via Yum: returncode %d" %
+              (", ".join(packages), e.returncode))
         sys.exit(e.returncode)
 
 
@@ -60,14 +60,14 @@ def read_yaml_file(path):
     try:
         content = read_file(path)
     except IOError as e:
-        print ("Failed to open config dump file %s: %s" %
-               (path, repr(e)))
+        print("Failed to open config dump file %s: %s" %
+              (path, repr(e)))
         sys.exit(1)
     try:
         return yaml.load(content)
     except yaml.YAMLError as e:
-        print ("Failed to decode config dump YAML file %s: %s" %
-               (path, repr(e)))
+        print("Failed to decode config dump YAML file %s: %s" %
+              (path, repr(e)))
         sys.exit(1)
 
 
