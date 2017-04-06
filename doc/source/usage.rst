@@ -369,7 +369,7 @@ To deploy the overcloud services in containers::
     (kayobe-venv) $ kayobe overcloud service deploy
 
 Once this command has completed the overcloud nodes should have OpenStack
-services running in Docker containers. 
+services running in Docker containers.
 
 Interacting with the Control Plane
 ----------------------------------
