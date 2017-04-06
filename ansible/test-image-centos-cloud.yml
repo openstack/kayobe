@@ -2,9 +2,9 @@
 - name: Ensure CentOS cloud image is registered with Glance
   hosts: controllers[0]
   vars:
-    shade_venv: "{{ ansible_env['PWD'] }}/shade-venv"
+    os_shade_venv: "{{ ansible_env['PWD'] }}/shade-venv"
   roles:
-    - role: shade
+    - role: stackhpc.os-shade
   tasks:
     - name: Ensure image download directory exists
       file:
@@ -20,7 +20,7 @@
     # evaluate the Jinja variable reference, so we use set_fact.
     - name: Update the Ansible python interpreter fact to point to the shade virtualenv
       set_fact:
-        ansible_python_interpreter: "{{ shade_venv }}/bin/python"
+        ansible_python_interpreter: "{{ os_shade_venv }}/bin/python"
 
     - name: Ensure test deployment image is registered with Glance
       os_image:

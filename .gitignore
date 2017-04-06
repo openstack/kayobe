@@ -55,6 +55,9 @@ ansible/roles/mrlesmithjr.manage-lvm/
 ansible/roles/MichaelRigart.interfaces/
 ansible/roles/stackhpc.drac/
 ansible/roles/stackhpc.drac-facts/
+ansible/roles/stackhpc.os-openstackclient/
+ansible/roles/stackhpc.os-projects/
+ansible/roles/stackhpc.os-shade/
 ansible/roles/resmo.ntp/
 ansible/roles/yatesr.timezone/
 

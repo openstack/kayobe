@@ -1,4 +1,4 @@
 ---
 dependencies:
-  - role: shade
-    shade_venv: "{{ ironic_inspector_venv }}"
+  - role: stackhpc.os-shade
+    os_shade_venv: "{{ ironic_inspector_venv }}"

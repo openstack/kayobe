@@ -10,8 +10,8 @@
     venv: "{{ ansible_env.PWD }}/shade-venv"
     flavor_base_name: baremetal-
   roles:
-    - role: openstackclient
-      openstackclient_venv: "{{ venv }}"
+    - role: stackhpc.os-openstackclient
+      os_openstackclient_venv: "{{ venv }}"
 
   tasks:
     - name: Get a list of ironic nodes
