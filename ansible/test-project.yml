@@ -62,6 +62,7 @@
               password: test-password
               roles:
                 - admin
+                - heat_stack_owner
               openrc_file: "{{ kayobe_config_path }}/test-user-openrc.sh"
           keypairs:
             - name: test-keypair
