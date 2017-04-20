@@ -70,18 +70,29 @@ key2: value2
 
     @mock.patch.object(subprocess, "check_call")
     def test_run_command(self, mock_call):
-        utils.run_command(["command", "to", "run"])
+        output = utils.run_command(["command", "to", "run"])
         mock_call.assert_called_once_with(["command", "to", "run"])
+        self.assertIsNone(output)
 
+    @mock.patch("kayobe.utils.open")
     @mock.patch.object(subprocess, "check_call")
-    def test_run_command_quiet(self, mock_call):
-        utils.run_command(["command", "to", "run"], quiet=True)
+    def test_run_command_quiet(self, mock_call, mock_open):
+        mock_devnull = mock_open.return_value.__enter__.return_value
+        output = utils.run_command(["command", "to", "run"], quiet=True)
         mock_call.assert_called_once_with(["command", "to", "run"],
-                                          stdout=subprocess.PIPE,
-                                          stderr=subprocess.PIPE)
+                                          stdout=mock_devnull,
+                                          stderr=mock_devnull)
+        self.assertIsNone(output)
 
-    @mock.patch.object(subprocess, "check_call")
-    def test_run_command_failure(self, mock_call):
-        mock_call.side_effect = subprocess.CalledProcessError(1, "command")
+    @mock.patch.object(subprocess, "check_output")
+    def test_run_command_check_output(self, mock_output):
+        mock_output.return_value = "command output"
+        output = utils.run_command(["command", "to", "run"], check_output=True)
+        mock_output.assert_called_once_with(["command", "to", "run"])
+        self.assertEqual(output, "command output")
+
+    @mock.patch.object(subprocess, "check_output")
+    def test_run_command_failure(self, mock_output):
+        mock_output.side_effect = subprocess.CalledProcessError(1, "command")
         self.assertRaises(subprocess.CalledProcessError, utils.run_command,
                           ["command", "to", "run"])

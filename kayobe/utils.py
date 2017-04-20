@@ -93,14 +93,24 @@ def is_readable_file(path):
     return {"result": True}
 
 
-def run_command(cmd, quiet=False, **kwargs):
-    """Run a command, checking the output."""
-    if quiet:
-        kwargs["stdout"] = subprocess.PIPE
-        kwargs["stderr"] = subprocess.PIPE
+def run_command(cmd, quiet=False, check_output=False, **kwargs):
+    """Run a command, checking the output.
+
+    :param quiet: Redirect output to /dev/null
+    :param check_output: Whether to return the output of the command
+    :returns: The output of the command if check_output is true
+    """
     if isinstance(cmd, six.string_types):
         cmd_string = cmd
     else:
         cmd_string = " ".join(cmd)
     LOG.debug("Running command: %s", cmd_string)
-    subprocess.check_call(cmd, **kwargs)
+    if quiet:
+        with open("/dev/null", "w") as devnull:
+            kwargs["stdout"] = devnull
+            kwargs["stderr"] = devnull
+            subprocess.check_call(cmd, **kwargs)
+    elif check_output:
+        return subprocess.check_output(cmd, **kwargs)
+    else:
+        subprocess.check_call(cmd, **kwargs)
