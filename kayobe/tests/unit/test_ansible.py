@@ -94,6 +94,7 @@ class TestCase(unittest.TestCase):
         parser = argparse.ArgumentParser()
         ansible.add_args(parser)
         args = [
+            "--ask-vault-pass",
             "--become",
             "--check",
             "--config-path", "/path/to/config",
@@ -106,6 +107,7 @@ class TestCase(unittest.TestCase):
         ansible.run_playbooks(parsed_args, ["playbook1.yml", "playbook2.yml"])
         expected_cmd = [
             "ansible-playbook",
+            "--ask-vault-pass",
             "--inventory", "/path/to/inventory",
             "-e", "@/path/to/config/vars-file1.yml",
             "-e", "@/path/to/config/vars-file2.yaml",
@@ -119,6 +121,64 @@ class TestCase(unittest.TestCase):
         ]
         mock_run.assert_called_once_with(expected_cmd, quiet=False)
         mock_vars.assert_called_once_with("/path/to/config")
+
+    @mock.patch.object(utils, "run_command")
+    @mock.patch.object(ansible, "_get_vars_files")
+    @mock.patch.object(ansible, "_validate_args")
+    def test_run_playbooks_vault_password_file(self, mock_validate, mock_vars,
+                                               mock_run):
+        mock_vars.return_value = []
+        parser = argparse.ArgumentParser()
+        ansible.add_args(parser)
+        args = [
+            "--vault-password-file", "/path/to/vault/pw",
+        ]
+        parsed_args = parser.parse_args(args)
+        ansible.run_playbooks(parsed_args, ["playbook1.yml"])
+        expected_cmd = [
+            "ansible-playbook",
+            "--vault-password-file", "/path/to/vault/pw",
+            "--inventory", "/etc/kayobe/inventory",
+            "playbook1.yml",
+        ]
+        mock_run.assert_called_once_with(expected_cmd, quiet=False)
+
+    @mock.patch.dict(os.environ, {"KAYOBE_VAULT_PASSWORD": "test-pass"})
+    @mock.patch.object(utils, "run_command")
+    @mock.patch.object(ansible, "_get_vars_files")
+    @mock.patch.object(ansible, "_validate_args")
+    def test_run_playbooks_vault_password_helper(self, mock_validate,
+                                                 mock_vars, mock_run):
+        mock_vars.return_value = []
+        parser = argparse.ArgumentParser()
+        mock_run.return_value = "/path/to/kayobe-vault-password-helper"
+        ansible.add_args(parser)
+        mock_run.assert_called_once_with(
+            ["which", "kayobe-vault-password-helper"], check_output=True)
+        mock_run.reset_mock()
+        parsed_args = parser.parse_args([])
+        ansible.run_playbooks(parsed_args, ["playbook1.yml"])
+        expected_cmd = [
+            "ansible-playbook",
+            "--vault-password-file", "/path/to/kayobe-vault-password-helper",
+            "--inventory", "/etc/kayobe/inventory",
+            "playbook1.yml",
+        ]
+        mock_run.assert_called_once_with(expected_cmd, quiet=False)
+
+    @mock.patch.object(utils, "run_command")
+    @mock.patch.object(ansible, "_get_vars_files")
+    @mock.patch.object(ansible, "_validate_args")
+    def test_run_playbooks_vault_ask_and_file(self, mock_validate, mock_vars,
+                                              mock_run):
+        mock_vars.return_value = []
+        parser = argparse.ArgumentParser()
+        ansible.add_args(parser)
+        args = [
+            "--ask-vault-pass",
+            "--vault-password-file", "/path/to/vault/pw",
+        ]
+        self.assertRaises(SystemExit, parser.parse_args, args)
 
     @mock.patch.object(utils, "run_command")
     @mock.patch.object(ansible, "_get_vars_files")

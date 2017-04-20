@@ -48,7 +48,8 @@ setup(
 
     entry_points={
         'console_scripts': [
-            'kayobe = kayobe.cmd.kayobe:main'
+            'kayobe = kayobe.cmd.kayobe:main',
+            'kayobe-vault-password-helper = kayobe.cmd.kayobe_vault_password_helper:main',
         ],
         'kayobe.cli': [
             'control_host_bootstrap = kayobe.cli.commands:ControlHostBootstrap',

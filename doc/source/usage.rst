@@ -102,6 +102,18 @@ Site Localisation and Customisation
 Site localisation and customisation is applied using Ansible extra-vars files
 in ``${KAYOBE_CONFIG_PATH}/*.yml``.
 
+Encryption of Secrets
+^^^^^^^^^^^^^^^^^^^^^
+
+Kayobe supports the use of `Ansible vault
+<http://docs.ansible.com/ansible/playbooks_vault.html>`_ to encrypt sensitive
+information in its configuration.  The ``ansible-vault`` tool should be used to
+manage individual files for which encryption is required.  Any of the
+configuration files may be encrypted.  Since encryption can make working with
+Kayobe difficult, it is recommended to follow `best practice
+<http://docs.ansible.com/ansible/playbooks_best_practices.html#best-practices-for-variables-and-vaults>`_,
+adding a layer of indirection and using encryption only where necessary.
+
 Command Line Interface
 ======================
 
@@ -127,6 +139,22 @@ can be activated by generating and then sourcing the bash completion script::
 
     (kayobe-venv) $ kayobe complete > kayobe-complete
     (kayobe-venv) $ source kayobe-complete
+
+Working with Ansible Vault
+--------------------------
+
+If Ansible vault has been used to encrypt Kayobe configuration files, it will
+be necessary to provide the ``kayobe`` command with access to vault password.
+There are three options for doing this:
+
+Prompt
+    Use ``kayobe --ask-vault-pass`` to prompt for the password.
+File
+    Use ``kayobe --vault-password-file <file>`` to read the password from a
+    (plain text) file.
+Environment variable
+    Export the environment variable ``KAYOBE_VAULT_PASSWORD`` to read the
+    password from the environment.
 
 Ansible Control Host
 ====================
