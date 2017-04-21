@@ -10,16 +10,72 @@
 - name: Ensure Ironic Python Agent (IPA) images are downloaded
   get_url:
     url: "{{ item }}"
-    dest: "{{ ipa_images_cache_path }}"
+    dest: "{{ ipa_images_cache_path }}/{{ item.filename }}"
   with_items:
-    - "{{ ipa_images_kernel_url }}"
-    - "{{ ipa_images_ramdisk_url }}"
+    - url: "{{ ipa_images_kernel_url }}"
+      filename: "{{ ipa_images_kernel_name }}"
+    - url: "{{ ipa_images_ramdisk_url }}"
+      filename: "{{ ipa_images_ramdisk_name }}"
+  when: "{{ item.url != None }}"
+
+- name: Compute the MD5 checksum of the Ironic Python Agent (IPA) images
+  stat:
+    path: "{{ ipa_images_cache_path }}/{{ item }}"
+    get_md5: True
+    get_checksum: False
+    mime: False
+  with_items:
+    - "{{ ipa_images_kernel_name }}"
+    - "{{ ipa_images_ramdisk_name }}"
+  register: ipa_images_checksum
 
 # Note that setting this via a play or task variable seems to not
 # evaluate the Jinja variable reference, so we use set_fact.
 - name: Update the Ansible python interpreter fact to point to the virtualenv
   set_fact:
     ansible_python_interpreter: "{{ ipa_images_venv }}/bin/python"
+
+# To support updating the IPA image, we check the MD5 sum of the cached image
+# files, and compare with the images in Glance (if there are any).
+
+- name: Gather facts about Ironic Python Agent (IPA) kernel image
+  os_image_facts:
+    auth_type: "{{ ipa_images_openstack_auth_type }}"
+    auth: "{{ ipa_images_openstack_auth }}"
+    image: "{{ ipa_images_kernel_name }}"
+
+- name: Set a fact containing the Ironic Python Agent (IPA) kernel image checksum
+  set_fact:
+    ipa_images_kernel_checksum: "{{ openstack_image.checksum }}"
+  when: "{{ openstack_image != None }}"
+
+- name: Gather facts about Ironic Python Agent (IPA) ramdisk image
+  os_image_facts:
+    auth_type: "{{ ipa_images_openstack_auth_type }}"
+    auth: "{{ ipa_images_openstack_auth }}"
+    image: "{{ ipa_images_ramdisk_name }}"
+
+- name: Set a fact containing the Ironic Python Agent (IPA) ramdisk image checksum
+  set_fact:
+    ipa_images_ramdisk_checksum: "{{ openstack_image.checksum }}"
+  when: "{{ openstack_image != None }}"
+
+- name: Ensure Ironic Python Agent (IPA) images are removed from Glance
+  os_image:
+    auth_type: "{{ ipa_images_openstack_auth_type }}"
+    auth: "{{ ipa_images_openstack_auth }}"
+    name: "{{ item.name }}"
+    state: absent
+  with_items:
+    - name: "{{ ipa_images_kernel_name }}"
+      checksum: "{{ ipa_images_checksum.results[0].stat.md5 }}"
+      glance_checksum: "{{ ipa_images_kernel_checksum | default }}"
+    - name: "{{ ipa_images_ramdisk_name }}"
+      checksum: "{{ ipa_images_checksum.results[1].stat.md5 }}"
+      glance_checksum: "{{ ipa_images_ramdisk_checksum | default }}"
+  when:
+    - "{{ item.glance_checksum != None }}"
+    - "{{ item.checksum != item.glance_checksum }}"
 
 - name: Ensure Ironic Python Agent (IPA) images are registered with Glance
   os_image:
@@ -29,13 +85,11 @@
     container_format: "{{ item.format }}"
     disk_format: "{{ item.format }}"
     state: present
-    filename: "{{ ipa_images_cache_path }}/{{ item.filename }}"
+    filename: "{{ ipa_images_cache_path }}/{{ item.name }}"
   with_items:
     - name: "{{ ipa_images_kernel_name }}"
-      filename: "{{ ipa_images_kernel_url | basename }}"
       format: aki
     - name: "{{ ipa_images_ramdisk_name }}"
-      filename: "{{ ipa_images_ramdisk_url | basename }}"
       format: ari
 
 # This variable is unset before we set it, and it does not appear to be

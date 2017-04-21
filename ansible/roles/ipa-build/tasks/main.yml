@@ -1,0 +1,104 @@
+---
+- name: Ensure EPEL repo is installed
+  yum:
+    name: epel-release
+    state: installed
+  become: True
+  when: "{{ ipa_build_install_epel | bool }}"
+
+- name: Ensure required packages are installed
+  yum:
+    name: "{{ item }}"
+    state: installed
+  become: True
+  with_items:
+    - gcc
+    - libffi-devel
+    - openssl-devel
+    - python-devel
+    - python-pip
+    - python-virtualenv
+  when: "{{ ipa_build_install_package_dependencies | bool }}"
+
+- name: Ensure source code checkout and image cache directories exist
+  file:
+    path: "{{ ipa_build_source_checkout_path }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    recurse: True
+  with_items:
+    - "{{ ipa_build_source_checkout_path }}"
+    - "{{ ipa_build_image_cache_path }}"
+  become: True
+
+- name: Ensure Ironic Python Agent (IPA) source code checkout exists
+  git:
+    repo: "{{ ipa_build_source_url }}"
+    dest: "{{ ipa_build_source_checkout_path }}/ironic-python-agent"
+    version: "{{ ipa_build_source_version }}"
+
+- name: Ensure the latest version of pip is installed
+  pip:
+    name: "{{ item.name }}"
+    state: latest
+    virtualenv: "{{ ipa_build_venv or omit }}"
+  with_items:
+    - { name: pip }
+
+- name: Ensure required Python packages are installed
+  pip:
+    requirements: "{{ ipa_build_source_checkout_path }}/ironic-python-agent/requirements.txt"
+    state: present
+    virtualenv: "{{ ipa_build_venv or omit }}"
+
+- name: Ensure upper constraints file is downloaded
+  uri:
+    url: "{{ ipa_build_upper_constraints_file_url }}"
+    return_content: yes
+  when: "{{ ipa_build_upper_constraints_file_url != None }}"
+  register: upper_constraints
+
+- name: Ensure custom upper constraints are set
+  copy:
+    content: |
+      {% for line in upper_constraints.content.splitlines() %}
+      {% set package, _, version = line.partition('===') %}
+      {{ package }}==={{ ipa_build_custom_upper_constraints.get(package, version) }}
+      {% endfor %}
+    dest: "{{ ipa_build_source_checkout_path }}/ironic-python-agent/upper-constraints.txt"
+  when: "{{ ipa_build_upper_constraints_file_url != None }}"
+
+- name: Ensure existing Ironic Python Agent (IPA) images are removed when forcing rebuild
+  file:
+    path: "{{ ipa_build_source_checkout_path }}/ironic-python-agent/imagebuild/coreos/UPLOAD/{{ item }}"
+    state: absent
+  with_items:
+    - "coreos_production_pxe.vmlinuz"
+    - "coreos_production_pxe_image-oem.cpio.gz"
+  when: "{{ ipa_build_force | bool }}"
+
+- name: Ensure Ironic Python Agent (IPA) images are built
+  shell: >
+    {% if ipa_build_venv | bool %}
+    source {{ ipa_build_venv }}/bin/activate &&
+    {% endif %}
+    {% if ipa_build_upper_constraints_file_url is defined %}
+    export UPPER_CONSTRAINTS_FILE="{{ ipa_build_source_checkout_path }}/ironic-python-agent/upper-constraints.txt" &&
+    {% endif %}
+    make clean &&
+    make
+  args:
+    chdir: "{{ ipa_build_source_checkout_path }}/ironic-python-agent/imagebuild/coreos"
+    creates: "{{ ipa_build_source_checkout_path }}/ironic-python-agent/imagebuild/coreos/UPLOAD/coreos_production_pxe_image-oem.cpio.gz"
+
+- name: Ensure built Ironic Python Agent (IPA) images are cached
+  copy:
+    src: "{{ ipa_build_source_checkout_path }}/ironic-python-agent/imagebuild/coreos/UPLOAD/{{ item.src }}"
+    dest: "{{ ipa_build_image_cache_path }}/{{ item.dest }}"
+    remote_src: True
+  with_items:
+    - src: "coreos_production_pxe.vmlinuz"
+      dest: "{{ ipa_build_kernel_name }}"
+    - src: "coreos_production_pxe_image-oem.cpio.gz"
+      dest: "{{ ipa_build_ramdisk_name }}"

@@ -15,9 +15,35 @@
       tags:
         - config-validation
 
+    - block:
+        - name: Check for the presence of locally built Ironic Python Agent (IPA) images
+          stat:
+            path: "{{ image_cache_path }}/{{ item }}"
+            get_md5: False
+            get_checksum: False
+            mime: False
+          with_items:
+            - "{{ ipa_images_kernel_name }}"
+            - "{{ ipa_images_ramdisk_name }}"
+          register: ipa_image_stat
+
+        - name: Validate the presence of locally built Ironic Python Agent (IPA) images
+          fail:
+            msg: >
+              Expected locally built Ironic Python Agent (IPA) image
+              {{ item.item }} was not present in {{ image_cache_path }}.
+          with_items: "{{ ipa_image_stat.results }}"
+          when: "{{ not item.stat.exists }}"
+      when: "{{ ipa_build_images | bool }}"
+      tags:
+        - config-validation
+
   roles:
     - role: ipa-images
       ipa_images_venv: "{{ ansible_env['PWD'] }}/shade-venv"
       ipa_images_openstack_auth_type: "{{ openstack_auth_type }}"
       ipa_images_openstack_auth: "{{ openstack_auth }}"
       ipa_images_cache_path: "{{ image_cache_path }}"
+      # Don't pass the kernel and ramdisk image URLs if using built images.
+      ipa_images_kernel_url: "{{ ipa_build_images | ternary(None, ipa_kernel_upstream_url) }}"
+      ipa_images_ramdisk_url: "{{ ipa_build_images | ternary(None, ipa_ramdisk_upstream_url) }}"

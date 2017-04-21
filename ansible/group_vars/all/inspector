@@ -8,10 +8,10 @@ inspector_extra_kernel_options: >
      ipa_kernel_options_inspection_collectors_all }}
 
 # URL of Ironic Python Agent (IPA) kernel image.
-inspector_ipa_kernel_upstream_url: "{{ ipa_images_kernel_url }}"
+inspector_ipa_kernel_upstream_url: "{{ ipa_kernel_upstream_url }}"
 
 # URL of Ironic Python Agent (IPA) ramdisk image.
-inspector_ipa_ramdisk_upstream_url: "{{ ipa_images_ramdisk_url }}"
+inspector_ipa_ramdisk_upstream_url: "{{ ipa_ramdisk_upstream_url }}"
 
 ###############################################################################
 # Ironic inspector processing configuration.

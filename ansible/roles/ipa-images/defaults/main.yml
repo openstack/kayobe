@@ -16,11 +16,13 @@ ipa_images_cache_path:
 # Name of Ironic deployment kernel image to register in Glance.
 ipa_images_kernel_name:
 
-# URL of Ironic deployment kernel image to download.
+# URL of Ironic deployment kernel image to download. If unset, an existing
+# image in ipa_images_cache_path will be used.
 ipa_images_kernel_url:
 
 # Name of Ironic deployment ramdisk image to register in Glance.
 ipa_images_ramdisk_name:
 
-# URL of Ironic deployment ramdisk image to download.
+# URL of Ironic deployment ramdisk image to download. If unset, an existing
+# image in ipa_images_cache_path will be used.
 ipa_images_ramdisk_url:

@@ -465,7 +465,7 @@ class OvercloudPostConfigure(KayobeAnsibleMixin, Command):
     def take_action(self, parsed_args):
         self.app.LOG.debug("Performing post-deployment configuration")
         playbooks = _build_playbook_list(
-            "ipa-images", "overcloud-introspection-rules",
+            "ipa-build", "ipa-images", "overcloud-introspection-rules",
             "overcloud-introspection-rules-dell-lldp-workaround",
             "provision-net")
         self.run_kayobe_playbooks(parsed_args, playbooks)
