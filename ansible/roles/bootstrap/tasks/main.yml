@@ -11,6 +11,9 @@
 - name: Check whether an SSH key exists
   stat:
     path: "{{ bootstrap_ssh_private_key_path }}"
+    get_checksum: False
+    get_md5: False
+    mime: False
   register: ssh_key_stat
 
 - name: Generate an SSH key

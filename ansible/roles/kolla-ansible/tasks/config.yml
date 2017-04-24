@@ -25,6 +25,9 @@
 - name: Check whether the Kolla passwords file exists
   stat:
     path: "{{ kolla_config_path }}/passwords.yml"
+    get_checksum: False
+    get_md5: False
+    mime: False
   register: kolla_passwords_stat
 
 - name: Generate Kolla passwords

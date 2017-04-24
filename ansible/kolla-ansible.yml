@@ -15,6 +15,9 @@
         - name: Check whether a Kolla extra globals configuration file exists
           stat:
             path: "{{ kayobe_config_path ~ '/kolla/globals.yml' }}"
+            get_checksum: False
+            get_md5: False
+            mime: False
           register: globals_stat
 
         - name: Read the Kolla extra globals configuration file
