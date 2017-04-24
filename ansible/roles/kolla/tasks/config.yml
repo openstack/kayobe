@@ -1,5 +1,5 @@
 ---
-- name: Ensure the Kolla configuration directores exist
+- name: Ensure the Kolla configuration directories exist
   file:
     path: "{{ item }}"
     state: directory
