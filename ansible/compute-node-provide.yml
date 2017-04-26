@@ -7,6 +7,10 @@
   hosts: controllers[0]
   vars:
     venv: "{{ ansible_env.PWD }}/shade-venv"
+    # Set this to a colon-separated list of compute node hostnames to provide.
+    # If unset, all compute nodes will be provided.
+    compute_node_limit:
+    compute_node_limit_list: "{{ compute_node_limit.split(':') }}"
   roles:
     - role: stackhpc.os-openstackclient
       os_openstackclient_venv: "{{ venv }}"
@@ -19,9 +23,17 @@
       changed_when: False
       environment: "{{ openstack_auth_env }}"
 
-    - name: Set a fact containing the ironic nodes
+    - name: Initialise a fact containing the ironic nodes
       set_fact:
-        ironic_nodes: "{{ ironic_node_list.stdout | from_json }}"
+        ironic_nodes: []
+
+    - name: Update a fact containing the ironic nodes
+      set_fact:
+        ironic_nodes: "{{ ironic_nodes + [item] }}"
+      with_items: "{{ ironic_node_list.stdout | from_json }}"
+      when: >
+        {{ not compute_node_limit or
+           item['Name'] in compute_node_limit_list }}
 
     - name: Ensure ironic nodes are managed
       shell: >
@@ -47,9 +59,17 @@
       changed_when: False
       environment: "{{ openstack_auth_env }}"
 
-    - name: Set a fact containing the ironic nodes
+    - name: Initialise a fact containing the ironic nodes
       set_fact:
-        ironic_nodes: "{{ ironic_node_list.stdout | from_json }}"
+        ironic_nodes: []
+
+    - name: Limit ironic nodes to the specified list
+      set_fact:
+        ironic_nodes: "{{ ironic_nodes + [item] }}"
+      with_items: "{{ ironic_node_list.stdout | from_json }}"
+      when: >
+        {{ not compute_node_limit or
+           item['Name'] in compute_node_limit_list }}
 
     - name: Fail if any ironic nodes are not available
       fail:
