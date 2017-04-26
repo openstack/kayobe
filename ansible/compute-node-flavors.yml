@@ -4,7 +4,7 @@
 # (ram, disk, cpus). More complex flavor registration must currently be
 # performed manually.
 
-- name: Determine a list of baremetal flavors to register in nova
+- name: Ensure baremetal compute node flavors are registered in nova
   hosts: controllers[0]
   vars:
     venv: "{{ ansible_env.PWD }}/shade-venv"
@@ -22,37 +22,64 @@
       changed_when: False
       environment: "{{ openstack_auth_env }}"
 
-    - name: Set facts containing the ironic nodes and initialise lists
+    - name: Get a list of nova flavors
+      shell: >
+        source {{ venv }}/bin/activate &&
+        openstack flavor list -f json -c Name -c RAM -c VCPUs -c Disk
+      register: nova_flavor_list
+      changed_when: False
+      environment: "{{ openstack_auth_env }}"
+
+    - name: Set facts containing the ironic nodes and nova flavors
       set_fact:
         ironic_nodes: "{{ ironic_node_list.stdout | from_json }}"
         ironic_node_flavor_properties: []
+        existing_nova_flavors: "{{ nova_flavor_list.stdout | from_json }}"
+        relevant_existing_flavors: []
         nova_flavors: []
 
+    # Build a list of nodes' flavor-relevant properties.
     - name: Set a fact containing the ironic node properties
       set_fact:
-        # Extra_specs required for CPU archiecture but not currently supported
+        # Extra_specs required for CPU architecture but not currently supported
         # by ansible. Will be added in 2.3.
         # At that point, add "'cpu_arch': item.Properties.cpu_arch,".
         ironic_node_flavor_properties: >
-          {{ ironic_node_flavor_properties  +
-             [{'vcpus': item.Properties.cpus,
-               'ram': item.Properties.memory_mb,
-               'disk': item.Properties.local_gb}] }}
+          {{ ironic_node_flavor_properties +
+             [{'vcpus': item.Properties.cpus | int,
+               'ram': item.Properties.memory_mb | int,
+               'disk': item.Properties.local_gb | int}] }}
       with_items: "{{ ironic_nodes }}"
 
+    # Build a list of flavors with the flavor base name, in the same format
+    # as the ironic node flavor properties list so that they can be compared.
+    - name: Set a fact containing the relevant nova flavors
+      set_fact:
+        relevant_existing_flavors: >
+          {{ relevant_existing_flavors +
+             [{'vcpus': item.VCPUs | int,
+               'ram': item.RAM | int,
+               'disk': item.Disk | int}] }}
+      with_items: "{{ existing_nova_flavors }}"
+      when: "{{ item.Name.startswith(flavor_base_name) }}"
+
+    # Build a list of nova flavors to create.  Here we offset the flavor name
+    # index by the length of the relevant existing flavor list. Note that this
+    # won't work for a list of names other than 0 to N-1.
     - name: Set a fact containing a list of flavors to register in nova
       set_fact:
         nova_flavors: >
           {{ nova_flavors +
-             [item.1 | combine({'name': flavor_base_name ~ item.0})] }}
-      with_indexed_items: "{{ ironic_node_flavor_properties | unique | sort }}"
+             [item.1 | combine({'name': flavor_base_name ~ (item.0 + relevant_existing_flavors | length)})] }}
+      with_indexed_items: >
+        {{ ironic_node_flavor_properties |
+           unique |
+           difference(relevant_existing_flavors) |
+           sort }}
 
-- name: Ensure baremetal compute node flavors are registered
-  hosts: controllers[0]
-  vars:
-    venv: "{{ ansible_env.PWD }}/shade-venv"
-  roles:
-    - role: nova-flavors
-      nova_flavors_venv: "{{ venv }}"
-      nova_flavors_auth_type: "{{ openstack_auth_type }}"
-      nova_flavors_auth: "{{ openstack_auth }}"
+    # Register the new flavors.
+    - include_role:
+        role: nova-flavors
+        nova_flavors_venv: "{{ venv }}"
+        nova_flavors_auth_type: "{{ openstack_auth_type }}"
+        nova_flavors_auth: "{{ openstack_auth }}"
