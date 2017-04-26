@@ -1,0 +1,64 @@
+---
+- name: Fail if the requested boot mode is unexpected
+  fail:
+    msg: >
+      Unexpected requested boot mode {{ drac_boot_mode }}. Expected one of
+      {{ drac_boot_mode_valid_modes | join(', ') }}.
+  when: "{{ drac_boot_mode | lower not in drac_boot_mode_valid_modes }}"
+
+- name: Check the boot mode
+  raw: "racadm get BIOS.BiosBootSettings.BootMode"
+  register: result
+  failed_when: "'ERROR' in result.stdout"
+  changed_when: False
+
+- name: Set a fact containing the current boot mode
+  set_fact:
+    # Format of the last line is:
+    # BootMode=<boot mode>[ (Pending Value=<pending boot mode>)]
+    current_boot_mode: "{{ result.stdout_lines[-1].partition('=')[2] | lower }}"
+
+- name: Fail if the current boot mode is unexpected
+  fail:
+    msg: >
+      Unexpected current boot mode {{ current_boot_mode }}. Expected one of
+      {{ drac_boot_mode_valid_modes | join(', ') }}.
+  when: "{{ current_boot_mode not in drac_boot_mode_valid_modes }}"
+
+- block:
+    - name: Set the boot mode
+      raw: "racadm set BIOS.BiosBootSettings.BootMode {{ drac_boot_mode | lower | capitalize }}"
+      register: result
+      failed_when: "'ERROR' in result.stdout"
+      until: "{{ drac_boot_mode_busy_message not in result.stdout }}"
+      retries: "{{ drac_boot_mode_retries }}"
+      delay: "{{ drac_boot_mode_interval }}"
+
+    - name: Ensure BIOS configuration job is created
+      raw: "racadm jobqueue create BIOS.Setup.1-1 -s TIME_NOW"
+      register: result
+      failed_when: "'ERROR' in result.stdout"
+      until: "{{ drac_boot_mode_busy_message not in result.stdout }}"
+      retries: "{{ drac_boot_mode_retries }}"
+      delay: "{{ drac_boot_mode_interval }}"
+
+    - name: Set a fact containing the BIOS configuration job ID
+      set_fact:
+        # Format of the last line is:
+        # JOB_ID = <job ID>
+        drac_boot_mode_bios_job_id: "{{ result.stdout_lines[-1].split()[-1] }}"
+
+    - name: Ensure server is rebooted
+      raw: "racadm serveraction powercycle"
+      register: result
+      failed_when: "'ERROR' in result.stdout"
+
+    - name: Wait for the BIOS configuration job to complete
+      raw: "racadm jobqueue view -i {{ drac_boot_mode_bios_job_id }}"
+      register: result
+      failed_when: "'ERROR' in result.stdout"
+      until: "{{ 'Status=Completed' in result.stdout }}"
+      retries: "{{ drac_boot_mode_timeout // drac_boot_mode_interval }}"
+      delay: "{{ drac_boot_mode_interval }}"
+
+  when: "{{ current_boot_mode != drac_boot_mode }}"

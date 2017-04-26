@@ -1,0 +1,12 @@
+---
+# Set this to the required boot mode.
+drac_boot_mode: "bios"
+
+# Timeout when waiting for boot mode configuration to be applied.
+drac_boot_mode_timeout: 600
+
+# Number of times to attempt to perform write operations.
+drac_boot_mode_retries: 5
+
+# Interval between successive write operations.
+drac_boot_mode_interval: 5

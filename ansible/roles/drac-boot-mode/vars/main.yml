@@ -1,0 +1,8 @@
+---
+# List of valid DRAC boot modes.
+drac_boot_mode_valid_modes:
+  - "bios"
+  - "uefi"
+
+# Message emitted by the DRAC which can be retried.
+drac_boot_mode_busy_message: "ERROR: Lifecycle Controller is currently in use."
