@@ -1,0 +1,15 @@
+---
+# Index of interface on which to enable PXE booting.
+drac_pxe_interface: 1
+
+# List of numerical indices of all interfaces.
+drac_pxe_all_interfaces: []
+
+# Timeout when waiting for boot sequence configuration to be applied.
+drac_pxe_timeout: 600
+
+# Number of times to attempt to perform write operations.
+drac_pxe_retries: 5
+
+# Interval between successive write operations.
+drac_pxe_interval: 5

@@ -1,0 +1,3 @@
+---
+# Message emitted by the DRAC which can be retried.
+drac_pxe_busy_message: "ERROR: Lifecycle Controller is currently in use."
