@@ -1,24 +1,5 @@
 ---
-- name: Ensure compute nodes are present in the Ansible inventory
-  hosts: config-mgmt
-  gather_facts: no
-  vars:
-    # Set this to a colon-separated list of compute node hostnames on which to
-    # trigger discovery. If unset, all compute nodes will be triggered.
-    compute_node_limit:
-    compute_node_limit_list: "{{ compute_node_limit.split(':') }}"
-  tasks:
-    - name: Add hosts for the compute nodes
-      add_host:
-        name: "{{ item.key }}"
-        groups: compute
-      with_dict: "{{ idrac_network_ips }}"
-      # Don't add hosts that already exist.
-      when:
-        - "{{ item.key not in groups['all'] }}"
-        - "{{ item.key | replace('-idrac', '') not in groups['all'] }}"
-        - "{{ not compute_node_limit or item.key | replace('-idrac', '') in compute_node_limit_list }}"
-      run_once: True
+- include: dell-compute-node-inventory.yml
 
 - name: Ensure compute nodes are PXE booted
   hosts: compute
@@ -35,12 +16,6 @@
       delegate_to: "{{ item }}"
       with_items:
         - "{{ hostvars[delegate_host].ansible_host }}"
-
-    - name: Set a fact containing the compute node IPMI address
-      set_fact:
-        ipmi_username: "{{ inspector_ipmi_username }}"
-        ipmi_password: "{{ inspector_ipmi_password }}"
-        ipmi_address: "{{ idrac_network_ips[inventory_hostname] }}"
 
     - name: Ensure compute nodes are powered off
       command: ipmitool -U {{ ipmi_username }} -P {{ ipmi_password }} -H {{ ipmi_address }} -I lanplus chassis power off

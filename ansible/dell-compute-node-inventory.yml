@@ -1,0 +1,25 @@
+---
+- name: Ensure compute nodes are present in the Ansible inventory
+  hosts: config-mgmt
+  gather_facts: no
+  vars:
+    # Set this to a colon-separated list of compute node hostnames on which to
+    # trigger discovery. If unset, all compute nodes will be triggered.
+    compute_node_limit: ""
+    compute_node_limit_list: "{{ compute_node_limit.split(':') }}"
+  tasks:
+    - name: Add hosts for the compute nodes
+      add_host:
+        name: "{{ item.key }}"
+        groups: compute
+        # SSH configuration to access the BMC.
+        ansible_host: "{{ item.value }}"
+        ansible_user: "{{ ipmi_username }}"
+        ansible_ssh_pass: "{{ ipmi_password }}"
+      with_dict: "{{ idrac_network_ips }}"
+      # Don't add hosts that already exist.
+      when:
+        - "{{ item.key not in groups['all'] }}"
+        - "{{ item.key | replace('-idrac', '') not in groups['all'] }}"
+        - "{{ not compute_node_limit or item.key | replace('-idrac', '') in compute_node_limit_list }}"
+      run_once: True

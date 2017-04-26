@@ -1,24 +1,8 @@
 ---
-- name: Ensure compute nodes are present in the Ansible inventory
-  hosts: config-mgmt
-  gather_facts: no
-  vars:
-    # Set this to a colon-separated list of compute node hostnames on which to
-    # trigger discovery. If unset, all compute nodes will be triggered.
-    compute_node_limit: ""
-    compute_node_limit_list: "{{ compute_node_limit.split(':') }}"
-  tasks:
-    - name: Add hosts for the compute nodes
-      add_host:
-        name: "{{ item.key }}"
-        groups: compute
-      with_dict: "{{ idrac_network_ips }}"
-      # Don't add hosts that already exist.
-      when:
-        - "{{ item.key not in groups['all'] }}"
-        - "{{ item.key | replace('-idrac', '') not in groups['all'] }}"
-        - "{{ not compute_node_limit or item.key | replace('-idrac', '') in compute_node_limit_list }}"
-      run_once: True
+# Configure the compute nodes to PXE boot.
+
+# Add compute nodes to the Ansible inventory.
+- include: dell-compute-node-inventory.yml
 
 - name: Ensure compute nodes are PXE booted
   hosts: compute
@@ -28,17 +12,6 @@
     drac_pxe_interface: 1
     # Set this to a list of indices of all interfaces.
     drac_pxe_all_interfaces: [1, 2, 3, 4]
-  tasks:
-    - name: Set a fact containing the compute node IPMI address
-      set_fact:
-        ansible_host: "{{ idrac_network_ips[inventory_hostname] }}"
-        ansible_user: "{{ ipmi_username }}"
-        ansible_ssh_pass: "{{ ipmi_password }}"
-
-    - name: Ensure the compute node's BMC is added as a known host
-      include_role:
-        role: ssh-known-host
-
-    - name: Ensure the compute node's BMC is set to PXE boot
-      include_role:
-        role: drac-pxe
+  roles:
+    - role: ssh-known-host
+    - role: drac-pxe
