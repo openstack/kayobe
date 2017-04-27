@@ -9,7 +9,7 @@
 
 - name: Ensure Ironic Python Agent (IPA) images are downloaded
   get_url:
-    url: "{{ item }}"
+    url: "{{ item.url }}"
     dest: "{{ ipa_images_cache_path }}/{{ item.filename }}"
   with_items:
     - url: "{{ ipa_images_kernel_url }}"
