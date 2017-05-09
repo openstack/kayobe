@@ -14,6 +14,7 @@
     provider_physical_network: "{{ neutron_net_physical_network | default(omit) }}"
     provider_segmentation_id: "{{ neutron_net_segmentation_id | default(omit) }}"
     shared: "{{ neutron_net_shared }}"
+    external: "{{ neutron_net_external }}"
     state: present
 
 - name: Ensure subnet is registered with Neutron
@@ -28,6 +29,16 @@
     allocation_pool_start: "{{ neutron_net_allocation_pool_start | default(omit) }}"
     allocation_pool_end: "{{ neutron_net_allocation_pool_end | default(omit) }}"
     state: present
+
+- name: Ensure router is registered with Neutron
+  os_router:
+    auth_type: "{{ neutron_net_openstack_auth_type }}"
+    auth: "{{ neutron_net_openstack_auth }}"
+    name: "{{ neutron_net_router_name }}"
+    interfaces: "{{ neutron_net_router_interfaces or omit }}"
+    network: "{{ neutron_net_router_network or omit }}"
+    state: present
+  when: "{{ neutron_net_router_name != None }}"
 
 # This variable is unset before we set it, and it does not appear to be
 # possible to unset a variable in Ansible.

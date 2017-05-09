@@ -25,6 +25,9 @@ neutron_net_segmentation_id:
 # Whether the Neutron network is shared.
 neutron_net_shared:
 
+# Whether the Neutron network is external.
+neutron_net_external:
+
 # Name of the Neutron subnet.
 neutron_net_subnet_name:
 
@@ -39,3 +42,12 @@ neutron_net_allocation_pool_start:
 
 # End of the Neutron subnet's IP allocation pool.
 neutron_net_allocation_pool_end:
+
+# Name of the Neutron router.
+neutron_net_router_name:
+
+# List of subnets to attach to the router internal interface.
+neutron_net_router_interfaces:
+
+# Unique name or ID of the external gateway network.
+neutron_net_router_network:
