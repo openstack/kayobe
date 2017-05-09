@@ -10,3 +10,8 @@
 {{ '{% endblock %}' }}
 
 {% endfor %}
+
+{% for var_name, var_value in kolla_build_customizations.items() %}
+{{ '{% set ' ~ var_name ~ ' = ' ~ var_value | to_json ~ ' %}' }}
+
+{% endfor %}
