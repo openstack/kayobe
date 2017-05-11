@@ -54,12 +54,19 @@
         - name: Update a fact containing switches for use by Neutron ML2 genericswitch driver
           set_fact:
             kolla_neutron_ml2_generic_switches: >
-              {{ kolla_neutron_ml2_generic_switches +
-                 [{'name': item,
-                   'device_type': switch_type_to_device_type[hostvars[item].switch_type],
-                   'ip': hostvars[item].ansible_host,
-                   'username': hostvars[item].ansible_user,
-                   'password': hostvars[item].ansible_ssh_pass}] }}
+              {{
+                  kolla_neutron_ml2_generic_switches +
+                  [{
+                    'name': item,
+                    'device_type': switch_type_to_device_type[hostvars[item].switch_type],
+                    'ip': hostvars[item].ansible_host,
+                    'username': hostvars[item].ansible_user,
+                    'password': hostvars[item].ansible_ssh_pass,
+                    'ngs_trunk_ports': (
+                         hostvars[item].switch_interface_config |
+                         switch_interface_config_select_description(kolla_neutron_ml2_generic_switch_trunk_port_hosts)).keys() | join(',')
+                  }]
+              }}
           with_items: "{{ kolla_neutron_ml2_generic_switch_hosts }}"
       tags:
         - config

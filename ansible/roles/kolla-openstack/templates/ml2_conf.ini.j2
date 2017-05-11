@@ -32,6 +32,9 @@ key_file = {{ switch.key_file }}
 {% if switch.secret is defined %}
 secret = {{ switch.secret }}
 {% endif %}
+{% if switch.ngs_trunk_ports is defined %}
+ngs_trunk_ports = {{ switch.ngs_trunk_ports }}
+{% endif %}
 
 {% endfor %}
 

@@ -46,3 +46,10 @@ kolla_neutron_ml2_generic_switches: []
 # key_file: not currently supported
 # secret: not currently supported
 kolla_neutron_ml2_generic_switch_hosts: []
+
+# List of Ansible hosts whose switch interfaces are to be configured as tagged
+# members of all networks managed by the genericswitch ML2 mechanism driver.
+# These hosts will be matched against the description fields in the
+# switch_interface_config variable for each switch to determine which
+# interfaces should be configured.
+kolla_neutron_ml2_generic_switch_trunk_port_hosts: "{{ groups['controllers'] }}"
