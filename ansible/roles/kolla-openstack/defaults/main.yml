@@ -160,6 +160,15 @@ kolla_inspector_dhcp_pool_start:
 kolla_inspector_dhcp_pool_end:
 
 ###############################################################################
+# Magnum configuration.
+
+# Whether to enable Magnum.
+kolla_enable_magnum:
+
+# Free form extra configuration to append to magnum.conf.
+kolla_magnum_extra:
+
+###############################################################################
 # Neutron configuration.
 
 # Whether to enable Neutron.
