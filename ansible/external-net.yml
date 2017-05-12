@@ -1,0 +1,23 @@
+---
+- name: Ensure external network and subnet are registered in neutron
+  # Only required to run on a single host.
+  hosts: controllers[0]
+  vars:
+    venv: "{{ ansible_env.PWD }}/shade-venv"
+  roles:
+    - role: neutron-net
+      neutron_net_venv: "{{ venv }}"
+      neutron_net_openstack_auth_type: "{{ openstack_auth_type }}"
+      neutron_net_openstack_auth: "{{ openstack_auth }}"
+      # Network configuration.
+      neutron_net_name: "{{ external_net_name }}"
+      neutron_net_type: "{% if external_net_name | net_vlan %}vlan{% else %}flat{% endif %}"
+      neutron_net_physical_network: "physnet1"
+      neutron_net_segmentation_id: "{{ external_net_name | net_vlan }}"
+      neutron_net_shared: True
+      # Subnet configuration.
+      neutron_net_subnet_name: "{{ external_net_name }}"
+      neutron_net_cidr: "{{ external_net_name | net_cidr }}"
+      neutron_net_gateway_ip: "{{ external_net_name | net_gateway }}"
+      neutron_net_allocation_pool_start: "{{ external_net_name | net_neutron_allocation_pool_start }}"
+      neutron_net_allocation_pool_end: "{{ external_net_name | net_neutron_allocation_pool_end }}"
