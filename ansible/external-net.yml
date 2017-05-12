@@ -15,6 +15,7 @@
       neutron_net_physical_network: "physnet1"
       neutron_net_segmentation_id: "{{ external_net_name | net_vlan }}"
       neutron_net_shared: True
+      neutron_net_external: True
       # Subnet configuration.
       neutron_net_subnet_name: "{{ external_net_name }}"
       neutron_net_cidr: "{{ external_net_name | net_cidr }}"
