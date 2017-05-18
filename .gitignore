@@ -57,6 +57,7 @@ ansible/roles/stackhpc.drac/
 ansible/roles/stackhpc.drac-facts/
 ansible/roles/stackhpc.os-flavors/
 ansible/roles/stackhpc.os-openstackclient/
+ansible/roles/stackhpc.os-networks/
 ansible/roles/stackhpc.os-projects/
 ansible/roles/stackhpc.os-shade/
 ansible/roles/resmo.ntp/

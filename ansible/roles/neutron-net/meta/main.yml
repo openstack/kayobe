@@ -1,4 +1,0 @@
----
-dependencies:
-  - role: stackhpc.os-shade
-    os_shade_venv: "{{ neutron_net_venv }}"
