@@ -6,5 +6,6 @@
 - src: resmo.ntp
 - src: stackhpc.drac
 - src: stackhpc.drac-facts
+- src: stackhpc.os-flavors
 - src: stackhpc.os-projects
 - src: yatesr.timezone

@@ -36,7 +36,7 @@
         ironic_node_flavor_properties: []
         existing_nova_flavors: "{{ nova_flavor_list.stdout | from_json }}"
         relevant_existing_flavors: []
-        nova_flavors: []
+        os_flavors: []
 
     # Build a list of nodes' flavor-relevant properties.
     - name: Set a fact containing the ironic node properties
@@ -68,8 +68,8 @@
     # won't work for a list of names other than 0 to N-1.
     - name: Set a fact containing a list of flavors to register in nova
       set_fact:
-        nova_flavors: >
-          {{ nova_flavors +
+        os_flavors: >
+          {{ os_flavors +
              [item.1 | combine({'name': flavor_base_name ~ (item.0 + relevant_existing_flavors | length)})] }}
       with_indexed_items: >
         {{ ironic_node_flavor_properties |
@@ -79,7 +79,7 @@
 
     # Register the new flavors.
     - include_role:
-        role: nova-flavors
-        nova_flavors_venv: "{{ venv }}"
-        nova_flavors_auth_type: "{{ openstack_auth_type }}"
-        nova_flavors_auth: "{{ openstack_auth }}"
+        role: stackhpc.os-flavors
+        os_flavors_venv: "{{ venv }}"
+        os_flavors_auth_type: "{{ openstack_auth_type }}"
+        os_flavors_auth: "{{ openstack_auth }}"

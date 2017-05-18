@@ -1,4 +1,0 @@
----
-dependencies:
-  - role: stackhpc.os-shade
-    os_shade_venv: "{{ nova_flavors_venv }}"
