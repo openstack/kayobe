@@ -378,7 +378,8 @@ class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Deploying overcloud services")
-        playbooks = _build_playbook_list("kolla-openstack", "swift-setup")
+        playbooks = _build_playbook_list("kolla-ansible", "kolla-openstack",
+                                         "swift-setup")
         self.run_kayobe_playbooks(parsed_args, playbooks)
         for command in ["prechecks", "deploy"]:
             self.run_kolla_ansible_overcloud(parsed_args, command)
