@@ -22,30 +22,18 @@
     - { src: overcloud.j2, dest: inventory/overcloud }
     - { src: globals.yml.j2, dest: globals.yml }
 
-- name: Check whether the Kolla passwords file exists
-  stat:
-    path: "{{ kolla_config_path }}/passwords.yml"
-    get_checksum: False
-    get_md5: False
-    mime: False
-  register: kolla_passwords_stat
+- name: Ensure the Kolla passwords file exists
+  kolla_passwords:
+    src: "{{ kayobe_config_path }}/kolla/passwords.yml"
+    dest: "{{ kayobe_config_path }}/kolla/passwords.yml"
+    mode: 0640
+    sample: "{{ kolla_ansible_install_dir }}/etc_examples/kolla/passwords.yml"
+    overrides: "{{ kolla_ansible_custom_passwords }}"
+    vault_password: "{{ kolla_ansible_vault_password }}"
+    virtualenv: "{{ kolla_venv or omit }}"
 
-- name: Generate Kolla passwords
-  shell: >
-    cp {{ kolla_ansible_install_dir }}/etc_examples/kolla/passwords.yml {{ kolla_config_path }}/passwords.yml.generated
-    && chmod 640 {{ kolla_config_path }}/passwords.yml.generated
-    && {{ kolla_venv }}/bin/kolla-genpwd -p {{ kolla_config_path }}/passwords.yml.generated
-    && mv {{ kolla_config_path }}/passwords.yml.generated {{ kolla_config_path }}/passwords.yml
-  when: not kolla_passwords_stat.stat.exists
-
-- name: Read the Kolla passwords file
-  slurp:
-    src: "{{ kolla_config_path }}/passwords.yml"
-  register: passwords_result
-  when: "{{ kolla_ansible_custom_passwords }}"
-
-- name: Ensure the Kolla passwords file contains the required custom passwords
+- name: Ensure the Kolla passwords file is copied into place
   copy:
-    content: "{{ passwords_result.content | b64decode | from_yaml | combine(kolla_ansible_custom_passwords) | to_nice_yaml }}"
+    src: "{{ kayobe_config_path }}/kolla/passwords.yml"
     dest: "{{ kolla_config_path }}/passwords.yml"
-  when: "{{ kolla_ansible_custom_passwords }}"
+    remote_src: True
