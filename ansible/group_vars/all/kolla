@@ -76,6 +76,8 @@ seed_container_image_sets:
 # List of regular expressions matching names of container images to build for
 # controllers.
 controller_container_image_regex_map:
+  - regex: barbican
+    enabled: "{{ kolla_enable_barbican | bool }}"
   - regex: cinder
     enabled: True
   - regex: cron
@@ -159,6 +161,7 @@ kolla_openstack_logging_debug: "False"
 ###############################################################################
 # Kolla feature flag configuration.
 
+kolla_enable_barbican: "no"
 kolla_enable_glance: "yes"
 kolla_enable_ironic: "yes"
 kolla_enable_neutron: "yes"
