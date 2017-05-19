@@ -13,6 +13,10 @@ type_drivers = {{ kolla_neutron_ml2_type_drivers | join(',') }}
 tenant_network_types = {{ kolla_neutron_ml2_tenant_network_types | join(',') }}
 {% endif %}
 
+{% if kolla_neutron_ml2_extension_drivers %}
+extension_drivers = {{ kolla_neutron_ml2_extension_drivers | join(',') }}
+{% endif %}
+
 [ml2_type_vlan]
 {% if kolla_neutron_ml2_network_vlan_ranges %}
 network_vlan_ranges = {% for vnr in kolla_neutron_ml2_network_vlan_ranges %}{{ vnr.physical_network }}{% if vnr.range is defined %}:{{ vnr.range }}{% endif %}{% if not loop.last %},{% endif %}{% endfor %}
