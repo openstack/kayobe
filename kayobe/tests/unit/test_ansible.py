@@ -23,6 +23,7 @@ import mock
 
 from kayobe import ansible
 from kayobe import utils
+from kayobe import vault
 
 
 class TestCase(unittest.TestCase):
@@ -35,6 +36,7 @@ class TestCase(unittest.TestCase):
                                   "/etc/kayobe/vars-file2.yaml"]
         parser = argparse.ArgumentParser()
         ansible.add_args(parser)
+        vault.add_args(parser)
         parsed_args = parser.parse_args([])
         ansible.run_playbooks(parsed_args, ["playbook1.yml", "playbook2.yml"])
         expected_cmd = [
@@ -57,6 +59,7 @@ class TestCase(unittest.TestCase):
                                   "/path/to/config/vars-file2.yaml"]
         parser = argparse.ArgumentParser()
         ansible.add_args(parser)
+        vault.add_args(parser)
         args = [
             "-b",
             "-C",
@@ -93,6 +96,7 @@ class TestCase(unittest.TestCase):
                                   "/path/to/config/vars-file2.yaml"]
         parser = argparse.ArgumentParser()
         ansible.add_args(parser)
+        vault.add_args(parser)
         args = [
             "--ask-vault-pass",
             "--become",
@@ -130,6 +134,7 @@ class TestCase(unittest.TestCase):
         mock_vars.return_value = []
         parser = argparse.ArgumentParser()
         ansible.add_args(parser)
+        vault.add_args(parser)
         args = [
             "--vault-password-file", "/path/to/vault/pw",
         ]
@@ -153,6 +158,7 @@ class TestCase(unittest.TestCase):
         parser = argparse.ArgumentParser()
         mock_run.return_value = "/path/to/kayobe-vault-password-helper"
         ansible.add_args(parser)
+        vault.add_args(parser)
         mock_run.assert_called_once_with(
             ["which", "kayobe-vault-password-helper"], check_output=True)
         mock_run.reset_mock()
@@ -174,6 +180,7 @@ class TestCase(unittest.TestCase):
         mock_vars.return_value = []
         parser = argparse.ArgumentParser()
         ansible.add_args(parser)
+        vault.add_args(parser)
         args = [
             "--ask-vault-pass",
             "--vault-password-file", "/path/to/vault/pw",
@@ -188,6 +195,7 @@ class TestCase(unittest.TestCase):
                                   "/etc/kayobe/vars-file2.yaml"]
         parser = argparse.ArgumentParser()
         ansible.add_args(parser)
+        vault.add_args(parser)
         args = [
             "--extra-vars", "ev_name1=ev_value1",
             "--limit", "group1:host1",
@@ -223,6 +231,7 @@ class TestCase(unittest.TestCase):
     def test_run_playbooks_failure(self, mock_validate, mock_vars, mock_run):
         parser = argparse.ArgumentParser()
         ansible.add_args(parser)
+        vault.add_args(parser)
         parsed_args = parser.parse_args([])
         mock_run.side_effect = subprocess.CalledProcessError(1, "dummy")
         self.assertRaises(SystemExit,

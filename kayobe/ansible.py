@@ -21,40 +21,19 @@ import sys
 import tempfile
 
 from kayobe import utils
+from kayobe import vault
 
 
 DEFAULT_CONFIG_PATH = "/etc/kayobe"
 
 CONFIG_PATH_ENV = "KAYOBE_CONFIG_PATH"
 
-VAULT_PASSWORD_ENV = "KAYOBE_VAULT_PASSWORD"
-
 LOG = logging.getLogger(__name__)
-
-
-def _get_default_vault_password_file():
-    """Return the default value for the vault password file argument.
-
-    It is possible to use an environment variable to avoid typing the vault
-    password.
-    """
-    if not os.getenv(VAULT_PASSWORD_ENV):
-        return None
-    cmd = ["which", "kayobe-vault-password-helper"]
-    try:
-        output = utils.run_command(cmd, check_output=True)
-    except subprocess.CalledProcessError:
-        return None
-    return output.strip()
 
 
 def add_args(parser):
     """Add arguments required for running Ansible playbooks to a parser."""
     default_config_path = os.getenv(CONFIG_PATH_ENV, DEFAULT_CONFIG_PATH)
-    default_vault_password_file = _get_default_vault_password_file()
-    vault = parser.add_mutually_exclusive_group()
-    vault.add_argument("--ask-vault-pass", action="store_true",
-                       help="ask for vault password")
     parser.add_argument("-b", "--become", action="store_true",
                         help="run operations with become (nopasswd implied)")
     parser.add_argument("-C", "--check", action="store_true",
@@ -79,9 +58,6 @@ def add_args(parser):
     parser.add_argument("-t", "--tags", metavar="TAGS",
                         help="only run plays and tasks tagged with these "
                              "values")
-    vault.add_argument("--vault-password-file", metavar="VAULT_PASSWORD_FILE",
-                       default=default_vault_password_file,
-                       help="vault password file")
 
 
 def _get_inventory_path(parsed_args):
@@ -133,10 +109,7 @@ def build_args(parsed_args, playbooks,
     cmd = ["ansible-playbook"]
     if verbose_level:
         cmd += ["-" + "v" * verbose_level]
-    if parsed_args.ask_vault_pass:
-        cmd += ["--ask-vault-pass"]
-    elif parsed_args.vault_password_file:
-        cmd += ["--vault-password-file", parsed_args.vault_password_file]
+    cmd += vault.build_args(parsed_args)
     inventory = _get_inventory_path(parsed_args)
     cmd += ["--inventory", inventory]
     vars_files = _get_vars_files(parsed_args.config_path)

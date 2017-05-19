@@ -21,11 +21,22 @@ from cliff.command import Command
 from kayobe import ansible
 from kayobe import kolla_ansible
 from kayobe import utils
+from kayobe import vault
 
 
 def _build_playbook_list(*playbooks):
     """Return a list of names of playbook files given their basenames."""
     return ["ansible/%s.yml" % playbook for playbook in playbooks]
+
+
+class VaultMixin(object):
+    """Mixin class for commands requiring Ansible vault."""
+
+    def get_parser(self, prog_name):
+        parser = super(VaultMixin, self).get_parser(prog_name)
+        group = parser.add_argument_group("Ansible vault")
+        vault.add_args(group)
+        return parser
 
 
 class KayobeAnsibleMixin(object):
@@ -100,7 +111,7 @@ class KollaAnsibleMixin(object):
         return kolla_ansible.run_seed(*args, **kwargs)
 
 
-class ControlHostBootstrap(KayobeAnsibleMixin, Command):
+class ControlHostBootstrap(KayobeAnsibleMixin, VaultMixin, Command):
     """Bootstrap the Kayobe control environment."""
 
     def take_action(self, parsed_args):
@@ -123,7 +134,7 @@ class ControlHostBootstrap(KayobeAnsibleMixin, Command):
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
 
-class ConfigurationDump(KayobeAnsibleMixin, Command):
+class ConfigurationDump(KayobeAnsibleMixin, VaultMixin, Command):
     """Dump Kayobe configuration."""
 
     def get_parser(self, prog_name):
@@ -153,7 +164,7 @@ class ConfigurationDump(KayobeAnsibleMixin, Command):
             sys.exit(1)
 
 
-class PlaybookRun(KayobeAnsibleMixin, Command):
+class PlaybookRun(KayobeAnsibleMixin, VaultMixin, Command):
     """Run a Kayobe Ansible playbook."""
 
     def add_kayobe_ansible_args(self, group):
@@ -166,7 +177,7 @@ class PlaybookRun(KayobeAnsibleMixin, Command):
         self.run_kayobe_playbooks(parsed_args, parsed_args.playbook)
 
 
-class KollaAnsibleRun(KollaAnsibleMixin, Command):
+class KollaAnsibleRun(KollaAnsibleMixin, VaultMixin, Command):
     """Run a Kolla Ansible command."""
 
     def add_kolla_ansible_args(self, group):
@@ -185,7 +196,7 @@ class KollaAnsibleRun(KollaAnsibleMixin, Command):
                                parsed_args.kolla_inventory_filename)
 
 
-class PhysicalNetworkConfigure(KayobeAnsibleMixin, Command):
+class PhysicalNetworkConfigure(KayobeAnsibleMixin, VaultMixin, Command):
     """Configure a set of physical network devices."""
 
     def get_parser(self, prog_name):
@@ -208,7 +219,8 @@ class PhysicalNetworkConfigure(KayobeAnsibleMixin, Command):
                                  extra_vars=extra_vars)
 
 
-class SeedVMProvision(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
+class SeedVMProvision(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
+                      Command):
     """Provision the seed VM."""
 
     def take_action(self, parsed_args):
@@ -221,7 +233,8 @@ class SeedVMProvision(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
                                  tags="config")
 
 
-class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
+class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
+                        Command):
     """Configure the seed node host OS."""
 
     def get_parser(self, prog_name):
@@ -251,7 +264,8 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed")
 
 
-class SeedServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
+class SeedServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
+                        Command):
     """Deploy the seed services."""
 
     def take_action(self, parsed_args):
@@ -263,7 +277,7 @@ class SeedServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
 
-class SeedContainerImageBuild(KayobeAnsibleMixin, Command):
+class SeedContainerImageBuild(KayobeAnsibleMixin, VaultMixin, Command):
     """Build the seed container images."""
 
     def get_parser(self, prog_name):
@@ -290,7 +304,7 @@ class SeedContainerImageBuild(KayobeAnsibleMixin, Command):
                                   extra_vars=extra_vars)
 
 
-class OvercloudInventoryDiscover(KayobeAnsibleMixin, Command):
+class OvercloudInventoryDiscover(KayobeAnsibleMixin, VaultMixin, Command):
     """Discover the overcloud inventory from the seed's Ironic service."""
 
     def take_action(self, parsed_args):
@@ -307,7 +321,7 @@ class OvercloudInventoryDiscover(KayobeAnsibleMixin, Command):
                                  tags="config")
 
 
-class OvercloudBIOSRAIDConfigure(KayobeAnsibleMixin, Command):
+class OvercloudBIOSRAIDConfigure(KayobeAnsibleMixin, VaultMixin, Command):
     """Configure BIOS and RAID for the overcloud hosts."""
 
     def take_action(self, parsed_args):
@@ -316,7 +330,7 @@ class OvercloudBIOSRAIDConfigure(KayobeAnsibleMixin, Command):
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
 
-class OvercloudHardwareInspect(KayobeAnsibleMixin, Command):
+class OvercloudHardwareInspect(KayobeAnsibleMixin, VaultMixin, Command):
     """Inspect the overcloud hardware using ironic inspector."""
 
     def take_action(self, parsed_args):
@@ -325,7 +339,7 @@ class OvercloudHardwareInspect(KayobeAnsibleMixin, Command):
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
 
-class OvercloudProvision(KayobeAnsibleMixin, Command):
+class OvercloudProvision(KayobeAnsibleMixin, VaultMixin, Command):
     """Provision the overcloud."""
 
     def take_action(self, parsed_args):
@@ -334,7 +348,7 @@ class OvercloudProvision(KayobeAnsibleMixin, Command):
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
 
-class OvercloudDeprovision(KayobeAnsibleMixin, Command):
+class OvercloudDeprovision(KayobeAnsibleMixin, VaultMixin, Command):
     """Deprovision the overcloud."""
 
     def take_action(self, parsed_args):
@@ -343,7 +357,8 @@ class OvercloudDeprovision(KayobeAnsibleMixin, Command):
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
 
-class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
+class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
+                             Command):
     """Configure the overcloud host OS."""
 
     def get_parser(self, prog_name):
@@ -373,7 +388,8 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="controllers")
 
 
-class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
+class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
+                             Command):
     """Deploy the overcloud services."""
 
     def take_action(self, parsed_args):
@@ -394,7 +410,7 @@ class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
 
 
 class OvercloudServiceReconfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
-                                  Command):
+                                  VaultMixin, Command):
     """Reconfigure the overcloud services."""
 
     def take_action(self, parsed_args):
@@ -414,7 +430,8 @@ class OvercloudServiceReconfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
 
-class OvercloudServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
+class OvercloudServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin,
+                              VaultMixin, Command):
     """Upgrade the overcloud services."""
 
     def take_action(self, parsed_args):
@@ -425,7 +442,7 @@ class OvercloudServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, Command):
             self.run_kolla_ansible_overcloud(parsed_args, command)
 
 
-class OvercloudContainerImagePull(KollaAnsibleMixin, Command):
+class OvercloudContainerImagePull(KollaAnsibleMixin, VaultMixin, Command):
     """Pull the overcloud container images from a registry."""
 
     def take_action(self, parsed_args):
@@ -433,7 +450,7 @@ class OvercloudContainerImagePull(KollaAnsibleMixin, Command):
         self.run_kolla_ansible_overcloud(parsed_args, "pull")
 
 
-class OvercloudContainerImageBuild(KayobeAnsibleMixin, Command):
+class OvercloudContainerImageBuild(KayobeAnsibleMixin, VaultMixin, Command):
     """Build the overcloud container images."""
 
     def get_parser(self, prog_name):
@@ -460,7 +477,7 @@ class OvercloudContainerImageBuild(KayobeAnsibleMixin, Command):
                                   extra_vars=extra_vars)
 
 
-class OvercloudPostConfigure(KayobeAnsibleMixin, Command):
+class OvercloudPostConfigure(KayobeAnsibleMixin, VaultMixin, Command):
     """Perform post-deployment configuration."""
 
     def take_action(self, parsed_args):
