@@ -219,3 +219,12 @@ kolla_extra_neutron:
 
 # Free form extra configuration to append to ml2_conf.ini.
 kolla_extra_neutron_ml2:
+
+###############################################################################
+# Nova configuration.
+
+# Whether to enable Nova.
+kolla_enable_nova:
+
+# Free form extra configuration to append to nova.conf.
+kolla_extra_nova:

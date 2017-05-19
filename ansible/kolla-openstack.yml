@@ -20,6 +20,7 @@
             - { name: magnum, file: magnum.conf }
             - { name: neutron, file: neutron.conf }
             - { name: neutron_ml2, file: neutron/ml2_conf.ini }
+            - { name: nova, file: nova.conf }
 
         - name: Initialise a fact containing extra configuration
           set_fact:
@@ -92,3 +93,4 @@
       kolla_extra_magnum: "{{ kolla_extra_config.magnum | default }}"
       kolla_extra_neutron: "{{ kolla_extra_config.neutron | default }}"
       kolla_extra_neutron_ml2: "{{ kolla_extra_config.neutron_ml2 | default }}"
+      kolla_extra_nova: "{{ kolla_extra_config.nova | default }}"
