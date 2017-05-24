@@ -135,6 +135,14 @@ build images locally::
 
     (kayobe-venv) $ kayobe seed container image build
 
+It is possible to build a specific set of images by supplying one or more
+image name regular expressions::
+
+    (kayobe-venv) $ kayobe seed container image build bifrost-deploy
+
+In order to push images to a registry after they are built, add the ``--push``
+argument.
+
 Deploying Containerised Services
 --------------------------------
 
@@ -269,6 +277,14 @@ locally::
 
     (kayobe-venv) $ kayobe overcloud container image build
 
+It is possible to build a specific set of images by supplying one or more
+image name regular expressions::
+
+    (kayobe-venv) $ kayobe overcloud container image build ironic- nova-api
+
+In order to push images to a registry after they are built, add the ``--push``
+argument.
+
 Pulling Container Images
 ------------------------
 
@@ -321,6 +337,45 @@ This will perform the following tasks:
 - Register Ironic Python Agent (IPA) images with glance
 - Register introspection rules with ironic inspector
 - Register a provisioning network and subnet with neutron
+
+Reconfiguring Containerised Services
+------------------------------------
+
+When configuration is changed, it is necessary to apply these changes across
+the system in an automated manner.  To reconfigure the overcloud, first make
+any changes required to the configuration on the control host.  Next, run the
+following command::
+
+    (kayobe-venv) $ kayobe overcloud service reconfigure
+
+In case not all services' configuration have been modified, performance can be
+improved by specifying Ansible tags to limit the tasks run in kayobe and/or
+kolla-ansible's playbooks.  This may require knowledge of the inner workings of
+these tools but in general, kolla-ansible tags the play used to configure each
+service by the name of that service.  For example: ``nova``, ``neutron`` or
+``ironic``.  Use ``-t`` or ``--tags`` to specify kayobe tags and ``-kt`` or
+``--kolla-tags`` to specify kolla-ansible tags.  For example::
+
+    (kayobe-venv) $ kayobe overcloud service reconfigure --tags config --kolla-tags nova,ironic
+
+Upgrading Containerised Services
+--------------------------------
+
+Containerised control plane services may be upgraded by replacing existing
+containers with new containers using updated images which have been pulled from
+a registry or built locally.  If using an updated version of Kayobe, it should
+be upgraded before upgrading the overcloud services.  If Kayobe has been
+upgraded, ensure that any required configuration changes have been performed as
+described in the release notes.
+
+To upgrade the containerised control plane services::
+
+    (kayobe-venv) $ kayobe overcloud service upgrade
+
+As for the reconfiguration command, it is possible to specify tags for Kayobe
+and/or kolla-ansible::
+
+    (kayobe-venv) $ kayobe overcloud service upgrade --tags config --kolla-tags keystone
 
 Other Useful Commands
 =====================
