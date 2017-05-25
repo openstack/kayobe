@@ -1,4 +1,6 @@
 DEVICE={{ item.peer_device }}
+TYPE=veth
+PEER_DEVICE={{ item.device }}
 {% if item.peer_bootproto == 'static' %}
 BOOTPROTO=none
 {% if item.peer_address is defined %}
