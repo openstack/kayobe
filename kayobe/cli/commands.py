@@ -256,7 +256,7 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
             playbooks += _build_playbook_list("wipe-disks")
         playbooks += _build_playbook_list(
             "dev-tools", "disable-selinux", "network", "ip-routing", "snat",
-            "ntp", "lvm")
+            "disable-glean", "ntp", "lvm")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed")
         self.run_kolla_ansible_seed(parsed_args, "bootstrap-servers",
                                     extra_vars={"ansible_user": ansible_user})
@@ -379,7 +379,8 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         if parsed_args.wipe_disks:
             playbooks += _build_playbook_list("wipe-disks")
         playbooks += _build_playbook_list(
-            "dev-tools", "disable-selinux", "network", "ntp", "lvm")
+            "dev-tools", "disable-selinux", "network", "disable-glean", "ntp",
+            "lvm")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="controllers")
         extra_vars = {"ansible_user": ansible_user}
         self.run_kolla_ansible_overcloud(parsed_args, "bootstrap-servers",

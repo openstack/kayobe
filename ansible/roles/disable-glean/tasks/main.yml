@@ -1,0 +1,38 @@
+---
+- name: Check for existing Glean systemd services
+  command: systemctl list-units glean*.service --no-legend --no-pager
+  register: glean_services
+  changed_when: False
+
+- name: Ensure Glean services are stopped and disabled
+  service:
+    name: "{{ item.split()[0] }}"
+    state: stopped
+    enabled: no
+  with_items: "{{ glean_services.stdout_lines }}"
+
+- name: Find interface configuration files created by Glean
+  find:
+    path: "/etc/sysconfig/network-scripts"
+    pattern: "ifcfg-*"
+    # This comment is added by Glean to interface configuration files.
+    contains: "# Automatically generated, do not edit"
+  register: interface_configs
+
+- name: Ensure interface configuration files created by Glean are removed
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items: "{{ interface_configs.files | map(attribute='path') | list }}"
+  become: True
+
+- name: Ensure Glean artifacts are removed
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "/usr/lib/systemd/system/glean@.service"
+    - "/etc/udev/rules.d/99-glean.rules"
+  become: True
+  notify:
+    - Reload systemd daemon
