@@ -27,8 +27,17 @@ controllers
 
 [compute:children]
 
-[monitoring:children]
-controllers
+[monitoring]
+# These hostnames must be resolvable from your deployment host
+{% for monitoring_host in groups['monitoring'] %}
+{% set monitoring_hv=hostvars[monitoring_host] %}
+{{ monitoring_host }}{% if "ansible_host" in monitoring_hv %}    ansible_host={{ monitoring_hv["ansible_host"] }}{% endif %}
+
+{% endfor %}
+
+[monitoring:vars]
+ansible_user=kolla
+ansible_become=true
 
 [storage:children]
 controllers

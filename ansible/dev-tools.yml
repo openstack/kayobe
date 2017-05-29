@@ -1,5 +1,5 @@
 ---
 - name: Ensure development tools are installed
-  hosts: seed:controllers
+  hosts: seed:overcloud
   roles:
     - role: dev-tools

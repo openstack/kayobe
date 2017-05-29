@@ -1,0 +1,17 @@
+---
+###############################################################################
+# Overcloud configuration.
+
+# Default Ansible group for overcloud hosts if not present in
+# overcloud_group_hosts_map.
+overcloud_group_default: controllers
+
+# List of names of Ansible groups for overcloud hosts.
+overcloud_groups:
+  - controllers
+  - monitoring
+
+# Dict mapping overcloud Ansible group names to lists of hosts in the group.
+# As a special case, the group 'ignore' can be used to specify hosts that
+# should not be added to the inventory.
+overcloud_group_hosts_map: {}

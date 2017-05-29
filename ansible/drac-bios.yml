@@ -1,6 +1,6 @@
 ---
-- name: Ensure that controller BIOS are configured
-  hosts: controllers
+- name: Ensure that overcloud nodes' BIOS are configured
+  hosts: overcloud
   gather_facts: no
   vars:
     bios_config:

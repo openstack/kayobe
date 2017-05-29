@@ -6,30 +6,30 @@
 # set the ironic nodes' to maintenance mode to prevent ironic from managing
 # their power states.
 
-- name: Group controller hosts by their BMC type
-  hosts: controllers
+- name: Group overcloud nodes by their BMC type
+  hosts: overcloud
   gather_facts: no
   vars:
     # List of BMC types supporting BIOS and RAID configuration.
     supported_bmc_types:
       - idrac
   tasks:
-    - name: Fail if controller has BIOS and/or RAID configuration and BMC type is not supported
+    - name: Fail if node has BIOS and/or RAID configuration and BMC type is not supported
       fail:
         msg: >
-          Controller has BIOS and/or RAID configuration but BMC type
+          Node has BIOS and/or RAID configuration but BMC type
           {% if bmc_type is undefined %}is not defined{% else %}{{ bmc_type }}
           is not supported{% endif %}.
       when:
-        - "{{ controller_bios_config or controller_raid_config }}"
+        - "{{ bios_config or raid_config }}"
         - "{{ bmc_type is undefined or bmc_type not in supported_bmc_types }}"
 
-    - name: Group controller hosts by their BMC type
+    - name: Group overcloud hosts by their BMC type
       group_by:
-        key: "controllers_with_bmcs_of_type_{{ bmc_type | default('unknown') }}"
+        key: "overcloud_with_bmcs_of_type_{{ bmc_type | default('unknown') }}"
 
-- name: Check whether any changes to controller BIOS and RAID configuration are required
-  hosts: controllers_with_bmcs_of_type_idrac
+- name: Check whether any changes to nodes' BIOS and RAID configuration are required
+  hosts: overcloud_with_bmcs_of_type_idrac
   gather_facts: no
   vars:
     # Set this to False to avoid rebooting the nodes after configuration.
@@ -39,22 +39,22 @@
       drac_address: "{{ ipmi_address }}"
       drac_username: "{{ ipmi_username }}"
       drac_password: "{{ ipmi_password }}"
-      drac_bios_config: "{{ controller_bios_config }}"
-      drac_raid_config: "{{ controller_raid_config }}"
+      drac_bios_config: "{{ bios_config }}"
+      drac_raid_config: "{{ raid_config }}"
       drac_check_mode: True
   tasks:
     - name: Set a fact about whether the configuration changed
       set_fact:
         bios_or_raid_change: "{{ drac_result | changed }}"
 
-- name: Ensure that controller BIOS and RAID volumes are configured
-  hosts: controllers_with_bmcs_of_type_idrac
+- name: Ensure that overcloud BIOS and RAID volumes are configured
+  hosts: overcloud_with_bmcs_of_type_idrac
   gather_facts: no
   vars:
     # Set this to False to avoid rebooting the nodes after configuration.
     drac_reboot: True
   pre_tasks:
-    - name: Set the controller nodes' maintenance mode
+    - name: Set the overcloud nodes' maintenance mode
       command: >
         docker exec bifrost_deploy
         bash -c '. env-vars &&
@@ -82,12 +82,12 @@
       drac_address: "{{ ipmi_address }}"
       drac_username: "{{ ipmi_username }}"
       drac_password: "{{ ipmi_password }}"
-      drac_bios_config: "{{ controller_bios_config }}"
-      drac_raid_config: "{{ controller_raid_config }}"
+      drac_bios_config: "{{ bios_config }}"
+      drac_raid_config: "{{ raid_config }}"
       when: "{{ bios_or_raid_change | bool }}"
 
   tasks:
-    - name: Unset the controller nodes' maintenance mode
+    - name: Unset the overcloud nodes' maintenance mode
       command: >
         docker exec bifrost_deploy
         bash -c '. env-vars &&

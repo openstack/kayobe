@@ -2,7 +2,7 @@
 # Enable SNAT using iptables.
 
 - name: Ensure SNAT is configured
-  hosts: seed:controllers
+  hosts: seed:overcloud
   vars:
     snat_rules:
       - interface: "{{ ansible_default_ipv4.interface }}"

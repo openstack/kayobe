@@ -2,6 +2,6 @@
 # Enable IP routing in the kernel.
 
 - name: Ensure IP routing is enabled
-  hosts: seed:controllers
+  hosts: seed:overcloud
   roles:
     - role: ip-routing

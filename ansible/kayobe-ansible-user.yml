@@ -1,6 +1,6 @@
 ---
 - name: Ensure the Kayobe Ansible user account exists
-  hosts: seed:controllers
+  hosts: seed:overcloud
   vars:
     ansible_user: "{{ bootstrap_user }}"
   tasks:

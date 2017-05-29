@@ -1,14 +1,14 @@
 ---
 # Use bifrost to provision the overcloud nodes with a base OS.
 
-- name: Ensure the overcloud controllers are provisioned
-  hosts: controllers
+- name: Ensure the overcloud nodes are provisioned
+  hosts: overcloud
   vars:
-    # Set to False to avoid waiting for the controllers to become active.
+    # Set to False to avoid waiting for the nodes to become active.
     wait_active: True
     wait_active_timeout: 600
     wait_active_interval: 10
-    # Set to False to avoid waiting for the controllers to be accessible via
+    # Set to False to avoid waiting for the nodes to be accessible via
     # SSH.
     wait_ssh: True
     wait_ssh_timeout: 600
@@ -133,7 +133,7 @@
       with_items:
         - "{{ hostvars[groups['seed'][0]].ansible_host }}"
       # We execute this only once, allowing the Bifrost Ansible to handle
-      # multiple controllers.
+      # multiple nodes.
       run_once: True
 
     - name: Wait for the ironic node to become active
@@ -171,7 +171,7 @@
         - "{{ wait_active | bool }}"
         - "{{ initial_provision_state != 'active' }}"
 
-    - name: Fail if any of the controllers are not available
+    - name: Fail if any of the nodes are not available
       fail:
         msg: >
           Ironic node for {{ inventory_hostname }} is in an unexpected
@@ -182,7 +182,7 @@
         - "{{ initial_provision_state != 'active' }}"
         - "{{ final_provision_state != 'active' }}"
 
-    - name: Wait for SSH access to the controllers
+    - name: Wait for SSH access to the nodes
       local_action:
         module: wait_for
         host: "{{ ansible_host }}"

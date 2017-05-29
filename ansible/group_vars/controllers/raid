@@ -1,0 +1,7 @@
+---
+###############################################################################
+# Controller node RAID configuration.
+
+# List of controller node RAID volumes. Format is same as that used by
+# stackhpc.drac role.
+raid_config: "{{ controller_raid_config }}"

@@ -1,6 +1,6 @@
 ---
-- name: Ensure that controller BIOS are configured
-  hosts: controllers
+- name: Gather and display BIOS and RAID facts from iDRACs
+  hosts: overcloud
   gather_facts: no
   roles:
     # The role simply pulls in the drac_facts module.

@@ -1,0 +1,9 @@
+---
+###############################################################################
+# Monitoring node LVM configuration.
+
+# List of LVM volume groups.
+lvm_groups: >
+  {{ controller_lvm_groups
+     if inventory_hostname in groups['controllers'] else
+     monitoring_lvm_groups }}

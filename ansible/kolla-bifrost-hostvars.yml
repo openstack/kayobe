@@ -1,7 +1,7 @@
 ---
 # Update the Bifrost inventory with the IP allocation and other variables.
 
-- name: Ensure the Bifrost controller inventory is initialised
+- name: Ensure the Bifrost overcloud inventory is initialised
   hosts: seed
   gather_facts: no
   tasks:
@@ -20,8 +20,8 @@
         force: True
       become: True
 
-- name: Ensure the Bifrost controller inventory is populated
-  hosts: controllers
+- name: Ensure the Bifrost overcloud inventory is populated
+  hosts: overcloud
   gather_facts: no
   vars:
     seed_host: "{{ groups['seed'][0] }}"

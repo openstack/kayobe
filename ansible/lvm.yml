@@ -1,6 +1,6 @@
 ---
 - name: Ensure LVM configuration is applied
-  hosts: seed:controllers
+  hosts: seed:overcloud
   pre_tasks:
     - name: Fail if the LVM physical disks have not been configured
       fail:

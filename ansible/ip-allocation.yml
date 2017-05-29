@@ -1,6 +1,6 @@
 ---
 - name: Ensure IP addresses are allocated
-  hosts: seed:controllers
+  hosts: seed:overcloud
   gather_facts: no
   pre_tasks:
     - name: Initialise the IP allocations fact

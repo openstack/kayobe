@@ -7,6 +7,6 @@
 # any LVM or file system state from them.
 
 - name: Ensure that all unmounted block devices are wiped
-  hosts: seed:controllers
+  hosts: seed:overcloud
   roles:
     - role: wipe-disks

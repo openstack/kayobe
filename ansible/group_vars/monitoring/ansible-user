@@ -1,0 +1,7 @@
+---
+# User with which to access the monitoring nodes via SSH.
+ansible_user: "{{ kayobe_ansible_user }}"
+
+# User with which to access the monitoring nodes before the kayobe_ansible_user
+# account has been created.
+bootstrap_user: "{{ monitoring_bootstrap_user }}"

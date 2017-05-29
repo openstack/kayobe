@@ -1,10 +1,10 @@
 ---
 # Use bifrost to inspect the overcloud nodes' hardware.
 
-- name: Ensure the overcloud controller hardware is inspected
-  hosts: controllers
+- name: Ensure the overcloud nodes' hardware is inspected
+  hosts: overcloud
   vars:
-    # Set to False to avoid waiting for the controllers to become active.
+    # Set to False to avoid waiting for the nodes to become active.
     wait_inspected: True
     wait_inspected_timeout: 600
     wait_inspected_interval: 10
@@ -133,7 +133,7 @@
       when:
         - "{{ wait_inspected | bool }}"
 
-    - name: Fail if any of the controllers are not manageable
+    - name: Fail if any of the nodes are not manageable
       fail:
         msg: >
           Ironic node for {{ inventory_hostname }} is in an unexpected

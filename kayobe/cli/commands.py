@@ -373,7 +373,8 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     def take_action(self, parsed_args):
         self.app.LOG.debug("Configuring overcloud host OS")
         ansible_user = self.run_kayobe_config_dump(
-            parsed_args, host="controllers[0]", var_name="kayobe_ansible_user")
+            parsed_args, var_name="kayobe_ansible_user")
+        ansible_user = ansible_user.values()[0]
         playbooks = _build_playbook_list(
             "ip-allocation", "ssh-known-host", "kayobe-ansible-user")
         if parsed_args.wipe_disks:
@@ -381,12 +382,12 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         playbooks += _build_playbook_list(
             "dev-tools", "disable-selinux", "network", "disable-glean", "ntp",
             "lvm")
-        self.run_kayobe_playbooks(parsed_args, playbooks, limit="controllers")
+        self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
         extra_vars = {"ansible_user": ansible_user}
         self.run_kolla_ansible_overcloud(parsed_args, "bootstrap-servers",
                                          extra_vars=extra_vars)
         playbooks = _build_playbook_list("kolla-host", "docker")
-        self.run_kayobe_playbooks(parsed_args, playbooks, limit="controllers")
+        self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
 
 
 class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,

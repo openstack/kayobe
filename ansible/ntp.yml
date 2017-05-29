@@ -1,6 +1,6 @@
 ---
 - name: Ensure NTP is installed and configured
-  hosts: seed:controllers
+  hosts: seed:overcloud
   roles:
     - role: yatesr.timezone
       become: True

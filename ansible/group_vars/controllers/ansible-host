@@ -1,3 +1,0 @@
----
-# Host/IP with which to access the controllers via SSH.
-ansible_host: "{{ provision_oc_net_name | net_ip }}"

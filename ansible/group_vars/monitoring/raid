@@ -1,0 +1,10 @@
+---
+###############################################################################
+# Monitoring node RAID configuration.
+
+# List of monitoring node RAID volumes. Format is same as that used by
+# stackhpc.drac role.
+raid_config: >
+  {{ controller_raid_config
+     if inventory_hostname in groups['controllers'] else
+     monitoring_raid_config }}

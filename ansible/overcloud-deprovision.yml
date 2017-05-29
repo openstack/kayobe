@@ -1,10 +1,10 @@
 ---
 # Use bifrost to deprovision the overcloud nodes.
 
-- name: Ensure the overcloud controllers are deprovisioned
-  hosts: controllers
+- name: Ensure the overcloud nodes are deprovisioned
+  hosts: overcloud
   vars:
-    # Set to False to avoid waiting for the controllers to become active.
+    # Set to False to avoid waiting for the nodes to become active.
     wait_available: True
     wait_available_timeout: 600
     wait_available_interval: 10

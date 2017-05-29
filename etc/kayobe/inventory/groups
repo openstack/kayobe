@@ -7,6 +7,13 @@
 [controllers]
 # Empty group to provide declaration of controllers group.
 
+[monitoring]
+# Empty group to provide declaration of monitoring group.
+
+[overcloud:children]
+controllers
+monitoring
+
 [docker:children]
 # Hosts in this group will have Docker installed.
 seed

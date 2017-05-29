@@ -1,6 +1,6 @@
 ---
 - name: Ensure networking is configured
-  hosts: seed:controllers
+  hosts: seed:overcloud
   tags:
     - config
   vars:

@@ -1,6 +1,6 @@
 ---
-- name: Ensure that controller boot order is configured
-  hosts: controllers
+- name: Ensure that overcloud nodes' boot order is configured
+  hosts: overcloud
   gather_facts: no
   vars:
     ansible_host: "{{ ipmi_address }}"

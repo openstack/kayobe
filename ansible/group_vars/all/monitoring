@@ -1,0 +1,64 @@
+---
+###############################################################################
+# Monitoring node configuration.
+
+# User with which to access the monitoring nodes via SSH during bootstrap, in
+# order to setup the Kayobe user account.
+monitoring_bootstrap_user: "{{ controller_bootstrap_user }}"
+
+###############################################################################
+# Monitoring node network interface configuration.
+
+# List of default networks to which monitoring nodes are attached.
+monitoring_default_network_interfaces: >
+  {{ [provision_oc_net_name,
+      internal_net_name,
+      external_net_name] | unique | list }}
+
+# List of extra networks to which monitoring nodes are attached.
+monitoring_extra_network_interfaces: []
+
+###############################################################################
+# Monitoring node BIOS configuration.
+
+# Dict of monitoring node BIOS options. Format is same as that used by
+# stackhpc.drac role.
+monitoring_bios_config: "{{ monitoring_bios_config_default | combine(monitoring_bios_config_extra) }}"
+
+# Dict of default monitoring node BIOS options. Format is same as that used by
+# stackhpc.drac role.
+monitoring_bios_config_default: "{{ controller_bios_config_default }}"
+
+# Dict of additional monitoring node BIOS options. Format is same as that used
+# by stackhpc.drac role.
+monitoring_bios_config_extra: "{{ controller_bios_config_extra }}"
+
+###############################################################################
+# Monitoring node RAID configuration.
+
+# List of monitoring node RAID volumes. Format is same as that used by
+# stackhpc.drac role.
+monitoring_raid_config: "{{ monitoring_raid_config_default + monitoring_raid_config_extra }}"
+
+# List of default monitoring node RAID volumes. Format is same as that used by
+# stackhpc.drac role.
+monitoring_raid_config_default: "{{ controller_raid_config_default }}"
+
+# List of additional monitoring node RAID volumes. Format is same as that used
+# by stackhpc.drac role.
+monitoring_raid_config_extra: "{{ controller_raid_config_extra }}"
+
+###############################################################################
+# Monitoring node LVM configuration.
+
+# List of monitoring node volume groups. See mrlesmithjr.manage-lvm role for
+# format.
+monitoring_lvm_groups: "{{ monitoring_lvm_groups_default + monitoring_lvm_groups_extra }}"
+
+# Default list of monitoring node volume groups. See mrlesmithjr.manage-lvm
+# role for format.
+monitoring_lvm_groups_default: "{{ controller_lvm_groups_default }}"
+
+# Additional list of monitoring node volume groups. See mrlesmithjr.manage-lvm
+# role for format.
+monitoring_lvm_groups_extra: "{{ controller_lvm_groups_extra }}"
