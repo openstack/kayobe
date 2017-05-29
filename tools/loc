@@ -1,0 +1,24 @@
+#!/bin/bash
+
+DOC=`find doc -type f -exec cat {} \; | wc -l`
+TESTS=`find kayobe/tests -type f -exec cat {} \; | wc -l`
+CLI=`find kayobe -type f -exec cat {} \; | wc -l`
+ANSIBLE=`find ansible -type f -exec cat {} \; | wc -l`
+
+ETC=`find etc -type f -exec cat {} \; | wc -l`
+TOOLS=`find tools -type f -exec cat {} \; | wc -l`
+
+CORE=$(($CLI+$ANSIBLE+$TESTS+$DOC))
+SUPP=$(($ETC+$TOOLS))
+TOTAL=$(($CORE+$SUPP))
+
+
+echo "CLI          $CLI"
+echo "Ansible      $ANSIBLE"
+echo "Doc          $DOC"
+echo "Etc          $ETC"
+echo "Tests        $TESTS"
+echo ""
+echo "Core Code    $CORE"
+echo "Support Code $SUPP"
+echo "Total Code   $TOTAL"
