@@ -314,6 +314,9 @@ class OvercloudInventoryDiscover(KayobeAnsibleMixin, VaultMixin, Command):
         # are used to populate other inventories.
         self.run_kayobe_playbook(parsed_args,
                                  "ansible/overcloud-inventory-discover.yml")
+        # If necessary, allocate IP addresses for the discovered hosts.
+        self.run_kayobe_playbook(parsed_args,
+                                 "ansible/ip-allocation.yml")
         # Now populate the Kolla Ansible and Bifrost inventories.
         self.run_kayobe_playbook(parsed_args,
                                  "ansible/kolla-bifrost-hostvars.yml")
