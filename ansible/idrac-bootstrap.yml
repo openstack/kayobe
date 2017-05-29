@@ -121,6 +121,11 @@
 - name: Ensure iDRACs are bootstrapped
   hosts: "{{ idrac_bootstrap_switch_group }}"
   gather_facts: no
+  vars:
+    # Set this to a colon-separated list of idrac hostnames to bootstrap.
+    # If unset, all idracs will be bootstrapped.
+    idrac_limit: ""
+    idrac_limit_list: "{{ idrac_limit.split(':') }}"
   # This is a separate play so that we can apply the serial keyword.
   serial: 1
   tasks:
@@ -142,7 +147,9 @@
         idrac_network_ip: "{{ idrac_network_ips[idrac_port_description] }}"
         idrac_bootstrap_controller: "{{ hostvars[groups[idrac_bootstrap_controller_group][0]].ansible_host }}"
       with_dict: "{{ switch_interface_config }}"
-      when: "{{ item.value.description | default in idrac_network_ips }}"
+      when: >
+        {{ item.value.description | default in idrac_network_ips and
+           (not idrac_limit or item.value.description | default in idrac_limit_list) }}
 
 # 4. Remove the temporary bootstrap VLAN from the switch.
 - name: Ensure the bootstrap VLAN is removed from switches
