@@ -127,7 +127,7 @@ def build_args(parsed_args, playbooks,
         cmd += ["--check"]
     if parsed_args.limit or limit:
         limits = [l for l in [parsed_args.limit, limit] if l]
-        cmd += ["--limit", "&".join(limits)]
+        cmd += ["--limit", ":&".join(limits)]
     if parsed_args.tags or tags:
         all_tags = [t for t in [parsed_args.tags, tags] if t]
         cmd += ["--tags", ",".join(all_tags)]
