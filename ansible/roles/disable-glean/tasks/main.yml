@@ -1,6 +1,6 @@
 ---
 - name: Check for existing Glean systemd services
-  command: systemctl list-units glean*.service --no-legend --no-pager
+  command: systemctl list-units glean*.service --no-legend --no-pager --state=loaded
   register: glean_services
   changed_when: False
 
@@ -10,6 +10,7 @@
     state: stopped
     enabled: no
   with_items: "{{ glean_services.stdout_lines }}"
+  become: True
 
 - name: Find interface configuration files created by Glean
   find:
