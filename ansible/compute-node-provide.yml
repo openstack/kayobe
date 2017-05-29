@@ -9,7 +9,7 @@
     venv: "{{ ansible_env.PWD }}/shade-venv"
     # Set this to a colon-separated list of compute node hostnames to provide.
     # If unset, all compute nodes will be provided.
-    compute_node_limit:
+    compute_node_limit: ""
     compute_node_limit_list: "{{ compute_node_limit.split(':') }}"
   roles:
     - role: stackhpc.os-openstackclient
