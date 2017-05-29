@@ -150,7 +150,7 @@ kolla_build_customizations: {}
 # Kolla-ansible configuration.
 
 # Password to use to encrypt the kolla-ansible passwords.yml file.
-kolla_ansible_vault_password: "{{ ansible_env.KAYOBE_VAULT_PASSWORD }}"
+kolla_ansible_vault_password: "{{ lookup('env', 'KAYOBE_VAULT_PASSWORD') | default }}"
 
 # Whether TLS is enabled for the external API endpoints.
 kolla_enable_tls_external: "no"
