@@ -86,7 +86,6 @@ class TestCase(unittest.TestCase):
         expected_cmd = [
             "source", "ansible/kolla-venv/bin/activate", "&&",
             "kolla-ansible", "command",
-            "--ask-vault-pass",
             "--inventory", "/path/to/inventory",
             "--configdir", "/path/to/config",
             "--passwords", "/path/to/config/passwords.yml",
@@ -110,7 +109,7 @@ class TestCase(unittest.TestCase):
         expected_cmd = [
             "source", "ansible/kolla-venv/bin/activate", "&&",
             "kolla-ansible", "command",
-            "--vault-password-file", "/path/to/vault/pw",
+            "--key", "/path/to/vault/pw",
             "--inventory", "/etc/kolla/inventory/overcloud",
         ]
         expected_cmd = " ".join(expected_cmd)
@@ -133,7 +132,7 @@ class TestCase(unittest.TestCase):
         expected_cmd = [
             "source", "ansible/kolla-venv/bin/activate", "&&",
             "kolla-ansible", "command",
-            "--vault-password-file", "/path/to/kayobe-vault-password-helper",
+            "--key", "/path/to/kayobe-vault-password-helper",
             "--inventory", "/etc/kolla/inventory/overcloud",
         ]
         expected_cmd = " ".join(expected_cmd)

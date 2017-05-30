@@ -217,7 +217,7 @@ class TestCase(unittest.TestCase):
             "-e", "@/etc/kayobe/vars-file2.yaml",
             "-e", "ev_name1=ev_value1",
             "-e", "ev_name2=ev_value2",
-            "--limit", "group1:host1&group2:host2",
+            "--limit", "group1:host1:&group2:host2",
             "--tags", "tag1,tag2,tag3,tag4",
             "playbook1.yml",
             "playbook2.yml",
