@@ -31,11 +31,11 @@ Features
   `ironic inspector <https://docs.openstack.org/developer/ironic-inspector/>`_
 * Containerised workloads on bare metal using `OpenStack magnum
   <https://docs.openstack.org/developer/magnum/>`_
+* Big data on bare metal using `OpenStack sahara
+  <https://docs.openstack.org/developer/sahara/>`_
 
 In the near future we aim to add support for the following:
 
-* Big data on bare metal using `OpenStack sahara
-  <https://docs.openstack.org/developer/sahara/>`_
 * Control plane and workload monitoring and log aggregation using `OpenStack
   monasca <https://wiki.openstack.org/wiki/Monasca>`_
 * Virtualised compute using `OpenStack nova

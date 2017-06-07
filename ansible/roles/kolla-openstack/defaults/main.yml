@@ -228,3 +228,12 @@ kolla_enable_nova:
 
 # Free form extra configuration to append to nova.conf.
 kolla_extra_nova:
+
+###############################################################################
+# Sahara configuration.
+
+# Whether to enable sahara.
+kolla_enable_sahara:
+
+# Free form extra configuration to append to sahara.conf.
+kolla_extra_sahara:

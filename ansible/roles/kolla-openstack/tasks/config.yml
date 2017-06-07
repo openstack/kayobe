@@ -25,6 +25,7 @@
     - { src: neutron.conf.j2, dest: neutron.conf, enabled: "{{ kolla_enable_neutron }}" }
     - { src: nova.conf.j2, dest: nova.conf, enabled: "{{ kolla_enable_nova }}" }
     - { src: pxelinux.default.j2, dest: ironic/pxelinux.default, enabled: "{{ kolla_enable_ironic }}" }
+    - { src: sahara.conf.j2, dest: sahara.conf, enabled: "{{ kolla_enable_sahara }}" }
   when: "{{ item.enabled | bool }}"
 
 - name: Ensure the ironic inspector kernel and ramdisk exist

@@ -121,6 +121,8 @@ controller_container_image_regex_map:
     enabled: True
   - regex: rabbitmq
     enabled: True
+  - regex: sahara
+    enabled: "{{ kolla_enable_sahara | bool }}"
   - regex: swift
     enabled: "{{ kolla_enable_swift | bool }}"
   - regex: tgtd
@@ -169,6 +171,7 @@ kolla_enable_glance: "yes"
 kolla_enable_ironic: "yes"
 kolla_enable_neutron: "yes"
 kolla_enable_magnum: "no"
+kolla_enable_sahara: "no"
 kolla_enable_swift: "yes"
 
 ###############################################################################
