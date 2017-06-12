@@ -1,0 +1,6 @@
+---
+###############################################################################
+# OpenSM Infiniband subnet manager configuration.
+
+# Whether OpenSM is enabled.
+opensm_enabled: False

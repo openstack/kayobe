@@ -399,11 +399,23 @@ class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Deploying overcloud services")
+
+        # First prepare configuration.
         playbooks = _build_playbook_list("kolla-ansible", "kolla-openstack",
                                          "swift-setup")
         self.run_kayobe_playbooks(parsed_args, playbooks)
+
+        # Run kolla-ansible prechecks before deployment.
         for command in ["prechecks", "deploy"]:
             self.run_kolla_ansible_overcloud(parsed_args, command)
+
+        # Deploy kayobe extra services.
+        playbooks = _build_playbook_list("overcloud-extras")
+        extra_vars = {"action": "deploy"}
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  extra_vars=extra_vars)
+
+        # Post-deployment configuration.
         # FIXME: Fudge to work around incorrect configuration path.
         extra_vars = {"node_config_directory": parsed_args.kolla_config_path}
         self.run_kolla_ansible_overcloud(parsed_args, "post-deploy",
@@ -420,11 +432,23 @@ class OvercloudServiceReconfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Reconfiguring overcloud services")
+
+        # First prepare configuration.
         playbooks = _build_playbook_list("kolla-ansible", "kolla-openstack",
                                          "swift-setup")
         self.run_kayobe_playbooks(parsed_args, playbooks)
+
+        # Run kolla-ansible prechecks before reconfiguration.
         for command in ["prechecks", "reconfigure"]:
             self.run_kolla_ansible_overcloud(parsed_args, command)
+
+        # Reconfigure kayobe extra services.
+        playbooks = _build_playbook_list("overcloud-extras")
+        extra_vars = {"action": "reconfigure"}
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  extra_vars=extra_vars)
+
+        # Post-deployment configuration.
         # FIXME: Fudge to work around incorrect configuration path.
         extra_vars = {"node_config_directory": parsed_args.kolla_config_path}
         self.run_kolla_ansible_overcloud(parsed_args, "post-deploy",
@@ -441,10 +465,20 @@ class OvercloudServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin,
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Upgrading overcloud services")
+
+        # First prepare configuration.
         playbooks = _build_playbook_list("kolla-ansible", "kolla-openstack")
         self.run_kayobe_playbooks(parsed_args, playbooks)
+
+        # Run kolla-ansible prechecks before upgrade.
         for command in ["prechecks", "upgrade"]:
             self.run_kolla_ansible_overcloud(parsed_args, command)
+
+        # Upgrade kayobe extra services.
+        playbooks = _build_playbook_list("overcloud-extras")
+        extra_vars = {"action": "upgrade"}
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  extra_vars=extra_vars)
 
 
 class OvercloudContainerImagePull(KollaAnsibleMixin, VaultMixin, Command):
@@ -452,7 +486,15 @@ class OvercloudContainerImagePull(KollaAnsibleMixin, VaultMixin, Command):
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Pulling overcloud container images")
+
+        # Pull updated kolla container images.
         self.run_kolla_ansible_overcloud(parsed_args, "pull")
+
+        # Pull container images for kayobe extra services.
+        playbooks = _build_playbook_list("overcloud-extras")
+        extra_vars = {"action": "pull"}
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  extra_vars=extra_vars)
 
 
 class OvercloudContainerImageBuild(KayobeAnsibleMixin, VaultMixin, Command):

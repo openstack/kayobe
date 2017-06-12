@@ -1,0 +1,12 @@
+---
+# Deploy/pull/reconfigure/upgrade OpenSM Infiniband subnet manager.
+#
+# Follows kolla-ansible service deployment patterns.
+#
+# Variables:
+# action: One of deploy, pull, reconfigure, upgrade
+
+- name: Ensure OpenSM is deployed
+  hosts: controllers[0]
+  roles:
+    - role: opensm

@@ -1,0 +1,10 @@
+---
+# Deploy/pull/reconfigure/upgrade overcloud services not managed by
+# kolla-ansible.
+#
+# Follows kolla-ansible service deployment patterns.
+#
+# Variables:
+# action: One of deploy, pull, reconfigure, upgrade
+
+- include: opensm.yml
