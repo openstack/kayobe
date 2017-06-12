@@ -16,6 +16,12 @@
 # 4. Remove the temporary bootstrap VLAN from the switch.
 # 5. Remove the VLAN interface on the controller node.
 
+# Playbook variables:
+#
+# idrac_limit: Colon-separated list of names of idracs to limit bootstrappping
+#              to. These names should be present in the variable
+#              idrac_network_ips. If omitted all idracs will be bootstrapped.
+
 - name: Ensure the iDRAC switches are supported
   hosts: "{{ idrac_bootstrap_switch_group }}"
   gather_facts: no
