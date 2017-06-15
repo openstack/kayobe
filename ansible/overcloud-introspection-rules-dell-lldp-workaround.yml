@@ -53,7 +53,7 @@
         - action: "set-attribute"
           path: "name"
           value: "{{ item.1.1.description }}"
-    inspector_rule_var_lldp_switch_port_interface: "{{ inspector_lldp_switch_port_interface }}"
+    inspector_rule_var_lldp_switch_port_interface: "{{ inspector_lldp_switch_port_interface_map.get(item.1.1.description, inspector_lldp_switch_port_interface_default) }}"
 
   pre_tasks:
     - name: Validate OpenStack password authentication parameters
