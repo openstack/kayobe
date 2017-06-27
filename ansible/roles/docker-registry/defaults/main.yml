@@ -1,0 +1,31 @@
+---
+# Roughly follows kolla-ansible's service deployment patterns.
+
+# Whether a docker registry is enabled.
+docker_registry_enabled: true
+
+# Service deployment definition.
+docker_registry_services:
+  docker_registry:
+    container_name: docker_registry
+    enabled: "{{ docker_registry_enabled }}"
+    image: "{{ docker_registry_image_full }}"
+    ports:
+      - "{{ docker_registry_port }}:5000"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "docker_registry:/var/lib/registry"
+
+# The port on which the docker registry server should listen.
+docker_registry_port: 5000
+
+####################
+# Docker
+####################
+docker_registry_namespace: "library"
+docker_registry_image: "{{ docker_registry ~ '/' if docker_registry | default else '' }}{{ docker_registry_namespace }}/registry"
+docker_registry_tag: "latest"
+docker_registry_image_full: "{{ docker_registry_image }}:{{ docker_registry_tag }}"
+
+docker_registry_restart_policy: "unless-stopped"
+docker_registry_restart_retries: 10

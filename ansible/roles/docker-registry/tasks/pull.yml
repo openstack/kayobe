@@ -1,0 +1,5 @@
+---
+- name: Pulling Docker registry container image
+  docker_image:
+    name: "{{ docker_registry_image_full }}"
+    state: present
