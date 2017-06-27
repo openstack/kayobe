@@ -3,7 +3,7 @@
 # Docker registry configuration.
 
 # Whether a docker registry is enabled.
-docker_registry_enabled: true
+docker_registry_enabled: False
 
 # The port on which the docker registry server should listen.
 # NOTE: This is set to 4000 rather than the default of 5000 to avoid clashing
