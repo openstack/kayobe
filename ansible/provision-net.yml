@@ -19,7 +19,7 @@
         - config-validation
 
   roles:
-    - role: neutron-net
+    - role: stackhpc.os-networks
       os_networks_venv: "{{ venv }}"
       os_networks_auth_type: "{{ openstack_auth_type }}"
       os_networks_auth: "{{ openstack_auth }}"
