@@ -23,3 +23,17 @@
         - "{{ item.key | replace('-idrac', '') not in groups['all'] }}"
         - "{{ not compute_node_limit or item.key | replace('-idrac', '') in compute_node_limit_list }}"
       run_once: True
+
+- name: Ensure compute nodes are present in the Ansible inventory
+  hosts: compute
+  gather_facts: no
+  vars:
+    compute_node_limit: ""
+    compute_node_limit_list: "{{ compute_node_limit.split(':') }}"
+  tasks:
+    - name: Set facts for the compute nodes for IPMI addresses
+      set_fact:
+        ipmi_address: "{{ idrac_network_ips[inventory_hostname] }}"
+      # Don't add hosts that already exist.
+      when: "{{ not compute_node_limit or inventory_hostname in compute_node_limit_list }}"
+      run_once: True
