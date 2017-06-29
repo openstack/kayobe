@@ -41,5 +41,5 @@
         --config-dir {{ kolla_config_path }} \
         {% if item.type is defined %}--type {{ item.type }}{% endif %} \
         {% if push_images | bool %}--push{% endif %} \
-        {{ item.regexes }} | tee --append {{ kolla_build_log_path }}
+        {{ item.regexes }} 2>&1 | tee --append {{ kolla_build_log_path }}
       with_items: "{{ container_image_sets }}"
