@@ -7,6 +7,15 @@
 #monitoring_bootstrap_user:
 
 ###############################################################################
+# Monitoring node network interface configuration.
+
+# List of default networks to which monitoring nodes are attached.
+#monitoring_default_network_interfaces:
+
+# List of extra networks to which monitoring nodes are attached.
+#monitoring_extra_network_interfaces:
+
+###############################################################################
 # Monitoring node BIOS configuration.
 
 # Dict of monitoring node BIOS options. Format is same as that used by

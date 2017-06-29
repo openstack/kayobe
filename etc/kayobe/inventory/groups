@@ -18,6 +18,7 @@ monitoring
 # Hosts in this group will have Docker installed.
 seed
 controllers
+monitoring
 
 ###############################################################################
 # Networking groups.
