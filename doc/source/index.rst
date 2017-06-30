@@ -26,6 +26,7 @@ Documentation
    configuration
    deployment
    upgrading
+   administration
 
 Developer Documentation
 -----------------------
