@@ -25,6 +25,7 @@ Documentation
    usage
    configuration
    deployment
+   upgrading
 
 Developer Documentation
 -----------------------
