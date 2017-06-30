@@ -53,6 +53,7 @@ setup(
         ],
         'kayobe.cli': [
             'control_host_bootstrap = kayobe.cli.commands:ControlHostBootstrap',
+            'control_host_upgrade = kayobe.cli.commands:ControlHostUpgrade',
             'configuration_dump = kayobe.cli.commands:ConfigurationDump',
             'kolla_ansible_run = kayobe.cli.commands:KollaAnsibleRun',
             'overcloud_bios_raid_configure = kayobe.cli.commands:OvercloudBIOSRAIDConfigure',

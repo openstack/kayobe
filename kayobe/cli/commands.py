@@ -116,21 +116,18 @@ class ControlHostBootstrap(KayobeAnsibleMixin, VaultMixin, Command):
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Bootstrapping Kayobe control host")
-        linux_distname = platform.linux_distribution()[0]
-        if linux_distname == "CentOS Linux":
-            utils.yum_install(["epel-release"])
-        else:
-            # On RHEL, the following should be done to install EPEL:
-            # sudo subscription-manager repos --enable=qci-1.0-for-rhel-7-rpms
-            # if ! yum info epel-release >/dev/null 2>&1 ; then
-            #     sudo yum -y install \
-            #         https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-            # fi
-            self.app.LOG.error("%s is not currently supported", linux_distname)
-            sys.exit(1)
-        utils.yum_install(["ansible"])
         utils.galaxy_install("ansible/requirements.yml", "ansible/roles")
-        playbooks = _build_playbook_list("bootstrap", "kolla")
+        playbooks = _build_playbook_list("bootstrap")
+        self.run_kayobe_playbooks(parsed_args, playbooks)
+
+
+class ControlHostUpgrade(KayobeAnsibleMixin, VaultMixin, Command):
+    """Upgrade the Kayobe control environment."""
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Upgrading Kayobe control host")
+        utils.galaxy_install("ansible/requirements.yml", "ansible/roles")
+        playbooks = _build_playbook_list("bootstrap")
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
 
