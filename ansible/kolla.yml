@@ -4,5 +4,3 @@
   roles:
     - role: kolla
     - role: kolla-build
-
-- include: kolla-ansible.yml
