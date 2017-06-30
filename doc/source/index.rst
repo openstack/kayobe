@@ -22,8 +22,9 @@ Documentation
 
    architecture
    installation
-   configuration
    usage
+   configuration
+   deployment
 
 Developer Documentation
 -----------------------
