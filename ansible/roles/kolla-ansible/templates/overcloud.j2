@@ -53,6 +53,16 @@ monitoring
 
 # You can explicitly specify which hosts run each project by updating the
 # groups in the sections below. Common services are grouped together.
+[chrony-server:children]
+control
+
+[chrony:children]
+control
+network
+compute
+storage
+monitoring
+
 [collectd:children]
 compute
 
@@ -84,10 +94,23 @@ control
 [haproxy:children]
 network
 
+[hyperv]
+#hyperv_host
+
+[hyperv:vars]
+#ansible_user=user
+#ansible_password=password
+#ansible_port=5986
+#ansible_connection=winrm
+#ansible_winrm_server_cert_validation=ignore
+
 [mariadb:children]
 control
 
 [rabbitmq:children]
+control
+
+[outward-rabbitmq:children]
 control
 
 [mongodb:children]
@@ -104,6 +127,11 @@ control
 
 [neutron:children]
 network
+
+[openvswitch:children]
+network
+compute
+manila-share
 
 [cinder:children]
 control
@@ -205,6 +233,12 @@ control
 [bifrost:children]
 deployment
 
+[zun:children]
+control
+
+[skydive:children]
+monitoring
+
 # Additional control implemented here. These groups allow you to control which
 # services run on which hosts at a per-service level.
 #
@@ -261,6 +295,9 @@ neutron
 neutron
 
 [neutron-vpnaas-agent:children]
+neutron
+
+[neutron-bgp-dragent:children]
 neutron
 
 # Ceph
@@ -545,3 +582,18 @@ designate
 # Placement
 [placement-api:children]
 placement
+
+# Zun
+[zun-api:children]
+zun
+
+[zun-compute:children]
+compute
+
+# Skydive
+[skydive-analyzer:children]
+skydive
+
+[skydive-agent:children]
+compute
+network
