@@ -11,7 +11,7 @@ to complement the kolla-ansible project, providing an opinionated yet highly
 configurable OpenStack deployment and automation of many operational
 procedures.
 
-* Documentation: https://github.com/stackhpc/kayobe/tree/master/doc
+* Documentation: https://kayobe.readthedocs.io/en/latest/
 * Source: https://github.com/stackhpc/kayobe
 * Bugs: https://github.com/stackhpc/kayobe/issues
 
