@@ -486,7 +486,8 @@ class OvercloudServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin,
                                   extra_vars=extra_vars)
 
 
-class OvercloudContainerImagePull(KollaAnsibleMixin, VaultMixin, Command):
+class OvercloudContainerImagePull(KayobeAnsibleMixin, KollaAnsibleMixin,
+                                  VaultMixin, Command):
     """Pull the overcloud container images from a registry."""
 
     def take_action(self, parsed_args):
