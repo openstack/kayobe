@@ -250,6 +250,10 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         self.app.LOG.debug("Configuring seed host OS")
         ansible_user = self.run_kayobe_config_dump(
             parsed_args, host="seed", var_name="kayobe_ansible_user")
+        if not ansible_user:
+            self.app.LOG.error("Could not determine kayobe_ansible_user "
+                               "variable for seed host")
+            sys.exit(1)
         playbooks = _build_playbook_list(
             "ip-allocation", "ssh-known-host", "kayobe-ansible-user")
         if parsed_args.wipe_disks:
@@ -376,7 +380,11 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     def take_action(self, parsed_args):
         self.app.LOG.debug("Configuring overcloud host OS")
         ansible_user = self.run_kayobe_config_dump(
-            parsed_args, var_name="kayobe_ansible_user")
+            parsed_args, hosts="overcloud", var_name="kayobe_ansible_user")
+        if not ansible_user:
+            self.app.LOG.error("Could not determine kayobe_ansible_user "
+                               "variable for overcloud hosts")
+            sys.exit(1)
         ansible_user = ansible_user.values()[0]
         playbooks = _build_playbook_list(
             "ip-allocation", "ssh-known-host", "kayobe-ansible-user")
