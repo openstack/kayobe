@@ -143,6 +143,10 @@ supported:
     VLAN ID.
 ``mtu``
     Maximum Transmission Unit (MTU).
+``routes``
+    List of static IP routes. Each item should be a dict containing the
+    items ``cidr`` and ``gateway``. ``cidr`` is the CIDR representation of the
+    route's destination. ``gateway`` is the IP address of the next hop.
 
 IP addresses are allocated automatically by Kayobe from the
 allocation pool
@@ -266,6 +270,9 @@ We could describe such a network as follows:
    external_allocation_pool_end: 10.0.3.127
    external_neutron_allocation_pool_start: 10.0.3.128
    external_neutron_allocation_pool_end: 10.0.3.254
+   external_routes:
+     - cidr 10.0.4.0/24
+       gateway: 10.0.3.1
 
 We can map these networks to network interfaces on the seed and controller hosts:
 

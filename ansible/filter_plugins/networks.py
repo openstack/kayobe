@@ -118,6 +118,7 @@ def net_vlan(context, name, inventory_hostname=None):
 
 
 net_mtu = _make_attr_filter('mtu')
+net_routes = _make_attr_filter('routes')
 
 
 @jinja2.contextfilter
@@ -125,8 +126,28 @@ def net_bridge_ports(context, name, inventory_hostname=None):
     return net_attr(context, name, 'bridge_ports', inventory_hostname)
 
 
+def _route_obj(route):
+    """Return a dict representation of an IP route.
+
+    The returned dict is compatible with the route item of the
+    interfaces_ether_interfaces and interfaces_bridge_interfaces variables in
+    the MichaelRigaert.interfaces role.
+    """
+    net = netaddr.IPNetwork(route['cidr'])
+    return {
+        'network': str(net.network),
+        'netmask': str(net.netmask),
+        'gateway': route['gateway'],
+    }
+
+
 @jinja2.contextfilter
 def net_interface_obj(context, name, inventory_hostname=None):
+    """Return a dict representation of a network interface.
+
+    The returned dict is compatible with the interfaces_ether_interfaces
+    variable in the MichaelRigaert.interfaces role.
+    """
     device = net_interface(context, name, inventory_hostname)
     if not device:
         raise errors.AnsibleFilterError(
@@ -138,6 +159,9 @@ def net_interface_obj(context, name, inventory_hostname=None):
     gateway = net_gateway(context, name, inventory_hostname)
     vlan = net_vlan(context, name, inventory_hostname)
     mtu = net_mtu(context, name, inventory_hostname)
+    routes = net_routes(context, name, inventory_hostname)
+    if routes:
+        routes = [_route_obj(route) for route in routes]
     interface = {
         'device': device,
         'address': ip,
@@ -145,6 +169,7 @@ def net_interface_obj(context, name, inventory_hostname=None):
         'gateway': gateway,
         'vlan': vlan,
         'mtu': mtu,
+        'route': routes,
         'bootproto': 'static',
         'onboot': 'yes',
     }
@@ -154,6 +179,11 @@ def net_interface_obj(context, name, inventory_hostname=None):
 
 @jinja2.contextfilter
 def net_bridge_obj(context, name, inventory_hostname=None):
+    """Return a dict representation of a network bridge interface.
+
+    The returned dict is compatible with the interfaces_bridge_interfaces
+    variable in the MichaelRigaert.interfaces role.
+    """
     device = net_interface(context, name, inventory_hostname)
     if not device:
         raise errors.AnsibleFilterError(
@@ -166,6 +196,9 @@ def net_bridge_obj(context, name, inventory_hostname=None):
     vlan = net_vlan(context, name, inventory_hostname)
     mtu = net_mtu(context, name, inventory_hostname)
     ports = net_bridge_ports(context, name, inventory_hostname)
+    routes = net_routes(context, name, inventory_hostname)
+    if routes:
+        routes = [_route_obj(route) for route in routes]
     interface = {
         'device': device,
         'address': ip,
@@ -174,6 +207,7 @@ def net_bridge_obj(context, name, inventory_hostname=None):
         'vlan': vlan,
         'mtu': mtu,
         'ports': ports,
+        'route': routes,
         'bootproto': 'static',
         'onboot': 'yes',
     }
@@ -261,6 +295,7 @@ class FilterModule(object):
             'net_neutron_allocation_pool_end': net_neutron_allocation_pool_end,
             'net_vlan': net_vlan,
             'net_mtu': net_mtu,
+            'net_routes': net_routes,
             'net_interface_obj': net_interface_obj,
             'net_bridge_obj': net_bridge_obj,
             'net_is_ether': net_is_ether,
