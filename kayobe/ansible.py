@@ -104,7 +104,8 @@ def _get_vars_files(config_path):
 
 
 def build_args(parsed_args, playbooks,
-               extra_vars=None, limit=None, tags=None, verbose_level=None):
+               extra_vars=None, limit=None, tags=None, verbose_level=None,
+               check=None):
     """Build arguments required for running Ansible playbooks."""
     cmd = ["ansible-playbook"]
     if verbose_level:
@@ -123,7 +124,7 @@ def build_args(parsed_args, playbooks,
             cmd += ["-e", "%s=%s" % (extra_var_name, extra_var_value)]
     if parsed_args.become:
         cmd += ["--become"]
-    if parsed_args.check:
+    if check or (parsed_args.check and check is None):
         cmd += ["--check"]
     if parsed_args.limit or limit:
         limits = [l for l in [parsed_args.limit, limit] if l]
@@ -137,12 +138,12 @@ def build_args(parsed_args, playbooks,
 
 def run_playbooks(parsed_args, playbooks,
                   extra_vars=None, limit=None, tags=None, quiet=False,
-                  verbose_level=None):
+                  verbose_level=None, check=None):
     """Run a Kayobe Ansible playbook."""
     _validate_args(parsed_args, playbooks)
     cmd = build_args(parsed_args, playbooks,
                      extra_vars=extra_vars, limit=limit, tags=tags,
-                     verbose_level=verbose_level)
+                     verbose_level=verbose_level, check=check)
     try:
         utils.run_command(cmd, quiet=quiet)
     except subprocess.CalledProcessError as e:

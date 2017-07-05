@@ -19,7 +19,6 @@ import subprocess
 import sys
 
 from kayobe import utils
-from kayobe import vault
 
 
 DEFAULT_CONFIG_PATH = "/etc/kolla"

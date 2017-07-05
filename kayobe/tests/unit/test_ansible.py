@@ -207,6 +207,7 @@ class TestCase(unittest.TestCase):
             "limit": "group2:host2",
             "tags": "tag3,tag4",
             "verbose_level": 0,
+            "check": True,
         }
         ansible.run_playbooks(parsed_args, ["playbook1.yml", "playbook2.yml"],
                               **kwargs)
@@ -217,6 +218,7 @@ class TestCase(unittest.TestCase):
             "-e", "@/etc/kayobe/vars-file2.yaml",
             "-e", "ev_name1=ev_value1",
             "-e", "ev_name2=ev_value2",
+            "--check",
             "--limit", "group1:host1:&group2:host2",
             "--tags", "tag1,tag2,tag3,tag4",
             "playbook1.yml",
@@ -263,7 +265,8 @@ class TestCase(unittest.TestCase):
                                          extra_vars={
                                              "dump_path": dump_dir,
                                          },
-                                         quiet=True, verbose_level=None)
+                                         quiet=True, verbose_level=None,
+                                         check=False)
         mock_rmtree.assert_called_once_with(dump_dir)
         mock_listdir.assert_called_once_with(dump_dir)
         mock_read.assert_has_calls([
