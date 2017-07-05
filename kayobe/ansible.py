@@ -170,9 +170,11 @@ def config_dump(parsed_args, host=None, hosts=None, var_name=None,
             extra_vars["dump_var_name"] = var_name
         if facts is not None:
             extra_vars["dump_facts"] = facts
+        # Don't use check mode for configuration dumps as we won't get any
+        # results back.
         run_playbook(parsed_args, "ansible/dump-config.yml",
                      extra_vars=extra_vars, quiet=True,
-                     verbose_level=verbose_level)
+                     verbose_level=verbose_level, check=False)
         hostvars = {}
         for path in os.listdir(dump_dir):
             LOG.debug("Found dump file %s", path)
