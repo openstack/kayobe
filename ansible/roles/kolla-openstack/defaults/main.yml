@@ -3,6 +3,12 @@
 kolla_node_custom_config_path:
 
 ###############################################################################
+# Fluentd configuration.
+
+# Path to extra Fluentd output configuration files.
+kolla_extra_fluentd_output_path:
+
+###############################################################################
 # Glance configuration.
 
 # Whether to enable Glance.

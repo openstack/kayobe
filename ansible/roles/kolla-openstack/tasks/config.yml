@@ -5,6 +5,7 @@
     state: directory
     mode: 0750
   with_items:
+    - { name: fluentd/output, enabled: "{{ kolla_extra_fluentd_output_path != None }}" }
     - { name: ironic, enabled: "{{ kolla_enable_ironic }}" }
     - { name: neutron, enabled: "{{ kolla_enable_neutron }}" }
     - { name: swift, enabled: "{{ kolla_enable_swift }}" }
@@ -27,6 +28,15 @@
     - { src: pxelinux.default.j2, dest: ironic/pxelinux.default, enabled: "{{ kolla_enable_ironic }}" }
     - { src: sahara.conf.j2, dest: sahara.conf, enabled: "{{ kolla_enable_sahara }}" }
   when: "{{ item.enabled | bool }}"
+
+- name: Ensure extra fluentd output configuration files exist
+  template:
+    src: "{{ item }}"
+    dest: "{{ kolla_node_custom_config_path }}/fluentd/output/{{ item | basename }}"
+    mode: 0640
+  with_fileglob:
+    - "{{ kolla_extra_fluentd_output_path }}/*.conf"
+  when: "{{ kolla_extra_fluentd_output_path != None }}"
 
 - name: Ensure the ironic inspector kernel and ramdisk exist
   get_url:
