@@ -152,7 +152,8 @@ class TestCase(unittest.TestCase):
         kwargs = {
             "extra_vars": {"ev_name2": "ev_value2"},
             "tags": "tag3,tag4",
-            "verbose_level": 1
+            "verbose_level": 1,
+            "extra_args": ["--arg1", "--arg2"],
         }
         kolla_ansible.run(parsed_args, "command", "overcloud", **kwargs)
         expected_cmd = [
@@ -163,6 +164,7 @@ class TestCase(unittest.TestCase):
             "-e", "ev_name1=ev_value1",
             "-e", "ev_name2=ev_value2",
             "--tags", "tag1,tag2,tag3,tag4",
+            "--arg1", "--arg2",
         ]
         expected_cmd = " ".join(expected_cmd)
         mock_run.assert_called_once_with(expected_cmd, shell=True, quiet=False)
