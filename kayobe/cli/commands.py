@@ -299,7 +299,7 @@ class SeedContainerImageBuild(KayobeAnsibleMixin, VaultMixin, Command):
             "kolla-build", "container-image-build")
         extra_vars = {"push_images": parsed_args.push}
         if parsed_args.regex:
-            regexes = " ".join(parsed_args.regex)
+            regexes = "'%s'" % " ".join(parsed_args.regex)
             extra_vars["container_image_regexes"] = regexes
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed",
                                   extra_vars=extra_vars)
@@ -563,7 +563,7 @@ class OvercloudContainerImageBuild(KayobeAnsibleMixin, VaultMixin, Command):
             "kolla-build", "container-image-build")
         extra_vars = {"push_images": parsed_args.push}
         if parsed_args.regex:
-            regexes = " ".join(parsed_args.regex)
+            regexes = "'%s'" % " ".join(parsed_args.regex)
             extra_vars["container_image_regexes"] = regexes
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="controllers",
                                   extra_vars=extra_vars)
