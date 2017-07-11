@@ -9,6 +9,6 @@
     read_only: "{{ item.value.read_only | default(omit) }}"
     restart_policy: "{{ opensm_restart_policy }}"
     restart_retries: "{{ opensm_restart_retries }}"
-    state: "{{ 'started' if item.value.enabled | bool else 'absent' }}"
+    state: "{{ 'started' if item.value.enabled and action != 'destroy' | bool else 'absent' }}"
     volumes: "{{ item.value.volumes }}"
   with_dict: "{{ opensm_services }}"

@@ -486,6 +486,45 @@ class OvercloudServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin,
                                   extra_vars=extra_vars)
 
 
+class OvercloudServiceDestroy(KollaAnsibleMixin, KayobeAnsibleMixin,
+                              VaultMixin, Command):
+    """Destroy the overcloud services."""
+
+    def get_parser(self, prog_name):
+        parser = super(OvercloudServiceDestroy, self).get_parser(prog_name)
+        group = parser.add_argument_group("Services")
+        group.add_argument("--yes-i-really-really-mean-it",
+                           action='store_true',
+                           help="confirm that you understand that this will "
+                                "permantently destroy all services and data.")
+        return parser
+
+    def take_action(self, parsed_args):
+        if not parsed_args.yes_i_really_really_mean_it:
+            self.app.LOG.error("This will permanently destroy all services "
+                               "and data. Specify "
+                               "--yes-i-really-really-mean-it to confirm that "
+                               "you understand this.")
+            sys.exit(1)
+
+        self.app.LOG.debug("Destroying overcloud services")
+
+        # First prepare configuration.
+        playbooks = _build_playbook_list("kolla-ansible", "kolla-openstack")
+        self.run_kayobe_playbooks(parsed_args, playbooks)
+
+        # Run kolla-ansible destroy.
+        extra_args = ["--yes-i-really-really-mean-it"]
+        self.run_kolla_ansible_overcloud(parsed_args, "destroy",
+                                         extra_args=extra_args)
+
+        # Destroy kayobe extra services.
+        playbooks = _build_playbook_list("overcloud-extras")
+        extra_vars = {"action": "destroy"}
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  extra_vars=extra_vars)
+
+
 class OvercloudContainerImagePull(KayobeAnsibleMixin, KollaAnsibleMixin,
                                   VaultMixin, Command):
     """Pull the overcloud container images from a registry."""

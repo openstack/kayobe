@@ -66,6 +66,7 @@ setup(
             'overcloud_post_configure = kayobe.cli.commands:OvercloudPostConfigure',
             'overcloud_provision = kayobe.cli.commands:OvercloudProvision',
             'overcloud_service_deploy = kayobe.cli.commands:OvercloudServiceDeploy',
+            'overcloud_service_destroy = kayobe.cli.commands:OvercloudServiceDestroy',
             'overcloud_service_reconfigure = kayobe.cli.commands:OvercloudServiceReconfigure',
             'overcloud_service_upgrade = kayobe.cli.commands:OvercloudServiceUpgrade',
             'physical_network_configure = kayobe.cli.commands:PhysicalNetworkConfigure',

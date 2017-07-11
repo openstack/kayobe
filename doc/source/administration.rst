@@ -45,6 +45,18 @@ and/or kolla-ansible::
 
     (kayobe-venv) $ kayobe overcloud service upgrade --tags config --kolla-tags keystone
 
+Destroying the Overcloud Services
+=================================
+
+.. note::
+
+   This step will destroy all containers, container images, volumes and data on
+   the overcloud hosts.
+
+To destroy the overcloud services::
+
+    (kayobe-venv) $ kayobe overcloud service destroy --yes-i-really-really-mean-it
+
 Deprovisioning The Cloud
 ========================
 

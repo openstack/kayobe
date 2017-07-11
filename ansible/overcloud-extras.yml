@@ -5,7 +5,7 @@
 # Follows kolla-ansible service deployment patterns.
 #
 # Variables:
-# action: One of deploy, pull, reconfigure, upgrade
+# action: One of deploy, destroy, pull, reconfigure, upgrade
 
 - include: docker-registry.yml
 - include: opensm.yml

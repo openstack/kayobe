@@ -4,7 +4,7 @@
 # Follows kolla-ansible service deployment patterns.
 #
 # Variables:
-# action: One of deploy, pull, reconfigure, upgrade
+# action: One of deploy, destroy, pull, reconfigure, upgrade
 
 - name: Ensure a local Docker registry is deployed
   hosts: controllers[0]
