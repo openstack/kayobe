@@ -178,6 +178,15 @@ kolla_enable_magnum:
 kolla_extra_magnum:
 
 ###############################################################################
+# Murano configuration.
+
+# Whether to enable Murano.
+kolla_enable_murano:
+
+# Free form extra configuration to append to murano.conf.
+kolla_extra_murano:
+
+###############################################################################
 # Neutron configuration.
 
 # Whether to enable Neutron.
