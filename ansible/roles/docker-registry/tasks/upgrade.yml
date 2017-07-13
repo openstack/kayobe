@@ -1,1 +1,3 @@
-deploy.yml
+---
+- include: pull.yml
+- include: deploy.yml

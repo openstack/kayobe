@@ -2,4 +2,5 @@
 - name: Pulling OpenSM container image
   docker_image:
     name: "{{ opensm_image_full }}"
+    repository: "{{ opensm_image_full }}"
     state: present

@@ -5,7 +5,6 @@
     name: "{{ item.value.container_name }}"
     network_mode: "host"
     privileged: "{{ item.value.privileged | default(omit) }}"
-    pull: "{{ action == 'upgrade' }}"
     read_only: "{{ item.value.read_only | default(omit) }}"
     restart_policy: "{{ opensm_restart_policy }}"
     restart_retries: "{{ opensm_restart_retries }}"

@@ -5,7 +5,6 @@
     name: "{{ item.value.container_name }}"
     ports: "{{ item.value.ports | default(omit) }}"
     privileged: "{{ item.value.privileged | default(omit) }}"
-    pull: "{{ action == 'upgrade' }}"
     read_only: "{{ item.value.read_only | default(omit) }}"
     restart_policy: "{{ docker_registry_restart_policy }}"
     restart_retries: "{{ docker_registry_restart_retries }}"
