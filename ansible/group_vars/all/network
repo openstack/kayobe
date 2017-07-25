@@ -2,9 +2,17 @@
 ###############################################################################
 # Network role to network name mappings.
 
+# Name of the network used by the overcloud hosts to manage the bare metal
+# compute hosts via their out-of-band management controllers.
+oob_oc_net_name: 'oob_oc_net'
+
 # Name of the network used by the seed to provision the bare metal overcloud
 # hosts.
 provision_oc_net_name: 'provision_oc_net'
+
+# Name of the network used by the overcloud hosts to provision the bare metal
+# workload hosts.
+oob_wl_net_name: 'oob_wl_net'
 
 # Name of the network used by the overcloud hosts to provision the bare metal
 # workload hosts.

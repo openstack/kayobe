@@ -4,13 +4,21 @@
 ###############################################################################
 # Network role to network mappings.
 
+# Name of the network used by the seed to manage the bare metal overcloud
+# hosts via their out-of-band management controllers.
+#oob_oc_net_name:
+
 # Name of the network used by the seed to provision the bare metal overcloud
 # hosts.
 #provision_oc_net_name:
 
 # Name of the network used by the overcloud hosts to provision the bare metal
 # workload hosts.
-#provision_wl_net_name:
+#oob_wl_net_name:
+
+# Name of the network used by the overcloud hosts to manage the bare metal
+# compute hosts via their out-of-band management controllers.
+#provision_oob_net_name:
 
 # Name of the network used to expose the internal OpenStack API endpoints.
 #internal_net_name:
@@ -32,6 +40,17 @@
 ###############################################################################
 # Network definitions.
 
+# Overcloud out-of-band management network IP information.
+# oob_oc_net_cidr:
+# oob_oc_net_allocation_pool_start:
+# oob_oc_net_allocation_pool_end:
+# oob_oc_net_inspection_allocation_pool_start:
+# oob_oc_net_inspection_allocation_pool_end:
+# oob_oc_net_gateway:
+# oob_oc_net_vlan:
+# oob_oc_net_mtu:
+# oob_oc_net_routes:
+
 # Overcloud provisioning network IP information.
 # provision_oc_net_cidr:
 # provision_oc_net_allocation_pool_start:
@@ -42,6 +61,19 @@
 # provision_oc_net_vlan:
 # provision_oc_net_mtu:
 # provision_oc_net_routes:
+
+# Workload out-of-band management network IP information.
+# oob_wl_net_cidr:
+# oob_wl_net_allocation_pool_start:
+# oob_wl_net_allocation_pool_end:
+# oob_wl_net_inspection_allocation_pool_start:
+# oob_wl_net_inspection_allocation_pool_end:
+# oob_wl_net_neutron_allocation_pool_start:
+# oob_wl_net_neutron_allocation_pool_end:
+# oob_wl_net_gateway:
+# oob_wl_net_vlan:
+# oob_wl_net_mtu:
+# oob_wl_net_routes:
 
 # Workload provisioning network IP information.
 # provision_wl_net_cidr:

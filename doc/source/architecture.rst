@@ -35,9 +35,15 @@ Kayobe's network configuration is very flexible but does define a few default
 classes of networks.  These are logical networks and may map to one or more
 physical networks in the system.
 
+Overcloud out-of-band network
+    Name of the network used by the seed to access the out-of-band management
+    controllers of the bare metal overcloud hosts.
 Overcloud provisioning network
     The overcloud provisioning network is used by the seed host to provision
     the cloud hosts.
+Workload out-of-band network
+    Name of the network used by the overcloud hosts to access the out-of-band
+    management controllers of the bare metal workload hosts.
 Workload provisioning network
     The workload provisioning network is used by the cloud hosts to provision
     the bare metal compute hosts.

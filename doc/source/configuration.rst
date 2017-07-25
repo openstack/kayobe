@@ -170,9 +170,15 @@ In order to provide flexibility in the system's network topology, Kayobe maps
 the named networks to logical network roles.  A single named network may
 perform multiple roles, or even none at all.  The available roles are:
 
+``oob_oc_net_name``
+    Name of the network used by the seed to access the out-of-band management
+    controllers of the bare metal overcloud hosts.
 ``provision_oc_net_name``
     Name of the network used by the seed to provision the bare metal overcloud
     hosts.
+``oob_wl_net_name``
+    Name of the network used by the overcloud hosts to access the out-of-band
+    management controllers of the bare metal workload hosts.
 ``provision_wl_net_name``
     Name of the network used by the overcloud hosts to provision the bare metal
     workload hosts.

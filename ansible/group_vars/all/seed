@@ -7,6 +7,17 @@
 seed_bootstrap_user: "{{ lookup('env', 'USER') }}"
 
 ###############################################################################
+# Seed network interface configuration.
+
+# List of default networks to which seed nodes are attached.
+seed_default_network_interfaces: >
+  {{ [oob_oc_net_name,
+      provision_oc_net_name] | unique | list }}
+
+# List of extra networks to which seed nodes are attached.
+seed_extra_network_interfaces: []
+
+###############################################################################
 # Seed node LVM configuration.
 
 # List of seed volume groups. See mrlesmithjr.manage-lvm role for format.

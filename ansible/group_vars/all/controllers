@@ -12,6 +12,7 @@ controller_bootstrap_user: "{{ lookup('env', 'USER') }}"
 # List of default networks to which controller nodes are attached.
 controller_default_network_interfaces: >
   {{ [provision_oc_net_name,
+      oob_wl_net_name,
       provision_wl_net_name,
       internal_net_name,
       external_net_name,
