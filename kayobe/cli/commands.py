@@ -119,6 +119,8 @@ class ControlHostBootstrap(KayobeAnsibleMixin, VaultMixin, Command):
         utils.galaxy_install("ansible/requirements.yml", "ansible/roles")
         playbooks = _build_playbook_list("bootstrap")
         self.run_kayobe_playbooks(parsed_args, playbooks)
+        playbooks = _build_playbook_list("kolla-ansible")
+        self.run_kayobe_playbooks(parsed_args, playbooks, tags="install")
 
 
 class ControlHostUpgrade(KayobeAnsibleMixin, VaultMixin, Command):
@@ -129,6 +131,8 @@ class ControlHostUpgrade(KayobeAnsibleMixin, VaultMixin, Command):
         utils.galaxy_install("ansible/requirements.yml", "ansible/roles")
         playbooks = _build_playbook_list("bootstrap")
         self.run_kayobe_playbooks(parsed_args, playbooks)
+        playbooks = _build_playbook_list("kolla-ansible")
+        self.run_kayobe_playbooks(parsed_args, playbooks, tags="install")
 
 
 class ConfigurationDump(KayobeAnsibleMixin, VaultMixin, Command):
