@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 # Copyright (c) 2017 StackHPC Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -12,7 +14,60 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-#!/usr/bin/python
+DOCUMENTATION = """
+module: ip_allocation
+short_description: Allocate an IP address for a host from a pool
+author: Mark Goddard (mark@stackhpc.com)
+options:
+  - option-name: net_name
+    description: Name of the network
+    required: True
+    type: string
+  - option-name: hostname
+    description: Name of the host
+    required: True
+    type: string
+  - option-name: cidr
+    description: IP Network in CIDR format
+    required: True
+    type: string
+  - option-name: allocation_pool_start
+    description: First address of the pool from which to allocate
+    required: False
+    type: string
+  - option-name: allocation_pool_end
+    description: Last address of the pool from which to allocate
+    required: False
+    type: string
+  - option-name: allocation_file
+    description: >
+      Path to a file in which to store the allocations. Will be created if it
+      does not exist.
+    required: True
+    type: string
+requirements:
+  - netaddr
+  - PyYAML
+"""
+
+EXAMPLES = """
+- name: Ensure host has an IP address
+  ip_allocation:
+    net_name: my-network
+    hostname: my-host
+    cidr: 10.0.0.0/24
+    allocation_pool_start: 10.0.0.1
+    allocation_pool_end: 10.0.0.254
+    allocation_file: /path/to/allocation/file.yml
+"""
+
+RETURN = """
+ip:
+  description: The allocated IP address
+  returned: success
+  type: string
+  sample: 10.0.0.1
+"""
 
 from ansible.module_utils.basic import *
 import sys
@@ -27,15 +82,6 @@ try:
     import yaml
 except Exception as e:
     IMPORT_ERRORS.append(e)
-
-
-DOCUMENTATION = """ 
-WM
-"""
-
-EXAMPLES = """ 
-WM
-"""
 
 
 def read_allocations(module):
