@@ -16,6 +16,16 @@ CentOS::
 
     $ yum install -y python-virtualenv
 
+It is necessary to install the GCC compiler chain in order to build the
+extensions of some of kayobe's python dependencies. On CentOS::
+
+    $ yum install -y gcc
+
+Finally, for cloning and working with the kayobe source code repository, Git is
+required. On CentOS::
+
+    $ yum install -y git
+
 Installation
 ============
 
