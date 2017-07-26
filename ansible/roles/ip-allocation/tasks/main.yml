@@ -1,4 +1,14 @@
 ---
+- name: Ensure package dependencies are installed
+  local_action:
+    module: yum
+    name: "{{ item }}"
+    state: installed
+  become: True
+  with_items:
+    - python-netaddr
+    - PyYAML
+
 - name: Ensure IP addresses are allocated
   local_action:
     module: ip_allocation
