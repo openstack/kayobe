@@ -17,7 +17,7 @@
   register: ssh_key_stat
 
 - name: Generate an SSH key
-  command: ssh-keygen -t {{ boostrap_ssh_key_type }} -N '' -f {{ bootstrap_ssh_private_key_path }}
+  command: ssh-keygen -t {{ bootstrap_ssh_key_type }} -N '' -f {{ bootstrap_ssh_private_key_path }}
   when: not ssh_key_stat.stat.exists
 
 - name: Ensure SSH public key is in authorized keys
