@@ -1,0 +1,19 @@
+---
+- name: Ensure the libvirt package is installed
+  yum:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - libvirt
+    - libvirt-daemon-kvm
+    - libvirt-python
+    - python-lxml
+    - qemu-kvm
+  become: True
+
+- name: Ensure the libvirt daemon is started and enabled
+  service:
+    name: libvirtd
+    state: running
+    enabled: yes
+  become: True

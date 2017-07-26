@@ -1,0 +1,22 @@
+---
+- name: Ensure libvirt networks are defined
+  virt_net:
+    name: "{{ item.name }}"
+    command: define
+    xml: "{{ item.xml | default(lookup('template', 'network.xml.j2')) }}"
+  with_items: "{{ libvirt_host_networks }}"
+  become: True
+
+- name: Ensure libvirt networks are active
+  virt_net:
+    name: "{{ item.name }}"
+    state: active
+  with_items: "{{ libvirt_host_networks }}"
+  become: True
+
+- name: Ensure libvirt networks are started on boot
+  virt_net:
+    name: "{{ item.name }}"
+    autostart: yes
+  with_items: "{{ libvirt_host_networks }}"
+  become: True

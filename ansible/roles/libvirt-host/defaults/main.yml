@@ -1,0 +1,19 @@
+---
+# List of pools to define and start.
+# Each item should be a dict containing the following items:
+# name: The name of the pool.
+# type: The type of the pool, currently only 'dir' is supported.
+# capacity:  The capacity, in bytes, of the pool.
+# path: The absolute path to the pool's backing directory.
+# mode: The access mode of the pool.
+# owner: The owner of the pool.
+# group: The group of the pool.
+libvirt_host_pools: []
+
+# List of networks to define and start.
+# Each item should be a dict containing the following items:
+# name: The name of the network.
+# mode: The forwarding mode of the network, currently only 'bridge' is
+# supported.
+# bridge: The name of the bridge interface for this network.
+libvirt_host_networks: []

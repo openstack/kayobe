@@ -1,0 +1,5 @@
+---
+- include: validate.yml
+- include: install.yml
+- include: pools.yml
+- include: networks.yml

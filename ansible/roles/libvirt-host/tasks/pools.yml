@@ -1,0 +1,32 @@
+---
+- name: Ensure libvirt storage pool directories exist
+  file:
+    path: "{{ item.path }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "{{ item.mode|int(base=8) }}"
+    state: directory
+  with_items: "{{ libvirt_host_pools }}"
+  become: True
+
+- name: Ensure libvirt storage pools are defined
+  virt_pool:
+    name: "{{ item.name }}"
+    command: define
+    xml: "{{ item.xml | default(lookup('template', 'pool.xml.j2')) }}"
+  with_items: "{{ libvirt_host_pools }}"
+  become: True
+
+- name: Ensure libvirt storage pools are active
+  virt_pool:
+    name: "{{ item.name }}"
+    state: active
+  with_items: "{{ libvirt_host_pools }}"
+  become: True
+
+- name: Ensure libvirt storage pools are started on boot
+  virt_pool:
+    name: "{{ item.name }}"
+    autostart: yes
+  with_items: "{{ libvirt_host_pools }}"
+  become: True
