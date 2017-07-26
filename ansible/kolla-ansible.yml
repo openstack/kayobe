@@ -145,7 +145,7 @@
                 description: "List of Neutron interface names"
                 required: True
             - value
-      when: "{{ controller_host is defined }}"
+      when: "{{ groups['controllers'] | length > 0 }}"
       tags:
         - config
         - config-validation
@@ -169,7 +169,7 @@
             - var_name: "kolla_bifrost_network_interface"
               description: "Bifrost network interface name"
               required: True
-      when: "{{ seed_host is defined }}"
+      when: "{{ groups['seed'] | length > 0 }}"
       tags:
         - config
         - config-validation
