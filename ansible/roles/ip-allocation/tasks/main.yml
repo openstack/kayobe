@@ -1,4 +1,7 @@
 ---
+# Note: Currently we install these using Yum to the system packages rather than
+# pip to a virtualenv. This is because Yum is required elsewhere and cannot
+# easily be installed in a virtualenv.
 - name: Ensure package dependencies are installed
   local_action:
     module: yum
