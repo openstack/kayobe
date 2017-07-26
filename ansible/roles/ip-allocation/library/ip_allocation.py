@@ -133,10 +133,12 @@ def update_allocation(module, allocations):
     object_name = "%s_ips" % net_name
     net_allocations = allocations.setdefault(object_name, {})
     invalid_allocations = {hn: ip for hn, ip in net_allocations.items()
-                           if ip not in network}
+                           if netaddr.IPAddress(ip) not in network}
     if invalid_allocations:
         module.fail_json(msg="Found invalid existing allocations in network %s: %s" %
-            (network, ", ".join("%s: %s" % (hn, ip) for hn, ip in invalid_allocations.items())))
+            (network,
+             ", ".join("%s: %s" % (hn, ip)
+                       for hn, ip in invalid_allocations.items())))
     if hostname not in net_allocations:
         result['changed'] = True
         allocated_ips = netaddr.IPSet(net_allocations.values())
