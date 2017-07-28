@@ -275,6 +275,9 @@ class SeedServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Deploying seed services")
+        playbooks = _build_playbook_list("kolla-ansible")
+        self.run_kayobe_playbooks(parsed_args, playbooks, tags="config")
+
         self.run_kayobe_playbook(parsed_args, "ansible/kolla-bifrost.yml")
         self.run_kolla_ansible_seed(parsed_args, "deploy-bifrost")
         playbooks = _build_playbook_list(
