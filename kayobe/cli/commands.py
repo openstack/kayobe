@@ -413,8 +413,10 @@ class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         self.app.LOG.debug("Deploying overcloud services")
 
         # First prepare configuration.
-        playbooks = _build_playbook_list("kolla-ansible", "kolla-openstack",
-                                         "swift-setup")
+        playbooks = _build_playbook_list("kolla-ansible")
+        self.run_kayobe_playbooks(parsed_args, playbooks, tags="config")
+
+        playbooks = _build_playbook_list("kolla-openstack", "swift-setup")
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
         # Run kolla-ansible prechecks before deployment.
@@ -446,8 +448,10 @@ class OvercloudServiceReconfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
         self.app.LOG.debug("Reconfiguring overcloud services")
 
         # First prepare configuration.
-        playbooks = _build_playbook_list("kolla-ansible", "kolla-openstack",
-                                         "swift-setup")
+        playbooks = _build_playbook_list("kolla-ansible")
+        self.run_kayobe_playbooks(parsed_args, playbooks, tags="config")
+
+        playbooks = _build_playbook_list("kolla-openstack", "swift-setup")
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
         # Run kolla-ansible prechecks before reconfiguration.
@@ -517,7 +521,10 @@ class OvercloudServiceDestroy(KollaAnsibleMixin, KayobeAnsibleMixin,
         self.app.LOG.debug("Destroying overcloud services")
 
         # First prepare configuration.
-        playbooks = _build_playbook_list("kolla-ansible", "kolla-openstack")
+        playbooks = _build_playbook_list("kolla-ansible")
+        self.run_kayobe_playbooks(parsed_args, playbooks, tags="config")
+
+        playbooks = _build_playbook_list("kolla-openstack")
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
         # Run kolla-ansible destroy.
