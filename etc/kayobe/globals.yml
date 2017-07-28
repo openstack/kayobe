@@ -16,6 +16,9 @@
 # Path on which to checkout source code repositories.
 #source_checkout_path:
 
+# Path on which to create python virtualenvs.
+#virtualenv_path:
+
 ###############################################################################
 # User configuration.
 

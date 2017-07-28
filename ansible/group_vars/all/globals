@@ -16,6 +16,9 @@ image_cache_path: "{{ base_path ~ '/images' }}"
 # Path on which to checkout source code repositories.
 source_checkout_path: "{{ base_path ~ '/src' }}"
 
+# Path on which to create python virtualenvs.
+virtualenv_path: "{{ base_path ~ '/venvs' }}"
+
 ###############################################################################
 # User configuration.
 
