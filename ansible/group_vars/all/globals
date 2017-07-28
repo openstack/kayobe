@@ -2,16 +2,22 @@
 # Kayobe global configuration.
 
 ###############################################################################
-# Miscellaneous configuration.
+# Path configuration.
 
 # Path to Kayobe configuration directory.
 kayobe_config_path: "{{ lookup('env', 'KAYOBE_CONFIG_PATH') | default('/etc/kayobe') }}"
 
+# Path in which to store data locally.
+base_path: "/opt/kayobe"
+
 # Path in which to cache downloaded images.
-image_cache_path: "{{ ansible_user_dir ~ '/kayobe-image-cache' }}"
+image_cache_path: "{{ base_path ~ '/images' }}"
 
 # Path on which to checkout source code repositories.
-source_checkout_path: "{{ ansible_user_dir ~ '/kayobe-source' }}"
+source_checkout_path: "{{ base_path ~ '/src' }}"
+
+###############################################################################
+# User configuration.
 
 # User with which to access seed and controller nodes. This user will be
 # created if it does not exist.
