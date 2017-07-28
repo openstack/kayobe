@@ -2,8 +2,6 @@
 - name: Ensure provisioning network and subnet are registered in neutron
   # Only required to run on a single host.
   hosts: controllers[0]
-  vars:
-    venv: "{{ ansible_env.PWD }}/shade-venv"
   pre_tasks:
     - name: Validate OpenStack password authentication parameters
       fail:
@@ -20,7 +18,7 @@
 
   roles:
     - role: stackhpc.os-networks
-      os_networks_venv: "{{ venv }}"
+      os_networks_venv: "{{ virtualenv_path }}/shade"
       os_networks_auth_type: "{{ openstack_auth_type }}"
       os_networks_auth: "{{ openstack_auth }}"
       # Network configuration.

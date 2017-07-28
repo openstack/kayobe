@@ -2,7 +2,6 @@
 - name: Ensure a test project exists
   hosts: controllers[0]
   vars:
-    venv: "{{ ansible_env.PWD }}/shade-venv"
     # Dict of quotas to set for the test project.
     test_project_quotas:
       cores: -1
@@ -52,7 +51,7 @@
 
   roles:
     - role: stackhpc.os-projects
-      os_projects_venv: "{{ venv }}"
+      os_projects_venv: "{{ virtualenv_path }}/shade"
       os_projects_auth_type: "{{ openstack_auth_type }}"
       os_projects_admin_auth: "{{ openstack_auth }}"
       os_projects:

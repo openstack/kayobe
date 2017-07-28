@@ -6,7 +6,7 @@
 - name: Ensure compute nodes are available in ironic
   hosts: controllers[0]
   vars:
-    venv: "{{ ansible_env.PWD }}/shade-venv"
+    venv: "{{ virtualenv_path }}/shade"
     # Set this to a colon-separated list of compute node hostnames to provide.
     # If unset, all compute nodes will be provided.
     compute_node_limit: ""

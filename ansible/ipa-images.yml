@@ -40,7 +40,7 @@
 
   roles:
     - role: ipa-images
-      ipa_images_venv: "{{ ansible_env['PWD'] }}/shade-venv"
+      ipa_images_venv: "{{ virtualenv_path }}/shade"
       ipa_images_openstack_auth_type: "{{ openstack_auth_type }}"
       ipa_images_openstack_auth: "{{ openstack_auth }}"
       ipa_images_cache_path: "{{ image_cache_path }}"

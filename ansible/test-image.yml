@@ -16,7 +16,7 @@
       - grub2
     image_extra_elements: []
     image_elements: "{{ image_base_elements + (image_whole_disk_elements if image_is_whole_disk|bool else image_partition_elements) + image_extra_elements }}"
-    os_shade_venv: "{{ ansible_env['PWD'] }}/shade-venv"
+    os_shade_venv: "{{ virtualenv_path }}/shade"
   roles:
     - role: stackhpc.os-shade
   tasks:

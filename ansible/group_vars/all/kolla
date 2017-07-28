@@ -19,6 +19,9 @@ kolla_ansible_source_url: "https://github.com/stackhpc/kolla-ansible"
 # is 'source'.
 kolla_ansible_source_version: "stackhpc-{{ kolla_openstack_release }}"
 
+# Path to virtualenv in which to install kolla.
+kolla_venv: "{{ virtualenv_path ~ '/kolla' }}"
+
 ###############################################################################
 # Kolla configuration.
 

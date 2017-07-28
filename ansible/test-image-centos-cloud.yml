@@ -2,7 +2,7 @@
 - name: Ensure CentOS cloud image is registered with Glance
   hosts: controllers[0]
   vars:
-    os_shade_venv: "{{ ansible_env['PWD'] }}/shade-venv"
+    os_shade_venv: "{{ virtualenv_path }}/shade"
   roles:
     - role: stackhpc.os-shade
   tasks:

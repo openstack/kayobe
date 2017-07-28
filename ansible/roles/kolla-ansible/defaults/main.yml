@@ -12,7 +12,7 @@ kolla_ansible_source_url:
 # is 'source'.
 kolla_ansible_source_version:
 
-# Virtualenv directory where Kolla will be installed.
+# Virtualenv directory where Kolla-ansible will be installed.
 kolla_venv: "{{ ansible_env['PWD'] }}/kolla-venv"
 
 # Password to use to encrypt the passwords.yml file.

@@ -19,7 +19,6 @@
   # Only required to run on a single host.
   hosts: controllers_require_workaround_True[0]
   vars:
-    venv: "{{ ansible_env.PWD }}/shade-venv"
     all_switch_interfaces: []
     ironic_inspector_rules: []
     # This rule template is used in a with_subelements loop.
@@ -99,6 +98,6 @@
   
   roles:
     - role: ironic-inspector-rules
-      ironic_inspector_venv: "{{ venv }}"
+      ironic_inspector_venv: "{{ virtualenv_path }}/shade"
       ironic_inspector_auth_type: "{{ openstack_auth_type }}"
       ironic_inspector_auth: "{{ openstack_auth }}"

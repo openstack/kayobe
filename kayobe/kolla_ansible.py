@@ -25,7 +25,7 @@ DEFAULT_CONFIG_PATH = "/etc/kolla"
 
 CONFIG_PATH_ENV = "KOLLA_CONFIG_PATH"
 
-DEFAULT_VENV_PATH = "ansible/kolla-venv"
+DEFAULT_VENV_PATH = "/opt/kayobe/venvs/kolla"
 
 VENV_PATH_ENV = "KOLLA_VENV"
 
@@ -54,7 +54,8 @@ def add_args(parser):
                              "values in Kolla Ansible")
     parser.add_argument("--kolla-venv", metavar="VENV", default=default_venv,
                         help="path to virtualenv where Kolla Ansible is "
-                             "installed")
+                             "installed (default=$%s or %s)" %
+                             (VENV_PATH_ENV, DEFAULT_VENV_PATH))
 
 
 def _get_inventory_path(parsed_args, inventory_filename):

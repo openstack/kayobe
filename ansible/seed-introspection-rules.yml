@@ -1,11 +1,9 @@
 ---
 - name: Ensure introspection rules are registered in Bifrost
   hosts: seed
-  vars:
-    venv: "{{ ansible_env.PWD }}/shade-venv"
   roles:
     - role: ironic-inspector-rules
-      ironic_inspector_venv: "{{ venv }}"
+      ironic_inspector_venv: "{{ virtualenv_path }}/shade"
       # No auth required for Bifrost.
       ironic_inspector_auth_type: None
       ironic_inspector_auth: {}

@@ -3,7 +3,7 @@
   hosts: controllers[0]
   vars:
     public_key_path: "{{ ssh_public_key_path }}"
-    os_shade_venv: "{{ ansible_env['PWD'] }}/shade-venv"
+    os_shade_venv: "{{ virtualenv_path }}/shade"
   roles:
     - role: stackhpc.os-shade
   tasks:

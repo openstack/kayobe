@@ -6,7 +6,7 @@
     ipa_build_force: False
   roles:
     - role: ipa-build
-      ipa_build_venv: "{{ ansible_env['PWD'] }}/ipa-build-venv"
+      ipa_build_venv: "{{ virtualenv_path }}/ipa-build"
       ipa_build_image_cache_path: "{{ image_cache_path }}"
       ipa_build_source_checkout_path: "{{ source_checkout_path }}"
       ipa_build_kernel_name: "{{ ipa_images_kernel_name }}"

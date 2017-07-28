@@ -2,11 +2,9 @@
 - name: Ensure external network and subnet are registered in neutron
   # Only required to run on a single host.
   hosts: controllers[0]
-  vars:
-    venv: "{{ ansible_env.PWD }}/shade-venv"
   roles:
     - role: neutron-net
-      neutron_net_venv: "{{ venv }}"
+      neutron_net_venv: "{{ virtualenv_path }}/shade"
       neutron_net_openstack_auth_type: "{{ openstack_auth_type }}"
       neutron_net_openstack_auth: "{{ openstack_auth }}"
       # Network configuration.

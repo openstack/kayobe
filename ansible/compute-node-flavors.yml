@@ -7,7 +7,7 @@
 - name: Ensure baremetal compute node flavors are registered in nova
   hosts: controllers[0]
   vars:
-    venv: "{{ ansible_env.PWD }}/shade-venv"
+    venv: "{{ virtualenv_path }}/shade"
     flavor_base_name: baremetal-
   roles:
     - role: stackhpc.os-openstackclient
