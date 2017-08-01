@@ -41,7 +41,6 @@ setup(
     provides=[],
     install_requires=open('requirements.txt', 'rt').read().splitlines(),
 
-
     namespace_packages=[],
     packages=find_packages(),
     include_package_data=True,
@@ -73,6 +72,7 @@ setup(
             'playbook_run = kayobe.cli.commands:PlaybookRun',
             'seed_container_image_build = kayobe.cli.commands:SeedContainerImageBuild',
             'seed_host_configure = kayobe.cli.commands:SeedHostConfigure',
+            'seed_hypervisor_host_configure = kayobe.cli.commands:SeedHypervisorHostConfigure',
             'seed_service_deploy = kayobe.cli.commands:SeedServiceDeploy',
             'seed_vm_provision = kayobe.cli.commands:SeedVMProvision',
         ],

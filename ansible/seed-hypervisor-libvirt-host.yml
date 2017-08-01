@@ -1,0 +1,7 @@
+---
+- name: Ensure the libvirt daemon is configured
+  hosts: seed-hypervisor
+  roles:
+    - role: libvirt-host
+      libvirt_host_pools: "{{ seed_hypervisor_libvirt_pools }}"
+      libvirt_host_networks: "{{ seed_hypervisor_libvirt_networks }}"

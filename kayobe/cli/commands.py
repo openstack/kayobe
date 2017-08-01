@@ -220,6 +220,19 @@ class PhysicalNetworkConfigure(KayobeAnsibleMixin, VaultMixin, Command):
                                  extra_vars=extra_vars)
 
 
+class SeedHypervisorHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
+                                  VaultMixin, Command):
+    """Configure the seed hypervisor node host OS."""
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Configuring seed hypervisor host OS")
+        playbooks = _build_playbook_list(
+            "ip-allocation", "ssh-known-host", "dev-tools", "network", "ntp",
+            "seed-hypervisor-libvirt-host")
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  limit="seed-hypervisor")
+
+
 class SeedVMProvision(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
                       Command):
     """Provision the seed VM."""

@@ -1,6 +1,6 @@
 ---
 - name: Ensure networking is configured
-  hosts: seed:overcloud
+  hosts: seed-hypervisor:seed:overcloud
   tags:
     - config
   vars:

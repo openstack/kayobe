@@ -40,6 +40,23 @@ The ``--enable-discovery`` argument enables a one-time configuration of ports
 attached to baremetal compute nodes to support hardware discovery via ironic
 inspector.
 
+Seed Hypervisor
+===============
+
+.. note::
+
+   It is not necessary to run the seed services in a VM.  To use an existing
+   bare metal host or a VM provisioned outside of Kayobe, this section may be
+   skipped.
+
+Host Configuration
+------------------
+
+To configure the seed hypervisor's host OS, and the Libvirt/KVM virtualisation
+support::
+
+    (kayobe-venv) $ kayobe seed hypervisor host configure
+
 Seed
 ====
 
@@ -48,7 +65,7 @@ VM Provisioning
 
 .. note::
 
-   It is not necesary to run the seed services in a VM.  To use an existing
+   It is not necessary to run the seed services in a VM.  To use an existing
    bare metal host or a VM provisioned outside of Kayobe, this step may be
    skipped.  Ensure that the Ansible inventory contains a host for the seed.
 
