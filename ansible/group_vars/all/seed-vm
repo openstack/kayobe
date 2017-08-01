@@ -31,10 +31,6 @@ seed_vm_data_volume:
   capacity: "{{ seed_vm_data_capacity }}"
   format: "{{ seed_vm_data_format }}"
 
-# List of network interfaces.
-seed_vm_interfaces:
-  - network: default
-
 # Name of the storage pool for the seed VM volumes.
 seed_vm_pool: default
 

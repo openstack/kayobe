@@ -122,6 +122,17 @@ net_routes = _make_attr_filter('routes')
 
 
 @jinja2.contextfilter
+def net_libvirt_network_name(context, name, inventory_hostname=None):
+    """Return the configured Libvirt name for a network.
+
+    If no Libvirt name is configured, the network's name is returned.
+    """
+    libvirt_name = net_attr(context, name, 'libvirt_network_name',
+                            inventory_hostname)
+    return libvirt_name or name
+
+
+@jinja2.contextfilter
 def net_bridge_ports(context, name, inventory_hostname=None):
     return net_attr(context, name, 'bridge_ports', inventory_hostname)
 
@@ -273,6 +284,35 @@ def net_configdrive_network_device(context, name, inventory_hostname=None):
     return interface
 
 
+@jinja2.contextfilter
+def net_libvirt_network(context, name, inventory_hostname=None):
+    """Return a dict which describes the Libvirt network for a network.
+
+    The Libvirt network is in a form accepted by the libvirt-host role.
+    """
+    interface = net_interface(context, name, inventory_hostname)
+    name = net_libvirt_network_name(context, name, inventory_hostname)
+    return {
+        "name": name,
+        "mode": "bridge",
+        "bridge": interface,
+    }
+
+
+@jinja2.contextfilter
+def net_libvirt_vm_network(context, name, inventory_hostname=None):
+    """Return a dict which describes the Libvirt VM's network for a network.
+
+    The Libvirt network is in a form accepted by the libvirt_vm_interfaces
+    variable of the libvirt-vm role.
+    """
+    libvirt_name = net_libvirt_network_name(context, name, inventory_hostname)
+    return {
+        "network": libvirt_name,
+        "net_name": name,
+    }
+
+
 class FilterModule(object):
     """Networking filters."""
 
@@ -306,4 +346,7 @@ class FilterModule(object):
             'net_select_vlans': net_select_vlans,
             'net_reject_vlans': net_reject_vlans,
             'net_configdrive_network_device': net_configdrive_network_device,
+            'net_libvirt_network_name': net_libvirt_network_name,
+            'net_libvirt_network': net_libvirt_network,
+            'net_libvirt_vm_network': net_libvirt_vm_network,
         }

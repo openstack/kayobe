@@ -147,6 +147,9 @@ supported:
     List of static IP routes. Each item should be a dict containing the
     items ``cidr`` and ``gateway``. ``cidr`` is the CIDR representation of the
     route's destination. ``gateway`` is the IP address of the next hop.
+``libvirt_network_name``
+    A name to give to a Libvirt network representing this network on the seed
+    hypervisor.
 
 IP addresses are allocated automatically by Kayobe from the
 allocation pool

@@ -25,7 +25,7 @@
       copy:
         content: |
           #!/bin/bash
-          {% for interface in seed_hostvars.seed_vm_interfaces | map(attribute='net_name') | map('net_interface', seed_host) %}
+          {% for interface in seed_hostvars.network_interfaces | map('net_interface', seed_host) %}
           ifup {{ interface }}
           {% endfor %}
         dest: "{{ seed_user_data_path }}"
@@ -46,8 +46,7 @@
         search: "{{ seed_hostvars.resolv_search | default }}"
         dns: "{{ seed_hostvars.resolv_nameservers | default([]) }}"
       configdrive_network_device_list: >
-        {{ seed_hostvars.seed_vm_interfaces |
-           map(attribute='net_name') |
+        {{ seed_hostvars.network_interfaces |
            map('net_configdrive_network_device', seed_host) |
            list }}
       configdrive_config_user_data_path: "{{ seed_user_data_path }}"
@@ -99,7 +98,8 @@
       libvirt_vm_memory_mb: "{{ seed_hostvars.seed_vm_memory_mb }}"
       libvirt_vm_vcpus: "{{ seed_hostvars.seed_vm_vcpus }}"
       libvirt_vm_volumes: "{{ seed_hostvars.seed_vm_volumes + [seed_vm_configdrive_volume] }}"
-      libvirt_vm_interfaces: "{{ seed_hostvars.seed_vm_interfaces }}"
+      libvirt_vm_interfaces: >
+        {{ seed_hostvars.network_interfaces | map('net_libvirt_vm_network') | list }}
       libvirt_vm_image_cache_path: "{{ image_cache_path }}"
       become: True
 
