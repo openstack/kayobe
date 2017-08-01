@@ -45,7 +45,7 @@ seed_vm_root_capacity: 50G
 seed_vm_root_format: qcow2
 
 # Base image for the seed VM root volume.
-seed_vm_root_image:
+seed_vm_root_image: "https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud.qcow2"
 
 # Capacity of the seed VM data volume.
 seed_vm_data_capacity: 100G
