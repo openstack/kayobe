@@ -1,3 +1,10 @@
 ---
-- include: volumes.yml
-- include: vm.yml
+- block:
+    - include: volumes.yml
+    - include: vm.yml
+  when: libvirt_vm_state == 'present'
+
+- block:
+    - include: destroy-volumes.yml
+    - include: destroy-vm.yml
+  when: libvirt_vm_state == 'absent'

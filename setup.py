@@ -74,6 +74,7 @@ setup(
             'seed_host_configure = kayobe.cli.commands:SeedHostConfigure',
             'seed_hypervisor_host_configure = kayobe.cli.commands:SeedHypervisorHostConfigure',
             'seed_service_deploy = kayobe.cli.commands:SeedServiceDeploy',
+            'seed_vm_deprovision = kayobe.cli.commands:SeedVMDeprovision',
             'seed_vm_provision = kayobe.cli.commands:SeedVMProvision',
         ],
     },

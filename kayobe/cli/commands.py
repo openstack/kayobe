@@ -241,10 +241,23 @@ class SeedVMProvision(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         self.app.LOG.debug("Provisioning seed VM")
         self.run_kayobe_playbook(parsed_args, "ansible/ip-allocation.yml",
                                  limit="seed")
-        self.run_kayobe_playbook(parsed_args, "ansible/seed-vm.yml")
+        self.run_kayobe_playbook(parsed_args, "ansible/seed-vm-provision.yml")
         # Now populate the Kolla Ansible inventory.
         self.run_kayobe_playbook(parsed_args, "ansible/kolla-ansible.yml",
                                  tags="config")
+
+
+class SeedVMDeprovision(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
+                        Command):
+    """Deprovision the seed VM.
+
+    This will destroy the seed VM and all associated volumes.
+    """
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Deprovisioning seed VM")
+        self.run_kayobe_playbook(parsed_args,
+                                 "ansible/seed-vm-deprovision.yml")
 
 
 class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,

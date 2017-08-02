@@ -69,6 +69,17 @@ To deprovision the overcloud::
 
     (kayobe-venv) $ kayobe overcloud deprovision
 
+Deprovisioning The Seed VM
+==========================
+
+.. note::
+
+   This step will destroy the seed VM and its data volumes.
+
+To deprovision the seed VM::
+
+    (kayobe-venv) $ kayobe seed vm deprovision
+
 Running Kayobe Playbooks on Demand
 ==================================
 

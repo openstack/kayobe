@@ -1,4 +1,7 @@
 ---
+# State of the VM. May be 'present' or 'absent'.
+libvirt_vm_state: present
+
 # Name of the VM.
 libvirt_vm_name:
 
