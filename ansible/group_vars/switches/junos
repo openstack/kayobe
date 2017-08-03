@@ -1,0 +1,12 @@
+---
+# Switch configuration.
+
+###############################################################################
+# Authentication configuration.
+
+# For Juniper switches, this defines a 'provider' argument to the junos_*
+# modules.
+switch_junos_provider:
+  host: "{{ ansible_host }}"
+  username: "{{ ansible_user }}"
+  password: "{{ ansible_ssh_pass }}"

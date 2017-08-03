@@ -1,0 +1,18 @@
+#jinja2: trim_blocks: True,lstrip_blocks: True
+
+{% for line in juniper_switch_config %}
+{{ line }}
+{% endfor %}
+
+interfaces {
+{% for interface, config in juniper_switch_interface_config.items() %}
+    {{ interface }} {
+{% if config.description is defined %}
+        description "{{ config.description }}";
+{% endif %}
+{% for line in config.config %}
+{{ line }}
+{% endfor %}
+    }
+{% endfor %}
+}

@@ -31,3 +31,16 @@
       dell_switch_provider: "{{ switch_dellos_provider }}"
       dell_switch_config: "{{ switch_config }}"
       dell_switch_interface_config: "{{ switch_interface_config }}"
+
+- name: Ensure Juniper physical switches are configured
+  hosts: switches_of_type_junos
+  gather_facts: no
+  roles:
+    - role: ssh-known-host
+
+    - role: juniper-switch
+      juniper_switch_delegate_to: localhost
+      juniper_switch_type: "{{ switch_type }}"
+      juniper_switch_provider: "{{ switch_juniper_provider }}"
+      juniper_switch_config: "{{ switch_config }}"
+      juniper_switch_interface_config: "{{ switch_interface_config }}"
