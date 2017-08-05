@@ -137,6 +137,11 @@ def net_bridge_ports(context, name, inventory_hostname=None):
     return net_attr(context, name, 'bridge_ports', inventory_hostname)
 
 
+net_bond_mode = _make_attr_filter('bond_mode')
+net_bond_slaves = _make_attr_filter('bond_slaves')
+net_bond_miimon = _make_attr_filter('bond_miimon')
+
+
 def _route_obj(route):
     """Return a dict representation of an IP route.
 
@@ -227,13 +232,81 @@ def net_bridge_obj(context, name, inventory_hostname=None):
 
 
 @jinja2.contextfilter
+def net_bond_obj(context, name, inventory_hostname=None):
+    """Return a dict representation of a network bond interface.
+
+    The returned dict is compatible with the interfaces_bond_interfaces
+    variable in the MichaelRigaert.interfaces role.
+    """
+    device = net_interface(context, name, inventory_hostname)
+    if not device:
+        raise errors.AnsibleFilterError(
+            "Network interface for network '%s' on host '%s' not found" %
+            (name, inventory_hostname))
+    ip = net_ip(context, name, inventory_hostname)
+    cidr = net_cidr(context, name, inventory_hostname)
+    netmask = net_mask(context, name, inventory_hostname)
+    gateway = net_gateway(context, name, inventory_hostname)
+    vlan = net_vlan(context, name, inventory_hostname)
+    mtu = net_mtu(context, name, inventory_hostname)
+    mode = net_bond_mode(context, name, inventory_hostname)
+    slaves = net_bond_slaves(context, name, inventory_hostname)
+    miimon = net_bond_miimon(context, name, inventory_hostname)
+    routes = net_routes(context, name, inventory_hostname)
+    if routes:
+        routes = [_route_obj(route) for route in routes]
+    interface = {
+        'device': device,
+        'address': ip,
+        'netmask': netmask,
+        'gateway': gateway,
+        'vlan': vlan,
+        'mtu': mtu,
+        'bond_slaves': slaves,
+        'bond_mode': mode,
+        'bond_miimon': miimon,
+        'route': routes,
+        'bootproto': 'static',
+        'onboot': 'yes',
+    }
+    interface = {k: v for k, v in interface.items() if v is not None}
+    return interface
+
+
+def _net_interface_type(context, name, inventory_hostname):
+    """Return a string describing the network interface type.
+
+    Possible types include 'ether', 'bridge', 'bond'.
+    """
+    bridge_ports = net_bridge_ports(context, name, inventory_hostname)
+    bond_slaves = net_bond_slaves(context, name, inventory_hostname)
+    if bridge_ports is not None and bond_slaves is not None:
+        raise errors.AnsibleFilterError(
+            "Network %s on host %s has both bridge ports and bond slaves "
+            "defined" %
+            (name,
+             _get_hostvar(context, 'inventory_hostname', inventory_hostname)))
+    if bridge_ports is None and bond_slaves is None:
+        return 'ether'
+    if bridge_ports is not None:
+        return 'bridge'
+    if bond_slaves is not None:
+        return 'bond'
+
+
+@jinja2.contextfilter
 def net_is_ether(context, name, inventory_hostname=None):
-    return net_bridge_ports(context, name) is None
+    return _net_interface_type(context, name, inventory_hostname) == 'ether'
 
 
 @jinja2.contextfilter
 def net_is_bridge(context, name, inventory_hostname=None):
-    return net_bridge_ports(context, name) is not None
+    return _net_interface_type(context, name, inventory_hostname) == 'bridge'
+
+
+@jinja2.contextfilter
+def net_is_bond(context, name, inventory_hostname=None):
+    return _net_interface_type(context, name, inventory_hostname) == 'bond'
 
 
 @jinja2.contextfilter
@@ -249,6 +322,11 @@ def net_select_ethers(context, names):
 @jinja2.contextfilter
 def net_select_bridges(context, names):
     return [name for name in names if net_is_bridge(context, name)]
+
+
+@jinja2.contextfilter
+def net_select_bonds(context, names):
+    return [name for name in names if net_is_bond(context, name)]
 
 
 @jinja2.contextfilter
@@ -338,11 +416,14 @@ class FilterModule(object):
             'net_routes': net_routes,
             'net_interface_obj': net_interface_obj,
             'net_bridge_obj': net_bridge_obj,
+            'net_bond_obj': net_bond_obj,
             'net_is_ether': net_is_ether,
             'net_is_bridge': net_is_bridge,
+            'net_is_bond': net_is_bond,
             'net_is_vlan': net_is_vlan,
             'net_select_ethers': net_select_ethers,
             'net_select_bridges': net_select_bridges,
+            'net_select_bonds': net_select_bonds,
             'net_select_vlans': net_select_vlans,
             'net_reject_vlans': net_reject_vlans,
             'net_configdrive_network_device': net_configdrive_network_device,

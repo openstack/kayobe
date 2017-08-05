@@ -168,6 +168,13 @@ The following attributes are supported:
 ``bridge_ports``
     For bridge interfaces, a list of names of network interfaces to add to the
     bridge.
+``bond_mode``
+    For bond interfaces, the bond's mode, e.g. 802.3ad.
+``bond_slaves``
+    For bond interfaces, a list of names of network interfaces to act as slaves
+    for the bond.
+``bond_miimon``
+    For bond interfaces, the time in milliseconds between MII link monitoring.
 
 In order to provide flexibility in the system's network topology, Kayobe maps
 the named networks to logical network roles.  A single named network may

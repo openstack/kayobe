@@ -6,6 +6,7 @@
   vars:
     ether_interfaces: "{{ network_interfaces | net_select_ethers | list }}"
     bridge_interfaces: "{{ network_interfaces | net_select_bridges | list }}"
+    bond_interfaces: "{{ network_interfaces | net_select_bonds | list }}"
   pre_tasks:
     - block:
         - name: Validate network interface configuration
@@ -22,6 +23,14 @@
               Bridge interface validation failed - no interface configured for
               {{ item }}. This should be configured via '{{ item }}_interface'.
           with_items: "{{ bridge_interfaces }}"
+          when: "{{ not item | net_interface }}"
+
+        - name: Validate bond interface configuration
+          fail:
+            msg: >
+              Bond interface validation failed - no interface configured for
+              {{ item }}. This should be configured via '{{ item }}_interface'.
+          with_items: "{{ bond_interfaces }}"
           when: "{{ not item | net_interface }}"
       tags:
         - config-validation
@@ -56,6 +65,10 @@
       interfaces_bridge_interfaces: >
         {{ bridge_interfaces |
            map('net_bridge_obj') |
+           list }}
+      interfaces_bond_interfaces: >
+        {{ bond_interfaces |
+           map('net_bond_obj') |
            list }}
       become: True
 
