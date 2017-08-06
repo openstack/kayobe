@@ -4,7 +4,27 @@
     name: "{{ ansible_user_id }}"
     groups: docker
     append: yes
+  register: group_result
   become: True
+
+# After adding the user to the docker group, we need to log out and in again to
+# pick up the group membership. We do this by removing the SSH ControlPersist
+# connection.
+- name: Drop the persistent SSH connection to activate the new group membership
+  local_action:
+    module: shell ssh -O stop {{ cp_hostname }} -o ControlPath={{ cp_path }}
+  register: socket_removal
+  failed_when:
+    - socket_removal|failed
+    - "'No such file or directory' not in socket_removal.stderr"
+  with_items: "{{ play_hosts }}"
+  run_once: True
+  when: group_result|changed
+  vars:
+    cp_hostname: "{{ hostvars[item].ansible_host|default(inventory_hostname) }}"
+    cp_username: "{{ hostvars[item].ansible_user }}"
+    cp_port: "{{ hostvars[item].ansible_ssh_port|default('22') }}"
+    cp_path: "~/.ansible/cp/ansible-ssh-{{ cp_hostname }}-{{ cp_port }}-{{ cp_username }}"
 
 - name: Ensure Docker daemon is started
   service:
@@ -16,7 +36,6 @@
   command: docker info
   register: docker_info
   changed_when: False
-  become: True
 
 - name: Fail when loopback-mode containers or images exist
   fail:
