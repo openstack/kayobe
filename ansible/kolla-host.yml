@@ -12,4 +12,10 @@
         - iscsid.socket
         - iscsiuio.socket
         - iscsid.service
+      register: result
+      failed_when:
+        - result|failed
+        # If a service is not installed, the ansible service module will fail
+        # with this error message.
+        - '"Could not find the requested service" not in result.msg'
       when: "{{ kolla_enable_ironic | bool }}"
