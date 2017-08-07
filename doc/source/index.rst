@@ -35,3 +35,4 @@ Developer Documentation
    :maxdepth: 2
 
    contributing
+   development
