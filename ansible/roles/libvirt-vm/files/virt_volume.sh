@@ -49,6 +49,27 @@ if [[ $result -ne 0 ]]; then
     exit $result
 fi
 
+# Determine the path to the volume file.
+output=$(virsh vol-key --pool $POOL --vol $NAME 2>&1)
+result=$?
+if [[ $result -ne 0 ]]; then
+    echo "Failed to get volume file path"
+    echo "$output"
+    virsh vol-delete --pool $POOL --vol $NAME
+    exit $result
+fi
+
+# Change the ownership of the volume to qemu. Without doing this libvirt cannot
+# access the volume.
+output=$(chown qemu:qemu $output 2>1)
+result=$?
+if [[ $result -ne 0 ]]; then
+    echo "Failed to change ownership of the volume to qemu"
+    echo "$output"
+    virsh vol-delete --pool $POOL --vol $NAME
+    exit $result
+fi
+
 if [[ -n $IMAGE ]]; then
     # Upload an image to the volume.
     output=$(virsh vol-upload --pool $POOL --vol $NAME --file $IMAGE 2>&1)
@@ -66,6 +87,7 @@ if [[ -n $IMAGE ]]; then
     if [[ $result -ne 0 ]]; then
         echo "Failed to resize volume $VOLUME to $CAPACITY"
         echo "$output"
+        virsh vol-delete --pool $POOL --vol $NAME
         exit $result
     fi
 fi
