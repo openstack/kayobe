@@ -119,6 +119,7 @@ def net_vlan(context, name, inventory_hostname=None):
 
 net_mtu = _make_attr_filter('mtu')
 net_routes = _make_attr_filter('routes')
+net_physical_network = _make_attr_filter('physical_network')
 
 
 @jinja2.contextfilter
@@ -414,6 +415,7 @@ class FilterModule(object):
             'net_vlan': net_vlan,
             'net_mtu': net_mtu,
             'net_routes': net_routes,
+            'net_physical_network': net_physical_network,
             'net_interface_obj': net_interface_obj,
             'net_bridge_obj': net_bridge_obj,
             'net_bond_obj': net_bond_obj,
