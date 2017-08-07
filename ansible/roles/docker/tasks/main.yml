@@ -1,4 +1,11 @@
 ---
+- name: Fail when the storage driver is invalid
+  fail:
+    msg: >
+      Storage driver {{ docker_storage_driver }} is invalid. Valid drivers
+      include 'devicemapper' and 'overlay'.
+  when: docker_storage_driver not in ['devicemapper', 'overlay']
+
 - name: Ensure user is in the docker group
   user:
     name: "{{ ansible_user_id }}"
@@ -40,8 +47,8 @@
 - name: Fail when loopback-mode containers or images exist
   fail:
     msg: >
-      Not configuring docker storage in direct-lvm mode as loopback-backed
-      containers or images exist.
+      Not configuring docker storage in {{ docker_storage_driver }} mode as
+      loopback-backed containers or images exist.
   when:
     - "{{ 'Data loop file' in docker_info.stdout }}"
     - "{{ 'Images: 0' not in docker_info.stdout }}"

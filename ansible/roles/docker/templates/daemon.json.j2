@@ -1,11 +1,13 @@
 {
-  "storage-driver": "devicemapper",
+  "storage-driver": "{% if docker_storage_driver == 'devicemapper' %}devicemapper{% else %}overlay{% endif %}",
 {% if docker_daemon_mtu %}
   "mtu": {{ docker_daemon_mtu }},
 {% endif %}
   "storage-opts": [
+{% if docker_storage_driver == 'devicemapper' %}
     "dm.thinpooldev=/dev/mapper/{{ docker_storage_volume_group | replace('-', '--') }}-{{ docker_storage_volume_thinpool | replace('-', '--') }}",
     "dm.use_deferred_removal=true",
     "dm.use_deferred_deletion=true"
+{% endif %}
   ]
 }
