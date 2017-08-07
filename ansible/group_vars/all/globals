@@ -8,7 +8,7 @@
 kayobe_config_path: "{{ lookup('env', 'KAYOBE_CONFIG_PATH') | default('/etc/kayobe') }}"
 
 # Path in which to store data locally.
-base_path: "/opt/kayobe"
+base_path: "{{ lookup('env', 'KAYOBE_BASE_PATH') | default('/opt/kayobe') }}"
 
 # Path in which to cache downloaded images.
 image_cache_path: "{{ base_path ~ '/images' }}"
