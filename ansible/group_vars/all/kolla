@@ -26,7 +26,7 @@ kolla_venv: "{{ virtualenv_path ~ '/kolla' }}"
 # Kolla configuration.
 
 # Path to Kolla configuration directory.
-kolla_config_path: "{{ lookup('env', 'KOLLA_CONFIG_PATH') | default('/etc/kolla') }}"
+kolla_config_path: "{{ lookup('env', 'KOLLA_CONFIG_PATH') | default('/etc/kolla', true) }}"
 
 # Path to Kolla node custom configuration directory.
 kolla_node_custom_config_path: "{{ kolla_config_path }}/config"
