@@ -19,15 +19,19 @@
         state: directory
 
     # The user data script is used to bring up the network interfaces that will
-    # be configured by metadata in the configdrive. It could be used for other
-    # things in future if necessary.
+    # be configured by metadata in the configdrive. For some reason resolv.conf
+    # gets configured with 660 permissions, so fix that here also.
     - name: Ensure the user data file exists
       copy:
         content: |
           #!/bin/bash
           {% for interface in seed_hostvars.network_interfaces | map('net_interface', seed_host) %}
+          # Bounce {{ interface }}.
+          ifdown {{ interface }}
           ifup {{ interface }}
           {% endfor %}
+          # Fix permissions of resolv.conf.
+          chmod 644 /etc/resolv.conf
         dest: "{{ seed_user_data_path }}"
 
   roles:
@@ -110,3 +114,6 @@
         host: "{{ seed_hostvars.ansible_host }}"
         port: 22
         state: started
+        # NOTE: Ensure we exceed the 5 minute DHCP timeout of the eth0
+        # interface if necessary.
+        timeout: 360
