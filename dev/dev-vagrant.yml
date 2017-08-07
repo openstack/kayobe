@@ -1,0 +1,59 @@
+---
+# Development configuration for Kayobe on Vagrant.
+# Configures a single controller with a single network (aio).
+
+# No need to provide a different user for bootstrapping.
+controller_bootstrap_user: vagrant
+
+# Don't create any LVM groups.
+controller_lvm_groups: []
+
+# Use the overlay docker storage driver as it doesn't require LVM.
+docker_storage_driver: overlay
+
+# Use the vagrant user to access the controller via SSH.
+kayobe_ansible_user: vagrant
+
+# Use the 4.0.2 release of kolla and kolla-ansible.
+kolla_openstack_release: 4.0.2
+
+# Kolla container image extensions.
+kolla_build_blocks:
+ ironic_base_footer: |
+   # Install a more recent version of ironic-lib with a fix for
+   # https://bugs.launchpad.net/ironic/+bug/1673731.
+   RUN pip install -U --no-deps ironic-lib==2.7.0
+
+# Kolla container image customisations.
+kolla_build_customizations:
+  ironic_conductor_packages_append:
+    # e2fsprogs is required to create ext ephemeral filesystems.
+    - 'e2fsprogs'
+    # xfsprogs is required to create XFS ephemeral filesystems.
+    - 'xfsprogs'
+
+# Disable swift.
+kolla_enable_swift: False
+
+# Map all networks to the all-in-one network.
+oob_oc_net_name: aio
+provision_oc_net_name: aio
+oob_wl_net_name: aio
+provision_wl_net_name: aio
+internal_net_name: aio
+external_net_name: aio
+storage_net_name: aio
+storage_mgmt_net_name: aio
+inspection_net_name: aio
+
+# All-in-one network.
+aio_cidr: 192.168.33.0/24
+aio_gateway: 192.168.33.1
+aio_allocation_pool_start: 192.168.33.3
+aio_allocation_pool_end: 192.168.33.254
+aio_vip_address: 192.168.33.2
+
+# Controller interface on all-in-one network.
+aio_interface: breth1
+aio_bridge_ports:
+  - eth1

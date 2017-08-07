@@ -26,7 +26,7 @@ Vagrant.configure("2") do |config|
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-  # config.vm.network "private_network", ip: "192.168.33.10"
+  config.vm.network "private_network", ip: "192.168.33.3"
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -64,8 +64,27 @@ Vagrant.configure("2") do |config|
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
-  # config.vm.provision "shell", inline: <<-SHELL
-  #   apt-get update
-  #   apt-get install -y apache2
-  # SHELL
+  #
+  # Set privileged: false to run as vagrant user.
+  config.vm.provision "shell", privileged: false, inline: <<-SHELL
+    sudo ifup eth1
+
+    sudo yum -y install gcc git vim python-virtualenv
+
+    cat > /vagrant/kayobe-env << EOF
+export KAYOBE_CONFIG_PATH=/vagrant/etc/kayobe
+export KOLLA_CONFIG_PATH=/vagrant/etc/kolla
+EOF
+    source /vagrant/kayobe-env
+
+    cp /vagrant/dev/dev-vagrant.yml /vagrant/etc/kayobe/
+    cp /vagrant/dev/dev-hosts /vagrant/etc/kayobe/inventory
+    cp /vagrant/dev/dev-vagrant-network-allocation.yml /vagrant/etc/kayobe/network-allocation.yml
+
+    virtualenv ~/kayobe-venv
+    source ~/kayobe-venv/bin/activate
+    pip install -U pip
+    pip install /vagrant
+    deactivate
+  SHELL
 end
