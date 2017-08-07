@@ -76,4 +76,4 @@
     src: "/usr/lib64/python2.7/site-packages/selinux"
     dest: "{{ kolla_venv }}/lib/python2.7/site-packages/selinux"
     state: link
-  when: "{{ ansible_selinux.mode != 'disabled' }}"
+  when: "{{ ansible_selinux.mode|default != 'disabled' }}"
