@@ -1,5 +1,5 @@
-Juniper Switch
-==============
+JunOS Switch
+============
 
 This role configures Juniper switches using the `junos` Ansible modules.  It
 provides a fairly minimal abstraction of the configuration interface provided
@@ -9,21 +9,25 @@ configuration options.
 Requirements
 ------------
 
-The switches should be configured to allow SSH access.
+The switches should be configured to allow access to NETCONF via SSH.
 
 Role Variables
 --------------
 
-`juniper_switch_delegate_to` is the host on which to execute the `junos` Ansible
+`junos_switch_delegate_to` is the host on which to execute the `junos` Ansible
 modules.
 
-`juniper_switch_provider` is authentication provider information passed as the
+`junos_switch_provider` is authentication provider information passed as the
 `provider` argument to the `junos` modules.
 
-`juniper_switch_config` is a list of configuration lines to apply to the switch,
+`junos_switch_config_format` is the format of configuration in
+`junos_switch_config` and `junos_switch_interface_config`. May be one of `set`,
+`text` or `json`.
+
+`junos_switch_config` is a list of configuration lines to apply to the switch,
 and defaults to an empty list.
 
-`juniper_switch_interface_config` contains interface configuration. It is a dict
+`junos_switch_interface_config` contains interface configuration. It is a dict
 mapping switch interface names to configuration dicts. Each dict may contain
 the following items:
 
@@ -48,19 +52,19 @@ passwords.  It applies global configuration for LLDP, and enables two
       hosts: junos-switches
       gather_facts: no
       roles:
-        - role: juniper-switch
-          juniper_switch_delegate_to: localhost
-          juniper_switch_provider:
+        - role: junos-switch
+          junos_switch_delegate_to: localhost
+          junos_switch_provider:
             host: "{{ switch_host }}"
             username: "{{ switch_user }}"
             password: "{{ switch_password }}"
-          juniper_switch_config:
+          junos_switch_config:
             - "protocols {"
             - "    lldp {"
             - "        interface all;"
             - "    }"
             - "}"
-          juniper_switch_interface_config:
+          junos_switch_interface_config:
             xe-1/1/1:
               description: server-1
               config:

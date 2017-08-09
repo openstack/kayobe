@@ -1,6 +1,0 @@
----
-- name: Ensure Juniper switches are configured
-  junos_config:
-    provider: "{{ juniper_switch_provider }}"
-    src: junos-config.j2
-  delegate_to: "{{ juniper_switch_delegate_to }}"

@@ -1,11 +1,12 @@
 #jinja2: trim_blocks: True,lstrip_blocks: True
 
-{% for line in juniper_switch_config %}
+{% for line in junos_switch_config %}
 {{ line }}
 {% endfor %}
 
+{% if junos_switch_interface_config %}
 interfaces {
-{% for interface, config in juniper_switch_interface_config.items() %}
+{% for interface, config in junos_switch_interface_config.items() %}
     {{ interface }} {
 {% if config.description is defined %}
         description "{{ config.description }}";
@@ -16,3 +17,4 @@ interfaces {
     }
 {% endfor %}
 }
+{% endif %}

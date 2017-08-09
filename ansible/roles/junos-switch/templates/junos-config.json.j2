@@ -1,0 +1,12 @@
+{% set config = junos_switch_interface_config %}
+{% if junos_switch_interface_config %}
+{% set _ = config.setdefault('interfaces', []) %}
+{% endif %}
+{% for interface, config in junos_switch_interface_config.items() %}
+{% set _ = config['interfaces'].append({'name': interface}) %}
+{% if config.description is defined %}
+{% set config['interfaces'][-1]['description'] = config.description %}
+{% endif %}
+{% set _ = config['interfaces'][-1].update(config.config) %}
+{% endif %}
+{{ config | to_nice_json }}

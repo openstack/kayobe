@@ -1,0 +1,20 @@
+#jinja2: trim_blocks: True,lstrip_blocks: True
+
+{% for line in junos_switch_config %}
+{{ line }}
+{% endfor %}
+
+{% for interface, config in junos_switch_interface_config.items() %}
+{% if config.description is defined %}
+set interfaces {{ interface }} description "{{ config.description }}";
+{% endif %}
+{% for line in config.config %}
+{% if line.startswith('set') %}
+set interfaces {{ interface }} {{ line[4:] }}
+{% elif line.startswith('delete') %}
+delete interfaces {{ interface }} {{ line[7:] }}
+{% else %}
+{{ interface_config_lines_must_start_with_set_or_delete }}
+{% endif %}
+{% endfor %}
+{% endfor %}
