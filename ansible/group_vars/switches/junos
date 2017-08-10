@@ -10,7 +10,7 @@ switch_junos_provider:
   host: "{{ ansible_host|default(inventory_hostname) }}"
   username: "{{ ansible_user }}"
   password: "{{ ansible_ssh_pass|default(omit) }}"
-  ssh_keyfile: "{{ ansible_ssh_private_keyfile|default(omit) }}"
+  ssh_keyfile: "{{ ansible_ssh_private_key_file|default(omit) }}"
   timeout: "{{ switch_junos_timeout|default(omit) }}"
 
 ###############################################################################
