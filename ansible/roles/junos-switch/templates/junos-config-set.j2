@@ -6,7 +6,7 @@
 
 {% for interface, config in junos_switch_interface_config.items() %}
 {% if config.description is defined %}
-set interfaces {{ interface }} description "{{ config.description }}";
+set interfaces {{ interface }} description "{{ config.description }}"
 {% endif %}
 {% for line in config.config %}
 {% if line.startswith('set') %}
