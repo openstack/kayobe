@@ -14,6 +14,9 @@ docker_storage_driver: overlay
 # Use the vagrant user to access the controller via SSH.
 kayobe_ansible_user: vagrant
 
+# Set an interface name for LLDP discovery.
+inspector_lldp_switch_port_interface_default: eth0
+
 # Use the 4.0.2 release of kolla and kolla-ansible.
 kolla_openstack_release: 4.0.2
 
