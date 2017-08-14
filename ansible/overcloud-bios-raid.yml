@@ -53,6 +53,7 @@
   vars:
     # Set this to False to avoid rebooting the nodes after configuration.
     drac_reboot: True
+    seed_host: "{{ groups['seed'][0] }}"
   pre_tasks:
     - name: Set the overcloud nodes' maintenance mode
       command: >
@@ -69,12 +70,11 @@
         --limit {{ inventory_hostname }}
         -m command
         -a "openstack baremetal node maintenance set {% raw %}{{ inventory_hostname }}{% endraw %} --reason BIOS-RAID"'
-      register: show_result
-      # We use this convoluted construct to work around Ansible's limitations
-      # in evaluation of the delegate_to keyword.
-      delegate_to: "{{ item }}"
-      with_items:
-        - "{{ hostvars[groups['seed'][0]].ansible_host }}"
+      delegate_to: "{{ seed_host }}"
+      vars:
+        # NOTE: Without this, the seed's ansible_host variable will not be
+        # respected when using delegate_to.
+        ansible_host: "{{ hostvars[seed_host].ansible_host | default(seed_host) }}"
       when: "{{ bios_or_raid_change | bool }}"
 
   roles:
@@ -102,10 +102,9 @@
         --limit {{ inventory_hostname }}
         -m command
         -a "openstack baremetal node maintenance unset {% raw %}{{ inventory_hostname }}{% endraw %}"'
-      register: show_result
-      # We use this convoluted construct to work around Ansible's limitations
-      # in evaluation of the delegate_to keyword.
-      delegate_to: "{{ item }}"
-      with_items:
-        - "{{ hostvars[groups['seed'][0]].ansible_host }}"
+      delegate_to: "{{ seed_host }}"
+      vars:
+        # NOTE: Without this, the seed's ansible_host variable will not be
+        # respected when using delegate_to.
+        ansible_host: "{{ hostvars[seed_host].ansible_host | default(seed_host) }}"
       when: "{{ bios_or_raid_change | bool }}"

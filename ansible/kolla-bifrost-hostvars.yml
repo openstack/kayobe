@@ -45,7 +45,9 @@
           # Bifrost host variables for {{ inventory_hostname }}
           {{ bifrost_hostvars | to_nice_yaml }}
         dest: "/etc/kolla/bifrost/inventory/host_vars/{{ inventory_hostname }}"
-      delegate_to: "{{ item }}"
-      with_items:
-        - "{{ hostvars[seed_host].ansible_host }}"
+      delegate_to: "{{ seed_host }}"
+      vars:
+        # NOTE: Without this, the seed's ansible_host variable will not be
+        # respected when using delegate_to.
+        ansible_host: "{{ hostvars[seed_host].ansible_host | default(seed_host) }}"
       become: True

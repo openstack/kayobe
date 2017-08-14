@@ -5,7 +5,7 @@
   hosts: compute
   gather_facts: no
   vars:
-    delegate_host: "{{ groups['controllers'][0] }}"
+    controller_host: "{{ groups['controllers'][0] }}"
   tasks:
     - name: Ensure ipmitool is installed
       yum:
@@ -13,15 +13,19 @@
         state: installed
       become: True
       run_once: True
-      delegate_to: "{{ item }}"
-      with_items:
-        - "{{ hostvars[delegate_host].ansible_host }}"
+      delegate_to: "{{ controller_host }}"
+      vars:
+        # NOTE: Without this, the controller's ansible_host variable will not
+        # be respected when using delegate_to.
+        ansible_host: "{{ hostvars[controller_host].ansible_host | default(controller_host) }}"
 
     - name: Ensure compute nodes are powered off
       command: ipmitool -U {{ ipmi_username }} -P {{ ipmi_password }} -H {{ ipmi_address }} -I lanplus chassis power off
-      delegate_to: "{{ item }}"
-      with_items:
-        - "{{ hostvars[delegate_host].ansible_host }}"
+      delegate_to: "{{ controller_host }}"
+      vars:
+        # NOTE: Without this, the controller's ansible_host variable will not
+        # be respected when using delegate_to.
+        ansible_host: "{{ hostvars[controller_host].ansible_host | default(controller_host) }}"
 
     - name: Pause to prevent overwhelming BMCs
       pause:
@@ -29,9 +33,11 @@
 
     - name: Ensure compute nodes are set to boot via PXE
       command: ipmitool -U {{ ipmi_username }} -P {{ ipmi_password }} -H {{ ipmi_address }} -I lanplus chassis bootdev pxe
-      delegate_to: "{{ item }}"
-      with_items:
-        - "{{ hostvars[delegate_host].ansible_host }}"
+      delegate_to: "{{ controller_host }}"
+      vars:
+        # NOTE: Without this, the controller's ansible_host variable will not
+        # be respected when using delegate_to.
+        ansible_host: "{{ hostvars[controller_host].ansible_host | default(controller_host) }}"
 
     - name: Pause to prevent overwhelming BMCs
       pause:
@@ -39,6 +45,8 @@
 
     - name: Ensure compute nodes are powered on
       command: ipmitool -U {{ ipmi_username }} -P {{ ipmi_password }} -H {{ ipmi_address }} -I lanplus chassis power on
-      delegate_to: "{{ item }}"
-      with_items:
-        - "{{ hostvars[delegate_host].ansible_host }}"
+      delegate_to: "{{ controller_host }}"
+      vars:
+        # NOTE: Without this, the controller's ansible_host variable will not
+        # be respected when using delegate_to.
+        ansible_host: "{{ hostvars[controller_host].ansible_host | default(controller_host) }}"

@@ -20,6 +20,7 @@
     # Retries to use when using Ironic API and hitting node locked errors.
     ironic_retries: 6
     ironic_retry_interval: 5
+    seed_host: "{{ groups['seed'][0] }}"
   gather_facts: no
   tasks:
     - name: Check the ironic node's initial provision state
@@ -39,15 +40,15 @@
         -a "openstack baremetal node show {% raw %}{{ inventory_hostname }}{% endraw %} -f value -c provision_state"'
       register: show_result
       changed_when: False
-      # We use this convoluted construct to work around Ansible's limitations
-      # in evaluation of the delegate_to keyword.
-      delegate_to: "{{ item }}"
-      with_items:
-        - "{{ hostvars[groups['seed'][0]].ansible_host }}"
+      delegate_to: "{{ seed_host }}"
+      vars:
+        # NOTE: Without this, the seed's ansible_host variable will not be
+        # respected when using delegate_to.
+        ansible_host: "{{ hostvars[seed_host].ansible_host | default(seed_host) }}"
 
     - name: Set a fact containing the ironic node's initial provision state
       set_fact:
-        initial_provision_state: "{{ show_result.results[0].stdout_lines[1] }}"
+        initial_provision_state: "{{ show_result.stdout_lines[1] }}"
 
     - name: Fail if the ironic node is in an unexpected provision state
       fail:
@@ -75,9 +76,11 @@
       retries: "{{ ironic_retries }}"
       delay: "{{ ironic_retry_interval }}"
       when: "{{ initial_provision_state != 'manageable' }}"
-      delegate_to: "{{ item }}"
-      with_items:
-        - "{{ hostvars[groups['seed'][0]].ansible_host }}"
+      delegate_to: "{{ seed_host }}"
+      vars:
+        # NOTE: Without this, the seed's ansible_host variable will not be
+        # respected when using delegate_to.
+        ansible_host: "{{ hostvars[seed_host].ansible_host | default(seed_host) }}"
 
     - name: Ensure the ironic node is inspected
       command: >
@@ -96,9 +99,11 @@
       until: "{{ provide_result | success or 'is locked by host' in provide_result.stdout }}"
       retries: "{{ ironic_retries }}"
       delay: "{{ ironic_retry_interval }}"
-      delegate_to: "{{ item }}"
-      with_items:
-        - "{{ hostvars[groups['seed'][0]].ansible_host }}"
+      delegate_to: "{{ seed_host }}"
+      vars:
+        # NOTE: Without this, the seed's ansible_host variable will not be
+        # respected when using delegate_to.
+        ansible_host: "{{ hostvars[seed_host].ansible_host | default(seed_host) }}"
 
     - name: Wait for the ironic node to be inspected
       command: >
@@ -123,13 +128,15 @@
       when:
         - "{{ wait_inspected | bool }}"
       changed_when: False
-      delegate_to: "{{ item }}"
-      with_items:
-        - "{{ hostvars[groups['seed'][0]].ansible_host }}"
+      delegate_to: "{{ seed_host }}"
+      vars:
+        # NOTE: Without this, the seed's ansible_host variable will not be
+        # respected when using delegate_to.
+        ansible_host: "{{ hostvars[seed_host].ansible_host | default(seed_host) }}"
 
     - name: Set a fact containing the final provision state
       set_fact:
-        final_provision_state: "{{ show_result.results[0].stdout_lines[1] }}"
+        final_provision_state: "{{ show_result.stdout_lines[1] }}"
       when:
         - "{{ wait_inspected | bool }}"
 
