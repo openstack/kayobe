@@ -56,6 +56,7 @@ ansible/roles/MichaelRigart.interfaces/
 ansible/roles/stackhpc.drac/
 ansible/roles/stackhpc.drac-facts/
 ansible/roles/stackhpc.os-flavors/
+ansible/roles/stackhpc.os-images/
 ansible/roles/stackhpc.os-openstackclient/
 ansible/roles/stackhpc.os-networks/
 ansible/roles/stackhpc.os-projects/
