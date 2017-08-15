@@ -71,6 +71,7 @@ setup(
             'physical_network_configure = kayobe.cli.commands:PhysicalNetworkConfigure',
             'playbook_run = kayobe.cli.commands:PlaybookRun',
             'seed_container_image_build = kayobe.cli.commands:SeedContainerImageBuild',
+            'seed_deployment_image_build = kayobe.cli.commands:SeedDeploymentImageBuild',
             'seed_host_configure = kayobe.cli.commands:SeedHostConfigure',
             'seed_hypervisor_host_configure = kayobe.cli.commands:SeedHypervisorHostConfigure',
             'seed_service_deploy = kayobe.cli.commands:SeedServiceDeploy',

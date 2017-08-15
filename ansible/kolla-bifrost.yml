@@ -34,3 +34,4 @@
       kolla_bifrost_dnsmasq_router: "{{ provision_oc_net_name | net_gateway }}"
       kolla_bifrost_dnsmasq_dns_servers: "{{ resolv_nameservers | default([]) }}"
       kolla_bifrost_domain: "{{ resolv_domain | default }}"
+      kolla_bifrost_download_ipa: "{{ not ipa_build_images | bool }}"

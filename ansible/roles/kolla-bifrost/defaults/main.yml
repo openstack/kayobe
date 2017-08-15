@@ -52,6 +52,9 @@ kolla_bifrost_inspector_port_addition:
 # List of extra kernel parameters for the inspector default PXE configuration.
 kolla_bifrost_inspector_extra_kernel_options:
 
+# Whether to download the Ironic Python Agent (IPA) images.
+kolla_bifrost_download_ipa: true
+
 # URL of Ironic Python Agent (IPA) kernel image.
 kolla_bifrost_ipa_kernel_upstream_url:
 

@@ -1,0 +1,49 @@
+---
+# Build and install an Ironic Python Agent (IPA) image for the seed host's
+# ironic and ironic-inspector services.
+
+- name: Ensure Ironic Python Agent images are built and installed
+  hosts: seed
+  vars:
+    ipa_image_name: "ipa"
+    ipa_images:
+      - "{{ ipa_image_name }}.vmlinuz"
+      - "{{ ipa_image_name }}.initramfs"
+  tasks:
+    - block:
+        - name: Ensure Ironic Python Agent images are built
+          include_role:
+            name: stackhpc.os-images
+            os_images_venv: "{{ virtualenv_path }}/ipa-build-dib"
+            os_images_cache: "{{ image_cache_path }}"
+            os_images_common: ""
+            os_images_list:
+              - name: "{{ ipa_image_name }}"
+                elements: "{{ ipa_build_dib_elements }}"
+                env: "{{ ipa_build_dib_env }}"
+                # Avoid needing to install qemu-img for qcow2 image.
+                type: raw
+            os_images_git_elements: "{{ ipa_build_dib_git_elements }}"
+            os_images_upload: False
+
+        - name: Ensure Ironic Python Agent images are copied onto seed
+          copy:
+            src: "{{ image_cache_path }}/{{ ipa_image_name }}/{{ item }}"
+            dest: "/etc/kolla/bifrost/{{ item }}"
+            remote_src: True
+          with_items: "{{ ipa_images }}"
+          notify:
+            - Copy Ironic Python Agent images into /httpboot
+          become: True
+      when: "{{ ipa_build_images | bool }}"
+
+  handlers:
+    - name: Copy Ironic Python Agent images into /httpboot
+      command: >
+        docker exec bifrost_deploy
+        bash -c 'source /bifrost/env-vars &&
+        ansible -vvvv target -i /bifrost/playbooks/inventory/target
+        -m copy
+        -a "src=/etc/bifrost/{{ item }} dest=/httpboot/{{ item }}"
+        -e "ansible_python_interpreter=/var/lib/kolla/venv/bin/python"'
+      with_items: "{{ ipa_images }}"

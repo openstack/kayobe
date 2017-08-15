@@ -20,6 +20,33 @@
 # to upper version constraint.
 #ipa_build_custom_upper_constraints:
 
+# List of default Diskimage Builder (DIB) elements to use when building IPA
+# images.
+#ipa_build_dib_elements_default:
+
+# List of additional Diskimage Builder (DIB) elements to use when building IPA
+# images.
+#ipa_build_dib_elements_extra:
+
+# List of Diskimage Builder (DIB) elements to use when building IPA images.
+#ipa_build_dib_elements:
+
+# Dictionary of default environment variables to provide to Diskimage Builder
+# (DIB) during IPA image build.
+#ipa_build_dib_env_default:
+
+# Dictionary of additional environment variables to provide to Diskimage
+# Builder (DIB) during IPA image build.
+#ipa_build_dib_env_extra:
+
+# Dictionary of environment variables to provide to Diskimage Builder (DIB)
+# during IPA image build.
+#ipa_build_dib_env:
+
+# List of git repositories containing Diskimage Builder (DIB) elements. See
+# stackhpc.os-images role for usage.
+#ipa_build_dib_git_elements:
+
 ###############################################################################
 # Ironic Python Agent (IPA) images configuration.
 

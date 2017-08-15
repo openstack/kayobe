@@ -340,6 +340,15 @@ class SeedContainerImageBuild(KayobeAnsibleMixin, VaultMixin, Command):
                                   extra_vars=extra_vars)
 
 
+class SeedDeploymentImageBuild(KayobeAnsibleMixin, VaultMixin, Command):
+    """Build the seed deployment kernel and ramdisk images."""
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Building seed deployment images")
+        playbooks = _build_playbook_list("seed-ipa-build")
+        self.run_kayobe_playbooks(parsed_args, playbooks)
+
+
 class OvercloudInventoryDiscover(KayobeAnsibleMixin, VaultMixin, Command):
     """Discover the overcloud inventory from the seed's Ironic service."""
 

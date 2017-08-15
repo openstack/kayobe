@@ -43,6 +43,9 @@ inspector_port_addition: "{{ kolla_bifrost_inspector_port_addition }}"
 inspector_extra_kernel_options: "{{ kolla_bifrost_inspector_extra_kernel_options | join(' ') }}"
 {% endif %}
 
+# Whether to download Ironic Python Agent (IPA) images.
+download_ipa: "{{ kolla_bifrost_download_ipa }}"
+
 {% if kolla_bifrost_ipa_kernel_upstream_url %}
 # URL of Ironic Python Agent (IPA) kernel image.
 ipa_kernel_upstream_url: "{{ kolla_bifrost_ipa_kernel_upstream_url }}"

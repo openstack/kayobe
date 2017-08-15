@@ -131,6 +131,23 @@ To deploy the seed services in containers::
 
 After this command has completed the seed services will be active.
 
+Building Deployment Images
+--------------------------
+
+.. note::
+
+   It is possible to use prebuilt deployment images. In this case, this step
+   can be skipped.
+
+It is possible to use prebuilt deployment images from the `OpenStack hosted
+tarballs <https://tarballs.openstack.org/ironic-python-agent>`_ or another
+source.  In some cases it may be necessary to build images locally either to
+apply local image customisation or to use a downstream version of Ironic Python
+Agent (IPA).  In order to build IPA images, the ``ipa_build_images`` variable
+should be set to ``True``.  To build images locally::
+
+    (kayobe-venv) $ kayobe seed deployment image build
+
 Accessing the Seed via SSH (Optional)
 -------------------------------------
 
