@@ -65,14 +65,37 @@
 ###############################################################################
 # Ironic Python Agent (IPA) deployment configuration.
 
-# List of extra kernel parameters to enable LLDP collection.
-#ipa_kernel_options_collect_lldp:
+# Whether to enable collection of LLDP TLVs.
+#ipa_collect_lldp:
 
-# List of extra kernel parameters to enable all inspector collectors.
-#ipa_kernel_options_inspection_collectors_all:
+# List of default inspection collectors to run.
+# NOTE: extra-hardware is not currently included as it requires a ramdisk
+#       with the hardware python module installed.
+#ipa_collectors_default:
 
-# List of extra kernel parameters to enable all inspector benchmarks.
-#ipa_kernel_options_inspection_benchmarks_all:
+# List of additional inspection collectors to run.
+#ipa_collectors_extra:
+
+# List of inspection collectors to run.
+#ipa_collectors:
+
+# List of default inspection benchmarks to run.
+#ipa_benchmarks_default:
+
+# List of extra inspection benchmarks to run.
+#ipa_benchmarks_extra:
+
+# List of inspection benchmarks to run.
+#ipa_benchmarks:
+
+# List of default kernel parameters for Ironic python agent.
+#ipa_kernel_options_default:
+
+# List of additional kernel parameters for Ironic python agent.
+#ipa_kernel_options_extra:
+
+# List of kernel parameters for Ironic python agent.
+#ipa_kernel_options:
 
 ###############################################################################
 # Dummy variable to allow Ansible to accept this file.

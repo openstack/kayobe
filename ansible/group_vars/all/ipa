@@ -74,16 +74,50 @@ ipa_ramdisk_upstream_url: "https://tarballs.openstack.org/ironic-python-agent/co
 ###############################################################################
 # Ironic Python Agent (IPA) deployment configuration.
 
-# List of extra kernel parameters to enable LLDP collection.
-ipa_kernel_options_collect_lldp:
-  - "ipa-collect-lldp=1"
+# Whether to enable collection of LLDP TLVs.
+ipa_collect_lldp: True
 
-# List of extra kernel parameters to enable all inspector collectors.
+# List of default inspection collectors to run.
 # NOTE: extra-hardware is not currently included as it requires a ramdisk
 #       with the hardware python module installed.
-ipa_kernel_options_inspection_collectors_all:
-  - "ipa-inspection-collectors=default,logs,pci-devices"
+ipa_collectors_default:
+  - "default"
+  - "logs"
+  - "pci-devices"
 
-# List of extra kernel parameters to enable all inspector benchmarks.
-ipa_kernel_options_inspection_benchmarks_all:
-  - "ipa-inspection-benchmarks=cpu,disk,mem"
+# List of additional inspection collectors to run.
+ipa_collectors_extra: []
+
+# List of inspection collectors to run.
+ipa_collectors: >
+  {{ ipa_collectors_default +
+     ipa_collectors_extra }}
+
+# List of default inspection benchmarks to run.
+ipa_benchmarks_default:
+  - "cpu"
+  - "disk"
+  - "mem"
+
+# List of extra inspection benchmarks to run.
+ipa_benchmarks_extra: []
+
+# List of inspection benchmarks to run.
+ipa_benchmarks: >
+  {{ (ipa_benchmarks_default +
+      ipa_benchmarks_extra)
+     if 'extra-hardware' in ipa_collectors else [] }}
+
+# List of default kernel parameters for Ironic python agent.
+ipa_kernel_options_default: >
+  {{ ['ipa-collect-lldp=' ~ '1' if ipa_collect_lldp else '0'] +
+     ['ipa-inspection-collectors=' ~ ipa_collectors | join(',')] +
+     ['ipa-inspection-benchmarks=' ~ ipa_benchmarks | join(',')] }}
+
+# List of additional kernel parameters for Ironic python agent.
+ipa_kernel_options_extra: []
+
+# List of kernel parameters for Ironic python agent.
+ipa_kernel_options: >
+  {{ ipa_kernel_options_default +
+     ipa_kernel_options_extra }}
