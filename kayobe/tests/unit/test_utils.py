@@ -91,8 +91,8 @@ key2: value2
         mock_output.assert_called_once_with(["command", "to", "run"])
         self.assertEqual(output, "command output")
 
-    @mock.patch.object(subprocess, "check_output")
-    def test_run_command_failure(self, mock_output):
-        mock_output.side_effect = subprocess.CalledProcessError(1, "command")
+    @mock.patch.object(subprocess, "check_call")
+    def test_run_command_failure(self, mock_call):
+        mock_call.side_effect = subprocess.CalledProcessError(1, "command")
         self.assertRaises(subprocess.CalledProcessError, utils.run_command,
                           ["command", "to", "run"])
