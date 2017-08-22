@@ -207,6 +207,19 @@ to add them to the Kayobe and bifrost Ansible inventories::
 
     (kayobe-venv) $ kayobe overcloud inventory discover
 
+Saving Hardware Introspection Data
+----------------------------------
+
+If ironic inspector is in use on the seed host, introspection data will be
+stored in the local nginx service.  This data may be saved to the control
+host::
+
+    (kayobe-venv) $ kayobe overcloud introspection data save
+
+``--output-dir`` may be used to specify the directory in which introspection
+data files will be saved. ``--output-format`` may be used to set the format of
+the files.
+
 BIOS and RAID Configuration
 ---------------------------
 

@@ -1,0 +1,64 @@
+---
+- name: Ensure the overcloud nodes' hardware introspection data is saved
+  hosts: overcloud
+  vars:
+    seed_host: "{{ groups['seed'][0] }}"
+    # Override this to save results to another location.
+    output_dir: "{{ lookup('env', 'PWD') }}/overcloud-introspection-data"
+    # Override this to set the output data format. One of json, yaml.
+    output_format: json
+  gather_facts: no
+  tasks:
+    - name: Query overcloud nodes' hardware introspection data
+      command: >
+        docker exec bifrost_deploy
+        bash -c '. env-vars &&
+        export OS_URL=$IRONIC_URL
+        export OS_TOKEN=$OS_AUTH_TOKEN &&
+        export BIFROST_INVENTORY_SOURCE=ironic &&
+        ansible baremetal
+        --connection local
+        --inventory /etc/bifrost/inventory/
+        -e @/etc/bifrost/bifrost.yml
+        -e @/etc/bifrost/dib.yml
+        --limit {{ inventory_hostname }}
+        -m shell
+        -a "env OS_URL=http://localhost:5050 openstack baremetal introspection data save {% raw %}{{ inventory_hostname }}{% endraw %}"'
+      register: save_result
+      changed_when: False
+      # Ignore errors, log a message later.
+      failed_when: False
+      delegate_to: "{{ seed_host }}"
+      vars:
+        # NOTE: Without this, the seed's ansible_host variable will not be
+        # respected when using delegate_to.
+        ansible_host: "{{ hostvars[seed_host].ansible_host | default(seed_host) }}"
+
+    - name: Ensure introspection data output directory exists
+      local_action:
+        module: file
+        path: "{{ output_dir }}"
+        state: directory
+
+    - name: Ensure introspection data is saved locally
+      local_action:
+        module: copy
+        content: "{{ introspection_data_map[output_format | lower] }}"
+        dest: "{{ output_dir }}/{{ inventory_hostname }}.{{ output_format | lower }}"
+      when: save_result.rc == 0
+      vars:
+        introspection_data: "{{ save_result.stdout_lines[1:] | join('\n') | from_json }}"
+        introspection_data_json: "{{ introspection_data | to_nice_json(indent=4) }}"
+        introspection_data_yaml: "{{ introspection_data | to_nice_yaml }}"
+        introspection_data_map:
+          json: "{{ introspection_data_json }}"
+          yaml: "{{ introspection_data_yaml }}"
+
+    - name: Log when introspection data could not be queried
+      debug:
+        msg: >
+          Could not query hardware introspection data for
+          {{ inventory_hostname }}.
+          Stdout: {{ save_result.stdout }}.
+          Stderr: {{ save_result.stderr }}.
+      when: save_result.rc != 0

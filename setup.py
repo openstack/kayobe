@@ -62,6 +62,7 @@ setup(
             'overcloud_deprovision = kayobe.cli.commands:OvercloudDeprovision',
             'overcloud_hardware_inspect = kayobe.cli.commands:OvercloudHardwareInspect',
             'overcloud_host_configure = kayobe.cli.commands:OvercloudHostConfigure',
+            'overcloud_introspection_data_save = kayobe.cli.commands:OvercloudIntrospectionDataSave',
             'overcloud_inventory_discover = kayobe.cli.commands:OvercloudInventoryDiscover',
             'overcloud_post_configure = kayobe.cli.commands:OvercloudPostConfigure',
             'overcloud_provision = kayobe.cli.commands:OvercloudProvision',
