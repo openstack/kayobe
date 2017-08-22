@@ -2,6 +2,10 @@
 - src: ahuffman.resolv
 - src: jriguera.configdrive
 - src: MichaelRigart.interfaces
+# Use our fork until the interface bounce rework patch is merged.
+- src: https://github.com/stackhpc/ansible-role-interfaces
+  version: rework-bouncing
+  name: MichaelRigart.interfaces
 - src: mrlesmithjr.manage-lvm
 - src: resmo.ntp
 - src: stackhpc.drac

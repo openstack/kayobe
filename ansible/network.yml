@@ -51,15 +51,9 @@
     - role: ahuffman.resolv
       become: True
 
-    # On the first pass we configure all ethernet interfaces that are not on
-    # VLANs and all bridges. On the second pass we configure all ethernet
-    # interfaces that are on VLANs. This allows us to specify VLAN interfaces
-    # on bridges.
-
     - role: MichaelRigart.interfaces
       interfaces_ether_interfaces: >
         {{ ether_interfaces |
-           net_reject_vlans |
            map('net_interface_obj') |
            list }}
       interfaces_bridge_interfaces: >
@@ -69,14 +63,6 @@
       interfaces_bond_interfaces: >
         {{ bond_interfaces |
            map('net_bond_obj') |
-           list }}
-      become: True
-
-    - role: MichaelRigart.interfaces
-      interfaces_ether_interfaces: >
-        {{ ether_interfaces |
-           net_select_vlans |
-           map('net_interface_obj') |
            list }}
       become: True
 
