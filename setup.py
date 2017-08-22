@@ -58,6 +58,7 @@ setup(
             'overcloud_bios_raid_configure = kayobe.cli.commands:OvercloudBIOSRAIDConfigure',
             'overcloud_container_image_build = kayobe.cli.commands:OvercloudContainerImageBuild',
             'overcloud_container_image_pull = kayobe.cli.commands:OvercloudContainerImagePull',
+            'overcloud_deployment_image_build = kayobe.cli.commands:OvercloudDeploymentImageBuild',
             'overcloud_deprovision = kayobe.cli.commands:OvercloudDeprovision',
             'overcloud_hardware_inspect = kayobe.cli.commands:OvercloudHardwareInspect',
             'overcloud_host_configure = kayobe.cli.commands:OvercloudHostConfigure',

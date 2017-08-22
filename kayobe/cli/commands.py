@@ -622,13 +622,22 @@ class OvercloudContainerImageBuild(KayobeAnsibleMixin, VaultMixin, Command):
                                   extra_vars=extra_vars)
 
 
+class OvercloudDeploymentImageBuild(KayobeAnsibleMixin, VaultMixin, Command):
+    """Build the overcloud deployment kernel and ramdisk images."""
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Building overcloud deployment images")
+        playbooks = _build_playbook_list("overcloud-ipa-build")
+        self.run_kayobe_playbooks(parsed_args, playbooks)
+
+
 class OvercloudPostConfigure(KayobeAnsibleMixin, VaultMixin, Command):
     """Perform post-deployment configuration."""
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Performing post-deployment configuration")
         playbooks = _build_playbook_list(
-            "ipa-build", "ipa-images", "overcloud-introspection-rules",
+            "overcloud-ipa-images", "overcloud-introspection-rules",
             "overcloud-introspection-rules-dell-lldp-workaround",
             "provision-net")
         self.run_kayobe_playbooks(parsed_args, playbooks)
