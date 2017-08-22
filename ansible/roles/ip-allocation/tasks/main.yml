@@ -11,6 +11,7 @@
   with_items:
     - python-netaddr
     - PyYAML
+  run_once: True
 
 - name: Ensure IP addresses are allocated
   local_action:

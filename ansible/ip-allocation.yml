@@ -2,6 +2,8 @@
 - name: Ensure IP addresses are allocated
   hosts: seed-hypervisor:seed:overcloud
   gather_facts: no
+  # Use serial=1 to avoid races between allocations for different hosts.
+  serial: 1
   pre_tasks:
     - name: Initialise the IP allocations fact
       set_fact:
@@ -25,5 +27,3 @@
     - role: ip-allocation
       ip_allocation_filename: "{{ kayobe_config_path }}/network-allocation.yml"
       ip_allocation_hostname: "{{ inventory_hostname }}"
-      # Use serial=1 to avoid races between allocations for different hosts.
-      serial: 1
