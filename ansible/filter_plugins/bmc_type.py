@@ -17,6 +17,8 @@ def bmc_type_from_system_vendor(system_vendor):
         return None
     if system_vendor.get('manufacturer') == 'Dell Inc.':
         return 'idrac'
+    if system_vendor.get('manufacturer') == 'Intel Corporation':
+        return 'intel'
     return None
 
 
