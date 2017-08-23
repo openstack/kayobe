@@ -68,9 +68,16 @@ Run the host configuration command again to completion::
 
     kayobe overcloud host configure
 
-Build container images::
+At this point, container images must be acquired. They can either be built
+locally or pulled from an image repository if appropriate images are available.
+
+Either build container images::
 
     kayobe overcloud container image build
+
+Or pull container images::
+
+    kayobe overcloud container image pull
 
 Deploy the control plane services::
 
