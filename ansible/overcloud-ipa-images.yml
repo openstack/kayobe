@@ -58,7 +58,7 @@
       register: image_cache_stat
 
     - name: Ensure the image cache directory exists
-      stat:
+      file:
         path: "{{ image_cache_path }}"
         state: directory
         owner: "{{ ansible_user }}"
