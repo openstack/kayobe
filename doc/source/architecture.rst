@@ -49,6 +49,8 @@ Workload provisioning network
     the bare metal compute hosts.
 Internal network
     The internal network hosts the internal and admin OpenStack API endpoints.
+Public network
+    The public network hosts the public OpenStack API endpoints.
 External network
-    The external network hosts the public OpenStack API endpoints and provides
-    external network access for the hosts in the system.
+    The external network provides external network access for the hosts in the
+    system.

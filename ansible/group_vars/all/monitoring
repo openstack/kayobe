@@ -13,7 +13,7 @@ monitoring_bootstrap_user: "{{ controller_bootstrap_user }}"
 monitoring_default_network_interfaces: >
   {{ [provision_oc_net_name,
       internal_net_name,
-      external_net_name] | unique | list }}
+      public_net_name] | unique | list }}
 
 # List of extra networks to which monitoring nodes are attached.
 monitoring_extra_network_interfaces: []

@@ -28,6 +28,7 @@ EOF
 provision_oc_net_name: 'the_net'
 provision_wl_net_name: 'the_net'
 internal_net_name: 'the_net'
+public_net_name: 'the_net'
 external_net_name: 'the_net'
 storage_net_name: 'the_net'
 storage_mgmt_net_name: 'the_net'

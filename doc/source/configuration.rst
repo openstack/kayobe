@@ -197,9 +197,10 @@ perform multiple roles, or even none at all.  The available roles are:
     workload hosts.
 ``internal_net_name``
     Name of the network used to expose the internal OpenStack API endpoints.
+``public_net_name``
+    Name of the network used to expose the public OpenStack API endpoints.
 ``external_net_name``
-    Name of the network used to expose the external OpenStack API endpoints and
-    to provide external network access via Neutron.
+    Name of the network used to provide external network access via Neutron.
 ``storage_net_name``
     Name of the network used to carry storage data traffic.
 ``storage_mgmt_net_name``
@@ -262,6 +263,7 @@ We could describe such a network as follows:
    provision_oc_net_name: management
    provision_wl_net_name: cloud
    internal_net_name: cloud
+   public_net_name: external
    external_net_name: external
    storage_net_name: cloud
    storage_mgmt_net_name: cloud

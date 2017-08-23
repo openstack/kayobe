@@ -3,4 +3,4 @@
   hosts: docker
   roles:
     - role: docker
-      docker_daemon_mtu: "{{ external_net_name | net_mtu | default }}"
+      docker_daemon_mtu: "{{ public_net_name | net_mtu | default }}"
