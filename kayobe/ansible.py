@@ -58,6 +58,10 @@ def add_args(parser):
     parser.add_argument("-t", "--tags", metavar="TAGS",
                         help="only run plays and tasks tagged with these "
                              "values")
+    parser.add_argument("-lt", "--list-tasks",
+                        action="store_true",
+                        help="only print names of tasks, don't run them, "
+                             "note this has no affect on kolla-ansible.")
 
 
 def _get_inventory_path(parsed_args):
@@ -110,6 +114,8 @@ def build_args(parsed_args, playbooks,
     cmd = ["ansible-playbook"]
     if verbose_level:
         cmd += ["-" + "v" * verbose_level]
+    if parsed_args.list_tasks:
+        cmd += ["--list-tasks"]
     cmd += vault.build_args(parsed_args)
     inventory = _get_inventory_path(parsed_args)
     cmd += ["--inventory", inventory]

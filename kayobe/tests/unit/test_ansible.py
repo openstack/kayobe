@@ -68,11 +68,17 @@ class TestCase(unittest.TestCase):
             "-i", "/path/to/inventory",
             "-l", "group1:host",
             "-t", "tag1,tag2",
+            "-lt",
         ]
         parsed_args = parser.parse_args(args)
-        ansible.run_playbooks(parsed_args, ["playbook1.yml", "playbook2.yml"])
+        ansible.run_playbooks(
+                parsed_args,
+                ["playbook1.yml", "playbook2.yml"],
+                verbose_level=2)
         expected_cmd = [
             "ansible-playbook",
+            "-vv",
+            "--list-tasks",
             "--inventory", "/path/to/inventory",
             "-e", "@/path/to/config/vars-file1.yml",
             "-e", "@/path/to/config/vars-file2.yaml",
@@ -106,11 +112,13 @@ class TestCase(unittest.TestCase):
             "--inventory", "/path/to/inventory",
             "--limit", "group1:host1",
             "--tags", "tag1,tag2",
+            "--list-tasks",
         ]
         parsed_args = parser.parse_args(args)
         ansible.run_playbooks(parsed_args, ["playbook1.yml", "playbook2.yml"])
         expected_cmd = [
             "ansible-playbook",
+            "--list-tasks",
             "--ask-vault-pass",
             "--inventory", "/path/to/inventory",
             "-e", "@/path/to/config/vars-file1.yml",
