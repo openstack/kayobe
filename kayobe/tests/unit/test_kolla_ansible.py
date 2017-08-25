@@ -52,6 +52,7 @@ class TestCase(unittest.TestCase):
             "--kolla-config-path", "/path/to/config",
             "-ke", "ev_name1=ev_value1",
             "-ki", "/path/to/inventory",
+            "-kl", "host1:host2",
             "-kt", "tag1,tag2",
         ]
         parsed_args = parser.parse_args(args)
@@ -63,6 +64,7 @@ class TestCase(unittest.TestCase):
             "--configdir", "/path/to/config",
             "--passwords", "/path/to/config/passwords.yml",
             "-e", "ev_name1=ev_value1",
+            "--limit", "host1:host2",
             "--tags", "tag1,tag2",
         ]
         expected_cmd = " ".join(expected_cmd)
@@ -79,6 +81,7 @@ class TestCase(unittest.TestCase):
             "--kolla-config-path", "/path/to/config",
             "--kolla-extra-vars", "ev_name1=ev_value1",
             "--kolla-inventory", "/path/to/inventory",
+            "--kolla-limit", "host1:host2",
             "--kolla-tags", "tag1,tag2",
         ]
         parsed_args = parser.parse_args(args)
@@ -90,6 +93,7 @@ class TestCase(unittest.TestCase):
             "--configdir", "/path/to/config",
             "--passwords", "/path/to/config/passwords.yml",
             "-e", "ev_name1=ev_value1",
+            "--limit", "host1:host2",
             "--tags", "tag1,tag2",
         ]
         expected_cmd = " ".join(expected_cmd)

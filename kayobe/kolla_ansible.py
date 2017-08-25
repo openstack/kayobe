@@ -49,6 +49,9 @@ def add_args(parser):
                              "(default=$%s/inventory or %s/inventory) or "
                              "comma-separated host list for Kolla Ansible" %
                              (CONFIG_PATH_ENV, DEFAULT_CONFIG_PATH))
+    parser.add_argument("-kl", "--kolla-limit", metavar="SUBSET",
+                        help="further limit selected hosts to an additional "
+                             "pattern")
     parser.add_argument("-kt", "--kolla-tags", metavar="TAGS",
                         help="only run plays and tasks tagged with these "
                              "values in Kolla Ansible")
@@ -90,7 +93,7 @@ def _validate_args(parsed_args, inventory_filename):
 
 
 def build_args(parsed_args, command, inventory_filename, extra_vars=None,
-               tags=None, verbose_level=None, extra_args=None):
+               tags=None, verbose_level=None, extra_args=None, limit=None):
     """Build arguments required for running Kolla Ansible."""
     venv_activate = os.path.join(parsed_args.kolla_venv, "bin", "activate")
     cmd = ["source", venv_activate, "&&"]
@@ -111,6 +114,9 @@ def build_args(parsed_args, command, inventory_filename, extra_vars=None,
     if extra_vars:
         for extra_var_name, extra_var_value in extra_vars.items():
             cmd += ["-e", "%s=%s" % (extra_var_name, extra_var_value)]
+    if parsed_args.kolla_limit or limit:
+        limits = [l for l in [parsed_args.kolla_limit, limit] if l]
+        cmd += ["--limit", ":&".join(limits)]
     if parsed_args.kolla_tags or tags:
         all_tags = [t for t in [parsed_args.kolla_tags, tags] if t]
         cmd += ["--tags", ",".join(all_tags)]
@@ -120,14 +126,16 @@ def build_args(parsed_args, command, inventory_filename, extra_vars=None,
 
 
 def run(parsed_args, command, inventory_filename, extra_vars=None,
-        tags=None, quiet=False, verbose_level=None, extra_args=None):
+        tags=None, quiet=False, verbose_level=None, extra_args=None,
+        limit=None):
     """Run a Kolla Ansible command."""
     _validate_args(parsed_args, inventory_filename)
     cmd = build_args(parsed_args, command,
                      inventory_filename=inventory_filename,
                      extra_vars=extra_vars, tags=tags,
                      verbose_level=verbose_level,
-                     extra_args=extra_args)
+                     extra_args=extra_args,
+                     limit=limit)
     try:
         utils.run_command(" ".join(cmd), quiet=quiet, shell=True)
     except subprocess.CalledProcessError as e:
