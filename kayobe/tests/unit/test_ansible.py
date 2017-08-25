@@ -71,10 +71,8 @@ class TestCase(unittest.TestCase):
             "-lt",
         ]
         parsed_args = parser.parse_args(args)
-        ansible.run_playbooks(
-                parsed_args,
-                ["playbook1.yml", "playbook2.yml"],
-                verbose_level=2)
+        ansible.run_playbooks(parsed_args, ["playbook1.yml", "playbook2.yml"],
+                              verbose_level=2)
         expected_cmd = [
             "ansible-playbook",
             "-vv",

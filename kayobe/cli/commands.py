@@ -13,7 +13,6 @@
 # under the License.
 
 import json
-import platform
 import sys
 
 from cliff.command import Command
@@ -383,8 +382,8 @@ class OvercloudIntrospectionDataSave(KayobeAnsibleMixin, VaultMixin, Command):
         # Defaults for these are applied in the playbook.
         group.add_argument("--output-dir", type=str,
                            help="Path to directory in which to save "
-                               "introspection data. Default: "
-                               "$PWD/overcloud-introspection-data")
+                                "introspection data. Default: "
+                                "$PWD/overcloud-introspection-data")
         group.add_argument("--output-format", type=str,
                            help="Format in which to save output data. One of "
                                 "JSON or YAML. Default: JSON",
@@ -399,7 +398,8 @@ class OvercloudIntrospectionDataSave(KayobeAnsibleMixin, VaultMixin, Command):
         if parsed_args.output_format:
             extra_vars['output_format'] = parsed_args.output_format
         playbooks = _build_playbook_list("overcloud-introspection-data-save")
-        self.run_kayobe_playbooks(parsed_args, playbooks, extra_vars=extra_vars)
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  extra_vars=extra_vars)
 
 
 class OvercloudBIOSRAIDConfigure(KayobeAnsibleMixin, VaultMixin, Command):
