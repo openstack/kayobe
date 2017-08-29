@@ -15,10 +15,10 @@ Seed host
     the cloud hosts.  Typically the seed host is deployed as a VM but this is
     not mandatory.
 Cloud hosts
-    The cloud hosts run the OpenStack control plane, storage, and virtualised
-    compute services.  Typically the cloud hosts run on bare metal but this is
-    not mandatory.
-Bare metal compute hosts:
+    The cloud hosts run the OpenStack control plane, network, monitoring,
+    storage, and virtualised compute services.  Typically the cloud hosts run
+    on bare metal but this is not mandatory.
+Bare metal compute hosts
     In a cloud providing bare metal compute services to tenants via ironic,
     these hosts will run the bare metal tenant workloads.  In a cloud with only
     virtualised compute this category of hosts does not exist.
@@ -27,6 +27,20 @@ Bare metal compute hosts:
 
    In many cases the control and seed host will be the same, although this is
    not mandatory.
+
+Cloud Hosts
+-----------
+
+Cloud hosts can further be divided into subclasses.
+
+Controllers
+    Controller hosts run the OpenStack control plane services.
+Network
+    Network hosts run the neutron networking services and load balancers for
+    the OpenStack API services.
+Monitoring
+    Monitoring host run the control plane and workload monitoring services.
+    Currently, kayobe does not deploy any services onto monitoring hosts.
 
 Networks
 ========

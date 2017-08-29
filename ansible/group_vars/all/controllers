@@ -12,7 +12,9 @@ controller_bootstrap_user: "{{ lookup('env', 'USER') }}"
 # List of networks to which controller nodes are attached.
 controller_network_interfaces: >
   {{ (controller_default_network_interfaces +
-      controller_extra_network_interfaces) | unique | list }}
+      controller_extra_network_interfaces +
+      controller_network_host_network_interfaces
+      if inventory_hostname in groups['network'] else []) | unique | list }}
 
 # List of default networks to which controller nodes are attached.
 controller_default_network_interfaces: >
@@ -20,13 +22,16 @@ controller_default_network_interfaces: >
       oob_wl_net_name,
       provision_wl_net_name,
       internal_net_name,
-      public_net_name,
-      external_net_name,
       storage_net_name,
       storage_mgmt_net_name] | unique | list }}
 
 # List of extra networks to which controller nodes are attached.
 controller_extra_network_interfaces: []
+
+# List of network interfaces to which network nodes are attached.
+controller_network_host_network_interfaces: >
+  {{ [public_net_name,
+      external_net_name] | unique | list }}
 
 ###############################################################################
 # Controller node BIOS configuration.

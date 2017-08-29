@@ -66,10 +66,10 @@
            list }}
       become: True
 
-# Configure a virtual ethernet patch links to connect the workload provision
+# Configure virtual ethernet patch links to connect the workload provision
 # and external network bridges to the Neutron OVS bridge.
-- name: Ensure controller workload OVS patch links exist
-  hosts: controllers
+- name: Ensure OVS patch links exist
+  hosts: network
   tags:
     - config
   vars:
