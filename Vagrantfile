@@ -37,7 +37,10 @@ Vagrant.configure("2") do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  # config.vm.synced_folder "../data", "/vagrant_data"
+
+  # NOTE: To make this work install vbguest plugin to install tools in VM:
+  #   vagrant plugin install vagrant-vbguest
+  config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -66,6 +69,20 @@ Vagrant.configure("2") do |config|
   # documentation for more information about their specific syntax and use.
   #
   # Set privileged: false to run as vagrant user.
+
+  # Disable selinux, then reboot to apply the change
+  config.vm.provision "shell", inline: <<-SHELL
+      echo "cat > /etc/selinux/config << EOF
+SELINUX=disabled
+SELINUXTYPE=targeted
+EOF" | sudo -s
+      cat /etc/selinux/config
+  SHELL
+
+  # NOTE: Reboot to apply selinux change, requires the reload plugin:
+  #   vagrant plugin install vagrant-reload
+  config.vm.provision :reload
+
   config.vm.provision "shell", privileged: false, inline: <<-SHELL
     sudo ifup eth1
 

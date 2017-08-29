@@ -8,7 +8,14 @@ machine using `Vagrant <https://www.vagrantup.com/>`_ and Kayobe.
 Preparation
 ===========
 
-First, ensure that Vagrant is installed and correctly configured.
+First, ensure that Vagrant is installed and correctly configured to use
+virtual box. Also install the following vagrant plugins:
+
+   vagrant plugin install vagrant-vbguest
+   vagrant plugin install vagrant-reload
+
+Note: if using Ubuntu 16.04 LTS, you may be unable to install any plugins. To
+work around this install the upstream version from www.virtualbox.org.
 
 Next, clone kayobe::
 
