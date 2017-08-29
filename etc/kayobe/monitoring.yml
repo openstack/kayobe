@@ -9,6 +9,9 @@
 ###############################################################################
 # Monitoring node network interface configuration.
 
+# List of networks to which monitoring nodes are attached.
+#monitoring_network_interfaces:
+
 # List of default networks to which monitoring nodes are attached.
 #monitoring_default_network_interfaces:
 

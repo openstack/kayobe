@@ -3,9 +3,4 @@
 # Network interface attachments.
 
 # List of networks to which these nodes are attached.
-network_interfaces: >
-  {{ (controller_default_network_interfaces +
-      controller_extra_network_interfaces) | unique | list
-     if inventory_hostname in groups['controllers'] else
-     (monitoring_default_network_interfaces +
-      monitoring_extra_network_interfaces) | unique | list }}
+network_interfaces: "{{ monitoring_network_interfaces | unique | list }}"

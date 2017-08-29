@@ -3,6 +3,4 @@
 # Network interface attachments.
 
 # List of networks to which these nodes are attached.
-network_interfaces: >
-  {{ (seed_default_network_interfaces +
-      seed_extra_network_interfaces) | unique | list }}
+network_interfaces: "{{ seed_network_interfaces | unique | list }}"

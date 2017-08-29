@@ -9,6 +9,9 @@
 ###############################################################################
 # Network interface attachments.
 
+# List of networks to which controller nodes are attached.
+#controller_network_interfaces:
+
 # List of default networks to which controller nodes are attached.
 #controller_default_network_interfaces:
 

@@ -9,6 +9,9 @@
 ###############################################################################
 # Network interface attachments.
 
+# List of networks to which seed nodes are attached.
+#seed_network_interfaces:
+
 # List of default networks to which seed nodes are attached.
 #seed_default_network_interfaces:
 
