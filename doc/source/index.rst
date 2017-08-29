@@ -28,6 +28,14 @@ Documentation
    upgrading
    administration
 
+Advanced Documentation
+----------------------
+
+.. toctree::
+   :maxdepth: 2
+
+   control-plane-service-placement
+
 Developer Documentation
 -----------------------
 

@@ -8,6 +8,58 @@ kolla_ansible_module: "{% if kolla_ansible_is_standalone | bool %}kolla-ansible{
 # Path to Kolla Ansible installation directory.
 kolla_ansible_install_dir: "{{ kolla_venv }}/share/{{ kolla_ansible_module }}"
 
+###############################################################################
+# Inventory configuration.
+
+# Full default seed inventory contents.
+kolla_seed_inventory_default: |
+  # This file is managed by Ansible. Do not edit.
+
+  {{ lookup('template', "seed.j2") }}
+
+# Full seed inventory contents.
+kolla_seed_inventory: "{{ kolla_seed_inventory_custom or kolla_seed_inventory_default }}"
+
+# Default overcloud inventory containing a mapping from top level groups to
+# hosts.
+kolla_overcloud_inventory_default_top_level: "{{ lookup('template', 'overcloud-top-level.j2') }}"
+
+# Overcloud inventory containing a mapping from top level groups to hosts.
+kolla_overcloud_inventory_top_level: "{{ kolla_overcloud_inventory_custom_top_level or kolla_overcloud_inventory_default_top_level }}"
+
+# Default overcloud inventory containing a mapping from components to top level
+# groups.
+kolla_overcloud_inventory_default_components: "{{ lookup('template', 'overcloud-components.j2') }}"
+
+# Overcloud inventory containing a mapping from components to top level groups.
+kolla_overcloud_inventory_components: "{{ kolla_overcloud_inventory_custom_components or kolla_overcloud_inventory_default_components }}"
+
+# Default overcloud inventory containing a mapping from services to components.
+kolla_overcloud_inventory_default_services: "{{ lookup('template', 'overcloud-services.j2') }}"
+
+# Overcloud inventory containing a mapping from services to components.
+kolla_overcloud_inventory_services: "{{ kolla_overcloud_inventory_custom_services or kolla_overcloud_inventory_default_services }}"
+
+# Full default overcloud inventory contents. By default this will be the
+# concatenation of the top level, component, and service inventories.
+kolla_overcloud_inventory_default: |
+  # This file is managed by Ansible. Do not edit.
+
+  # Overcloud inventory file for kolla-ansible.
+
+  {{ kolla_overcloud_inventory_top_level }}
+
+  {{ kolla_overcloud_inventory_components }}
+
+  {{ kolla_overcloud_inventory_services }}
+
+# Full overcloud inventory contents. By default this will be the concatenation
+# of the top level, component, and service inventories.
+kolla_overcloud_inventory: "{{ kolla_overcloud_inventory_custom or kolla_overcloud_inventory_default }}"
+
+###############################################################################
+# Feature configuration.
+
 # List of features supported by Kolla as enable_* flags.
 kolla_feature_flags:
   - aodh
@@ -48,3 +100,4 @@ kolla_feature_flags:
   - telegraf
   - tempest
   - watcher
+

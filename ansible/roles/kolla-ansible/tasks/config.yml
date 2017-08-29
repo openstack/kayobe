@@ -12,15 +12,26 @@
     - "{{ kolla_config_path }}/inventory"
     - "{{ kolla_node_custom_config_path }}"
 
-- name: Ensure the Kolla configuration files exist
+- name: Ensure the Kolla global configuration file exists
   template:
-    src: "{{ item.src }}"
-    dest: "{{ kolla_config_path }}/{{ item.dest }}"
+    src: "globals.yml.j2"
+    dest: "{{ kolla_config_path }}/globals.yml"
     mode: 0640
-  with_items:
-    - { src: seed.j2, dest: inventory/seed }
-    - { src: overcloud.j2, dest: inventory/overcloud }
-    - { src: globals.yml.j2, dest: globals.yml }
+
+# NOTE: We're not looping over the two inventory files to avoid having the file
+# content displayed in the ansible-playbook output.
+
+- name: Ensure the Kolla seed inventory file exists
+  copy:
+    content: "{{ kolla_seed_inventory }}"
+    dest: "{{ kolla_config_path }}/inventory/seed"
+    mode: 0640
+
+- name: Ensure the Kolla overcloud inventory file exists
+  copy:
+    content: "{{ kolla_overcloud_inventory }}"
+    dest: "{{ kolla_config_path }}/inventory/overcloud"
+    mode: 0640
 
 - name: Ensure the Kolla passwords file exists
   kolla_passwords:

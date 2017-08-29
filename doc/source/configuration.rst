@@ -90,7 +90,12 @@ Seed
     should exist in the ``seed`` group.
 
 Cloud hosts and bare metal compute hosts are not required to exist in the
-inventory.
+inventory if discovery of the control plane hardware is planned, although
+entries for groups may still be required.
+
+Use of advanced control planes with multiple server roles and customised
+service placement across those servers is covered in
+:ref:`control-plane-service-placement`.
 
 Site Localisation and Customisation
 -----------------------------------

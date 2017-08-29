@@ -1,0 +1,63 @@
+# This inventory section provides a mapping of the top level groups to hosts.
+#
+# Top level groups define the roles of hosts, e.g. controller or compute.
+# Components define groups of services, e.g. nova or ironic.
+# Services define single containers, e.g. nova-compute or ironic-api.
+
+{% set top_level_groups = kolla_overcloud_inventory_top_level_group_map.values() |
+                          selectattr('groups', 'defined') |
+                          map(attribute='groups') |
+                          sum(start=[]) |
+                          unique |
+                          list %}
+
+{% for group in top_level_groups %}
+# Top level {{ group }} group.
+[{{ group }}]
+# These hostnames must be resolvable from your deployment host
+{% for host in groups[group] %}
+{% set host_hv=hostvars[host] %}
+{{ host }}{% if "ansible_host" in host_hv %}    ansible_host={{ host_hv["ansible_host"] }}{% endif %}
+
+{% endfor %}
+
+{% endfor %}
+[overcloud:children]
+{% for group in top_level_groups %}
+{{ group }}
+{% endfor %}
+
+[overcloud:vars]
+ansible_user=kolla
+ansible_become=true
+
+{% for kolla_group, kolla_group_config in kolla_overcloud_inventory_top_level_group_map.items() %}
+{% if 'groups' in kolla_group_config %}
+{% set renamed_groups = kolla_group_config.groups | difference([kolla_group]) | list %}
+{% if renamed_groups | length > 0 %}
+# Mapping from kolla-ansible group {{ kolla_group }} to top level kayobe
+# groups.
+[{{ kolla_group }}:children]
+{% for group in kolla_group_config.groups %}
+{{ group }}
+{% endfor %}
+
+{% endif %}
+{% endif %}
+{% if 'vars' in kolla_group_config %}
+# Mapping from kolla-ansible group {{ kolla_group }} to top level kayobe
+# variables.
+[{{ kolla_group }}:vars]
+{% for var_name, var_value in kayobe_group_config.vars.items() %}
+{{ var_name }}={{ var_value }}
+{% endfor %}
+
+{% endif %}
+{% endfor %}
+{% for group in kolla_overcloud_inventory_kolla_top_level_groups %}
+{% if group not in kolla_overcloud_inventory_top_level_group_map %}
+# Empty group definition for {{ group }}.
+[{{ group }}]
+
+{% endif %}
+{% endfor %}
