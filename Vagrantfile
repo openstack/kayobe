@@ -69,6 +69,20 @@ Vagrant.configure("2") do |config|
   # documentation for more information about their specific syntax and use.
   #
   # Set privileged: false to run as vagrant user.
+
+  # Disable selinux, then reboot to apply the change
+  config.vm.provision "shell", inline: <<-SHELL
+      echo "cat > /etc/selinux/config << EOF
+SELINUX=disabled
+SELINUXTYPE=targeted
+EOF" | sudo -s
+      cat /etc/selinux/config
+  SHELL
+
+  # NOTE: Reboot to apply selinux change, requires the reload plugin:
+  #   vagrant plugin install vagrant-reload
+  config.vm.provision :reload
+
   config.vm.provision "shell", privileged: false, inline: <<-SHELL
     sudo ifup eth1
 
