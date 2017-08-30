@@ -8,6 +8,10 @@ dhcp-option=option:tftp-server,{% raw %}{{ hostvars[inventory_hostname]['ansible
 
 dhcp-option=option:server-ip-address,{% raw %}{{ hostvars[inventory_hostname]['ansible_' ~ provision_interface | replace('-', '_')]['ipv4']['address'] }}{% endraw %}
 
+{% if kolla_inspector_default_gateway %}
+dhcp-option=3,{{ kolla_inspector_default_gateway }}
+{% endif %}
+
 dhcp-option=option:bootfile-name,pxelinux.0
 dhcp-option=210,/tftpboot/
 
