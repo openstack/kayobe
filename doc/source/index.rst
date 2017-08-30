@@ -44,3 +44,9 @@ Developer Documentation
 
    contributing
    development
+
+Release Notes
+-------------
+
+.. toctree::
+   :maxdepth: 2
