@@ -69,11 +69,16 @@ kolla_feature_flags:
   - ceph
   - ceph_rgw
   - cinder
+  - cinder_backend_hnas_iscsi
+  - cinder_backend_hnas_nfs
   - cinder_backend_iscsi
   - cinder_backend_lvm
+  - cinder_backend_nfs
   - cloudkitty
   - congress
+  - designate
   - etcd
+  - freezer
   - gnocchi
   - grafana
   - haproxy
@@ -81,23 +86,38 @@ kolla_feature_flags:
   - horizon
   - influxdb
   - ironic
+  - karbor
   - kuryr
   - magnum
   - manila
+  - manila_backend_generic
+  - manila_backend_hnas
   - mistral
   - mongodb
   - murano
   - multipathd
   - neutron_dvr
+  - neutron_fwaas
   - neutron_lbaas
   - neutron_qos
   - neutron_agent_ha
   - neutron_vpnaas
+  - neutron_bgp_dragent
+  - neutron_provider_networks
+  - nova_serialconsole_proxy
+  - octavia
+  - osprofiler
+  - panko
   - rally
   - sahara
+  - searchlight
   - senlin
+  - skydive
+  - solum
   - swift
+  - tacker
   - telegraf
   - tempest
+  - trove
   - watcher
-
+  - zun
