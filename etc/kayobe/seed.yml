@@ -52,5 +52,11 @@
 #seed_lvm_group_data_lv_docker_volumes_fs:
 
 ###############################################################################
+# Seed node sysctl configuration.
+
+# Dict of sysctl parameters to set.
+#seed_sysctl_parameters:
+
+###############################################################################
 # Dummy variable to allow Ansible to accept this file.
 workaround_ansible_issue_8743: yes

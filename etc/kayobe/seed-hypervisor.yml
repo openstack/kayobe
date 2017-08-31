@@ -45,5 +45,11 @@
 #seed_hypervisor_libvirt_networks:
 
 ###############################################################################
+# Seed hypervisor sysctl configuration.
+
+# Dict of sysctl parameters to set.
+#seed_hypervisor_sysctl_parameters:
+
+###############################################################################
 # Dummy variable to allow Ansible to accept this file.
 workaround_ansible_issue_8743: yes

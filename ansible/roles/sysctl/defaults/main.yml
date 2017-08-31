@@ -1,0 +1,9 @@
+---
+# File in which to write sysctl parameters.
+sysctl_file:
+
+# Verify token value with the sysctl command and set with -w if necessary.
+sysctl_set:
+
+# Dict of parameters to set via sysctl.
+sysctl_parameters: {}

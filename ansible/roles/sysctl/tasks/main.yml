@@ -1,0 +1,10 @@
+---
+- name: Ensure sysctl parameters are configured
+  sysctl:
+    name: "{{ item.key }}"
+    state: "present"
+    sysctl_file: "{{ sysctl_file or omit }}"
+    sysctl_set: "{{ sysctl_set or omit }}"
+    value: "{{ item.value }}"
+  with_dict: "{{ sysctl_parameters }}"
+  become: True

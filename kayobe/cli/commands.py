@@ -226,8 +226,8 @@ class SeedHypervisorHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
     def take_action(self, parsed_args):
         self.app.LOG.debug("Configuring seed hypervisor host OS")
         playbooks = _build_playbook_list(
-            "ip-allocation", "ssh-known-host", "dev-tools", "network", "ntp",
-            "seed-hypervisor-libvirt-host")
+            "ip-allocation", "ssh-known-host", "dev-tools", "network",
+            "sysctl", "ntp", "seed-hypervisor-libvirt-host")
         self.run_kayobe_playbooks(parsed_args, playbooks,
                                   limit="seed-hypervisor")
 
@@ -285,8 +285,8 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         if parsed_args.wipe_disks:
             playbooks += _build_playbook_list("wipe-disks")
         playbooks += _build_playbook_list(
-            "dev-tools", "disable-selinux", "network", "ip-routing", "snat",
-            "disable-glean", "ntp", "lvm")
+            "dev-tools", "disable-selinux", "network", "sysctl", "ip-routing",
+            "snat", "disable-glean", "ntp", "lvm")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed")
         playbooks = _build_playbook_list("kolla-ansible")
         self.run_kayobe_playbooks(parsed_args, playbooks, tags="config")
@@ -465,8 +465,8 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         if parsed_args.wipe_disks:
             playbooks += _build_playbook_list("wipe-disks")
         playbooks += _build_playbook_list(
-            "dev-tools", "disable-selinux", "network", "disable-glean", "ntp",
-            "lvm")
+            "dev-tools", "disable-selinux", "network", "sysctl",
+            "disable-glean", "ntp", "lvm")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
         playbooks = _build_playbook_list("kolla-ansible")
         self.run_kayobe_playbooks(parsed_args, playbooks, tags="config")

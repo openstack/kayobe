@@ -57,3 +57,9 @@ seed_hypervisor_libvirt_networks: >
      net_select_bridges |
      map('net_libvirt_network') |
      list }}
+
+###############################################################################
+# Seed hypervisor sysctl configuration.
+
+# Dict of sysctl parameters to set.
+seed_hypervisor_sysctl_parameters: {}
