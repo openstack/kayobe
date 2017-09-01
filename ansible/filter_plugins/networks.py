@@ -102,6 +102,9 @@ def net_inspection_allocation_pool_end(context, name, inventory_hostname=None):
     return net_attr(context, name, 'inspection_allocation_pool_end', inventory_hostname)
 
 
+net_inspection_gateway = _make_attr_filter('inspection_gateway')
+
+
 @jinja2.contextfilter
 def net_neutron_allocation_pool_start(context, name, inventory_hostname=None):
     return net_attr(context, name, 'neutron_allocation_pool_start', inventory_hostname)
@@ -110,6 +113,9 @@ def net_neutron_allocation_pool_start(context, name, inventory_hostname=None):
 @jinja2.contextfilter
 def net_neutron_allocation_pool_end(context, name, inventory_hostname=None):
     return net_attr(context, name, 'neutron_allocation_pool_end', inventory_hostname)
+
+
+net_neutron_gateway = _make_attr_filter('neutron_gateway')
 
 
 @jinja2.contextfilter
@@ -416,8 +422,10 @@ class FilterModule(object):
             'net_allocation_pool_end': net_allocation_pool_end,
             'net_inspection_allocation_pool_start': net_inspection_allocation_pool_start,
             'net_inspection_allocation_pool_end': net_inspection_allocation_pool_end,
+            'net_inspection_gateway': net_inspection_gateway,
             'net_neutron_allocation_pool_start': net_neutron_allocation_pool_start,
             'net_neutron_allocation_pool_end': net_neutron_allocation_pool_end,
+            'net_neutron_gateway': net_neutron_gateway,
             'net_vlan': net_vlan,
             'net_mtu': net_mtu,
             'net_routes': net_routes,

@@ -144,6 +144,10 @@ supported:
     IP address of the end of neutron's allocation pool range.
 ``gateway``
     IP address of the network's default gateway.
+``inspection_gateway``
+    IP address of the gateway for the hardware introspection network.
+``neutron_gateway``
+    IP address of the gateway for a neutron subnet based on this network.
 ``vlan``
     VLAN ID.
 ``mtu``

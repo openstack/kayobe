@@ -31,6 +31,6 @@
           subnets:
             - name: "{{ kolla_ironic_provisioning_network }}"
               cidr: "{{ provision_wl_net_name | net_cidr }}"
-              gateway_ip: "{{ provision_wl_net_name | net_gateway }}"
+              gateway_ip: "{{ provision_wl_net_name | net_neutron_gateway or provision_wl_net_name | net_gateway }}"
               allocation_pool_start: "{{ provision_wl_net_name | net_neutron_allocation_pool_start }}"
               allocation_pool_end: "{{ provision_wl_net_name | net_neutron_allocation_pool_end }}"
