@@ -1,0 +1,17 @@
+---
+- name: Ensure inspection store configuration path exists
+  file:
+    path: "{{ inspection_store_config_path }}"
+    state: directory
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+    mode: 0750
+  become: True
+
+- name: Ensure inspection store server is configured
+  template:
+    src: nginx.conf
+    dest: "{{ inspection_store_config_path }}/nginx.conf"
+  notify:
+    - Restart inspection store container
+    - Ensure inspection store data directory exists

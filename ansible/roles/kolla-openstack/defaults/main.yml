@@ -163,6 +163,13 @@ kolla_inspector_ipa_kernel_path:
 # Mutually exclusive with kolla_inspector_ipa_ramdisk_upstream_url.
 kolla_inspector_ipa_ramdisk_path:
 
+# Whether to enable the Swift introspection data store.
+kolla_inspector_enable_swift:
+
+# Dict of authentication parameters for accessing the Swift introspection data
+# store.
+kolla_inspector_swift_auth: {}
+
 # Free form extra configuration to append to ironic-inspector.conf.
 kolla_extra_inspector:
 

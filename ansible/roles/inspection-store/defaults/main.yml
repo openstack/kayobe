@@ -1,0 +1,37 @@
+---
+# Roughly follows kolla-ansible's service deployment patterns.
+
+# Whether an inspection store is enabled.
+inspection_store_enabled: true
+
+# Service deployment definition.
+inspection_store_services:
+  inspection_store:
+    container_name: inspection_store
+    enabled: "{{ inspection_store_enabled }}"
+    image: "{{ inspection_store_image_full }}"
+    ports:
+      - "{{ inspection_store_port }}:80"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "{{ inspection_store_config_path }}/nginx.conf:/etc/nginx/nginx.conf:ro"
+      - "inspection_store:/data"
+
+# The port on which the inspection store server should listen.
+inspection_store_port: 8080
+
+# Path in which to store inspection store server configuration.
+inspection_store_config_path: "/etc/inspection-store"
+
+####################
+# Inspection Store
+####################
+# NOTE: Namespace 'library' causes image task to always be changed and
+# container to never update to new images.
+inspection_store_namespace: ""
+inspection_store_image: "{{ inspection_store ~ '/' if inspection_store | default else '' }}{{ inspection_store_namespace ~ '/' if inspection_store_namespace else '' }}nginx"
+inspection_store_tag: "latest"
+inspection_store_image_full: "{{ inspection_store_image }}:{{ inspection_store_tag }}"
+
+inspection_store_restart_policy: "unless-stopped"
+inspection_store_restart_retries: 10

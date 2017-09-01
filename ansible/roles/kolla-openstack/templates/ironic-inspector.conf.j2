@@ -27,7 +27,20 @@ always_store_ramdisk_logs = True
 {% if kolla_inspector_enable_discovery %}
 # Enable discovery when nodes do not exist in Ironic.
 node_not_found_hook = enroll
+{% endif %}
 
+{% if kolla_inspector_enable_swift %}
+store_data = swift
+{% endif %}
+
+{% if kolla_inspector_enable_swift %}
+[swift]
+{% for key, value in kolla_inspector_swift_auth.items() %}
+{{ key }} = {{ value }}
+{% endfor %}
+{% endif %}
+
+{% if kolla_inspector_enable_discovery %}
 [discovery]
 # The driver with which to enroll newly discovered nodes in Ironic.
 enroll_node_driver = {{ kolla_inspector_discovery_enroll_node_driver }}

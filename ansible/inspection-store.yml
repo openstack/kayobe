@@ -1,0 +1,16 @@
+---
+# Deploy/pull/reconfigure/upgrade inspection data store.
+#
+# Follows kolla-ansible service deployment patterns.
+#
+# Variables:
+# action: One of deploy, destroy, pull, reconfigure, upgrade
+
+- name: Ensure inspection store is deployed
+  hosts: controllers[0]
+  roles:
+    - role: inspection-store
+      inspection_store_enabled: "{{ inspector_store_enabled }}"
+      inspection_store_port: "{{ inspector_store_port }}"
+      # FIXME: Use kayobe_config_path?
+      inspection_store_config_path: "/etc/kayobe/inspection-store"

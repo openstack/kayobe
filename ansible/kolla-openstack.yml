@@ -161,6 +161,13 @@
       kolla_inspector_enable_discovery: "{{ inspector_enable_discovery }}"
       kolla_inspector_discovery_enroll_node_driver: "{{ inspector_discovery_enroll_node_driver }}"
       kolla_inspector_extra_kernel_options: "{{ inspector_extra_kernel_options }}"
+      # Ironic inspector swift store configuration. Currently only supports the
+      # 'fake' inspection store.
+      kolla_inspector_enable_swift: "{{ inspector_store_enabled }}"
+      kolla_inspector_swift_auth:
+        auth_type: token_endpoint
+        url: "http://{% raw %}{{ api_interface_address }}{% endraw %}:{{ inspector_store_port }}"
+        token: fake-token
       # Ironic inspector's dnsmasq configuration.
       kolla_inspector_dhcp_pool_start: "{{ inspection_net_name | net_inspection_allocation_pool_start }}"
       kolla_inspector_dhcp_pool_end: "{{ inspection_net_name | net_inspection_allocation_pool_end }}"

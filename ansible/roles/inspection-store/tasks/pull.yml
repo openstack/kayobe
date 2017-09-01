@@ -1,0 +1,10 @@
+---
+- name: Pulling inspection store container image
+  docker_image:
+    name: "{{ item.value.image }}"
+    repository: "{{ item.value.image }}"
+    state: present
+  with_dict: "{{ inspection_store_services }}"
+  when:
+    - item.value.enabled
+    - action != 'destroy'

@@ -1,0 +1,15 @@
+---
+- name: Ensure inspection store container is running
+  docker_container:
+    image: "{{ item.value.image }}"
+    name: "{{ item.value.container_name }}"
+    ports: "{{ item.value.ports | default(omit) }}"
+    privileged: "{{ item.value.privileged | default(omit) }}"
+    read_only: "{{ item.value.read_only | default(omit) }}"
+    restart_policy: "{{ inspection_store_restart_policy }}"
+    restart_retries: "{{ inspection_store_restart_retries }}"
+    state: "{{ item.value.enabled | ternary('started', 'absent') }}"
+    volumes: "{{ item.value.volumes }}"
+  with_dict: "{{ inspection_store_services }}"
+  notify:
+    - Ensure inspection store data directory exists

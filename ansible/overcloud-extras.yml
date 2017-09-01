@@ -8,4 +8,5 @@
 # action: One of deploy, destroy, pull, reconfigure, upgrade
 
 - include: docker-registry.yml
+- include: inspection-store.yml
 - include: opensm.yml
