@@ -84,6 +84,15 @@ EOF" | sudo -s
   config.vm.provision :reload
 
   config.vm.provision "shell", privileged: false, inline: <<-SHELL
+    cat << EOF | sudo tee /etc/sysconfig/network-scripts/ifcfg-eth1
+DEVICE=eth1
+USERCTL=no
+BOOTPROTO=none
+IPADDR=192.168.33.3
+NETMASK=255.255.255.0
+ONBOOT=yes
+NM_CONTROLLED=no
+EOF
     sudo ifup eth1
 
     sudo yum -y install gcc git vim python-virtualenv
