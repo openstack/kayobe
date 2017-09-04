@@ -1,0 +1,28 @@
+---
+language: python
+python: "2.7"
+
+# Use the new container infrastructure
+sudo: false
+
+# Install ansible
+addons:
+  apt:
+    packages:
+      - gcc
+      - python-virtualenv
+
+install:
+  - virtualenv venv
+  - venv/bin/pip install -U pip
+  - venv/bin/pip install tox
+
+script:
+  # Run python style checks.
+  - venv/bin/tox -e pep8
+
+  # Build documentation.
+  - venv/bin/tox -e docs
+
+  # Run python2.7 unit tests.
+  - venv/bin/tox -e py27
