@@ -9,6 +9,7 @@
     - { name: ironic, enabled: "{{ kolla_enable_ironic }}" }
     - { name: neutron, enabled: "{{ kolla_enable_neutron }}" }
     - { name: swift, enabled: "{{ kolla_enable_swift }}" }
+    - { name: glance, enabled: "{{ kolla_enable_glance }}" }
   when: "{{ item.enabled | bool }}"
 
 - name: Ensure the Kolla OpenStack configuration files exist
@@ -29,6 +30,15 @@
     - { src: pxelinux.default.j2, dest: ironic/pxelinux.default, enabled: "{{ kolla_enable_ironic }}" }
     - { src: sahara.conf.j2, dest: sahara.conf, enabled: "{{ kolla_enable_sahara }}" }
   when: "{{ item.enabled | bool }}"
+
+- name: Ensure extra glance configuration files exist
+  template:
+    src: "{{ item }}"
+    dest: "{{ kolla_node_custom_config_path }}/glance/{{ item | basename }}"
+    mode: 0640
+  with_fileglob:
+    - "{{ kolla_extra_glance_path }}/*"
+  when: "{{ kolla_extra_glance_path != None }}"
 
 - name: Ensure extra fluentd output configuration files exist
   template:
