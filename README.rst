@@ -2,6 +2,9 @@
 Kayobe
 ======
 
+.. image:: https://travis-ci.org/stackhpc/kayobe.svg?branch=master
+   :target: https://travis-ci.org/stackhpc/kayobe
+
 Deployment of Scientific OpenStack using OpenStack kolla.
 
 Kayobe is an open source tool for automating deployment of Scientific OpenStack
