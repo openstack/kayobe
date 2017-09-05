@@ -143,6 +143,12 @@ kolla_provision_interface:
 # Interface on which the inspector dnsmasq service listens.
 kolla_inspector_dnsmasq_interface:
 
+# List of Neutron ML2 type drivers to use.
+kolla_neutron_ml2_type_drivers: []
+
+# List of Neutron ML2 tenant network types to use.
+kolla_neutron_ml2_tenant_network_types: []
+
 ####################
 # TLS options
 ####################
