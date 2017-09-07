@@ -17,7 +17,7 @@
 # These hostnames must be resolvable from your deployment host
 {% for host in groups[group] %}
 {% set host_hv=hostvars[host] %}
-{{ host }}{% if "ansible_host" in host_hv %}    ansible_host={{ host_hv["ansible_host"] }}{% endif %}
+{{ host }}{% for hv_name in kolla_overcloud_inventory_pass_through_host_vars %}{% if hv_name in host_hv %} {{ hv_name }}={{ host_hv[hv_name] }}{% endif %}{% endfor %}
 
 {% endfor %}
 
