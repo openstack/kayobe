@@ -22,11 +22,6 @@ enabled_hardware_types: {{ kolla_ironic_enabled_hardware_types | join(',') }}
 [agent]
 deploy_logs_local_path = /var/log/kolla/ironic/deploy
 
-[conductor]
-{% raw %}
-api_url = {{ internal_protocol }}://{{ hostvars[inventory_hostname]['ansible_' + provision_interface | replace('-', '_')]['ipv4']['address'] }}:{{ ironic_api_port }}
-{% endraw %}
-
 [deploy]
 {% if kolla_ironic_default_boot_option %}
 default_boot_option = {{ kolla_ironic_default_boot_option }}
