@@ -104,7 +104,7 @@ def build_args(parsed_args, command, inventory_filename, extra_vars=None,
                tags=None, verbose_level=None, extra_args=None, limit=None):
     """Build arguments required for running Kolla Ansible."""
     venv_activate = os.path.join(parsed_args.kolla_venv, "bin", "activate")
-    cmd = ["source", venv_activate, "&&"]
+    cmd = [".", venv_activate, "&&"]
     cmd += ["kolla-ansible", command]
     if verbose_level:
         cmd += ["-" + "v" * verbose_level]
