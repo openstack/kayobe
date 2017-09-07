@@ -1,0 +1,10 @@
+---
+# List of packages to install.
+kolla_ansible_package_dependencies:
+  - gcc
+  - libffi-devel
+  - openssl-devel
+  - patch
+  - python-devel
+  - python-pip
+  - python-virtualenv
