@@ -68,6 +68,7 @@
   vars:
     switch_type_to_device_type:
       dellos9: netmiko_dell_force10
+      junos: netmiko_juniper
     ipa_image_name: "ipa"
   pre_tasks:
     - block:
