@@ -27,7 +27,8 @@ def switch_interface_config_select_description(switch_interface_config, descript
     return {
         name: config
         for name, config in switch_interface_config.items()
-        if config.get('description') in descriptions
+        if (config.get('description') in descriptions and
+            config.get('ngs_trunk_port', True))
     }
 
 
