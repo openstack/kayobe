@@ -3,28 +3,20 @@
   hosts: seed:overcloud
   vars:
     ansible_user: "{{ bootstrap_user }}"
-  tasks:
-    - block:
-        - name: Ensure the Kayobe Ansible group exists
-          group:
-            name: "{{ kayobe_ansible_user }}"
-            state: present
+  roles:
+    - role: singleplatform-eng.users
+      users:
+        - username: "{{ kayobe_ansible_user }}"
+          name: Kayobe deployment user
+          append: True
+          ssh_key:
+            - "{{ lookup('file', ssh_public_key_path) }}"
+      become: True
 
-        - name: Ensure the Kayobe Ansible user account exists
-          user:
-            name: "{{ kayobe_ansible_user }}"
-            group: "{{ kayobe_ansible_user }}"
-            comment: "Kayobe Ansible SSH access"
-            state: present
-
-        - name: Ensure the Kayobe Ansible user has passwordless sudo
-          copy:
-            content: "{{ kayobe_ansible_user }} ALL=(ALL) NOPASSWD: ALL"
-            dest: "/etc/sudoers.d/kayobe-ansible-user"
-            mode: 0440
-
-        - name: Ensure the Kayobe Ansible user has authorized our SSH key
-          authorized_key:
-            user: "{{ kayobe_ansible_user }}"
-            key: "{{ lookup('file', ssh_public_key_path) }}"
+  post_tasks:
+    - name: Ensure the Kayobe Ansible user has passwordless sudo
+      copy:
+        content: "{{ kayobe_ansible_user }} ALL=(ALL) NOPASSWD: ALL"
+        dest: "/etc/sudoers.d/kayobe-ansible-user"
+        mode: 0440
       become: True
