@@ -17,6 +17,9 @@
       file:
         path: "{{ image_cache_path }}"
         state: directory
+        owner: "{{ ansible_env.USER }}"
+        group: "{{ ansible_env.USER }}"
+      become: True
 
     # The user data script is used to bring up the network interfaces that will
     # be configured by metadata in the configdrive. For some reason resolv.conf
