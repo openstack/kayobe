@@ -74,4 +74,4 @@ monitoring_lvm_groups_extra: "{{ controller_lvm_groups_extra }}"
 # Monitoring node sysctl configuration.
 
 # Dict of sysctl parameters to set.
-monitoring_sysctl_parameters: {}
+monitoring_sysctl_parameters: "{{ controller_sysctl_parameters }}"
