@@ -50,6 +50,7 @@ ansible/*.retry
 
 # Ansible Galaxy roles
 ansible/roles/ahuffman.resolv/
+ansible/roles/singleplatform-eng.users/
 ansible/roles/jriguera.configdrive/
 ansible/roles/mrlesmithjr.manage-lvm/
 ansible/roles/MichaelRigart.interfaces/

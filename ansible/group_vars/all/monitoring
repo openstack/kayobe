@@ -75,3 +75,10 @@ monitoring_lvm_groups_extra: "{{ controller_lvm_groups_extra }}"
 
 # Dict of sysctl parameters to set.
 monitoring_sysctl_parameters: "{{ controller_sysctl_parameters }}"
+
+###############################################################################
+# Monitoring node user configuration.
+
+# List of users to create. This should be in a format accepted by the
+# singleplatform-eng.users role.
+monitoring_users: "{{ controller_users }}"

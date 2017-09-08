@@ -4,6 +4,10 @@
 - src: MichaelRigart.interfaces
 - src: mrlesmithjr.manage-lvm
 - src: resmo.ntp
+#- src: singleplatform-eng.users
+- src: https://github.com/singleplatform-eng/ansible-users
+  version: append
+  name: singleplatform-eng.users
 - src: stackhpc.drac
 - src: stackhpc.drac-facts
 - src: stackhpc.os-flavors

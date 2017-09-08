@@ -66,6 +66,9 @@ hosts in the ``monitoring`` group.
    ``network_interfaces`` List of names of networks to which the host is
                           connected.
    ``sysctl_parameters``  Dict of sysctl parameters to set.
+   ``users``              List of users to create. See
+                          `singleplatform-eng.users role
+                          <https://galaxy.ansible.com/singleplatform-eng/users/>`_
    ====================== =====================================================
 
 If configuring BIOS and RAID via ``kayobe overcloud bios raid configure``, the
@@ -184,6 +187,7 @@ providing the necessary variables for a control plane host.
    lvm_groups: "{{ controller_lvm_groups }}"
    network_interfaces: "{{ controller_network_host_network_interfaces }}"
    sysctl_parameters: "{{ controller_sysctl_parameters }}"
+   users: "{{ controller_users }}"
 
 Here we are using the controller-specific values for some of these variables,
 but they could equally be different.

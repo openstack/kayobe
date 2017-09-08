@@ -51,5 +51,12 @@
 #seed_hypervisor_sysctl_parameters:
 
 ###############################################################################
+# Seed hypervisor user configuration.
+
+# List of users to create. This should be in a format accepted by the
+# singleplatform-eng.users role.
+#seed_hypervisor_users:
+
+###############################################################################
 # Dummy variable to allow Ansible to accept this file.
 workaround_ansible_issue_8743: yes
