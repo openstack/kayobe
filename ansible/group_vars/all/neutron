@@ -58,4 +58,4 @@ kolla_neutron_ml2_generic_switch_hosts: []
 # These hosts will be matched against the description fields in the
 # switch_interface_config variable for each switch to determine which
 # interfaces should be configured.
-kolla_neutron_ml2_generic_switch_trunk_port_hosts: "{{ groups['controllers'] }}"
+kolla_neutron_ml2_generic_switch_trunk_port_hosts: "{{ groups['network'] }}"
