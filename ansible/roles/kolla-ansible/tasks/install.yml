@@ -1,5 +1,6 @@
 ---
-- include_vars: "{{ ansible_os_family }}.yml"
+- name: Include OS family-specific variables
+  include_vars: "{{ ansible_os_family }}.yml"
 
 - name: Ensure EPEL repo is installed
   yum:

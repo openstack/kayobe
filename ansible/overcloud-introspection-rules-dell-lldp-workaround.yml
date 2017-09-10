@@ -95,7 +95,7 @@
         - "{{ 'vlan' not in item.1.0 }}"
         # Ignore trunk links.
         - "{{ '-trunk' not in item.1.1.description }}"
-  
+
   roles:
     - role: ironic-inspector-rules
       ironic_inspector_venv: "{{ virtualenv_path }}/shade"

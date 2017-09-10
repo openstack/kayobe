@@ -7,10 +7,12 @@
   changed_when: False
   register: ip_allocation_os_release
 
-- include_vars: "RedHat.yml"
+- name: Include RedHat family-specific variables
+  include_vars: "RedHat.yml"
   when: ip_allocation_os_release.stdout in ['centos', 'fedora', 'rhel']
 
-- include_vars: "Debian.yml"
+- name: Include Debian family-specific variables
+  include_vars: "Debian.yml"
   when: ip_allocation_os_release.stdout in ['debian', 'ubuntu']
 
 # Note: Currently we install these using the system package manager rather than
