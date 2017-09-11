@@ -36,11 +36,13 @@ def yum_install(packages):
         sys.exit(e.returncode)
 
 
-def galaxy_install(role_file, roles_path):
+def galaxy_install(role_file, roles_path, force=False):
     """Install Ansible roles via Ansible Galaxy."""
     cmd = ["ansible-galaxy", "install"]
     cmd += ["--roles-path", roles_path]
     cmd += ["--role-file", role_file]
+    if force:
+        cmd += ["--force"]
     try:
         run_command(cmd)
     except subprocess.CalledProcessError as e:
