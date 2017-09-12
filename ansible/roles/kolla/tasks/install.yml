@@ -24,7 +24,6 @@
     state: directory
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
-    recurse: True
   become: True
   when: "{{ kolla_ctl_install_type == 'source' }}"
 
