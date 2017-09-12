@@ -80,7 +80,8 @@
     # Register the new flavors.
     - name: Include the stackhpc.os-flavors role
       include_role:
-        role: stackhpc.os-flavors
+        name: stackhpc.os-flavors
+      vars:
         os_flavors_venv: "{{ venv }}"
         os_flavors_auth_type: "{{ openstack_auth_type }}"
         os_flavors_auth: "{{ openstack_auth }}"

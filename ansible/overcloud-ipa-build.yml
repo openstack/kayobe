@@ -12,6 +12,7 @@
     - name: Ensure Ironic Python Agent images are built
       include_role:
         name: stackhpc.os-images
+      vars:
         os_images_venv: "{{ virtualenv_path }}/ipa-build-dib"
         os_images_cache: "{{ image_cache_path }}"
         os_images_common: ""
