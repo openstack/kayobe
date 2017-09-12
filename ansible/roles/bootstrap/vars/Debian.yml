@@ -1,0 +1,5 @@
+---
+# List of package dependencies to install.
+bootstrap_package_dependencies:
+  - git
+  - vim

@@ -5,26 +5,25 @@ Installation
 Prerequisites
 =============
 
-Currently Kayobe supports the following Operating Systems:
+Currently Kayobe supports the following Operating Systems on the control host:
 
 - CentOS 7.3
+- Ubuntu 16.04
 
 To avoid conflicts with python packages installed by the system package manager
 it is recommended to install Kayobe in a virtualenv. Ensure that the
-``virtualenv`` python module is available on the control host. For example, on
-CentOS::
+``virtualenv`` python module is available on the control host. It is necessary
+to install the GCC compiler chain in order to build the extensions of some of
+kayobe's python dependencies. Finally, for cloning and working with the kayobe
+source code repository, Git is required.
 
-    $ yum install -y python-virtualenv
+On CentOS::
 
-It is necessary to install the GCC compiler chain in order to build the
-extensions of some of kayobe's python dependencies. On CentOS::
+    $ yum install -y python-virtualenv gcc git
 
-    $ yum install -y gcc
+On Ubuntu::
 
-Finally, for cloning and working with the kayobe source code repository, Git is
-required. On CentOS::
-
-    $ yum install -y git
+    $ apt install -y python-virtualenv gcc git
 
 Installation
 ============

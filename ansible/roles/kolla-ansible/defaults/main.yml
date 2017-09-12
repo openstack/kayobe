@@ -56,6 +56,13 @@ kolla_overcloud_inventory_top_level_group_map: {}
 # have no hosts mapped to them will be provided with an empty group definition.
 kolla_overcloud_inventory_kolla_top_level_groups: []
 
+# List of names of host variables to pass through from kayobe hosts to
+# kolla-ansible hosts, if set.
+kolla_overcloud_inventory_pass_through_host_vars:
+  - "ansible_host"
+  - "ansible_port"
+  - "ansible_ssh_private_key_file"
+
 ###############################################################################
 # Kolla-ansible global configuration options.
 

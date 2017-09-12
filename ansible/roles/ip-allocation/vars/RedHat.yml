@@ -1,0 +1,8 @@
+---
+# Package manager to use.
+ip_allocation_package_manager: yum
+
+# List of packages to install.
+ip_allocation_packages:
+  - python-netaddr
+  - PyYAML

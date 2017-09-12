@@ -1,16 +1,29 @@
 ---
-# Note: Currently we install these using Yum to the system packages rather than
+# Facts may not be available for the control host, so read the OS release
+# manually.
+- name: Check the OS release
+  local_action:
+    module: shell . /etc/os-release && echo $ID
+  changed_when: False
+  register: ip_allocation_os_release
+
+- include_vars: "RedHat.yml"
+  when: ip_allocation_os_release.stdout in ['centos', 'fedora', 'rhel']
+
+- include_vars: "Debian.yml"
+  when: ip_allocation_os_release.stdout in ['debian', 'ubuntu']
+
+# Note: Currently we install these using the system package manager rather than
 # pip to a virtualenv. This is because Yum is required elsewhere and cannot
 # easily be installed in a virtualenv.
 - name: Ensure package dependencies are installed
   local_action:
-    module: yum
+    module: package
     name: "{{ item }}"
     state: installed
+    use: "{{ ip_allocation_package_manager }}"
   become: True
-  with_items:
-    - python-netaddr
-    - PyYAML
+  with_items: "{{ ip_allocation_package_dependencies }}"
   run_once: True
 
 - name: Ensure IP addresses are allocated

@@ -1,0 +1,8 @@
+---
+# Package manager to use.
+ip_allocation_package_manager: apt
+
+# List of packages to install.
+ip_allocation_package_dependencies:
+  - python-netaddr
+  - python-yaml
