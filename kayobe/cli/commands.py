@@ -481,6 +481,13 @@ class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
                              Command):
     """Deploy the overcloud services."""
 
+    def get_parser(self, prog_name):
+        parser = super(OvercloudServiceDeploy, self).get_parser(prog_name)
+        group = parser.add_argument_group("Service Deployment")
+        group.add_argument("--skip-prechecks", action='store_true',
+                           help="skip the kolla-ansible prechecks command")
+        return parser
+
     def take_action(self, parsed_args):
         self.app.LOG.debug("Deploying overcloud services")
 
@@ -492,8 +499,11 @@ class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
         # Run kolla-ansible prechecks before deployment.
-        for command in ["prechecks", "deploy"]:
-            self.run_kolla_ansible_overcloud(parsed_args, command)
+        if not parsed_args.skip_prechecks:
+            self.run_kolla_ansible_overcloud(parsed_args, "prechecks")
+
+        # Perform the kolla-ansible deployment.
+        self.run_kolla_ansible_overcloud(parsed_args, "deploy")
 
         # Deploy kayobe extra services.
         playbooks = _build_playbook_list("overcloud-extras")
@@ -516,6 +526,13 @@ class OvercloudServiceReconfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
                                   VaultMixin, Command):
     """Reconfigure the overcloud services."""
 
+    def get_parser(self, prog_name):
+        parser = super(OvercloudServiceReconfigure, self).get_parser(prog_name)
+        group = parser.add_argument_group("Service Reconfiguration")
+        group.add_argument("--skip-prechecks", action='store_true',
+                           help="skip the kolla-ansible prechecks command")
+        return parser
+
     def take_action(self, parsed_args):
         self.app.LOG.debug("Reconfiguring overcloud services")
 
@@ -527,8 +544,11 @@ class OvercloudServiceReconfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
         # Run kolla-ansible prechecks before reconfiguration.
-        for command in ["prechecks", "reconfigure"]:
-            self.run_kolla_ansible_overcloud(parsed_args, command)
+        if not parsed_args.skip_prechecks:
+            self.run_kolla_ansible_overcloud(parsed_args, "prechecks")
+
+        # Perform the kolla-ansible reconfiguration.
+        self.run_kolla_ansible_overcloud(parsed_args, "reconfigure")
 
         # Reconfigure kayobe extra services.
         playbooks = _build_playbook_list("overcloud-extras")
@@ -551,6 +571,13 @@ class OvercloudServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin,
                               VaultMixin, Command):
     """Upgrade the overcloud services."""
 
+    def get_parser(self, prog_name):
+        parser = super(OvercloudServiceUpgrade, self).get_parser(prog_name)
+        group = parser.add_argument_group("Service Upgrade")
+        group.add_argument("--skip-prechecks", action='store_true',
+                           help="skip the kolla-ansible prechecks command")
+        return parser
+
     def take_action(self, parsed_args):
         self.app.LOG.debug("Upgrading overcloud services")
 
@@ -559,8 +586,11 @@ class OvercloudServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin,
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
         # Run kolla-ansible prechecks before upgrade.
-        for command in ["prechecks", "upgrade"]:
-            self.run_kolla_ansible_overcloud(parsed_args, command)
+        if not parsed_args.skip_prechecks:
+            self.run_kolla_ansible_overcloud(parsed_args, "prechecks")
+
+        # Perform the kolla-ansible upgrade.
+        self.run_kolla_ansible_overcloud(parsed_args, "upgrade")
 
         # Upgrade kayobe extra services.
         playbooks = _build_playbook_list("overcloud-extras")
