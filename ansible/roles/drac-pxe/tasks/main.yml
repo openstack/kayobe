@@ -5,6 +5,13 @@
   failed_when: "'ERROR' in result.stdout"
   changed_when: False
 
+- name: Initialise some facts about configuration jobs
+  set_fact:
+    # List of job IDs that have been created.
+    job_ids: []
+    # Whether a BIOS configuration job is required.
+    bios_job_required: False
+
 - name: Set a fact containing the boot mode
   set_fact:
     # Format of last line is:
@@ -21,10 +28,59 @@
     - "{{ not boot_mode_is_bios }}"
     - "{{ not boot_mode_is_uefi }}"
 
+- name: Check the BIOS boot sequence
+  raw: "racadm get BIOS.BiosBootSettings.{% if boot_mode_is_uefi %}Uefi{% endif %}BootSeq"
+  register: result
+  failed_when: "'ERROR' in result.stdout"
+  changed_when: False
+
+- name: Set a fact containing the boot sequence
+  set_fact:
+    # Format of last line is:
+    # BootSeq=<boot sequence>[ (Pending Value=<pending boot sequence>)]
+    current_boot_sequence: "{{ result.stdout_lines[-1].partition('=')[2] }}"
+    required_boot_sequence: "{{ boot_mode_is_uefi | ternary(drac_pxe_uefi_boot_sequence, drac_pxe_bios_boot_sequence) }}"
+
+- name: Fail if there is a pending boot sequence configuration change
+  fail:
+    msg: >
+      There is a pending boot sequence configuration change. Please
+      apply this change before continuing.
+  when: "{{ 'Pending' in current_boot_sequence }}"
+
 - block:
-    - name: Ensure NIC boot protocol is configured
-      raw: "racadm set Nic.NICConfig.{{ item }}.LegacyBootProto {% if item == drac_pxe_interface %}PXE{% else %}NONE{% endif %}"
+    - name: Check the NICs' boot protocol
+      raw: "racadm get Nic.NICConfig.{{ item }}.LegacyBootProto"
       with_items: "{{ drac_pxe_all_interfaces }}"
+      register: result
+      failed_when: "'ERROR' in result.stdout"
+      changed_when: False
+
+    - name: Initialise a fact containing the NICs' boot protocol
+      set_fact:
+        nic_boot_protos: []
+
+    - name: Set a fact containing the NICs' boot protocol
+      set_fact:
+        nic_boot_protos: >
+          {{ nic_boot_protos +
+             [{'nic': item.item,
+               'required': 'PXE' if item.item == drac_pxe_interface else 'NONE',
+               'current': item.stdout_lines[-1].partition('=')[2]}] }}
+      with_items: "{{ result.results }}"
+
+    - name: Fail if there are pending NIC boot protocol changes
+      fail:
+        msg: >
+          There is a pending NIC boot protocol configuration change for
+          NIC {{ item.nic }}. Please apply this before continuing.
+      with_items: "{{ nic_boot_protos }}"
+      when: "{{ 'Pending' in item.current }}"
+
+    - name: Ensure NIC boot protocol is configured
+      raw: "racadm set Nic.NICConfig.{{ item.nic }}.LegacyBootProto {{ item.required }}"
+      with_items: "{{ nic_boot_protos }}"
+      when: "{{ item.current != item.required }}"
       register: result
       failed_when: "'ERROR' in result.stdout"
       until: "{{ drac_pxe_busy_message not in result.stdout }}"
@@ -32,25 +88,42 @@
       delay: "{{ drac_pxe_interval }}"
 
     - name: Ensure NIC configuration jobs are created
-      raw: "racadm jobqueue create NIC.Integrated.1-{{ item }}-1 -s TIME_NOW"
-      with_items: "{{ drac_pxe_all_interfaces }}"
+      raw: "racadm jobqueue create NIC.Integrated.1-{{ item.nic }}-1 -s TIME_NOW"
+      with_items: "{{ nic_boot_protos }}"
+      when: "{{ item.current != item.required }}"
       register: result
       failed_when: "'ERROR' in result.stdout"
       until: "{{ drac_pxe_busy_message not in result.stdout }}"
       retries: "{{ drac_pxe_retries }}"
       delay: "{{ drac_pxe_interval }}"
 
-    - name: Ensure BIOS boot sequence is configured
-      raw: "racadm set BIOS.BiosBootSettings.bootseq NIC.Integrated.1-{{ drac_pxe_interface }}-1,HardDisk.List.1-1"
-      register: result
-      failed_when: "'ERROR' in result.stdout"
-      until: "{{ drac_pxe_busy_message not in result.stdout }}"
-      retries: "{{ drac_pxe_retries }}"
-      delay: "{{ drac_pxe_interval }}"
+    - name: Set a fact containing the NIC configuration job IDs
+      set_fact:
+        job_ids: "{{ job_ids + [item.stdout_lines[-1].split()[-1]] }}"
+      with_items: "{{ result.results }}"
+      when: "{{ not item.skipped }}"
 
   when: "{{ boot_mode_is_bios }}"
 
 - block:
+    - name: Check the UEFI PXE interface
+      raw: "racadm get BIOS.PxeDev1Settings.PxeDev1Interface"
+      register: result
+      failed_when: "'ERROR' in result.stdout"
+      changed_when: False
+
+    - name: Set a fact containing the UEFI PXE interface
+      set_fact:
+        current_pxe_interface: "{{ result.stdout_lines[-1].partition('=')[2]}] }}"
+        required_pxe_interface: "{{ 'NIC.Integrated.1-' ~ drac_pxe_interface ~ '-1' }}"
+
+    - name: Fail if there are pending UEFI PXE interface changes
+      fail:
+        msg: >
+          There is a pending UEFI PXE interface configuration change.
+          Please apply this before continuing.
+      when: "{{ 'Pending' in current_pxe_interface }}"
+
     - name: Ensure UEFI PXE device is configured
       raw: "racadm set BIOS.PxeDev1Settings.PxeDev1Interface NIC.Integrated.1-{{ drac_pxe_interface }}-1"
       register: result
@@ -58,16 +131,28 @@
       until: "{{ drac_pxe_busy_message not in result.stdout }}"
       retries: "{{ drac_pxe_retries }}"
       delay: "{{ drac_pxe_interval }}"
+      when: "{{ current_pxe_interface != required_pxe_interface }}"
 
-    - name: Ensure UEFI boot sequence is configured
-      raw: "racadm set BIOS.BiosBootSettings.UefiBootSeq NIC.PxeDevice.1-1,RAID.Integrated.1-1"
-      register: result
-      failed_when: "'ERROR' in result.stdout"
-      until: "{{ drac_pxe_busy_message not in result.stdout }}"
-      retries: "{{ drac_pxe_retries }}"
-      delay: "{{ drac_pxe_interval }}"
+    - name: Set a fact to trigger a BIOS configuration job
+      set_fact:
+        bios_job_required: True
+      when: "{{ current_pxe_interface != required_pxe_interface }}"
 
   when: "{{ boot_mode_is_uefi }}"
+
+- name: Ensure boot sequence is configured
+  raw: "racadm set BIOS.BiosBootSettings.BootSeq {{ drac_pxe_bios_boot_sequence }}"
+  register: result
+  failed_when: "'ERROR' in result.stdout"
+  until: "{{ drac_pxe_busy_message not in result.stdout }}"
+  retries: "{{ drac_pxe_retries }}"
+  delay: "{{ drac_pxe_interval }}"
+  when: "{{ current_boot_sequence != required_boot_sequence }}"
+
+- name: Set a fact to trigger a BIOS configuration job
+  set_fact:
+    bios_job_required: True
+  when: "{{ current_boot_sequence != required_boot_sequence }}"
 
 - name: Ensure BIOS configuration job is created
   raw: "racadm jobqueue create BIOS.Setup.1-1 -s TIME_NOW"
@@ -76,20 +161,24 @@
   until: "{{ drac_pxe_busy_message not in result.stdout }}"
   retries: "{{ drac_pxe_retries }}"
   delay: "{{ drac_pxe_interval }}"
+  when: "{{ bios_job_required }}"
 
 - name: Set a fact containing the BIOS configuration job ID
   set_fact:
     # Format of the last line is:
     # JOB_ID = <job ID>
-    bios_job_id: "{{ result.stdout_lines[-1].split()[-1] }}"
+    job_ids: "{{ job_ids + [result.stdout_lines[-1].split()[-1]] }}"
+  when: "{{ bios_job_required }}"
 
 - name: Ensure server is rebooted
   raw: "racadm serveraction powercycle"
   register: result
   failed_when: "'ERROR' in result.stdout"
 
-- name: Wait for the BIOS configuration job to complete
-  raw: "racadm jobqueue view -i {{ bios_job_id }}"
+- name: Wait for the configuration jobs to complete
+  raw: "racadm jobqueue view -i {{ item }}"
+  with_items: "{{ job_ids }}"
+  when: "{{ job_ids | length > 0 }}"
   register: result
   failed_when: "'ERROR' in result.stdout"
   until: "{{ 'Status=Completed' in result.stdout }}"

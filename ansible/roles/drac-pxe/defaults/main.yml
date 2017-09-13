@@ -13,3 +13,9 @@ drac_pxe_retries: 5
 
 # Interval between successive write operations.
 drac_pxe_interval: 5
+
+# Boot sequence to set in BIOS mode.
+drac_pxe_bios_boot_sequence: "NIC.Integrated.1-{{ drac_pxe_interface }}-1,HardDisk.List.1-1"
+
+# Boot sequence to set in UEFI mode.
+drac_pxe_uefi_boot_sequence: "NIC.PxeDevice.1-1,RAID.Integrated.1-1"
