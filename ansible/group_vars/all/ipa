@@ -11,7 +11,7 @@ ipa_build_images: False
 ipa_build_source_url: "https://github.com/openstack/ironic-python-agent"
 
 # Version of IPA source repository.
-ipa_build_source_version: "stable/ocata"
+ipa_build_source_version: "stable/pike"
 
 # URL of IPA upper constraints file.
 ipa_build_upper_constraints_file_url:
@@ -63,13 +63,13 @@ ipa_build_dib_git_elements: []
 ipa_images_kernel_name: "ipa.vmlinuz"
 
 # URL of Ironic deployment kernel image to download.
-ipa_kernel_upstream_url: "https://tarballs.openstack.org/ironic-python-agent/coreos/files/coreos_production_pxe-stable-ocata.vmlinuz"
+ipa_kernel_upstream_url: "https://tarballs.openstack.org/ironic-python-agent/coreos/files/coreos_production_pxe-stable-pike.vmlinuz"
 
 # Name of Ironic deployment ramdisk image to register in Glance.
 ipa_images_ramdisk_name: "ipa.initramfs"
 
 # URL of Ironic deployment ramdisk image to download.
-ipa_ramdisk_upstream_url: "https://tarballs.openstack.org/ironic-python-agent/coreos/files/coreos_production_pxe_image-oem-stable-ocata.cpio.gz"
+ipa_ramdisk_upstream_url: "https://tarballs.openstack.org/ironic-python-agent/coreos/files/coreos_production_pxe_image-oem-stable-pike.cpio.gz"
 
 ###############################################################################
 # Ironic Python Agent (IPA) deployment configuration.

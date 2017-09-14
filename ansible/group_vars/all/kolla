@@ -13,7 +13,7 @@ kolla_source_url: "https://github.com/stackhpc/kolla"
 
 # Version (branch, tag, etc.) of Kolla source code repository if type is
 # 'source'.
-kolla_source_version: "stackhpc-{{ kolla_openstack_release }}"
+kolla_source_version: "stackhpc/pike"
 
 # Path to virtualenv in which to install kolla.
 kolla_venv: "{{ virtualenv_path ~ '/kolla' }}"
@@ -32,7 +32,7 @@ kolla_ansible_source_url: "https://github.com/stackhpc/kolla-ansible"
 
 # Version (branch, tag, etc.) of Kolla Ansible source code repository if type
 # is 'source'.
-kolla_ansible_source_version: "stackhpc-{{ kolla_openstack_release }}"
+kolla_ansible_source_version: "stackhpc/pike"
 
 # Path to virtualenv in which to install kolla-ansible.
 kolla_ansible_venv: "{{ lookup('env', 'KOLLA_VENV_PATH') | default(lookup('env', 'PWD') ~ '/venvs/kolla-ansible', true) }}"
@@ -56,7 +56,7 @@ kolla_install_type: "binary"
 kolla_docker_namespace: "stackhpc"
 
 # Kolla OpenStack release version. This should be a Docker image tag.
-kolla_openstack_release: "4.0.0.1"
+kolla_openstack_release: "5.0.0"
 
 # Dict mapping names of sources to their definitions for
 # kolla_install_type=source. See kolla.common.config for details.
