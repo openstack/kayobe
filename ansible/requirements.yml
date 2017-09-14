@@ -5,7 +5,7 @@
 - src: mrlesmithjr.manage-lvm
 - src: resmo.ntp
 #- src: singleplatform-eng.users
-- src: https://github.com/singleplatform-eng/ansible-users
+- src: https://github.com/stackhpc/ansible-users
   version: append
   name: singleplatform-eng.users
 - src: stackhpc.drac
@@ -13,5 +13,7 @@
 - src: stackhpc.os-flavors
 - src: stackhpc.os-images
 - src: stackhpc.os-networks
+- src: stackhpc.os-openstackclient
 - src: stackhpc.os-projects
+- src: stackhpc.os-shade
 - src: yatesr.timezone
