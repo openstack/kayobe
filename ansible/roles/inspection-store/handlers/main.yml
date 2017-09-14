@@ -4,6 +4,10 @@
     name: "{{ item.value.container_name }}"
     state: started
     restart: True
+    # NOTE: The image argument shouldn't be required, but without it this
+    # handler fails on Ansible 2.3. Related bug:
+    # https://github.com/ansible/ansible/issues/21188.
+    image: "{{ item.value.image }}"
   with_dict: "{{ inspection_store_services }}"
   when: item.value.enabled
 
