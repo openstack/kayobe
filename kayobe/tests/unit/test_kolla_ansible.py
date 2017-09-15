@@ -24,6 +24,7 @@ from kayobe import utils
 from kayobe import vault
 
 
+@mock.patch.object(os, "getcwd", new=lambda: "/path/to/cwd")
 class TestCase(unittest.TestCase):
 
     @mock.patch.object(utils, "run_command")
@@ -35,7 +36,7 @@ class TestCase(unittest.TestCase):
         parsed_args = parser.parse_args([])
         kolla_ansible.run(parsed_args, "command", "overcloud")
         expected_cmd = [
-            ".", "/opt/kayobe/venvs/kolla/bin/activate", "&&",
+            ".", "/path/to/cwd/venvs/kolla-ansible/bin/activate", "&&",
             "kolla-ansible", "command",
             "--inventory", "/etc/kolla/inventory/overcloud",
         ]
@@ -58,7 +59,7 @@ class TestCase(unittest.TestCase):
         parsed_args = parser.parse_args(args)
         kolla_ansible.run(parsed_args, "command", "overcloud")
         expected_cmd = [
-            ".", "/opt/kayobe/venvs/kolla/bin/activate", "&&",
+            ".", "/path/to/cwd/venvs/kolla-ansible/bin/activate", "&&",
             "kolla-ansible", "command",
             "--inventory", "/path/to/inventory",
             "--configdir", "/path/to/config",
@@ -87,7 +88,7 @@ class TestCase(unittest.TestCase):
         parsed_args = parser.parse_args(args)
         kolla_ansible.run(parsed_args, "command", "overcloud")
         expected_cmd = [
-            ".", "/opt/kayobe/venvs/kolla/bin/activate", "&&",
+            ".", "/path/to/cwd/venvs/kolla-ansible/bin/activate", "&&",
             "kolla-ansible", "command",
             "--inventory", "/path/to/inventory",
             "--configdir", "/path/to/config",
@@ -111,7 +112,7 @@ class TestCase(unittest.TestCase):
         parsed_args = parser.parse_args(args)
         kolla_ansible.run(parsed_args, "command", "overcloud")
         expected_cmd = [
-            ".", "/opt/kayobe/venvs/kolla/bin/activate", "&&",
+            ".", "/path/to/cwd/venvs/kolla-ansible/bin/activate", "&&",
             "kolla-ansible", "command",
             "--key", "/path/to/vault/pw",
             "--inventory", "/etc/kolla/inventory/overcloud",
@@ -134,7 +135,7 @@ class TestCase(unittest.TestCase):
         parsed_args = parser.parse_args([])
         kolla_ansible.run(parsed_args, "command", "overcloud")
         expected_cmd = [
-            ".", "/opt/kayobe/venvs/kolla/bin/activate", "&&",
+            ".", "/path/to/cwd/venvs/kolla-ansible/bin/activate", "&&",
             "kolla-ansible", "command",
             "--key", "/path/to/kayobe-vault-password-helper",
             "--inventory", "/etc/kolla/inventory/overcloud",
@@ -161,7 +162,7 @@ class TestCase(unittest.TestCase):
         }
         kolla_ansible.run(parsed_args, "command", "overcloud", **kwargs)
         expected_cmd = [
-            ".", "/opt/kayobe/venvs/kolla/bin/activate", "&&",
+            ".", "/path/to/cwd/venvs/kolla-ansible/bin/activate", "&&",
             "kolla-ansible", "command",
             "-v",
             "--inventory", "/etc/kolla/inventory/overcloud",

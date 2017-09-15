@@ -6,7 +6,7 @@ kolla_ansible_is_standalone: "{{ kolla_ansible_source_version | version_compare(
 kolla_ansible_module: "{% if kolla_ansible_is_standalone | bool %}kolla-ansible{% else %}kolla{% endif %}"
 
 # Path to Kolla Ansible installation directory.
-kolla_ansible_install_dir: "{{ kolla_venv }}/share/{{ kolla_ansible_module }}"
+kolla_ansible_install_dir: "{{ kolla_ansible_venv }}/share/{{ kolla_ansible_module }}"
 
 ###############################################################################
 # Inventory configuration.

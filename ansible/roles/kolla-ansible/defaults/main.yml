@@ -1,9 +1,9 @@
 ---
-# Path to directory for source code checkouts.
-source_checkout_path:
+# Path to directory for kolla-ansible source code checkout.
+kolla_ansible_source_path:
 
-# Type of Kolla control installation. One of 'binary' or 'source'.
-kolla_ctl_install_type:
+# Type of Kolla-ansible control installation. One of 'binary' or 'source'.
+kolla_ansible_ctl_install_type:
 
 # URL of Kolla Ansible source code repository if type is 'source'.
 kolla_ansible_source_url:
@@ -13,7 +13,7 @@ kolla_ansible_source_url:
 kolla_ansible_source_version:
 
 # Virtualenv directory where Kolla-ansible will be installed.
-kolla_venv: "{{ ansible_env['PWD'] }}/kolla-venv"
+kolla_ansible_venv: "{{ ansible_env['PWD'] }}/kolla-venv"
 
 # Password to use to encrypt the passwords.yml file.
 kolla_ansible_vault_password:

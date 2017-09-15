@@ -41,7 +41,7 @@
     sample: "{{ kolla_ansible_install_dir }}/etc_examples/kolla/passwords.yml"
     overrides: "{{ kolla_ansible_custom_passwords }}"
     vault_password: "{{ kolla_ansible_vault_password }}"
-    virtualenv: "{{ kolla_venv or omit }}"
+    virtualenv: "{{ kolla_ansible_venv or omit }}"
 
 - name: Ensure the Kolla passwords file is copied into place
   copy:

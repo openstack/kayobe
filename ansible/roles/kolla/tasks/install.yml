@@ -20,7 +20,7 @@
 
 - name: Ensure source code checkout path exists
   file:
-    path: "{{ source_checkout_path }}"
+    path: "{{ kolla_source_path | dirname }}"
     state: directory
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
@@ -30,7 +30,7 @@
 - name: Ensure Kolla source code checkout exists
   git:
     repo: "{{ kolla_source_url }}"
-    dest: "{{ source_checkout_path }}/kolla"
+    dest: "{{ kolla_source_path }}"
     version: "{{ kolla_source_version }}"
   when: "{{ kolla_ctl_install_type == 'source' }}"
 
@@ -50,7 +50,7 @@
     virtualenv: "{{ kolla_venv }}"
   with_items:
     # Intall Kolla from source.
-    - name: "{{ source_checkout_path }}/kolla"
+    - name: "{{ kolla_source_path }}"
       install: "{{ kolla_ctl_install_type == 'source' }}"
     # Intall Kolla from PyPI.
     - name: "kolla"

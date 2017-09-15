@@ -25,24 +25,20 @@ DEFAULT_CONFIG_PATH = "/etc/kolla"
 
 CONFIG_PATH_ENV = "KOLLA_CONFIG_PATH"
 
-DEFAULT_BASE_PATH = "/opt/kayobe"
+DEFAULT_VENV_PATH = "venvs/kolla-ansible"
 
-BASE_PATH_ENV = "KAYOBE_BASE_PATH"
-
-DEFAULT_VENV_PATH = "venvs/kolla"
-
-VENV_PATH_ENV = "KOLLA_VENV"
+VENV_PATH_ENV = "KOLLA_VENV_PATH"
 
 LOG = logging.getLogger(__name__)
 
 
 def add_args(parser):
     """Add arguments required for running Kolla Ansible to a parser."""
+    # $KOLLA_CONFIG_PATH or /etc/kolla.
     default_config_path = os.getenv(CONFIG_PATH_ENV, DEFAULT_CONFIG_PATH)
+    # $KOLLA_VENV_PATH or $PWD/venvs/kolla-ansible
     default_venv = os.getenv(VENV_PATH_ENV,
-                             os.path.join(os.getenv(BASE_PATH_ENV,
-                                                    DEFAULT_BASE_PATH),
-                                          DEFAULT_VENV_PATH))
+                             os.path.join(os.getcwd(), DEFAULT_VENV_PATH))
     parser.add_argument("--kolla-config-path", default=default_config_path,
                         help="path to Kolla configuration. "
                              "(default=$%s or %s)" %
@@ -64,9 +60,8 @@ def add_args(parser):
                              "values in Kolla Ansible")
     parser.add_argument("--kolla-venv", metavar="VENV", default=default_venv,
                         help="path to virtualenv where Kolla Ansible is "
-                             "installed (default=$%s or $%s/%s, or %s/%s)" %
-                             (VENV_PATH_ENV, BASE_PATH_ENV, DEFAULT_VENV_PATH,
-                              DEFAULT_BASE_PATH, DEFAULT_VENV_PATH))
+                             "installed (default=$%s or $PWD/%s)" %
+                             (VENV_PATH_ENV, DEFAULT_VENV_PATH))
 
 
 def _get_inventory_path(parsed_args, inventory_filename):

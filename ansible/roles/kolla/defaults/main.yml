@@ -1,6 +1,6 @@
 ---
-# Path to directory for source code checkouts.
-source_checkout_path:
+# Path to directory for kolla source code checkout.
+kolla_source_path:
 
 # Type of Kolla control installation. One of 'binary' or 'source'.
 kolla_ctl_install_type:

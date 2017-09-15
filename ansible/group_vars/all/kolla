@@ -5,12 +5,27 @@
 # Type of Kolla control installation. One of 'binary' or 'source'.
 kolla_ctl_install_type: source
 
+# Path to directory for kolla source code checkout.
+kolla_source_path: "{{ source_checkout_path ~ '/kolla' }}"
+
 # URL of Kolla source code repository if type is 'source'.
 kolla_source_url: "https://github.com/stackhpc/kolla"
 
 # Version (branch, tag, etc.) of Kolla source code repository if type is
 # 'source'.
 kolla_source_version: "stackhpc-{{ kolla_openstack_release }}"
+
+# Path to virtualenv in which to install kolla.
+kolla_venv: "{{ virtualenv_path ~ '/kolla' }}"
+
+###############################################################################
+# Kolla-ansible installation.
+
+# Type of Kolla-ansible control installation. One of 'binary' or 'source'.
+kolla_ansible_ctl_install_type: source
+
+# Path to directory for kolla-ansible source code checkout.
+kolla_ansible_source_path: "{{ lookup('env', 'KOLLA_SOURCE_PATH') | default(lookup('env', 'PWD') ~ '/src/kolla-ansible', true) }}"
 
 # URL of Kolla Ansible source code repository if type is 'source'.
 kolla_ansible_source_url: "https://github.com/stackhpc/kolla-ansible"
@@ -19,11 +34,11 @@ kolla_ansible_source_url: "https://github.com/stackhpc/kolla-ansible"
 # is 'source'.
 kolla_ansible_source_version: "stackhpc-{{ kolla_openstack_release }}"
 
-# Path to virtualenv in which to install kolla.
-kolla_venv: "{{ virtualenv_path ~ '/kolla' }}"
+# Path to virtualenv in which to install kolla-ansible.
+kolla_ansible_venv: "{{ lookup('env', 'KOLLA_VENV_PATH') | default(lookup('env', 'PWD') ~ '/venvs/kolla-ansible', true) }}"
 
 ###############################################################################
-# Kolla configuration.
+# Kolla & kolla-ansible configuration.
 
 # Path to Kolla configuration directory.
 kolla_config_path: "{{ lookup('env', 'KOLLA_CONFIG_PATH') | default('/etc/kolla', true) }}"

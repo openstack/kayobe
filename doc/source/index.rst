@@ -25,6 +25,7 @@ Documentation
    usage
    configuration/kayobe
    configuration/network
+   configuration/kolla-ansible
    deployment
    upgrading
    administration

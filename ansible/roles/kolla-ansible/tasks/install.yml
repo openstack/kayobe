@@ -16,27 +16,27 @@
   become: True
   with_items: "{{ kolla_ansible_package_dependencies }}"
 
-- name: Ensure source code checkout path exists
+- name: Ensure source code checkout parent directory exists
   file:
-    path: "{{ source_checkout_path }}"
+    path: "{{ kolla_ansible_source_path | dirname }}"
     state: directory
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
   become: True
-  when: "{{ kolla_ctl_install_type == 'source' }}"
+  when: "{{ kolla_ansible_ctl_install_type == 'source' }}"
 
 - name: Ensure Kolla Ansible source code checkout exists
   git:
     repo: "{{ kolla_ansible_source_url }}"
-    dest: "{{ source_checkout_path }}/kolla-ansible"
+    dest: "{{ kolla_ansible_source_path }}"
     version: "{{ kolla_ansible_source_version }}"
-  when: "{{ kolla_ctl_install_type == 'source' }}"
+  when: "{{ kolla_ansible_ctl_install_type == 'source' }}"
 
 - name: Ensure the latest version of pip is installed
   pip:
     name: "{{ item.name }}"
     state: latest
-    virtualenv: "{{ kolla_venv }}"
+    virtualenv: "{{ kolla_ansible_venv }}"
   with_items:
     - { name: pip }
 
@@ -45,15 +45,15 @@
     name: "{{ item.name }}"
     version: "{{ item.version | default(omit) }}"
     state: present
-    virtualenv: "{{ kolla_venv }}"
+    virtualenv: "{{ kolla_ansible_venv }}"
   with_items:
     # Intall Kolla Ansible from source.
-    - name: "{{ source_checkout_path }}/kolla-ansible"
-      install: "{{ kolla_ctl_install_type == 'source' }}"
+    - name: "{{ kolla_ansible_source_path }}"
+      install: "{{ kolla_ansible_ctl_install_type == 'source' }}"
     # Intall Kolla Ansible from PyPI.
     - name: "kolla-ansible"
       version: "{{ kolla_openstack_release }}"
-      install: "{{ kolla_ctl_install_type == 'binary' }}"
+      install: "{{ kolla_ansible_ctl_install_type == 'binary' }}"
     # On CentOS 7.3 Jinja2==2.7, but kolla-ansible requires 2.8. Install
     # Ansible to ensure we pull in and use a later Jinja2.
     - name: "ansible"
@@ -70,7 +70,7 @@
 - name: Ensure selinux Python package is linked into the virtualenv
   file:
     src: "/usr/lib64/python2.7/site-packages/selinux"
-    dest: "{{ kolla_venv }}/lib/python2.7/site-packages/selinux"
+    dest: "{{ kolla_ansible_venv }}/lib/python2.7/site-packages/selinux"
     state: link
   when:
     - ansible_selinux != False
