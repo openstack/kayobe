@@ -2,8 +2,10 @@
 Release Notes
 =============
 
-Unreleased
-==========
+Kayobe 2.0.0
+============
+
+Kayobe 2.0.0 was released on 15th September 2017.
 
 Features
 --------
