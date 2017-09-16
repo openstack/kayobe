@@ -1,0 +1,51 @@
+---
+# For some currently unknown reason, overcloud hosts end up with multiple
+# entries in /etc/hosts that map their own hostname to their provisioning
+# network IP address, in addition to one that maps their own hostname to their
+# internal network IP address. This causes RabbitMQ upgrades to fail, as
+# RabbitMQ expects the system's hostname to resolve to the IP address on
+# which it is listening. As a workaround, we remove the stale entries from
+# /etc/hosts.  See https://github.com/stackhpc/kayobe/issues/14.
+
+- name: Ensure overcloud hosts' /etc/hosts does not contain provisioning network IP
+  hosts: overcloud
+  tasks:
+    - name: Ensure overcloud hosts' /etc/hosts does not contain provisioning network IP
+      lineinfile:
+        dest: /etc/hosts
+        regexp: "^{{ provision_oc_net_name | net_ip }}[ \t]*{{ inventory_hostname }}"
+        state: absent
+      when: provision_oc_net_name | net_ip != None
+      become: True
+
+- name: Ensure rabbitmq containers' /etc/hosts does not contain provisioning network IP
+  hosts: controllers
+  vars:
+    rabbitmq_containers:
+      - rabbitmq
+      - outward_rabbitmq
+  tasks:
+    - block:
+        - name: Check whether rabbitmq container is running
+          command: docker inspect -f {{ '{{.Id}}' }} {{ item }}
+          changed_when: False
+          failed_when: False
+          with_items: "{{ rabbitmq_containers }}"
+          register: ps_result
+
+        - name: Ensure rabbitmq containers' /etc/hosts does not contain provisioning network IP
+          command: >
+            docker exec -u root {{ item.item }}
+            bash -c
+            'cp /etc/hosts /tmp/hosts &&
+             sed -i -e "/^{{ provision_oc_net_name | net_ip }}[ \t]*{{ inventory_hostname }}/d" /tmp/hosts &&
+             if ! diff -q /tmp/hosts /etc/hosts >/dev/null; then
+               cp /tmp/hosts /etc/hosts &&
+               echo changed
+             fi &&
+             rm /tmp/hosts'
+          changed_when: "'changed' in sed_result.stdout"
+          with_items: "{{ ps_result.results }}"
+          when: item.rc == 0
+          register: sed_result
+      when: provision_oc_net_name | net_ip != None

@@ -87,6 +87,17 @@ should be obtained either by building them locally or pulling them from an
 image registry.  Second, the overcloud services should be replaced with new
 containers created from the new container images.
 
+Upgrading Host Services
+-----------------------
+
+Prior to upgrading the OpenStack control plane, the overcloud host services
+should be upgraded::
+
+    (kayobe-venv) $ kayobe overcloud host upgrade
+
+Note that this will not perform full configuration of the host, and will
+instead perform a targeted upgrade of specific services where necessary.
+
 Upgrading the Ironic Deployment Images
 --------------------------------------
 

@@ -442,7 +442,7 @@ class OvercloudDeprovision(KayobeAnsibleMixin, VaultMixin, Command):
 
 class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
                              Command):
-    """Configure the overcloud host OS."""
+    """Configure the overcloud host services."""
 
     def get_parser(self, prog_name):
         parser = super(OvercloudHostConfigure, self).get_parser(prog_name)
@@ -477,6 +477,21 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
                                          extra_vars=extra_vars)
         playbooks = _build_playbook_list("kolla-host", "docker")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
+
+
+class OvercloudHostUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
+                           Command):
+    """Upgrade the overcloud host services.
+
+    Performs the changes necessary to make the host services suitable for the
+    configured OpenStack release.
+    """
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Upgrading overcloud host services")
+        playbooks = _build_playbook_list(
+            "overcloud-etc-hosts-fixup")
+        self.run_kayobe_playbooks(parsed_args, playbooks)
 
 
 class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
