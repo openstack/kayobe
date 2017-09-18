@@ -67,6 +67,8 @@ setup(
             'overcloud_inventory_discover = kayobe.cli.commands:OvercloudInventoryDiscover',
             'overcloud_post_configure = kayobe.cli.commands:OvercloudPostConfigure',
             'overcloud_provision = kayobe.cli.commands:OvercloudProvision',
+            'overcloud_service_configuration save = kayobe.cli.commands:OvercloudServiceConfigurationSave',
+            'overcloud_service_configuration generate = kayobe.cli.commands:OvercloudServiceConfigurationGenerate',
             'overcloud_service_deploy = kayobe.cli.commands:OvercloudServiceDeploy',
             'overcloud_service_destroy = kayobe.cli.commands:OvercloudServiceDestroy',
             'overcloud_service_reconfigure = kayobe.cli.commands:OvercloudServiceReconfigure',

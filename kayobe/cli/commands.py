@@ -494,6 +494,69 @@ class OvercloudHostUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
 
+class OvercloudServiceConfigurationGenerate(KayobeAnsibleMixin,
+                                            KollaAnsibleMixin, VaultMixin,
+                                            Command):
+    """Generate the overcloud service configuration files."""
+
+    def get_parser(self, prog_name):
+        parser = super(OvercloudServiceConfigurationGenerate,
+                       self).get_parser(prog_name)
+        group = parser.add_argument_group("Service Configuration")
+        group.add_argument("--node-config-dir",
+                           help="the directory to store the config files on "
+                                "the remote node (default /etc/kolla)")
+        group.add_argument("--skip-prechecks", action='store_true',
+                           help="skip the kolla-ansible prechecks command")
+        return parser
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Generating overcloud service configuration")
+
+        # First prepare configuration.
+        playbooks = _build_playbook_list("kolla-ansible")
+        self.run_kayobe_playbooks(parsed_args, playbooks, tags="config")
+
+        playbooks = _build_playbook_list("kolla-openstack", "swift-setup")
+        self.run_kayobe_playbooks(parsed_args, playbooks)
+
+        # Run kolla-ansible prechecks before deployment.
+        if not parsed_args.skip_prechecks:
+            self.run_kolla_ansible_overcloud(parsed_args, "prechecks")
+
+        # Generate the configuration.
+        extra_vars = {}
+        if parsed_args.node_config_dir:
+            # When generating configuration, kolla-ansible sets {{ project }}
+            # to the name of the container being configured.
+            extra_vars["node_config_directory"] = os.path.join(
+                parsed_args.node_config_dir, "{{ project }}")
+        self.run_kolla_ansible_overcloud(parsed_args, "genconfig")
+
+
+class OvercloudServiceConfigurationSave(KayobeAnsibleMixin, VaultMixin,
+                                        Command):
+    """Gather and save the overcloud service configuration files."""
+
+    def get_parser(self, prog_name):
+        parser = super(OvercloudServiceConfigurationSave, self).get_parser(
+            prog_name)
+        group = parser.add_argument_group("Service configuration")
+        group.add_argument("--output-dir",
+                           help="path to a directory in which to save "
+                                "configuration")
+        return parser
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Saving overcloud service configuration")
+        playbooks = _build_playbook_list("overcloud-service-config-save")
+        extra_vars = {}
+        if parsed_args.output_dir:
+            extra_vars["config_save_path"] = parsed_args.output_dir
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  extra_vars=extra_vars)
+
+
 class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
                              Command):
     """Deploy the overcloud services."""
