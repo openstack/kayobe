@@ -1,0 +1,18 @@
+---
+- name: Ensure docker SDK for python is installed
+  hosts: overcloud
+  tasks:
+    # Docker renamed their python SDK from docker-py to docker in the 2.0.0
+    # release, and also broke backwards compatibility. Kolla-ansible requires
+    # docker, so ensure it is installed.
+    - name: Ensure legacy docker-py python package is uninstalled
+      pip:
+        name: docker-py
+        state: absent
+      become: True
+
+    - name: Ensure docker SDK for python is installed
+      pip:
+        name: docker
+        state: latest
+      become: True

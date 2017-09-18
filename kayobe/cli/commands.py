@@ -490,7 +490,7 @@ class OvercloudHostUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     def take_action(self, parsed_args):
         self.app.LOG.debug("Upgrading overcloud host services")
         playbooks = _build_playbook_list(
-            "overcloud-etc-hosts-fixup")
+            "overcloud-docker-sdk-upgrade", "overcloud-etc-hosts-fixup")
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
 
