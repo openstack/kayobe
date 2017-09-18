@@ -23,7 +23,8 @@ Documentation
    architecture
    installation
    usage
-   configuration
+   configuration/kayobe
+   configuration/network
    deployment
    upgrading
    administration
