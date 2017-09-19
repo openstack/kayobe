@@ -60,6 +60,12 @@ The output of this command is a JSON object mapping hosts to their
 configuration.  The output of the command may be restricted using the
 ``--host``, ``--hosts``, ``--var-name`` and ``--dump-facts`` options.
 
+If using the ``kayobe-env`` environment file in ``kayobe-config``, this should
+also be inspected for changes and modified to suit the local ansible control
+host environment if necessary. When ready, source the environment file::
+
+    $ source kayobe-env
+
 Upgrading the Control Host
 ==========================
 
@@ -98,12 +104,29 @@ should be upgraded::
 Note that this will not perform full configuration of the host, and will
 instead perform a targeted upgrade of specific services where necessary.
 
-Upgrading the Ironic Deployment Images
---------------------------------------
+Building Ironic Deployment Images
+---------------------------------
+
+.. note::
+
+   It is possible to use prebuilt deployment images. In this case, this step
+   can be skipped.
+
+It is possible to use prebuilt deployment images from the `OpenStack hosted
+tarballs <https://tarballs.openstack.org/ironic-python-agent>`_ or another
+source.  In some cases it may be necessary to build images locally either to
+apply local image customisation or to use a downstream version of Ironic Python
+Agent (IPA).  In order to build IPA images, the ``ipa_build_images`` variable
+should be set to ``True``.  To build images locally::
+
+    (kayobe-venv) $ kayobe overcloud deployment image build
+
+Upgrading Ironic Deployment Images
+----------------------------------
 
 Prior to upgrading the OpenStack control plane, the baremetal compute nodes
 should be configured to use an updated deployment ramdisk. This procedure is
-not currently automated by kayobe.
+not currently automated by kayobe, and should be performed manually.
 
 Building Container Images
 -------------------------
