@@ -112,7 +112,12 @@ class KollaAnsibleMixin(object):
 
 
 class ControlHostBootstrap(KayobeAnsibleMixin, VaultMixin, Command):
-    """Bootstrap the Kayobe control environment."""
+    """Bootstrap the Kayobe control environment.
+
+    * Downloads and installs Ansible roles from Galaxy.
+    * Generates an SSH key for the ansible control host, if one does not exist.
+    * Installs kolla-ansible on the ansible control host.
+    """
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Bootstrapping Kayobe control host")
@@ -124,7 +129,12 @@ class ControlHostBootstrap(KayobeAnsibleMixin, VaultMixin, Command):
 
 
 class ControlHostUpgrade(KayobeAnsibleMixin, VaultMixin, Command):
-    """Upgrade the Kayobe control environment."""
+    """Upgrade the Kayobe control environment.
+
+    * Downloads and installs updated Ansible roles from Galaxy.
+    * Generates an SSH key for the ansible control host, if one does not exist.
+    * Updates kolla-ansible on the ansible control host.
+    """
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Upgrading Kayobe control host")
@@ -138,7 +148,11 @@ class ControlHostUpgrade(KayobeAnsibleMixin, VaultMixin, Command):
 
 
 class ConfigurationDump(KayobeAnsibleMixin, VaultMixin, Command):
-    """Dump Kayobe configuration."""
+    """Dump Kayobe configuration.
+
+    Dumps kayobe Ansible host variables to standard output. The output may be
+    filtered by selecting one or more hosts, or a specific variable.
+    """
 
     def get_parser(self, prog_name):
         parser = super(ConfigurationDump, self).get_parser(prog_name)
@@ -168,7 +182,10 @@ class ConfigurationDump(KayobeAnsibleMixin, VaultMixin, Command):
 
 
 class PlaybookRun(KayobeAnsibleMixin, VaultMixin, Command):
-    """Run a Kayobe Ansible playbook."""
+    """Run a Kayobe Ansible playbook.
+
+    Allows a single Kayobe ansible playbook to be run. For advanced users only.
+    """
 
     def add_kayobe_ansible_args(self, group):
         super(PlaybookRun, self).add_kayobe_ansible_args(group)
@@ -181,7 +198,10 @@ class PlaybookRun(KayobeAnsibleMixin, VaultMixin, Command):
 
 
 class KollaAnsibleRun(KollaAnsibleMixin, VaultMixin, Command):
-    """Run a Kolla Ansible command."""
+    """Run a Kolla Ansible command.
+
+    Allows a single kolla-ansible command to be run. For advanced users only.
+    """
 
     def add_kolla_ansible_args(self, group):
         super(KollaAnsibleRun, self).add_kolla_ansible_args(group)
@@ -224,7 +244,16 @@ class PhysicalNetworkConfigure(KayobeAnsibleMixin, VaultMixin, Command):
 
 class SeedHypervisorHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
                                   VaultMixin, Command):
-    """Configure the seed hypervisor node host OS."""
+    """Configure the seed hypervisor node host OS and services.
+
+    * Allocate IP addresses for all configured networks.
+    * Add the host to SSH known hosts.
+    * Configure user accounts, group associations, and authorised SSH keys.
+    * Configure the host's network interfaces.
+    * Set sysctl parameters.
+    * Configure NTP.
+    * Configure the host as a libvirt hypervisor.
+    """
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Configuring seed hypervisor host OS")
@@ -237,7 +266,12 @@ class SeedHypervisorHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
 
 class SeedVMProvision(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
                       Command):
-    """Provision the seed VM."""
+    """Provision the seed VM.
+
+    * Allocate IP addresses for all configured networks.
+    * Provision a virtual machine using libvirt.
+    * Configure the kolla-ansible inventory for the seed VM.
+    """
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Provisioning seed VM")
@@ -264,7 +298,23 @@ class SeedVMDeprovision(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 
 class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
                         Command):
-    """Configure the seed node host OS."""
+    """Configure the seed node host OS and services.
+
+    * Allocate IP addresses for all configured networks.
+    * Add the host to SSH known hosts.
+    * Configure a user account for use by kayobe for SSH access.
+    * Optionally, wipe unmounted disk partitions (--wipe-disks).
+    * Configure user accounts, group associations, and authorised SSH keys.
+    * Disable SELinux.
+    * Configure the host's network interfaces.
+    * Set sysctl parameters.
+    * Configure IP routing and source NAT.
+    * Disable bootstrap interface configuration.
+    * Configure NTP.
+    * Configure LVM volumes.
+    * Configure a user account for kolla-ansible.
+    * Configure Docker engine.
+    """
 
     def get_parser(self, prog_name):
         parser = super(SeedHostConfigure, self).get_parser(prog_name)
@@ -301,7 +351,17 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 
 class SeedServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
                         Command):
-    """Deploy the seed services."""
+    """Deploy the seed services.
+
+    * Configures kolla-ansible.
+    * Configures the bifrost service.
+    * Deploys the bifrost container using kolla-ansible.
+    * Builds disk images for the overcloud hosts using Diskimage Builder (DIB).
+    * Configures ironic inspector introspection rules in the bifrost inspector
+      service.
+    * When enabled, configures a Bare Metal Provisioning (BMP) environment for
+      Dell Force10 switches, hosted by the bifrost dnsmasq and nginx services.
+    """
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Deploying seed services")
@@ -316,7 +376,11 @@ class SeedServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 
 
 class SeedContainerImageBuild(KayobeAnsibleMixin, VaultMixin, Command):
-    """Build the seed container images."""
+    """Build the seed container images.
+
+    * Installs and configures kolla build environment on the seed.
+    * Builds container images for the seed services.
+    """
 
     def get_parser(self, prog_name):
         parser = super(SeedContainerImageBuild, self).get_parser(
@@ -343,7 +407,11 @@ class SeedContainerImageBuild(KayobeAnsibleMixin, VaultMixin, Command):
 
 
 class SeedDeploymentImageBuild(KayobeAnsibleMixin, VaultMixin, Command):
-    """Build the seed deployment kernel and ramdisk images."""
+    """Build the seed deployment kernel and ramdisk images.
+
+    Builds Ironic Python Agent (IPA) deployment images using Diskimage Builder
+    (DIB) for use when provisioning and inspecting the overcloud hosts.
+    """
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Building seed deployment images")
@@ -352,7 +420,15 @@ class SeedDeploymentImageBuild(KayobeAnsibleMixin, VaultMixin, Command):
 
 
 class OvercloudInventoryDiscover(KayobeAnsibleMixin, VaultMixin, Command):
-    """Discover the overcloud inventory from the seed's Ironic service."""
+    """Discover the overcloud inventory from the seed's Ironic service.
+
+    * Query the ironic inventory on the seed, and use this to populate kayobe's
+      ansible inventory.
+    * Allocate IP addresses for all configured networks.
+    * Configure the bifrost service with host variables for provisioning the
+      overcloud hosts.
+    * Update the kolla-ansible configuration for the new overcloud hosts.
+    """
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Discovering overcloud inventory")
@@ -415,7 +491,11 @@ class OvercloudBIOSRAIDConfigure(KayobeAnsibleMixin, VaultMixin, Command):
 
 
 class OvercloudHardwareInspect(KayobeAnsibleMixin, VaultMixin, Command):
-    """Inspect the overcloud hardware using ironic inspector."""
+    """Inspect the overcloud hardware using ironic inspector.
+
+    Perform hardware inspection of existing ironic nodes in the seed's
+    ironic inventory.
+    """
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Inspecting overcloud")
@@ -424,7 +504,12 @@ class OvercloudHardwareInspect(KayobeAnsibleMixin, VaultMixin, Command):
 
 
 class OvercloudProvision(KayobeAnsibleMixin, VaultMixin, Command):
-    """Provision the overcloud."""
+    """Provision the overcloud.
+
+    Provision the overcloud hosts using the seed host's bifrost service. This
+    will image the hosts and perform some minimal network configuration using
+    glean/simple-init.
+    """
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Provisioning overcloud")
@@ -433,7 +518,12 @@ class OvercloudProvision(KayobeAnsibleMixin, VaultMixin, Command):
 
 
 class OvercloudDeprovision(KayobeAnsibleMixin, VaultMixin, Command):
-    """Deprovision the overcloud."""
+    """Deprovision the overcloud.
+
+    Deprovision the overcloud hosts using the seed host's bifrost service. This
+    will clear the instance state of the nodes from the seed's ironic service
+    and power them off.
+    """
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Deprovisioning overcloud")
@@ -443,7 +533,22 @@ class OvercloudDeprovision(KayobeAnsibleMixin, VaultMixin, Command):
 
 class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
                              Command):
-    """Configure the overcloud host services."""
+    """Configure the overcloud host OS and services.
+
+    * Allocate IP addresses for all configured networks.
+    * Add the host to SSH known hosts.
+    * Configure a user account for use by kayobe for SSH access.
+    * Optionally, wipe unmounted disk partitions (--wipe-disks).
+    * Configure user accounts, group associations, and authorised SSH keys.
+    * Disable SELinux.
+    * Configure the host's network interfaces.
+    * Set sysctl parameters.
+    * Disable bootstrap interface configuration.
+    * Configure NTP.
+    * Configure LVM volumes.
+    * Configure a user account for kolla-ansible.
+    * Configure Docker engine.
+    """
 
     def get_parser(self, prog_name):
         parser = super(OvercloudHostConfigure, self).get_parser(prog_name)
@@ -498,7 +603,15 @@ class OvercloudHostUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 class OvercloudServiceConfigurationGenerate(KayobeAnsibleMixin,
                                             KollaAnsibleMixin, VaultMixin,
                                             Command):
-    """Generate the overcloud service configuration files."""
+    """Generate the overcloud service configuration files.
+
+    Generates kolla-ansible configuration for the OpenStack control plane
+    services, without pushing that configuration to the running containers.
+    This can be used to generate a candidate configuration set for comparison
+    with the existing configuration. It is recommended to use a directory other
+    than /etc/kolla for --node-config-dir, to ensure that the running
+    containers are not affected.
+    """
 
     def get_parser(self, prog_name):
         parser = super(OvercloudServiceConfigurationGenerate,
@@ -537,7 +650,13 @@ class OvercloudServiceConfigurationGenerate(KayobeAnsibleMixin,
 
 class OvercloudServiceConfigurationSave(KayobeAnsibleMixin, VaultMixin,
                                         Command):
-    """Gather and save the overcloud service configuration files."""
+    """Gather and save the overcloud service configuration files.
+
+    This can be used to collect the running configuration for inspection (the
+    default) or a candidate configuration generated via 'kayobe overcloud
+    service configuration generate', for comparision with another configuration
+    set.
+    """
 
     def get_parser(self, prog_name):
         parser = super(OvercloudServiceConfigurationSave, self).get_parser(
@@ -560,7 +679,19 @@ class OvercloudServiceConfigurationSave(KayobeAnsibleMixin, VaultMixin,
 
 class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
                              Command):
-    """Deploy the overcloud services."""
+    """Deploy the overcloud services.
+
+    * Configure kolla-ansible.
+    * Configure overcloud services in kolla-ansible.
+    * Perform kolla-ansible prechecks to verify the system state for
+      deployment.
+    * Perform a kolla-ansible deployment of the overcloud services.
+    * Configure and deploy kayobe extra services.
+    * Generate openrc files for the admin user.
+
+    This can be used in conjunction with the --tags and --kolla-tags arguments
+    to deploy specific services.
+    """
 
     def get_parser(self, prog_name):
         parser = super(OvercloudServiceDeploy, self).get_parser(prog_name)
@@ -605,7 +736,19 @@ class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 
 class OvercloudServiceReconfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
                                   VaultMixin, Command):
-    """Reconfigure the overcloud services."""
+    """Reconfigure the overcloud services.
+
+    * Configure kolla-ansible.
+    * Configure overcloud services in kolla-ansible.
+    * Perform kolla-ansible prechecks to verify the system state for
+      deployment.
+    * Perform a kolla-ansible reconfiguration of the overcloud services.
+    * Configure and deploy kayobe extra services.
+    * Generate openrc files for the admin user.
+
+    This can be used in conjunction with the --tags and --kolla-tags arguments
+    to reconfigure specific services.
+    """
 
     def get_parser(self, prog_name):
         parser = super(OvercloudServiceReconfigure, self).get_parser(prog_name)
@@ -650,7 +793,18 @@ class OvercloudServiceReconfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
 
 class OvercloudServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin,
                               VaultMixin, Command):
-    """Upgrade the overcloud services."""
+    """Upgrade the overcloud services.
+
+    * Configure kolla-ansible.
+    * Configure overcloud services in kolla-ansible.
+    * Perform kolla-ansible prechecks to verify the system state for
+      deployment.
+    * Perform a kolla-ansible upgrade of the overcloud services.
+    * Configure and upgrade kayobe extra services.
+
+    This can be used in conjunction with the --tags and --kolla-tags arguments
+    to upgrade specific services.
+    """
 
     def get_parser(self, prog_name):
         parser = super(OvercloudServiceUpgrade, self).get_parser(prog_name)
@@ -682,7 +836,11 @@ class OvercloudServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin,
 
 class OvercloudServiceDestroy(KollaAnsibleMixin, KayobeAnsibleMixin,
                               VaultMixin, Command):
-    """Destroy the overcloud services."""
+    """Destroy the overcloud services.
+
+    Permanently destroy the overcloud containers, container images, and
+    container volumes.
+    """
 
     def get_parser(self, prog_name):
         parser = super(OvercloudServiceDestroy, self).get_parser(prog_name)
@@ -776,7 +934,14 @@ class OvercloudDeploymentImageBuild(KayobeAnsibleMixin, VaultMixin, Command):
 
 
 class OvercloudPostConfigure(KayobeAnsibleMixin, VaultMixin, Command):
-    """Perform post-deployment configuration."""
+    """Perform post-deployment configuration.
+
+    * Register Ironic Python Agent (IPA) deployment images using Diskimage
+      Builder (DIB), if building deployment images locally.
+    * Register ironic inspector introspection rules with the overcloud
+      inspector service.
+    * Register a provisioning network with glance.
+    """
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Performing post-deployment configuration")
