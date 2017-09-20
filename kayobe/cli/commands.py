@@ -616,9 +616,9 @@ class OvercloudServiceConfigurationGenerate(KayobeAnsibleMixin,
         parser = super(OvercloudServiceConfigurationGenerate,
                        self).get_parser(prog_name)
         group = parser.add_argument_group("Service Configuration")
-        group.add_argument("--node-config-dir",
+        group.add_argument("--node-config-dir", required=True,
                            help="the directory to store the config files on "
-                                "the remote node (default /etc/kolla)")
+                                "the remote node (required)")
         group.add_argument("--skip-prechecks", action='store_true',
                            help="skip the kolla-ansible prechecks command")
         return parser
