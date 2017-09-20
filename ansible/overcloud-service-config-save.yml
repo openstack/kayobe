@@ -5,10 +5,13 @@
     # Override this to change the directory in which the configuration will be
     # saved.
     config_save_path: "{{ lookup('env', 'PWD') ~ '/overcloud-config' }}"
+    # Override this to change the directory on the remote hosts from which the
+    # kolla-ansible configuration will be saved.
+    node_config_directory: "/etc/kolla"
   tasks:
     - name: Find overcloud service configuration files
       find:
-        paths: "/etc/kolla"
+        paths: "{{ node_config_directory }}"
         recurse: True
       register: find_result
 
