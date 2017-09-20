@@ -19,7 +19,7 @@
       become: True
 
 - name: Ensure rabbitmq containers' /etc/hosts does not contain provisioning network IP
-  hosts: controllers
+  hosts: overcloud
   vars:
     rabbitmq_containers:
       - rabbitmq
