@@ -49,6 +49,11 @@
     state: "{{ item.state | default('present') }}"
     virtualenv: "{{ kolla_venv }}"
   with_items:
+    # In version 2.0.0, docker renamed the docker-py python package to docker.
+    # Kolla requires the docker package rather than the docker-py package.
+    - name: docker-py
+      state: absent
+    - name: docker
     # Intall Kolla from source.
     - name: "{{ kolla_source_path }}"
       install: "{{ kolla_ctl_install_type == 'source' }}"
@@ -59,9 +64,4 @@
     # Required for kolla-genpwd.
     - name: PyYAML
       version: "3.12"
-    # In version 2.0.0, docker renamed the docker-py python package to docker.
-    # Kolla requires the docker package rather than the docker-py package.
-    - name: docker-py
-      state: absent
-    - name: docker
   when: "{{ item.install | default(True) | bool }}"
