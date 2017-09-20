@@ -2,6 +2,25 @@
 Release Notes
 =============
 
+Kayobe 3.0.0
+============
+
+Kayobe 3.0.0 was released on 20th September 2017.
+
+Features
+--------
+
+* Adds support for the OpenStack Pike release.
+* Adds support for saving overcloud service configuration to the ansible
+  control host.
+* Adds support for generating overcloud service configuration, without applying
+  it to the running system.
+
+Upgrade Notes
+-------------
+
+See the upgrade notes for the pike release of the OpenStack services in use.
+
 Kayobe 2.0.0
 ============
 

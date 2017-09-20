@@ -18,7 +18,7 @@ from setuptools import setup, find_packages
 
 
 PROJECT = 'kayobe'
-VERSION = '2.0.0'
+VERSION = '3.0.0'
 
 try:
     long_description = open('README.md', 'rt').read()
