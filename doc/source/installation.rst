@@ -73,6 +73,6 @@ Finally, deactivate the virtualenv::
     (kayobe) $ deactivate
 
 Creation of a ``kayobe-config`` source code repository will be covered in the
-:ref:`configuration guide<configuring-kayobe>`_. The kolla-ansible source code
+:ref:`configuration guide <configuring-kayobe>`. The kolla-ansible source code
 checkout and python virtual environment will be created automatically by
 kayobe.
