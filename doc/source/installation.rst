@@ -29,24 +29,50 @@ Installation
 ============
 
 This guide will describe how to install Kayobe from source in a virtualenv.
-First, obtain the Kayobe source code. For example::
 
+The directory structure for a kayobe control host environment is configurable,
+but the following is recommended, where ``<base_path>`` is the path to a top
+level directory::
+
+    <base_path>/
+        src/
+            kayobe/
+            kayobe-config/
+            kolla-ansible/
+        venvs/
+            kayobe/
+            kolla-ansible/
+
+First, change to the top level directory, and make the directories for source
+code repositories and python virtual environments::
+
+    $ cd <base_path>
+    $ mkdir -p src venvs
+
+Next, obtain the Kayobe source code. For example::
+
+    $ cd <base_path>/src
     $ git clone https://github.com/stackhpc/kayobe
 
 Create a virtualenv for Kayobe::
 
-    $ cd kayobe
-    $ virtualenv kayobe-venv
+    $ virtualenv <base_path>/venvs/kayobe
 
 Activate the virtualenv and update pip::
 
-    $ source kayobe-venv/bin/activate
-    (kayobe-venv) $ pip install -U pip
+    $ source <base_path>/venvs/kayobe/bin/activate
+    (kayobe) $ pip install -U pip
 
 Install Kayobe and its dependencies using the source code checkout::
 
-    (kayobe-venv) $ pip install .
+    (kayobe) $ cd <base_path>/src/kayobe
+    (kayobe) $ pip install .
 
 Finally, deactivate the virtualenv::
 
-    (kayobe-venv) $ deactivate
+    (kayobe) $ deactivate
+
+Creation of a ``kayobe-config`` source code repository will be covered in the
+:ref:`configuration guide<configuring-kayobe>`_. The kolla-ansible source code
+checkout and python virtual environment will be created automatically by
+kayobe.

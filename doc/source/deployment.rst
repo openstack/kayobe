@@ -21,7 +21,7 @@ performed here include:
 
 To bootstrap the Ansible control host::
 
-    (kayobe-venv) $ kayobe control host bootstrap
+    (kayobe) $ kayobe control host bootstrap
 
 Physical Network
 ================
@@ -31,7 +31,7 @@ modules.  Currently Dell Network OS 6 and Dell Network OS 9 switches are
 supported but this could easily be extended.  To provision the physical
 network::
 
-    (kayobe-venv) $ kayobe physical network configure --group <group> [--enable-discovery]
+    (kayobe) $ kayobe physical network configure --group <group> [--enable-discovery]
 
 The ``--group`` argument is used to specify an Ansible group containing
 the switches to be configured.
@@ -55,7 +55,7 @@ Host Configuration
 To configure the seed hypervisor's host OS, and the Libvirt/KVM virtualisation
 support::
 
-    (kayobe-venv) $ kayobe seed hypervisor host configure
+    (kayobe) $ kayobe seed hypervisor host configure
 
 Seed
 ====
@@ -74,7 +74,7 @@ have ``libvirt`` networks configured for all networks that the seed VM needs
 access to and a ``libvirt`` storage pool available for the seed VM's volumes.
 To provision the seed VM::
 
-    (kayobe-venv) $ kayobe seed vm provision
+    (kayobe) $ kayobe seed vm provision
 
 When this command has completed the seed VM should be active and accessible via
 SSH.  Kayobe will update the Ansible inventory with the IP address of the VM.
@@ -84,7 +84,7 @@ Host Configuration
 
 To configure the seed host OS::
 
-    (kayobe-venv) $ kayobe seed host configure
+    (kayobe) $ kayobe seed host configure
 
 .. note::
 
@@ -92,7 +92,7 @@ To configure the seed host OS::
    installation, it may be necessary to wipe partition and LVM data from those
    disks.  To wipe all disks that are not mounted during host configuration::
 
-       (kayobe-venv) $ kayobe seed host configure --wipe-disks
+       (kayobe) $ kayobe seed host configure --wipe-disks
 
 Building Container Images
 -------------------------
@@ -107,12 +107,12 @@ Dockerhub.  In some cases it may be necessary to build images locally either to
 apply local image customisation or to use a downstream version of kolla.  To
 build images locally::
 
-    (kayobe-venv) $ kayobe seed container image build
+    (kayobe) $ kayobe seed container image build
 
 It is possible to build a specific set of images by supplying one or more
 image name regular expressions::
 
-    (kayobe-venv) $ kayobe seed container image build bifrost-deploy
+    (kayobe) $ kayobe seed container image build bifrost-deploy
 
 In order to push images to a registry after they are built, add the ``--push``
 argument.
@@ -127,7 +127,7 @@ nodes using Disk Image Builder (DIB).
 
 To deploy the seed services in containers::
 
-    (kayobe-venv) $ kayobe seed service deploy
+    (kayobe) $ kayobe seed service deploy
 
 After this command has completed the seed services will be active.
 
@@ -146,7 +146,7 @@ apply local image customisation or to use a downstream version of Ironic Python
 Agent (IPA).  In order to build IPA images, the ``ipa_build_images`` variable
 should be set to ``True``.  To build images locally::
 
-    (kayobe-venv) $ kayobe seed deployment image build
+    (kayobe) $ kayobe seed deployment image build
 
 Accessing the Seed via SSH (Optional)
 -------------------------------------
@@ -155,7 +155,7 @@ For SSH access to the seed, first determine the seed's IP address. We can
 use the ``kayobe configuration dump`` command to inspect the seed's IP
 address::
 
-    (kayobe-venv) $ kayobe configuration dump --host seed --var-name ansible_host
+    (kayobe) $ kayobe configuration dump --host seed --var-name ansible_host
 
 The ``kayobe_ansible_user`` variable determines which user account will be used
 by Kayobe when accessing the machine via SSH.  By default this is ``stack``.
@@ -205,7 +205,7 @@ the following on the seed::
 In order to interact with these nodes using Kayobe, run the following command
 to add them to the Kayobe and bifrost Ansible inventories::
 
-    (kayobe-venv) $ kayobe overcloud inventory discover
+    (kayobe) $ kayobe overcloud inventory discover
 
 Saving Hardware Introspection Data
 ----------------------------------
@@ -214,7 +214,7 @@ If ironic inspector is in use on the seed host, introspection data will be
 stored in the local nginx service.  This data may be saved to the control
 host::
 
-    (kayobe-venv) $ kayobe overcloud introspection data save
+    (kayobe) $ kayobe overcloud introspection data save
 
 ``--output-dir`` may be used to specify the directory in which introspection
 data files will be saved. ``--output-format`` may be used to set the format of
@@ -232,13 +232,13 @@ Configuration of BIOS settings and RAID volumes is currently performed out of
 band as a separate task from hardware provisioning.  To configure the BIOS and
 RAID::
 
-    (kayobe-venv) $ kayobe overcloud bios raid configure
+    (kayobe) $ kayobe overcloud bios raid configure
 
 After configuring the nodes' RAID volumes it may be necessary to perform
 hardware inspection of the nodes to reconfigure the ironic nodes' scheduling
 properties and root device hints.  To perform manual hardware inspection::
 
-    (kayobe-venv) $ kayobe overcloud hardware inspect
+    (kayobe) $ kayobe overcloud hardware inspect
 
 Provisioning
 ------------
@@ -246,7 +246,7 @@ Provisioning
 Provisioning of the overcloud is performed by the ironic service running in the
 bifrost container on the seed.  To provision the overcloud nodes::
 
-    (kayobe-venv) $ kayobe overcloud provision
+    (kayobe) $ kayobe overcloud provision
 
 After this command has completed the overcloud nodes should have been
 provisioned with an OS image.  The command will wait for the nodes to become
@@ -257,7 +257,7 @@ Host Configuration
 
 To configure the overcloud hosts' OS::
 
-    (kayobe-venv) $ kayobe overcloud host configure
+    (kayobe) $ kayobe overcloud host configure
 
 .. note::
 
@@ -265,7 +265,7 @@ To configure the overcloud hosts' OS::
    installation, it may be necessary to wipe partition and LVM data from those
    disks.  To wipe all disks that are not mounted during host configuration::
 
-       (kayobe-venv) $ kayobe overcloud host configure --wipe-disks
+       (kayobe) $ kayobe overcloud host configure --wipe-disks
 
 Building Container Images
 -------------------------
@@ -279,12 +279,12 @@ In some cases it may be necessary to build images locally either to apply local
 image customisation or to use a downstream version of kolla.  To build images
 locally::
 
-    (kayobe-venv) $ kayobe overcloud container image build
+    (kayobe) $ kayobe overcloud container image build
 
 It is possible to build a specific set of images by supplying one or more
 image name regular expressions::
 
-    (kayobe-venv) $ kayobe overcloud container image build ironic- nova-api
+    (kayobe) $ kayobe overcloud container image build ironic- nova-api
 
 In order to push images to a registry after they are built, add the ``--push``
 argument.
@@ -302,7 +302,7 @@ The `stackhpc account <https://hub.docker.com/r/stackhpc/>`_ provides image
 repositories suitable for use with kayobe and will be used by default.  To
 pull images from the configured image registry::
 
-    (kayobe-venv) $ kayobe overcloud container image pull
+    (kayobe) $ kayobe overcloud container image pull
 
 Building Deployment Images
 --------------------------
@@ -319,14 +319,14 @@ apply local image customisation or to use a downstream version of Ironic Python
 Agent (IPA).  In order to build IPA images, the ``ipa_build_images`` variable
 should be set to ``True``.  To build images locally::
 
-    (kayobe-venv) $ kayobe overcloud deployment image build
+    (kayobe) $ kayobe overcloud deployment image build
 
 Deploying Containerised Services
 --------------------------------
 
 To deploy the overcloud services in containers::
 
-    (kayobe-venv) $ kayobe overcloud service deploy
+    (kayobe) $ kayobe overcloud service deploy
 
 Once this command has completed the overcloud nodes should have OpenStack
 services running in Docker containers.
@@ -350,8 +350,8 @@ Performing Post-deployment Configuration
 
 To perform post deployment configuration of the overcloud services::
 
-    (kayobe-venv) $ source ${KOLLA_CONFIG_PATH:-/etc/kolla}/admin-openrc.sh
-    (kayobe-venv) $ kayobe overcloud post configure
+    (kayobe) $ source ${KOLLA_CONFIG_PATH:-/etc/kolla}/admin-openrc.sh
+    (kayobe) $ kayobe overcloud post configure
 
 This will perform the following tasks:
 

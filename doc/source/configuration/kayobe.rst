@@ -57,6 +57,8 @@ variables files in ``${KAYOBE_CONFIG_PATH}/inventory/host_vars/*``.  It should
 be noted that variables set in extra-vars files take precedence over per-host
 variables.
 
+.. _configuring-kayobe:
+
 Configuring Kayobe
 ==================
 
