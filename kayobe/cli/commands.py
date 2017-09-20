@@ -809,6 +809,10 @@ class OvercloudContainerImagePull(KayobeAnsibleMixin, KollaAnsibleMixin,
     def take_action(self, parsed_args):
         self.app.LOG.debug("Pulling overcloud container images")
 
+        # First prepare configuration.
+        playbooks = _build_playbook_list("kolla-ansible")
+        self.run_kayobe_playbooks(parsed_args, playbooks tags="config")
+
         # Pull updated kolla container images.
         self.run_kolla_ansible_overcloud(parsed_args, "pull")
 
