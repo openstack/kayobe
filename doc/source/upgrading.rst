@@ -165,6 +165,37 @@ pull images from the configured image registry::
 
     (kayobe-venv) $ kayobe overcloud container image pull
 
+Saving Overcloud Service Configuration
+--------------------------------------
+
+It is often useful to be able to save the configuration of the control
+plane services for inspection or comparison with another configuration set
+prior to a reconfiguration or upgrade. This command will gather and save the
+control plane configuration for all hosts to the ansible control host::
+
+    (kayobe-venv) $ kayobe overcloud service configuration save
+
+The default location for the saved configuration is ``$PWD/overcloud-config``,
+but this can be changed via the ``output-dir`` argument. To gather
+configuration from a directory other than the default ``/etc/kolla``, use the
+``node-config-dir`` argument.
+
+Generating Overcloud Service Configuration
+------------------------------------------
+
+Prior to deploying, reconfiguring, or upgrading a control plane, it may be
+useful to generate the configuration that will be applied, without actually
+applying it to the running containers. The configuration should typically be
+generated in a directory other than the default configuration directory of
+``/etc/kolla``, to avoid overwriting the active configuration::
+
+    (kayobe-venv) $ kayobe overcloud service configuration generate --node-config-dir /path/to/generated/config
+
+The configuration will be generated remotely on the overcloud hosts in the
+specified directory, with one subdirectory per container. This command may be
+followed by ``kayobe ovecloud service configuration save`` to gather the
+generated configuration to the ansible control host.
+
 Upgrading Containerised Services
 --------------------------------
 
