@@ -13,7 +13,6 @@
 # under the License.
 
 import json
-import os.path
 import sys
 
 from cliff.command import Command
@@ -641,8 +640,6 @@ class OvercloudServiceConfigurationGenerate(KayobeAnsibleMixin,
         # Generate the configuration.
         extra_vars = {}
         if parsed_args.node_config_dir:
-            # When generating configuration, kolla-ansible sets {{ project }}
-            # to the name of the container being configured.
             extra_vars["node_config_directory"] = parsed_args.node_config_dir
         self.run_kolla_ansible_overcloud(parsed_args, "genconfig",
                                          extra_vars=extra_vars)
