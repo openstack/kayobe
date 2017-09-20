@@ -34,4 +34,4 @@ inspection_store_tag: "latest"
 inspection_store_image_full: "{{ inspection_store_image }}:{{ inspection_store_tag }}"
 
 inspection_store_restart_policy: "unless-stopped"
-inspection_store_restart_retries: 10
+#inspection_store_restart_retries:
