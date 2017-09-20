@@ -26,7 +26,7 @@ If local changes were made to kayobe, these should now be reapplied.
 
 The upgraded kayobe python module and dependencies should be installed::
 
-    (kayobe-venv) $ pip install -U .
+    (kayobe) $ pip install -U .
 
 Migrating Kayobe Configuration
 ------------------------------
@@ -54,7 +54,7 @@ default values:
 Once the configuration has been migrated, it is possible to view the global
 variables for all hosts::
 
-    (kayobe-venv) $ kayobe configuration dump
+    (kayobe) $ kayobe configuration dump
 
 The output of this command is a JSON object mapping hosts to their
 configuration.  The output of the command may be restricted using the
@@ -72,7 +72,7 @@ performed here include:
 
 To upgrade the Ansible control host::
 
-    (kayobe-venv) $ kayobe control host upgrade
+    (kayobe) $ kayobe control host upgrade
 
 Upgrading the Seed
 ==================
@@ -93,7 +93,7 @@ Upgrading Host Services
 Prior to upgrading the OpenStack control plane, the overcloud host services
 should be upgraded::
 
-    (kayobe-venv) $ kayobe overcloud host upgrade
+    (kayobe) $ kayobe overcloud host upgrade
 
 Note that this will not perform full configuration of the host, and will
 instead perform a targeted upgrade of specific services where necessary.
@@ -117,12 +117,12 @@ In some cases it may be necessary to build images locally either to apply local
 image customisation or to use a downstream version of kolla.  To build images
 locally::
 
-    (kayobe-venv) $ kayobe overcloud container image build
+    (kayobe) $ kayobe overcloud container image build
 
 It is possible to build a specific set of images by supplying one or more
 image name regular expressions::
 
-    (kayobe-venv) $ kayobe overcloud container image build ironic- nova-api
+    (kayobe) $ kayobe overcloud container image build ironic- nova-api
 
 In order to push images to a registry after they are built, add the ``--push``
 argument.
@@ -140,7 +140,7 @@ The `stackhpc account <https://hub.docker.com/r/stackhpc/>`_ provides image
 repositories suitable for use with kayobe and will be used by default.  To
 pull images from the configured image registry::
 
-    (kayobe-venv) $ kayobe overcloud container image pull
+    (kayobe) $ kayobe overcloud container image pull
 
 Saving Overcloud Service Configuration
 --------------------------------------
@@ -150,7 +150,7 @@ plane services for inspection or comparison with another configuration set
 prior to a reconfiguration or upgrade. This command will gather and save the
 control plane configuration for all hosts to the ansible control host::
 
-    (kayobe-venv) $ kayobe overcloud service configuration save
+    (kayobe) $ kayobe overcloud service configuration save
 
 The default location for the saved configuration is ``$PWD/overcloud-config``,
 but this can be changed via the ``output-dir`` argument. To gather
@@ -166,7 +166,7 @@ applying it to the running containers. The configuration should typically be
 generated in a directory other than the default configuration directory of
 ``/etc/kolla``, to avoid overwriting the active configuration::
 
-    (kayobe-venv) $ kayobe overcloud service configuration generate --node-config-dir /path/to/generated/config
+    (kayobe) $ kayobe overcloud service configuration generate --node-config-dir /path/to/generated/config
 
 The configuration will be generated remotely on the overcloud hosts in the
 specified directory, with one subdirectory per container. This command may be
@@ -182,9 +182,9 @@ a registry or built locally.
 
 To upgrade the containerised control plane services::
 
-    (kayobe-venv) $ kayobe overcloud service upgrade
+    (kayobe) $ kayobe overcloud service upgrade
 
 It is possible to specify tags for Kayobe and/or kolla-ansible to restrict the
 scope of the upgrade::
 
-    (kayobe-venv) $ kayobe overcloud service upgrade --tags config --kolla-tags keystone
+    (kayobe) $ kayobe overcloud service upgrade --tags config --kolla-tags keystone
