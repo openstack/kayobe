@@ -3,6 +3,6 @@
 ip_allocation_package_manager: yum
 
 # List of packages to install.
-ip_allocation_packages:
+ip_allocation_package_dependencies:
   - python-netaddr
   - PyYAML
