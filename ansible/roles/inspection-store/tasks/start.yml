@@ -7,7 +7,7 @@
     privileged: "{{ item.value.privileged | default(omit) }}"
     read_only: "{{ item.value.read_only | default(omit) }}"
     restart_policy: "{{ inspection_store_restart_policy }}"
-    restart_retries: "{{ inspection_store_restart_retries }}"
+    restart_retries: "{{ inspection_store_restart_retries | default(omit) }}"
     state: "{{ item.value.enabled | ternary('started', 'absent') }}"
     volumes: "{{ item.value.volumes }}"
   with_dict: "{{ inspection_store_services }}"
