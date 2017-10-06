@@ -19,11 +19,11 @@ source code repository, Git is required.
 
 On CentOS::
 
-    $ yum install -y python-virtualenv gcc git
+    $ yum install -y python-devel python-virtualenv gcc git
 
 On Ubuntu::
 
-    $ apt install -y python-virtualenv gcc git
+    $ apt install -y python-dev python-virtualenv gcc git
 
 Installation
 ============
