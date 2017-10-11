@@ -40,7 +40,6 @@
 
     - role: junos-switch
       junos_switch_delegate_to: localhost
-      junos_switch_venv: "{{ lookup('env', 'VIRTUAL_ENV') }}"
       junos_switch_type: "{{ switch_type }}"
       junos_switch_provider: "{{ switch_junos_provider }}"
       junos_switch_config_format: "{{ switch_junos_config_format }}"
