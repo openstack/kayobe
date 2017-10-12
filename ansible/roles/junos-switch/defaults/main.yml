@@ -1,7 +1,4 @@
 ---
-# Host on which to execute Junos Ansible modules.
-junos_switch_delegate_to:
-
 # Authentication provider information.
 junos_switch_provider:
 

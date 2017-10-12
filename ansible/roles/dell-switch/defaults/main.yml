@@ -1,7 +1,4 @@
 ---
-# Host on which to execute DellOS Ansible modules.
-dell_switch_delegate_to:
-
 # Type of Dell switch. One of dellos6, dellos9.
 dell_switch_type:
 

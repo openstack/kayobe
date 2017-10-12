@@ -27,11 +27,11 @@
   become: "{{ lookup('env', 'VIRTUAL_ENV') == None }}"
 
 - name: Ensure Juniper switches are configured
-  junos_config:
+  local_action:
+    module: junos_config
     provider: "{{ junos_switch_provider }}"
     src: "{{ junos_switch_src }}"
     src_format: "{{ junos_switch_config_format }}"
-  delegate_to: "{{ junos_switch_delegate_to }}"
   vars:
     junos_switch_config_format_to_src:
       set: junos-config-set.j2

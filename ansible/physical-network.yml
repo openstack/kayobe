@@ -26,7 +26,6 @@
     - role: ssh-known-host
 
     - role: dell-switch
-      dell_switch_delegate_to: localhost
       dell_switch_type: "{{ switch_type }}"
       dell_switch_provider: "{{ switch_dellos_provider }}"
       dell_switch_config: "{{ switch_config }}"
@@ -39,7 +38,6 @@
     - role: ssh-known-host
 
     - role: junos-switch
-      junos_switch_delegate_to: localhost
       junos_switch_type: "{{ switch_type }}"
       junos_switch_provider: "{{ switch_junos_provider }}"
       junos_switch_config_format: "{{ switch_junos_config_format }}"

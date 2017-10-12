@@ -1,14 +1,14 @@
 ---
 - name: Ensure DellOS6 switches are configured
-  dellos6_config:
+  local_action:
+    module: dellos6_config
     provider: "{{ dell_switch_provider }}"
     src: dellos6-config.j2
-  delegate_to: "{{ dell_switch_delegate_to }}"
   when: "{{ dell_switch_type == 'dellos6' }}"
 
 - name: Ensure DellOS9 switches are configured
-  dellos9_config:
+  local_action:
+    module: dellos9_config
     provider: "{{ dell_switch_provider }}"
     src: dellos9-config.j2
-  delegate_to: "{{ dell_switch_delegate_to }}"
   when: "{{ dell_switch_type == 'dellos9' }}"
