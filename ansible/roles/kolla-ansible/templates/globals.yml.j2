@@ -177,12 +177,6 @@ enable_{{ feature_flag }}: {{ hostvars[inventory_hostname]['kolla_enable_' ~ fea
 # 28800(8 hour), 43200(12 hour), 86400(1 day), 604800(1 week).
 #fernet_token_expiry: 86400
 
-# Use versionless endpoints for Keystone to avoid hitting an issue similar to
-# TripleO issue https://bugs.launchpad.net/tripleo/+bug/1667679.
-keystone_admin_url: "{% raw %}{{ admin_protocol }}://{{ kolla_internal_fqdn }}:{{ keystone_admin_port }}{% endraw %}"
-keystone_internal_url: "{% raw %}{{ internal_protocol }}://{{ kolla_internal_fqdn }}:{{ keystone_public_port }}{% endraw %}"
-keystone_public_url: "{% raw %}{{ public_protocol }}://{{ kolla_external_fqdn }}:{{ keystone_public_port }}{% endraw %}"
-
 
 #######################
 # Glance options
