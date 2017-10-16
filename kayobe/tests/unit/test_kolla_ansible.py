@@ -83,6 +83,7 @@ class TestCase(unittest.TestCase):
             "--kolla-extra-vars", "ev_name1=ev_value1",
             "--kolla-inventory", "/path/to/inventory",
             "--kolla-limit", "host1:host2",
+            "--kolla-skip-tags", "tag3,tag4",
             "--kolla-tags", "tag1,tag2",
         ]
         parsed_args = parser.parse_args(args)
@@ -95,6 +96,7 @@ class TestCase(unittest.TestCase):
             "--passwords", "/path/to/config/passwords.yml",
             "-e", "ev_name1=ev_value1",
             "--limit", "host1:host2",
+            "--skip-tags", "tag3,tag4",
             "--tags", "tag1,tag2",
         ]
         expected_cmd = " ".join(expected_cmd)

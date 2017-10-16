@@ -109,6 +109,7 @@ class TestCase(unittest.TestCase):
             "--extra-vars", "ev_name1=ev_value1",
             "--inventory", "/path/to/inventory",
             "--limit", "group1:host1",
+            "--skip-tags", "tag3,tag4",
             "--tags", "tag1,tag2",
             "--list-tasks",
         ]
@@ -125,6 +126,7 @@ class TestCase(unittest.TestCase):
             "--become",
             "--check",
             "--limit", "group1:host1",
+            "--skip-tags", "tag3,tag4",
             "--tags", "tag1,tag2",
             "playbook1.yml",
             "playbook2.yml",
