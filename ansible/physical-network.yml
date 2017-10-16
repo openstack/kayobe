@@ -2,13 +2,30 @@
 # Switch configuration depends on the type of switch, so groups hosts by their
 # switch type and apply tasks/roles to the relevant groups.
 
-- name: Group hosts by their switch type
+- name: Group hosts by their switch type and apply configuration filters
   hosts: switches
   gather_facts: no
   vars:
-    # Set this variable to True to configure of network for hardware discovery.
+    # Set this variable to True to configure the network for hardware
+    # discovery.
     physical_network_enable_discovery: False
+    # Set this variable to a comma-separated list of names of interfaces to
+    # configure in order to restrict configuration to a subset of interfaces.
+    physical_network_interface_limit: ''
+    # Set this variable to a comma-separated list of descriptions of interfaces
+    # to configure in order to restrict configuration to a subset of
+    # interfaces.
+    physical_network_interface_description_limit: ''
   tasks:
+    - name: Fail if both interface name and description limits are specified
+      fail:
+        msg: >
+          The interface name and interface description limits are mutually
+          exclusive.
+      when:
+        - physical_network_interface_limit != ''
+        - physical_network_interface_description_limit != ''
+
     - name: Group hosts by their switch type
       group_by:
         key: "switches_of_type_{{ switch_type }}"
@@ -18,6 +35,20 @@
         switch_interface_config: >
           {{ switch_interface_config | combine(switch_interface_config_discovery) }}
       when: "{{ physical_network_enable_discovery | bool }}"
+
+    - name: Restrict switch interfaces to requested subset by name
+      set_fact:
+        switch_interface_config: >
+          {{ switch_interface_config |
+             switch_interface_config_select_name(physical_network_interface_limit.split(",")) }}
+      when: physical_network_interface_limit != ''
+
+    - name: Restrict switch interfaces to requested subset by description
+      set_fact:
+        switch_interface_config: >
+          {{ switch_interface_config |
+             switch_interface_config_select_description(physical_network_interface_description_limit.split(",")) }}
+      when: physical_network_interface_description_limit != ''
 
 - name: Ensure DellOS physical switches are configured
   hosts: switches_of_type_dellos6:switches_of_type_dellos9

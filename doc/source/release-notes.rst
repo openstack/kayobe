@@ -5,6 +5,13 @@ Release Notes
 In Development
 ==============
 
+Features
+--------
+
+* Adds ``--interface-limit`` and ``--interface-description-limit`` arguments to
+  the ``kayobe physical network configure`` command.  These arguments allow
+  configuration to be limited to a subset of switch interfaces.
+
 Upgrade Notes
 -------------
 
