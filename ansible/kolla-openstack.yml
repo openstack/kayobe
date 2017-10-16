@@ -135,7 +135,7 @@
                     'ngs_trunk_ports': (
                          hostvars[item].switch_interface_config |
                          switch_interface_config_select_description(kolla_neutron_ml2_generic_switch_trunk_port_hosts)).keys() | join(',')
-                  }]
+                  } | combine(hostvars[item].kolla_neutron_ml2_generic_switch_extra) ]
               }}
           with_items: "{{ kolla_neutron_ml2_generic_switch_hosts }}"
 
