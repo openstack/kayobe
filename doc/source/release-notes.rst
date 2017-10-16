@@ -2,6 +2,17 @@
 Release Notes
 =============
 
+In Development
+==============
+
+Upgrade Notes
+-------------
+
+* Modifies the default value for ``inspector_manage_firewall`` from ``False``
+  to ``True``.  Management of the firewall by ironic inspector is important to
+  ensure that DHCP offers are not made to nodes during provisioning by
+  inspector's DHCP server.
+
 Kayobe 3.0.0
 ============
 
