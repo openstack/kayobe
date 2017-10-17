@@ -18,6 +18,9 @@ kolla_enable_glance:
 # glance-registry.conf.
 kolla_extra_glance:
 
+# Path to extra Glance configuration files.
+kolla_extra_glance_path:
+
 ###############################################################################
 # Ironic configuration.
 
@@ -252,6 +255,9 @@ kolla_extra_neutron:
 # Free form extra configuration to append to ml2_conf.ini.
 kolla_extra_neutron_ml2:
 
+# Path to extra Neutron configuration files.
+kolla_extra_neutron_path:
+
 ###############################################################################
 # Nova configuration.
 
@@ -260,6 +266,9 @@ kolla_enable_nova:
 
 # Free form extra configuration to append to nova.conf.
 kolla_extra_nova:
+
+# Path to extra Nova configuration files.
+kolla_extra_nova_path:
 
 ###############################################################################
 # Sahara configuration.

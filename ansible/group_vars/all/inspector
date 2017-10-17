@@ -15,7 +15,7 @@ inspector_ipa_ramdisk_upstream_url: "{{ ipa_ramdisk_upstream_url }}"
 # Ironic inspector processing configuration.
 
 # Whether inspector should manage the firewall.
-inspector_manage_firewall: False
+inspector_manage_firewall: True
 
 # List of of default inspector processing plugins.
 inspector_processing_hooks_default:

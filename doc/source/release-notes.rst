@@ -2,6 +2,29 @@
 Release Notes
 =============
 
+In Development
+==============
+
+Features
+--------
+
+* Adds ``--interface-limit`` and ``--interface-description-limit`` arguments to
+  the ``kayobe physical network configure`` command.  These arguments allow
+  configuration to be limited to a subset of switch interfaces.
+* Adds a ``--display`` argument to ``kayobe physical network configure``
+  command.  This will output the candidate switch configuration without
+  applying it.
+* Adds support for custom neutron and nova configuration files in
+  ``$KAYOBE_CONFIG_PATH/kolla/config/[neutron,nova]``.
+
+Upgrade Notes
+-------------
+
+* Modifies the default value for ``inspector_manage_firewall`` from ``False``
+  to ``True``.  Management of the firewall by ironic inspector is important to
+  ensure that DHCP offers are not made to nodes during provisioning by
+  inspector's DHCP server.
+
 Kayobe 3.0.0
 ============
 

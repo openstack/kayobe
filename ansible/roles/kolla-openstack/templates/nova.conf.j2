@@ -1,22 +1,5 @@
 # {{ ansible_managed }}
 
-[DEFAULT]
-{% if kolla_enable_ironic | bool %}
-# Taken from the ironic configuration guide.
-
-# Flag to decide whether to use baremetal_scheduler_default_filters or not.
-# (boolean value)
-scheduler_use_baremetal_filters=True
-
-# Determines if the Scheduler tracks changes to instances to help with
-# its filtering decisions (boolean value)
-scheduler_tracks_instance_changes=False
-
-# For ironic, this should be set to a number >= the number of ironic nodes
-# to more evenly distribute instances across the nodes.
-scheduler_host_subset_size=9999999
-{% endif %}
-
 {% if kolla_extra_nova %}
 #######################
 # Extra configuration
