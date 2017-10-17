@@ -40,6 +40,19 @@ The ``--enable-discovery`` argument enables a one-time configuration of ports
 attached to baremetal compute nodes to support hardware discovery via ironic
 inspector.
 
+It is possible to limit the switch interfaces that will be configured, either
+by interface name or interface description::
+
+    (kayobe) $ kayobe physical network configure --group <group> --interface-limit <interface names>
+    (kayobe) $ kayobe physical network configure --group <group> --interface-description-limit <interface descriptions>
+
+The names or descriptions should be separated by commas.  This may be useful
+when adding compute nodes to an existing deployment, in order to avoid changing
+the configuration interfaces in use by active nodes.
+
+The ``display`` argument will display the candidate switch configuration,
+without actually applying it.
+
 Seed Hypervisor
 ===============
 

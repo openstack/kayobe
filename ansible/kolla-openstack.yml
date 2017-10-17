@@ -134,7 +134,8 @@
                     'password': hostvars[item].ansible_ssh_pass,
                     'ngs_trunk_ports': (
                          hostvars[item].switch_interface_config |
-                         switch_interface_config_select_description(kolla_neutron_ml2_generic_switch_trunk_port_hosts)).keys() | join(',')
+                         switch_interface_config_select_description(kolla_neutron_ml2_generic_switch_trunk_port_hosts) |
+                         switch_interface_config_select_trunk()).keys() | join(',')
                   }]
               }}
           with_items: "{{ kolla_neutron_ml2_generic_switch_hosts }}"
