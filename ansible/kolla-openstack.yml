@@ -185,5 +185,7 @@
       kolla_extra_neutron_ml2: "{{ kolla_extra_config.neutron_ml2 | default }}"
       kolla_extra_nova: "{{ kolla_extra_config.nova | default }}"
       kolla_extra_sahara: "{{ kolla_extra_config.sahara | default }}"
-      kolla_extra_glance_path: "{{ kayobe_config_path }}/kolla/config/glance"
       kolla_extra_fluentd_output_path: "{{ kayobe_config_path }}/kolla/config/fluentd/output"
+      kolla_extra_glance_path: "{{ kayobe_config_path }}/kolla/config/glance"
+      kolla_extra_neutron_path: "{{ kayobe_config_path }}/kolla/config/neutron"
+      kolla_extra_nova_path: "{{ kayobe_config_path }}/kolla/config/nova"

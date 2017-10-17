@@ -11,8 +11,11 @@ Features
 * Adds ``--interface-limit`` and ``--interface-description-limit`` arguments to
   the ``kayobe physical network configure`` command.  These arguments allow
   configuration to be limited to a subset of switch interfaces.
-* Adds a ``display`` argument to ``kayobe physical network configure`` command.
-  This will output the candidate switch configuration without applying it.
+* Adds a ``--display`` argument to ``kayobe physical network configure``
+  command.  This will output the candidate switch configuration without
+  applying it.
+* Adds support for custom neutron and nova configuration files in
+  ``$KAYOBE_CONFIG_PATH/kolla/config/[neutron,nova]``.
 
 Upgrade Notes
 -------------
