@@ -13,6 +13,9 @@ kayobe_config_path: "{{ lookup('env', 'KAYOBE_CONFIG_PATH') | default('/etc/kayo
 # Base path for kayobe state on remote hosts.
 base_path: "/opt/kayobe"
 
+# Path in which to store configuration on remote hosts.
+config_path: "{{ base_path ~ '/etc' }}"
+
 # Path in which to cache downloaded images on remote hosts.
 image_cache_path: "{{ base_path ~ '/images' }}"
 

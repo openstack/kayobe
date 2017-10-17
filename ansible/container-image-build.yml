@@ -37,7 +37,7 @@
         set -o pipefail &&
         source {{ kolla_venv }}/bin/activate &&
         kolla-build \
-        --config-dir {{ kolla_config_path }} \
+        --config-dir {{ kolla_build_config_path }} \
         {% if item.type is defined %}--type {{ item.type }}{% endif %} \
         {% if push_images | bool %}--push{% endif %} \
         {{ item.regexes }} 2>&1 | tee --append {{ kolla_build_log_path }}

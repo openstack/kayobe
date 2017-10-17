@@ -15,7 +15,7 @@ namespace={{ kolla_docker_namespace }}
 tag={{ kolla_openstack_release }}
 
 # Path to a file containing template overrides.
-template_override={{ kolla_config_path }}/template-override.j2
+template_override={{ kolla_build_config_path }}/template-override.j2
 
 {% for source_name, source_def in kolla_sources.items() %}
 [{{ source_name }}]

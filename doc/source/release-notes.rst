@@ -12,6 +12,12 @@ Upgrade Notes
   to ``True``.  Management of the firewall by ironic inspector is important to
   ensure that DHCP offers are not made to nodes during provisioning by
   inspector's DHCP server.
+* Adds a variable ``config_path``, used to set the base path to configuration
+  on remote hosts. The default value is ``/opt/kayobe/etc``.
+* Modifies the variable used to configure the kolla build configuration path
+  from ``kolla_config_path`` to ``kolla_build_config_path``.  This provides a
+  cleaner separation of kolla and kolla-ansible configuration options. The
+  default value is ``{{ config_path }}/kolla``.
 
 Kayobe 3.0.0
 ============

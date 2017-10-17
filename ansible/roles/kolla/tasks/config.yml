@@ -8,4 +8,4 @@
     mode: 0750
   become: True
   with_items:
-    - "{{ kolla_config_path }}"
+    - "{{ kolla_build_config_path }}"

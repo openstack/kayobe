@@ -12,5 +12,4 @@
     - role: inspection-store
       inspection_store_enabled: "{{ inspector_store_enabled }}"
       inspection_store_port: "{{ inspector_store_port }}"
-      # FIXME: Use kayobe_config_path?
-      inspection_store_config_path: "/etc/kayobe/inspection-store"
+      inspection_store_config_path: "{{ config_path }}/inspection-store"

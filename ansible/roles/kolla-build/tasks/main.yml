@@ -2,7 +2,7 @@
 - name: Ensure the Kolla build configuration files exist
   template:
     src: "{{ item.src }}"
-    dest: "{{ kolla_config_path }}/{{ item.dest }}"
+    dest: "{{ kolla_build_config_path }}/{{ item.dest }}"
     mode: 0644
   with_items:
     - { src: kolla-build.conf.j2, dest: kolla-build.conf }
