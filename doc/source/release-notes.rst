@@ -16,6 +16,7 @@ Features
   applying it.
 * Adds support for custom neutron and nova configuration files in
   ``$KAYOBE_CONFIG_PATH/kolla/config/[neutron,nova]``.
+* Adds support for configuration of custom fluentd filters.
 
 Upgrade Notes
 -------------

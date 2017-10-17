@@ -5,6 +5,7 @@
     state: directory
     mode: 0750
   with_items:
+    - { name: fluentd/filter, enabled: "{{ kolla_extra_fluentd_filter_path != None }}" }
     - { name: fluentd/output, enabled: "{{ kolla_extra_fluentd_output_path != None }}" }
     - { name: glance, enabled: "{{ kolla_enable_glance }}" }
     - { name: ironic, enabled: "{{ kolla_enable_ironic }}" }
@@ -40,6 +41,15 @@
   with_fileglob:
     - "{{ kolla_extra_glance_path }}/*"
   when: kolla_extra_glance_path != None
+
+- name: Ensure extra fluentd filter configuration files exist
+  template:
+    src: "{{ item }}"
+    dest: "{{ kolla_node_custom_config_path }}/fluentd/filter/{{ item | basename }}"
+    mode: 0640
+  with_fileglob:
+    - "{{ kolla_extra_fluentd_filter_path }}/*.conf"
+  when: kolla_extra_fluentd_filter_path != None
 
 - name: Ensure extra fluentd output configuration files exist
   template:

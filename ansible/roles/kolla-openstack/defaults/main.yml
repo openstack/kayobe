@@ -5,6 +5,9 @@ kolla_node_custom_config_path:
 ###############################################################################
 # Fluentd configuration.
 
+# Path to extra Fluentd filter configuration files.
+kolla_extra_fluentd_filter_path:
+
 # Path to extra Fluentd output configuration files.
 kolla_extra_fluentd_output_path:
 
