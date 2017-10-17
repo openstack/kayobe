@@ -6,11 +6,12 @@
     mode: 0750
   with_items:
     - { name: fluentd/output, enabled: "{{ kolla_extra_fluentd_output_path != None }}" }
+    - { name: glance, enabled: "{{ kolla_enable_glance }}" }
     - { name: ironic, enabled: "{{ kolla_enable_ironic }}" }
     - { name: neutron, enabled: "{{ kolla_enable_neutron }}" }
+    - { name: nova, enabled: "{{ kolla_enable_nova }}" }
     - { name: swift, enabled: "{{ kolla_enable_swift }}" }
-    - { name: glance, enabled: "{{ kolla_enable_glance }}" }
-  when: "{{ item.enabled | bool }}"
+  when: item.enabled | bool
 
 - name: Ensure the Kolla OpenStack configuration files exist
   template:
@@ -29,7 +30,7 @@
     - { src: nova.conf.j2, dest: nova.conf, enabled: "{{ kolla_enable_nova }}" }
     - { src: pxelinux.default.j2, dest: ironic/pxelinux.default, enabled: "{{ kolla_enable_ironic }}" }
     - { src: sahara.conf.j2, dest: sahara.conf, enabled: "{{ kolla_enable_sahara }}" }
-  when: "{{ item.enabled | bool }}"
+  when: item.enabled | bool
 
 - name: Ensure extra glance configuration files exist
   template:
@@ -38,7 +39,7 @@
     mode: 0640
   with_fileglob:
     - "{{ kolla_extra_glance_path }}/*"
-  when: "{{ kolla_extra_glance_path != None }}"
+  when: kolla_extra_glance_path != None
 
 - name: Ensure extra fluentd output configuration files exist
   template:
@@ -47,7 +48,7 @@
     mode: 0640
   with_fileglob:
     - "{{ kolla_extra_fluentd_output_path }}/*.conf"
-  when: "{{ kolla_extra_fluentd_output_path != None }}"
+  when: kolla_extra_fluentd_output_path != None
 
 - name: Ensure the ironic inspector kernel and ramdisk are downloaded
   get_url:
@@ -72,3 +73,21 @@
   when:
     - kolla_enable_ironic | bool
     - item.path != None
+
+- name: Ensure extra neutron configuration files exist
+  template:
+    src: "{{ item }}"
+    dest: "{{ kolla_node_custom_config_path }}/neutron/{{ item | basename }}"
+    mode: 0640
+  with_fileglob:
+    - "{{ kolla_extra_neutron_path }}/*"
+  when: kolla_extra_neutron_path != None
+
+- name: Ensure extra nova configuration files exist
+  template:
+    src: "{{ item }}"
+    dest: "{{ kolla_node_custom_config_path }}/nova/{{ item | basename }}"
+    mode: 0640
+  with_fileglob:
+    - "{{ kolla_extra_nova_path }}/*"
+  when: kolla_extra_nova_path != None
