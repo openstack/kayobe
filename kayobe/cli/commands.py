@@ -227,6 +227,9 @@ class PhysicalNetworkConfigure(KayobeAnsibleMixin, VaultMixin, Command):
         group = parser.add_argument_group("Physical Networking")
         group.add_argument("--group", required=True,
                            help="the Ansible group to apply configuration to")
+        group.add_argument("--display", action="store_true",
+                           help="display the candidate configuration and exit "
+                                "without applying it")
         group.add_argument("--enable-discovery", action="store_true",
                            help="configure the network for hardware discovery")
         group.add_argument("--interface-limit",
@@ -240,6 +243,7 @@ class PhysicalNetworkConfigure(KayobeAnsibleMixin, VaultMixin, Command):
     def take_action(self, parsed_args):
         self.app.LOG.debug("Configuring a physical network")
         extra_vars = {}
+        extra_vars["physical_network_display"] = parsed_args.display
         if parsed_args.enable_discovery:
             extra_vars["physical_network_enable_discovery"] = True
         if parsed_args.interface_limit:

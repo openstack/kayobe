@@ -16,6 +16,9 @@
     # to configure in order to restrict configuration to a subset of
     # interfaces.
     physical_network_interface_description_limit: ''
+    # Set this variable to True in order to display the candidate switch
+    # configuration and exit without applying it.
+    physical_network_display: False
   tasks:
     - name: Fail if both interface name and description limits are specified
       fail:
@@ -29,6 +32,10 @@
     - name: Group hosts by their switch type
       group_by:
         key: "switches_of_type_{{ switch_type }}"
+
+    - name: Group hosts by whether display mode is set
+      group_by:
+        key: "switches_in_display_mode_{{ physical_network_display | bool }}"
 
     - name: Add discovery interface configuration when performing discovery
       set_fact:
@@ -50,8 +57,20 @@
              switch_interface_config_select_description(physical_network_interface_description_limit.split(",")) }}
       when: physical_network_interface_description_limit != ''
 
+- name: Display switch configuration
+  hosts: switches_in_display_mode_True
+  gather_facts: no
+  tasks:
+    - name: Display the candidate global switch configuration
+      debug:
+        var: switch_config
+
+    - name: Display the candidate switch interface configuration
+      debug:
+        var: switch_interface_config
+
 - name: Ensure DellOS physical switches are configured
-  hosts: switches_of_type_dellos6:switches_of_type_dellos9
+  hosts: switches_of_type_dellos6:switches_of_type_dellos9:&switches_in_display_mode_False
   gather_facts: no
   roles:
     - role: ssh-known-host
@@ -63,7 +82,7 @@
       dell_switch_interface_config: "{{ switch_interface_config }}"
 
 - name: Ensure Juniper physical switches are configured
-  hosts: switches_of_type_junos
+  hosts: switches_of_type_junos:&switches_in_display_mode_False
   gather_facts: no
   roles:
     - role: ssh-known-host
