@@ -1,15 +1,9 @@
 ---
+# Path to extra kolla-ansible configuration files.
+kolla_extra_config_path:
+
 # Directory where Kolla custom configuration files will be installed.
 kolla_node_custom_config_path:
-
-###############################################################################
-# Fluentd configuration.
-
-# Path to extra Fluentd filter configuration files.
-kolla_extra_fluentd_filter_path:
-
-# Path to extra Fluentd output configuration files.
-kolla_extra_fluentd_output_path:
 
 ###############################################################################
 # Glance configuration.
@@ -20,9 +14,6 @@ kolla_enable_glance:
 # Free form extra configuration to append to glance-api.conf and
 # glance-registry.conf.
 kolla_extra_glance:
-
-# Path to extra Glance configuration files.
-kolla_extra_glance_path:
 
 ###############################################################################
 # Ironic configuration.
@@ -258,9 +249,6 @@ kolla_extra_neutron:
 # Free form extra configuration to append to ml2_conf.ini.
 kolla_extra_neutron_ml2:
 
-# Path to extra Neutron configuration files.
-kolla_extra_neutron_path:
-
 ###############################################################################
 # Nova configuration.
 
@@ -270,9 +258,6 @@ kolla_enable_nova:
 # Free form extra configuration to append to nova.conf.
 kolla_extra_nova:
 
-# Path to extra Nova configuration files.
-kolla_extra_nova_path:
-
 ###############################################################################
 # Sahara configuration.
 
@@ -281,3 +266,9 @@ kolla_enable_sahara:
 
 # Free form extra configuration to append to sahara.conf.
 kolla_extra_sahara:
+
+###############################################################################
+# Swift configuration.
+
+# Whether to enable swift.
+kolla_enable_swift:
