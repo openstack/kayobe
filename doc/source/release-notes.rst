@@ -14,9 +14,9 @@ Features
 * Adds a ``--display`` argument to ``kayobe physical network configure``
   command.  This will output the candidate switch configuration without
   applying it.
-* Adds support for custom neutron and nova configuration files in
-  ``$KAYOBE_CONFIG_PATH/kolla/config/[neutron,nova]``.
-* Adds support for configuration of custom fluentd filters.
+* Adds support for configuration of custom fluentd filters, and additional
+  config file templates for heat, ironic, keystone, magnum, murano, sahara, and
+  swift in ``$KAYOBE_CONFIG_PATH/kolla/config/<component>/``.
 
 Upgrade Notes
 -------------
