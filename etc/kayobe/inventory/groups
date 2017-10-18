@@ -15,10 +15,14 @@ controllers
 [monitoring]
 # Empty group to provide declaration of monitoring group.
 
+[compute]
+# Empty group to provide declaration of compute group.
+
 [overcloud:children]
 controllers
 network
 monitoring
+compute
 
 [docker:children]
 # Hosts in this group will have Docker installed.
@@ -26,6 +30,7 @@ seed
 controllers
 network
 monitoring
+compute
 
 ###############################################################################
 # Networking groups.

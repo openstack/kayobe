@@ -1,0 +1,6 @@
+---
+###############################################################################
+# Compute node LVM configuration.
+
+# List of LVM volume groups.
+lvm_groups: "{{ compute_lvm_groups }}"

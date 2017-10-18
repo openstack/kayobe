@@ -1,0 +1,7 @@
+---
+###############################################################################
+# Compute node RAID configuration.
+
+# List of compute node RAID volumes. Format is same as that used by
+# stackhpc.drac role.
+raid_config: "{{ compute_raid_config }}"

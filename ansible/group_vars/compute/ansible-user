@@ -1,0 +1,7 @@
+---
+# User with which to access the computes via SSH.
+ansible_user: "{{ kayobe_ansible_user }}"
+
+# User with which to access the computes before the kayobe_ansible_user
+# account has been created.
+bootstrap_user: "{{ compute_bootstrap_user }}"

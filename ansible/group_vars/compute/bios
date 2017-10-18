@@ -1,0 +1,7 @@
+---
+###############################################################################
+# Compute node BIOS configuration.
+
+# Dict of monitoring node BIOS options. Format is same as that used by
+# stackhpc.drac role.
+bios_config: "{{ compute_bios_config }}"
