@@ -38,6 +38,7 @@
         bash -c '. env-vars &&
         export OS_URL=$IRONIC_URL &&
         export OS_TOKEN=$OS_AUTH_TOKEN &&
+        export OS_BAREMETAL_API_VERSION=1.34 &&
         export BIFROST_INVENTORY_SOURCE=ironic &&
         ansible baremetal
         --connection local
@@ -127,6 +128,7 @@
         docker exec bifrost_deploy
         bash -c '. env-vars &&
         export BIFROST_INVENTORY_SOURCE=ironic &&
+        export OS_BAREMETAL_API_VERSION=1.34 &&
         ansible-playbook -vvvv
         /bifrost/playbooks/deploy-dynamic.yaml
         --inventory /etc/bifrost/inventory/
@@ -149,6 +151,7 @@
         bash -c '. env-vars &&
         export OS_URL=$IRONIC_URL &&
         export OS_TOKEN=$OS_AUTH_TOKEN &&
+        export OS_BAREMETAL_API_VERSION=1.34 &&
         export BIFROST_INVENTORY_SOURCE=ironic &&
         ansible baremetal
         --connection local
