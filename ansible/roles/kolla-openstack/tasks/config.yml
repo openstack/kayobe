@@ -1,16 +1,10 @@
 ---
 - name: Ensure the Kolla OpenStack configuration directores exist
   file:
-    path: "{{ kolla_node_custom_config_path }}/{{ item.name }}"
+    path: "{{ item.dest }}"
     state: directory
     mode: 0750
-  with_items:
-    - { name: fluentd/output, enabled: "{{ kolla_extra_fluentd_output_path != None }}" }
-    - { name: glance, enabled: "{{ kolla_enable_glance }}" }
-    - { name: ironic, enabled: "{{ kolla_enable_ironic }}" }
-    - { name: neutron, enabled: "{{ kolla_enable_neutron }}" }
-    - { name: nova, enabled: "{{ kolla_enable_nova }}" }
-    - { name: swift, enabled: "{{ kolla_enable_swift }}" }
+  with_items: "{{ kolla_openstack_custom_config }}"
   when: item.enabled | bool
 
 - name: Ensure the Kolla OpenStack configuration files exist
@@ -31,24 +25,6 @@
     - { src: pxelinux.default.j2, dest: ironic/pxelinux.default, enabled: "{{ kolla_enable_ironic }}" }
     - { src: sahara.conf.j2, dest: sahara.conf, enabled: "{{ kolla_enable_sahara }}" }
   when: item.enabled | bool
-
-- name: Ensure extra glance configuration files exist
-  template:
-    src: "{{ item }}"
-    dest: "{{ kolla_node_custom_config_path }}/glance/{{ item | basename }}"
-    mode: 0640
-  with_fileglob:
-    - "{{ kolla_extra_glance_path }}/*"
-  when: kolla_extra_glance_path != None
-
-- name: Ensure extra fluentd output configuration files exist
-  template:
-    src: "{{ item }}"
-    dest: "{{ kolla_node_custom_config_path }}/fluentd/output/{{ item | basename }}"
-    mode: 0640
-  with_fileglob:
-    - "{{ kolla_extra_fluentd_output_path }}/*.conf"
-  when: kolla_extra_fluentd_output_path != None
 
 - name: Ensure the ironic inspector kernel and ramdisk are downloaded
   get_url:
@@ -74,20 +50,50 @@
     - kolla_enable_ironic | bool
     - item.path != None
 
-- name: Ensure extra neutron configuration files exist
-  template:
-    src: "{{ item }}"
-    dest: "{{ kolla_node_custom_config_path }}/neutron/{{ item | basename }}"
-    mode: 0640
-  with_fileglob:
-    - "{{ kolla_extra_neutron_path }}/*"
-  when: kolla_extra_neutron_path != None
+# We support a fairly flexible mechanism of dropping config file templates into
+# an 'extra' config directory, and passing these through to kolla-ansible. We
+# look for matching files in the source directory to template, and also remove
+# any unexpected files from the destination, to support removal of files.
 
-- name: Ensure extra nova configuration files exist
+- name: Find extra configuration files
+  find:
+    path: "{{ item.src }}"
+    patterns: "{{ item.patterns }}"
+  with_items: "{{ kolla_openstack_custom_config }}"
+  register: find_src_result
+
+- name: Find previously generated extra configuration files
+  find:
+    path: "{{ item.dest }}"
+    patterns: "{{ item.patterns }}"
+  with_items: "{{ kolla_openstack_custom_config }}"
+  register: find_dest_result
+
+- name: Ensure extra configuration files exist
   template:
-    src: "{{ item }}"
-    dest: "{{ kolla_node_custom_config_path }}/nova/{{ item | basename }}"
+    src: "{{ item.1.path }}"
+    dest: "{{ item.0.item.dest }}/{{ item.1.path | basename }}"
     mode: 0640
-  with_fileglob:
-    - "{{ kolla_extra_nova_path }}/*"
-  when: kolla_extra_nova_path != None
+  with_subelements:
+    - "{{ find_src_result.results }}"
+    - files
+    - skip_missing: True
+  when: item.0.item.enabled | bool
+
+- name: Ensure unnecessary extra configuration files are absent
+  file:
+    path: "{{ item.1.path }}"
+    state: absent
+  with_subelements:
+    - "{{ find_dest_result.results }}"
+    - files
+    - skip_missing: True
+  when:
+    - not item.0.item.enabled or
+      item.1.path | basename not in src_files
+    - item.1.path | basename not in item.0.item.ignore | default([])
+  vars:
+    # Find the source result that corresponds to this one.
+    src_result: "{{ (find_src_result.results | selectattr('item', 'equalto', item.0.item) | list)[0] }}"
+    # Find the list of files in the source.
+    src_files: "{{ src_result.files | map(attribute='path') | map('basename') | list }}"
