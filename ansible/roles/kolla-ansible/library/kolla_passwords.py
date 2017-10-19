@@ -182,7 +182,7 @@ def main():
             overrides=dict(default={}, type='dict'),
             sample=dict(default='/usr/share/kolla-ansible/etc_examples/kolla/passwords.yml', type='str'),
             src=dict(default='/etc/kolla/passwords.yml', type='str'),
-            vault_password=dict(type='str'),
+            vault_password=dict(type='str', no_log=True),
             virtualenv=dict(type='str'),
         ),
         add_file_common_args=True,
