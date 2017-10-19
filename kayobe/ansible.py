@@ -55,6 +55,9 @@ def add_args(parser):
     parser.add_argument("-l", "--limit", metavar="SUBSET",
                         help="further limit selected hosts to an additional "
                              "pattern")
+    parser.add_argument("--skip-tags", metavar="TAGS",
+                        help="only run plays and tasks whose tags do not match"
+                             "these values")
     parser.add_argument("-t", "--tags", metavar="TAGS",
                         help="only run plays and tasks tagged with these "
                              "values")
@@ -135,6 +138,8 @@ def build_args(parsed_args, playbooks,
     if parsed_args.limit or limit:
         limits = [l for l in [parsed_args.limit, limit] if l]
         cmd += ["--limit", ":&".join(limits)]
+    if parsed_args.skip_tags:
+        cmd += ["--skip-tags", parsed_args.skip_tags]
     if parsed_args.tags or tags:
         all_tags = [t for t in [parsed_args.tags, tags] if t]
         cmd += ["--tags", ",".join(all_tags)]

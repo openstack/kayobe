@@ -55,6 +55,9 @@ def add_args(parser):
     parser.add_argument("-kl", "--kolla-limit", metavar="SUBSET",
                         help="further limit selected hosts to an additional "
                              "pattern")
+    parser.add_argument("--kolla-skip-tags", metavar="TAGS",
+                        help="only run plays and tasks whose tags do not match"
+                             "these values in Kolla Ansible")
     parser.add_argument("-kt", "--kolla-tags", metavar="TAGS",
                         help="only run plays and tasks tagged with these "
                              "values in Kolla Ansible")
@@ -120,6 +123,8 @@ def build_args(parsed_args, command, inventory_filename, extra_vars=None,
     if parsed_args.kolla_limit or limit:
         limits = [l for l in [parsed_args.kolla_limit, limit] if l]
         cmd += ["--limit", ":&".join(limits)]
+    if parsed_args.kolla_skip_tags:
+        cmd += ["--skip-tags", parsed_args.kolla_skip_tags]
     if parsed_args.kolla_tags or tags:
         all_tags = [t for t in [parsed_args.kolla_tags, tags] if t]
         cmd += ["--tags", ",".join(all_tags)]
