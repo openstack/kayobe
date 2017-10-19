@@ -24,4 +24,4 @@
             type: raw
         os_images_git_elements: "{{ ipa_build_dib_git_elements }}"
         os_images_upload: False
-      when: "{{ ipa_build_images | bool }}"
+      when: ipa_build_images | bool

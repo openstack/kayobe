@@ -15,7 +15,7 @@
               Network interface validation failed - no interface configured for
               {{ item }}. This should be configured via '{{ item }}_interface'.
           with_items: "{{ ether_interfaces }}"
-          when: "{{ not item | net_interface }}"
+          when: not item | net_interface
 
         - name: Validate bridge interface configuration
           fail:
@@ -23,7 +23,7 @@
               Bridge interface validation failed - no interface configured for
               {{ item }}. This should be configured via '{{ item }}_interface'.
           with_items: "{{ bridge_interfaces }}"
-          when: "{{ not item | net_interface }}"
+          when: not item | net_interface
 
         - name: Validate bond interface configuration
           fail:
@@ -31,7 +31,7 @@
               Bond interface validation failed - no interface configured for
               {{ item }}. This should be configured via '{{ item }}_interface'.
           with_items: "{{ bond_interfaces }}"
-          when: "{{ not item | net_interface }}"
+          when: not item | net_interface
       tags:
         - config-validation
 
@@ -43,9 +43,9 @@
       become: True
       register: nm_result
       failed_when:
-        - "{{ nm_result | failed }}"
+        - nm_result | failed
         # Ugh, Ansible's service module doesn't handle uninstalled services.
-        - "{{ 'Could not find the requested service' not in nm_result.msg }}"
+        - "'Could not find the requested service' not in nm_result.msg"
 
   roles:
     - role: ahuffman.resolv
@@ -89,7 +89,7 @@
       with_items:
         - "{{ provision_wl_net_name }}"
         - "{{ external_net_name }}"
-      when: "{{ item in network_interfaces }}"
+      when: item in network_interfaces
 
     - name: Update a fact containing veth interfaces
       set_fact:

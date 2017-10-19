@@ -46,8 +46,8 @@
               ({{ item.description }}) is invalid. Value:
               "{{ hostvars[inventory_hostname][item.var_name] | default('<undefined>') }}".
           when:
-            - "{{ item.required | bool }}"
-            - "{{ hostvars[inventory_hostname][item.var_name] is not defined or not hostvars[inventory_hostname][item.var_name] }}"
+            - item.required | bool
+            - hostvars[inventory_hostname][item.var_name] is not defined or not hostvars[inventory_hostname][item.var_name]
           with_items:
             - var_name: "kolla_api_interface"
               description: "API network interface name"
@@ -58,7 +58,7 @@
             - var_name: "kolla_inspector_dnsmasq_interface"
               description: "Bare metal introspection network interface name"
               required: "{{ kolla_enable_ironic }}"
-      when: "{{ groups['controllers'] | length > 0 }}"
+      when: groups['controllers'] | length > 0
       tags:
         - config
         - config-validation
@@ -71,7 +71,7 @@
             kolla_internal_fqdn: "{{ internal_net_name | net_fqdn or internal_net_name | net_vip_address }}"
             kolla_external_vip_address: "{{ public_net_name | net_vip_address }}"
             kolla_external_fqdn: "{{ public_net_name | net_fqdn or public_net_name | net_vip_address }}"
-          when: "{{ kolla_enable_haproxy | bool }}"
+          when: kolla_enable_haproxy | bool
 
         - name: Set facts containing the VIP addresses and FQDNs
           set_fact:
@@ -79,8 +79,7 @@
             kolla_internal_fqdn: "{{ internal_net_name | net_ip(network_host) }}"
             kolla_external_vip_address: "{{ public_net_name | net_ip(network_host) }}"
             kolla_external_fqdn: "{{ public_net_name | net_ip(network_host) }}"
-          when:
-            - "{{ not kolla_enable_haproxy | bool }}"
+          when: not kolla_enable_haproxy | bool
 
         - name: Set facts containing the network host interfaces
           set_fact:
@@ -107,7 +106,7 @@
             # FIXME: Network host does not have an IP on this network.
             - "{{ provision_wl_net_name }}"
             - "{{ external_net_name }}"
-          when: "{{ item in hostvars[network_host].network_interfaces }}"
+          when: item in hostvars[network_host].network_interfaces
 
         - name: Set facts containing the Neutron bridge and interface names
           set_fact:
@@ -126,8 +125,8 @@
               ({{ item.description }}) is invalid. Value:
               "{{ hostvars[inventory_hostname][item.var_name] | default('<undefined>') }}".
           when:
-            - "{{ item.required | bool }}"
-            - "{{ hostvars[inventory_hostname][item.var_name] is not defined or not hostvars[inventory_hostname][item.var_name] }}"
+            - item.required | bool
+            - hostvars[inventory_hostname][item.var_name] is not defined or not hostvars[inventory_hostname][item.var_name]
           with_items:
             - var_name: "kolla_internal_vip_address"
               description: "Internal API VIP address"
@@ -158,8 +157,8 @@
               ({{ item.0.description }}) is invalid. Value:
               "{{ item.1 | default('<undefined>') }}".
           when:
-            - "{{ item.0.required | bool }}"
-            - "{{ item.1 is not defined or not item.1 }}"
+            - item.0.required | bool
+            - item.1 is not defined or not item.1
           with_subelements:
             - - var_name: "kolla_neutron_bridge_names"
                 value: "{{ kolla_neutron_bridge_names }}"
@@ -170,7 +169,7 @@
                 description: "List of Neutron interface names"
                 required: True
             - value
-      when: "{{ groups['network'] | length > 0 }}"
+      when: groups['network'] | length > 0
       tags:
         - config
         - config-validation
@@ -188,13 +187,13 @@
               ({{ item.description }}) is invalid. Value:
               "{{ hostvars[inventory_hostname][item.var_name] | default('<undefined>') }}".
           when:
-            - "{{ item.required | bool }}"
-            - "{{ hostvars[inventory_hostname][item.var_name] is not defined or not hostvars[inventory_hostname][item.var_name] }}"
+            - item.required | bool
+            - hostvars[inventory_hostname][item.var_name] is not defined or not hostvars[inventory_hostname][item.var_name]
           with_items:
             - var_name: "kolla_bifrost_network_interface"
               description: "Bifrost network interface name"
               required: True
-      when: "{{ groups['seed'] | length > 0 }}"
+      when: groups['seed'] | length > 0
       tags:
         - config
         - config-validation

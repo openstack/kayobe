@@ -13,7 +13,7 @@
       set_fact:
         container_image_sets:
           - regexes: "{{ container_image_regexes }}"
-      when: "{{ container_image_regexes != '' }}"
+      when: container_image_regexes != ''
 
     - name: Display the regexes for container images that will be built
       debug:

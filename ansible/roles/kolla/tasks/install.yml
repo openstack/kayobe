@@ -25,14 +25,14 @@
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
   become: True
-  when: "{{ kolla_ctl_install_type == 'source' }}"
+  when: kolla_ctl_install_type == 'source'
 
 - name: Ensure Kolla source code checkout exists
   git:
     repo: "{{ kolla_source_url }}"
     dest: "{{ kolla_source_path }}"
     version: "{{ kolla_source_version }}"
-  when: "{{ kolla_ctl_install_type == 'source' }}"
+  when: kolla_ctl_install_type == 'source'
 
 - name: Ensure the latest version of pip is installed
   pip:
@@ -64,4 +64,4 @@
     # Required for kolla-genpwd.
     - name: PyYAML
       version: "3.12"
-  when: "{{ item.install | default(True) | bool }}"
+  when: item.install | default(True) | bool

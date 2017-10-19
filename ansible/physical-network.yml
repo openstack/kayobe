@@ -41,7 +41,7 @@
       set_fact:
         switch_interface_config: >
           {{ switch_interface_config | combine(switch_interface_config_discovery) }}
-      when: "{{ physical_network_enable_discovery | bool }}"
+      when: physical_network_enable_discovery | bool
 
     - name: Restrict switch interfaces to requested subset by name
       set_fact:

@@ -19,9 +19,9 @@
       with_dict: "{{ idrac_network_ips }}"
       # Don't add hosts that already exist.
       when:
-        - "{{ item.key not in groups['all'] }}"
-        - "{{ item.key | replace('-idrac', '') not in groups['all'] }}"
-        - "{{ not compute_node_limit or item.key | replace('-idrac', '') in compute_node_limit_list }}"
+        - item.key not in groups['all']
+        - item.key | replace('-idrac', '') not in groups['all']
+        - not compute_node_limit or item.key | replace('-idrac', '') in compute_node_limit_list
       run_once: True
 
 - name: Ensure compute nodes are present in the Ansible inventory
@@ -35,5 +35,5 @@
       set_fact:
         ipmi_address: "{{ idrac_network_ips[inventory_hostname] }}"
       # Don't add hosts that already exist.
-      when: "{{ not compute_node_limit or inventory_hostname in compute_node_limit_list }}"
+      when: not compute_node_limit or inventory_hostname in compute_node_limit_list
       run_once: True

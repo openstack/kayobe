@@ -51,7 +51,7 @@
         parents:
           - "interface {{ switch_interface_name }}"
       delegate_to: localhost
-      when: "{{ switch_type == 'dellos6' }}"
+      when: switch_type == 'dellos6'
 
     # The tasks in this block are delegated to the controller.
     - block:
@@ -67,8 +67,8 @@
           delegate_to: "{{ delegate_host }}"
           register: arp_result
           failed_when:
-            - "{{ arp_result | failed }}"
-            - "{{ 'No ARP entry for ' ~ idrac_default_ip not in arp_result.stdout }}"
+            - arp_result | failed
+            - "'No ARP entry for ' ~ idrac_default_ip not in arp_result.stdout"
 
         # Ansible's until keyword seems to not work nicely with failed_when, causing
         # the task to fail even though we have specified failed_when: False.
@@ -103,7 +103,7 @@
         - name: Set a fact about whether the iDRAC default IP was reachable
           set_fact:
             idrac_bootstrap_failure: "{{ ping_result.results[0] }}"
-          when: "{{ ping_result.results[0].rc != 0 }}"
+          when: ping_result.results[0].rc != 0
 
         - name: Ensure IPMI is enabled on the iDRAC
           command: >
@@ -117,7 +117,7 @@
           loop_control:
             loop_var: delegate_host
           delegate_to: "{{ delegate_host }}"
-          when: "{{ not idrac_bootstrap_failure }}"
+          when: not idrac_bootstrap_failure
           register: racadm_ipmi_enable
           failed_when: False
 
@@ -125,8 +125,8 @@
           set_fact:
             idrac_bootstrap_failure: "{{ racadm_ipmi_enable.results[0] }}"
           when:
-            - "{{ not idrac_bootstrap_failure }}"
-            - "{{ racadm_ipmi_enable.results[0].rc != 0 }}"
+            - not idrac_bootstrap_failure
+            - racadm_ipmi_enable.results[0].rc != 0
 
         - name: Ensure the iDRAC IP address is configured
           command: >
@@ -140,8 +140,7 @@
           loop_control:
             loop_var: delegate_host
           delegate_to: "{{ delegate_host }}"
-          when:
-            - "{{ not idrac_bootstrap_failure }}"
+          when: not idrac_bootstrap_failure
           register: racadm_setniccfg
           failed_when: False
 
@@ -149,14 +148,14 @@
           set_fact:
             idrac_bootstrap_failure: "{{ racadm_setniccfg.results[0] }}"
           when:
-            - "{{ not idrac_bootstrap_failure }}"
-            - "{{ racadm_setniccfg.results[0].rc != 0 }}"
+            - not idrac_bootstrap_failure
+            - racadm_setniccfg.results[0].rc != 0
 
         - name: Append the iDRAC to the successful list on success
           set_fact:
             idrac_bootstrap_success: >
               {{ idrac_bootstrap_success + [idrac_port_description] }}
-          when: "{{ not idrac_bootstrap_failure }}"
+          when: not idrac_bootstrap_failure
 
         - name: Append the iDRAC to the failed list on failure
           set_fact:
@@ -164,7 +163,7 @@
               {{ idrac_bootstrap_failed +
                  [{"port description": idrac_port_description,
                    "failure": idrac_bootstrap_failure}] }}
-          when: "{{ idrac_bootstrap_failure }}"
+          when: idrac_bootstrap_failure
       run_once: True
 
   # Ensure we reconfigure the switch interface.
@@ -177,14 +176,13 @@
         parents:
           - "interface {{ switch_interface_name }}"
       delegate_to: localhost
-      when:
-        - "{{ switch_type == 'dellos6' }}"
+      when: switch_type == 'dellos6'
 
-  when: "{{ idrac_bootstrap_required }}"
+  when: idrac_bootstrap_required
 
 - name: Append the iDRAC to the unchanged list when unchanged
   set_fact:
     idrac_bootstrap_unchanged: >
       {{ idrac_bootstrap_unchanged + [idrac_port_description] }}
   run_once: True
-  when: "{{ not idrac_bootstrap_required }}"
+  when: not idrac_bootstrap_required

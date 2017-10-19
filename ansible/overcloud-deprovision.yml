@@ -63,7 +63,7 @@
           Ironic node for {{ inventory_hostname }} is in an unexpected
           initial provision state: {{ initial_provision_state }}. Expected
           states are: {{ deprovisionable_states | join(',') }}.
-      when: "{{ initial_provision_state not in deprovisionable_states }}"
+      when: initial_provision_state not in deprovisionable_states
 
     - name: Ensure the the ironic node is deprovisioned
       command: >
@@ -82,7 +82,7 @@
       until: "{{ delete_result | success or 'is locked by host' in delete_result.stdout }}"
       retries: "{{ ironic_retries }}"
       delay: "{{ ironic_retry_interval }}"
-      when: "{{ initial_provision_state != 'available' }}"
+      when: initial_provision_state != 'available'
       delegate_to: "{{ seed_host }}"
       vars:
         # NOTE: Without this, the seed's ansible_host variable will not be
@@ -111,8 +111,8 @@
       retries: "{{ wait_available_timeout // wait_available_interval }}"
       delay: "{{ wait_available_interval }}"
       when:
-        - "{{ wait_available | bool }}"
-        - "{{ initial_provision_state != 'available' }}"
+        - wait_available | bool
+        - initial_provision_state != 'available'
       changed_when: False
       delegate_to: "{{ seed_host }}"
       vars:
@@ -124,8 +124,8 @@
       set_fact:
         final_provision_state: "{{ show_result.stdout_lines[1] }}"
       when:
-        - "{{ wait_available | bool }}"
-        - "{{ initial_provision_state != 'available' }}"
+        - wait_available | bool
+        - initial_provision_state != 'available'
 
     - name: Fail if the ironic node is not available
       fail:
@@ -134,6 +134,6 @@
           provision state after deprovisioning.  Ironic provision state:
           {{ final_provision_state }}. Expected: available.
       when:
-        - "{{ wait_available | bool }}"
-        - "{{ initial_provision_state != 'available' }}"
-        - "{{ final_provision_state != 'available' }}"
+        - wait_available | bool
+        - initial_provision_state != 'available'
+        - final_provision_state != 'available'

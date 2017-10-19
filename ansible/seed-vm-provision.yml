@@ -11,7 +11,7 @@
         msg: >
           There should be exactly one host in the seed group. There are
           currently {{ groups['seed'] | length }}.
-      when: "{{ groups['seed'] | length != 1 }}"
+      when: groups['seed'] | length != 1
 
     - name: Ensure the image cache directory exists
       file:

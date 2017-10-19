@@ -22,7 +22,7 @@
             }]
           }}
       with_items: "{{ network_interfaces }}"
-      when: "{{ item|net_cidr != None }}"
+      when: item|net_cidr != None
   roles:
     - role: ip-allocation
       ip_allocation_filename: "{{ kayobe_config_path }}/network-allocation.yml"

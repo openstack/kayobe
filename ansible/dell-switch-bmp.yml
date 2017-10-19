@@ -8,4 +8,4 @@
     - role: dell-switch-bmp
       # This is the Nginx web server on the seed node.
       dell_switch_bmp_http_base_url: "http://{{ provision_oc_net_name | net_ip }}:8080"
-      when: "{{ dell_switch_bmp_images }}"
+      when: dell_switch_bmp_images
