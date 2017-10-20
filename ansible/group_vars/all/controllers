@@ -13,8 +13,8 @@ controller_bootstrap_user: "{{ lookup('env', 'USER') }}"
 controller_network_interfaces: >
   {{ (controller_default_network_interfaces +
       controller_extra_network_interfaces +
-      controller_network_host_network_interfaces
-      if inventory_hostname in groups['network'] else []) | unique | list }}
+      (controller_network_host_network_interfaces
+       if inventory_hostname in groups['network'] else [])) | unique | list }}
 
 # List of default networks to which controller nodes are attached.
 controller_default_network_interfaces: >
