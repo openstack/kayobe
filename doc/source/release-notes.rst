@@ -25,6 +25,10 @@ Upgrade Notes
   to ``True``.  Management of the firewall by ironic inspector is important to
   ensure that DHCP offers are not made to nodes during provisioning by
   inspector's DHCP server.
+* The default list of neutron ML2 mechanism drivers
+  (``kolla_neutron_ml2_mechanism_drivers``) has been removed in favour of using
+  the defaults provided by kolla-ansible. Users relying on the default list of
+  ``openvswitch`` and ``genericswitch`` should set the value explicitly.
 
 Kayobe 3.0.0
 ============
