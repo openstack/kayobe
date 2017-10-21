@@ -1,4 +1,4 @@
 =================
 How to Contribute
 =================
-.. include:: ../../CONTRIBUTING.rst
+.. include:: ../../../CONTRIBUTING.rst

@@ -1,0 +1,195 @@
+#!/bin/bash
+
+set -e
+
+# Library of functions for the kayobe development environment.
+
+# Configuration
+
+function config_defaults {
+    # Set default values for kayobe development configuration.
+
+    # Try to detect if we are running in a vagrant VM.
+    if [[ -e /vagrant ]]; then
+        KAYOBE_SOURCE_PATH_DEFAULT=/vagrant
+    else
+        KAYOBE_SOURCE_PATH_DEFAULT=$(pwd)
+    fi
+
+    # Path to the kayobe source code repository. Typically this will be the
+    # Vagrant shared directory.
+    export KAYOBE_SOURCE_PATH=${KAYOBE_SOURCE_PATH:-$KAYOBE_SOURCE_PATH_DEFAULT}
+
+    # Path to the kayobe-config repository checkout.
+    export KAYOBE_CONFIG_SOURCE_PATH=${KAYOBE_CONFIG_SOURCE_PATH:-${KAYOBE_SOURCE_PATH}/config/src/kayobe-config}
+
+    # Path to the kayobe virtual environment.
+    export KAYOBE_VENV_PATH=${KAYOBE_VENV_PATH:-~/kayobe-venv}
+
+    # Whether to build container images for the seed services. If 0, they will
+    # be pulled.
+    export KAYOBE_SEED_CONTAINER_IMAGE_BUILD=${KAYOBE_SEED_CONTAINER_IMAGE_BUILD:-0}
+
+    # Whether to build container images for the overcloud services. If 0, they
+    # will be pulled.
+    export KAYOBE_OVERCLOUD_CONTAINER_IMAGE_BUILD=${KAYOBE_OVERCLOUD_CONTAINER_IMAGE_BUILD:-0}
+}
+
+function config_set {
+    # Source the configuration file, config.sh
+
+    PARENT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+    source ${PARENT}/config.sh
+}
+
+function config_check {
+    # Check the configuration environment variables.
+
+    if [[ ! -e $KAYOBE_CONFIG_SOURCE_PATH ]]; then
+        if [[ ${KAYOBE_CONFIG_REQUIRED:-1} -eq 1 ]]; then
+            echo "Kayobe configuration path $KAYOBE_CONFIG_SOURCE_PATH does not exist"
+            return 1
+        fi
+    fi
+
+    if [[ ! -e $KAYOBE_SOURCE_PATH ]]; then
+        echo "Kayobe source path $KAYOBE_SOURCE_PATH does not exist"
+        return 1
+    fi
+}
+
+function config_init {
+    config_defaults
+    config_set
+    config_check
+}
+
+# Installation
+
+function install_dependencies {
+    echo "Installing package dependencies for kayobe"
+    if [[ -e /etc/centos-release ]]; then
+        sudo yum -y install gcc git vim python-virtualenv
+    else
+        sudo apt install -y python-dev python-virtualenv gcc git
+    fi
+}
+
+function install_venv {
+    local venv_parent=$(dirname ${KAYOBE_VENV_PATH})
+    if [[ ! -d $venv_parent ]]; then
+        mkdir -p $venv_parent
+    fi
+    if [[ ! -f ${KAYOBE_VENV_PATH}/bin/activate ]]; then
+        echo "Creating kayobe virtual environment in ${KAYOBE_VENV_PATH}"
+        virtualenv ${KAYOBE_VENV_PATH}
+        source ${KAYOBE_VENV_PATH}/bin/activate
+        pip install -U pip
+        pip install ${KAYOBE_SOURCE_PATH}
+        deactivate
+    else
+        echo "Using existing kayobe virtual environment in ${KAYOBE_VENV_PATH}"
+    fi
+}
+
+# Deployment
+
+function is_deploy_image_built_locally {
+    ipa_build_images=$(kayobe configuration dump --host controllers[0] --var-name ipa_build_images)
+    [[ $ipa_build_images =~ ^true$ ]]
+}
+
+function environment_setup {
+    source ${KAYOBE_VENV_PATH}/bin/activate
+    source ${KAYOBE_CONFIG_SOURCE_PATH}/kayobe-env
+
+    cd ${KAYOBE_SOURCE_PATH}
+}
+
+function seed_hypervisor_deploy {
+    # Deploy a seed hypervisor.
+    environment_setup
+
+    echo "Bootstrapping the ansible control host"
+    kayobe control host bootstrap
+
+    echo "Configuring the seed hypervisor"
+    kayobe seed hypervisor host configure
+}
+
+function seed_deploy {
+    # Deploy a kayobe seed in a VM.
+    environment_setup
+
+    echo "Bootstrapping the ansible control host"
+    kayobe control host bootstrap
+
+    echo "Provisioning the seed VM"
+    kayobe seed vm provision
+
+    echo "Configuring the seed host"
+    kayobe seed host configure
+
+    # Note: This must currently be before host configure, because host
+    # configure runs kolla-ansible.yml, which validates the presence of the
+    # built deploy images.
+    if is_deploy_image_built_locally; then
+        echo "Building seed deployment images"
+        kayobe seed deployment image build
+    else
+        echo "Not building seed deployment images"
+    fi
+
+    if [[ ${KAYOBE_SEED_CONTAINER_IMAGE_BUILD} = 1 ]]; then
+        echo "Building seed container images"
+        kayobe seed container image build
+    else
+        echo "Not pulling seed container images - no such command yet"
+        #kayobe seed container image pull
+    fi
+
+    echo "Deploying containerised seed services"
+    kayobe seed service deploy
+}
+
+function overcloud_deploy {
+    # Deploy a kayobe control plane.
+    echo "Deploying a kayobe development environment. This consists of a "
+    echo "single node OpenStack control plane."
+
+    environment_setup
+
+    echo "Bootstrapping the ansible control host"
+    kayobe control host bootstrap
+
+    echo "Configuring the controller host"
+    kayobe overcloud host configure
+
+    # Note: This must currently be before host configure, because host
+    # configure runs kolla-ansible.yml, which validates the presence of the
+    # built deploy images.
+    if is_deploy_image_built_locally; then
+        echo "Building overcloud deployment images"
+        kayobe overcloud deployment image build
+    else
+        echo "Not building overcloud deployment images"
+    fi
+
+    if [[ ${KAYOBE_OVERCLOUD_CONTAINER_IMAGE_BUILD} = 1 ]]; then
+        echo "Building overcloud container images"
+        kayobe overcloud container image build
+    else
+        echo "Pulling overcloud container images"
+        kayobe overcloud container image pull
+    fi
+
+    echo "Deploying containerised overcloud services"
+    kayobe overcloud service deploy
+
+    echo "Performing post-deployment configuration"
+    source ${KOLLA_CONFIG_PATH:-/etc/kolla}/admin-openrc.sh
+    kayobe overcloud post configure
+
+    echo "Control plane deployment complete"
+}

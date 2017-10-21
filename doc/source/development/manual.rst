@@ -1,42 +1,26 @@
-===========
-Development
-===========
+.. _development-manual:
 
-This section describes how to set up an OpenStack controller in a virtual
-machine using `Vagrant <https://www.vagrantup.com/>`_ and Kayobe.
+============
+Manual Setup
+============
+
+This section provides a set of manual steps to set up a development environment
+for an OpenStack controller in a virtual machine using `Vagrant
+<https://www.vagrantup.com/>`_ and Kayobe.
+
+For a more automated and flexible procedure, see :ref:`development-automated`.
 
 Preparation
 ===========
 
-First, ensure that Vagrant is installed and correctly configured to use
-virtual box. Also install the following vagrant plugins:
+Follow the steps in :ref:`development-vagrant` to prepare your environment for
+use with Vagrant and bring up a Vagrant VM.
 
-   vagrant plugin install vagrant-vbguest
-   vagrant plugin install vagrant-reload
+Manual Installation
+===================
 
-Note: if using Ubuntu 16.04 LTS, you may be unable to install any plugins. To
-work around this install the upstream version from www.virtualbox.org.
-
-Next, clone kayobe::
-
-    git clone https://github.com/stackhpc/kayobe
-
-Change the current directory to the kayobe repository::
-
-    cd kayobe
-
-Inspect kayobe's ``Vagrantfile``, noting the provisioning steps::
-
-    less Vagrantfile
-
-Bring up a virtual machine::
-
-    vagrant up
-
-Wait for the VM to boot.
-
-Installation
-============
+Sometimes the best way to learn a tool is to ditch the scripts and perform a
+manual installation.
 
 SSH into the controller VM::
 
