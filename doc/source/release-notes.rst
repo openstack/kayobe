@@ -25,6 +25,8 @@ Upgrade Notes
   to ``True``.  Management of the firewall by ironic inspector is important to
   ensure that DHCP offers are not made to nodes during provisioning by
   inspector's DHCP server.
+* Disables swift by default. The default value of ``kolla_enable_swift`` is
+  now ``no``.
 
 Kayobe 3.0.0
 ============
