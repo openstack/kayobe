@@ -125,6 +125,7 @@ def net_vlan(context, name, inventory_hostname=None):
 
 net_mtu = _make_attr_filter('mtu')
 net_routes = _make_attr_filter('routes')
+net_rules = _make_attr_filter('rules')
 net_physical_network = _make_attr_filter('physical_network')
 
 
@@ -154,14 +155,21 @@ def _route_obj(route):
 
     The returned dict is compatible with the route item of the
     interfaces_ether_interfaces and interfaces_bridge_interfaces variables in
-    the MichaelRigaert.interfaces role.
+    the MichaelRigart.interfaces role.
     """
     net = netaddr.IPNetwork(route['cidr'])
-    return {
+    route_obj = {
         'network': str(net.network),
         'netmask': str(net.netmask),
-        'gateway': route['gateway'],
     }
+    optional = {
+        'gateway',
+        'table',
+    }
+    for option in optional:
+        if option in route:
+            route_obj[option] = route[option]
+    return route_obj
 
 
 @jinja2.contextfilter
@@ -187,6 +195,7 @@ def net_interface_obj(context, name, inventory_hostname=None):
     routes = net_routes(context, name, inventory_hostname)
     if routes:
         routes = [_route_obj(route) for route in routes]
+    rules = net_rules(context, name, inventory_hostname)
     interface = {
         'device': device,
         'address': ip,
@@ -195,6 +204,7 @@ def net_interface_obj(context, name, inventory_hostname=None):
         'vlan': vlan,
         'mtu': mtu,
         'route': routes,
+        'rules': rules,
         'bootproto': 'static',
         'onboot': 'yes',
     }
@@ -226,6 +236,7 @@ def net_bridge_obj(context, name, inventory_hostname=None):
     routes = net_routes(context, name, inventory_hostname)
     if routes:
         routes = [_route_obj(route) for route in routes]
+    rules = net_rules(context, name, inventory_hostname)
     interface = {
         'device': device,
         'address': ip,
@@ -235,6 +246,7 @@ def net_bridge_obj(context, name, inventory_hostname=None):
         'mtu': mtu,
         'ports': ports,
         'route': routes,
+        'rules': rules,
         'bootproto': 'static',
         'onboot': 'yes',
     }
@@ -268,6 +280,7 @@ def net_bond_obj(context, name, inventory_hostname=None):
     routes = net_routes(context, name, inventory_hostname)
     if routes:
         routes = [_route_obj(route) for route in routes]
+    rules = net_rules(context, name, inventory_hostname)
     interface = {
         'device': device,
         'address': ip,
@@ -279,6 +292,7 @@ def net_bond_obj(context, name, inventory_hostname=None):
         'bond_mode': mode,
         'bond_miimon': miimon,
         'route': routes,
+        'rules': rules,
         'bootproto': 'static',
         'onboot': 'yes',
     }
@@ -429,6 +443,7 @@ class FilterModule(object):
             'net_vlan': net_vlan,
             'net_mtu': net_mtu,
             'net_routes': net_routes,
+            'net_rules': net_rules,
             'net_physical_network': net_physical_network,
             'net_interface_obj': net_interface_obj,
             'net_bridge_obj': net_bridge_obj,

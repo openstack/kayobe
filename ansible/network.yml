@@ -52,6 +52,7 @@
       become: True
 
     - role: MichaelRigart.interfaces
+      interfaces_route_tables: "{{ network_route_tables }}"
       interfaces_ether_interfaces: >
         {{ ether_interfaces |
            map('net_interface_obj') |
