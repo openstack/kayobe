@@ -54,8 +54,11 @@ node_custom_config: "{{ kolla_node_custom_config_path }}"
 
 #docker_registry: "172.16.0.10:4000"
 docker_namespace: "{{ kolla_docker_namespace }}"
-#docker_registry_username: "sam"
-#docker_registry_password: "correcthorsebatterystaple"
+{% if kolla_docker_namespace_username and kolla_docker_namespace_password %}
+docker_registry_username: "{{ kolla_docker_namespace_username }}"
+docker_registry_password: "{{ kolla_docker_namespace_password }}"
+{% endif %}
+
 
 
 ####################
