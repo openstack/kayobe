@@ -1,12 +1,9 @@
 ---
+# Path to extra kolla-ansible configuration files.
+kolla_extra_config_path:
+
 # Directory where Kolla custom configuration files will be installed.
 kolla_node_custom_config_path:
-
-###############################################################################
-# Fluentd configuration.
-
-# Path to extra Fluentd output configuration files.
-kolla_extra_fluentd_output_path:
 
 ###############################################################################
 # Glance configuration.
@@ -269,3 +266,9 @@ kolla_enable_sahara:
 
 # Free form extra configuration to append to sahara.conf.
 kolla_extra_sahara:
+
+###############################################################################
+# Swift configuration.
+
+# Whether to enable swift.
+kolla_enable_swift:

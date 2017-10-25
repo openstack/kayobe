@@ -5,6 +5,19 @@ Release Notes
 In Development
 ==============
 
+Features
+--------
+
+* Adds ``--interface-limit`` and ``--interface-description-limit`` arguments to
+  the ``kayobe physical network configure`` command.  These arguments allow
+  configuration to be limited to a subset of switch interfaces.
+* Adds a ``--display`` argument to ``kayobe physical network configure``
+  command.  This will output the candidate switch configuration without
+  applying it.
+* Adds support for configuration of custom fluentd filters, and additional
+  config file templates for heat, ironic, keystone, magnum, murano, sahara, and
+  swift in ``$KAYOBE_CONFIG_PATH/kolla/config/<component>/``.
+
 Upgrade Notes
 -------------
 
@@ -12,6 +25,8 @@ Upgrade Notes
   to ``True``.  Management of the firewall by ironic inspector is important to
   ensure that DHCP offers are not made to nodes during provisioning by
   inspector's DHCP server.
+* Disables swift by default. The default value of ``kolla_enable_swift`` is
+  now ``no``.
 * Adds a variable ``config_path``, used to set the base path to configuration
   on remote hosts. The default value is ``/opt/kayobe/etc``.
 * Modifies the variable used to configure the kolla build configuration path

@@ -134,8 +134,9 @@
                     'password': hostvars[item].ansible_ssh_pass,
                     'ngs_trunk_ports': (
                          hostvars[item].switch_interface_config |
-                         switch_interface_config_select_description(kolla_neutron_ml2_generic_switch_trunk_port_hosts)).keys() | join(',')
-                  }]
+                         switch_interface_config_select_description(kolla_neutron_ml2_generic_switch_trunk_port_hosts) |
+                         switch_interface_config_select_trunk()).keys() | join(',')
+                  } | combine(hostvars[item].kolla_neutron_ml2_generic_switch_extra) ]
               }}
           with_items: "{{ kolla_neutron_ml2_generic_switch_hosts }}"
 
@@ -184,5 +185,4 @@
       kolla_extra_neutron_ml2: "{{ kolla_extra_config.neutron_ml2 | default }}"
       kolla_extra_nova: "{{ kolla_extra_config.nova | default }}"
       kolla_extra_sahara: "{{ kolla_extra_config.sahara | default }}"
-      kolla_extra_glance_path: "{{ kayobe_config_path }}/kolla/config/glance"
-      kolla_extra_fluentd_output_path: "{{ kayobe_config_path }}/kolla/config/fluentd/output"
+      kolla_extra_config_path: "{{ kayobe_config_path }}/kolla/config"

@@ -236,12 +236,14 @@ kolla_openstack_logging_debug: "False"
 kolla_enable_barbican: "no"
 kolla_enable_glance: "yes"
 kolla_enable_haproxy: "yes"
+kolla_enable_heat: "yes"
 kolla_enable_ironic: "yes"
 kolla_enable_neutron: "yes"
+kolla_enable_nova: "yes"
 kolla_enable_magnum: "no"
 kolla_enable_murano: "no"
 kolla_enable_sahara: "no"
-kolla_enable_swift: "yes"
+kolla_enable_swift: "no"
 
 ###############################################################################
 # Passwords and credentials.

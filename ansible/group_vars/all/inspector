@@ -58,7 +58,7 @@ inspector_ipmi_password: "{{ ipmi_password }}"
 
 # Ironic inspector default network interface name on which to check for an LLDP
 # switch port description to use as the node's name.
-inspector_lldp_switch_port_interface_default:
+inspector_lldp_switch_port_interface_default: eth0
 
 # Ironic inspector map from hostname to network interface name on which to
 # check for an LLDP switch port description to use as the node's name.
