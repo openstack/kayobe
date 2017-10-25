@@ -58,10 +58,10 @@
 #kolla_docker_namespace:
 
 # Username to use to access a docker registry.
-#kolla_docker_namespace_username:
+#kolla_docker_registry_username:
 
 # Password to use to access a docker registry.
-#kolla_docker_namespace_password:
+#kolla_docker_registry_password:
 
 # Kolla OpenStack release version. This should be a Docker image tag.
 #kolla_openstack_release:
