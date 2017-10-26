@@ -16,7 +16,7 @@
 - name: Set a fact to determine whether we are running locally
   set_fact:
     is_local: "{{ lookup('pipe', 'hostname') in [ansible_hostname, ansible_nodename] }}"
-  when: "{{ selinux_result | changed }}"
+  when: selinux_result | changed
 
 # Any SSH connection errors cause ansible to fail the task. We therefore
 # perform a manual SSH connection and allow the command to fail.
@@ -29,18 +29,18 @@
       sudo shutdown -r now "Applying SELinux changes"
   register: reboot_result
   failed_when:
-    - "{{ reboot_result | failed }}"
-    - "{{ 'closed by remote host' not in reboot_result.stderr }}"
+    - reboot_result | failed
+    - "'closed by remote host' not in reboot_result.stderr"
   when:
-    - "{{ selinux_result | changed }}"
-    - "{{ not is_local | bool }}"
+    - selinux_result | changed
+    - not is_local | bool
 
 - name: Reboot the system to apply SELinux changes (local)
   command: shutdown -r now "Applying SELinux changes"
   become: True
   when:
-    - "{{ selinux_result | changed }}"
-    - "{{ is_local | bool }}"
+    - selinux_result | changed
+    - is_local | bool
 
 # If we're running this locally we won't get here.
 - name: Wait for the system to boot up (remote)
@@ -53,5 +53,5 @@
     delay: 10
     timeout: "{{ disable_selinux_reboot_timeout }}"
   when:
-    - "{{ selinux_result | changed }}"
-    - "{{ not is_local | bool }}"
+    - selinux_result | changed
+    - not is_local | bool

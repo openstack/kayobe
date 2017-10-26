@@ -62,8 +62,8 @@
           {% if item in openstack_auth %}empty{% else %}not present{% endif %}
           in openstack_auth. Have you sourced the environment file?
       when:
-        - "{{ openstack_auth_type == 'password' }}"
-        - "{{ item not in openstack_auth or not openstack_auth[item] }}"
+        - openstack_auth_type == 'password'
+        - item not in openstack_auth or not openstack_auth[item]
       with_items: "{{ openstack_auth_password_required_params }}"
       tags:
         - config-validation
@@ -79,7 +79,7 @@
              [{'host': item.key,
                'interface_config': item.value.switch_interface_config.items()}] }}
       with_dict: "{{ hostvars }}"
-      when: "{{ item.key in groups[inspector_dell_switch_lldp_workaround_group] }}"
+      when: item.key in groups[inspector_dell_switch_lldp_workaround_group]
 
     - name: Update a fact containing Ironic Inspector rules
       set_fact:
@@ -90,11 +90,11 @@
         - "{{ all_switch_interfaces }}"
         - interface_config
       when:
-        - "{{ item.1.1.description is defined }}"
+        - item.1.1.description is defined
         # Ignore VLAN interfaces.
-        - "{{ 'vlan' not in item.1.0 }}"
+        - "'vlan' not in item.1.0"
         # Ignore trunk links.
-        - "{{ '-trunk' not in item.1.1.description }}"
+        - "'-trunk' not in item.1.1.description"
 
   roles:
     - role: ironic-inspector-rules

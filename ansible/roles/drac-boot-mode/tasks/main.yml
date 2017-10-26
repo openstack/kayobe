@@ -4,7 +4,7 @@
     msg: >
       Unexpected requested boot mode {{ drac_boot_mode }}. Expected one of
       {{ drac_boot_mode_valid_modes | join(', ') }}.
-  when: "{{ drac_boot_mode | lower not in drac_boot_mode_valid_modes }}"
+  when: drac_boot_mode | lower not in drac_boot_mode_valid_modes
 
 - name: Check the boot mode
   raw: "racadm get BIOS.BiosBootSettings.BootMode"
@@ -23,7 +23,7 @@
     msg: >
       Unexpected current boot mode {{ current_boot_mode }}. Expected one of
       {{ drac_boot_mode_valid_modes | join(', ') }}.
-  when: "{{ current_boot_mode not in drac_boot_mode_valid_modes }}"
+  when: current_boot_mode not in drac_boot_mode_valid_modes
 
 - block:
     - name: Set the boot mode
@@ -61,4 +61,4 @@
       retries: "{{ drac_boot_mode_timeout // drac_boot_mode_interval }}"
       delay: "{{ drac_boot_mode_interval }}"
 
-  when: "{{ current_boot_mode != drac_boot_mode }}"
+  when: current_boot_mode != drac_boot_mode

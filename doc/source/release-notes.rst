@@ -27,6 +27,10 @@ Upgrade Notes
   inspector's DHCP server.
 * Disables swift by default. The default value of ``kolla_enable_swift`` is
   now ``no``.
+* The default list of neutron ML2 mechanism drivers
+  (``kolla_neutron_ml2_mechanism_drivers``) has been removed in favour of using
+  the defaults provided by kolla-ansible. Users relying on the default list of
+  ``openvswitch`` and ``genericswitch`` should set the value explicitly.
 * Adds a variable ``config_path``, used to set the base path to configuration
   on remote hosts. The default value is ``/opt/kayobe/etc``.
 * Modifies the variable used to configure the kolla build configuration path

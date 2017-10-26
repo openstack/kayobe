@@ -4,11 +4,11 @@
     module: dellos6_config
     provider: "{{ dell_switch_provider }}"
     src: dellos6-config.j2
-  when: "{{ dell_switch_type == 'dellos6' }}"
+  when: dell_switch_type == 'dellos6'
 
 - name: Ensure DellOS9 switches are configured
   local_action:
     module: dellos9_config
     provider: "{{ dell_switch_provider }}"
     src: dellos9-config.j2
-  when: "{{ dell_switch_type == 'dellos9' }}"
+  when: dell_switch_type == 'dellos9'

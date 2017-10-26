@@ -10,3 +10,4 @@
 - include: docker-registry.yml
 - include: inspection-store.yml
 - include: opensm.yml
+- include: node-exporter.yml

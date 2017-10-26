@@ -21,8 +21,8 @@
           {% if bmc_type is undefined %}is not defined{% else %}{{ bmc_type }}
           is not supported{% endif %}.
       when:
-        - "{{ bios_config or raid_config }}"
-        - "{{ bmc_type is undefined or bmc_type not in supported_bmc_types }}"
+        - bios_config or raid_config
+        - bmc_type is undefined or bmc_type not in supported_bmc_types
 
     - name: Group overcloud hosts by their BMC type
       group_by:
@@ -75,7 +75,7 @@
         # NOTE: Without this, the seed's ansible_host variable will not be
         # respected when using delegate_to.
         ansible_host: "{{ hostvars[seed_host].ansible_host | default(seed_host) }}"
-      when: "{{ bios_or_raid_change | bool }}"
+      when: bios_or_raid_change | bool
 
   roles:
     - role: stackhpc.drac
@@ -84,7 +84,7 @@
       drac_password: "{{ ipmi_password }}"
       drac_bios_config: "{{ bios_config }}"
       drac_raid_config: "{{ raid_config }}"
-      when: "{{ bios_or_raid_change | bool }}"
+      when: bios_or_raid_change | bool
 
   tasks:
     - name: Unset the overcloud nodes' maintenance mode
@@ -107,4 +107,4 @@
         # NOTE: Without this, the seed's ansible_host variable will not be
         # respected when using delegate_to.
         ansible_host: "{{ hostvars[seed_host].ansible_host | default(seed_host) }}"
-      when: "{{ bios_or_raid_change | bool }}"
+      when: bios_or_raid_change | bool

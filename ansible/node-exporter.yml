@@ -1,0 +1,12 @@
+---
+# Deploy/pull/reconfigure/upgrade the Prometheus Node Exporter.
+#
+# Follows kolla-ansible service deployment patterns.
+#
+# Variables:
+# action: One of deploy, destroy, pull, reconfigure, upgrade
+
+- name: Ensure Node Exporter is deployed
+  hosts: all
+  roles:
+    - role: node-exporter

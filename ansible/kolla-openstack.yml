@@ -99,7 +99,7 @@
           set_fact:
             kolla_extra_config: "{{ kolla_extra_config | combine({item.item.name: lookup('template', '{{ item.stat.path }}')}) }}"
           with_items: "{{ stat_result.results }}"
-          when: "{{ item.stat.exists }}"
+          when: item.stat.exists
 
         - name: Validate switch configuration for Neutron ML2 genericswitch driver
           fail:
@@ -110,14 +110,12 @@
               {{ switch_type_to_device_type.keys() | join(', ') }}.
           with_items: "{{ kolla_neutron_ml2_generic_switch_hosts }}"
           when: >
-            {{
-                item not in hostvars or
-                'switch_type' not in hostvars[item] or
-                hostvars[item].switch_type not in switch_type_to_device_type or
-                'ansible_host' not in hostvars[item] or
-                'ansible_user' not in hostvars[item] or
-                'ansible_ssh_pass' not in hostvars[item]
-            }}
+            item not in hostvars or
+            'switch_type' not in hostvars[item] or
+            hostvars[item].switch_type not in switch_type_to_device_type or
+            'ansible_host' not in hostvars[item] or
+            'ansible_user' not in hostvars[item] or
+            'ansible_ssh_pass' not in hostvars[item]
           tags:
             - config-validation
 

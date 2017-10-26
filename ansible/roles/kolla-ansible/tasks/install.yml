@@ -23,14 +23,14 @@
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
   become: True
-  when: "{{ kolla_ansible_ctl_install_type == 'source' }}"
+  when: kolla_ansible_ctl_install_type == 'source'
 
 - name: Ensure Kolla Ansible source code checkout exists
   git:
     repo: "{{ kolla_ansible_source_url }}"
     dest: "{{ kolla_ansible_source_path }}"
     version: "{{ kolla_ansible_source_version }}"
-  when: "{{ kolla_ansible_ctl_install_type == 'source' }}"
+  when: kolla_ansible_ctl_install_type == 'source'
 
 - name: Ensure the latest version of pip is installed
   pip:
@@ -61,7 +61,7 @@
     # Required for kolla-genpwd.
     - name: PyYAML
       version: "3.12"
-  when: "{{ item.install | default(True) | bool }}"
+  when: item.install | default(True) | bool
 
 # This is a workaround for the lack of a python package for libselinux-python
 # on PyPI. Without using --system-site-packages to create the virtualenv, it

@@ -33,7 +33,7 @@
       fail:
         msg: >
           The iDRAC bootstrap process currently only supports DellOS6 switches.
-      when: "{{ switch_type not in supported_switch_types }}"
+      when: switch_type not in supported_switch_types
 
 # 1. Create a VLAN interface on the controller node with IP in the iDRAC
 #    default subnet.
@@ -119,7 +119,7 @@
       dell_switch_config:
         - "vlan {{ idrac_bootstrap_vlan }}"
       dell_switch_interface_config: "{{ switch_interface_config_bootstrap }}"
-      when: "{{ switch_interface_config_bootstrap != {} }}"
+      when: switch_interface_config_bootstrap != {}
 
 # 3. For each iDRAC switch port in turn, flip to the temporary VLAN and
 #    configure the iDRAC's IP address, before returning the port to the iDRAC
@@ -186,7 +186,7 @@
       dell_switch_config:
         - "no vlan {{ idrac_bootstrap_vlan }}"
       dell_switch_interface_config: "{{ switch_interface_config_bootstrap }}"
-      when: "{{ switch_interface_config_bootstrap != {} }}"
+      when: switch_interface_config_bootstrap != {}
 
 # 5. Remove the VLAN interface on the controller node.
 - name: Ensure the controller bootstrap network is cleaned up
@@ -204,7 +204,7 @@
     - name: Display a list of failed iDRACs
       set_fact:
         idrac_bootstrap_failed_port_descriptions: "{{ idrac_bootstrap_failed | map(attribute='port description') | list }}"
-      when: "{{ idrac_bootstrap_failed | length > 0 }}"
+      when: idrac_bootstrap_failed | length > 0
 
     - name: Display a list of successfully bootstrapped iDRACs
       debug:
@@ -217,16 +217,16 @@
     - name: Display a list of failed iDRACs
       debug:
         var: idrac_bootstrap_failed_port_descriptions
-      when: "{{ idrac_bootstrap_failed | length > 0 }}"
+      when: idrac_bootstrap_failed | length > 0
 
     - name: Display a list of failed iDRACs with debug output for the failed tasks
       debug:
         var: idrac_bootstrap_failed
-      when: "{{ idrac_bootstrap_failed | length > 0 }}"
+      when: idrac_bootstrap_failed | length > 0
 
     - name: Fail if there were any iDRAC bootstrapping failures
       fail:
         msg: >
           One or more iDRACs failed to bootstrap, see the list above for
           details.
-      when: "{{ idrac_bootstrap_failed | length > 0 }}"
+      when: idrac_bootstrap_failed | length > 0
