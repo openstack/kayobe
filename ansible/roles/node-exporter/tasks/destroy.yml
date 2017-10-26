@@ -1,0 +1,25 @@
+---
+- include: deploy.yml
+
+- name: Check whether Node Exporter volumes are present
+  command: docker volume inspect {{ volume }}
+  changed_when: False
+  with_subelements:
+    - "{{ nodeexporter_services }}"
+    - volumes
+  when: "'/' not in volume"
+  failed_when:
+    - volume_result.rc != 0
+    - "'No such volume' not in volume_result.stderr"
+  vars:
+    volume: "{{ item.1.split(':')[0] }}"
+  register: volume_result
+
+- name: Ensure Node Exporter volumes are absent
+  command: docker volume rm {{ volume }}
+  with_items: "{{ volume_result.results }}"
+  when:
+    - not item | skipped
+    - item.rc == 0
+  vars:
+    volume: "{{ item.item.1.split(':')[0] }}"

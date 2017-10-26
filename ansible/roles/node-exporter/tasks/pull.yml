@@ -1,0 +1,10 @@
+---
+- name: Pulling Node Exporter container image
+  docker_image:
+    name: "{{ item.value.image }}"
+    repository: "{{ item.value.image }}"
+    state: present
+  with_dict: "{{ nodeexporter_services }}"
+  when:
+    - item.value.enabled
+    - action != 'destroy'
