@@ -55,6 +55,12 @@ kolla_install_type: "binary"
 # Docker namespace to use for Kolla images.
 kolla_docker_namespace: "stackhpc"
 
+# Username to use to access a docker registry.
+kolla_docker_registry_username:
+
+# Password to use to access a docker registry.
+kolla_docker_registry_password:
+
 # Kolla OpenStack release version. This should be a Docker image tag.
 kolla_openstack_release: "5.0.0"
 
