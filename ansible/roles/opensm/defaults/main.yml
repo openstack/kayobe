@@ -27,4 +27,4 @@ opensm_tag: "latest"
 opensm_image_full: "{{ opensm_image }}:{{ opensm_tag }}"
 
 opensm_restart_policy: "unless-stopped"
-opensm_restart_retries: 10
+#opensm_restart_retries:

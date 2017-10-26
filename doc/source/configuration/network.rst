@@ -8,6 +8,9 @@ that define the network's attributes.  For example, to configure the ``cidr``
 attribute of a network named ``arpanet``, we would use a variable named
 ``arpanet_cidr``.
 
+Global Network Configuration
+============================
+
 Global network configuration is stored in
 ``${KAYOBE_CONFIG_PATH}/networks.yml``.  The following attributes are
 supported:
@@ -47,12 +50,113 @@ supported:
     A name to give to a Libvirt network representing this network on the seed
     hypervisor.
 
+Configuring an IP Subnet
+------------------------
+
+An IP subnet may be configured by setting the ``cidr`` attribute for a network
+to the CIDR representation of the subnet.
+
+To configure a network called ``example`` with the ``10.0.0.0/24`` IP subnet:
+
+.. code-block:: yaml
+   :caption: ``networks.yml``
+
+   example_cidr: 10.0.0.0/24
+
+Configuring an IP Gateway
+-------------------------
+
+An IP gateway may be configured by setting the ``gateway`` attribute for a
+network to the IP address of the gateway.
+
+To configure a network called ``example`` with a gateway at ``10.0.0.1``:
+
+.. code-block:: yaml
+   :caption: ``networks.yml``
+
+   example_gateway: 10.0.0.1
+
+This gateway will be configured on all hosts to which the network is mapped.
+Note that configuring multiple IP gateways on a single host will lead to
+unpredictable results.
+
+Configuring Static IP Routes
+----------------------------
+
+Static IP routes may be configured by setting the ``routes`` attribute for a
+network to a list of routes.
+
+To configure a network called ``example`` with a single IP route:
+
+.. code-block:: yaml
+   :caption: ``networks.yml``
+
+   example_routes:
+     - cidr: 10.1.0.0/24
+       gateway: 10.0.0.1
+
+These routes will be configured on all hosts to which the network is mapped.
+
+Configuring a VLAN
+------------------
+
+A VLAN network may be configured by setting the ``vlan`` attribute for a
+network to the ID of the VLAN.
+
+To configure a network called ``example`` with VLAN ID ``123``:
+
+.. code-block:: yaml
+   :caption: ``networks.yml``
+
+   example_vlan: 123
+
+IP Address Allocation
+=====================
+
 IP addresses are allocated automatically by Kayobe from the
 allocation pool
 defined by ``allocation_pool_start`` and ``allocation_pool_end``.  The
 allocated addresses are stored in
 ``${KAYOBE_CONFIG_PATH}/network-allocation.yml`` using the global per-network
 attribute ``ips`` which maps Ansible inventory hostnames to allocated IPs.
+
+If static IP address allocation is required, the IP allocation file
+``network-allocation.yml`` may be manually populated with the required
+addresses.
+
+Configuring Dynamic IP Address Allocation
+-----------------------------------------
+
+To configure a network called ``example`` with the ``10.0.0.0/24`` IP subnet
+and an allocation pool spanning from ``10.0.0.4`` to ``10.0.0.254``:
+
+.. code-block:: yaml
+   :caption: ``networks.yml``
+
+   example_cidr: 10.0.0.0/24
+   example_allocation_pool_start: 10.0.0.4
+   example_allocation_pool_end: 10.0.0.254
+
+.. note::
+
+   This pool should not overlap with an inspection or neutron allocation pool
+   on the same network.
+
+Configuring Static IP Address Allocation
+----------------------------------------
+
+To configure a network called ``example`` with statically allocated IP
+addresses for hosts ``host1`` and ``host2``:
+
+.. code-block:: yaml
+   :caption: ``network-allocation.yml``
+
+   example_ips:
+     host1: 10.0.0.1
+     host2: 10.0.0.2
+
+Per-host Network Configuration
+==============================
 
 Some network attributes are specific to a host's role in the system, and
 these are stored in
@@ -72,51 +176,356 @@ The following attributes are supported:
 ``bond_miimon``
     For bond interfaces, the time in milliseconds between MII link monitoring.
 
+IP Addresses
+------------
+
+An interface will be assigned an IP address if the associated network has a
+``cidr`` attribute. The IP address will be assigned from the range defined by
+the ``allocation_pool_start`` and ``allocation_pool_end`` attributes, if one
+has not been statically assigned in ``network-allocation.yml``.
+
+Configuring Ethernet Interfaces
+-------------------------------
+
+An Ethernet interface may be configured by setting the ``interface`` attribute
+for a network to the name of the Ethernet interface.
+
+To configure a network called ``example`` with an Ethernet interface on
+``eth0``:
+
+.. code-block:: yaml
+   :caption: ``inventory/group_vars/<group>/network-interfaces``
+
+   example_interface: eth0
+
+.. _configuring-bridge-interfaces:
+
+Configuring Bridge Interfaces
+-----------------------------
+
+A Linux bridge interface may be configured by setting the ``interface``
+attribute of a network to the name of the bridge interface, and the
+``bridge_ports`` attribute to a list of interfaces which will be added as
+member ports on the bridge.
+
+To configure a network called ``example`` with a bridge interface on
+``breth1``, and a single port ``eth1``:
+
+.. code-block:: yaml
+   :caption: ``inventory/group_vars/<group>/network-interfaces``
+
+   example_interface: breth1
+   example_bridge_ports:
+     - eth1
+
+Bridge member ports may be Ethernet interfaces, bond interfaces, or VLAN
+interfaces.  In the case of bond interfaces, the bond must be configured
+separately in addition to the bridge, as a different named network.  In the
+case of VLAN interfaces, the underlying Ethernet interface must be configured
+separately in addition to the bridge, as a different named network.
+
+Configuring Bond Interfaces
+---------------------------
+
+A bonded interface may be configured by setting the ``interface`` attribute of
+a network to the name of the bond's master interface, and the ``bond_slaves``
+attribute to a list of interfaces which will be added as slaves to the master.
+
+To configure a network called ``example`` with a bond with master interface
+``bond0`` and two slaves ``eth0`` and ``eth1``:
+
+.. code-block:: yaml
+   :caption: ``inventory/group_vars/<group>/network-interfaces``
+
+   example_interface: bond0
+   example_bond_slaves:
+     - eth0
+     - eth1
+
+Optionally, the bond mode and MII monitoring interval may also be configured:
+
+.. code-block:: yaml
+   :caption: ``inventory/group_vars/<group>/network-interfaces``
+
+   example_bond_mode: 802.3ad
+   example_bond_miimon: 100
+
+Bond slaves may be Ethernet interfaces, or VLAN interfaces.  In the case of
+VLAN interfaces, underlying Ethernet interface must be configured separately in
+addition to the bond, as a different named network.
+
+Configuring VLAN Interfaces
+---------------------------
+
+A VLAN interface may be configured by setting the ``interface`` attribute  of a
+network to the name of the VLAN interface.  The interface name must be of the
+form ``<parent interface>.<VLAN ID>``.
+
+To configure a network called ``example`` with a VLAN interface with a parent
+interface of ``eth2`` for VLAN ``123``:
+
+.. code-block:: yaml
+   :caption: ``inventory/group_vars/<group>/network-interfaces``
+
+   example_interface: eth2.123
+
+To keep the configuration DRY, reference the network's ``vlan`` attribute:
+
+.. code-block:: yaml
+   :caption: ``inventory/group_vars/<group>/network-interfaces``
+
+   example_interface: "eth2.{{ example_vlan }}"
+
+Ethernet interfaces, bridges, and bond master interfaces may all be parents to
+a VLAN interface.
+
+Bridges and VLANs
+^^^^^^^^^^^^^^^^^
+
+Adding a VLAN interface to a bridge directly will allow tagged traffic for that
+VLAN to be forwarded by the bridge, whereas adding a VLAN interface to an
+Ethernet or bond interface that is a bridge member port will prevent tagged
+traffic for that VLAN being forwarded by the bridge.
+
+Network Role Configuration
+==========================
+
 In order to provide flexibility in the system's network topology, Kayobe maps
 the named networks to logical network roles.  A single named network may
 perform multiple roles, or even none at all.  The available roles are:
 
-``oob_oc_net_name``
+Overcloud out-of-band network (``oob_oc_net_name``)
     Name of the network used by the seed to access the out-of-band management
     controllers of the bare metal overcloud hosts.
-``provision_oc_net_name``
+Overcloud provisioning network (``provision_oc_net_name``)
     Name of the network used by the seed to provision the bare metal overcloud
     hosts.
-``oob_wl_net_name``
+Workload out-of-band network (``oob_wl_net_name``)
     Name of the network used by the overcloud hosts to access the out-of-band
     management controllers of the bare metal workload hosts.
-``provision_wl_net_name``
+Workload provisioning network (``provision_wl_net_name``)
     Name of the network used by the overcloud hosts to provision the bare metal
     workload hosts.
-``internal_net_name``
+Internal network (``internal_net_name``)
     Name of the network used to expose the internal OpenStack API endpoints.
-``public_net_name``
+Public network (``public_net_name``)
     Name of the network used to expose the public OpenStack API endpoints.
-``external_net_name``
+External network (``external_net_name``)
     Name of the network used to provide external network access via Neutron.
-``storage_net_name``
+Storage network (``storage_net_name``)
     Name of the network used to carry storage data traffic.
-``storage_mgmt_net_name``
+Storage management network (``storage_mgmt_net_name``)
     Name of the network used to carry storage management traffic.
-``inspection_net_name``
+Workload inspection network (``inspection_net_name``)
     Name of the network used to perform hardware introspection on the bare
     metal workload hosts.
 
 These roles are configured in ``${KAYOBE_CONFIG_PATH}/networks.yml``.
 
+Configuring Network Roles
+-------------------------
+
+To configure network roles in a system with two networks, ``example1`` and
+``example2``:
+
+.. code-block:: yaml
+   :caption: ``networks.yml``
+
+   oob_oc_net_name: example1
+   provision_oc_net_name: example1
+   oob_wl_net_name: example1
+   provision_wl_net_name: example2
+   internal_net_name: example2
+   public_net_name: example2
+   external_net_name: example2
+   storage_net_name: example2
+   storage_mgmt_net_name: example2
+   inspection_net_name: example2
+
+Overcloud Provisioning Network
+------------------------------
+
+If using a seed to inspect the bare metal overcloud hosts, it is necessary to
+define a DHCP allocation pool for the seed's ironic inspector DHCP server using
+the ``inspection_allocation_pool_start`` and ``inspection_allocation_pool_end``
+attributes of the overcloud provisioning network.
+
+.. note::
+
+   This example assumes that the ``example`` network is mapped to
+   ``provision_oc_net_name``.
+
+To configure a network called ``example`` with an inspection allocation pool:
+
+.. code-block:: yaml
+
+   example_inspection_allocation_pool_start: 10.0.0.128
+   example_inspection_allocation_pool_end: 10.0.0.254
+
+.. note::
+
+   This pool should not overlap with a kayobe allocation pool on the same
+   network.
+
+Workload Provisioning Network
+-----------------------------
+
+If using the overcloud to provision bare metal workload (compute) hosts, it is
+necessary to define an IP allocation pool for the overcloud's neutron
+provisioning network using the ``neutron_allocation_pool_start`` and
+``neutron_allocation_pool_end`` attributes of the workload provisioning
+network.
+
+.. note::
+
+   This example assumes that the ``example`` network is mapped to
+   ``provision_wl_net_name``.
+
+To configure a network called ``example`` with a neutron provisioning
+allocation pool:
+
+.. code-block:: yaml
+
+   example_neutron_allocation_pool_start: 10.0.1.128
+   example_neutron_allocation_pool_end: 10.0.1.195
+
+.. note::
+
+   This pool should not overlap with a kayobe or inspection allocation pool on
+   the same network.
+
+Workload Inspection Network
+---------------------------
+
+If using the overcloud to inspect bare metal workload (compute) hosts, it is
+necessary to define a DHCP allocation pool for the overcloud's ironic inspector
+DHCP server using the ``inspection_allocation_pool_start`` and
+``inspection_allocation_pool_end`` attributes of the workload provisioning
+network.
+
+.. note::
+
+   This example assumes that the ``example`` network is mapped to
+   ``provision_wl_net_name``.
+
+To configure a network called ``example`` with an inspection allocation pool:
+
+.. code-block:: yaml
+
+   example_inspection_allocation_pool_start: 10.0.1.196
+   example_inspection_allocation_pool_end: 10.0.1.254
+
+.. note::
+
+   This pool should not overlap with a kayobe or neutron allocation pool on the
+   same network.
+
+Neutron Networking
+==================
+
+.. note::
+
+   This assumes the use of the neutron ``openvswitch`` ML2 mechanism driver for
+   control plane networking.
+
+Certain modes of operation of neutron require layer 2 access to physical
+networks in the system.  Hosts in the ``network`` group (by default, this is
+the same as the ``controllers`` group) run the neutron networking services
+(Open vSwitch agent, DHCP agent, L3 agent, metadata agent, etc.).
+
+The kayobe network configuration must ensure that the neutron Open
+vSwitch bridges on the network hosts have access to the external network.  If
+bare metal compute nodes are in use, then they must also have access to the
+workload provisioning network. This can be done by ensuring that the external
+and workload provisioning network interfaces are bridges.  Kayobe will ensure
+connectivity between these Linux bridges and the neutron Open vSwitch bridges
+via a virtual Ethernet pair.  See :ref:`configuring-bridge-interfaces`.
+
+Network to Host Mapping
+=======================
+
 Networks are mapped to hosts using the variable ``network_interfaces``.
 Kayobe's playbook group variables define some sensible defaults for this
-variable for hosts in the ``seed`` and ``controllers`` groups based on the
-logical network roles.  These defaults can be extended by setting the variables
-``seed_extra_network_interfaces`` and ``controller_extra_network_interfaces``
-in ``${KAYOBE_CONFIG_PATH}/seed.yml`` and
-``${KAYOBE_CONFIG_PATH}/controllers.yml`` respectively.
+variable for hosts in the top level standard groups.  These defaults are set
+using the network roles typically required by the group.
 
-Example
-=======
+Seed
+----
 
-In our example cloud we have three networks: ``management``, ``cloud`` and
-``external``:
+By default, the seed is attached to the following networks:
+
+* overcloud out-of-band network
+* overcloud provisioning network
+
+This list may be extended by setting ``seed_extra_network_interfaces`` to a
+list of names of additional networks to attach.  Alternatively, the list may be
+completely overridden by setting ``seed_network_interfaces``.  These variables
+are found in ``${KAYOBE_CONFIG_PATH}/seed.yml``.
+
+Seed Hypervisor
+---------------
+
+By default, the seed hypervisor is attached to the same networks as the seed.
+
+This list may be extended by setting
+``seed_hypervisor_extra_network_interfaces`` to a list of names of additional
+networks to attach.  Alternatively, the list may be
+completely overridden by setting ``seed_hypervisor_network_interfaces``.  These
+variables are found in ``${KAYOBE_CONFIG_PATH}/seed-hypervisor.yml``.
+
+Controllers
+-----------
+
+By default, controllers are attached to the following networks:
+
+* overcloud provisioning network
+* workload (compute) out-of-band network
+* workload (compute) provisioning network
+* internal network
+* storage network
+* storage management network
+
+In addition, if the controllers are also in the ``network`` group, they are
+attached to the following networks:
+
+* public network
+* external network
+
+This list may be extended by setting ``controller_extra_network_interfaces`` to a
+list of names of additional networks to attach.  Alternatively, the list may be
+completely overridden by setting ``controller_network_interfaces``.  These
+variables are found in ``${KAYOBE_CONFIG_PATH}/controllers.yml``.
+
+Monitoring Hosts
+----------------
+
+By default, the monitoring hosts are attached to the same networks as the
+controllers when they are in the ``controllers`` group.  If the monitoring
+hosts are not in the ``controllers`` group, they are attached to the following
+networks by default:
+
+* overcloud provisioning network
+* internal network
+* public network
+
+This list may be extended by setting ``monitoring_extra_network_interfaces`` to
+a list of names of additional networks to attach.  Alternatively, the list may
+be completely overridden by setting ``monitoring_network_interfaces``.  These
+variables are found in ``${KAYOBE_CONFIG_PATH}/monitoring.yml``.
+
+Other Hosts
+-----------
+
+If additional hosts are managed by kayobe, the networks to which these hosts
+are attached may be defined in a host or group variables file.  See
+:ref:`control-plane-service-placement` for further details.
+
+Complete Example
+================
+
+The following example combines the complete network configuration into a single
+system configuration.  In our example cloud we have three networks:
+``management``, ``cloud`` and ``external``:
 
 .. parsed-literal::
 
@@ -140,20 +549,21 @@ In our example cloud we have three networks: ``management``, ``cloud`` and
    external   +---------------------------------------+----------------------------------------+
 
 The ``management`` network is used to access the servers' BMCs and by the seed
-to provision the cloud hosts.  The ``cloud`` network carries all internal
-control plane and storage traffic, and is used by the control plane to
+to inspect and provision the cloud hosts.  The ``cloud`` network carries all
+internal control plane and storage traffic, and is used by the control plane to
 provision the bare metal compute hosts.  Finally, the ``external`` network
 links the cloud to the outside world.
 
 We could describe such a network as follows:
 
 .. code-block:: yaml
-   :name: networks.yml
    :caption: ``networks.yml``
 
    ---
    # Network role mappings.
+   oob_oc_net_name: management
    provision_oc_net_name: management
+   oob_wl_net_name: management
    provision_wl_net_name: cloud
    internal_net_name: cloud
    public_net_name: external
@@ -170,13 +580,13 @@ We could describe such a network as follows:
    management_inspection_allocation_pool_end: 10.0.0.254
 
    # cloud network definition.
-   cloud_cidr: 10.0.1.0/23
+   cloud_cidr: 10.0.1.0/24
    cloud_allocation_pool_start: 10.0.1.1
    cloud_allocation_pool_end: 10.0.1.127
    cloud_inspection_allocation_pool_start: 10.0.1.128
-   cloud_inspection_allocation_pool_end: 10.0.1.255
-   cloud_neutron_allocation_pool_start: 10.0.2.0
-   cloud_neutron_allocation_pool_end: 10.0.2.254
+   cloud_inspection_allocation_pool_end: 10.0.1.195
+   cloud_neutron_allocation_pool_start: 10.0.1.196
+   cloud_neutron_allocation_pool_end: 10.0.1.254
 
    # external network definition.
    external_cidr: 10.0.3.0/24
@@ -191,14 +601,12 @@ We could describe such a network as follows:
 We can map these networks to network interfaces on the seed and controller hosts:
 
 .. code-block:: yaml
-   :name: inventory/group_vars/seed/network-interfaces
    :caption: ``inventory/group_vars/seed/network-interfaces``
 
    ---
    management_interface: eth0
 
 .. code-block:: yaml
-   :name: inventory/group_vars/controllers/network-interfaces
    :caption: ``inventory/group_vars/controllers/network-interfaces``
 
    ---
@@ -214,7 +622,6 @@ allow it to be plugged into a neutron Open vSwitch bridge.
 Kayobe will allocate IP addresses for the hosts that it manages:
 
 .. code-block:: yaml
-   :name: network-allocation.yml
    :caption: ``network-allocation.yml``
 
    ---

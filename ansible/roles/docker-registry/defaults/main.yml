@@ -30,4 +30,4 @@ docker_registry_tag: "latest"
 docker_registry_image_full: "{{ docker_registry_image }}:{{ docker_registry_tag }}"
 
 docker_registry_restart_policy: "unless-stopped"
-docker_registry_restart_retries: 10
+#docker_registry_restart_retries:
