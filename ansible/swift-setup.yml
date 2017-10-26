@@ -8,4 +8,4 @@
       swift_region: 1
       # ID of the zone for this Swift service.
       swift_zone: "{{ groups['controllers'].index(inventory_hostname) % swift_num_zones }}"
-      when: "{{ kolla_enable_swift | bool }}"
+      when: kolla_enable_swift | bool

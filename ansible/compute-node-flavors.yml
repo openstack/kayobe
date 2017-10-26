@@ -61,7 +61,7 @@
                'ram': item.RAM | int,
                'disk': item.Disk | int}] }}
       with_items: "{{ existing_nova_flavors }}"
-      when: "{{ item.Name.startswith(flavor_base_name) }}"
+      when: item.Name.startswith(flavor_base_name)
 
     # Build a list of nova flavors to create.  Here we offset the flavor name
     # index by the length of the relevant existing flavor list. Note that this

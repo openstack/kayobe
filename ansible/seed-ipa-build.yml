@@ -36,7 +36,7 @@
           notify:
             - Copy Ironic Python Agent images into /httpboot
           become: True
-      when: "{{ ipa_build_images | bool }}"
+      when: ipa_build_images | bool
 
   handlers:
     - name: Copy Ironic Python Agent images into /httpboot

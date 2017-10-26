@@ -24,14 +24,14 @@
         module: copy
         content: "{{ hostvars[inventory_hostname] | to_nice_yaml }}"
         dest: "{{ dump_path }}/{{ inventory_hostname }}.yml"
-      when: "{{ dump_var_name is not defined }}"
+      when: dump_var_name is not defined
 
     - name: Write host variable to file
       local_action:
         module: copy
         content: "{{ hostvars[inventory_hostname][dump_var_name] | to_nice_yaml }}"
         dest: "{{ dump_path }}/{{ inventory_hostname }}.yml"
-      when: "{{ dump_var_name is defined }}"
+      when: dump_var_name is defined
 
 #    - name: Write merged config to file
 #      local_action:

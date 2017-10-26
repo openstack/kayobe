@@ -56,7 +56,7 @@
           Ironic node for {{ inventory_hostname }} is in an unexpected
           initial provision state: {{ initial_provision_state }}. Expected
           states are: {{ inspectable_states | join(',') }}.
-      when: "{{ initial_provision_state not in inspectable_states }}"
+      when: initial_provision_state not in inspectable_states
 
     - name: Ensure the ironic node is manageable
       command: >
@@ -75,7 +75,7 @@
       until: "{{ manage_result | success or 'is locked by host' in manage_result.stdout }}"
       retries: "{{ ironic_retries }}"
       delay: "{{ ironic_retry_interval }}"
-      when: "{{ initial_provision_state != 'manageable' }}"
+      when: initial_provision_state != 'manageable'
       delegate_to: "{{ seed_host }}"
       vars:
         # NOTE: Without this, the seed's ansible_host variable will not be
@@ -125,8 +125,7 @@
       until: "{{ not show_result.stdout_lines[1:] | intersect(inspecting_states) }}"
       retries: "{{ wait_inspected_timeout // wait_inspected_interval }}"
       delay: "{{ wait_inspected_interval }}"
-      when:
-        - "{{ wait_inspected | bool }}"
+      when: wait_inspected | bool
       changed_when: False
       delegate_to: "{{ seed_host }}"
       vars:
@@ -137,8 +136,7 @@
     - name: Set a fact containing the final provision state
       set_fact:
         final_provision_state: "{{ show_result.stdout_lines[1] }}"
-      when:
-        - "{{ wait_inspected | bool }}"
+      when: wait_inspected | bool
 
     - name: Fail if any of the nodes are not manageable
       fail:
@@ -147,5 +145,5 @@
           provision state after inspecting.  Ironic provision state:
           {{ final_provision_state }}. Expected: manageable.
       when:
-        - "{{ wait_inspected | bool }}"
-        - "{{ final_provision_state != 'manageable' }}"
+        - wait_inspected | bool
+        - final_provision_state != 'manageable'

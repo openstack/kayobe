@@ -40,7 +40,7 @@
         source {{ venv }}/bin/activate &&
         openstack baremetal node manage {{ item['Name'] }}
       with_items: "{{ ironic_nodes }}"
-      when: "{{ item['Provisioning State'] == 'enroll' }}"
+      when: item['Provisioning State'] == 'enroll'
       environment: "{{ openstack_auth_env }}"
 
     - name: Ensure ironic nodes are available
@@ -48,7 +48,7 @@
         source {{ venv }}/bin/activate &&
         openstack baremetal node provide {{ item['Name'] }}
       with_items: "{{ ironic_nodes }}"
-      when: "{{ item['Provisioning State'] in ['enroll', 'manageable'] }}"
+      when: item['Provisioning State'] in ['enroll', 'manageable']
       environment: "{{ openstack_auth_env }}"
 
     - name: Get a list of ironic nodes
@@ -77,4 +77,4 @@
           Failed to make compute node {{ item['Name'] }} available in ironic.
           Provisioning state is {{ item['Provisioning State'] }}.
       with_items: "{{ ironic_nodes }}"
-      when: "{{ item['Provisioning State'] != 'available' }}"
+      when: item['Provisioning State'] != 'available'

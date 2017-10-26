@@ -66,7 +66,7 @@
           Ironic node for {{ inventory_hostname }} is in an unexpected
           initial provision state: {{ initial_provision_state }}. Expected
           states are: {{ provisionable_states | join(',') }}.
-      when: "{{ initial_provision_state not in provisionable_states }}"
+      when: initial_provision_state not in provisionable_states
 
     - name: Ensure the ironic node is manageable
       command: >
@@ -85,7 +85,7 @@
       until: "{{ manage_result | success or 'is locked by host' in manage_result.stdout }}"
       retries: "{{ ironic_retries }}"
       delay: "{{ ironic_retry_interval }}"
-      when: "{{ initial_provision_state == 'enroll' }}"
+      when: initial_provision_state == 'enroll'
       delegate_to: "{{ seed_host }}"
       vars:
         # NOTE: Without this, the seed's ansible_host variable will not be
@@ -109,7 +109,7 @@
       until: "{{ provide_result | success or 'is locked by host' in provide_result.stdout }}"
       retries: "{{ ironic_retries }}"
       delay: "{{ ironic_retry_interval }}"
-      when: "{{ initial_provision_state in ['enroll', 'manageable'] }}"
+      when: initial_provision_state in ['enroll', 'manageable']
       delegate_to: "{{ seed_host }}"
       vars:
         # NOTE: Without this, the seed's ansible_host variable will not be
@@ -120,7 +120,7 @@
       set_fact:
         bifrost_limit: "{{ bifrost_limit + [item] }}"
       with_items: "{{ play_hosts }}"
-      when: "{{ hostvars[item].initial_provision_state != 'active' }}"
+      when: hostvars[item].initial_provision_state != 'active'
       run_once: True
 
     - name: Ensure the ironic nodes are provisioned
@@ -135,7 +135,7 @@
         -e @/etc/bifrost/bifrost.yml
         -e @/etc/bifrost/dib.yml
         --limit {{ bifrost_limit | join(':') }}'
-      when: "{{ bifrost_limit }}"
+      when: bifrost_limit
       delegate_to: "{{ seed_host }}"
       vars:
         # NOTE: Without this, the seed's ansible_host variable will not be
@@ -167,8 +167,8 @@
       retries: "{{ wait_active_timeout // wait_active_interval }}"
       delay: "{{ wait_active_interval }}"
       when:
-        - "{{ wait_active | bool }}"
-        - "{{ initial_provision_state != 'active' }}"
+        - wait_active | bool
+        - initial_provision_state != 'active'
       changed_when: False
       delegate_to: "{{ seed_host }}"
       vars:
@@ -180,8 +180,8 @@
       set_fact:
         final_provision_state: "{{ show_result.stdout_lines[1] }}"
       when:
-        - "{{ wait_active | bool }}"
-        - "{{ initial_provision_state != 'active' }}"
+        - wait_active | bool
+        - initial_provision_state != 'active'
 
     - name: Fail if any of the nodes are not available
       fail:
@@ -190,9 +190,9 @@
           provision state after provisioning.  Ironic provision state:
           {{ final_provision_state }}. Expected: active.
       when:
-        - "{{ wait_active | bool }}"
-        - "{{ initial_provision_state != 'active' }}"
-        - "{{ final_provision_state != 'active' }}"
+        - wait_active | bool
+        - initial_provision_state != 'active'
+        - final_provision_state != 'active'
 
     - name: Wait for SSH access to the nodes
       local_action:
@@ -201,5 +201,4 @@
         port: 22
         state: started
         timeout: "{{ wait_ssh_timeout }}"
-      when:
-        - "{{ wait_ssh | bool }}"
+      when: wait_ssh | bool
