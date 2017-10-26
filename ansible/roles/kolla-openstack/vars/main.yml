@@ -8,6 +8,11 @@
 # ignore: Optional list of files to leave in the destination, even if disabled
 #         or unexpected.
 kolla_openstack_custom_config:
+  # Ceph.
+  - src: "{{ kolla_extra_config_path }}/ceph"
+    dest: "{{ kolla_node_custom_config_path }}/ceph"
+    patterns: "*"
+    enabled: "{{ kolla_enable_ceph }}"  
   # Fluentd filters.
   - src: "{{ kolla_extra_config_path }}//fluentd/filter"
     dest: "{{ kolla_node_custom_config_path }}/fluentd/filter"

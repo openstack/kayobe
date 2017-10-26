@@ -237,6 +237,7 @@ kolla_openstack_logging_debug: "False"
 # Kolla feature flag configuration.
 
 kolla_enable_barbican: "no"
+kolla_enable_ceph: "no"
 kolla_enable_glance: "yes"
 kolla_enable_haproxy: "yes"
 kolla_enable_heat: "yes"
