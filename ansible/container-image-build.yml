@@ -7,7 +7,7 @@
     # Set this variable to a space-separated list of regexes to override the
     # default set of images.
     container_image_regexes: ""
-    kolla_build_log_path: "/var/log/kolla-build.log" 
+    kolla_build_log_path: "/var/log/kolla-build.log"
   tasks:
     - name: Set the container image sets to build if images regexes specified
       set_fact:
@@ -36,7 +36,7 @@
       docker_login:
         username: "{{ kolla_docker_registry_username }}"
         password: "{{ kolla_docker_registry_password }}"
-      when: kolla_docker_registry_username is not None and kolla_docker_registry_password is not None
+      when: kolla_docker_registry_username is not none and kolla_docker_registry_password is not none
 
     - name: Ensure Kolla container images are built
       shell: >
