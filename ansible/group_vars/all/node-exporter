@@ -1,0 +1,6 @@
+---
+###############################################################################
+# Prometheus node exporter configuration.
+
+# Whether Prometheus node exporter is enabled.
+nodeexporter_enabled: False
