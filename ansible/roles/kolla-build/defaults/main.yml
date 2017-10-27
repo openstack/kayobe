@@ -1,6 +1,6 @@
 ---
 # Directory where Kolla config files will be installed.
-kolla_config_path:
+kolla_build_config_path:
 
 # Valid options are [ centos, fedora, oraclelinux, ubuntu ]
 kolla_base_distro:

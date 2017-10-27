@@ -18,6 +18,9 @@ kolla_source_version: "stackhpc/pike"
 # Path to virtualenv in which to install kolla.
 kolla_venv: "{{ virtualenv_path ~ '/kolla' }}"
 
+# Path in which to generate kolla configuration.
+kolla_build_config_path: "{{ config_path ~ '/kolla' }}"
+
 ###############################################################################
 # Kolla-ansible installation.
 
@@ -37,14 +40,14 @@ kolla_ansible_source_version: "stackhpc/pike"
 # Path to virtualenv in which to install kolla-ansible.
 kolla_ansible_venv: "{{ lookup('env', 'KOLLA_VENV_PATH') | default(lookup('env', 'PWD') ~ '/venvs/kolla-ansible', true) }}"
 
-###############################################################################
-# Kolla & kolla-ansible configuration.
-
-# Path to Kolla configuration directory.
+# Path to Kolla-ansible configuration directory.
 kolla_config_path: "{{ lookup('env', 'KOLLA_CONFIG_PATH') | default('/etc/kolla', true) }}"
 
-# Path to Kolla node custom configuration directory.
+# Path to Kolla-ansible node custom configuration directory.
 kolla_node_custom_config_path: "{{ kolla_config_path }}/config"
+
+###############################################################################
+# Kolla configuration.
 
 # Kolla base container image distribution.
 kolla_base_distro: "centos"

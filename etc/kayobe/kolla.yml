@@ -20,6 +20,9 @@
 # Path to virtualenv in which to install kolla.
 #kolla_venv:
 
+# Path in which to generate kolla configuration.
+#kolla_build_config_path:
+
 ###############################################################################
 # Kolla-ansible installation.
 
@@ -39,14 +42,14 @@
 # Path to virtualenv in which to install kolla-ansible.
 #kolla_ansible_venv:
 
-###############################################################################
-# Kolla & kolla-ansible configuration.
-
-# Path to Kolla configuration directory.
+# Path to Kolla-ansible configuration directory.
 #kolla_config_path:
 
-# Path to Kolla node custom configuration directory.
+# Path to Kolla-ansible node custom configuration directory.
 #kolla_node_custom_config_path:
+
+###############################################################################
+# Kolla configuration.
 
 # Kolla base container image distribution.
 #kolla_base_distro:

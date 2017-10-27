@@ -16,7 +16,7 @@ kolla_source_version:
 kolla_venv: "{{ ansible_env['PWD'] }}/kolla-venv"
 
 # Directory where Kolla config files will be installed.
-kolla_config_path:
+kolla_build_config_path:
 
 # Kolla OpenStack release version. This should be a Docker image tag.
 kolla_openstack_release:

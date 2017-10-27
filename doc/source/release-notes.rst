@@ -31,6 +31,12 @@ Upgrade Notes
   (``kolla_neutron_ml2_mechanism_drivers``) has been removed in favour of using
   the defaults provided by kolla-ansible. Users relying on the default list of
   ``openvswitch`` and ``genericswitch`` should set the value explicitly.
+* Adds a variable ``config_path``, used to set the base path to configuration
+  on remote hosts. The default value is ``/opt/kayobe/etc``.
+* Modifies the variable used to configure the kolla build configuration path
+  from ``kolla_config_path`` to ``kolla_build_config_path``.  This provides a
+  cleaner separation of kolla and kolla-ansible configuration options. The
+  default value is ``{{ config_path }}/kolla``.
 
 Kayobe 3.0.0
 ============
