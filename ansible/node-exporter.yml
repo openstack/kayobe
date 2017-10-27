@@ -7,6 +7,6 @@
 # action: One of deploy, destroy, pull, reconfigure, upgrade
 
 - name: Ensure Node Exporter is deployed
-  hosts: all
+  hosts: overcloud:&docker
   roles:
     - role: node-exporter
