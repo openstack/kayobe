@@ -41,8 +41,13 @@ supported:
     Maximum Transmission Unit (MTU).
 ``routes``
     List of static IP routes. Each item should be a dict containing the
-    items ``cidr`` and ``gateway``. ``cidr`` is the CIDR representation of the
-    route's destination. ``gateway`` is the IP address of the next hop.
+    item ``cidr``, and optionally ``gateway`` and ``table``. ``cidr`` is the CIDR
+    representation of the route's destination. ``gateway`` is the IP address of
+    the next hop. ``table`` is the name or ID of a routing table to which the
+    route will be added.
+``rules``
+    List of IP routing rules. Each item should be an ``iproute2`` IP routing
+    rule.
 ``physical_network``
     Name of the physical network on which this network exists. This aligns with
     the physical network concept in neutron.
@@ -86,7 +91,8 @@ Configuring Static IP Routes
 Static IP routes may be configured by setting the ``routes`` attribute for a
 network to a list of routes.
 
-To configure a network called ``example`` with a single IP route:
+To configure a network called ``example`` with a single IP route to the
+``10.1.0.0/24`` subnet via ``10.0.0.1``:
 
 .. code-block:: yaml
    :caption: ``networks.yml``
@@ -154,6 +160,71 @@ addresses for hosts ``host1`` and ``host2``:
    example_ips:
      host1: 10.0.0.1
      host2: 10.0.0.2
+
+Advanced: Policy-Based Routing
+------------------------------
+
+Policy-based routing can be useful in complex networking environments,
+particularly where asymmetric routes exist, and strict reverse path filtering
+is enabled.
+
+Configuring IP Routing Tables
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Custom IP routing tables may be configured by setting the global variable
+``network_route_tables`` in ``${KAYOBE_CONFIG_PATH}/networks.yml`` to a list of
+route tables. These route tables will be added to ``/etc/iproute2/rt_tables``.
+
+To configure a routing table called ``exampleroutetable`` with ID ``1``:
+
+.. code-block:: yaml
+   :caption: ``networks.yml``
+
+   network_route_tables:
+     - name: exampleroutetable
+       id: 1
+
+To configure route tables on specific hosts, use a host or group variables
+file.
+
+Configuring IP Routing Policy Rules
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+IP routing policy rules may be configured by setting the ``rules`` attribute
+for a network to a list of rules. The format of a rule is the string which
+would be appended to ``ip rule <add|del>`` to create or delete the rule.
+
+To configure a network called ``example`` with an IP routing policy rule to
+handle traffic from the subnet ``10.1.0.0/24`` using the routing table
+``exampleroutetable``:
+
+.. code-block:: yaml
+   :caption: ``networks.yml``
+
+   example_rules:
+     - from 10.1.0.0/24 table exampleroutetable
+
+These rules will be configured on all hosts to which the network is mapped.
+
+Configuring IP Routes on Specific Tables
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A route may be added to a specific routing table by adding the name or ID of
+the table to a ``table`` attribute of the route:
+
+To configure a network called ``example`` with a default route and a
+'connected' (local subnet) route to the subnet ``10.1.0.0/24`` on the table
+``exampleroutetable``:
+
+.. code-block:: yaml
+   :caption: ``networks.yml``
+
+   example_routes:
+     - cidr: 0.0.0.0/0
+       gateway 10.1.0.1
+       table: exampleroutetable
+     - cidr: 10.1.0.0/24
+       table: exampleroutetable
 
 Per-host Network Configuration
 ==============================

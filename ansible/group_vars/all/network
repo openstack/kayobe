@@ -54,3 +54,10 @@ network_patch_suffix_phy: '-phy'
 # Suffix for virtual patch link interface names when connected towards the
 # OVS bridge.
 network_patch_suffix_ovs: '-ovs'
+
+###############################################################################
+# Network routing table configuration.
+
+# List of IP routing tables. Each item should be a dict containing 'id' and
+# 'name' items. These tables will be added to /etc/iproute2/rt_tables.
+network_route_tables: []
