@@ -32,6 +32,8 @@ Features
 * Discovery, introspection and provisioning of bare metal compute hosts
   using `OpenStack ironic <https://docs.openstack.org/developer/ironic/>`_ and
   `ironic inspector <https://docs.openstack.org/developer/ironic-inspector/>`_
+* Virtualised compute using `OpenStack nova
+  <https://docs.openstack.org/developer/nova/>`_
 * Containerised workloads on bare metal using `OpenStack magnum
   <https://docs.openstack.org/developer/magnum/>`_
 * Big data on bare metal using `OpenStack sahara
@@ -41,5 +43,3 @@ In the near future we aim to add support for the following:
 
 * Control plane and workload monitoring and log aggregation using `OpenStack
   monasca <https://wiki.openstack.org/wiki/Monasca>`_
-* Virtualised compute using `OpenStack nova
-  <https://docs.openstack.org/developer/nova/>`_

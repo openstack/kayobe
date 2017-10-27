@@ -41,6 +41,9 @@ Network
 Monitoring
     Monitoring host run the control plane and workload monitoring services.
     Currently, kayobe does not deploy any services onto monitoring hosts.
+Virtualised compute hypervisors
+    Virtualised compute hypervisors run the tenant Virtual Machines (VMs) and
+    associated OpenStack services for compute, networking and storage.
 
 Networks
 ========
