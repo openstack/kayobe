@@ -1,10 +1,7 @@
 ---
 - src: ahuffman.resolv
 - src: jriguera.configdrive
-#- src: MichaelRigart.interfaces
-- src: https://github.com/stackhpc/ansible-role-interfaces
-  version: route-tables-and-rules
-  name: MichaelRigart.interfaces
+- src: MichaelRigart.interfaces
 - src: mrlesmithjr.manage-lvm
 - src: resmo.ntp
 #- src: singleplatform-eng.users
