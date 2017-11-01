@@ -40,3 +40,19 @@
     update_cache=yes
   when: ansible_os_family == 'RedHat'
 
+- name: Yum | Install yum-cron (CentOS)
+  package: name=yum-cron state=present
+  when: ansible_os_family == 'RedHat'
+
+- name: Replace | Enable update applying for yum-cron (CentOS)
+  replace:
+    dest: /etc/yum/yum-cron.conf
+    regexp: "^apply_updates = no"
+    replace: "apply_updates = yes"
+  when: ansible_os_family == 'RedHat'
+  notify:
+    - Restart yum-cron
+
+- name: Service | Enable yum-cron (CentOS)
+  service: name=yum-cron state=started enabled=yes
+  when: ansible_os_family == 'RedHat'
