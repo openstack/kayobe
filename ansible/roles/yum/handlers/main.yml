@@ -2,5 +2,5 @@
 
 - name: Restart yum-cron
   service:
-    name=yum-cron
-    state=restarted
+    name: yum-cron
+    state: restarted
