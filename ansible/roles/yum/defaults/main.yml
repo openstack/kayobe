@@ -1,0 +1,5 @@
+---
+
+centos_mirror_host: 'mirror.centos.org'
+epel_mirror_host: 'download.fedoraproject.org'
+epel_mirror_directory: 'pub/epel'
