@@ -18,7 +18,7 @@
 
 - name: Yum | Update cache (CentOS)
   yum:
-    update_cache=yes
+    update_cache: yes
   when: ansible_os_family == 'RedHat'
 
 - name: Yum | Install epel-release (CentOS)
@@ -37,7 +37,8 @@
   when: ansible_os_family == 'RedHat'
 
 - name: Yum | Update cache (CentOS)
-    update_cache=yes
+  yum:
+    update_cache: yes
   when: ansible_os_family == 'RedHat'
 
 - name: Yum | Install yum-cron (CentOS)
