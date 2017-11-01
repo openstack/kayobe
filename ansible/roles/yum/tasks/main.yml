@@ -42,7 +42,7 @@
   when: ansible_os_family == 'RedHat'
 
 - name: Yum | Install yum-cron (CentOS)
-  package: name=yum-cron state=present
+  yum: name=yum-cron state=present
   when: ansible_os_family == 'RedHat'
 
 - name: Replace | Enable update applying for yum-cron (CentOS)
