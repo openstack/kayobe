@@ -111,6 +111,20 @@ specified directory, with one subdirectory per container. This command may be
 followed by ``kayobe ovecloud service configuration save`` to gather the
 generated configuration to the ansible control host.
 
+Checking Network Connectivity
+=============================
+
+In complex networking environments it can be useful to be able to automatically
+check network connectivity and diagnose networking issues.  To perform some
+simple connectivity checks::
+
+    (kayobe) $ kayobe network connectivity check
+
+Note that this will run on the seed, seed hypervisor, and overcloud hosts. If
+any of these hosts are not expected to be active (e.g. prior to overcloud
+deployment), the set of target hosts may be limited using the ``--limit``
+argument.
+
 Running Kayobe Playbooks on Demand
 ==================================
 

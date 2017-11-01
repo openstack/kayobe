@@ -972,3 +972,17 @@ class OvercloudPostConfigure(KayobeAnsibleMixin, VaultMixin, Command):
             "overcloud-introspection-rules-dell-lldp-workaround",
             "provision-net")
         self.run_kayobe_playbooks(parsed_args, playbooks)
+
+
+class NetworkConnectivityCheck(KayobeAnsibleMixin, VaultMixin, Command):
+    """Check network connectivity between hosts in the control plane.
+
+    Checks for access to an external IP address, an external hostname, any
+    configured gateways, and between hosts on the same subnets. The MTU of
+    each network is validated by sending ping packets of maximum size.
+    """
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Performing network connectivity check")
+        playbooks = _build_playbook_list("network-connectivity")
+        self.run_kayobe_playbooks(parsed_args, playbooks)
