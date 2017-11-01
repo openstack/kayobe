@@ -4,3 +4,4 @@
   service:
     name: yum-cron
     state: restarted
+  become: True

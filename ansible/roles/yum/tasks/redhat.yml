@@ -5,6 +5,7 @@
     dest: /etc/yum/pluginconf.d/fastestmirror.conf
     regexp: "enabled=1"
     replace: "enabled=0"
+  become: True
 
 - name: Template | Copy CentOS repo templates (CentOS)
   template:
@@ -13,16 +14,18 @@
     owner: root
     group: root
     mode: 0664
+  become: True
 
 - name: Yum | Update cache (CentOS)
   yum:
     update_cache: yes
+  become: True
 
 - name: Yum | Install epel-release (CentOS)
   yum:
     name: epel-release
     state: installed
-  when: ansible_os_family == 'RedHat'
+  become: True
 
 - name: Template | Copy EPEL repo templates (CentOS)
   template:
@@ -31,8 +34,9 @@
     owner: root
     group: root
     mode: 0664
+  become: True
 
 - name: Yum | Update cache (CentOS)
   yum:
     update_cache: yes
-  when: ansible_os_family == 'RedHat'
+  become: True

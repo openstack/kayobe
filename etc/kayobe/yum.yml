@@ -2,8 +2,6 @@
 
 # Whether or not to use a local Yum mirror.
 #yum_use_local_mirror: false
-# Whether or not yum-cron is enabled.
-#yum_cron_enabled: false
 # Mirror FQDN for Yum repos.
 #yum_centos_mirror_host: 'mirror.centos.org'
 # Mirror directory for Yum CentOS repos.

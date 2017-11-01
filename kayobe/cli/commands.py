@@ -555,11 +555,11 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     * Configure a user account for use by kayobe for SSH access.
     * Optionally, wipe unmounted disk partitions (--wipe-disks).
     * Configure user accounts, group associations, and authorised SSH keys.
+    * Configure YUM repos.
     * Disable SELinux.
     * Configure the host's network interfaces.
     * Set sysctl parameters.
     * Disable bootstrap interface configuration.
-    * Configure YUM repos.
     * Configure NTP.
     * Configure LVM volumes.
     * Configure a user account for kolla-ansible.
