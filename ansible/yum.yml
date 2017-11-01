@@ -1,7 +1,7 @@
 ---
 
 - name: Ensure Yum repos are configured
-  hosts: seed:overcloud
+  hosts: seed-hypervisor:seed:overcloud
   roles:
     - role: yum
     - role: yum-cron
