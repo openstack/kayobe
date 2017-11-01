@@ -559,6 +559,7 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     * Configure the host's network interfaces.
     * Set sysctl parameters.
     * Disable bootstrap interface configuration.
+    * Configure YUM repos.
     * Configure NTP.
     * Configure LVM volumes.
     * Configure a user account for kolla-ansible.
@@ -589,7 +590,7 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
             playbooks += _build_playbook_list("wipe-disks")
         playbooks += _build_playbook_list(
             "users", "dev-tools", "disable-selinux", "network", "sysctl",
-            "disable-glean", "ntp", "lvm")
+            "disable-glean", "yum", "ntp", "lvm")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
         playbooks = _build_playbook_list("kolla-ansible")
         self.run_kayobe_playbooks(parsed_args, playbooks, tags="config")
