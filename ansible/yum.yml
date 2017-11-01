@@ -1,0 +1,6 @@
+---
+
+- name: Ensure Yum repos are configured
+  hosts: seed:overcloud
+  roles:
+    - role: yum
