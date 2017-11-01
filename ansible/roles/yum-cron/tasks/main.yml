@@ -15,6 +15,15 @@
   notify:
     - Restart yum-cron
 
+- name: Replace | Enable update applying for yum-cron (CentOS)
+  replace:
+    dest: /etc/yum/yum-cron.conf
+    regexp: "^update_cmd = default"
+    replace: "update_cmd = {{ yum_cron_update_cmd }}"
+  when: yum_cron_enabled
+  notify:
+    - Restart yum-cron
+
 - name: Service | Enable yum-cron (CentOS)
   service:
     name: yum-cron
