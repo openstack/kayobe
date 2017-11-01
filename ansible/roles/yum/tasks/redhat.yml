@@ -1,0 +1,59 @@
+---
+
+- name: Replace | Disable YUM fastestmirror plugin (CentOS)
+  replace:
+    dest: /etc/yum/pluginconf.d/fastestmirror.conf
+    regexp: "enabled=1"
+    replace: "enabled=0"
+  when: ansible_os_family == 'RedHat'
+
+- name: Template | Copy CentOS repo templates (CentOS)
+  template:
+    src: CentOS-Base.repo.j2
+    dest: /etc/yum.repos.d/CentOS-Base.repo
+    owner: root
+    group: root
+    mode: 0664
+  when: ansible_os_family == 'RedHat'
+
+- name: Yum | Update cache (CentOS)
+  yum:
+    update_cache: yes
+  when: ansible_os_family == 'RedHat'
+
+- name: Yum | Install epel-release (CentOS)
+  yum:
+    name: epel-release
+    state: installed
+  when: ansible_os_family == 'RedHat'
+
+- name: Template | Copy EPEL repo templates (CentOS)
+  template:
+    src: epel.repo.j2
+    dest: /etc/yum.repos.d/epel.repo
+    owner: root
+    group: root
+    mode: 0664
+  when: ansible_os_family == 'RedHat'
+
+- name: Yum | Update cache (CentOS)
+  yum:
+    update_cache: yes
+  when: ansible_os_family == 'RedHat'
+
+- name: Yum | Install yum-cron (CentOS)
+  yum: name=yum-cron state=present
+  when: ansible_os_family == 'RedHat'
+
+- name: Replace | Enable update applying for yum-cron (CentOS)
+  replace:
+    dest: /etc/yum/yum-cron.conf
+    regexp: "^apply_updates = no"
+    replace: "apply_updates = yes"
+  when: ansible_os_family == 'RedHat'
+  notify:
+    - Restart yum-cron
+
+- name: Service | Enable yum-cron (CentOS)
+  service: name=yum-cron state=started enabled=yes
+  when: ansible_os_family == 'RedHat'
