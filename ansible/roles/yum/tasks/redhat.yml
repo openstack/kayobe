@@ -45,14 +45,14 @@
   yum:
     name: yum-cron
     state: present
-  when: ansible_os_family == 'RedHat'
+  when: yum_cron_enabled
 
 - name: Replace | Enable update applying for yum-cron (CentOS)
   replace:
     dest: /etc/yum/yum-cron.conf
     regexp: "^apply_updates = no"
     replace: "apply_updates = yes"
-  when: ansible_os_family == 'RedHat'
+  when: yum_cron_enabled
   notify:
     - Restart yum-cron
 
@@ -61,4 +61,4 @@
     name: yum-cron
     state: started
     enabled: yes
-  when: ansible_os_family == 'RedHat'
+  when: yum_cron_enabled
