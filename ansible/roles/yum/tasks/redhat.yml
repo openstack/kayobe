@@ -18,6 +18,7 @@
 
 - name: Yum | Update cache (CentOS)
   yum:
+    name: '*'
     update_cache: yes
   become: True
 
@@ -38,5 +39,6 @@
 
 - name: Yum | Update cache (CentOS)
   yum:
+    name: '*'
     update_cache: yes
   become: True
