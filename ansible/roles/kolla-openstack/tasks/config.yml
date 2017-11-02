@@ -78,7 +78,9 @@
     - "{{ find_src_result.results }}"
     - files
     - skip_missing: True
-  when: item.0.item.enabled | bool
+  when:
+    - item.0.item.enabled | bool
+    - item.1.path | basename not in item.0.item.ignore | default([])
 
 - name: Ensure unnecessary extra configuration files are absent
   file:
