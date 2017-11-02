@@ -1,0 +1,6 @@
+---
+
+- include: redhat.yml
+  when:
+    - ansible_os_family == "RedHat"
+    - yum_use_local_mirror

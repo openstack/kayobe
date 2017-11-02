@@ -1,0 +1,44 @@
+---
+
+- name: Replace | Disable YUM fastestmirror plugin (CentOS)
+  replace:
+    dest: /etc/yum/pluginconf.d/fastestmirror.conf
+    regexp: "enabled=1"
+    replace: "enabled=0"
+  become: True
+
+- name: Template | Copy CentOS repo templates (CentOS)
+  template:
+    src: CentOS-Base.repo.j2
+    dest: /etc/yum.repos.d/CentOS-Base.repo
+    owner: root
+    group: root
+    mode: 0664
+  become: True
+
+- name: Yum | Update cache (CentOS)
+  yum:
+    name: '*'
+    update_cache: yes
+  become: True
+
+- name: Yum | Install epel-release (CentOS)
+  yum:
+    name: epel-release
+    state: installed
+  become: True
+
+- name: Template | Copy EPEL repo templates (CentOS)
+  template:
+    src: epel.repo.j2
+    dest: /etc/yum.repos.d/epel.repo
+    owner: root
+    group: root
+    mode: 0664
+  become: True
+
+- name: Yum | Update cache (CentOS)
+  yum:
+    name: '*'
+    update_cache: yes
+  become: True
