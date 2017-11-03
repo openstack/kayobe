@@ -148,6 +148,7 @@ def net_bridge_ports(context, name, inventory_hostname=None):
 net_bond_mode = _make_attr_filter('bond_mode')
 net_bond_slaves = _make_attr_filter('bond_slaves')
 net_bond_miimon = _make_attr_filter('bond_miimon')
+net_bond_xmit_hash_policy = _make_attr_filter('bond_xmit_hash_policy')
 
 
 def _route_obj(route):
@@ -277,6 +278,7 @@ def net_bond_obj(context, name, inventory_hostname=None):
     mode = net_bond_mode(context, name, inventory_hostname)
     slaves = net_bond_slaves(context, name, inventory_hostname)
     miimon = net_bond_miimon(context, name, inventory_hostname)
+    xmit_hash_policy = net_bond_xmit_hash_policy(context, name, inventory_hostname)
     routes = net_routes(context, name, inventory_hostname)
     if routes:
         routes = [_route_obj(route) for route in routes]
@@ -291,6 +293,7 @@ def net_bond_obj(context, name, inventory_hostname=None):
         'bond_slaves': slaves,
         'bond_mode': mode,
         'bond_miimon': miimon,
+        'bond_xmit_hash_policy': xmit_hash_policy,
         'route': routes,
         'rules': rules,
         'bootproto': 'static',
