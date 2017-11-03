@@ -20,6 +20,10 @@ Features
 * Adds support for specifying a local Yum mirror for package installation.
 * Adds the command ``kayobe network connectivity check`` which can be used to
   verify network connectivity in the cloud hosts.
+* Adds a variable ``kolla_nova_compute_ironic_group`` which may be used to set
+  which hosts run the nova compute service for ironic. This may be used to
+  avoid the experimental HA nova compute service for ironic, by specifying a
+  single host.
 
 Upgrade Notes
 -------------

@@ -38,7 +38,10 @@ nova
 nova
 
 [nova-compute-ironic:children]
-nova
+# NOTE: HA for nova-compute services with ironic is still an experimental
+# feature. Provide the option to use a single compute host, even when multiple
+# controllers are in use.
+{{ kolla_nova_compute_ironic_group }}
 
 [nova-serialproxy:children]
 nova
