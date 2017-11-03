@@ -246,8 +246,16 @@ The following attributes are supported:
     for the bond.
 ``bond_miimon``
     For bond interfaces, the time in milliseconds between MII link monitoring.
+``bond_updelay``
+    For bond interfaces, the time in milliseconds to wait before declaring an
+    interface up (should be multiple of ``bond_miimon``).
+``bond_downdelay``
+    For bond interfaces, the time in milliseconds to wait before declaring an
+    interface down (should be multiple of ``bond_miimon``).
 ``bond_xmit_hash_policy``
     For bond interfaces, the xmit_hash_policy to use for the bond.
+``bond_lacp_rate``
+    For bond interfaces, the lacp_rate to use for the bond.
 
 IP Addresses
 ------------
