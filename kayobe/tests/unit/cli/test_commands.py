@@ -68,3 +68,16 @@ class TestCase(unittest.TestCase):
                       tags="install"),
         ]
         self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_network_connectivity_check(self, mock_run):
+        command = commands.NetworkConnectivityCheck(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+        expected_calls = [
+            mock.call(mock.ANY, ["ansible/network-connectivity.yml"]),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)

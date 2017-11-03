@@ -55,6 +55,7 @@ setup(
             'control_host_upgrade = kayobe.cli.commands:ControlHostUpgrade',
             'configuration_dump = kayobe.cli.commands:ConfigurationDump',
             'kolla_ansible_run = kayobe.cli.commands:KollaAnsibleRun',
+            'network_connectivity_check = kayobe.cli.commands:NetworkConnectivityCheck',
             'overcloud_bios_raid_configure = kayobe.cli.commands:OvercloudBIOSRAIDConfigure',
             'overcloud_container_image_build = kayobe.cli.commands:OvercloudContainerImageBuild',
             'overcloud_container_image_pull = kayobe.cli.commands:OvercloudContainerImagePull',

@@ -1,0 +1,84 @@
+---
+- name: Check network connectivity between hosts
+  hosts: seed:seed-hypervisor:overcloud
+  vars:
+    # Set this to an external IP address to check.
+    nc_external_ip: 8.8.8.8
+    # Set this to an external hostname to check.
+    nc_external_hostname: google.com
+    # Number of bytes to subtract from MTU to allow for ICMP (8 bytes) and IP
+    # (20 bytes) headers.
+    icmp_overhead_bytes: 28
+  tasks:
+    - name: Display next action
+      debug:
+        msg: >
+          Checking whether hosts have access to an external IP address,
+          {{ nc_external_ip }}.
+      run_once: True
+
+    - name: Ensure an external IP is reachable
+      command: ping -c1 {{ nc_external_ip }}
+      changed_when: False
+
+    - name: Display next action
+      debug:
+        msg: >
+          Checking whether hosts have access to an external hostname,
+          {{ nc_external_hostname }}.
+      run_once: True
+
+    - name: Ensure an external host is reachable
+      command: ping -c1 {{ nc_external_hostname }}
+      changed_when: False
+
+    - name: Display next action
+      debug:
+        msg: >
+          Checking whether hosts have access to any configured gateways.
+      run_once: True
+
+    - name: Ensure the gateway is reachable
+      command: >
+        ping {{ item | net_gateway }} -c1 -M do {% if mtu %} -s {{ mtu | int - icmp_overhead_bytes }}{% endif %}
+      with_items: "{{ network_interfaces }}"
+      when:
+        - item | net_ip
+        - item | net_gateway
+      changed_when: False
+      vars:
+        mtu: "{{ item | net_mtu }}"
+
+    # For each network on this host, pick a random remote host also on the
+    # network and try to ping it. Set the packet size according to the
+    # network's MTU.
+
+    - name: Display next action
+      debug:
+        msg: >
+          Checking whether hosts have access to other hosts on the same
+          network.
+      run_once: True
+
+    - name: Ensure hosts on the same network are reachable
+      command: >
+        ping {{ remote_ip }} -c1 -M do {% if mtu %} -s {{ mtu | int - icmp_overhead_bytes }}{% endif %}
+      with_items: "{{ network_interfaces }}"
+      when:
+        - item | net_ip
+        - remote_hosts | length > 0
+      changed_when: False
+      vars:
+        # Select other hosts targeted by this play which have this network
+        # interface (item).
+        remote_hosts: >
+          {{ hostvars.values() |
+             selectattr('inventory_hostname', 'is_in', play_hosts) |
+             selectattr('network_interfaces', 'defined') |
+             selectattr('network_interfaces', 'issuperset', [item]) |
+             rejectattr('inventory_hostname', 'equalto', inventory_hostname) |
+             map(attribute='inventory_hostname') |
+             list }}
+        remote_host: "{{ remote_hosts | random }}"
+        remote_ip: "{{ item | net_ip(remote_host) }}"
+        mtu: "{{ item | net_mtu }}"
