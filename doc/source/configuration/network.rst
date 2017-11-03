@@ -246,6 +246,8 @@ The following attributes are supported:
     for the bond.
 ``bond_miimon``
     For bond interfaces, the time in milliseconds between MII link monitoring.
+``bond_xmit_hash_policy``
+    For bond interfaces, the xmit_hash_policy to use for the bond.
 
 IP Addresses
 ------------
