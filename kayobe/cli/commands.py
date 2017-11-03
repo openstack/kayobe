@@ -264,6 +264,7 @@ class SeedHypervisorHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
     * Allocate IP addresses for all configured networks.
     * Add the host to SSH known hosts.
     * Configure user accounts, group associations, and authorised SSH keys.
+    * Configure Yum repos.
     * Configure the host's network interfaces.
     * Set sysctl parameters.
     * Configure NTP.
@@ -273,8 +274,8 @@ class SeedHypervisorHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
     def take_action(self, parsed_args):
         self.app.LOG.debug("Configuring seed hypervisor host OS")
         playbooks = _build_playbook_list(
-            "ip-allocation", "ssh-known-host", "users", "dev-tools", "network",
-            "sysctl", "ntp", "seed-hypervisor-libvirt-host")
+            "ip-allocation", "ssh-known-host", "users", "yum", "dev-tools",
+            "network", "sysctl", "ntp", "seed-hypervisor-libvirt-host")
         self.run_kayobe_playbooks(parsed_args, playbooks,
                                   limit="seed-hypervisor")
 
@@ -320,6 +321,7 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     * Configure a user account for use by kayobe for SSH access.
     * Optionally, wipe unmounted disk partitions (--wipe-disks).
     * Configure user accounts, group associations, and authorised SSH keys.
+    * Configure Yum repos.
     * Disable SELinux.
     * Configure the host's network interfaces.
     * Set sysctl parameters.
@@ -353,8 +355,8 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         if parsed_args.wipe_disks:
             playbooks += _build_playbook_list("wipe-disks")
         playbooks += _build_playbook_list(
-            "users", "dev-tools", "disable-selinux", "network", "sysctl",
-            "ip-routing", "snat", "disable-glean", "ntp", "lvm")
+            "users", "yum", "dev-tools", "disable-selinux", "network",
+            "sysctl", "ip-routing", "snat", "disable-glean", "ntp", "lvm")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed")
         playbooks = _build_playbook_list("kolla-ansible")
         self.run_kayobe_playbooks(parsed_args, playbooks, tags="config")
@@ -555,6 +557,7 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     * Configure a user account for use by kayobe for SSH access.
     * Optionally, wipe unmounted disk partitions (--wipe-disks).
     * Configure user accounts, group associations, and authorised SSH keys.
+    * Configure Yum repos.
     * Disable SELinux.
     * Configure the host's network interfaces.
     * Set sysctl parameters.
@@ -588,8 +591,8 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         if parsed_args.wipe_disks:
             playbooks += _build_playbook_list("wipe-disks")
         playbooks += _build_playbook_list(
-            "users", "dev-tools", "disable-selinux", "network", "sysctl",
-            "disable-glean", "ntp", "lvm")
+            "users", "yum", "dev-tools", "disable-selinux", "network",
+            "sysctl", "disable-glean", "ntp", "lvm")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
         playbooks = _build_playbook_list("kolla-ansible")
         self.run_kayobe_playbooks(parsed_args, playbooks, tags="config")

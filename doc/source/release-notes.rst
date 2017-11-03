@@ -17,6 +17,7 @@ Features
 * Adds support for configuration of custom fluentd filters, and additional
   config file templates for heat, ironic, keystone, magnum, murano, sahara, and
   swift in ``$KAYOBE_CONFIG_PATH/kolla/config/<component>/``.
+* Adds support for specifying a local Yum mirror for package installation.
 * Adds the command ``kayobe network connectivity check`` which can be used to
   verify network connectivity in the cloud hosts.
 

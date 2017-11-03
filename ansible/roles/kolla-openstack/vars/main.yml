@@ -5,8 +5,9 @@
 # dest: Path to directory in which generated files will be created.
 # patterns: One or more file name patterns to match.
 # enabled: Whether these files should be templated.
-# ignore: Optional list of files to leave in the destination, even if disabled
-#         or unexpected.
+# ignore: Optional list of files to ignore. These files will not be copied to
+#         the destination, and will not be removed from the destination, even
+#         if disabled or unexpected.
 kolla_openstack_custom_config:
   # Ceph.
   - src: "{{ kolla_extra_config_path }}/ceph"
