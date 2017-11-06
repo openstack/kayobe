@@ -84,23 +84,28 @@
     - name: Update a fact containing bridges to be patched to the Neutron OVS bridge
       set_fact:
         veth_bridges: >
-          {{ veth_bridges |
-             union([item | net_interface | replace('.' ~ item | net_vlan | default('!nomatch!'), '')]) |
-             list }}
+          {{ veth_bridges | union([bridge_obj]) | list }}
       with_items:
         - "{{ provision_wl_net_name }}"
         - "{{ external_net_name }}"
       when: item in network_interfaces
+      vars:
+        interface: "{{ item | net_interface | replace('.' ~ item | net_vlan | default('!nomatch!'), '') }}"
+        bridge_obj:
+          interface: "{{ interface }}"
+          mtu: "{{ item | net_mtu }}"
 
     - name: Update a fact containing veth interfaces
       set_fact:
         veth_interfaces: >
           {{ veth_interfaces +
-             [{'device': network_patch_prefix ~ item ~ network_patch_suffix_phy,
+             [{'device': network_patch_prefix ~ item.interface ~ network_patch_suffix_phy,
                'bootproto': 'static',
-               'bridge': item,
-               'peer_device': network_patch_prefix ~ item ~ network_patch_suffix_ovs,
+               'bridge': item.interface,
+               'mtu': item.mtu,
+               'peer_device': network_patch_prefix ~ item.interface ~ network_patch_suffix_ovs,
                'peer_bootproto': 'static',
+               'peer_mtu': item.mtu,
                'onboot': 'yes'}] }}
       with_items: "{{ veth_bridges }}"
   roles:

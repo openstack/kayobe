@@ -25,3 +25,6 @@ BRIDGE={{ item.peer_bridge }}
 {% if ansible_distribution_major_version | int >= 7 %}
 NM_CONTROLLED=no
 {% endif %}
+{% if item.peer_mtu is defined and item.peer_mtu %}
+MTU={{ item.peer_mtu }}
+{% endif %}
