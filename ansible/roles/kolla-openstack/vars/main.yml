@@ -34,6 +34,11 @@ kolla_openstack_custom_config:
     dest: "{{ kolla_node_custom_config_path }}/heat"
     patterns: "*"
     enabled: "{{ kolla_enable_heat }}"
+  # Horizon.
+  - src: "{{ kolla_extra_config_path }}/horizon"
+    dest: "{{ kolla_node_custom_config_path }}/horizon"
+    patterns: "*"
+    enabled: "{{ kolla_enable_horizon }}"
   # Ironic.
   - src: "{{ kolla_extra_config_path }}/ironic"
     dest: "{{ kolla_node_custom_config_path }}/ironic"
