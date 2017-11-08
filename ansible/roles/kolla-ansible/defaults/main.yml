@@ -205,6 +205,17 @@ kolla_openstack_logging_debug:
 #kolla_enable_tempest:
 #kolla_enable_watcher:
 
+#######################
+# Nova options
+#######################
+
+# Which group to use to deploy the nova-compute services for ironic. By default
+# all hosts in the nova group are used - typically the controllers.
+kolla_nova_compute_ironic_group: nova
+
+###############################################################################
+# Extra free-form configuraton.
+
 # Free form extra configuration to append to {{ kolla_config_path }}/globals.yml.
 kolla_extra_globals:
 
