@@ -150,6 +150,13 @@ def build_args(parsed_args, playbooks,
     return cmd
 
 
+def _read_vault_password_file(vault_password_file):
+    """Return the password from a vault password file."""
+    vault_password = utils.read_file(vault_password_file)
+    vault_password = vault_password.strip()
+    return vault_password
+
+
 def run_playbooks(parsed_args, playbooks,
                   extra_vars=None, limit=None, tags=None, quiet=False,
                   verbose_level=None, check=None):
@@ -158,8 +165,20 @@ def run_playbooks(parsed_args, playbooks,
     cmd = build_args(parsed_args, playbooks,
                      extra_vars=extra_vars, limit=limit, tags=tags,
                      verbose_level=verbose_level, check=check)
+    env = os.environ.copy()
+    # If the Vault password has been specified via --vault-password-file,
+    # ensure the environment variable is set, so that it can be referenced by
+    # playbooks to generate the kolla-ansible passwords.yml file.
+    if vault.VAULT_PASSWORD_ENV not in env and parsed_args.vault_password_file:
+        vault_password = _read_vault_password_file(
+            parsed_args.vault_password_file)
+        env[vault.VAULT_PASSWORD_ENV] = vault_password
+    # If the configuration path has been specified via --config-path, ensure
+    # the environment variable is set, so that it can be referenced by
+    # playbooks.
+    env.setdefault(CONFIG_PATH_ENV, parsed_args.config_path)
     try:
-        utils.run_command(cmd, quiet=quiet)
+        utils.run_command(cmd, quiet=quiet, env=env)
     except subprocess.CalledProcessError as e:
         LOG.error("Kayobe playbook(s) %s exited %d",
                   ", ".join(playbooks), e.returncode)
