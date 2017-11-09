@@ -1222,3 +1222,31 @@ class BaremetalComputeRename(KayobeAnsibleMixin, VaultMixin, Command):
         self.app.LOG.debug("Renaming baremetal compute nodes")
         playbooks = _build_playbook_list("baremetal-compute-rename")
         self.run_kayobe_playbooks(parsed_args, playbooks)
+
+
+class BaremetalComputeUpdateDeploymentImage(KayobeAnsibleMixin, VaultMixin,
+                                            Command):
+    """Update the Ironic nodes to use the new  kernel and ramdisk images."""
+
+    def get_parser(self, prog_name):
+        parser = super(BaremetalComputeUpdateDeploymentImage, self).get_parser(
+            prog_name)
+        group = parser.add_argument_group("Baremetal Compute Update")
+        group.add_argument("--baremetal-compute-limit",
+                           help="Limit the upgrade to the hosts specified in "
+                                "this limit"
+                           )
+        return parser
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug(
+            "Upgrading the ironic nodes to use the latest  deployment images")
+        playbooks = _build_playbook_list("overcloud-ipa-images")
+        extra_vars = {}
+        extra_vars["ipa_images_update_ironic_nodes"] = True
+        if parsed_args.baremetal_compute_limit:
+            extra_vars["ipa_images_compute_node_limit"] = (
+                parsed_args.baremetal_compute_limit
+            )
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  extra_vars=extra_vars)

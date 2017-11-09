@@ -121,6 +121,8 @@ should be upgraded::
 Note that this will not perform full configuration of the host, and will
 instead perform a targeted upgrade of specific services where necessary.
 
+.. _building_ironic_deployment_images:
+
 Building Ironic Deployment Images
 ---------------------------------
 
@@ -141,9 +143,23 @@ should be set to ``True``.  To build images locally::
 Upgrading Ironic Deployment Images
 ----------------------------------
 
-Prior to upgrading the OpenStack control plane, the baremetal compute nodes
-should be configured to use an updated deployment ramdisk. This procedure is
-not currently automated by kayobe, and should be performed manually.
+Prior to upgrading the OpenStack control plane you should upgrade
+the deployment images. If you are using prebuilt images, update
+``ipa_kernel_upstream_url`` and ``ipa_ramdisk_upstream_url`` in
+``etc/kayobe/ipa.yml``, alternatively, you can update the files that the URLs
+point to. If building the images locally, follow the process outlined in
+:ref:`building_ironic_deployment_images`.
+
+To get Ironic to use an updated set of overcloud deployment images, you can run::
+
+    (kayobe) $ kayobe baremetal compute update deployment image
+
+This will register the images in Glance and update the ``deploy_ramdisk``
+and ``deploy_kernel`` properties of the Ironic nodes.
+
+Before rolling out the update to all nodes, it can be useful to test the image
+on a limited subset. To do this, you can use the ``baremetal-compute-limit``
+option. See :ref:`update_deployment_image` for more details.
 
 Building Container Images
 -------------------------
