@@ -13,7 +13,7 @@ idrac_default_ip: 192.168.0.120
 
 # Dict mapping host description (as found in switch interface configuration) to
 # IP address of the iDRAC for that host.
-idrac_network_ips:
+idrac_network_ips: {}
 
 # Gateway IP address for iDRAC network.
 idrac_network_gateway:
