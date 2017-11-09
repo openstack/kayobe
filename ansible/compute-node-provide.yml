@@ -18,7 +18,7 @@
     - name: Get a list of ironic nodes
       shell: >
         source {{ venv }}/bin/activate &&
-        openstack baremetal node list --fields name provision_state -f json
+        openstack baremetal node list --fields name provision_state -f json --no-maintenance
       register: ironic_node_list
       changed_when: False
       environment: "{{ openstack_auth_env }}"
@@ -54,7 +54,7 @@
     - name: Get a list of ironic nodes
       shell: >
         source {{ venv }}/bin/activate &&
-        openstack baremetal node list -f json -c Name -c 'Provisioning State'
+        openstack baremetal node list -f json -c Name -c 'Provisioning State' --no-maintenance
       register: ironic_node_list
       changed_when: False
       environment: "{{ openstack_auth_env }}"
