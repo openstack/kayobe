@@ -106,18 +106,28 @@ seed_container_image_sets:
 # List of regular expressions matching names of container images to build for
 # controllers.
 controller_container_image_regex_map:
+  - regex: aodh
+    enabled: "{{ kolla_enable_aodh | bool }}"
   - regex: barbican
     enabled: "{{ kolla_enable_barbican | bool }}"
+  - regex: ceilometer
+    enabled: "{{ kolla_enable_ceilometer | bool }}"
   - regex: cinder
     enabled: True
   - regex: cron
     enabled: True
+  - regex: designate
+    enabled: "{{ kolla_enable_designate | bool }}"
   - regex: dnsmasq
     enabled: True
+  - regex: elasticsearch
+    enabled: "{{ kolla_enable_elasticsearch | bool }}"
   - regex: fluentd
     enabled: True
   - regex: glance
     enabled: "{{ kolla_enable_glance | bool }}"
+  - regex: gnocchi
+    enabled: "{{ kolla_enable_gnocchi | bool }}"
   - regex: haproxy
     enabled: True
   - regex: heat
@@ -132,6 +142,8 @@ controller_container_image_regex_map:
     enabled: True
   - regex: keystone
     enabled: True
+  - regex: kibana
+    enabled: "{{ kolla_enable_kibana | bool }}"
   - regex: kolla-toolbox
     enabled: True
   - regex: magnum
@@ -155,6 +167,8 @@ controller_container_image_regex_map:
     enabled: True
   - regex: sahara
     enabled: "{{ kolla_enable_sahara | bool }}"
+  - regex: skydive
+    enabled: "{{ kolla_enable_skydive | bool }}"
   - regex: swift
     enabled: "{{ kolla_enable_swift | bool }}"
   - regex: tgtd
@@ -242,18 +256,28 @@ kolla_openstack_logging_debug: "False"
 ###############################################################################
 # Kolla feature flag configuration.
 
+kolla_enable_aodh: "no"
 kolla_enable_barbican: "no"
+kolla_enable_central_logging: "no"
 kolla_enable_ceph: "no"
+kolla_enable_ceilometer: "no"
+kolla_enable_designate: "no"
+kolla_enable_elasticsearch: "{{ 'yes' if kolla_enable_central_logging | bool or kolla_enable_freezer | bool or kolla_enable_osprofiler | bool or kolla_enable_skydive | bool else 'no' }}"
+kolla_enable_freezer: "no"
 kolla_enable_glance: "yes"
+kolla_enable_gnocchi: "no"
 kolla_enable_haproxy: "yes"
 kolla_enable_heat: "yes"
 kolla_enable_horizon: "yes"
 kolla_enable_ironic: "yes"
-kolla_enable_neutron: "yes"
-kolla_enable_nova: "yes"
+kolla_enable_kibana: "{{ 'yes' if kolla_enable_central_logging | bool else 'no' }}"
 kolla_enable_magnum: "no"
 kolla_enable_murano: "no"
+kolla_enable_neutron: "yes"
+kolla_enable_nova: "yes"
+kolla_enable_osprofiler: "no"
 kolla_enable_sahara: "no"
+kolla_enable_skydive: "no"
 kolla_enable_swift: "no"
 
 ###############################################################################
