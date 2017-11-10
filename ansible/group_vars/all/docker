@@ -17,3 +17,9 @@ docker_storage_volume_thinpool_meta: docker-thinpoolmeta
 # Size of the docker storage metadata LVM volume (see lvol module size
 # argument).
 docker_storage_volume_thinpool_meta_size: 1%VG
+
+# URL of docker registry
+docker_registry:
+
+# CA of docker registry
+docker_registry_ca:
