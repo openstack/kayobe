@@ -23,9 +23,7 @@ Documentation
    architecture
    installation
    usage
-   configuration/kayobe
-   configuration/network
-   configuration/kolla-ansible
+   configuration/index
    deployment
    upgrading
    administration
