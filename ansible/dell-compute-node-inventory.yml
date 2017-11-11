@@ -1,17 +1,18 @@
 ---
-- name: Ensure compute nodes are present in the Ansible inventory
+- name: Ensure Dell baremetal compute nodes are present in the Ansible inventory
   hosts: config-mgmt
   gather_facts: no
   vars:
-    # Set this to a colon-separated list of compute node hostnames on which to
-    # trigger discovery. If unset, all compute nodes will be triggered.
+    # Set this to a colon-separated list of baremeal compute node hostnames on
+    # which to trigger discovery. If unset, all compute nodes will be
+    # triggered.
     compute_node_limit: ""
     compute_node_limit_list: "{{ compute_node_limit.split(':') }}"
   tasks:
-    - name: Add hosts for the compute nodes
+    - name: Add hosts for the Dell baremetal compute nodes
       add_host:
         name: "{{ item.key }}"
-        groups: compute
+        groups: baremetal-compute
         # SSH configuration to access the BMC.
         ansible_host: "{{ item.value }}"
         ansible_user: "{{ ipmi_username }}"
@@ -24,8 +25,8 @@
         - not compute_node_limit or item.key | replace('-idrac', '') in compute_node_limit_list
       run_once: True
 
-- name: Ensure compute nodes are present in the Ansible inventory
-  hosts: compute
+- name: Ensure Dell baremetal compute nodes are present in the Ansible inventory
+  hosts: baremetal-compute
   gather_facts: no
   vars:
     compute_node_limit: ""
@@ -33,7 +34,9 @@
   tasks:
     - name: Set facts for the compute nodes for IPMI addresses
       set_fact:
+        bmc_type: idrac
         ipmi_address: "{{ idrac_network_ips[inventory_hostname] }}"
-      # Don't add hosts that already exist.
-      when: not compute_node_limit or inventory_hostname in compute_node_limit_list
+      when:
+        - not ipmi_address
+        - not compute_node_limit or inventory_hostname in compute_node_limit_list
       run_once: True

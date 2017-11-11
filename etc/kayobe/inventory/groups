@@ -33,6 +33,12 @@ monitoring
 compute
 
 ###############################################################################
+# Baremetal compute node groups.
+
+[baremetal-compute]
+# Empty group to provide declaration of baremetal-compute group.
+
+###############################################################################
 # Networking groups.
 
 [mgmt-switches]
