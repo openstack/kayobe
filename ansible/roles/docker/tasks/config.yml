@@ -6,6 +6,13 @@
   become: True
   notify: restart docker service
 
+- name: Ensure the path for CA file for private registry exists
+  file:
+    path: "/etc/docker/certs.d/{{ docker_registry }}"
+    state: directory
+  become: True
+  when: docker_registry is not none and docker_registry_ca is not none
+
 - name: Ensure the CA file for private registry exists
   copy:
     src: "{{ docker_registry_ca }}"
