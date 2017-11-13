@@ -8,7 +8,7 @@
     privileged: "{{ item.value.privileged | default(omit) }}"
     read_only: "{{ item.value.read_only | default(omit) }}"
     restart_policy: "{{ nodeexporter_restart_policy }}"
-    restart_retries: "{{ nodeexporter_restart_retries }}"
+    restart_retries: "{{ nodeexporter_restart_retries | default(omit) }}"
     state: "{{ (item.value.enabled and action != 'destroy') | ternary('started', 'absent') }}"
     volumes: "{{ item.value.volumes }}"
   with_dict: "{{ nodeexporter_services }}"

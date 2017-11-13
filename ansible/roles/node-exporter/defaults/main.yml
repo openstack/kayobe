@@ -10,7 +10,7 @@ nodeexporter_services:
     container_name: nodeexporter
     enabled: "{{ nodeexporter_enabled }}"
     image: "{{ nodeexporter_image_full }}"
-    command: --collector.procfs=/host/proc --collector.sysfs=/host/sys --collector.filesystem.ignored-mount-points "^/(sys|proc|dev|host|etc)($|/)"
+    command: --path.procfs=/host/proc --path.sysfs=/host/sys --collector.filesystem.ignored-mount-points "^/(sys|proc|dev|host|etc)($|/)" --collector.ntp
     privileged: True
     read_only: True
     volumes:
@@ -28,4 +28,4 @@ nodeexporter_tag: "v0.15.0"
 nodeexporter_image_full: "{{ nodeexporter_image }}:{{ nodeexporter_tag }}"
 
 nodeexporter_restart_policy: "unless-stopped"
-nodeexporter_restart_retries: 10
+#nodeexporter_restart_retries: 10
