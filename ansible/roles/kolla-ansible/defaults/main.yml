@@ -210,12 +210,9 @@ kolla_openstack_logging_debug:
 # Nova options
 #######################
 
-# Which group to use to deploy the nova-compute services for ironic. By default
-# all hosts in the nova group are used - typically the controllers.
-kolla_nova_compute_ironic_group: nova
-
 # Which host to use to deploy the nova-compute services for ironic. By default
-# this is none and the kolla_nova_compute_ironic_group is used instead.
+# this is none and all hosts in the nova group are used instead - typically the
+# controllers.
 kolla_nova_compute_ironic_host:
 
 ###############################################################################

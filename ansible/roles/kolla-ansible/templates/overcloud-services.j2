@@ -45,7 +45,7 @@ nova
 {{ kolla_nova_compute_ironic_host }}
 {% else %}
 [nova-compute-ironic:children]
-{{ kolla_nova_compute_ironic_group }}
+nova
 {% endif %}
 
 [nova-serialproxy:children]
