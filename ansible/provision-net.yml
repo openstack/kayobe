@@ -1,7 +1,15 @@
 ---
+- name: Check whether Ironic is enabled
+  hosts: controllers
+  tasks:
+    - name: Create controllers group with ironic enabled
+      group_by:
+        key: "controllers_with_ironic_enabled_{{ kolla_enable_ironic }}"
+
 - name: Ensure provisioning network and subnet are registered in neutron
   # Only required to run on a single host.
-  hosts: controllers[0]
+  hosts: controllers_with_ironic_enabled_True[0]
+  gather_facts: False
   pre_tasks:
     - name: Validate OpenStack password authentication parameters
       fail:

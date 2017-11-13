@@ -4,8 +4,16 @@
 #
 # The images will be stored in {{ image_cache_path }}/{{ ipa_image_name }}.
 
+- name: Check whether Ironic is enabled
+  hosts: controllers
+  tasks:
+    - name: Create controllers group with ironic enabled
+      group_by:
+        key: "controllers_with_ironic_enabled_{{ kolla_enable_ironic }}"
+
 - name: Ensure Ironic Python Agent images are built and installed
-  hosts: controllers[0]
+  hosts: controllers_with_ironic_enabled_True[0]
+  gather_facts: False
   vars:
     ipa_image_name: "ipa"
   tasks:
