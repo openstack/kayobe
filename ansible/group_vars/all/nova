@@ -5,3 +5,7 @@
 # Which group to use to deploy the nova-compute services for ironic. By default
 # all hosts in the nova group are used - typically the controllers.
 kolla_nova_compute_ironic_group: nova
+
+# Which host to use to deploy the nova-compute services for ironic. By default
+# this is none and the kolla_nova_compute_ironic_group is used instead.
+kolla_nova_compute_ironic_host:
