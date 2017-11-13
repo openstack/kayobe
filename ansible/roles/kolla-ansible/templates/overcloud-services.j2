@@ -37,11 +37,16 @@ nova
 [nova-spicehtml5proxy:children]
 nova
 
-[nova-compute-ironic:children]
 # NOTE: HA for nova-compute services with ironic is still an experimental
 # feature. Provide the option to use a single compute host, even when multiple
 # controllers are in use.
+{% if kolla_nova_compute_ironic_host is not none %}
+[nova-compute-ironic]
+{{ kolla_nova_compute_ironic_host }}
+{% else %}
+[nova-compute-ironic:children]
 {{ kolla_nova_compute_ironic_group }}
+{% endif %}
 
 [nova-serialproxy:children]
 nova
