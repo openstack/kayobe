@@ -10,7 +10,7 @@ nodeexporter_services:
     container_name: nodeexporter
     enabled: "{{ nodeexporter_enabled }}"
     image: "{{ nodeexporter_image_full }}"
-    command: --path.procfs=/host/proc --path.sysfs=/host/sys --collector.filesystem.ignored-mount-points "^/(sys|proc|dev|host|etc)($|/)"
+    command: --path.procfs=/host/proc --path.sysfs=/host/sys --collector.filesystem.ignored-mount-points "^/(sys|proc|dev|host|etc)($|/)" --collector.ntp
     privileged: True
     read_only: True
     volumes:
