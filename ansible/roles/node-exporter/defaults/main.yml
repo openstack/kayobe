@@ -28,4 +28,4 @@ nodeexporter_tag: "v0.15.0"
 nodeexporter_image_full: "{{ nodeexporter_image }}:{{ nodeexporter_tag }}"
 
 nodeexporter_restart_policy: "unless-stopped"
-nodeexporter_restart_retries: 10
+#nodeexporter_restart_retries: 10
