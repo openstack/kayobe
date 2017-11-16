@@ -20,8 +20,8 @@
   file:
     path: "{{ kolla_ansible_source_path | dirname }}"
     state: directory
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
   become: True
   when: kolla_ansible_ctl_install_type == 'source'
 
