@@ -24,6 +24,9 @@ kolla_config_path:
 # Directory where Kolla custom configuration files will be installed.
 kolla_node_custom_config_path:
 
+# Path to kolla-ansible passwords.yml input file.
+kolla_ansible_passwords_path:
+
 ###############################################################################
 # Kolla-ansible inventory configuration.
 
