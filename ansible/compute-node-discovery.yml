@@ -1,8 +1,8 @@
 ---
 - include: dell-compute-node-inventory.yml
 
-- name: Ensure compute nodes are PXE booted
-  hosts: compute
+- name: Ensure baremetal compute nodes are PXE booted
+  hosts: baremetal-compute
   gather_facts: no
   vars:
     controller_host: "{{ groups['controllers'][0] }}"
@@ -19,7 +19,7 @@
         # be respected when using delegate_to.
         ansible_host: "{{ hostvars[controller_host].ansible_host | default(controller_host) }}"
 
-    - name: Ensure compute nodes are powered off
+    - name: Ensure baremetal compute nodes are powered off
       command: ipmitool -U {{ ipmi_username }} -P {{ ipmi_password }} -H {{ ipmi_address }} -I lanplus chassis power off
       delegate_to: "{{ controller_host }}"
       vars:
@@ -31,7 +31,7 @@
       pause:
         seconds: 5
 
-    - name: Ensure compute nodes are set to boot via PXE
+    - name: Ensure baremetal compute nodes are set to boot via PXE
       command: ipmitool -U {{ ipmi_username }} -P {{ ipmi_password }} -H {{ ipmi_address }} -I lanplus chassis bootdev pxe
       delegate_to: "{{ controller_host }}"
       vars:
@@ -43,7 +43,7 @@
       pause:
         seconds: 5
 
-    - name: Ensure compute nodes are powered on
+    - name: Ensure baremetal compute nodes are powered on
       command: ipmitool -U {{ ipmi_username }} -P {{ ipmi_password }} -H {{ ipmi_address }} -I lanplus chassis power on
       delegate_to: "{{ controller_host }}"
       vars:

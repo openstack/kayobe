@@ -24,6 +24,8 @@ Features
   which hosts run the nova compute service for ironic. This may be used to
   avoid the experimental HA nova compute service for ironic, by specifying a
   single host.
+* Adds support for deployment of virtualised compute hosts.  These hosts should
+  be added to the ``[compute]`` group.
 
 Upgrade Notes
 -------------

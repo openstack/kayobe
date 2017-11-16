@@ -15,7 +15,7 @@
 # Top level {{ group }} group.
 [{{ group }}]
 # These hostnames must be resolvable from your deployment host
-{% for host in groups[group] %}
+{% for host in groups.get(group, []) %}
 {% set host_hv=hostvars[host] %}
 {{ host }}{% for hv_name in kolla_overcloud_inventory_pass_through_host_vars %}{% if hv_name in host_hv %} {{ hv_name }}={{ host_hv[hv_name] }}{% endif %}{% endfor %}
 

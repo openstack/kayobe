@@ -1,11 +1,11 @@
 ---
-# Configure the compute nodes to PXE boot.
+# Configure the Dell baremetal compute nodes to PXE boot.
 
-# Add compute nodes to the Ansible inventory.
+# Add Dell baremetal compute nodes to the Ansible inventory.
 - include: dell-compute-node-inventory.yml
 
-- name: Ensure compute nodes are PXE booted
-  hosts: compute
+- name: Ensure Dell baremetal compute nodes are PXE booted
+  hosts: baremetal-compute
   gather_facts: no
   vars:
     # Set this to the index of the inteface on which to enable PXE.

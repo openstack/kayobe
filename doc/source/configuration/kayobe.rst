@@ -1,6 +1,6 @@
-=============
-Configuration
-=============
+====================
+Kayobe Configuration
+====================
 
 This section covers configuration of Kayobe.  As an Ansible-based project,
 Kayobe is for the most part configured using YAML files.

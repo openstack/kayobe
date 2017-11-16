@@ -594,6 +594,20 @@ a list of names of additional networks to attach.  Alternatively, the list may
 be completely overridden by setting ``monitoring_network_interfaces``.  These
 variables are found in ``${KAYOBE_CONFIG_PATH}/monitoring.yml``.
 
+Virtualised Compute Hosts
+-------------------------
+
+By default, virtualised compute hosts are attached to the following networks:
+
+* overcloud provisioning network
+* internal network
+* storage network
+
+This list may be extended by setting ``compute_extra_network_interfaces`` to a
+list of names of additional networks to attach.  Alternatively, the list may be
+completely overridden by setting ``compute_network_interfaces``.  These
+variables are found in ``${KAYOBE_CONFIG_PATH}/compute.yml``.
+
 Other Hosts
 -----------
 

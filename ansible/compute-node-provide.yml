@@ -1,14 +1,14 @@
 ---
-# This playbook will ensure that all compute nodes in the overcloud ironic
-# inventory are available. Supported initial states include 'enroll' and
+# This playbook will ensure that all baremetal compute nodes in the overcloud
+# ironic inventory are available. Supported initial states include 'enroll' and
 # 'manageable'.
 
-- name: Ensure compute nodes are available in ironic
+- name: Ensure baremetal compute nodes are available in ironic
   hosts: controllers[0]
   vars:
     venv: "{{ virtualenv_path }}/shade"
-    # Set this to a colon-separated list of compute node hostnames to provide.
-    # If unset, all compute nodes will be provided.
+    # Set this to a colon-separated list of baremetal compute node hostnames to
+    # provide.  If unset, all baremetal compute nodes will be provided.
     compute_node_limit: ""
     compute_node_limit_list: "{{ compute_node_limit.split(':') }}"
   roles:
@@ -74,7 +74,7 @@
     - name: Fail if any ironic nodes are not available
       fail:
         msg: >
-          Failed to make compute node {{ item['Name'] }} available in ironic.
+          Failed to make baremetal compute node {{ item['Name'] }} available in ironic.
           Provisioning state is {{ item['Provisioning State'] }}.
       with_items: "{{ ironic_nodes }}"
       when: item['Provisioning State'] != 'available'

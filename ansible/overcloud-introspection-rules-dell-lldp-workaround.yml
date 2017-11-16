@@ -8,8 +8,16 @@
 # each ironic node that matches against the switch system and the relevant
 # interface name, then sets the node's name appropriately.
 
-- name: Group controller hosts in systems requiring the workaround
+- name: Check whether Ironic is enabled
   hosts: controllers
+  tasks:
+    - name: Create controllers group with ironic enabled
+      group_by:
+        key: "controllers_with_ironic_enabled_{{ kolla_enable_ironic }}"
+
+- name: Group controller hosts in systems requiring the workaround
+  hosts: controllers_with_ironic_enabled_True
+  gather_facts: False
   tasks:
     - name: Group controller hosts in systems requiring the Dell switch LLDP workaround
       group_by:
@@ -18,6 +26,7 @@
 - name: Ensure introspection rules for Dell switch LLDP workarounds are registered in Ironic Inspector
   # Only required to run on a single host.
   hosts: controllers_require_workaround_True[0]
+  gather_facts: False
   vars:
     all_switch_interfaces: []
     ironic_inspector_rules: []
