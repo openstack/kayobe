@@ -16,6 +16,15 @@ kolla_enable_glance:
 kolla_extra_glance:
 
 ###############################################################################
+# Heat configuration.
+
+# Whether to enable Heat.
+kolla_enable_heat:
+
+# Free form extra configuration to append to heat.conf.
+kolla_extra_heat:
+
+###############################################################################
 # Ironic configuration.
 
 # Whether to enable Ironic.
