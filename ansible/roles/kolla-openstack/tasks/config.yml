@@ -60,6 +60,7 @@
   find:
     path: "{{ item.src }}"
     patterns: "{{ item.patterns }}"
+    recurse: yes
   with_items: "{{ kolla_openstack_custom_config }}"
   register: find_src_result
 
@@ -73,7 +74,7 @@
 - name: Ensure extra configuration files exist
   template:
     src: "{{ item.1.path }}"
-    dest: "{{ item.0.item.dest }}/{{ item.1.path | basename }}"
+    dest: "{{ item.0.item.dest }}/{{ item.1.path | relpath(item.0.item.src) }}"
     mode: 0640
   with_subelements:
     - "{{ find_src_result.results }}"
