@@ -22,6 +22,8 @@ env:
     - TOX_ENV=docs
     # Run python2.7 unit tests.
     - TOX_ENV=py27
+    # Run ansible syntax checks.
+    - TOX_ENV=ansible-syntax
 
 install:
   # Install a virtualenv for tox.
