@@ -2,14 +2,15 @@
 language: python
 python: "2.7"
 
-# Run jobs in containers.
-sudo: false
+# Run jobs in VMs - sudo is required by ansible tests.
+sudo: required
 
 # Install ansible
 addons:
   apt:
     packages:
       - gcc
+      - python-apt
       - python-virtualenv
       - realpath
 
@@ -24,10 +25,15 @@ env:
     - TOX_ENV=py27
     # Run ansible syntax checks.
     - TOX_ENV=ansible-syntax
+    # Run ansible tests.
+    - TOX_ENV=ansible
 
 install:
-  - pip install tox
+  # Install tox in a virtualenv to ensure we have an up to date version.
+  - virtualenv venv
+  - venv/bin/pip install -U pip
+  - venv/bin/pip install tox
 
 script:
   # Run the tox environment.
-  - tox -e ${TOX_ENV}
+  - venv/bin/tox -e ${TOX_ENV}
