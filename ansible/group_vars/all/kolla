@@ -113,33 +113,35 @@ overcloud_container_image_regex_map:
   - regex: ceilometer
     enabled: "{{ kolla_enable_ceilometer | bool }}"
   - regex: cinder
-    enabled: True
+    enabled: "{{ kolla_enable_cinder | bool }}"
   - regex: cron
     enabled: True
   - regex: designate
     enabled: "{{ kolla_enable_designate | bool }}"
   - regex: dnsmasq
-    enabled: True
+    enabled: "{{ kolla_enable_ironic | bool }}"
   - regex: elasticsearch
     enabled: "{{ kolla_enable_elasticsearch | bool }}"
+  - regex: etcd
+    enabled: "{{ kolla_enable_etcd | bool }}"
   - regex: fluentd
     enabled: True
   - regex: glance
     enabled: "{{ kolla_enable_glance | bool }}"
   - regex: gnocchi
     enabled: "{{ kolla_enable_gnocchi | bool }}"
-  - regex: haproxy
-    enabled: True
+  - regex: ^haproxy$
+    enabled: "{{ kolla_enable_haproxy | bool }}"
   - regex: heat
-    enabled: True
+    enabled: "{{ kolla_enable_heat | bool }}"
   - regex: horizon
-    enabled: True
+    enabled: "{{ kolla_enable_horizon | bool }}"
   - regex: ironic
     enabled: "{{ kolla_enable_ironic | bool }}"
   - regex: iscsid
-    enabled: True
+    enabled: "{{ kolla_enable_cinder | bool or kolla_enable_ironic | bool }}"
   - regex: keepalived
-    enabled: True
+    enabled: "{{ kolla_enable_haproxy | bool }}"
   - regex: keystone
     enabled: True
   - regex: kibana
@@ -155,14 +157,14 @@ overcloud_container_image_regex_map:
   - regex: memcached
     enabled: True
   - regex: neutron-server
-    enabled: True
+    enabled: "{{ kolla_enable_neutron | bool }}"
   # Neutron SFC agent not currently supported on CentOS binary builds.
   - regex: "neutron-\\(dhcp\\|l3\\|metadata\\|openvswitch\\)-agent"
-    enabled: True
+    enabled: "{{ kolla_enable_neutron | bool }}"
   - regex: nova
-    enabled: True
+    enabled: "{{ kolla_enable_nova | bool }}"
   - regex: openvswitch
-    enabled: True
+    enabled: "{{ kolla_enable_neutron | bool }}"
   - regex: rabbitmq
     enabled: True
   - regex: sahara
@@ -172,7 +174,7 @@ overcloud_container_image_regex_map:
   - regex: swift
     enabled: "{{ kolla_enable_swift | bool }}"
   - regex: tgtd
-    enabled: True
+    enabled: "{{ kolla_enable_cinder | bool or kolla_enable_ironic | bool }}"
 
 # List of regular expressions matching names of container images to build for
 # overcloud hosts.
@@ -264,8 +266,10 @@ kolla_enable_barbican: "no"
 kolla_enable_central_logging: "no"
 kolla_enable_ceph: "no"
 kolla_enable_ceilometer: "no"
+kolla_enable_cinder: "no"
 kolla_enable_designate: "no"
 kolla_enable_elasticsearch: "{{ 'yes' if kolla_enable_central_logging | bool or kolla_enable_freezer | bool or kolla_enable_osprofiler | bool or kolla_enable_skydive | bool else 'no' }}"
+kolla_enable_etcd: "no"
 kolla_enable_freezer: "no"
 kolla_enable_glance: "yes"
 kolla_enable_gnocchi: "no"
