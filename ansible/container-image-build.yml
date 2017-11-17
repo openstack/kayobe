@@ -1,6 +1,6 @@
 ---
 - name: Ensure Kolla container images are built
-  hosts: seed:controllers
+  hosts: container-image-builders
   vars:
     # Set this to True to push images to the registry when built.
     push_images: False

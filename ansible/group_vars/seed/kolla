@@ -1,3 +1,0 @@
----
-# List of Kolla container image sets for the seed.
-container_image_sets: "{{ seed_container_image_sets }}"

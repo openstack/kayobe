@@ -81,3 +81,101 @@ class TestCase(unittest.TestCase):
             mock.call(mock.ANY, ["ansible/network-connectivity.yml"]),
         ]
         self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_seed_container_image_build(self, mock_run):
+        command = commands.SeedContainerImageBuild(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    "ansible/container-image-builders-check.yml",
+                    "ansible/kolla-build.yml",
+                    "ansible/container-image-build.yml"
+                ],
+                extra_vars={
+                    "container_image_sets": (
+                        "{{ seed_container_image_sets }}"),
+                    "push_images": False,
+                }
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_seed_container_image_build_with_regex(self, mock_run):
+        command = commands.SeedContainerImageBuild(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args(["--push", "^regex1$", "^regex2$"])
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    "ansible/container-image-builders-check.yml",
+                    "ansible/kolla-build.yml",
+                    "ansible/container-image-build.yml"
+                ],
+                extra_vars={
+                    "container_image_regexes": "'^regex1$ ^regex2$'",
+                    "push_images": True,
+                }
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_overcloud_container_image_build(self, mock_run):
+        command = commands.OvercloudContainerImageBuild(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    "ansible/container-image-builders-check.yml",
+                    "ansible/kolla-build.yml",
+                    "ansible/container-image-build.yml"
+                ],
+                extra_vars={
+                    "container_image_sets": (
+                        "{{ overcloud_container_image_sets }}"),
+                    "push_images": False,
+                }
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_overcloud_container_image_build_with_regex(self, mock_run):
+        command = commands.OvercloudContainerImageBuild(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args(["--push", "^regex1$", "^regex2$"])
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    "ansible/container-image-builders-check.yml",
+                    "ansible/kolla-build.yml",
+                    "ansible/container-image-build.yml"
+                ],
+                extra_vars={
+                    "container_image_regexes": "'^regex1$ ^regex2$'",
+                    "push_images": True,
+                }
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
