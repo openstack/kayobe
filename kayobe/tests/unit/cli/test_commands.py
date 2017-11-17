@@ -42,7 +42,7 @@ class TestCase(unittest.TestCase):
         parsed_args = parser.parse_args([])
         result = command.run(parsed_args)
         self.assertEqual(0, result)
-        mock_install.assert_called_once_with("ansible/requirements.yml",
+        mock_install.assert_called_once_with("requirements.yml",
                                              "ansible/roles")
         expected_calls = [
             mock.call(mock.ANY, ["ansible/bootstrap.yml"]),
@@ -60,7 +60,7 @@ class TestCase(unittest.TestCase):
         parsed_args = parser.parse_args([])
         result = command.run(parsed_args)
         self.assertEqual(0, result)
-        mock_install.assert_called_once_with("ansible/requirements.yml",
+        mock_install.assert_called_once_with("requirements.yml",
                                              "ansible/roles", force=True)
         expected_calls = [
             mock.call(mock.ANY, ["ansible/bootstrap.yml"]),

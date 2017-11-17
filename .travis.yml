@@ -22,13 +22,12 @@ env:
     - TOX_ENV=docs
     # Run python2.7 unit tests.
     - TOX_ENV=py27
+    # Run ansible syntax checks.
+    - TOX_ENV=ansible-syntax
 
 install:
-  # Install a virtualenv for tox.
-  - virtualenv venv
-  - venv/bin/pip install -U pip
-  - venv/bin/pip install tox
+  - pip install tox
 
 script:
   # Run the tox environment.
-  - venv/bin/tox -e ${TOX_ENV}
+  - tox -e ${TOX_ENV}
