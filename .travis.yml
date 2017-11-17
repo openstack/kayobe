@@ -2,7 +2,7 @@
 language: python
 python: "2.7"
 
-# Use the new container infrastructure
+# Run jobs in containers.
 sudo: false
 
 # Install ansible
@@ -11,18 +11,24 @@ addons:
     packages:
       - gcc
       - python-virtualenv
+      - realpath
+
+# Create a build matrix for the different test jobs.
+env:
+  matrix:
+    # Run python style checks.
+    - TOX_ENV=pep8
+    # Build documentation.
+    - TOX_ENV=docs
+    # Run python2.7 unit tests.
+    - TOX_ENV=py27
 
 install:
+  # Install a virtualenv for tox.
   - virtualenv venv
   - venv/bin/pip install -U pip
   - venv/bin/pip install tox
 
 script:
-  # Run python style checks.
-  - venv/bin/tox -e pep8
-
-  # Build documentation.
-  - venv/bin/tox -e docs
-
-  # Run python2.7 unit tests.
-  - venv/bin/tox -e py27
+  # Run the tox environment.
+  - venv/bin/tox -e ${TOX_ENV}
