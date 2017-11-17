@@ -120,7 +120,7 @@ class ControlHostBootstrap(KayobeAnsibleMixin, VaultMixin, Command):
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Bootstrapping Kayobe control host")
-        utils.galaxy_install("ansible/requirements.yml", "ansible/roles")
+        utils.galaxy_install("requirements.yml", "ansible/roles")
         playbooks = _build_playbook_list("bootstrap")
         self.run_kayobe_playbooks(parsed_args, playbooks)
         playbooks = _build_playbook_list("kolla-ansible")
@@ -138,7 +138,7 @@ class ControlHostUpgrade(KayobeAnsibleMixin, VaultMixin, Command):
     def take_action(self, parsed_args):
         self.app.LOG.debug("Upgrading Kayobe control host")
         # Use force to upgrade roles.
-        utils.galaxy_install("ansible/requirements.yml", "ansible/roles",
+        utils.galaxy_install("requirements.yml", "ansible/roles",
                              force=True)
         playbooks = _build_playbook_list("bootstrap")
         self.run_kayobe_playbooks(parsed_args, playbooks)
