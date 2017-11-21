@@ -60,6 +60,11 @@ kolla_openstack_custom_config:
     dest: "{{ kolla_node_custom_config_path }}/magnum"
     patterns: "*"
     enabled: "{{ kolla_enable_magnum }}"
+  # Manila.
+  - src: "{{ kolla_extra_config_path }}/manila"
+    dest: "{{ kolla_node_custom_config_path }}/manila"
+    patterns: "*"
+    enabled: "{{ kolla_enable_manila }}"
   # Murano.
   - src: "{{ kolla_extra_config_path }}/murano"
     dest: "{{ kolla_node_custom_config_path }}/murano"
