@@ -47,7 +47,7 @@
         kolla-build \
         --config-dir {{ kolla_build_config_path }} \
         {% if item.type is defined %}--type {{ item.type }}{% endif %} \
-        {% if kolla_docker_registry is defined %}--registry {{ kolla_docker_registry }}{% endif %} \
+        {% if kolla_docker_registry != "" and kolla_docker_registry != None %}--registry {{ kolla_docker_registry }}{% endif %} \
         {% if push_images | bool %}--push{% endif %} \
         {{ item.regexes }} 2>&1 | tee --append {{ kolla_build_log_path }}
       with_items: "{{ container_image_sets }}"
