@@ -4,3 +4,4 @@
   roles:
     - role: kolla
     - role: kolla-build
+      kolla_build_extra_config_path: "{{ kayobe_config_path }}/kolla/kolla-build.conf"
