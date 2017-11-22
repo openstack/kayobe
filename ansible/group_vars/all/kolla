@@ -148,6 +148,8 @@ controller_container_image_regex_map:
     enabled: True
   - regex: magnum
     enabled: "{{ kolla_enable_magnum | bool }}"
+  - regex: manila
+    enabled: "{{ kolla_enable_manila | bool }}"
   - regex: murano
     enabled: "{{ kolla_enable_murano | bool }}"
   - regex: mariadb
@@ -275,6 +277,7 @@ kolla_enable_horizon: "yes"
 kolla_enable_ironic: "yes"
 kolla_enable_kibana: "{{ 'yes' if kolla_enable_central_logging | bool else 'no' }}"
 kolla_enable_magnum: "no"
+kolla_enable_manila: "no"
 kolla_enable_murano: "no"
 kolla_enable_neutron: "yes"
 kolla_enable_nova: "yes"
