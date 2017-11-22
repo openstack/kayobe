@@ -10,15 +10,18 @@
 - name: Ensure overcloud hosts' /etc/hosts does not contain provisioning network IP
   hosts: overcloud
   tasks:
-    - name: Ensure overcloud hosts' /etc/hosts does not contain provisioning network IP
+    - name: Ensure overcloud hosts' /etc/hosts does not contain provisioning network or loopback IPs
       lineinfile:
         dest: /etc/hosts
-        regexp: "^{{ provision_oc_net_name | net_ip }}[ \t]*{{ inventory_hostname }}"
+        regexp: "^{{ item }}[ \t]*{{ inventory_hostname }}"
         state: absent
+      with_items:
+        - "127.0.0.1"
+        - "{{ provision_oc_net_name | net_ip }}"
       when: provision_oc_net_name | net_ip != None
       become: True
 
-- name: Ensure rabbitmq containers' /etc/hosts does not contain provisioning network IP
+- name: Ensure rabbitmq containers' /etc/hosts does not contain provisioning network or loopback IPs
   hosts: overcloud
   vars:
     rabbitmq_containers:
@@ -33,19 +36,22 @@
           with_items: "{{ rabbitmq_containers }}"
           register: ps_result
 
-        - name: Ensure rabbitmq containers' /etc/hosts does not contain provisioning network IP
+        - name: Ensure rabbitmq containers' /etc/hosts does not contain provisioning network or loopback IPs
           command: >
-            docker exec -u root {{ item.item }}
+            docker exec -u root {{ item.0.item }}
             bash -c
             'cp /etc/hosts /tmp/hosts &&
-             sed -i -e "/^{{ provision_oc_net_name | net_ip }}[ \t]*{{ inventory_hostname }}/d" /tmp/hosts &&
+             sed -i -e "/^{{ item.1 }}[ \t]*{{ inventory_hostname }}/d" /tmp/hosts &&
              if ! diff -q /tmp/hosts /etc/hosts >/dev/null; then
                cp /tmp/hosts /etc/hosts &&
                echo changed
              fi &&
              rm /tmp/hosts'
           changed_when: "'changed' in sed_result.stdout"
-          with_items: "{{ ps_result.results }}"
-          when: item.rc == 0
+          with_nested:
+            - "{{ ps_result.results }}"
+            - - "127.0.0.1"
+              - "{{ provision_oc_net_name | net_ip }}"
+          when: item.0.rc == 0
           register: sed_result
       when: provision_oc_net_name | net_ip != None
