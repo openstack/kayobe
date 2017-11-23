@@ -117,8 +117,11 @@ Building Container Images
 
 It is possible to use prebuilt container images from an image registry such as
 Dockerhub.  In some cases it may be necessary to build images locally either to
-apply local image customisation or to use a downstream version of kolla.  To
-build images locally::
+apply local image customisation or to use a downstream version of kolla.
+Images are built by hosts in the ``container-image-builders`` group, which by
+default includes the ``seed``.
+
+To build container images::
 
     (kayobe) $ kayobe seed container image build
 
@@ -289,8 +292,13 @@ Building Container Images
    as Dockerhub.  In this case, this step can be skipped.
 
 In some cases it may be necessary to build images locally either to apply local
-image customisation or to use a downstream version of kolla.  To build images
-locally::
+image customisation or to use a downstream version of kolla.  Images are built
+by hosts in the ``container-image-builders`` group, which by default includes
+the ``seed``. If no seed host is in use, for example in an all-in-one
+controller development environment, this group may be modified to cause
+containers to be built on the controllers.
+
+To build container images::
 
     (kayobe) $ kayobe overcloud container image build
 

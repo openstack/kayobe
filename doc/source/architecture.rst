@@ -12,8 +12,8 @@ Control host
     be installed, and is typically where the cloud will be managed from.
 Seed host
     The seed host runs the bifrost deploy container and is used to provision
-    the cloud hosts.  Typically the seed host is deployed as a VM but this is
-    not mandatory.
+    the cloud hosts.  By default, container images are built on the seed.
+    Typically the seed host is deployed as a VM but this is not mandatory.
 Cloud hosts
     The cloud hosts run the OpenStack control plane, network, monitoring,
     storage, and virtualised compute services.  Typically the cloud hosts run

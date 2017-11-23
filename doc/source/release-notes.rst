@@ -46,6 +46,11 @@ Upgrade Notes
   from ``kolla_config_path`` to ``kolla_build_config_path``.  This provides a
   cleaner separation of kolla and kolla-ansible configuration options. The
   default value is ``{{ config_path }}/kolla``.
+* Adds a group ``container-image-builders``, which defaults to containing the
+  seed.  Hosts in this group will build container images. Previously, container
+  images for the seed were built on the seed, and container images for the
+  overcloud were built on the controllers.  The new design is intended to
+  encourage a build, push, pull workflow.
 
 Kayobe 3.0.0
 ============
