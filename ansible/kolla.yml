@@ -1,6 +1,0 @@
----
-- name: Ensure Kolla is configured
-  hosts: config-mgmt
-  roles:
-    - role: kolla
-    - role: kolla-build

@@ -1,0 +1,12 @@
+---
+- name: Ensure the container-image-builders group exists
+  hosts: localhost
+  gather_facts: False
+  tasks:
+    - name: Ensure the container-image-builders group exists
+      fail:
+        msg: >
+          Container images are now built by hosts in the
+          container-image-builders group. Ensure that this group is present in
+          your inventory.
+      when: groups.get('container-image-builders', []) | length == 0

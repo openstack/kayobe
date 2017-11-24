@@ -2,6 +2,9 @@
 # Directory where Kolla config files will be installed.
 kolla_build_config_path:
 
+# Path to extra kolla configuration files.
+kolla_build_extra_config_path:
+
 # Valid options are [ centos, fedora, oraclelinux, ubuntu ]
 kolla_base_distro:
 
@@ -34,3 +37,6 @@ kolla_build_blocks: {}
 # most commonly packages. The operation should be one of override, append or
 # remove. The value should be a list.
 kolla_build_customizations: {}
+
+# Free-form extra configuration for kolla-build.
+kolla_extra_build: {}

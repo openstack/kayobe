@@ -1,3 +1,0 @@
----
-# List of Kolla container image sets for controllers.
-container_image_sets: "{{ controller_container_image_sets }}"

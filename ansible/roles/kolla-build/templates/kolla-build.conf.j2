@@ -33,3 +33,11 @@ reference = {{ source_def.reference }}
 {% endif %}
 
 {% endfor %}
+
+{% if kolla_build_extra_config is defined %}
+#######################
+# Extra configuration
+#######################
+
+{{ kolla_build_extra_config }}
+{% endif %}

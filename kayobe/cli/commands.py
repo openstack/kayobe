@@ -414,12 +414,16 @@ class SeedContainerImageBuild(KayobeAnsibleMixin, VaultMixin, Command):
     def take_action(self, parsed_args):
         self.app.LOG.debug("Building seed container images")
         playbooks = _build_playbook_list(
-            "kolla-build", "container-image-build")
+            "container-image-builders-check", "kolla-build",
+            "container-image-build")
         extra_vars = {"push_images": parsed_args.push}
         if parsed_args.regex:
             regexes = "'%s'" % " ".join(parsed_args.regex)
             extra_vars["container_image_regexes"] = regexes
-        self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed",
+        else:
+            extra_vars["container_image_sets"] = (
+                "{{ seed_container_image_sets }}")
+        self.run_kayobe_playbooks(parsed_args, playbooks,
                                   extra_vars=extra_vars)
 
 
@@ -940,12 +944,16 @@ class OvercloudContainerImageBuild(KayobeAnsibleMixin, VaultMixin, Command):
     def take_action(self, parsed_args):
         self.app.LOG.debug("Building overcloud container images")
         playbooks = _build_playbook_list(
-            "kolla-build", "container-image-build")
+            "container-image-builders-check", "kolla-build",
+            "container-image-build")
         extra_vars = {"push_images": parsed_args.push}
         if parsed_args.regex:
             regexes = "'%s'" % " ".join(parsed_args.regex)
             extra_vars["container_image_regexes"] = regexes
-        self.run_kayobe_playbooks(parsed_args, playbooks, limit="controllers",
+        else:
+            extra_vars["container_image_sets"] = (
+                "{{ overcloud_container_image_sets }}")
+        self.run_kayobe_playbooks(parsed_args, playbooks,
                                   extra_vars=extra_vars)
 
 
