@@ -5,7 +5,7 @@
   tasks:
     - name: Create controllers group with ironic enabled
       group_by:
-        key: "controllers_with_ironic_enabled_{{ kolla_enable_ironic }}"
+        key: "controllers_with_ironic_enabled_{{ kolla_enable_ironic | bool }}"
 
 - name: Ensure locally built Ironic Python Agent images are copied
   hosts: controllers_with_ironic_enabled_True
