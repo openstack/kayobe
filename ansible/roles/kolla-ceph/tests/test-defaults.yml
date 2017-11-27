@@ -1,0 +1,64 @@
+---
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: Allocate a temporary file for a fake OSD
+      tempfile:
+      register: tempfile
+
+    - name: Allocate a fake OSD file
+      command: fallocate -l "{{ device_size }} {{ tempfile.path }}"
+
+    - name: Find a free loopback device
+      command: losetup -f 
+      register: loopback_result
+
+    - name: Create a loopback device for the fake OSD file
+      command: losetup "{{ loopback_result.stdout }} {{ tempfile.path }}"
+      become: True
+
+    - block:
+        - name: Import parted role
+          include_role:
+            name: stackhpc.parted-1-1
+
+        - name: Test the kolla-ceph role
+          include_role:
+            name:  ../../kolla-ceph
+          vars:
+              ceph_disks:
+                 - osd: "{{ loopback_result.stdout }}"
+
+        - name: Get name of fake partition
+          parted_kayobe:
+            device: "{{ loopback_result.stdout }}"
+          register: "disk_osd_info"
+
+        - name: Validate number of partition
+          assert:
+            that: disk_osd_info.partitions | length == 1
+            msg: >
+              Number of partition is not correct.
+
+        - name: Validate OSD tag is present
+          assert:
+            that: "disk_osd_info.partitions.0.name == 'KOLLA_CEPH_OSD_BOOTSTRAP'"
+            msg: >
+              Name of partition is not correct.
+
+      always:
+        - name: Detach the loopback device
+          command: losetup -d {{ loopback_result.stdout }}
+          become: True
+
+        - name: Remove the fake OSD file
+          file:
+            name: "{{ tempfile.path }}"
+            state: absent
+
+      rescue:
+        - name: Flag that a failure occurred
+          set_fact:
+            test_failures: "{{ test_failures | default(0) | int + 1 }}"
+
+

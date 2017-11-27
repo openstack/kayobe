@@ -1,0 +1,6 @@
+---
+###############################################################################
+# Storage node Ceph configuration.
+
+# List of Ceph disks.
+ceph_disks: "{{ storage_ceph_disks }}"

@@ -1,0 +1,9 @@
+---
+- name: Ensure Ceph disk are tagged
+  hosts: overcloud 
+  tags:
+    - kolla-ceph
+  roles:
+    - role: stackhpc.parted-1-1
+    - role: kolla-ceph
+      when: kolla_enable_ceph | bool

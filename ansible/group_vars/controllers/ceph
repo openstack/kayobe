@@ -1,0 +1,6 @@
+---
+###############################################################################
+# Controller node Ceph configuration.
+
+# List of Ceph disks.
+ceph_disks: "{{ controller_ceph_disks }}"

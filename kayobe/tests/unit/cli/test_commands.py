@@ -482,6 +482,7 @@ class TestCase(unittest.TestCase):
                     "ansible/kolla-target-venv.yml",
                     "ansible/kolla-host.yml",
                     "ansible/docker.yml",
+                    "ansible/ceph-block-devices.yml",
                 ],
                 limit="overcloud",
             ),
