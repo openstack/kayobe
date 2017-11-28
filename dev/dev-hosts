@@ -1,2 +1,5 @@
 [controllers]
-controller0 ansible_host=192.168.33.3
+controller1 ansible_host=192.168.33.3
+
+[container-image-builders]
+controller1 ansible_host=192.168.33.3
