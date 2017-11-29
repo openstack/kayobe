@@ -1,5 +1,9 @@
 ---
-- include: deploy.yml
+- name: Ensure node exporter container is stopped
+  docker_container:
+    name: "{{ item.value.container_name }}"
+    state: "absent"
+  with_dict: "{{ nodeexporter_services }}"
 
 - name: Check whether Node Exporter volumes are present
   command: docker volume inspect {{ volume }}

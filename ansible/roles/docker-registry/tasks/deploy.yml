@@ -8,6 +8,6 @@
     read_only: "{{ item.value.read_only | default(omit) }}"
     restart_policy: "{{ docker_registry_restart_policy }}"
     restart_retries: "{{ docker_registry_restart_retries | default(omit) }}"
-    state: "{{ (item.value.enabled and action != 'destroy') | ternary('started', 'absent') }}"
+    state: "{{ item.value.enabled | ternary('started', 'absent') }}"
     volumes: "{{ item.value.volumes }}"
   with_dict: "{{ docker_registry_services }}"
