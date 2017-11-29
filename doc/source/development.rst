@@ -62,19 +62,6 @@ Configure the controller host::
 
     kayobe overcloud host configure
 
-During execution of this command, SELinux will be disabled and the VM will be
-rebooted, causing you to be logged out. Wait for the VM to finish rebooting and
-log in, performing the same environment setup steps as before::
-
-    vagrant ssh
-    source kayobe-venv/bin/activate
-    cd /vagrant
-    source kayobe-env
-
-Run the host configuration command again to completion::
-
-    kayobe overcloud host configure
-
 At this point, container images must be acquired. They can either be built
 locally or pulled from an image repository if appropriate images are available.
 
