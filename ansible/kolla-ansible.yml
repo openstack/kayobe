@@ -115,7 +115,7 @@
               {{ kolla_neutron_bridge_names +
                  [item ~ network_bridge_suffix_ovs] }}
             kolla_neutron_external_interfaces: >
-              {{ kolla_neutron_bridge_names +
+              {{ kolla_neutron_external_interfaces +
                  [network_patch_prefix ~ item ~ network_patch_suffix_ovs] }}
           with_items: "{{ kolla_neutron_bridge_interfaces }}"
 
