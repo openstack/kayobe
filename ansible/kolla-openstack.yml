@@ -72,7 +72,7 @@
         - config
 
 - name: Ensure Kolla OpenStack components are configured
-  hosts: config-mgmt
+  hosts: localhost
   vars:
     switch_type_to_device_type:
       dellos9: netmiko_dell_force10
