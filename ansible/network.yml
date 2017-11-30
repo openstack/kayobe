@@ -85,9 +85,7 @@
       set_fact:
         veth_bridges: >
           {{ veth_bridges | union([bridge_obj]) | list }}
-      with_items:
-        - "{{ provision_wl_net_name }}"
-        - "{{ external_net_name }}"
+      with_items: "{{ [provision_wl_net_name] + external_net_names }}"
       when: item in network_interfaces
       vars:
         interface: "{{ item | net_interface | replace('.' ~ item | net_vlan | default('!nomatch!'), '') }}"

@@ -8,15 +8,16 @@
       os_networks_openstack_auth_type: "{{ openstack_auth_type }}"
       os_networks_openstack_auth: "{{ openstack_auth }}"
       # Network configuration.
-      os_networks_name: "{{ external_net_name }}"
-      os_networks_type: "{% if external_net_name | net_vlan %}vlan{% else %}flat{% endif %}"
+      os_networks_name: "{{ item }}"
+      os_networks_type: "{% if item | net_vlan %}vlan{% else %}flat{% endif %}"
       os_networks_physical_network: "physnet1"
-      os_networks_segmentation_id: "{{ external_net_name | net_vlan }}"
+      os_networks_segmentation_id: "{{ item | net_vlan }}"
       os_networks_shared: True
       os_networks_external: True
       # Subnet configuration.
-      os_networks_subnet_name: "{{ external_net_name }}"
-      os_networks_cidr: "{{ external_net_name | net_cidr }}"
-      os_networks_gateway_ip: "{{ external_net_name | net_gateway }}"
-      os_networks_allocation_pool_start: "{{ external_net_name | net_neutron_allocation_pool_start }}"
-      os_networks_allocation_pool_end: "{{ external_net_name | net_neutron_allocation_pool_end }}"
+      os_networks_subnet_name: "{{ item }}"
+      os_networks_cidr: "{{ item | net_cidr }}"
+      os_networks_gateway_ip: "{{ item | net_gateway }}"
+      os_networks_allocation_pool_start: "{{ item | net_neutron_allocation_pool_start }}"
+      os_networks_allocation_pool_end: "{{ item | net_neutron_allocation_pool_end }}"
+      with_items: "{{ external_net_names }}"
