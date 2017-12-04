@@ -22,6 +22,7 @@
         virtualenv: "{{ venv }}"
       with_items:
         - name: python-ironicclient
+
     - name: Get a list of ironic nodes
       shell: >
         source {{ venv }}/bin/activate &&
