@@ -15,6 +15,13 @@
     - role: stackhpc.os-openstackclient
       os_openstackclient_venv: "{{ venv }}"
   tasks:
+    - name: Ensure required Python packages are installed
+      pip:
+        name: "{{ item.name }}"
+        state: present
+        virtualenv: "{{ venv }}"
+      with_items:
+        - name: python-ironicclient
     - name: Get a list of ironic nodes
       shell: >
         source {{ venv }}/bin/activate &&
