@@ -21,12 +21,21 @@ provision_wl_net_name: 'provision_wl_net'
 # Name of the network used to expose the internal OpenStack API endpoints.
 internal_net_name: 'internal_net'
 
-# Name of the network used to expose the external OpenStack API endpoints and
-# to provide external network access via Neutron.
-external_net_name: 'external_net'
+# List of names of networks used to provide external network access via
+# Neutron.
+# Deprecated name: external_net_name
+# If external_net_name is defined, external_net_names will default to a list
+# containing one item, external_net_name.
+external_net_names: >
+  {{ [external_net_name]
+     if external_net_name is defined else
+     ['external_net'] }}
 
 # Name of the network used to expose the public OpenStack API endpoints.
-public_net_name: "{{ external_net_name }}"
+public_net_name: >
+  {{ external_net_names[0]
+     if external_net_names | length > 0 else
+     None }}
 
 # Name of the network used to carry storage data traffic.
 storage_net_name: 'storage_net'

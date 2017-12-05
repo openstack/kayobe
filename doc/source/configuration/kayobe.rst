@@ -82,8 +82,7 @@ Inventory
 The inventory should contain the following hosts:
 
 Control host
-    This should be localhost and should be a member of the ``config-mgmt``
-    group.
+    This should be localhost.
 Seed hypervisor
     If provisioning a seed VM, a host should exist for the hypervisor that
     will run the VM, and should be a member of the ``seed-hypervisor`` group.

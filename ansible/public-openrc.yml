@@ -3,7 +3,7 @@
 # as the admin user in the admin project.
 
 - name: Ensure a public OpenStack API environment file exists
-  hosts: config-mgmt
+  hosts: localhost
   vars:
     public_api_proto: "{% if kolla_enable_tls_external | bool %}https{% else %}http{% endif %}"
     public_api_vip_address: "{{ public_net_name | net_vip_address }}"

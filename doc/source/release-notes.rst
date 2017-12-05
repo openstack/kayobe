@@ -26,6 +26,8 @@ Features
   single host.
 * Adds support for deployment of virtualised compute hosts.  These hosts should
   be added to the ``[compute]`` group.
+* Adds support for multiple external networks.  ``external_net_names`` should
+  be a list of names of networks.
 
 Upgrade Notes
 -------------

@@ -1,6 +1,6 @@
 ---
 - name: Ensure Dell baremetal compute nodes are present in the Ansible inventory
-  hosts: config-mgmt
+  hosts: localhost
   gather_facts: no
   vars:
     # Set this to a colon-separated list of baremeal compute node hostnames on

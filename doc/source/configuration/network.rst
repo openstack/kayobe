@@ -391,8 +391,10 @@ Internal network (``internal_net_name``)
     Name of the network used to expose the internal OpenStack API endpoints.
 Public network (``public_net_name``)
     Name of the network used to expose the public OpenStack API endpoints.
-External network (``external_net_name``)
-    Name of the network used to provide external network access via Neutron.
+External networks (``external_net_names``, deprecated: ``external_net_name``)
+    List of names of networks used to provide external network access via
+    Neutron. If ``external_net_name`` is defined, ``external_net_names``
+    defaults to a list containing only that network.
 Storage network (``storage_net_name``)
     Name of the network used to carry storage data traffic.
 Storage management network (``storage_mgmt_net_name``)

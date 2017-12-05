@@ -1,6 +1,6 @@
 ---
 - name: Ensure Kolla Ansible is configured
-  hosts: config-mgmt
+  hosts: localhost
   vars:
     # We need to reference configuration for the controller and seed nodes.
     # We pick the first host from each group for this. It is possible that at
@@ -103,10 +103,7 @@
               {{ kolla_neutron_bridge_interfaces |
                  union([item | net_interface(network_host) | replace('.' ~ item | net_vlan(network_host) | default('!nomatch!'), '')]) |
                  list }}
-          with_items:
-            # FIXME: Network host does not have an IP on this network.
-            - "{{ provision_wl_net_name }}"
-            - "{{ external_net_name }}"
+          with_items: "{{ [provision_wl_net_name] + external_net_names }}"
           when: item in hostvars[network_host].network_interfaces
 
         - name: Set facts containing the Neutron bridge and interface names
@@ -115,7 +112,7 @@
               {{ kolla_neutron_bridge_names +
                  [item ~ network_bridge_suffix_ovs] }}
             kolla_neutron_external_interfaces: >
-              {{ kolla_neutron_bridge_names +
+              {{ kolla_neutron_external_interfaces +
                  [network_patch_prefix ~ item ~ network_patch_suffix_ovs] }}
           with_items: "{{ kolla_neutron_bridge_interfaces }}"
 
