@@ -67,3 +67,6 @@ ansible/roles/yatesr.timezone/
 
 # Virtualenv
 ansible/kolla-venv/
+
+# Vagrant
+.vagrant
