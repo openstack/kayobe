@@ -250,6 +250,10 @@ kolla_overcloud_inventory_kolla_top_level_groups:
 ###############################################################################
 # Kolla-ansible configuration.
 
+# Virtualenv directory where Kolla-ansible's ansible modules will execute
+# remotely on the target nodes. If None, no virtualenv will be used.
+kolla_ansible_target_venv: "{{ virtualenv_path ~ '/kolla-ansible' }}"
+
 # Password to use to encrypt the kolla-ansible passwords.yml file.
 kolla_ansible_vault_password: "{{ lookup('env', 'KAYOBE_VAULT_PASSWORD') | default }}"
 

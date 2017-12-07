@@ -30,6 +30,11 @@
 [overcloud:vars]
 ansible_user=kolla
 ansible_become=true
+{% if kolla_ansible_target_venv is not none %}
+# Execute ansible modules on the remote target hosts using a virtualenv.
+ansible_python_interpreter={{ kolla_ansible_target_venv }}/bin/python
+{% endif %}
+
 
 {% for kolla_group, kolla_group_config in kolla_overcloud_inventory_top_level_group_map.items() %}
 {% if 'groups' in kolla_group_config %}
