@@ -1,0 +1,52 @@
+---
+# Create a virtualenv for ansible modules to use on the remote target systems
+# when running kayobe.
+
+- name: Ensure a virtualenv exists for kayobe
+  hosts: seed:seed-hypervisor:overcloud
+  gather_facts: False
+  tasks:
+    - name: Set a fact about the kayobe target virtualenv
+      set_fact:
+        virtualenv: "{{ ansible_python_interpreter | dirname | dirname }}"
+      when:
+        - ansible_python_interpreter is defined
+        - not ansible_python_interpreter.startswith('/bin')
+        - not ansible_python_interpreter.startswith('/usr/bin')
+
+    - block:
+        # This will cause ansible to use the system python interpreter.
+        - name: Deactivate the virtualenv
+          include_role:
+            name: deactivate-virtualenv
+
+        - name: Ensure the python-virtualenv package is installed
+          package:
+            name: python-virtualenv
+            state: installed
+          become: True
+
+        - name: Ensure kayobe virtualenv directory exists
+          file:
+            path: "{{ virtualenv }}"
+            state: directory
+            owner: "{{ ansible_user }}"
+            group: "{{ ansible_user }}"
+            mode: 0700
+          become: True
+
+        - name: Ensure kayobe virtualenv has the latest version of pip installed
+          pip:
+            name: pip
+            state: latest
+            virtualenv: "{{ virtualenv }}"
+            # Site packages are required for using the yum and selinux python
+            # modules, which are not available via PyPI.
+            virtualenv_site_packages: True
+
+        - name: Activate the virtualenv
+          include_role:
+            name: activate-virtualenv
+          vars:
+            activate_virtualenv_path: "{{ virtualenv }}"
+      when: virtualenv is defined
