@@ -20,8 +20,8 @@
   file:
     path: "{{ kolla_ansible_source_path | dirname }}"
     state: directory
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
   become: True
   when: kolla_ansible_ctl_install_type == 'source'
 
@@ -47,10 +47,10 @@
     state: present
     virtualenv: "{{ kolla_ansible_venv }}"
   with_items:
-    # Intall Kolla Ansible from source.
+    # Install Kolla Ansible from source.
     - name: "{{ kolla_ansible_source_path }}"
       install: "{{ kolla_ansible_ctl_install_type == 'source' }}"
-    # Intall Kolla Ansible from PyPI.
+    # Install Kolla Ansible from PyPI.
     - name: "kolla-ansible"
       version: "{{ kolla_openstack_release }}"
       install: "{{ kolla_ansible_ctl_install_type == 'binary' }}"

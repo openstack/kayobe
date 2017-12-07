@@ -1,0 +1,21 @@
+---
+# TODO:
+# - Check inventory file.
+# - Add hosts to inventory.
+# - Seed custom inventory
+# - Overcloud custom inventory
+#   - Group map
+#   - Pass through variables
+# - Nova ironic compute host
+
+- include: test-defaults.yml
+- include: test-extras.yml
+
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: Fail if any tests failed
+      fail:
+        msg: >
+          Test failures: {{ test_failures }}
+      when: test_failures is defined

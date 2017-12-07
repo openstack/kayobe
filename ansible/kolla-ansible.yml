@@ -198,3 +198,4 @@
 
   roles:
     - role: kolla-ansible
+      kolla_ansible_passwords_path: "{{ kayobe_config_path }}/kolla/passwords.yml"

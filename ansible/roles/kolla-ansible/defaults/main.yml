@@ -24,6 +24,9 @@ kolla_config_path:
 # Directory where Kolla custom configuration files will be installed.
 kolla_node_custom_config_path:
 
+# Path to kolla-ansible passwords.yml input file.
+kolla_ansible_passwords_path:
+
 ###############################################################################
 # Kolla-ansible inventory configuration.
 
@@ -74,6 +77,15 @@ kolla_install_type:
 
 # Docker namespace to use for Kolla images.
 kolla_docker_namespace:
+
+# Url of docker registry to use for Kolla images.
+kolla_docker_registry:
+
+# Username to use to access a docker registry.
+kolla_docker_registry_username:
+
+# Password to use to access a docker registry.
+kolla_docker_registry_password:
 
 # Valid option is Docker repository tag
 kolla_openstack_release:

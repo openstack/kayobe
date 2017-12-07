@@ -3,8 +3,8 @@
   file:
     path: "{{ item }}"
     state: directory
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
     mode: 0750
   become: True
   with_items:
@@ -35,8 +35,8 @@
 
 - name: Ensure the Kolla passwords file exists
   kolla_passwords:
-    src: "{{ kayobe_config_path }}/kolla/passwords.yml"
-    dest: "{{ kayobe_config_path }}/kolla/passwords.yml"
+    src: "{{ kolla_ansible_passwords_path }}"
+    dest: "{{ kolla_ansible_passwords_path }}"
     mode: 0640
     sample: "{{ kolla_ansible_install_dir }}/etc_examples/kolla/passwords.yml"
     overrides: "{{ kolla_ansible_custom_passwords }}"
@@ -45,6 +45,6 @@
 
 - name: Ensure the Kolla passwords file is copied into place
   copy:
-    src: "{{ kayobe_config_path }}/kolla/passwords.yml"
+    src: "{{ kolla_ansible_passwords_path }}"
     dest: "{{ kolla_config_path }}/passwords.yml"
     remote_src: True
