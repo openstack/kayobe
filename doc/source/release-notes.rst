@@ -31,6 +31,16 @@ Features
 * Adds commands for management of baremetal compute nodes - ``kayobe baremetal
   compute inspect``, ``kayobe baremetal compute manage``, and ``kayobe
   baremetal compute provide``.
+* Adds support for installation and use of a python virtual environment for
+  remote execution of ansible modules, providing isolation from the system's
+  python packages. This is enabled by setting a host variable,
+  ``ansible_python_interpreter``, to the path to a python interpreter in a
+  virtualenv, noting that Jinja2 templating is not supported for this variable.
+* Adds support for configuration of a python virtual environment for remote
+  execution of ansible modules in kolla-ansible, providing isolation from the
+  system's python packages. This is enabled by setting the variable
+  ``kolla_ansible_target_venv`` to a path to the virtualenv. The default for
+  this variable is ``{{ virtualenv_path }}/kolla-ansible``.
 
 Upgrade Notes
 -------------
@@ -56,6 +66,10 @@ Upgrade Notes
   images for the seed were built on the seed, and container images for the
   overcloud were built on the controllers.  The new design is intended to
   encourage a build, push, pull workflow.
+* The default behaviour is now to configure kolla-ansible to use a virtual
+  environment for remote execution of ansible modules. The previous behaviour
+  of installing python dependencies directly to the host can be used by
+  setting ``kolla_ansible_target_venv`` to ``None``
 
 Kayobe 3.0.0
 ============
