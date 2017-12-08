@@ -1,0 +1,10 @@
+---
+- name: Set a fact containing the current python interpreter
+  set_fact:
+    activate_virtualenv_current_python_interpreter: "{{ ansible_python_interpreter | default('/usr/bin/python') }}"
+
+# Note that setting this via a play or task variable seems to not
+# evaluate the Jinja variable reference, so we use set_fact.
+- name: Update the Ansible python interpreter fact to point to the virtualenv
+  set_fact:
+    ansible_python_interpreter: "{{ activate_virtualenv_path }}/bin/python"

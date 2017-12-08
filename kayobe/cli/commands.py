@@ -997,3 +997,31 @@ class NetworkConnectivityCheck(KayobeAnsibleMixin, VaultMixin, Command):
         self.app.LOG.debug("Performing network connectivity check")
         playbooks = _build_playbook_list("network-connectivity")
         self.run_kayobe_playbooks(parsed_args, playbooks)
+
+
+class BaremetalComputeInspect(KayobeAnsibleMixin, VaultMixin, Command):
+    """Perform hardware inspection on baremetal compute nodes."""
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Performing hardware inspection on baremetal "
+                           "compute nodes")
+        playbooks = _build_playbook_list("baremetal-compute-inspect")
+        self.run_kayobe_playbooks(parsed_args, playbooks)
+
+
+class BaremetalComputeManage(KayobeAnsibleMixin, VaultMixin, Command):
+    """Put baremetal compute nodes into the manageable provision state."""
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Making baremetal compute nodes manageable")
+        playbooks = _build_playbook_list("baremetal-compute-manage")
+        self.run_kayobe_playbooks(parsed_args, playbooks)
+
+
+class BaremetalComputeProvide(KayobeAnsibleMixin, VaultMixin, Command):
+    """Put baremetal compute nodes into the available provision state."""
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Making baremetal compute nodes available")
+        playbooks = _build_playbook_list("baremetal-compute-provide")
+        self.run_kayobe_playbooks(parsed_args, playbooks)

@@ -1,0 +1,5 @@
+---
+# Path to a python interpreter to set as the ansible_python_interpreter
+# variable. The default uses a variable set by the activate-virtualenv role
+# containing the original python interpreter before entering the virtualenv.
+deactivate_virtualenv_python_interpreter: "{{ activate_virtualenv_current_python_interpreter | default('/usr/bin/python') }}"

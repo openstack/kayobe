@@ -1,0 +1,44 @@
+---
+# This playbook will ensure that all baremetal compute nodes in the overcloud
+# ironic inventory are available. Supported initial states include 'enroll' and
+# 'manageable'.
+
+# We install shade in a virtualenv on one of the controllers, and delegate to
+# it when executing the stackhpc.os-ironic-state role.
+
+- name: Ensure baremetal compute nodes are available in ironic
+  hosts: controllers[0]
+  gather_facts: False
+  vars:
+    venv: "{{ virtualenv_path }}/shade"
+  roles:
+    - role: stackhpc.os-shade
+      os_shade_venv: "{{ venv }}"
+
+    - role: activate-virtualenv
+      activate_virtualenv_path: "{{ venv }}"
+
+- name: Ensure baremetal compute nodes are available in ironic
+  hosts: baremetal-compute
+  gather_facts: False
+  vars:
+    # Whether to wait for the state transition to complete.
+    baremetal_compute_wait: True
+    # Time to wait for state transition to complete, if baremetal_compute_wait
+    # is True.
+    baremetal_compute_timeout: 1200
+  roles:
+    - role: stackhpc.os-ironic-state
+      os_ironic_state_auth_type: "{{ openstack_auth_type }}"
+      os_ironic_state_auth: "{{ openstack_auth }}"
+      os_ironic_state_name: "{{ inventory_hostname }}"
+      os_ironic_state_provision_state: "provide"
+      os_ironic_state_wait: "{{ baremetal_compute_wait }}"
+      os_ironic_state_timeout: "{{ baremetal_compute_timeout }}"
+      os_ironic_state_delegate_to: "{{ groups['controllers'][0] }}"
+
+- name: Ensure baremetal compute nodes are available in ironic
+  hosts: controllers[0]
+  gather_facts: False
+  roles:
+    - role: deactivate-virtualenv

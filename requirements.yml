@@ -12,6 +12,7 @@
 - src: stackhpc.drac-facts
 - src: stackhpc.os-flavors
 - src: stackhpc.os-images
+- src: stackhpc.os-ironic-state
 - src: stackhpc.os-networks
 - src: stackhpc.os-openstackclient
 - src: stackhpc.os-projects

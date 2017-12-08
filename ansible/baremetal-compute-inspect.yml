@@ -1,0 +1,49 @@
+---
+# This playbook will ensure that all baremetal compute nodes in the
+# baremetal-compute ansible group are inspected. The nodes should be in the
+# 'manageable' state.
+
+# We install shade in a virtualenv on one of the controllers, and delegate to
+# it when executing the stackhpc.os-ironic-state role.
+
+- name: Ensure dependencies are installed and the virtual environment is activated
+  hosts: controllers[0]
+  gather_facts: False
+  vars:
+    venv: "{{ virtualenv_path }}/shade"
+  roles:
+    - role: stackhpc.os-shade
+      os_shade_venv: "{{ venv }}"
+
+    - role: activate-virtualenv
+      activate_virtualenv_path: "{{ venv }}"
+
+- name: Ensure baremetal compute nodes are inspected in ironic
+  hosts: baremetal-compute
+  gather_facts: False
+  vars:
+    controller_host: "{{ groups['controllers'][0] }}"
+    # Whether to wait for the state transition to complete.
+    baremetal_compute_wait: True
+    # Time to wait for state transition to complete, if baremetal_compute_wait
+    # is True.
+    baremetal_compute_timeout: 1200
+  tasks:
+    - name: Ensure baremetal compute nodes are inspected in ironic
+      os_ironic_inspect:
+        auth_type: "{{ openstack_auth_type }}"
+        auth: "{{ openstack_auth }}"
+        name: "{{ inventory_hostname }}"
+        timeout: "{{ baremetal_compute_timeout }}"
+        wait: "{{ baremetal_compute_wait }}"
+      delegate_to: "{{ controller_host }}"
+      vars:
+        # NOTE: Without this, the controller's ansible_host variable will not
+        # be respected when using delegate_to.
+        ansible_host: "{{ hostvars[controller_host].ansible_host | default(controller_host) }}"
+
+- name: Deactivate the virtual environment on the controller
+  hosts: controllers[0]
+  gather_facts: False
+  roles:
+    - role: deactivate-virtualenv
