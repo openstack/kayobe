@@ -69,6 +69,7 @@ kolla_feature_flags:
   - cinder_backend_lvm
   - cinder_backend_nfs
   - cloudkitty
+  - collectd
   - congress
   - designate
   - elasticsearch
