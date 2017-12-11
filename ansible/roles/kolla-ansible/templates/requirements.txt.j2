@@ -1,0 +1,8 @@
+{% if kolla_ansible_ctl_install_type == 'source' %}
+# Install Kolla Ansible from source.
+{{ kolla_ansible_source_path }}
+{% else %}
+# Install Kolla Ansible from PyPI.
+kolla-ansible=={{ kolla_openstack_release }}
+{% endif %}
+ansible<2.4

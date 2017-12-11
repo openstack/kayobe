@@ -40,28 +40,16 @@
   with_items:
     - { name: pip }
 
+- name: Ensure python requirements file exists
+  template:
+    src: requirements.txt.j2
+    dest: "{{ kolla_ansible_venv }}/requirements.txt"
+
 - name: Ensure required Python packages are installed
   pip:
-    name: "{{ item.name }}"
-    version: "{{ item.version | default(omit) }}"
+    requirements: "{{ kolla_ansible_venv }}/requirements.txt"
     state: present
     virtualenv: "{{ kolla_ansible_venv }}"
-  with_items:
-    # Install Kolla Ansible from source.
-    - name: "{{ kolla_ansible_source_path }}"
-      install: "{{ kolla_ansible_ctl_install_type == 'source' }}"
-    # Install Kolla Ansible from PyPI.
-    - name: "kolla-ansible"
-      version: "{{ kolla_openstack_release }}"
-      install: "{{ kolla_ansible_ctl_install_type == 'binary' }}"
-    # On CentOS 7.3 Jinja2==2.7, but kolla-ansible requires 2.8. Install
-    # Ansible to ensure we pull in and use a later Jinja2.
-    - name: "ansible"
-      version: "2.2"
-    # Required for kolla-genpwd.
-    - name: PyYAML
-      version: "3.12"
-  when: item.install | default(True) | bool
 
 # This is a workaround for the lack of a python package for libselinux-python
 # on PyPI. Without using --system-site-packages to create the virtualenv, it
