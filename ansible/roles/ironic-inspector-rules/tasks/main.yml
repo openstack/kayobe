@@ -8,9 +8,11 @@
   with_items:
     - name: python-ironic-inspector-client
 
-- name: Set a fact to ensure Ansible uses the python interpreter in the virtualenv
-  set_fact:
-    ansible_python_interpreter: "{{ ironic_inspector_venv }}/bin/python"
+- name: Activate the virtualenv
+  include_role:
+    name: activate-virtualenv
+  vars:
+    activate_virtualenv_path: "{{ ironic_inspector_venv }}"
 
 - name: Ensure introspection rules exist
   os_ironic_inspector_rule:
@@ -24,8 +26,6 @@
     inspector_url: "{{ ironic_inspector_url }}"
   with_items: "{{ ironic_inspector_rules }}"
 
-# This variable is unset before we set it, and it does not appear to be
-# possible to unset a variable in Ansible.
-- name: Set a fact to reset the Ansible python interpreter
-  set_fact:
-    ansible_python_interpreter: /usr/bin/python
+- name: Deactivate the virtualenv
+  include_role:
+    name: deactivate-virtualenv

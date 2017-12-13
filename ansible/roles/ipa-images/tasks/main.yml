@@ -29,11 +29,11 @@
     - "{{ ipa_images_ramdisk_name }}"
   register: ipa_images_checksum
 
-# Note that setting this via a play or task variable seems to not
-# evaluate the Jinja variable reference, so we use set_fact.
-- name: Update the Ansible python interpreter fact to point to the virtualenv
-  set_fact:
-    ansible_python_interpreter: "{{ ipa_images_venv }}/bin/python"
+- name: Activate the virtualenv
+  include_role:
+    name: activate-virtualenv
+  vars:
+    activate_virtualenv_path: "{{ ipa_images_venv }}"
 
 # To support updating the IPA image, we check the MD5 sum of the cached image
 # files, and compare with the images in Glance (if there are any).
@@ -92,8 +92,6 @@
     - name: "{{ ipa_images_ramdisk_name }}"
       format: ari
 
-# This variable is unset before we set it, and it does not appear to be
-# possible to unset a variable in Ansible.
-- name: Set a fact to reset the Ansible python interpreter
-  set_fact:
-    ansible_python_interpreter: /usr/bin/python
+- name: Deactivate the virtualenv
+  include_role:
+    name: deactivate-virtualenv
