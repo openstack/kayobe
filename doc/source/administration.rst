@@ -125,6 +125,50 @@ any of these hosts are not expected to be active (e.g. prior to overcloud
 deployment), the set of target hosts may be limited using the ``--limit``
 argument.
 
+Baremetal Compute Node Management
+=================================
+
+When enrolling new hardware or performing maintenance, it can be useful to be
+able to manage many bare metal compute nodes simulteneously.
+
+In all cases, commands are delegated to one of the controller hosts, and
+executed concurrently. Note that ansible's ``forks`` configuration option,
+which defaults to 5, may limit the number of nodes configured concurrently.
+
+By default these commands wait for the state transition to complete for each
+node. This behavior can be changed by overriding the variable
+``baremetal_compute_wait`` via ``-e baremetal_compute_wait=False``
+
+Manage
+------
+
+A node may need to be set to the ``manageable`` provision state in order to
+perform certain management operations, or when an enrolled node is
+transitioned into service. In order to manage a node, it must be in one of
+these states: ``enroll``, ``available``, ``cleaning``, ``clean failed``,
+``adopt failed`` or ``inspect failed``. To move the baremetal compute nodes
+to the ``manageable`` provision state::
+
+    (kayobe) $ kayobe baremetal compute manage
+
+Provide
+-------
+
+In order for nodes to be scheduled by nova, they must be ``available``. To
+move the baremetal compute nodes from the ``manageable`` state to the
+``available`` provision state::
+
+    (kayobe) $ kayobe baremetal compute provide
+
+Inspect
+-------
+
+Nodes must be in one of the following states: ``manageable``, ``inspect
+failed``, or ``available``. To trigger hardware inspection on the baremetal
+compute nodes::
+
+    (kayobe) $ kayobe baremetal compute inspect
+
 Running Kayobe Playbooks on Demand
 ==================================
 

@@ -28,6 +28,9 @@ Features
   be added to the ``[compute]`` group.
 * Adds support for multiple external networks.  ``external_net_names`` should
   be a list of names of networks.
+* Adds commands for management of baremetal compute nodes - ``kayobe baremetal
+  compute inspect``, ``kayobe baremetal compute manage``, and ``kayobe
+  baremetal compute provide``.
 
 Upgrade Notes
 -------------

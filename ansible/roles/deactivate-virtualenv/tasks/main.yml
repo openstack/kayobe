@@ -1,0 +1,6 @@
+---
+# This variable is unset before we set it, and it does not appear to be
+# possible to unset a variable in Ansible.
+- name: Set a fact to reset the Ansible python interpreter
+  set_fact:
+    ansible_python_interpreter: "{{ deactivate_virtualenv_python_interpreter }}"

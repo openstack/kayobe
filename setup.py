@@ -51,6 +51,9 @@ setup(
             'kayobe-vault-password-helper = kayobe.cmd.kayobe_vault_password_helper:main',
         ],
         'kayobe.cli': [
+            'baremetal_compute_inspect = kayobe.cli.commands:BaremetalComputeInspect',
+            'baremetal_compute_manage = kayobe.cli.commands:BaremetalComputeManage',
+            'baremetal_compute_provide = kayobe.cli.commands:BaremetalComputeProvide',
             'control_host_bootstrap = kayobe.cli.commands:ControlHostBootstrap',
             'control_host_upgrade = kayobe.cli.commands:ControlHostUpgrade',
             'configuration_dump = kayobe.cli.commands:ConfigurationDump',
