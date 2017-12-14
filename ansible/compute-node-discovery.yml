@@ -22,6 +22,10 @@
     - name: Ensure baremetal compute nodes are powered off
       command: ipmitool -U {{ ipmi_username }} -P {{ ipmi_password }} -H {{ ipmi_address }} -I lanplus chassis power off
       delegate_to: "{{ controller_host }}"
+      failed_when:
+        - result | failed
+        # Some BMCs complain if the node is already powered off.
+        - "'Command not supported in present state' not in result.stderr"
       vars:
         # NOTE: Without this, the controller's ansible_host variable will not
         # be respected when using delegate_to.
