@@ -5,4 +5,6 @@
 # Install Kolla Ansible from PyPI.
 kolla-ansible=={{ kolla_openstack_release }}
 {% endif %}
+# Limit the version of ansible used by kolla-ansible to avoid new releases from
+# breaking tested code. Changes to this limit should be tested.
 ansible<2.4

@@ -3,6 +3,9 @@
   hosts: seed:overcloud
   vars:
     ansible_user: "{{ bootstrap_user }}"
+    # We can't assume that a virtualenv exists at this point, so use the system
+    # python interpreter.
+    ansible_python_interpreter: /usr/bin/python
   roles:
     - role: singleplatform-eng.users
       users:

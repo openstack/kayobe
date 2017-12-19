@@ -6,6 +6,21 @@
       include 'devicemapper' and 'overlay'.
   when: docker_storage_driver not in ['devicemapper', 'overlay']
 
+- name: Set a fact about the virtualenv on the remote system
+  set_fact:
+    virtualenv: "{{ ansible_python_interpreter | dirname | dirname }}"
+  when:
+    - ansible_python_interpreter is defined
+    - not ansible_python_interpreter.startswith('/bin/')
+    - not ansible_python_interpreter.startswith('/usr/bin/')
+
+- name: Ensure docker SDK for python is installed
+  pip:
+    name: docker
+    state: latest
+    virtualenv: "{{ virtualenv is defined | ternary(virtualenv, omit) }}"
+  become: "{{ virtualenv is not defined }}"
+
 - name: Ensure user is in the docker group
   user:
     name: "{{ ansible_user_id }}"

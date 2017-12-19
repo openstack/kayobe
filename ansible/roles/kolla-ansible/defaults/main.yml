@@ -15,6 +15,10 @@ kolla_ansible_source_version:
 # Virtualenv directory where Kolla-ansible will be installed.
 kolla_ansible_venv: "{{ ansible_env['PWD'] }}/kolla-venv"
 
+# Virtualenv directory where Kolla-ansible's ansible modules will execute
+# remotely on the target nodes. If None, no virtualenv will be used.
+kolla_ansible_target_venv:
+
 # Password to use to encrypt the passwords.yml file.
 kolla_ansible_vault_password:
 

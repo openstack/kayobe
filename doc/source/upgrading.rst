@@ -80,10 +80,27 @@ To upgrade the Ansible control host::
 
     (kayobe) $ kayobe control host upgrade
 
+Upgrading the Seed Hypervisor
+=============================
+
+Currently, upgrading the seed hypervisor services is not supported.  It may
+however be necessary to upgrade some host services::
+
+    (kayobe) $ kayobe seed hypervisor host upgrade
+
+Note that this will not perform full configuration of the host, and will
+instead perform a targeted upgrade of specific services where necessary.
+
 Upgrading the Seed
 ==================
 
-Currently, upgrading the seed services is not supported.
+Currently, upgrading the seed services is not supported.  It may however be
+necessary to upgrade some host services::
+
+    (kayobe) $ kayobe seed host upgrade
+
+Note that this will not perform full configuration of the host, and will
+instead perform a targeted upgrade of specific services where necessary.
 
 Upgrading the Overcloud
 =======================

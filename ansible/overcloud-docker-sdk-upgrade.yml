@@ -5,14 +5,24 @@
     # Docker renamed their python SDK from docker-py to docker in the 2.0.0
     # release, and also broke backwards compatibility. Kolla-ansible requires
     # docker, so ensure it is installed.
+    - name: Set a fact about the virtualenv on the remote system
+      set_fact:
+        virtualenv: "{{ ansible_python_interpreter | dirname | dirname }}"
+      when:
+        - ansible_python_interpreter is defined
+        - not ansible_python_interpreter.startswith('/bin/')
+        - not ansible_python_interpreter.startswith('/usr/bin/')
+
     - name: Ensure legacy docker-py python package is uninstalled
       pip:
         name: docker-py
         state: absent
-      become: True
+        virtualenv: "{{ virtualenv is defined | ternary(virtualenv, omit) }}"
+      become: "{{ virtualenv is not defined }}"
 
     - name: Ensure docker SDK for python is installed
       pip:
         name: docker
         state: latest
-      become: True
+        virtualenv: "{{ virtualenv is defined | ternary(virtualenv, omit) }}"
+      become: "{{ virtualenv is not defined }}"

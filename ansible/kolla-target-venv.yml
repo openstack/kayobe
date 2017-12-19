@@ -1,0 +1,44 @@
+---
+# Create a virtualenv for ansible modules to use on the remote target systems
+# when running kolla-ansible.
+
+- name: Ensure a virtualenv exists for kolla-ansible
+  hosts: seed:seed-hypervisor:overcloud
+  gather_facts: False
+  tags:
+    - kolla-ansible
+    - kolla-target-venv
+  tasks:
+    - block:
+        - name: Ensure the python-virtualenv package is installed
+          package:
+            name: python-virtualenv
+            state: installed
+          become: True
+
+        - name: Ensure kolla-ansible virtualenv has the latest version of pip installed
+          pip:
+            name: pip
+            state: latest
+            virtualenv: "{{ kolla_ansible_target_venv }}"
+            # Site packages are required for using the yum and selinux python
+            # modules, which are not available via PyPI.
+            virtualenv_site_packages: True
+          become: True
+
+        - name: Ensure kolla-ansible virtualenv has docker SDK for python installed
+          pip:
+            name: docker
+            state: latest
+            virtualenv: "{{ kolla_ansible_target_venv }}"
+          become: True
+
+        - name: Ensure kolla-ansible virtualenv has correct ownership
+          file:
+            path: "{{ kolla_ansible_target_venv }}"
+            recurse: True
+            state: directory
+            owner: kolla
+            group: kolla
+          become: True
+      when: kolla_ansible_target_venv is not none

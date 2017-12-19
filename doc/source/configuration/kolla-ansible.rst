@@ -27,6 +27,23 @@ kolla-ansible is installed and executed.
                           the kolla-ansible virtualenv will be created.
    ====================== ================================================== ============================
 
+Remote Execution Environment
+============================
+
+By default, ansible executes modules remotely using the system python
+interpreter, even if the ansible control process is executed from within a
+virtual environment (unless the ``local`` connection plugin is used).
+This is not ideal if there are python dependencies that must be installed
+without isolation from the system python packages. Ansible can be configured to
+use a virtualenv by setting the host variable ``ansible_python_interpreter``
+to a path to a python interpreter in an existing virtual environment.
+
+If the variable ``kolla_ansible_target_venv`` is set, kolla-ansible will be
+configured to create and use a virtual environment on the remote hosts.
+This variable is by default set to ``{{ virtualenv_path }}/kolla-ansible``.
+The previous behaviour of installing python dependencies directly to the host
+can be used by setting ``kolla_ansible_target_venv`` to ``None``.
+
 Control Plane Services
 ======================
 

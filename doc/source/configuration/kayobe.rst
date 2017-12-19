@@ -115,3 +115,19 @@ configuration files may be encrypted.  Since encryption can make working with
 Kayobe difficult, it is recommended to follow `best practice
 <http://docs.ansible.com/ansible/playbooks_best_practices.html#best-practices-for-variables-and-vaults>`_,
 adding a layer of indirection and using encryption only where necessary.
+
+Remote Execution Environment
+----------------------------
+
+By default, ansible executes modules remotely using the system python
+interpreter, even if the ansible control process is executed from within a
+virtual environment (unless the ``local`` connection plugin is used).
+This is not ideal if there are python dependencies that must be installed
+without isolation from the system python packages. Ansible can be configured to
+use a virtualenv by setting the host variable ``ansible_python_interpreter``
+to a path to a python interpreter in an existing virtual environment.
+
+If kayobe detects that ``ansible_python_interpreter`` is set and references a
+virtual environment, it will create the virtual environment if it does not
+exist. Typically this variable should be set via a group variable for hosts in
+the ``seed``, ``seed-hypervisor``, and/or ``overcloud`` groups.

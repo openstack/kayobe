@@ -263,6 +263,7 @@ class SeedHypervisorHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
 
     * Allocate IP addresses for all configured networks.
     * Add the host to SSH known hosts.
+    * Optionally, create a virtualenv for remote target hosts.
     * Configure user accounts, group associations, and authorised SSH keys.
     * Configure Yum repos.
     * Configure the host's network interfaces.
@@ -274,8 +275,24 @@ class SeedHypervisorHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
     def take_action(self, parsed_args):
         self.app.LOG.debug("Configuring seed hypervisor host OS")
         playbooks = _build_playbook_list(
-            "ip-allocation", "ssh-known-host", "users", "yum", "dev-tools",
-            "network", "sysctl", "ntp", "seed-hypervisor-libvirt-host")
+            "ip-allocation", "ssh-known-host", "kayobe-target-venv", "users",
+            "yum", "dev-tools", "network", "sysctl", "ntp",
+            "seed-hypervisor-libvirt-host")
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  limit="seed-hypervisor")
+
+
+class SeedHypervisorHostUpgrade(KayobeAnsibleMixin, VaultMixin, Command):
+    """Upgrade the seed hypervisor host services.
+
+    Performs the changes necessary to make the host services suitable for the
+    configured OpenStack release.
+    """
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Upgrading seed hypervisor host services")
+        playbooks = _build_playbook_list(
+            "kayobe-target-venv", "kolla-target-venv")
         self.run_kayobe_playbooks(parsed_args, playbooks,
                                   limit="seed-hypervisor")
 
@@ -319,6 +336,7 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     * Allocate IP addresses for all configured networks.
     * Add the host to SSH known hosts.
     * Configure a user account for use by kayobe for SSH access.
+    * Optionally, create a virtualenv for remote target hosts.
     * Optionally, wipe unmounted disk partitions (--wipe-disks).
     * Configure user accounts, group associations, and authorised SSH keys.
     * Configure Yum repos.
@@ -329,6 +347,7 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     * Disable bootstrap interface configuration.
     * Configure NTP.
     * Configure LVM volumes.
+    * Optionally, create a virtualenv for kolla-ansible.
     * Configure a user account for kolla-ansible.
     * Configure Docker engine.
     """
@@ -344,14 +363,25 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Configuring seed host OS")
-        ansible_user = self.run_kayobe_config_dump(
-            parsed_args, host="seed", var_name="kayobe_ansible_user")
+
+        # Query some kayobe ansible variables.
+        hostvars = self.run_kayobe_config_dump(parsed_args, hosts="seed")
+        if not hostvars:
+            self.app.LOG.error("No hosts in the seed group")
+            sys.exit(1)
+        hostvars = hostvars.values()[0]
+        ansible_user = hostvars.get("kayobe_ansible_user")
         if not ansible_user:
             self.app.LOG.error("Could not determine kayobe_ansible_user "
                                "variable for seed host")
             sys.exit(1)
+        python_interpreter = hostvars.get("ansible_python_interpreter")
+        kolla_target_venv = hostvars.get("kolla_ansible_target_venv")
+
+        # Run kayobe playbooks.
         playbooks = _build_playbook_list(
-            "ip-allocation", "ssh-known-host", "kayobe-ansible-user")
+            "ip-allocation", "ssh-known-host", "kayobe-ansible-user",
+            "kayobe-target-venv")
         if parsed_args.wipe_disks:
             playbooks += _build_playbook_list("wipe-disks")
         playbooks += _build_playbook_list(
@@ -360,9 +390,41 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed")
         playbooks = _build_playbook_list("kolla-ansible")
         self.run_kayobe_playbooks(parsed_args, playbooks, tags="config")
+
+        # Run kolla-ansible bootstrap-servers.
+        # This command should be run as the kayobe ansible user because at this
+        # point the kolla user may not exist.
+        extra_vars = {"ansible_user": ansible_user}
+        if python_interpreter:
+            # Use the kayobe virtualenv, as this is the executing user.
+            extra_vars["ansible_python_interpreter"] = python_interpreter
+        elif kolla_target_venv:
+            # Override the kolla-ansible virtualenv, use the system python
+            # instead.
+            extra_vars["ansible_python_interpreter"] = "/usr/bin/python"
+        if kolla_target_venv:
+            # Specify a virtualenv in which to install python packages.
+            extra_vars["virtualenv"] = kolla_target_venv
         self.run_kolla_ansible_seed(parsed_args, "bootstrap-servers",
-                                    extra_vars={"ansible_user": ansible_user})
+                                    extra_vars=extra_vars)
+
+        # Run final kayobe playbooks.
         playbooks = _build_playbook_list("kolla-host", "docker")
+        self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed")
+
+
+class SeedHostUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
+                      Command):
+    """Upgrade the seed host services.
+
+    Performs the changes necessary to make the host services suitable for the
+    configured OpenStack release.
+    """
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Upgrading seed host services")
+        playbooks = _build_playbook_list(
+            "kayobe-target-venv", "kolla-target-venv")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed")
 
 
@@ -559,6 +621,7 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     * Allocate IP addresses for all configured networks.
     * Add the host to SSH known hosts.
     * Configure a user account for use by kayobe for SSH access.
+    * Optionally, create a virtualenv for remote target hosts.
     * Optionally, wipe unmounted disk partitions (--wipe-disks).
     * Configure user accounts, group associations, and authorised SSH keys.
     * Configure Yum repos.
@@ -568,6 +631,7 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     * Disable bootstrap interface configuration.
     * Configure NTP.
     * Configure LVM volumes.
+    * Optionally, create a virtualenv for kolla-ansible.
     * Configure a user account for kolla-ansible.
     * Configure Docker engine.
     """
@@ -583,15 +647,25 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Configuring overcloud host OS")
-        ansible_user = self.run_kayobe_config_dump(
-            parsed_args, hosts="overcloud", var_name="kayobe_ansible_user")
+
+        # Query some kayobe ansible variables.
+        hostvars = self.run_kayobe_config_dump(parsed_args, hosts="overcloud")
+        if not hostvars:
+            self.app.LOG.error("No hosts in the overcloud group")
+            sys.exit(1)
+        hostvars = hostvars.values()[0]
+        ansible_user = hostvars.get("kayobe_ansible_user")
         if not ansible_user:
             self.app.LOG.error("Could not determine kayobe_ansible_user "
                                "variable for overcloud hosts")
             sys.exit(1)
-        ansible_user = ansible_user.values()[0]
+        python_interpreter = hostvars.get("ansible_python_interpreter")
+        kolla_target_venv = hostvars.get("kolla_ansible_target_venv")
+
+        # Kayobe playbooks.
         playbooks = _build_playbook_list(
-            "ip-allocation", "ssh-known-host", "kayobe-ansible-user")
+            "ip-allocation", "ssh-known-host", "kayobe-ansible-user",
+            "kayobe-target-venv")
         if parsed_args.wipe_disks:
             playbooks += _build_playbook_list("wipe-disks")
         playbooks += _build_playbook_list(
@@ -600,15 +674,31 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
         playbooks = _build_playbook_list("kolla-ansible")
         self.run_kayobe_playbooks(parsed_args, playbooks, tags="config")
+
+        # Kolla-ansible bootstrap-servers.
+        # The kolla-ansible bootstrap-servers command should be run as the
+        # kayobe ansible user because at this point the kolla user may not
+        # exist.
         extra_vars = {"ansible_user": ansible_user}
+        if python_interpreter:
+            # Use the kayobe virtualenv, as this is the executing user.
+            extra_vars["ansible_python_interpreter"] = python_interpreter
+        elif kolla_target_venv:
+            # Override the kolla-ansible virtualenv, use the system python
+            # instead.
+            extra_vars["ansible_python_interpreter"] = "/usr/bin/python"
+        if kolla_target_venv:
+            # Specify a virtualenv in which to install python packages.
+            extra_vars["virtualenv"] = kolla_target_venv
         self.run_kolla_ansible_overcloud(parsed_args, "bootstrap-servers",
                                          extra_vars=extra_vars)
+
+        # Further kayobe playbooks.
         playbooks = _build_playbook_list("kolla-host", "docker")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
 
 
-class OvercloudHostUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
-                           Command):
+class OvercloudHostUpgrade(KayobeAnsibleMixin, VaultMixin, Command):
     """Upgrade the overcloud host services.
 
     Performs the changes necessary to make the host services suitable for the
@@ -618,8 +708,9 @@ class OvercloudHostUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     def take_action(self, parsed_args):
         self.app.LOG.debug("Upgrading overcloud host services")
         playbooks = _build_playbook_list(
+            "kayobe-target-venv", "kolla-target-venv",
             "overcloud-docker-sdk-upgrade", "overcloud-etc-hosts-fixup")
-        self.run_kayobe_playbooks(parsed_args, playbooks)
+        self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
 
 
 class OvercloudServiceConfigurationGenerate(KayobeAnsibleMixin,
