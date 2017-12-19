@@ -113,6 +113,28 @@ class TestCase(unittest.TestCase):
         self.assertEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_seed_hypervisor_host_upgrade(self, mock_run):
+        command = commands.SeedHypervisorHostUpgrade(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    "ansible/kayobe-target-venv.yml",
+                    "ansible/kolla-target-venv.yml",
+                ],
+                limit="seed-hypervisor",
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_config_dump")
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -282,6 +304,28 @@ class TestCase(unittest.TestCase):
             ),
         ]
         self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_seed_host_upgrade(self, mock_run):
+        command = commands.SeedHostUpgrade(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    "ansible/kayobe-target-venv.yml",
+                    "ansible/kolla-target-venv.yml",
+                ],
+                limit="seed",
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -501,6 +545,30 @@ class TestCase(unittest.TestCase):
             ),
         ]
         self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_overcloud_host_upgrade(self, mock_run):
+        command = commands.OvercloudHostUpgrade(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    "ansible/kayobe-target-venv.yml",
+                    "ansible/kolla-target-venv.yml",
+                    "ansible/overcloud-docker-sdk-upgrade.yml",
+                    "ansible/overcloud-etc-hosts-fixup.yml",
+                ],
+                limit="overcloud",
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")

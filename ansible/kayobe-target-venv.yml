@@ -5,6 +5,8 @@
 - name: Ensure a virtualenv exists for kayobe
   hosts: seed:seed-hypervisor:overcloud
   gather_facts: False
+  tags:
+    - kayobe-target-venv
   tasks:
     - name: Set a fact about the kayobe target virtualenv
       set_fact:

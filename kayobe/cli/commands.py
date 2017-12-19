@@ -282,6 +282,21 @@ class SeedHypervisorHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
                                   limit="seed-hypervisor")
 
 
+class SeedHypervisorHostUpgrade(KayobeAnsibleMixin, VaultMixin, Command):
+    """Upgrade the seed hypervisor host services.
+
+    Performs the changes necessary to make the host services suitable for the
+    configured OpenStack release.
+    """
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Upgrading seed hypervisor host services")
+        playbooks = _build_playbook_list(
+            "kayobe-target-venv", "kolla-target-venv")
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  limit="seed-hypervisor")
+
+
 class SeedVMProvision(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
                       Command):
     """Provision the seed VM.
@@ -395,6 +410,21 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 
         # Run final kayobe playbooks.
         playbooks = _build_playbook_list("kolla-host", "docker")
+        self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed")
+
+
+class SeedHostUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
+                      Command):
+    """Upgrade the seed host services.
+
+    Performs the changes necessary to make the host services suitable for the
+    configured OpenStack release.
+    """
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Upgrading seed host services")
+        playbooks = _build_playbook_list(
+            "kayobe-target-venv", "kolla-target-venv")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed")
 
 
@@ -668,8 +698,7 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
 
 
-class OvercloudHostUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
-                           Command):
+class OvercloudHostUpgrade(KayobeAnsibleMixin, VaultMixin, Command):
     """Upgrade the overcloud host services.
 
     Performs the changes necessary to make the host services suitable for the
@@ -679,8 +708,9 @@ class OvercloudHostUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     def take_action(self, parsed_args):
         self.app.LOG.debug("Upgrading overcloud host services")
         playbooks = _build_playbook_list(
+            "kayobe-target-venv", "kolla-target-venv",
             "overcloud-docker-sdk-upgrade", "overcloud-etc-hosts-fixup")
-        self.run_kayobe_playbooks(parsed_args, playbooks)
+        self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
 
 
 class OvercloudServiceConfigurationGenerate(KayobeAnsibleMixin,

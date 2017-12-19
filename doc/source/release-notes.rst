@@ -66,10 +66,25 @@ Upgrade Notes
   images for the seed were built on the seed, and container images for the
   overcloud were built on the controllers.  The new design is intended to
   encourage a build, push, pull workflow.
+* It is now possible to configure kayobe to use a virtual environment for
+  remote execution of ansible modules.  If this is required, the following
+  commands should be run in order to ensure that the virtual environments exist
+  on the remote hosts::
+
+      (kayobe) $ kayobe seed hypervisor host upgrade
+      (kayobe) $ kayobe seed host upgrade
+      (kayobe) $ kayobe overcloud host upgrade
+
 * The default behaviour is now to configure kolla-ansible to use a virtual
-  environment for remote execution of ansible modules. The previous behaviour
-  of installing python dependencies directly to the host can be used by
-  setting ``kolla_ansible_target_venv`` to ``None``
+  environment for remote execution of ansible modules. In order to ensure the
+  virtual environment exists on the remote hosts, run the following commands::
+
+      (kayobe) $ kayobe seed hypervisor host upgrade
+      (kayobe) $ kayobe seed host upgrade
+      (kayobe) $ kayobe overcloud host upgrade
+
+  The previous behaviour of installing python dependencies directly to the host
+  can be used by setting ``kolla_ansible_target_venv`` to ``None``.
 
 Kayobe 3.0.0
 ============
