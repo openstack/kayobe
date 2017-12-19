@@ -3,6 +3,7 @@
   hosts: seed-hypervisor:seed:overcloud
   tags:
     - config
+    - network
   vars:
     ether_interfaces: "{{ network_interfaces | net_select_ethers | list }}"
     bridge_interfaces: "{{ network_interfaces | net_select_bridges | list }}"
@@ -73,6 +74,7 @@
   hosts: network
   tags:
     - config
+    - network
   vars:
     veth_bridge_mtu_map: {}
     veth_interfaces: []

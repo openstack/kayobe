@@ -4,6 +4,8 @@
 
 - name: Ensure that a Bare Metal Provisioning (BMP) environment is configured for Dell switches on the seed
   hosts: seed
+  tags:
+    - dell-switch-bmp
   roles:
     - role: dell-switch-bmp
       # This is the Nginx web server on the seed node.

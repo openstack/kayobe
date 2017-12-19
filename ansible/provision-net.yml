@@ -1,6 +1,8 @@
 ---
 - name: Check whether Ironic is enabled
   hosts: controllers
+  tags:
+    - provision-net
   tasks:
     - name: Create controllers group with ironic enabled
       group_by:
@@ -10,6 +12,8 @@
   # Only required to run on a single host.
   hosts: controllers_with_ironic_enabled_True[0]
   gather_facts: False
+  tags:
+    - provision-net
   pre_tasks:
     - name: Validate OpenStack password authentication parameters
       fail:

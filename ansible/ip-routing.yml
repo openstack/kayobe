@@ -3,5 +3,7 @@
 
 - name: Ensure IP routing is enabled
   hosts: seed:overcloud
+  tags:
+    - ip-routing
   roles:
     - role: ip-routing

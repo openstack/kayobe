@@ -1,6 +1,8 @@
 ---
 - name: Ensure users exist
   hosts: seed:seed-hypervisor:overcloud
+  tags:
+    - users
   roles:
     - role: singleplatform-eng.users
       become: True

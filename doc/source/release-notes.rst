@@ -41,6 +41,8 @@ Features
   system's python packages. This is enabled by setting the variable
   ``kolla_ansible_target_venv`` to a path to the virtualenv. The default for
   this variable is ``{{ virtualenv_path }}/kolla-ansible``.
+* Adds tags to plays to support more fine grained configuration using the
+  ``--tags`` argument.
 
 Upgrade Notes
 -------------

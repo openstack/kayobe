@@ -4,6 +4,8 @@
 
 - name: Ensure Ironic Python Agent images are built and installed
   hosts: seed
+  tags:
+    - ipa-build
   vars:
     ipa_image_name: "ipa"
     ipa_images:

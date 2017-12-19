@@ -8,5 +8,7 @@
 
 - name: Ensure that all unmounted block devices are wiped
   hosts: seed:overcloud
+  tags:
+    - wipe-disks
   roles:
     - role: wipe-disks

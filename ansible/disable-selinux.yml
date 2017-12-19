@@ -1,6 +1,8 @@
 ---
 - name: Disable SELinux and reboot if required
   hosts: seed:overcloud
+  tags:
+    - disable-selinux
   roles:
     - role: disable-selinux
       disable_selinux_reboot_timeout: "{{ 600 if ansible_virtualization_role == 'host' else 300 }}"

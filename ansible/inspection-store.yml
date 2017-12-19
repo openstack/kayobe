@@ -8,6 +8,8 @@
 
 - name: Ensure inspection store is deployed
   hosts: controllers[0]
+  tags:
+    - inspection-store
   roles:
     - role: inspection-store
       inspection_store_enabled: "{{ inspector_store_enabled }}"

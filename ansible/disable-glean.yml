@@ -4,5 +4,7 @@
 # interfaces. In some cases this can lead to timeouts.
 - name: Ensure Glean is disabled and its artifacts are removed
   hosts: seed:overcloud
+  tags:
+    - disable-glean
   roles:
     - role: disable-glean

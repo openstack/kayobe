@@ -1,6 +1,8 @@
 ---
 - name: Ensure the Kayobe Ansible user account exists
   hosts: seed:overcloud
+  tags:
+    - kayobe-ansible-user
   vars:
     ansible_user: "{{ bootstrap_user }}"
     # We can't assume that a virtualenv exists at this point, so use the system

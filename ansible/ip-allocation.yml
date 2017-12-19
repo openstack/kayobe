@@ -1,6 +1,8 @@
 ---
 - name: Ensure IP addresses are allocated
   hosts: seed-hypervisor:seed:overcloud
+  tags:
+    - ip-allocation
   gather_facts: no
   # Use serial=1 to avoid races between allocations for different hosts.
   serial: 1

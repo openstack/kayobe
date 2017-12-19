@@ -1,6 +1,8 @@
 ---
 - name: Ensure Kolla is installed and configured
   hosts: container-image-builders
+  tags:
+    - kolla-build
   roles:
     - role: kolla
     - role: kolla-build

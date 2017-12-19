@@ -1,6 +1,8 @@
 ---
 - name: Ensure introspection rules are registered in Bifrost
   hosts: seed
+  tags:
+    - introspection-rules
   roles:
     - role: ironic-inspector-rules
       ironic_inspector_venv: "{{ virtualenv_path }}/shade"

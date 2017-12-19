@@ -1,5 +1,7 @@
 ---
 - hosts: controllers
+  tags:
+    - swift
   roles:
     - role: swift-setup
       swift_image: "kolla/{{ kolla_base_distro }}-{{ kolla_install_type }}-swift-base:{{ kolla_openstack_release }}"

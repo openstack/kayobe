@@ -1,6 +1,8 @@
 ---
 - name: Ensure NTP is installed and configured
   hosts: seed-hypervisor:seed:overcloud
+  tags:
+    - ntp
   roles:
     - role: yatesr.timezone
       become: True

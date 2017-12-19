@@ -1,6 +1,8 @@
 ---
 - name: Check whether Ironic is enabled
   hosts: controllers
+  tags:
+    - introspection-rules
   tasks:
     - name: Create controllers group with ironic enabled
       group_by:
@@ -10,6 +12,8 @@
   # Only required to run on a single host.
   hosts: controllers_with_ironic_enabled_True[0]
   gather_facts: False
+  tags:
+    - introspection-rules
   vars:
     venv: "{{ virtualenv_path }}/shade"
   pre_tasks:
