@@ -8,5 +8,7 @@
 
 - name: Ensure OpenSM is deployed
   hosts: controllers[0]
+  tags:
+    - opensm
   roles:
     - role: opensm

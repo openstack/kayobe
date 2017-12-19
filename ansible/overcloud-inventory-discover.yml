@@ -4,6 +4,8 @@
 
 - name: Ensure the overcloud Ansible inventory is populated
   hosts: seed
+  tags:
+    - inventory-discover
   tasks:
     - name: Gather the Ironic node inventory using Bifrost
       command: >

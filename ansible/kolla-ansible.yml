@@ -1,6 +1,8 @@
 ---
 - name: Ensure Kolla Ansible is configured
   hosts: localhost
+  tags:
+    - kolla-ansible
   vars:
     # We need to reference configuration for the controller and seed nodes.
     # We pick the first host from each group for this. It is possible that at

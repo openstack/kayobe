@@ -4,6 +4,8 @@
 - name: Ensure the Bifrost overcloud inventory is initialised
   hosts: seed
   gather_facts: no
+  tags:
+    - kolla-bifrost-hostvars
   tasks:
     - name: Ensure the Bifrost host variables directory exists
       file:
@@ -23,6 +25,8 @@
 - name: Ensure the Bifrost overcloud inventory is populated
   hosts: overcloud
   gather_facts: no
+  tags:
+    - kolla-bifrost-hostvars
   vars:
     seed_host: "{{ groups['seed'][0] }}"
     bifrost_hostvars:

@@ -1,6 +1,8 @@
 ---
 - name: Ensure docker is configured
   hosts: docker
+  tags:
+    - docker
   roles:
     - role: docker
       docker_daemon_mtu: "{{ public_net_name | net_mtu | default }}"

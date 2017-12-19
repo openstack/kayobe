@@ -3,6 +3,8 @@
 
 - name: Ensure the overcloud nodes are provisioned
   hosts: overcloud
+  tags:
+    - provision
   vars:
     # Set to False to avoid waiting for the nodes to become active.
     wait_active: True

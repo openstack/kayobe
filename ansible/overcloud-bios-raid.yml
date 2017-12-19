@@ -9,6 +9,9 @@
 - name: Group overcloud nodes by their BMC type
   hosts: overcloud
   gather_facts: no
+  tags:
+    - bios
+    - raid
   vars:
     # List of BMC types supporting BIOS and RAID configuration.
     supported_bmc_types:
@@ -31,6 +34,9 @@
 - name: Check whether any changes to nodes' BIOS and RAID configuration are required
   hosts: overcloud_with_bmcs_of_type_idrac
   gather_facts: no
+  tags:
+    - bios
+    - raid
   vars:
     # Set this to False to avoid rebooting the nodes after configuration.
     drac_reboot: True
@@ -50,6 +56,9 @@
 - name: Ensure that overcloud BIOS and RAID volumes are configured
   hosts: overcloud_with_bmcs_of_type_idrac
   gather_facts: no
+  tags:
+    - bios
+    - raid
   vars:
     # Set this to False to avoid rebooting the nodes after configuration.
     drac_reboot: True

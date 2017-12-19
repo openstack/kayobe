@@ -3,6 +3,8 @@
 
 - name: Ensure the overcloud nodes are deprovisioned
   hosts: overcloud
+  tags:
+    - deprovision
   vars:
     # Set to False to avoid waiting for the nodes to become active.
     wait_available: True

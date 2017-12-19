@@ -1,6 +1,8 @@
 ---
 - name: Save overcloud service configuration
   hosts: overcloud
+  tags:
+    - service-config-save
   vars:
     # Override this to change the directory in which the configuration will be
     # saved.

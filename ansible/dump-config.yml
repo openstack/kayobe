@@ -8,6 +8,8 @@
 - name: Dump configuration from one or more hosts
   hosts: "{{ dump_hosts }}"
   gather_facts: "{{ dump_facts }}"
+  tags:
+    - dump-config
   vars:
     dump_path: /tmp/kayobe-dump-config
     dump_facts: no

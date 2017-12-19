@@ -3,6 +3,8 @@
 
 - name: Ensure SNAT is configured
   hosts: seed:overcloud
+  tags:
+    - snat
   vars:
     snat_rules:
       - interface: "{{ ansible_default_ipv4.interface }}"

@@ -10,6 +10,9 @@
 
 - name: Check whether Ironic is enabled
   hosts: controllers
+  tags:
+    - introspection-rules
+    - introspection-rules-dell-lldp-workaround
   tasks:
     - name: Create controllers group with ironic enabled
       group_by:
@@ -18,6 +21,9 @@
 - name: Group controller hosts in systems requiring the workaround
   hosts: controllers_with_ironic_enabled_True
   gather_facts: False
+  tags:
+    - introspection-rules
+    - introspection-rules-dell-lldp-workaround
   tasks:
     - name: Group controller hosts in systems requiring the Dell switch LLDP workaround
       group_by:
@@ -27,6 +33,9 @@
   # Only required to run on a single host.
   hosts: controllers_require_workaround_True[0]
   gather_facts: False
+  tags:
+    - introspection-rules
+    - introspection-rules-dell-lldp-workaround
   vars:
     all_switch_interfaces: []
     ironic_inspector_rules: []

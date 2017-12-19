@@ -3,6 +3,8 @@
 
 - name: Ensure the overcloud nodes' hardware is inspected
   hosts: overcloud
+  tags:
+    - hardware-inspect
   vars:
     # Set to False to avoid waiting for the nodes to become active.
     wait_inspected: True

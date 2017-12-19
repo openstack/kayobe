@@ -4,6 +4,8 @@
 
 - name: Ensure a public OpenStack API environment file exists
   hosts: localhost
+  tags:
+    - public-openrc
   vars:
     public_api_proto: "{% if kolla_enable_tls_external | bool %}https{% else %}http{% endif %}"
     public_api_vip_address: "{{ public_net_name | net_vip_address }}"

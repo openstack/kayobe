@@ -8,5 +8,7 @@
 
 - name: Ensure Node Exporter is deployed
   hosts: overcloud:&docker
+  tags:
+    - node-exporter
   roles:
     - role: node-exporter

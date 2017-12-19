@@ -1,6 +1,9 @@
 ---
 - name: Ensure Kolla host services are configured
   hosts: controllers
+  tags:
+    - kolla-ansible
+    - kolla-host
   tasks:
     - name: Ensure host iSCSI services are stopped and disabled
       service:

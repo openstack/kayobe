@@ -9,6 +9,8 @@
 
 - name: Ensure overcloud hosts' /etc/hosts does not contain provisioning network IP
   hosts: overcloud
+  tags:
+    - etc-hosts-fixup
   tasks:
     - name: Ensure overcloud hosts' /etc/hosts does not contain provisioning network or loopback IPs
       lineinfile:
@@ -23,6 +25,8 @@
 
 - name: Ensure rabbitmq containers' /etc/hosts does not contain provisioning network or loopback IPs
   hosts: overcloud
+  tags:
+    - etc-hosts-fixup
   vars:
     rabbitmq_containers:
       - rabbitmq

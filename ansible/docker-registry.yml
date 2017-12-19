@@ -8,5 +8,7 @@
 
 - name: Ensure a local Docker registry is deployed
   hosts: controllers[0]
+  tags:
+    - docker-registry
   roles:
     - role: docker-registry
