@@ -10,7 +10,7 @@ Requirements
 The host executing the role has the following requirements:
 
 * Docker engine
-* ``docker-py >= 1.7.0``
+* Python ``docker >= 2.0.0``
 
 Role Variables
 --------------

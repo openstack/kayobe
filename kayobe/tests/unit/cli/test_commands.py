@@ -84,6 +84,101 @@ class TestCase(unittest.TestCase):
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
+    def test_seed_hypervisor_host_configure(self, mock_run):
+        command = commands.SeedHypervisorHostConfigure(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    "ansible/ip-allocation.yml",
+                    "ansible/ssh-known-host.yml",
+                    "ansible/users.yml",
+                    "ansible/yum.yml",
+                    "ansible/dev-tools.yml",
+                    "ansible/network.yml",
+                    "ansible/sysctl.yml",
+                    "ansible/ntp.yml",
+                    "ansible/seed-hypervisor-libvirt-host.yml",
+                ],
+                limit="seed-hypervisor",
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_config_dump")
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    @mock.patch.object(commands.KollaAnsibleMixin,
+                       "run_kolla_ansible_seed")
+    def test_seed_host_configure(self, mock_kolla_run, mock_run, mock_dump):
+        command = commands.SeedHostConfigure(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+        mock_dump.return_value = "stack"
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(mock.ANY, host="seed", var_name="kayobe_ansible_user")
+        ]
+        self.assertEqual(expected_calls, mock_dump.call_args_list)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    "ansible/ip-allocation.yml",
+                    "ansible/ssh-known-host.yml",
+                    "ansible/kayobe-ansible-user.yml",
+                    "ansible/users.yml",
+                    "ansible/yum.yml",
+                    "ansible/dev-tools.yml",
+                    "ansible/disable-selinux.yml",
+                    "ansible/network.yml",
+                    "ansible/sysctl.yml",
+                    "ansible/ip-routing.yml",
+                    "ansible/snat.yml",
+                    "ansible/disable-glean.yml",
+                    "ansible/ntp.yml",
+                    "ansible/lvm.yml",
+                ],
+                limit="seed",
+            ),
+            mock.call(
+                mock.ANY,
+                ["ansible/kolla-ansible.yml"],
+                tags="config",
+            ),
+            mock.call(
+                mock.ANY,
+                [
+                    "ansible/kolla-host.yml",
+                    "ansible/docker.yml",
+                ],
+                limit="seed",
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                "bootstrap-servers",
+                extra_vars={"ansible_user": "stack"},
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
     def test_seed_container_image_build(self, mock_run):
         command = commands.SeedContainerImageBuild(TestApp(), [])
         parser = command.get_parser("test")
@@ -130,6 +225,73 @@ class TestCase(unittest.TestCase):
             ),
         ]
         self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_config_dump")
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    @mock.patch.object(commands.KollaAnsibleMixin,
+                       "run_kolla_ansible_overcloud")
+    def test_overcloud_host_configure(self, mock_kolla_run, mock_run,
+                                      mock_dump):
+        command = commands.OvercloudHostConfigure(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+        mock_dump.return_value = {
+            "controller0": "stack"
+        }
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(mock.ANY, hosts="overcloud",
+                      var_name="kayobe_ansible_user")]
+        self.assertEqual(expected_calls, mock_dump.call_args_list)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    "ansible/ip-allocation.yml",
+                    "ansible/ssh-known-host.yml",
+                    "ansible/kayobe-ansible-user.yml",
+                    "ansible/users.yml",
+                    "ansible/yum.yml",
+                    "ansible/dev-tools.yml",
+                    "ansible/disable-selinux.yml",
+                    "ansible/network.yml",
+                    "ansible/sysctl.yml",
+                    "ansible/disable-glean.yml",
+                    "ansible/ntp.yml",
+                    "ansible/lvm.yml",
+                ],
+                limit="overcloud",
+            ),
+            mock.call(
+                mock.ANY,
+                ["ansible/kolla-ansible.yml"],
+                tags="config",
+            ),
+            mock.call(
+                mock.ANY,
+                [
+                    "ansible/kolla-host.yml",
+                    "ansible/docker.yml",
+                ],
+                limit="overcloud",
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                "bootstrap-servers",
+                extra_vars={"ansible_user": "stack"},
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")

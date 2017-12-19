@@ -10,7 +10,10 @@ authentication mechanism is provided.
 Requirements
 ------------
 
-Docker engine should be running on the target system.
+The host executing the role has the following requirements:
+
+* Docker engine
+* Python ``docker >= 2.0.0``
 
 Role Variables
 --------------
@@ -18,7 +21,7 @@ Role Variables
 Dependencies
 ------------
 
-The `docker-py` python package is required on the target system.
+None
 
 Example Playbook
 ----------------
