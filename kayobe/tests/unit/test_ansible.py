@@ -273,8 +273,8 @@ class TestCase(unittest.TestCase):
                                          extra_vars={
                                              "dump_path": dump_dir,
                                          },
-                                         quiet=True, verbose_level=None,
-                                         check=False)
+                                         quiet=True, tags=None,
+                                         verbose_level=None, check=False)
         mock_rmtree.assert_called_once_with(dump_dir)
         mock_listdir.assert_called_once_with(dump_dir)
         mock_read.assert_has_calls([

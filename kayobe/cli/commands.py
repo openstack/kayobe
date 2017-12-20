@@ -365,7 +365,10 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         self.app.LOG.debug("Configuring seed host OS")
 
         # Query some kayobe ansible variables.
-        hostvars = self.run_kayobe_config_dump(parsed_args, hosts="seed")
+        # Explicitly request the dump-config tag to ensure this play runs even
+        # if the user specified tags.
+        hostvars = self.run_kayobe_config_dump(parsed_args, hosts="seed",
+                                               tags="dump-config")
         if not hostvars:
             self.app.LOG.error("No hosts in the seed group")
             sys.exit(1)
@@ -649,7 +652,10 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         self.app.LOG.debug("Configuring overcloud host OS")
 
         # Query some kayobe ansible variables.
-        hostvars = self.run_kayobe_config_dump(parsed_args, hosts="overcloud")
+        # Explicitly request the dump-config tag to ensure this play runs even
+        # if the user specified tags.
+        hostvars = self.run_kayobe_config_dump(parsed_args, hosts="overcloud",
+                                               tags="dump-config")
         if not hostvars:
             self.app.LOG.error("No hosts in the overcloud group")
             sys.exit(1)

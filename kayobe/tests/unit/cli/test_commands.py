@@ -152,7 +152,7 @@ class TestCase(unittest.TestCase):
         self.assertEqual(0, result)
 
         expected_calls = [
-            mock.call(mock.ANY, hosts="seed")
+            mock.call(mock.ANY, hosts="seed", tags="dump-config")
         ]
         self.assertEqual(expected_calls, mock_dump.call_args_list)
 
@@ -395,7 +395,7 @@ class TestCase(unittest.TestCase):
         self.assertEqual(0, result)
 
         expected_calls = [
-            mock.call(mock.ANY, hosts="overcloud")
+            mock.call(mock.ANY, hosts="overcloud", tags="dump-config")
         ]
         self.assertEqual(expected_calls, mock_dump.call_args_list)
 
