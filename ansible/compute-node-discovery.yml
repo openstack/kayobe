@@ -22,6 +22,7 @@
     - name: Ensure baremetal compute nodes are powered off
       command: ipmitool -U {{ ipmi_username }} -P {{ ipmi_password }} -H {{ ipmi_address }} -I lanplus chassis power off
       delegate_to: "{{ controller_host }}"
+      register: result
       failed_when:
         - result | failed
         # Some BMCs complain if the node is already powered off.
