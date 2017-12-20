@@ -169,7 +169,7 @@ def run_playbook(parsed_args, playbook, *args, **kwargs):
 
 
 def config_dump(parsed_args, host=None, hosts=None, var_name=None,
-                facts=None, extra_vars=None, verbose_level=None):
+                facts=None, extra_vars=None, tags=None, verbose_level=None):
     dump_dir = tempfile.mkdtemp()
     try:
         if not extra_vars:
@@ -184,7 +184,7 @@ def config_dump(parsed_args, host=None, hosts=None, var_name=None,
         # Don't use check mode for configuration dumps as we won't get any
         # results back.
         run_playbook(parsed_args, "ansible/dump-config.yml",
-                     extra_vars=extra_vars, quiet=True,
+                     extra_vars=extra_vars, tags=tags, quiet=True,
                      verbose_level=verbose_level, check=False)
         hostvars = {}
         for path in os.listdir(dump_dir):
