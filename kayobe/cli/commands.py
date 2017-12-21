@@ -412,7 +412,8 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
                                     extra_vars=extra_vars)
 
         # Run final kayobe playbooks.
-        playbooks = _build_playbook_list("kolla-host", "docker")
+        playbooks = _build_playbook_list(
+            "kolla-target-venv", "kolla-host", "docker")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed")
 
 
@@ -700,7 +701,8 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
                                          extra_vars=extra_vars)
 
         # Further kayobe playbooks.
-        playbooks = _build_playbook_list("kolla-host", "docker")
+        playbooks = _build_playbook_list(
+            "kolla-target-venv", "kolla-host", "docker")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
 
 

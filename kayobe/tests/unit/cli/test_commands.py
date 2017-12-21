@@ -186,6 +186,7 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
+                    "ansible/kolla-target-venv.yml",
                     "ansible/kolla-host.yml",
                     "ansible/docker.yml",
                 ],
@@ -427,6 +428,7 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
+                    "ansible/kolla-target-venv.yml",
                     "ansible/kolla-host.yml",
                     "ansible/docker.yml",
                 ],
