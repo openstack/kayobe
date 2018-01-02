@@ -5,7 +5,7 @@
     seed_host: "{{ groups['seed'][0] }}"
     seed_hostvars: "{{ hostvars[seed_host] }}"
   roles:
-    - role: libvirt-vm
+    - role: stackhpc.libvirt-vm
       seed_vm_configdrive_volume:
         name: "{{ seed_hostvars.seed_vm_name }}-configdrive"
         pool: "{{ seed_hostvars.seed_vm_pool }}"

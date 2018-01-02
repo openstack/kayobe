@@ -4,6 +4,6 @@
   tags:
     - libvirt-host
   roles:
-    - role: libvirt-host
+    - role: stackhpc.libvirt-host
       libvirt_host_pools: "{{ seed_hypervisor_libvirt_pools }}"
       libvirt_host_networks: "{{ seed_hypervisor_libvirt_networks }}"
