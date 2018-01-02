@@ -17,6 +17,7 @@ procedures.
 * Documentation: https://kayobe.readthedocs.io/en/latest/
 * Source: https://github.com/stackhpc/kayobe
 * Bugs: https://github.com/stackhpc/kayobe/issues
+* IRC: #openstack-kayobe
 
 Features
 --------
