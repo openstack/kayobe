@@ -85,8 +85,8 @@
     state: started
   become: True
 
-- name: Check whether docker storage is in loopback mode
-  command: docker info
+- name: Query docker daemon information
+  command: "docker info"
   register: docker_info
   changed_when: False
 
@@ -96,11 +96,10 @@
       Not configuring docker storage in {{ docker_storage_driver }} mode as
       loopback-backed containers or images exist.
   when:
-    - "'Data loop file' in docker_info.stdout"
-    - "'Images: 0' not in docker_info.stdout"
-    - "'Containers: 0' not in docker_info.stdout"
+    - "'Data loop file' in docker_info.stdout or docker_storage_driver not in docker_info.stdout"
+    - "'Images: 0' not in docker_info.stdout or 'Containers: 0' not in docker_info.stdout"
 
 - include: storage.yml
-  when: "'Data loop file' in docker_info.stdout"
+  when: "'Data loop file' in docker_info.stdout or docker_storage_driver not in docker_info.stdout"
 
 - include: config.yml
