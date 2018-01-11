@@ -13,6 +13,8 @@
     dest: "{{ kolla_node_custom_config_path }}/{{ item.dest }}"
     mode: 0640
   with_items:
+    - { src: ceph.conf.j2, dest: ceph.conf, enabled: "{{ kolla_enable_ceph }}" }
+    - { src: cinder.conf.j2, dest: cinder.conf, enabled: "{{ kolla_enable_cinder }}" }
     - { src: glance.conf.j2, dest: glance.conf, enabled: "{{ kolla_enable_glance }}" }
     - { src: heat.conf.j2, dest: heat.conf, enabled: "{{ kolla_enable_heat }}" }
     - { src: ironic.conf.j2, dest: ironic.conf, enabled: "{{ kolla_enable_ironic }}" }

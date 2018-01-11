@@ -14,6 +14,11 @@ kolla_openstack_custom_config:
     dest: "{{ kolla_node_custom_config_path }}/ceph"
     patterns: "*"
     enabled: "{{ kolla_enable_ceph }}"  
+  # Cinder.
+  - src: "{{ kolla_extra_config_path }}/cinder"
+    dest: "{{ kolla_node_custom_config_path }}/cinder"
+    patterns: "*"
+    enabled: "{{ kolla_enable_cinder }}"
   # Fluentd filters.
   - src: "{{ kolla_extra_config_path }}//fluentd/filter"
     dest: "{{ kolla_node_custom_config_path }}/fluentd/filter"

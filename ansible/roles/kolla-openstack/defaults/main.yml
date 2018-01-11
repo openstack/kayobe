@@ -6,6 +6,24 @@ kolla_extra_config_path:
 kolla_node_custom_config_path:
 
 ###############################################################################
+# ceph configuration.
+
+# Whether to enable ceph.
+kolla_enable_ceph:
+
+# Free form extra configuration to append to ceph.conf.
+kolla_extra_ceph:
+
+###############################################################################
+# cinder configuration.
+
+# Whether to enable cinder.
+kolla_enable_cinder:
+
+# Free form extra configuration to append to cinder.conf.
+kolla_extra_cinder:
+
+###############################################################################
 # Glance configuration.
 
 # Whether to enable Glance.
