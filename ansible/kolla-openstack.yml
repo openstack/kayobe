@@ -96,6 +96,8 @@
             mime: False
           register: stat_result
           with_items:
+            - { name: ceph, file: ceph.conf }
+            - { name: cinder, file: cinder.conf }
             - { name: glance, file: glance.conf }
             - { name: heat, file: heat.conf }
             - { name: inspector, file: ironic-inspector.conf }
@@ -192,6 +194,8 @@
       kolla_inspector_dhcp_pool_end: "{{ inspection_net_name | net_inspection_allocation_pool_end }}"
       kolla_inspector_default_gateway: "{{ inspection_net_name | net_inspection_gateway or inspection_net_name | net_gateway }}"
       # Extra free-form user-provided configuration.
+      kolla_extra_ceph: "{{ kolla_extra_config.ceph | default }}"
+      kolla_extra_cinder: "{{ kolla_extra_config.cinder | default }}"
       kolla_extra_glance: "{{ kolla_extra_config.glance | default }}"
       kolla_extra_heat: "{{ kolla_extra_config.heat | default }}"
       kolla_extra_inspector: "{{ kolla_extra_config.inspector | default }}"
