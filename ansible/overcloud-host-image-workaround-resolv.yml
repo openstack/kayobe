@@ -1,0 +1,36 @@
+---
+# The CentOS cloud images from 7.2 (1511) onwards have a bogus name server
+# entry in /etc/resolv.conf, 10.0.2.3. Cloud-init only appends name server
+# entries to this file, and will not remove this bogus entry. Typically this
+# leads to a delay of around 30 seconds when connecting via SSH, due to a
+# timeout in NSS. The workaround employed here is to remove this bogus entry
+# from the image using virt-customize, if it exists. See
+# https://bugs.centos.org/view.php?id=14369.
+
+- name: Ensure the overcloud host image has bogus name server entries removed
+  hosts: seed
+  tags:
+    - overcloud-host-image-workaround
+  tasks:
+    - block:
+        - name: Ensure libguestfs-tools is installed
+          command: >
+            docker exec bifrost_deploy
+            bash -c '
+            ansible localhost
+            --connection local
+            --become
+            -m yum
+            -a "name=libguestfs-tools state=installed"'
+
+        - name: Ensure the overcloud host image has bogus name server entries removed
+          command: >
+            docker exec bifrost_deploy
+            bash -c '
+            export LIBGUESTFS_BACKEND=direct &&
+            ansible localhost
+            --connection local
+            --become
+            -m command
+            -a "virt-customize -a /httpboot/deployment_image.qcow2 --edit \"/etc/resolv.conf:s/^nameserver 10\.0\.2\.3\$//\""'
+      when: overcloud_host_image_workaround_resolv_enabled | bool
