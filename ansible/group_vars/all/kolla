@@ -238,6 +238,9 @@ kolla_overcloud_inventory_top_level_group_map:
   compute:
     groups:
       - compute
+  monitoring:
+    groups:
+      - monitoring
 
 # List of names of top level kolla-ansible groups. Any of these groups which
 # have no hosts mapped to them will be provided with an empty group definition.
