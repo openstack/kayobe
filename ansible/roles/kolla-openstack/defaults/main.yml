@@ -16,6 +16,15 @@ kolla_enable_glance:
 kolla_extra_glance:
 
 ###############################################################################
+# Grafana configuration.
+
+# Whether to enable Grafana.
+kolla_enable_grafana:
+
+# Free form extra configuration to append to grafana.ini.
+kolla_extra_grafana:
+
+###############################################################################
 # Heat configuration.
 
 # Whether to enable Heat.

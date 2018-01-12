@@ -97,6 +97,7 @@
           register: stat_result
           with_items:
             - { name: glance, file: glance.conf }
+            - { name: grafana, file: grafana.ini }
             - { name: heat, file: heat.conf }
             - { name: inspector, file: ironic-inspector.conf }
             - { name: ironic, file: ironic.conf }
@@ -193,6 +194,7 @@
       kolla_inspector_default_gateway: "{{ inspection_net_name | net_inspection_gateway or inspection_net_name | net_gateway }}"
       # Extra free-form user-provided configuration.
       kolla_extra_glance: "{{ kolla_extra_config.glance | default }}"
+      kolla_extra_grafana: "{{ kolla_extra_config.grafana | default }}"
       kolla_extra_heat: "{{ kolla_extra_config.heat | default }}"
       kolla_extra_inspector: "{{ kolla_extra_config.inspector | default }}"
       kolla_extra_ironic: "{{ kolla_extra_config.ironic | default }}"

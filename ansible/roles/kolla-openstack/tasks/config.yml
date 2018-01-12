@@ -14,6 +14,7 @@
     mode: 0640
   with_items:
     - { src: glance.conf.j2, dest: glance.conf, enabled: "{{ kolla_enable_glance }}" }
+    - { src: grafana.ini.j2, dest: grafana.ini, enabled: "{{ kolla_enable_grafana }}" }
     - { src: heat.conf.j2, dest: heat.conf, enabled: "{{ kolla_enable_heat }}" }
     - { src: ironic.conf.j2, dest: ironic.conf, enabled: "{{ kolla_enable_ironic }}" }
     - { src: ironic-dnsmasq.conf.j2, dest: ironic/ironic-dnsmasq.conf, enabled: "{{ kolla_enable_ironic }}" }
