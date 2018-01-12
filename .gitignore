@@ -57,6 +57,8 @@ ansible/roles/mrlesmithjr.manage-lvm/
 ansible/roles/MichaelRigart.interfaces/
 ansible/roles/stackhpc.drac/
 ansible/roles/stackhpc.drac-facts/
+ansible/roles/stackhpc.libvirt-host/
+ansible/roles/stackhpc.libvirt-vm/
 ansible/roles/stackhpc.os-flavors/
 ansible/roles/stackhpc.os-images/
 ansible/roles/stackhpc.os-ironic-state/
