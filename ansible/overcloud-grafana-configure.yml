@@ -1,0 +1,44 @@
+---
+- name: Check whether Grafana is enabled
+  hosts: overcloud
+  tags:
+    - grafana
+  tasks:
+    - name: Create monitoring group with grafana enabled
+      group_by:
+        key: "monitoring_with_grafana_enabled_{{ kolla_enable_grafana | bool }}"
+
+- name: Configure control plane monitoring for Grafana
+  # Only required to run on a single host.
+  hosts: monitoring_with_grafana_enabled_True[0]
+  gather_facts: False
+  tags:
+    - grafana
+  pre_tasks:
+    - name: Set fact for the VIP address
+      set_fact:
+        kolla_internal_vip_address: "{{ internal_net_name | net_vip_address }}"
+      when: kolla_enable_haproxy | bool
+
+    - name: Set fact for the VIP address
+      set_fact:
+        kolla_internal_vip_address: "{{ internal_net_name | net_ip(network_host) }}"
+      when: not kolla_enable_haproxy | bool
+
+    - name: Clone dashboards
+      git:
+        repo: "{{ grafana_monitoring_node_dashboard_repo }}"
+        dest: "{{ grafana_monitoring_node_dashboard_repo_path }}"
+      when: grafana_monitoring_node_dashboard_repo | bool
+      become: True
+
+    - name: Include Kolla passwords for Grafana local admin account credentials
+      include_vars: "{{ kayobe_config_path }}/kolla/passwords.yml"
+  roles:
+    - role: stackhpc.grafana-conf
+      grafana_conf_organisation: "{{ grafana_control_plane_organisation }}"
+      grafana_conf_grafana_admin_user: "{{ grafana_local_admin_user_name }}"
+      grafana_conf_grafana_admin_pass: "{{ grafana_admin_password }}"
+      grafana_conf_grafana_url: "http://{{ kolla_internal_vip_address }}:3000"
+      grafana_conf_grafana_datasources: "{{ grafana_datasources }}"
+      grafana_conf_grafana_dashboards: "{{ grafana_monitoring_node_dashboard_repo_path }}{{ grafana_monitoring_node_dashboard_path }}"
