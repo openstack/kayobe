@@ -32,6 +32,15 @@
     version: "{{ kolla_ansible_source_version }}"
   when: kolla_ansible_ctl_install_type == 'source'
 
+- name: Ensure virtualenv parent directory exists
+  file:
+    path: "{{ kolla_ansible_venv | dirname }}"
+    state: directory
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+  become: True
+  when: kolla_ansible_venv is not none
+
 - name: Ensure the latest version of pip is installed
   pip:
     name: "{{ item.name }}"
