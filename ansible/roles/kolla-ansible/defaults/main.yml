@@ -69,6 +69,7 @@ kolla_overcloud_inventory_pass_through_host_vars:
   - "ansible_host"
   - "ansible_port"
   - "ansible_ssh_private_key_file"
+  - "kolla_api_interface"
 
 ###############################################################################
 # Kolla-ansible global configuration options.

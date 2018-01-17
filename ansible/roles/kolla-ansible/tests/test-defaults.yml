@@ -83,7 +83,6 @@
               docker_namespace: "fake-namespace"
               network_interface: "eth0"
               kolla_external_vip_interface: "eth1"
-              api_interface: "eth2"
               storage_interface: "eth3"
               cluster_interface: "eth4"
               dns_interface: "eth5"
