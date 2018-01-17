@@ -76,7 +76,9 @@
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
       become: True
-      when: not image_cache_stat.stat.exists
+      when: >-
+        not image_cache_stat.stat.exists or
+        not image_cache_stat.stat.writeable
 
     - name: Ensure locally built Ironic Python Agent (IPA) images are copied
       copy:

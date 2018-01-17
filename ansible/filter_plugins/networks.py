@@ -390,12 +390,14 @@ def net_configdrive_network_device(context, name, inventory_hostname=None):
     netmask = net_mask(context, name, inventory_hostname)
     gateway = net_gateway(context, name, inventory_hostname)
     bootproto = 'static' if ip is not None else 'dhcp'
+    mtu = net_mtu(context, name, inventory_hostname)
     interface = {
         'device': device,
         'address': ip,
         'netmask': netmask,
         'gateway': gateway,
         'bootproto': bootproto,
+        'mtu': mtu,
     }
     interface = {k: v for k, v in interface.items() if v is not None}
     return interface

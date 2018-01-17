@@ -60,7 +60,9 @@
             owner: "{{ lookup('env', 'USER') }}"
             group: "{{ lookup('env', 'USER') }}"
           become: True
-          when: not image_cache_stat.stat.exists
+          when: >-
+            not image_cache_stat.stat.exists or
+            not image_cache_stat.stat.writeable
 
         - name: Ensure Ironic Python Agent images are copied onto the local machine
           fetch:

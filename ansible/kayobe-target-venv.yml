@@ -52,3 +52,9 @@
           vars:
             activate_virtualenv_path: "{{ virtualenv }}"
       when: virtualenv is defined
+
+    - name: Ensure pip is installed
+      easy_install:
+        name: pip
+      become: True
+      when: virtualenv is not defined

@@ -87,6 +87,13 @@ Upgrade Notes
 
   The previous behaviour of installing python dependencies directly to the host
   can be used by setting ``kolla_ansible_target_venv`` to ``None``.
+* Adds a workaround for an issue with CentOS cloud images 7.2 (1511) onwards,
+  which have a bogus name server entry in /etc/resolv.conf, 10.0.2.3.
+  Cloud-init only appends name server entries to this file, and will not remove
+  this bogus entry. Typically this leads to a delay of around 30 seconds when
+  connecting via SSH, due to a timeout in NSS. The workaround employed here is
+  to remove this bogus entry from the image using virt-customize, if it exists.
+  See https://bugs.centos.org/view.php?id=14369.
 
 Kayobe 3.0.0
 ============
