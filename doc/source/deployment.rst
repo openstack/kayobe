@@ -379,3 +379,4 @@ This will perform the following tasks:
 - Register Ironic Python Agent (IPA) images with glance
 - Register introspection rules with ironic inspector
 - Register a provisioning network and subnet with neutron
+- Configure Grafana organisations, dashboards and datasources

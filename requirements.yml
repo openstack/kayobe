@@ -10,6 +10,7 @@
   name: singleplatform-eng.users
 - src: stackhpc.drac
 - src: stackhpc.drac-facts
+- src: stackhpc.grafana-conf
 - src: stackhpc.libvirt-host
 - src: stackhpc.libvirt-vm
 - src: stackhpc.os-flavors
