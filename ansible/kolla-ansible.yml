@@ -1,4 +1,29 @@
 ---
+- name: Set interfaces for overcloud hosts
+  hosts: overcloud
+  tags:
+    - config
+    - kolla-ansible
+  gather_facts: False
+  tasks:
+    - name: Set API interface
+      set_fact:
+        kolla_api_interface: "{{ internal_net_name | net_interface | replace('-', '_')  }}"
+      when: internal_net_name in network_interfaces
+    - name: Validate overcloud host Kolla Ansible network configuration
+      fail:
+        msg: >
+          The Kolla Ansible variable {{ item.var_name }}
+          ({{ item.description }}) is invalid. Value:
+          "{{ hostvars[inventory_hostname][item.var_name] | default('<undefined>') }}".
+      when:
+        - item.required | bool
+        - hostvars[inventory_hostname][item.var_name] is not defined or not hostvars[inventory_hostname][item.var_name]
+      with_items:
+        - var_name: "kolla_api_interface"
+          description: "API network interface name"
+          required: True
+
 - name: Ensure Kolla Ansible is configured
   hosts: localhost
   tags:
@@ -35,7 +60,6 @@
         - name: Set facts containing the controller network interfaces
           set_fact:
             kolla_network_interface: "{{ internal_net_name | net_interface(controller_host) | replace('-', '_') }}"
-            kolla_api_interface: "{{ internal_net_name | net_interface(controller_host) | replace('-', '_') }}"
             kolla_storage_interface: "{{ storage_net_name | net_interface(controller_host) | replace('-', '_') }}"
             kolla_cluster_interface: "{{ storage_mgmt_net_name | net_interface(controller_host) | replace('-', '_') }}"
             kolla_provision_interface: "{{ provision_wl_net_name | net_interface(controller_host) | replace('-', '_') }}"
@@ -52,9 +76,6 @@
             - item.required | bool
             - hostvars[inventory_hostname][item.var_name] is not defined or not hostvars[inventory_hostname][item.var_name]
           with_items:
-            - var_name: "kolla_api_interface"
-              description: "API network interface name"
-              required: True
             - var_name: "kolla_provision_interface"
               description: "Bare metal provisioning network interface name"
               required: "{{ kolla_enable_ironic }}"

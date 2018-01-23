@@ -76,12 +76,17 @@ docker_registry_password: "{{ kolla_docker_registry_password }}"
 # Yet another way to workaround the naming problem is to create a bond for the
 # interface on all hosts and give the bond name here. Similar strategy can be
 # followed for other types of interfaces.
+#
+# NOTE: The following interfaces are configured via the inventory and are
+# therefore not set here:
+#
+# - api_interface
+
 network_interface: "{{ kolla_network_interface }}"
 
 # These can be adjusted for even more customization. The default is the same as
 # the 'network_interface'. These interfaces must contain an IPv4 address.
 kolla_external_vip_interface: "{{ kolla_external_vip_interface }}"
-api_interface: "{{ kolla_api_interface }}"
 storage_interface: "{{ kolla_storage_interface }}"
 cluster_interface: "{{ kolla_cluster_interface }}"
 dns_interface: "{{ kolla_dns_interface }}"
