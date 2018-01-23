@@ -1,0 +1,14 @@
+---
+# Deploy/pull/reconfigure/upgrade cAdvisor.
+#
+# Follows kolla-ansible service deployment patterns.
+#
+# Variables:
+# action: One of deploy, destroy, pull, reconfigure, upgrade
+
+- name: Ensure cAdvisor is deployed
+  hosts: overcloud:&docker
+  tags:
+    - cadvisor
+  roles:
+    - role: cadvisor

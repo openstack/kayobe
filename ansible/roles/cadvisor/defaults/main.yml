@@ -1,0 +1,31 @@
+---
+# Roughly follows kolla-ansible's service deployment patterns.
+
+# Whether cAdvisor is enabled.
+cadvisor_enabled: false
+
+# Service deployment definition.
+cadvisor_services:
+  cadvisor:
+    container_name: cadvisor
+    enabled: "{{ cadvisor_enabled }}"
+    image: "{{ cadvisor_image_full }}"
+    published_ports: '8080:8080'
+    read_only: True
+    volumes:
+      - "/:/rootfs"
+      - "/var/run:/var/run:rw"
+      - "/sys:/sys:ro"
+      - "/var/lib/docker/:/var/lib/docker:ro"
+      - "/dev/disk/:/dev/disk:ro"
+
+####################
+# Docker
+####################
+cadvisor_namespace: "cadvisor"
+cadvisor_image: "{{ docker_registry ~ '/' if docker_registry | default else '' }}{{ cadvisor_namespace }}/cadvisor"
+cadvisor_tag: "v0.28.3"
+cadvisor_image_full: "{{ cadvisor_image }}:{{ cadvisor_tag }}"
+
+cadvisor_restart_policy: "unless-stopped"
+#cadvisor_restart_retries: 10
