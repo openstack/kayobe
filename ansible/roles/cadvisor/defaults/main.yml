@@ -28,4 +28,4 @@ cadvisor_tag: "v0.28.3"
 cadvisor_image_full: "{{ cadvisor_image }}:{{ cadvisor_tag }}"
 
 cadvisor_restart_policy: "unless-stopped"
-#nodeexporter_restart_retries: 10
+#cadvisor_restart_retries: 10
