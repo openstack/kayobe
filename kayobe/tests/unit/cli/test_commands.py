@@ -688,7 +688,7 @@ class TestCase(unittest.TestCase):
                 [
                     'ansible/overcloud-ipa-images.yml',
                     'ansible/overcloud-introspection-rules.yml',
-                    'ansible/overcloud-introspection-rules-dell-lldp-workaround.yml',
+                    'ansible/overcloud-introspection-rules-dell-lldp-workaround.yml',  # noqa
                     'ansible/provision-net.yml',
                     'ansible/overcloud-grafana-configure.yml'
                 ],
