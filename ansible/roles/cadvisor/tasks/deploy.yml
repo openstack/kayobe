@@ -1,0 +1,15 @@
+---
+- name: Ensure cAdvisor container is running
+  docker_container:
+    image: "{{ item.value.image }}"
+    name: "{{ item.value.container_name }}"
+    command: "{{ item.value.command }}"
+    network_mode: "host"
+    privileged: "{{ item.value.privileged | default(omit) }}"
+    published_ports: "{{ item.value.published_ports | default(omit) }}"
+    read_only: "{{ item.value.read_only | default(omit) }}"
+    restart_policy: "{{ nodeexporter_restart_policy }}"
+    restart_retries: "{{ nodeexporter_restart_retries | default(omit) }}"
+    state: "{{ item.value.enabled | ternary('started', 'absent') }}"
+    volumes: "{{ item.value.volumes }}"
+  with_dict: "{{ cadvisor_services }}"

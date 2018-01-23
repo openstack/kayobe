@@ -11,3 +11,4 @@
 - include: inspection-store.yml
 - include: opensm.yml
 - include: node-exporter.yml
+- include: cadvisor.yml
