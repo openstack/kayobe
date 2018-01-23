@@ -25,8 +25,8 @@ grafana_monitoring_node_dashboard_repo_path:
 # organisation_name@openstack_domain
 grafana_control_plane_organisation: "control_plane"
 
-# A list of datasources to configure. See the stackhpc.grafana-conf role
-# for a list of supported datasources. Example:
+# A dict of datasources to configure. See the stackhpc.grafana-conf role
+# for all supported datasources. Example:
 #
 # grafana_datasources:
 #   monasca_api:
