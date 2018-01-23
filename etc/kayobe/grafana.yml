@@ -10,7 +10,14 @@
 # https://github.com/stackhpc/grafana-reference-dashboards.git
 #grafana_monitoring_node_dashboard_repo:
 
+# Dashboard repo version. Optional, defaults to 'HEAD'.
+#grafana_monitoring_node_dashboard_repo_version:
+
 # Path to which Grafana dashboards will be cloned to a monitoring node
+#grafana_monitoring_node_dashboard_repo_checkout_path:
+
+# The path, relative to the grafana_monitoring_node_dashboard_repo_checkout_path
+# containing the dashboards. Eg. /prometheus/control_plane
 #grafana_monitoring_node_dashboard_repo_path:
 
 # The Grafana organisation for the control plane. Note that for Monasca
@@ -18,8 +25,8 @@
 # organisation_name@openstack_domain
 #grafana_control_plane_organisation:
 
-# A list of datasources to configure. See the stackhpc.grafana-conf role
-# for a list of supported datasources. Example:
+# A dict of datasources to configure. See the stackhpc.grafana-conf role
+# for all supported datasources. Example:
 #
 # grafana_datasources:
 #   monasca_api:
@@ -34,10 +41,6 @@
 #     project_id: "some_id"
 #
 #grafana_datasources:
-
-# The path, relative to the grafana_monitoring_node_dashboard_repo_path
-# containing the dashboards. Eg. /prometheus/control_plane
-#grafana_monitoring_node_dashboard_path:
 
 ###############################################################################
 # Dummy variable to allow Ansible to accept this file.

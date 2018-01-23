@@ -10,8 +10,15 @@ grafana_local_admin_user_name: "grafana_admin"
 # https://github.com/stackhpc/grafana-reference-dashboards.git
 grafana_monitoring_node_dashboard_repo:
 
+# Dashboard repo version. Optional, defaults to 'HEAD'.
+grafana_monitoring_node_dashboard_repo_version:
+
 # Path to which Grafana dashboards will be cloned to a monitoring node
-grafana_monitoring_node_dashboard_repo_path: "{{ source_checkout_path ~ '/grafana' }}"
+grafana_monitoring_node_dashboard_repo_checkout_path: "{{ source_checkout_path ~ '/grafana-dashboards' }}"
+
+# The path, relative to the grafana_monitoring_node_dashboard_repo_checkout_path
+# containing the dashboards. Eg. /prometheus/control_plane
+grafana_monitoring_node_dashboard_repo_path:
 
 # The Grafana organisation for the control plane. Note that for Monasca
 # Grafana with domain support the format is:
@@ -34,9 +41,5 @@ grafana_control_plane_organisation: "control_plane"
 #     project_id: "some_id"
 #
 grafana_datasources: {}
-
-# The path, relative to the grafana_monitoring_node_dashboard_repo_path
-# containing the dashboards. Eg. /prometheus/control_plane
-grafana_monitoring_node_dashboard_path:
 
 ###############################################################################
