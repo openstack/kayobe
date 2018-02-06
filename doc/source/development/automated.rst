@@ -51,23 +51,24 @@ Clone the ``dev-kayobe-config`` repository to ``config/src/kayobe-config``::
     mkdir -p config/src
     git clone https://github.com/stackhpc/dev-kayobe-config config/src/kayobe-config
 
-Follow the steps in :ref:`development-vagrant` to prepare your environment for
-use with Vagrant and bring up a Vagrant VM.
-
 Inspect the kayobe configuration and make any changes necessary for your
 environment.
+
+If using Vagrant, follow the steps in :ref:`development-vagrant` to prepare
+your environment for use with Vagrant and bring up a Vagrant VM.
 
 Usage
 -----
 
-SSH into the Vagrant VM::
+If using Vagrant, SSH into the Vagrant VM and change to the shared directory::
 
     vagrant ssh
+    cd /vagrant
 
 Run the ``dev/overcloud-deploy.sh`` script to deploy the OpenStack control
 plane::
 
-    /vagrant/kayobe/dev/overcloud-deploy.sh
+    ./dev/overcloud-deploy.sh
 
 Upon successful completion of this script, the control plane will be active.
 
