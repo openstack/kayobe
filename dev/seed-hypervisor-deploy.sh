@@ -1,13 +1,14 @@
 #!/bin/bash
 
-set -e
+set -eu
+set -o pipefail
 
 # Simple script to stand up a development environment for a seed hypervisor
 # using kayobe.  This should be executed from the hypervisor.
 
 PARENT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-source ${PARENT}/functions
+source "${PARENT}/functions"
 
 
 function main {

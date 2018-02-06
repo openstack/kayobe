@@ -1,6 +1,7 @@
 #!/bin/bash
 
-set -e
+set -eu
+set -o pipefail
 
 # This script can be used to prepare the environment for use with kayobe. This
 # includes setting environment variables and activating the python virtual
@@ -9,7 +10,7 @@ set -e
 
 PARENT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-source ${PARENT}/functions
+source "${PARENT}/functions"
 
 
 function main {

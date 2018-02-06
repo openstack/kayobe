@@ -1,12 +1,13 @@
 #!/bin/bash
 
-set -e
+set -eu
+set -o pipefail
 
 # Install kayobe and its dependencies in a virtual environment.
 
 PARENT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-source ${PARENT}/functions
+source "${PARENT}/functions"
 
 
 function main {

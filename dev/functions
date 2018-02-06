@@ -1,6 +1,7 @@
 #!/bin/bash
 
-set -e
+set -eu
+set -o pipefail
 
 # Library of functions for the kayobe development environment.
 
@@ -13,18 +14,18 @@ function config_defaults {
     if [[ -e /vagrant ]]; then
         KAYOBE_SOURCE_PATH_DEFAULT=/vagrant
     else
-        KAYOBE_SOURCE_PATH_DEFAULT=$(pwd)
+        KAYOBE_SOURCE_PATH_DEFAULT="$(pwd)"
     fi
 
     # Path to the kayobe source code repository. Typically this will be the
     # Vagrant shared directory.
-    export KAYOBE_SOURCE_PATH=${KAYOBE_SOURCE_PATH:-$KAYOBE_SOURCE_PATH_DEFAULT}
+    export KAYOBE_SOURCE_PATH="${KAYOBE_SOURCE_PATH:-$KAYOBE_SOURCE_PATH_DEFAULT}"
 
     # Path to the kayobe-config repository checkout.
-    export KAYOBE_CONFIG_SOURCE_PATH=${KAYOBE_CONFIG_SOURCE_PATH:-${KAYOBE_SOURCE_PATH}/config/src/kayobe-config}
+    export KAYOBE_CONFIG_SOURCE_PATH="${KAYOBE_CONFIG_SOURCE_PATH:-${KAYOBE_SOURCE_PATH}/config/src/kayobe-config}"
 
     # Path to the kayobe virtual environment.
-    export KAYOBE_VENV_PATH=${KAYOBE_VENV_PATH:-~/kayobe-venv}
+    export KAYOBE_VENV_PATH="${KAYOBE_VENV_PATH:-~/kayobe-venv}"
 
     # Whether to build container images for the seed services. If 0, they will
     # be pulled.
@@ -40,20 +41,20 @@ function config_set {
 
     PARENT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-    source ${PARENT}/config.sh
+    source "${PARENT}/config.sh"
 }
 
 function config_check {
     # Check the configuration environment variables.
 
-    if [[ ! -e $KAYOBE_CONFIG_SOURCE_PATH ]]; then
+    if [[ ! -e "$KAYOBE_CONFIG_SOURCE_PATH" ]]; then
         if [[ ${KAYOBE_CONFIG_REQUIRED:-1} -eq 1 ]]; then
             echo "Kayobe configuration path $KAYOBE_CONFIG_SOURCE_PATH does not exist"
             return 1
         fi
     fi
 
-    if [[ ! -e $KAYOBE_SOURCE_PATH ]]; then
+    if [[ ! -e "$KAYOBE_SOURCE_PATH" ]]; then
         echo "Kayobe source path $KAYOBE_SOURCE_PATH does not exist"
         return 1
     fi
@@ -77,17 +78,21 @@ function install_dependencies {
 }
 
 function install_venv {
-    local venv_parent=$(dirname ${KAYOBE_VENV_PATH})
-    if [[ ! -d $venv_parent ]]; then
-        mkdir -p $venv_parent
+    local venv_parent="$(dirname ${KAYOBE_VENV_PATH})"
+    if [[ ! -d "$venv_parent" ]]; then
+        mkdir -p "$venv_parent"
     fi
-    if [[ ! -f ${KAYOBE_VENV_PATH}/bin/activate ]]; then
+    if [[ ! -f "${KAYOBE_VENV_PATH}/bin/activate" ]]; then
         echo "Creating kayobe virtual environment in ${KAYOBE_VENV_PATH}"
-        virtualenv ${KAYOBE_VENV_PATH}
-        source ${KAYOBE_VENV_PATH}/bin/activate
+        virtualenv "${KAYOBE_VENV_PATH}"
+        # NOTE: Virtualenv's activate and deactivate scripts reference an
+        # unbound variable.
+        set +u
+        source "${KAYOBE_VENV_PATH}/bin/activate"
         pip install -U pip
-        pip install ${KAYOBE_SOURCE_PATH}
+        pip install "${KAYOBE_SOURCE_PATH}"
         deactivate
+        set -u
     else
         echo "Using existing kayobe virtual environment in ${KAYOBE_VENV_PATH}"
     fi
@@ -101,10 +106,13 @@ function is_deploy_image_built_locally {
 }
 
 function environment_setup {
-    source ${KAYOBE_VENV_PATH}/bin/activate
-    source ${KAYOBE_CONFIG_SOURCE_PATH}/kayobe-env
+    # NOTE: Virtualenv's activate script references an unbound variable.
+    set +u
+    source "${KAYOBE_VENV_PATH}/bin/activate"
+    set -u
+    source "${KAYOBE_CONFIG_SOURCE_PATH}/kayobe-env"
 
-    cd ${KAYOBE_SOURCE_PATH}
+    cd "${KAYOBE_SOURCE_PATH}"
 }
 
 function seed_hypervisor_deploy {
@@ -188,7 +196,7 @@ function overcloud_deploy {
     kayobe overcloud service deploy
 
     echo "Performing post-deployment configuration"
-    source ${KOLLA_CONFIG_PATH:-/etc/kolla}/admin-openrc.sh
+    source "${KOLLA_CONFIG_PATH:-/etc/kolla}/admin-openrc.sh"
     kayobe overcloud post configure
 
     echo "Control plane deployment complete"

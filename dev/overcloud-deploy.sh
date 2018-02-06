@@ -1,6 +1,7 @@
 #!/bin/bash
 
-set -e
+set -eu
+set -o pipefail
 
 # Simple script to stand up a development environment for an OpenStack
 # controller in a Vagrant VM using kayobe.  This should be executed from within
@@ -8,7 +9,7 @@ set -e
 
 PARENT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-source ${PARENT}/functions
+source "${PARENT}/functions"
 
 
 function main {
