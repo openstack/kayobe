@@ -43,22 +43,16 @@ NM_CONTROLLED=no
 EOF
     sudo ifup eth1
 
-    sudo yum -y install gcc git vim python-virtualenv
+    /vagrant/dev/install.sh
 
+    # Configure the legacy development environment. This has been retained
+    # while transitioning to the new development environment.
     cat > /vagrant/kayobe-env << EOF
 export KAYOBE_CONFIG_PATH=/vagrant/etc/kayobe
 export KOLLA_CONFIG_PATH=/vagrant/etc/kolla
 EOF
-    source /vagrant/kayobe-env
-
     cp /vagrant/dev/dev-vagrant.yml /vagrant/etc/kayobe/
     cp /vagrant/dev/dev-hosts /vagrant/etc/kayobe/inventory
     cp /vagrant/dev/dev-vagrant-network-allocation.yml /vagrant/etc/kayobe/network-allocation.yml
-
-    virtualenv ~/kayobe-venv
-    source ~/kayobe-venv/bin/activate
-    pip install -U pip
-    pip install /vagrant
-    deactivate
   SHELL
 end

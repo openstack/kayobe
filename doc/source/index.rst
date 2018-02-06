@@ -42,8 +42,7 @@ Developer Documentation
 .. toctree::
    :maxdepth: 2
 
-   contributing
-   development
+   development/index
 
 Release Notes
 -------------
