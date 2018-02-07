@@ -19,6 +19,11 @@ kolla_openstack_custom_config:
     dest: "{{ kolla_node_custom_config_path }}/cinder"
     patterns: "*"
     enabled: "{{ kolla_enable_cinder }}"
+  # Designate.
+  - src: "{{ kolla_extra_config_path }}/designate"
+    dest: "{{ kolla_node_custom_config_path }}/designate"
+    patterns: "*"
+    enabled: "{{ kolla_enable_designate }}"
   # Fluentd filters.
   - src: "{{ kolla_extra_config_path }}//fluentd/filter"
     dest: "{{ kolla_node_custom_config_path }}/fluentd/filter"

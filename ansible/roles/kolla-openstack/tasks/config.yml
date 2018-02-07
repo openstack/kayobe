@@ -15,6 +15,7 @@
   with_items:
     - { src: ceph.conf.j2, dest: ceph.conf, enabled: "{{ kolla_enable_ceph }}" }
     - { src: cinder.conf.j2, dest: cinder.conf, enabled: "{{ kolla_enable_cinder }}" }
+    - { src: designate.conf.j2, dest: designate.conf, enabled: "{{ kolla_enable_designate }}" }
     - { src: glance.conf.j2, dest: glance.conf, enabled: "{{ kolla_enable_glance }}" }
     - { src: grafana.ini.j2, dest: grafana.ini, enabled: "{{ kolla_enable_grafana }}" }
     - { src: heat.conf.j2, dest: heat.conf, enabled: "{{ kolla_enable_heat }}" }
