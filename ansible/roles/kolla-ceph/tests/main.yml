@@ -1,6 +1,8 @@
 ---
-
-- include: test-defaults.yml
+- include: test-no-journal.yml
+- include: test-journal.yml
+- include: test-bootstrapped-journal.yml
+- include: test-data-journal.yml
 
 - hosts: localhost
   connection: local

@@ -67,6 +67,7 @@ ansible/roles/stackhpc.os-openstackclient/
 ansible/roles/stackhpc.os-networks/
 ansible/roles/stackhpc.os-projects/
 ansible/roles/stackhpc.os-shade/
+ansible/roles/stackhpc.parted-1-1/
 ansible/roles/resmo.ntp/
 ansible/roles/yatesr.timezone/
 

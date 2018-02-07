@@ -2,7 +2,7 @@
 # (ktibi) Need to remove parted_1_1 module when kayobe will support ansible 2.4
 
 - name: Ensure required packages are installed
-  yum:
+  package:
     name: parted
     state: installed
   become: True
@@ -63,7 +63,7 @@
     label: "{{item.item}}"
   vars:
       part_label: "{% if item.item.journal is defined %}{{ part_label_with_journal }}{% else %}KOLLA_CEPH_OSD_BOOTSTRAP{% endif %}"
-      part_label_with_journal: "KOLLA_CEPH_OSD_BOOTSTRAP_{{ osd_id }}"
+      part_label_with_journal: "KOLLA_CEPH_OSD_BOOTSTRAP_{{ (osd_id | hash('md5'))[:9] }}"
       osd_id: "{{ item.item.osd | basename }}{{ ansible_hostname }}"
 
 - name: Create tag partition for Ceph external journal
@@ -81,6 +81,6 @@
   loop_control:
     label: "{{item.item}}"
   vars:
-      part_label: "KOLLA_CEPH_OSD_BOOTSTRAP_{{ osd_id }}_J"
+      part_label: "KOLLA_CEPH_OSD_BOOTSTRAP_{{ (osd_id | hash('md5'))[:9] }}_J"
       osd_id: "{{ item.item.osd | basename }}{{ ansible_hostname }}"
 
