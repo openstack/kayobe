@@ -27,6 +27,8 @@ env:
     - TOX_ENV=ansible-syntax
     # Run ansible tests.
     - TOX_ENV=ansible
+    # Run molecule tests.
+    - TOX_ENV=molecule
 
 install:
   # Install tox in a virtualenv to ensure we have an up to date version.

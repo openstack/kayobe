@@ -57,3 +57,11 @@ ansible/kolla-venv/
 
 # Vagrant
 .vagrant
+
+# Molecule
+.molecule/
+
+# Pytest
+.cache/
+.pytest_cache/
+pytestdebug.log
