@@ -50,25 +50,7 @@ ansible/*.retry
 ansible/roles/*/tests/*.retry
 
 # Ansible Galaxy roles
-ansible/roles/ahuffman.resolv/
-ansible/roles/singleplatform-eng.users/
-ansible/roles/jriguera.configdrive/
-ansible/roles/mrlesmithjr.manage-lvm/
-ansible/roles/MichaelRigart.interfaces/
-ansible/roles/stackhpc.drac/
-ansible/roles/stackhpc.drac-facts/
-ansible/roles/stackhpc.grafana-conf/
-ansible/roles/stackhpc.libvirt-host/
-ansible/roles/stackhpc.libvirt-vm/
-ansible/roles/stackhpc.os-flavors/
-ansible/roles/stackhpc.os-images/
-ansible/roles/stackhpc.os-ironic-state/
-ansible/roles/stackhpc.os-openstackclient/
-ansible/roles/stackhpc.os-networks/
-ansible/roles/stackhpc.os-projects/
-ansible/roles/stackhpc.os-shade/
-ansible/roles/resmo.ntp/
-ansible/roles/yatesr.timezone/
+ansible/roles/*\.*/
 
 # Virtualenv
 ansible/kolla-venv/
