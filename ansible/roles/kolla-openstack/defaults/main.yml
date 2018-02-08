@@ -3,7 +3,7 @@
 kolla_extra_config_path:
 
 # Directory where Kolla custom configuration files will be installed.
-kolla_node_custom_config_path:
+kolla_node_custom_config_path: /etc/kolla/config
 
 ###############################################################################
 # ceph configuration.
@@ -59,6 +59,12 @@ kolla_enable_heat:
 
 # Free form extra configuration to append to heat.conf.
 kolla_extra_heat:
+
+###############################################################################
+# Horizon configuration.
+
+# Whether to enable Horizon.
+kolla_enable_horizon:
 
 ###############################################################################
 # Ironic configuration.
@@ -245,6 +251,12 @@ kolla_enable_magnum:
 
 # Free form extra configuration to append to magnum.conf.
 kolla_extra_magnum:
+
+###############################################################################
+# Manila configuration.
+
+# Whether to enable Manila.
+kolla_enable_manila:
 
 ###############################################################################
 # Monasca configuration.

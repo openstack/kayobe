@@ -13,7 +13,7 @@ kolla_openstack_custom_config:
   - src: "{{ kolla_extra_config_path }}/ceph"
     dest: "{{ kolla_node_custom_config_path }}/ceph"
     patterns: "*"
-    enabled: "{{ kolla_enable_ceph }}"  
+    enabled: "{{ kolla_enable_ceph }}"
   # Cinder.
   - src: "{{ kolla_extra_config_path }}/cinder"
     dest: "{{ kolla_node_custom_config_path }}/cinder"
