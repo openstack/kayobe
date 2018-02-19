@@ -8,6 +8,30 @@
       group_by:
         key: "monitoring_with_grafana_enabled_{{ kolla_enable_grafana | bool }}"
 
+- name: Set the Monasca control plane project ID
+  hosts: monitoring_with_grafana_enabled_True[0]
+  gather_facts: False
+  tags:
+    - grafana
+  vars:
+    venv: "{{ virtualenv_path }}/shade"
+  roles:
+    - role: stackhpc.os-openstackclient
+      os_openstackclient_venv: "{{ venv }}"
+
+  tasks:
+    - name: Look up Monasca control plane project ID
+      shell: >
+        source {{ venv }}/bin/activate &&
+        openstack project show monasca --format json --column id
+      register: monasca_project_show
+      changed_when: False
+      environment: "{{ openstack_auth_env }}"
+
+    - name: Set Monasca control plane ID
+      set_fact:
+        monasca_control_plane_project_id:  "{{ (monasca_project_show.stdout | from_json).get('id') }}"
+
 - name: Configure control plane monitoring for Grafana
   # Only required to run on a single host.
   hosts: monitoring_with_grafana_enabled_True[0]
