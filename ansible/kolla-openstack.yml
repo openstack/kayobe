@@ -100,6 +100,7 @@
           with_items:
             - { name: ceph, file: ceph.conf }
             - { name: cinder, file: cinder.conf }
+            - { name: designate, file: designate.conf }
             - { name: glance, file: glance.conf }
             - { name: grafana, file: grafana.ini }
             - { name: heat, file: heat.conf }
@@ -199,6 +200,7 @@
       # Extra free-form user-provided configuration.
       kolla_extra_ceph: "{{ kolla_extra_config.ceph | default }}"
       kolla_extra_cinder: "{{ kolla_extra_config.cinder | default }}"
+      kolla_extra_designate: "{{ kolla_extra_config.designate | default }}"
       kolla_extra_glance: "{{ kolla_extra_config.glance | default }}"
       kolla_extra_grafana: "{{ kolla_extra_config.grafana | default }}"
       kolla_extra_heat: "{{ kolla_extra_config.heat | default }}"

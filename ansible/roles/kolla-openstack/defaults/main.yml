@@ -24,6 +24,15 @@ kolla_enable_cinder:
 kolla_extra_cinder:
 
 ###############################################################################
+# designate configuration.
+
+# Whether to enable designate.
+kolla_enable_designate:
+
+# Free form extra configuration to append to designate.conf.
+kolla_extra_designate:
+
+###############################################################################
 # Glance configuration.
 
 # Whether to enable Glance.
