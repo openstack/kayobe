@@ -279,6 +279,19 @@ tempest_floating_network_name:
 bifrost_deploy_image: "{% raw %}{{ docker_registry ~ '/' if docker_registry else '' }}{{ docker_namespace }}/{{ kolla_base_distro }}-source-bifrost-deploy{% endraw %}"
 
 
+############################################
+# Grafana - Data visualisation & Monitoring
+############################################
+
+# When using the Monasca fork of Grafana if an OpenStack user with the
+# same name as the admin user logs into Grafana it overwrites user data
+# in the Grafana database, breaking the local admin account, and
+# preventing admin API calls to Grafana. To reduce the chance of this
+# happening the local admin account is renamed here.
+{% if kolla_enable_grafana and grafana_local_admin_user_name %}
+grafana_admin_username: "{{ grafana_local_admin_user_name }}"
+{% endif %}
+
 {% if kolla_extra_globals %}
 #######################
 # Extra configuration
