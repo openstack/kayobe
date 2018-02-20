@@ -48,6 +48,9 @@ kolla_extra_glance:
 # Whether to enable Grafana.
 kolla_enable_grafana:
 
+# Name of the admin user for Grafana.
+grafana_local_admin_user_name:
+
 # Free form extra configuration to append to grafana.ini.
 kolla_extra_grafana:
 
@@ -200,7 +203,7 @@ kolla_inspector_enable_discovery:
 kolla_inspector_discovery_enroll_node_driver:
 
 # List of extra kernel parameters for the inspector default PXE configuration.
-kolla_inspector_extra_kernel_options:
+kolla_inspector_extra_kernel_options: []
 
 # URL of Ironic Python Agent (IPA) kernel image for Ironic Inspector.
 # Mutually exclusive with kolla_inspector_ipa_kernel_path.
