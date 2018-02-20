@@ -691,7 +691,7 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
             playbooks += _build_playbook_list("wipe-disks")
         playbooks += _build_playbook_list(
             "users", "yum", "dev-tools", "disable-selinux", "network",
-            "sysctl", "disable-glean", "ntp", "lvm")
+            "sysctl", "disable-glean", "disable-cloud-init", "ntp", "lvm")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
         playbooks = _build_playbook_list("kolla-ansible")
         self.run_kayobe_playbooks(parsed_args, playbooks, tags="config")

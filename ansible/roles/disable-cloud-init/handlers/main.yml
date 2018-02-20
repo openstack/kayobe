@@ -1,0 +1,7 @@
+---
+- name: restart cloud-init daemon
+  systemd: 
+    name: cloud-init
+    state: restarted 
+    daemon_reload: yes
+  become: True

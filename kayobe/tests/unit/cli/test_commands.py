@@ -466,6 +466,7 @@ class TestCase(unittest.TestCase):
                     "ansible/network.yml",
                     "ansible/sysctl.yml",
                     "ansible/disable-glean.yml",
+                    "ansible/disable-cloud-init.yml",
                     "ansible/ntp.yml",
                     "ansible/lvm.yml",
                 ],

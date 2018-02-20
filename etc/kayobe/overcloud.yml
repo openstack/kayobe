@@ -13,6 +13,9 @@
 # should not be added to the inventory.
 #overcloud_group_hosts_map:
 
+# To prevent some network issues you can choose to disable cloud-init
+disable_cloud_init: False 
+
 ###############################################################################
 # Overcloud host image configuration.
 
