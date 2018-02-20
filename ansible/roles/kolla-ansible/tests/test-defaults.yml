@@ -45,6 +45,7 @@
             kolla_provision_interface: "eth9"
             kolla_inspector_dnsmasq_interface: "eth10"
             kolla_enable_tls_external: False
+            kolla_enable_grafana: False
             kolla_external_fqdn_cert: "fake-cert"
             kolla_openstack_logging_debug: False
 
@@ -117,6 +118,7 @@
               - enable_ironic
               - enable_neutron
               - enable_nova
+              - grafana_admin_username
 
         - name: Check whether inventory files exist
           stat:
