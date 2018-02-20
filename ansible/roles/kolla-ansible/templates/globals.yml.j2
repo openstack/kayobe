@@ -288,7 +288,7 @@ bifrost_deploy_image: "{% raw %}{{ docker_registry ~ '/' if docker_registry else
 # in the Grafana database, breaking the local admin account, and
 # preventing admin API calls to Grafana. To reduce the chance of this
 # happening the local admin account is renamed here.
-{% if kolla_enable_grafana and grafana_local_admin_user_name %}
+{% if kolla_enable_grafana and grafana_local_admin_user_name is defined %}
 grafana_admin_username: "{{ grafana_local_admin_user_name }}"
 {% endif %}
 
