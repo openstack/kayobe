@@ -91,6 +91,7 @@ kolla_feature_flags:
   - manila_backend_hnas
   - mistral
   - mongodb
+  - monasca
   - murano
   - multipathd
   - neutron_dvr
