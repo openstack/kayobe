@@ -93,6 +93,7 @@
             kolla_enable_manila_backend_generic: True
             kolla_enable_manila_backend_hnas: True
             kolla_enable_mistral: True
+            kolla_enable_monasca: True
             kolla_enable_mongodb: True
             kolla_enable_murano: True
             kolla_enable_multipathd: True

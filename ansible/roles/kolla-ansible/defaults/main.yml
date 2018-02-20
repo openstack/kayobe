@@ -207,6 +207,7 @@ kolla_openstack_logging_debug:
 #kolla_enable_magnum:
 #kolla_enable_manila:
 #kolla_enable_mistral:
+#kolla_enable_monasca:
 #kolla_enable_mongodb:
 #kolla_enable_murano:
 #kolla_enable_multipathd:

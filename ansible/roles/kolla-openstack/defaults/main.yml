@@ -238,6 +238,15 @@ kolla_enable_magnum:
 kolla_extra_magnum:
 
 ###############################################################################
+# Monasca configuration.
+
+# NOTE: Support for Monasca in Kolla is a work in progress. This currently
+# relies on an out-of-band Monasca installation.
+
+# Whether to enable Monasca.
+kolla_enable_monasca:
+
+###############################################################################
 # Murano configuration.
 
 # Whether to enable Murano.

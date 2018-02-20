@@ -18,6 +18,7 @@
   roles:
     - role: stackhpc.os-openstackclient
       os_openstackclient_venv: "{{ venv }}"
+      when: kolla_enable_monasca
 
   tasks:
     - name: Look up Monasca control plane project ID
@@ -27,10 +28,12 @@
       register: monasca_project_show
       changed_when: False
       environment: "{{ openstack_auth_env }}"
+      when: kolla_enable_monasca
 
     - name: Set Monasca control plane ID
       set_fact:
         monasca_control_plane_project_id:  "{{ (monasca_project_show.stdout | from_json).get('id') }}"
+      when: kolla_enable_monasca
 
 - name: Configure control plane monitoring for Grafana
   # Only required to run on a single host.
