@@ -1,0 +1,93 @@
+=======
+Testing
+=======
+
+Kayobe has a number of test suites covering different areas of code. Many tests
+are run in virtual environments using ``tox``.
+
+Preparation
+===========
+
+System Prerequisites
+--------------------
+
+The following packages should be installed on the development system prior to
+running kayobe's tests.
+
+* Ubuntu/Debian::
+
+      sudo apt-get install build-essential python-dev libssl-dev python-pip git
+
+* Fedora 21/RHEL7/CentOS7::
+
+      sudo yum install python-devel openssl-devel python-pip git gcc
+
+* Fedora 22 or higher::
+
+      sudo dnf install python-devel openssl-devel python-pip git gcc
+
+* OpenSUSE/SLE 12::
+
+      sudo zypper install python-devel python-pip libopenssl-devel git
+
+Python Prerequisites
+--------------------
+
+If your distro has at least ``tox 1.8``, use your system package manager to
+install the ``python-tox`` package. Otherwise install this on all distros::
+
+    sudo pip install -U tox
+
+You may need to explicitly upgrade ``virtualenv`` if you’ve installed the one from
+your OS distribution and it is too old (tox will complain). You can upgrade it
+individually, if you need to::
+
+    sudo pip install -U virtualenv
+
+Running Unit Tests Locally
+==========================
+
+If you haven’t already, the kayobe source code should be pulled directly from
+git::
+
+    # from your home or source directory
+    cd ~
+    git clone https://github.com/stackhpc/kayobe
+    cd kayobe
+
+Running Unit and Style Tests
+----------------------------
+
+Kayobe defines a number of different tox environments in ``tox.ini``. The
+default environments may be displayed::
+
+    tox -list
+
+To run all default environments::
+
+    tox
+
+To run one or more specific environments, including any of the non-default
+environments::
+
+    tox -e <environment>[,<environment>]
+
+Environments
+------------
+
+The following tox environments are provided:
+
+alint
+    Run Ansible linter.
+ansible
+    Run Ansible tests for some ansible roles using Ansible playbooks.
+ansible-syntax
+    Run a syntax check for all Ansible files.
+docs
+    Build Sphinx documentation.
+molecule
+    Run Ansible tests for some Ansible roles using the molecule test framework.
+pep8
+    Run style checks for all shell, python and documentation files.
+py27,py34
+    Run python unit tests for kayobe python module.
