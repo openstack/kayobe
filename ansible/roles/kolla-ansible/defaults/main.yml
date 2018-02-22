@@ -19,6 +19,10 @@ kolla_ansible_venv: "{{ ansible_env['PWD'] }}/kolla-venv"
 # remotely on the target nodes. If None, no virtualenv will be used.
 kolla_ansible_target_venv:
 
+# Upper constraints file which is passed to pip when installing packages
+# into the kolla-ansible venv.
+kolla_upper_constraints_file:
+
 # Password to use to encrypt the passwords.yml file.
 kolla_ansible_vault_password:
 

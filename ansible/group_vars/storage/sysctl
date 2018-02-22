@@ -1,0 +1,3 @@
+---
+# Dict of sysctl parameters to set.
+sysctl_parameters: "{{ storage_sysctl_parameters }}"

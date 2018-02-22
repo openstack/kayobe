@@ -1,0 +1,7 @@
+---
+###############################################################################
+# Storage node BIOS configuration.
+
+# Dict of storage node BIOS options. Format is same as that used by
+# stackhpc.drac role.
+bios_config: "{{ storage_bios_config }}"

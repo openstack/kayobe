@@ -223,6 +223,10 @@ kolla_overcloud_inventory_custom_services:
 # concatenation of the top level, component, and service inventories.
 kolla_overcloud_inventory_custom:
 
+# List of groups mapped to kolla storage group.
+kolla_overcloud_inventory_storage_groups:
+  - "storage"
+
 # Dict mapping from kolla-ansible groups to kayobe groups and variables. Each
 # item is a dict with the following items:
 # * groups: A list of kayobe ansible groups to map to this kolla-ansible group.
@@ -241,6 +245,9 @@ kolla_overcloud_inventory_top_level_group_map:
   monitoring:
     groups:
       - monitoring
+  storage:
+    groups:
+      - "{{ kolla_overcloud_inventory_storage_groups }}"
 
 # List of names of top level kolla-ansible groups. Any of these groups which
 # have no hosts mapped to them will be provided with an empty group definition.
@@ -270,6 +277,9 @@ kolla_external_fqdn_cert:
 
 # Whether debug logging is enabled.
 kolla_openstack_logging_debug: "False"
+
+# Upper constraints file for the stable/pike branch of Kolla
+kolla_upper_constraints_file: "https://raw.githubusercontent.com/openstack/requirements/stable/pike/upper-constraints.txt"
 
 ###############################################################################
 # Kolla feature flag configuration.

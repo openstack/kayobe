@@ -58,6 +58,7 @@
   pip:
     requirements: "{{ kolla_ansible_venv }}/requirements.txt"
     state: present
+    extra_args: "{% if kolla_upper_constraints_file %}-c {{ kolla_upper_constraints_file }}{% endif %}"
     virtualenv: "{{ kolla_ansible_venv }}"
 
 # This is a workaround for the lack of a python package for libselinux-python

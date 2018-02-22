@@ -18,6 +18,7 @@
   pip:
     name: docker
     state: latest
+    extra_args: "{% if docker_upper_constraints_file %}-c {{ docker_upper_constraints_file }}{% endif %}"
     virtualenv: "{{ virtualenv is defined | ternary(virtualenv, omit) }}"
   become: "{{ virtualenv is not defined }}"
 
