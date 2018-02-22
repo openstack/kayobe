@@ -1,0 +1,118 @@
+---
+# Test case with an OSD and external journal that have already been tagged by
+# kayobe with the kolla-ansible bootstrap label, but have not yet been
+# converted to use the in-use label.
+
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: Allocate a temporary file for a fake OSD
+      tempfile:
+      register: osd_tempfile
+
+    - name: Allocate a temporary file for a fake journal
+      tempfile:
+      register: journal_tempfile
+
+    - name: Allocate a fake OSD file
+      command: fallocate -l 10M {{ osd_tempfile.path }}
+
+    - name: Allocate a fake journal file
+      command: fallocate -l 10M {{ journal_tempfile.path }}
+
+    - name: Create tag partition for the fake OSD
+      become: True
+      parted_1_1:
+        device: "{{ osd_tempfile.path }}"
+        number: 1
+        label: gpt
+        name: "{{ part_label }}"
+        state: present
+      vars:
+        part_label: "KOLLA_CEPH_OSD_BOOTSTRAP_{{ (osd_id | hash('md5'))[:9] }}"
+        osd_id: "{{ osd_tempfile.path | basename }}{{ ansible_hostname }}"
+
+    - name: Create tag partition for the fake journal
+      become: True
+      parted_1_1:
+        device: "{{ journal_tempfile.path }}"
+        number: 1
+        label: gpt
+        name: "{{ part_label }}"
+        state: present
+      vars:
+        part_label: "KOLLA_CEPH_OSD_BOOTSTRAP_{{ (osd_id | hash('md5'))[:9] }}_J"
+        osd_id: "{{ osd_tempfile.path | basename }}{{ ansible_hostname }}"
+
+    - block:
+        - name: Import parted role
+          include_role:
+            name: ../../stackhpc.parted-1-1
+
+        - name: Test the kolla-ceph role
+          include_role:
+            name:  ../../kolla-ceph
+          vars:
+              ceph_disks:
+                 - osd: "{{ osd_tempfile.path }}"
+                   journal: "{{ journal_tempfile.path }}"
+
+        - name: Get name of fake OSD partition
+          parted_1_1:
+            device: "{{ osd_tempfile.path }}"
+          register: "disk_osd_info"
+          become: True
+
+        - name: Validate number of OSD partitions
+          assert:
+            that: disk_osd_info.partitions | length == 1
+            msg: >
+              Number of OSD partitions is not correct. Expected 1,
+              actual {{ disk_osd_info.partitions | length }}
+
+        - name: Validate OSD tag is present
+          assert:
+            that: "disk_osd_info.partitions.0.name == expected"
+            msg: >
+              Name of OSD partition is not correct. Expected {{ expected }},
+              actual {{ disk_osd_info.partitions.0.name }}.
+          vars:
+            expected: "{{ 'KOLLA_CEPH_OSD_BOOTSTRAP_' ~ ((osd_tempfile.path | basename ~ ansible_hostname) | hash('md5'))[:9] }}"
+
+        - name: Get name of fake journal partition
+          parted_1_1:
+            device: "{{ journal_tempfile.path }}"
+          register: "disk_journal_info"
+          become: True
+
+        - name: Validate number of journal partitions
+          assert:
+            that: disk_journal_info.partitions | length == 1
+            msg: >
+              Number of journal partitions is not correct. Expected 1,
+              actual {{ disk_journal_info.partitions | length }}
+
+        - name: Validate journal tag is present
+          assert:
+            that: "disk_journal_info.partitions.0.name == expected"
+            msg: >
+              Name of journal partition is not correct. Expected {{ expected }},
+              actual {{ disk_journal_info.partitions.0.name }}.
+          vars:
+            expected: "{{ 'KOLLA_CEPH_OSD_BOOTSTRAP_' ~ (( osd_tempfile.path | basename ~ ansible_hostname) | hash('md5'))[:9] ~ '_J' }}"
+
+      always:
+        - name: Remove the fake OSD file
+          file:
+            name: "{{ osd_tempfile.path }}"
+            state: absent
+
+        - name: Remove the fake journal file
+          file:
+            name: "{{ journal_tempfile.path }}"
+            state: absent
+
+      rescue:
+        - name: Flag that a failure occurred
+          set_fact:
+            test_failures: "{{ test_failures | default(0) | int + 1 }}"

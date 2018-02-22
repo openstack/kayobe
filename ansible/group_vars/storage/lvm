@@ -1,0 +1,6 @@
+---
+###############################################################################
+# Storage node LVM configuration.
+
+# List of LVM volume groups.
+lvm_groups: "{{ storage_lvm_groups }}"

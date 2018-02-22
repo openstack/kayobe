@@ -1,0 +1,86 @@
+---
+# (ktibi) Need to remove parted_1_1 module when kayobe will support ansible 2.4
+
+- name: Ensure required packages are installed
+  package:
+    name: parted
+    state: installed
+  become: True
+  when: ceph_disks | length > 0
+
+- name: Check the presence of a partition on the OSD disks
+  become: True
+  parted_1_1:
+    device: "{{ item.osd }}"
+  with_items: "{{ ceph_disks }}"
+  register: "disk_osd_info"
+
+- name: Check the presence of a partition on the journal disks
+  become: True
+  parted_1_1:
+    device: "{{ item.journal }}"
+  with_items: "{{ ceph_disks }}"
+  register: "disk_journal_info"
+  when: 
+    - item.journal is defined
+
+- name: Fail if the Ceph OSD disks have already a partition
+  fail:
+    msg: >
+      The physical disk {{ item.item }} already has a partition.
+      Ensure that each disk in 'ceph_disks' does not have any partitions.
+  with_items: "{{ disk_osd_info.results }}"
+  when:
+    - item.partitions | length > 0
+    - not item.partitions.0.name.startswith('KOLLA_CEPH')
+  loop_control:
+    label: "{{item.item}}"
+
+- name: Fail if the Ceph journal disks have already a partition
+  fail:
+    msg: >
+      The physical disk {{ item.item }} already has a partition.
+      Ensure that each disk in 'ceph_disks' does not have any partitions.
+  with_items: "{{ disk_journal_info.results }}"
+  when:
+    - not item | skipped
+    - item.partitions | length > 0
+    - not item.partitions.0.name.startswith('KOLLA_CEPH')
+  loop_control:
+    label: "{{item.item}}"
+
+- name: Create tag partition for Ceph OSD
+  become: True
+  parted_1_1:
+    device: "{{ item.item.osd }}"
+    number: 1
+    label: gpt
+    name: "{{ part_label }}"
+    state: present
+  with_items: "{{ disk_osd_info.results }}"
+  when: item.partitions | length == 0
+  loop_control:
+    label: "{{item.item}}"
+  vars:
+      part_label: "{% if item.item.journal is defined %}{{ part_label_with_journal }}{% else %}KOLLA_CEPH_OSD_BOOTSTRAP{% endif %}"
+      part_label_with_journal: "KOLLA_CEPH_OSD_BOOTSTRAP_{{ (osd_id | hash('md5'))[:9] }}"
+      osd_id: "{{ item.item.osd | basename }}{{ ansible_hostname }}"
+
+- name: Create tag partition for Ceph external journal
+  become: True
+  parted_1_1:
+    device: "{{ item.item.journal }}"
+    number: 1
+    label: gpt
+    name: "{{ part_label }}"
+    state: present
+  with_items: "{{ disk_journal_info.results }}"
+  when:
+    - not item | skipped
+    - item.partitions | length == 0
+  loop_control:
+    label: "{{item.item}}"
+  vars:
+      part_label: "KOLLA_CEPH_OSD_BOOTSTRAP_{{ (osd_id | hash('md5'))[:9] }}_J"
+      osd_id: "{{ item.item.osd | basename }}{{ ansible_hostname }}"
+

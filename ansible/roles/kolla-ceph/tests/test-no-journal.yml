@@ -1,0 +1,54 @@
+---
+# Test case with an OSD and no external journal that has not yet been tagged by
+# kayobe with the kolla-ansible bootstrap label.
+
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: Allocate a temporary file for a fake OSD
+      tempfile:
+      register: tempfile
+
+    - name: Allocate a fake OSD file
+      command: fallocate -l 10M {{ tempfile.path }}
+
+    - block:
+        - name: Import parted role
+          include_role:
+            name: ../../stackhpc.parted-1-1
+
+        - name: Test the kolla-ceph role
+          include_role:
+            name:  ../../kolla-ceph
+          vars:
+              ceph_disks:
+                 - osd: "{{ tempfile.path }}"
+
+        - name: Get name of fake partition
+          parted_1_1:
+            device: "{{ tempfile.path }}"
+          register: "disk_osd_info"
+          become: True
+
+        - name: Validate number of partition
+          assert:
+            that: disk_osd_info.partitions | length == 1
+            msg: >
+              Number of partition is not correct.
+
+        - name: Validate OSD tag is present
+          assert:
+            that: "disk_osd_info.partitions.0.name == 'KOLLA_CEPH_OSD_BOOTSTRAP'"
+            msg: >
+              Name of partition is not correct.
+
+      always:
+        - name: Remove the fake OSD file
+          file:
+            name: "{{ tempfile.path }}"
+            state: absent
+
+      rescue:
+        - name: Flag that a failure occurred
+          set_fact:
+            test_failures: "{{ test_failures | default(0) | int + 1 }}"

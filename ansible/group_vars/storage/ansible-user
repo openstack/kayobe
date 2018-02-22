@@ -1,0 +1,7 @@
+---
+# User with which to access the storages via SSH.
+ansible_user: "{{ kayobe_ansible_user }}"
+
+# User with which to access the storages before the kayobe_ansible_user
+# account has been created.
+bootstrap_user: "{{ storage_bootstrap_user }}"

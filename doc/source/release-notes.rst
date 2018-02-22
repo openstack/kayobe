@@ -43,6 +43,9 @@ Features
   this variable is ``{{ virtualenv_path }}/kolla-ansible``.
 * Adds tags to plays to support more fine grained configuration using the
   ``--tags`` argument.
+* Adds support for deployment of storage hosts. These hosts should be added to
+  the ``[storage]`` group.
+* Adds support for the tagging of ceph disks.
 
 Upgrade Notes
 -------------
@@ -94,6 +97,9 @@ Upgrade Notes
   connecting via SSH, due to a timeout in NSS. The workaround employed here is
   to remove this bogus entry from the image using virt-customize, if it exists.
   See https://bugs.centos.org/view.php?id=14369.
+* Adds a group ``storage``, which used for deploy node with cinder-volume, LVM
+  or ceph-osd. If you want to add these services to compute or control group,
+  you need to override ``kolla_overcloud_inventory_storage_groups``.
 
 Kayobe 3.0.0
 ============

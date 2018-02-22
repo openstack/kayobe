@@ -1,0 +1,14 @@
+---
+- include: test-no-journal.yml
+- include: test-journal.yml
+- include: test-bootstrapped-journal.yml
+- include: test-data-journal.yml
+
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: Fail if any tests failed
+      fail:
+        msg: >
+          Test failures: {{ test_failures }}
+      when: test_failures is defined

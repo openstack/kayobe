@@ -716,7 +716,7 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 
         # Further kayobe playbooks.
         playbooks = _build_playbook_list(
-            "kolla-target-venv", "kolla-host", "docker")
+            "kolla-target-venv", "kolla-host", "docker", "ceph-block-devices")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
 
 
