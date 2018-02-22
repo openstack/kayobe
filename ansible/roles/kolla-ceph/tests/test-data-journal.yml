@@ -41,7 +41,7 @@
         state: present
       vars:
         part_label: "KOLLA_CEPH_DATA_{{ (osd_id | hash('md5'))[:9] }}_J"
-        osd_id: "{{ (journal_tempfile.path | basename ~ ansible_hostname) }}"
+        osd_id: "{{ (osd_tempfile.path | basename ~ ansible_hostname) }}"
 
     - block:
         - name: Import parted role
@@ -98,7 +98,7 @@
               Name of journal partition is not correct. Expected {{ expected }},
               actual {{ disk_journal_info.partitions.0.name }}.
           vars:
-            expected: "{{ 'KOLLA_CEPH_DATA_' ~ ((journal_tempfile.path | basename ~ ansible_hostname)| hash('md5'))[:9] ~ '_J' }}"
+            expected: "{{ 'KOLLA_CEPH_DATA_' ~ ((osd_tempfile.path | basename ~ ansible_hostname)| hash('md5'))[:9] ~ '_J' }}"
 
       always:
         - name: Remove the fake OSD file

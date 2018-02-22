@@ -74,7 +74,7 @@
               Name of journal partition is not correct. Expected {{ expected }},
               actual {{ disk_journal_info.partitions.0.name }}.
           vars:
-            expected: "{{ 'KOLLA_CEPH_OSD_BOOTSTRAP_' ~ ((journal_tempfile.path | basename ~ ansible_hostname)| hash('md5'))[:9] ~ '_J' }}"
+            expected: "{{ 'KOLLA_CEPH_OSD_BOOTSTRAP_' ~ ((osd_tempfile.path | basename ~ ansible_hostname)| hash('md5'))[:9] ~ '_J' }}"
 
       always:
         - name: Remove the fake OSD file
