@@ -91,3 +91,44 @@ pep8
     Run style checks for all shell, python and documentation files.
 py27,py34
     Run python unit tests for kayobe python module.
+
+Writing Tests
+=============
+
+Unit Tests
+----------
+
+Unit tests follow the lead of OpenStack, and use ``unittest``. One difference
+is that tests are run using the discovery functionality built into
+``unittest``, rather than ``ostestr``/``stestr``.  Unit tests are found in
+``kayobe/tests/unit/``, and should be added to cover all new python code.
+
+Ansible Role Tests
+------------------
+
+Two types of test exist for Ansible roles - pure Ansible and molecule tests.
+
+Pure Ansible Role Tests
+^^^^^^^^^^^^^^^^^^^^^^^
+
+These tests exist for the ``kolla-ansible`` role, and are found in
+``ansible/<role>/tests/*.yml``. The role is exercised using an ansible
+playbook.
+
+Molecule Role Tests
+^^^^^^^^^^^^^^^^^^^
+
+`Molecule <https://molecule.readthedocs.io/en/latest/>`_ is an Ansible role
+testing framework that allows roles to be tested in isolation, in a stable
+environment, under multiple scenarios. Kayobe uses Docker engine to provide the
+test environment, so this must be installed and running on the development
+system.
+
+Molecule scenarios are found in ``ansible/<role>/molecule/<scenario>``, and
+defined by the config file ``ansible/<role>/molecule/<scenario>/molecule.yml``
+Tests are written in python using the `pytest
+<https://docs.pytest.org/en/latest/>`_ framework, and are found in
+``ansible/<role>/molecule/<scenario>/tests/test_*.py``.
+
+Molecule tests currently exist for the ``kolla-openstack`` role, and should be
+added for all new roles where practical.
