@@ -33,3 +33,7 @@ docker_registry_ca:
 
 # MTU to pass through to containers not using net=host
 docker_daemon_mtu: 1500
+
+# Upper constraints file which is passed to pip when installing packages
+# into a venv.
+docker_upper_constraints_file:
