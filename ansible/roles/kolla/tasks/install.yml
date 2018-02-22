@@ -75,7 +75,4 @@
     - name: "kolla"
       version: "{{ kolla_openstack_release }}"
       install: "{{ kolla_ctl_install_type == 'binary' }}"
-    # Required for kolla-genpwd.
-    - name: PyYAML
-      version: "3.12"
   when: item.install | default(True) | bool
