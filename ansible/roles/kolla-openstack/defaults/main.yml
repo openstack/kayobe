@@ -3,7 +3,7 @@
 kolla_extra_config_path:
 
 # Directory where Kolla custom configuration files will be installed.
-kolla_node_custom_config_path:
+kolla_node_custom_config_path: /etc/kolla/config
 
 ###############################################################################
 # ceph configuration.
@@ -48,6 +48,9 @@ kolla_extra_glance:
 # Whether to enable Grafana.
 kolla_enable_grafana:
 
+# Name of the admin user for Grafana.
+grafana_local_admin_user_name:
+
 # Free form extra configuration to append to grafana.ini.
 kolla_extra_grafana:
 
@@ -59,6 +62,12 @@ kolla_enable_heat:
 
 # Free form extra configuration to append to heat.conf.
 kolla_extra_heat:
+
+###############################################################################
+# Horizon configuration.
+
+# Whether to enable Horizon.
+kolla_enable_horizon:
 
 ###############################################################################
 # Ironic configuration.
@@ -194,7 +203,7 @@ kolla_inspector_enable_discovery:
 kolla_inspector_discovery_enroll_node_driver:
 
 # List of extra kernel parameters for the inspector default PXE configuration.
-kolla_inspector_extra_kernel_options:
+kolla_inspector_extra_kernel_options: []
 
 # URL of Ironic Python Agent (IPA) kernel image for Ironic Inspector.
 # Mutually exclusive with kolla_inspector_ipa_kernel_path.
@@ -245,6 +254,12 @@ kolla_enable_magnum:
 
 # Free form extra configuration to append to magnum.conf.
 kolla_extra_magnum:
+
+###############################################################################
+# Manila configuration.
+
+# Whether to enable Manila.
+kolla_enable_manila:
 
 ###############################################################################
 # Monasca configuration.

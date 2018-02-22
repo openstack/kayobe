@@ -8,4 +8,5 @@ Kayobe Development Guide
    vagrant
    manual
    automated
+   testing
    contributing
