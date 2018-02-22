@@ -67,7 +67,6 @@
     virtualenv: "{{ kolla_venv }}"
     extra_args: "-c {{ kolla_upper_constraints_file }}"
   with_items:
-    - name: docker
     # Intall Kolla from source.
     - name: "{{ kolla_source_path }}"
       install: "{{ kolla_ctl_install_type == 'source' }}"
