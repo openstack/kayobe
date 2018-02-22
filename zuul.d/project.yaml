@@ -4,9 +4,7 @@
       jobs:
         - openstack-tox-pep8
         - openstack-tox-py27
-        # FIXME(mgoddard): python 3.5 jobs currently failing.
-        - openstack-tox-py35:
-            voting: false
+        - openstack-tox-py35
         - build-openstack-sphinx-docs
         - kayobe-tox-ansible-syntax
         - kayobe-tox-ansible
@@ -16,6 +14,7 @@
       jobs:
         - openstack-tox-pep8
         - openstack-tox-py27
+        - openstack-tox-py35
         - build-openstack-sphinx-docs
         - kayobe-tox-ansible-syntax
         - kayobe-tox-ansible
