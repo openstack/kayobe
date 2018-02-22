@@ -5,6 +5,7 @@
         - openstack-tox-pep8
         - openstack-tox-py27
         - openstack-tox-py35
+        - openstack-tox-cover
         - build-openstack-sphinx-docs
         - kayobe-tox-ansible-syntax
         - kayobe-tox-ansible
@@ -15,6 +16,7 @@
         - openstack-tox-pep8
         - openstack-tox-py27
         - openstack-tox-py35
+        - openstack-tox-cover
         - build-openstack-sphinx-docs
         - kayobe-tox-ansible-syntax
         - kayobe-tox-ansible
