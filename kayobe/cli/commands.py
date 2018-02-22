@@ -382,7 +382,7 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         if not hostvars:
             self.app.LOG.error("No hosts in the seed group")
             sys.exit(1)
-        hostvars = hostvars.values()[0]
+        hostvars = list(hostvars.values())[0]
         ansible_user = hostvars.get("kayobe_ansible_user")
         if not ansible_user:
             self.app.LOG.error("Could not determine kayobe_ansible_user "
@@ -674,7 +674,7 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         if not hostvars:
             self.app.LOG.error("No hosts in the overcloud group")
             sys.exit(1)
-        hostvars = hostvars.values()[0]
+        hostvars = list(hostvars.values())[0]
         ansible_user = hostvars.get("kayobe_ansible_user")
         if not ansible_user:
             self.app.LOG.error("Could not determine kayobe_ansible_user "
