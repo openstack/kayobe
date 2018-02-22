@@ -26,5 +26,6 @@
       pip:
         name: docker
         state: latest
+        extra_args: "-c {{ kolla_upper_constraints_file }}"
         virtualenv: "{{ virtualenv is defined | ternary(virtualenv, omit) }}"
       become: "{{ virtualenv is not defined }}"
