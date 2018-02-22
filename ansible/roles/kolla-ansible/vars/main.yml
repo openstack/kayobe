@@ -58,9 +58,12 @@ kolla_overcloud_inventory: "{{ kolla_overcloud_inventory_custom or kolla_overclo
 kolla_feature_flags:
   - aodh
   - barbican
+  - blazar
   - ceilometer
   - central_logging
   - ceph
+  - ceph_mds
+  - ceph_nfs
   - ceph_rgw
   - cinder
   - cinder_backend_hnas_iscsi
@@ -68,12 +71,14 @@ kolla_feature_flags:
   - cinder_backend_iscsi
   - cinder_backend_lvm
   - cinder_backend_nfs
+  - cinder_backend_zfssa_iscsi
   - cloudkitty
   - collectd
   - congress
   - designate
   - elasticsearch
   - etcd
+  - fluentd
   - freezer
   - gnocchi
   - grafana
@@ -82,6 +87,7 @@ kolla_feature_flags:
   - horizon
   - influxdb
   - ironic
+  - ironic_pxe_uefi
   - kafka
   - karbor
   - kibana
@@ -90,23 +96,28 @@ kolla_feature_flags:
   - manila
   - manila_backend_generic
   - manila_backend_hnas
+  - manila_backend_cephfs_native
+  - manila_backend_cephfs_nfs
   - mistral
   - mongodb
   - monasca
   - murano
   - multipathd
+  - neutron_agent_ha
+  - neutron_bgp_dragent
   - neutron_dvr
   - neutron_fwaas
   - neutron_lbaas
-  - neutron_qos
-  - neutron_agent_ha
-  - neutron_vpnaas
-  - neutron_bgp_dragent
   - neutron_provider_networks
+  - neutron_qos
+  - neutron_segments
+  - neutron_sriov
+  - neutron_vpnaas
   - nova_serialconsole_proxy
   - octavia
   - osprofiler
   - panko
+  - qdrouterd
   - rally
   - sahara
   - searchlight
@@ -118,6 +129,8 @@ kolla_feature_flags:
   - telegraf
   - tempest
   - trove
+  - vitrage
+  - vmtp
   - watcher
   - zookeeper
   - zun

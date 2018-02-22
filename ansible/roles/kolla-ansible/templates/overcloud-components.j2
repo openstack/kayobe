@@ -15,7 +15,7 @@ monitoring
 # You can explicitly specify which hosts run each project by updating the
 # groups in the sections below. Common services are grouped together.
 [chrony-server:children]
-control
+haproxy
 
 [chrony:children]
 control
@@ -32,6 +32,7 @@ monitoring
 
 [etcd:children]
 control
+compute
 
 [influxdb:children]
 monitoring
@@ -77,6 +78,9 @@ control
 [outward-rabbitmq:children]
 control
 
+[qdrouterd:children]
+control
+
 [mongodb:children]
 control
 
@@ -96,6 +100,9 @@ network
 network
 compute
 manila-share
+
+[opendaylight:children]
+network
 
 [cinder:children]
 control
@@ -176,6 +183,9 @@ control
 [vmtp:children]
 control
 
+[vitrage:children]
+control
+
 [watcher:children]
 control
 
@@ -202,6 +212,12 @@ control
 
 [skydive:children]
 monitoring
+
+[redis:children]
+control
+
+[blazar:children]
+control
 
 [zookeeper:children]
 control

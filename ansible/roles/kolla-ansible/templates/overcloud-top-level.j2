@@ -66,3 +66,7 @@ ansible_python_interpreter={{ kolla_ansible_target_venv }}/bin/python
 
 {% endif %}
 {% endfor %}
+
+[compute:children]
+inner-compute
+external-compute

@@ -5,10 +5,10 @@
 # Bifrost installation.
 
 # URL of Bifrost source code repository.
-kolla_bifrost_source_url: "https://github.com/stackhpc/bifrost"
+kolla_bifrost_source_url: "https://git.openstack.org/openstack/bifrost"
 
 # Version (branch, tag, etc.) of Bifrost source code repository.
-kolla_bifrost_source_version: "stackhpc/pike"
+kolla_bifrost_source_version: "stable/queens"
 
 ###############################################################################
 # Diskimage-builder configuration.

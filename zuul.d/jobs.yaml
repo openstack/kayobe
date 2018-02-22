@@ -24,7 +24,7 @@
     timeout: 3600
     required-projects:
       - name: openstack/requirements
-        override-checkout: stable/pike
+        override-checkout: stable/queens
     vars:
       tox_envlist: molecule
 

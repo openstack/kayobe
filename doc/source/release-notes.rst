@@ -5,6 +5,8 @@ Release Notes
 In Development
 ==============
 
+Kayobe 4.0.0 will be based on the Queens release of OpenStack.
+
 Features
 --------
 

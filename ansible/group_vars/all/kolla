@@ -9,11 +9,11 @@ kolla_ctl_install_type: source
 kolla_source_path: "{{ source_checkout_path ~ '/kolla' }}"
 
 # URL of Kolla source code repository if type is 'source'.
-kolla_source_url: "https://github.com/stackhpc/kolla"
+kolla_source_url: "https://git.openstack.org/openstack/kolla"
 
 # Version (branch, tag, etc.) of Kolla source code repository if type is
 # 'source'.
-kolla_source_version: "stackhpc/pike"
+kolla_source_version: "stable/queens"
 
 # Path to virtualenv in which to install kolla.
 kolla_venv: "{{ virtualenv_path ~ '/kolla' }}"
@@ -31,11 +31,11 @@ kolla_ansible_ctl_install_type: source
 kolla_ansible_source_path: "{{ lookup('env', 'KOLLA_SOURCE_PATH') | default(lookup('env', 'PWD') ~ '/src/kolla-ansible', true) }}"
 
 # URL of Kolla Ansible source code repository if type is 'source'.
-kolla_ansible_source_url: "https://github.com/stackhpc/kolla-ansible"
+kolla_ansible_source_url: "https://git.openstack.org/openstack/kolla-ansible"
 
 # Version (branch, tag, etc.) of Kolla Ansible source code repository if type
 # is 'source'.
-kolla_ansible_source_version: "stackhpc/pike"
+kolla_ansible_source_version: "stable/queens"
 
 # Path to virtualenv in which to install kolla-ansible.
 kolla_ansible_venv: "{{ lookup('env', 'KOLLA_VENV_PATH') | default(lookup('env', 'PWD') ~ '/venvs/kolla-ansible', true) }}"
@@ -56,7 +56,7 @@ kolla_base_distro: "centos"
 kolla_install_type: "binary"
 
 # Docker namespace to use for Kolla images.
-kolla_docker_namespace: "stackhpc"
+kolla_docker_namespace: "kolla"
 
 # Url of docker registry to use for Kolla images.
 kolla_docker_registry:
@@ -68,7 +68,7 @@ kolla_docker_registry_username:
 kolla_docker_registry_password:
 
 # Kolla OpenStack release version. This should be a Docker image tag.
-kolla_openstack_release: "5.0.0"
+kolla_openstack_release: "queens"
 
 # Dict mapping names of sources to their definitions for
 # kolla_install_type=source. See kolla.common.config for details.
@@ -260,6 +260,8 @@ kolla_overcloud_inventory_top_level_group_map:
 kolla_overcloud_inventory_kolla_top_level_groups:
   - "control"
   - "network"
+  - "inner-compute"
+  - "external-compute"
   - "compute"
   - "monitoring"
   - "storage"
@@ -281,8 +283,8 @@ kolla_enable_tls_external: "no"
 # Whether debug logging is enabled.
 kolla_openstack_logging_debug: "False"
 
-# Upper constraints file for the stable/pike branch of Kolla
-kolla_upper_constraints_file: "https://raw.githubusercontent.com/openstack/requirements/stable/pike/upper-constraints.txt"
+# Upper constraints file for installation of Kolla.
+kolla_upper_constraints_file: "https://raw.githubusercontent.com/openstack/requirements/stable/queens/upper-constraints.txt"
 
 ###############################################################################
 # Kolla feature flag configuration.
