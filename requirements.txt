@@ -1,3 +1,8 @@
+# The order of packages is significant, because pip processes them in the order
+# of appearance. Changing the order has an impact on the overall integration
+# process, which may cause wedges in the gate later.
+
+pbr>=2.0 # Apache-2.0
 # Ansible 2.3 has a bug (#30350) in the Dell network modules. Pull in a version
 # with the fix backported. It can be installed by uncommenting the following
 # line and commenting the one after.
