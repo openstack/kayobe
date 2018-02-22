@@ -65,7 +65,7 @@
     version: "{{ item.version | default(omit) }}"
     state: "{{ item.state | default('present') }}"
     virtualenv: "{{ kolla_venv }}"
-    extra_args: "-c {{ kolla_upper_constraints_file }}"
+    extra_args: "{% if kolla_upper_constraints_file %}-c {{ kolla_upper_constraints_file }}{% endif %}"
   with_items:
     # Intall Kolla from source.
     - name: "{{ kolla_source_path }}"
