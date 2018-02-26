@@ -57,6 +57,21 @@ environment.
 If using Vagrant, follow the steps in :ref:`development-vagrant` to prepare
 your environment for use with Vagrant and bring up a Vagrant VM.
 
+If not using Vagrant, the default development configuration expects the
+presence of a bridge interface on the OpenStack controller host to carry
+control plane traffic.  The bridge should be named ``breth1`` with a single
+port ``eth1``, and an IP address of ``192.168.33.3/24``.  This can be modified
+by editing
+``config/src/kayobe-config/etc/kayobe/inventory/group_vars/controllers/network-interfaces``.
+Alternatively, this can be added using the following commands::
+
+    sudo ip l add breth1 type bridge
+    sudo ip l set breth1 up
+    sudo ip a add 192.168.33.3/24 dev breth1
+    sudo ip l add eth1 type dummy
+    sudo ip l set eth1 up
+    sudo ip l set eth1 master breth1
+
 Usage
 -----
 
@@ -64,6 +79,11 @@ If using Vagrant, SSH into the Vagrant VM and change to the shared directory::
 
     vagrant ssh
     cd /vagrant
+
+If not using Vagrant, run the ``dev/install.sh`` script to install kayobe and
+its dependencies in a virtual environment::
+
+    ./dev/install.sh
 
 Run the ``dev/overcloud-deploy.sh`` script to deploy the OpenStack control
 plane::
@@ -104,6 +124,11 @@ environment.
 Usage
 -----
 
+Run the ``dev/install.sh`` script to install kayobe and its dependencies in a
+virtual environment::
+
+    ./dev/install.sh
+
 Run the ``dev/seed-hypervisor-deploy.sh`` script to deploy the seed
 hypervisor::
 
@@ -141,6 +166,11 @@ environment.
 
 Usage
 =====
+
+Run the ``dev/install.sh`` script to install kayobe and its dependencies in a
+virtual environment::
+
+    ./dev/install.sh
 
 Run the ``dev/seed-deploy.sh`` script to deploy the seed VM::
 
