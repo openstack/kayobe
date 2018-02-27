@@ -8,6 +8,18 @@ In Development
 Features
 --------
 
+Upgrade Notes
+-------------
+
+Kayobe 3.1.0
+============
+
+Kayobe 3.1.0 was released on 22nd February 2018 and is based on the Pike
+release of OpenStack.
+
+Features
+--------
+
 * Adds ``--interface-limit`` and ``--interface-description-limit`` arguments to
   the ``kayobe physical network configure`` command.  These arguments allow
   configuration to be limited to a subset of switch interfaces.
@@ -46,6 +58,8 @@ Features
 * Adds support for deployment of storage hosts. These hosts should be added to
   the ``[storage]`` group.
 * Adds support for the tagging of ceph disks.
+* Adds support for post-deployment configuration of Grafana data sources and
+  dashboards.
 
 Upgrade Notes
 -------------
