@@ -58,6 +58,8 @@ Features
 * Adds support for deployment of storage hosts. These hosts should be added to
   the ``[storage]`` group.
 * Adds support for the tagging of ceph disks.
+* Adds support for post-deployment configuration of Grafana data sources and
+  dashboards.
 
 Upgrade Notes
 -------------
