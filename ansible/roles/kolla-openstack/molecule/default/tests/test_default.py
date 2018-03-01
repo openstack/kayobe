@@ -51,7 +51,8 @@ def test_service_config_directory(host, path):
      'neutron',
      'nova',
      'sahara',
-     'swift'])
+     'swift',
+     'zookeeper'])
 def test_service_config_directory_absent(host, path):
     path = os.path.join('/etc/kolla/config', path)
     utils.test_path_absent(host, path)

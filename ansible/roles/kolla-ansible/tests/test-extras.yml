@@ -121,6 +121,7 @@
             kolla_enable_tempest: True
             kolla_enable_trove: True
             kolla_enable_watcher: True
+            kolla_enable_zookeeper: True
             kolla_enable_zun: True
             kolla_extra_globals:
               extra-global-1: "extra-val-1"
@@ -253,6 +254,7 @@
               #enable_tempest: True
               #enable_trove: True
               #enable_watcher: True
+              #enable_zookeeper: True
               #enable_zun: True
               extra-global-1: "extra-val-1"
               extra-global-2: "extra-val-2"

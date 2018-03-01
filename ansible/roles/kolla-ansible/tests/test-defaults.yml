@@ -118,6 +118,7 @@
               - enable_ironic
               - enable_neutron
               - enable_nova
+              - enable_zookeeper
               - grafana_admin_username
 
         - name: Check whether inventory files exist

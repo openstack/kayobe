@@ -348,3 +348,12 @@ kolla_extra_sahara:
 
 # Whether to enable swift.
 kolla_enable_swift:
+
+###############################################################################
+# Zookeeper configuration.
+
+# Whether to enable Zookeeper.
+kolla_enable_zookeeper:
+
+# Free form extra configuration to append to zookeeper.cfg.
+kolla_extra_zookeeper:
