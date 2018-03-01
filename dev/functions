@@ -25,7 +25,7 @@ function config_defaults {
     export KAYOBE_CONFIG_SOURCE_PATH="${KAYOBE_CONFIG_SOURCE_PATH:-${KAYOBE_SOURCE_PATH}/config/src/kayobe-config}"
 
     # Path to the kayobe virtual environment.
-    export KAYOBE_VENV_PATH="${KAYOBE_VENV_PATH:-~/kayobe-venv}"
+    export KAYOBE_VENV_PATH="${KAYOBE_VENV_PATH:-${HOME}/kayobe-venv}"
 
     # Whether to build container images for the seed services. If 0, they will
     # be pulled.
