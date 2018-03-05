@@ -16,10 +16,10 @@
   tasks:
     - name: Create controllers group with ironic enabled
       group_by:
-        key: "controllers_with_ironic_enabled_{{ kolla_enable_ironic | bool }}"
+        key: "controllers_for_introspection_rules_dell_lldp_workaround_{{ kolla_enable_ironic | bool }}"
 
 - name: Group controller hosts in systems requiring the workaround
-  hosts: controllers_with_ironic_enabled_True
+  hosts: controllers_for_introspection_rules_dell_lldp_workaround_True
   gather_facts: False
   tags:
     - introspection-rules

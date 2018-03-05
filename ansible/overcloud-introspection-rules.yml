@@ -6,11 +6,11 @@
   tasks:
     - name: Create controllers group with ironic enabled
       group_by:
-        key: "controllers_with_ironic_enabled_{{ kolla_enable_ironic | bool }}"
+        key: "controllers_for_introspection_rules_{{ kolla_enable_ironic | bool }}"
 
 - name: Ensure introspection rules are registered in Ironic Inspector
   # Only required to run on a single host.
-  hosts: controllers_with_ironic_enabled_True[0]
+  hosts: controllers_for_introspection_rules_True[0]
   gather_facts: False
   tags:
     - introspection-rules
