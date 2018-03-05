@@ -6,10 +6,10 @@
   tasks:
     - name: Create controllers group with ironic enabled
       group_by:
-        key: "controllers_with_ironic_enabled_{{ kolla_enable_ironic | bool }}"
+        key: "controllers_for_ipa_images_{{ kolla_enable_ironic | bool }}"
 
 - name: Ensure Ironic Python Agent (IPA) images are downloaded and registered
-  hosts: controllers_with_ironic_enabled_True[0]
+  hosts: controllers_for_ipa_images_True[0]
   gather_facts: False
   tags:
     - ipa-images
