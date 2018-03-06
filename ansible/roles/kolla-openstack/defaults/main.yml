@@ -247,6 +247,15 @@ kolla_inspector_default_gateway:
 kolla_extra_ironic_dnsmasq:
 
 ###############################################################################
+# Kafka configuration.
+
+# Whether to enable Kafka.
+kolla_enable_kafka:
+
+# Free form extra configuration to append to kafka.server.properties.
+kolla_extra_kafka:
+
+###############################################################################
 # Magnum configuration.
 
 # Whether to enable Magnum.

@@ -45,6 +45,7 @@ def test_service_config_directory(host, path):
      'heat',
      'horizon',
      'ironic',
+     'kafka',
      'magnum',
      'manila',
      'murano',

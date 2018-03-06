@@ -52,6 +52,10 @@ provisioner:
         kolla_inspector_ipa_ramdisk_path: ${MOLECULE_TEMP_PATH:-/tmp}/ironic-agent.initramfs
         kolla_extra_ironic_dnsmasq: |
           extra=bar
+        kolla_enable_kafka: True
+        kolla_extra_kafka: |
+          [extra-kafka.server.properties]
+          foo=bar
         kolla_enable_magnum: True
         kolla_extra_magnum: |
           [extra-magnum.conf]

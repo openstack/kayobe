@@ -85,6 +85,7 @@
             kolla_enable_horizon: True
             kolla_enable_influxdb: True
             kolla_enable_ironic: True
+            kolla_enable_kafka: True
             kolla_enable_karbor: True
             kolla_enable_kibana: True
             kolla_enable_kuryr: True
@@ -219,6 +220,7 @@
               #enable_horizon: True
               #enable_influxdb: True
               #enable_ironic: True
+              #enable_kafka: True
               #enable_karbor: True
               #enable_kibana: True
               #enable_kuryr: True
