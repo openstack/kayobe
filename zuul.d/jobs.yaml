@@ -1,0 +1,14 @@
+---
+# Tox job that checks Ansible playbook syntax.
+- job:
+    name: kayobe-tox-ansible-syntax
+    parent: openstack-tox
+    vars:
+      tox_envlist: ansible-syntax
+
+# Tox job that runs native Ansible role tests.
+- job:
+    name: kayobe-tox-ansible
+    parent: openstack-tox-with-sudo
+    vars:
+      tox_envlist: ansible

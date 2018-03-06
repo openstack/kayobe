@@ -1,0 +1,21 @@
+---
+- project:
+    check:
+      jobs:
+        - openstack-tox-pep8
+        - openstack-tox-py27
+        # FIXME(mgoddard): python 3.5 jobs currently failing.
+        - openstack-tox-py35:
+            voting: false
+        - build-openstack-sphinx-docs
+        - kayobe-tox-ansible-syntax
+        - kayobe-tox-ansible
+
+    gate:
+      queue: kayobe
+      jobs:
+        - openstack-tox-pep8
+        - openstack-tox-py27
+        - build-openstack-sphinx-docs
+        - kayobe-tox-ansible-syntax
+        - kayobe-tox-ansible
