@@ -1,19 +1,33 @@
 ---
-# Tox job that checks Ansible playbook syntax.
 - job:
     name: kayobe-tox-ansible-syntax
+    description: |
+      Tox job that checks Ansible playbook syntax.
     parent: openstack-tox
     vars:
       tox_envlist: ansible-syntax
 
-# Tox job that runs native Ansible role tests.
 - job:
     name: kayobe-tox-ansible
+    description: |
+      Tox job that runs native Ansible role tests.
     parent: openstack-tox-with-sudo
     vars:
       tox_envlist: ansible
 
-# Base job for testing overcloud deployment.
+- job:
+    name: kayobe-tox-molecule
+    description: |
+      Tox job that runs molecule-based Ansible role tests.
+    parent: openstack-tox-with-sudo
+    pre-run: playbooks/kayobe-tox-molecule/pre.yml
+    timeout: 3600
+    required-projects:
+      - name: openstack/requirements
+        override-checkout: stable/pike
+    vars:
+      tox_envlist: molecule
+
 - job:
     name: kayobe-overcloud-base
     description: |

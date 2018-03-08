@@ -9,6 +9,7 @@
         - build-openstack-sphinx-docs
         - kayobe-tox-ansible-syntax
         - kayobe-tox-ansible
+        - kayobe-tox-molecule
         - kayobe-overcloud-centos
         - kayobe-seed-centos
 
@@ -22,5 +23,6 @@
         - build-openstack-sphinx-docs
         - kayobe-tox-ansible-syntax
         - kayobe-tox-ansible
+        - kayobe-tox-molecule
         - kayobe-overcloud-centos
         - kayobe-seed-centos
