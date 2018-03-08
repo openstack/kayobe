@@ -1,0 +1,79 @@
+---
+# Docker community edition installation procedure for Ubuntu taken from
+# https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-ce-1.
+
+# TODO: Configure docker to use the registry mirror provided by OpenStack
+# infra. Kolla-ansible has code referencing
+# http://{{ zuul_site_mirror_fqdn }}:8081/registry-1.docker/, but this did not
+# seem to work.
+
+- name: Fail if OS family is not supported
+  fail:
+    msg: "OS family {{ ansible_os_family }} is not supported"
+  when: ansible_os_family not in ["Debian"]
+
+- name: Update apt package cache
+  apt:
+    update_cache: true
+  become: true
+
+- name: Ensure dependencies are installed
+  apt:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - software-properties-common
+  become: true
+
+- name: Ensure docker apt gpg key is installed
+  apt_key:
+    url: "https://download.docker.com/linux/ubuntu/gpg"
+    id: "0EBFCD88"
+    state: present
+  become: true
+
+- name: Ensure docker CE stable repository is present
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable"
+    state: present
+  become: true
+
+- name: Update apt package cache
+  apt:
+    update_cache: true
+  become: true
+
+- name: Ensure docker-ce is installed
+  apt:
+    name: docker-ce
+    state: installed
+  become: true
+
+- name: Ensure docker group exists
+  group:
+    name: docker
+  become: true
+
+- name: Add user to docker group
+  user:
+    name: "{{ ansible_user_id }}"
+    append: yes
+    groups: docker
+  register: group_result
+  become: true
+
+# NOTE(mgoddard): We need to reset the SSH connection to pick up the new group
+# membership. For Ansible 2.3+, ideally we'd use a meta task with the
+# reset_connection option but due to
+# https://github.com/ansible/ansible/issues/27520 this does not work (checked
+# in Ansible 2.3.2.0). Various methods have been attempted, but none have been
+# found to work. Instead, we use sudo when executing tox.
+# Attempted solutions:
+# * reset_connection - see above.
+# * kill local ssh/remove control socket - Zuul blocks running local commands.
+# * kill remote sshd - causes the task to fail, error cannot be ignored.
+# * pause for SSH connection timeout - fails due to
+#   https://github.com/ansible/ansible/issues/31694.
