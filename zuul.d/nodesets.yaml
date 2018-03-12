@@ -1,0 +1,6 @@
+---
+- nodeset:
+    name: kayobe-centos
+    nodes:
+      - name: primary
+        label: centos-7

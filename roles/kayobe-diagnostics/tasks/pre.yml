@@ -1,0 +1,17 @@
+---
+- name: Ensure node log directory exists
+  file:
+    path: "{{ kayobe_diagnostics_log_dir }}"
+    state: "directory"
+
+- name: Ensure node log subdirectories exist
+  file:
+    path: "{{ kayobe_diagnostics_log_dir }}/{{ item }}"
+    state: "directory"
+    mode: 0777
+  with_items:
+    - "docker_logs"
+    - "kolla_configs"
+    - "system_logs"
+    - "kolla"
+    - "ansible"
