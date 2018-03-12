@@ -1,0 +1,60 @@
+---
+- hosts: primary
+  vars:
+    logs_dir: "/tmp/logs"
+    kayobe_src_dir: "{{ zuul.project.src_dir }}"
+  roles:
+    - role: kayobe-diagnostics
+      kayobe_diagnostics_phase: "pre"
+      kayobe_diagnostics_log_dir: "{{ logs_dir }}"
+  tasks:
+    - name: Install dbus for debian system
+      apt:
+        name: dbus
+      when:
+        - ansible_os_family == 'Debian'
+      become: true
+
+    - block:
+        # NOTE(mgoddard): The CentOS image used in CI has epel-release installed,
+        # but the configure-mirrors role used by Zuul disables epel. Since we
+        # install epel-release and expect epel to be enabled, enable it here.
+        - name: Ensure yum-utils is installed
+          yum:
+            name: yum-utils
+            state: installed
+
+        - name: Enable the EPEL yum repository
+          command: yum-config-manager --enable epel
+      when: ansible_os_family == 'RedHat'
+      become: true
+
+    - name: Ensure kayobe-config directory exists
+      file:
+        path: "{{ kayobe_src_dir }}/config/src"
+        state: directory
+
+    - name: Ensure kayobe-config repository is cloned
+      git:
+        repo: https://github.com/stackhpc/dev-kayobe-config
+        dest: "{{ kayobe_src_dir }}/config/src/kayobe-config"
+
+    - name: Ensure kayobe-config override config file exists
+      template:
+        src: overrides.yml.j2
+        dest: "{{ kayobe_src_dir }}/config/src/kayobe-config/etc/kayobe/overrides.yml"
+
+    # NOTE(mgoddard): The kayobe dev config by default expects a bridge -
+    # breth1 - to exist with an IP address of 192.168.33.3.
+    - name: Ensure all-in-one network bridge interface exists
+      command: "{{ item }}"
+      become: true
+      with_items:
+        - "ip l add breth1 type bridge"
+        - "ip l set breth1 up"
+        - "ip a add 192.168.33.3/24 dev breth1"
+
+    - name: Ensure kayobe is installed
+      shell:
+        cmd: dev/install.sh > {{ logs_dir }}/ansible/install
+        chdir: "{{ kayobe_src_dir }}"

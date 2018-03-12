@@ -8,6 +8,7 @@
         - build-openstack-sphinx-docs
         - kayobe-tox-ansible-syntax
         - kayobe-tox-ansible
+        - kayobe-overcloud-centos
 
     gate:
       queue: kayobe
@@ -18,3 +19,4 @@
         - build-openstack-sphinx-docs
         - kayobe-tox-ansible-syntax
         - kayobe-tox-ansible
+        - kayobe-overcloud-centos

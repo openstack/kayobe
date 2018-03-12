@@ -1,0 +1,10 @@
+---
+- hosts: primary
+  vars:
+    kayobe_src_dir: "{{ zuul.project.src_dir }}"
+    logs_dir: "/tmp/logs"
+  tasks:
+    - name: Ensure overcloud is deployed
+      shell:
+        cmd: dev/overcloud-deploy.sh > {{ logs_dir }}/ansible/overcloud-deploy
+        chdir: "{{ kayobe_src_dir }}"

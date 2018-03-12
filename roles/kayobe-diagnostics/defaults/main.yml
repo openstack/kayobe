@@ -1,0 +1,9 @@
+---
+# Job phase - one of 'pre' or 'post'.
+kayobe_diagnostics_phase:
+
+# Directory on the remote host in which to save diagnostics.
+kayobe_diagnostics_logs_dir:
+
+# Directory on the executor in which to save logs.
+kayobe_diagnostics_executor_log_dir:
