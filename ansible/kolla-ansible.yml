@@ -221,4 +221,5 @@
 
   roles:
     - role: kolla-ansible
+      kolla_external_fqdn_cert: "{{ kolla_config_path }}/certificates/haproxy.pem"
       kolla_ansible_passwords_path: "{{ kayobe_config_path }}/kolla/passwords.yml"

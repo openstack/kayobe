@@ -246,3 +246,10 @@ kolla_extra_globals:
 # Dictionary containing custom passwords to add or override in the Kolla
 # passwords file.
 kolla_ansible_custom_passwords: {}
+
+###############################################################################
+# TLS certificate bundle management
+
+# When set, this will copy the contents of this variable into place for
+# use by HAProxy.
+kolla_tls_cert:
