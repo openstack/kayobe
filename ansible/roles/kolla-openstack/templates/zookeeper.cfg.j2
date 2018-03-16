@@ -1,0 +1,9 @@
+# {{ ansible_managed }}
+
+{% if kolla_extra_zookeeper %}
+#######################
+# Extra configuration
+#######################
+
+{{ kolla_extra_zookeeper }}
+{% endif %}

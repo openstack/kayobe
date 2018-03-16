@@ -29,6 +29,7 @@
     - { src: nova.conf.j2, dest: nova.conf, enabled: "{{ kolla_enable_nova }}" }
     - { src: pxelinux.default.j2, dest: ironic/pxelinux.default, enabled: "{{ kolla_enable_ironic }}" }
     - { src: sahara.conf.j2, dest: sahara.conf, enabled: "{{ kolla_enable_sahara }}" }
+    - { src: zookeeper.cfg.j2, dest: zookeeper.cfg, enabled: "{{ kolla_enable_zookeeper }}" }
   when: item.enabled | bool
 
 - name: Ensure the ironic inspector kernel and ramdisk are downloaded

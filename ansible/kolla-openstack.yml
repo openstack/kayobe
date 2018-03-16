@@ -113,6 +113,7 @@
             - { name: neutron_ml2, file: neutron/ml2_conf.ini }
             - { name: nova, file: nova.conf }
             - { name: sahara, file: sahara.conf }
+            - { name: zookeeper, file: zookeeper.cfg }
 
         - name: Initialise a fact containing extra configuration
           set_fact:
@@ -213,4 +214,5 @@
       kolla_extra_neutron_ml2: "{{ kolla_extra_config.neutron_ml2 | default }}"
       kolla_extra_nova: "{{ kolla_extra_config.nova | default }}"
       kolla_extra_sahara: "{{ kolla_extra_config.sahara | default }}"
+      kolla_extra_zookeeper: "{{ kolla_extra_config.zookeeper | default }}"
       kolla_extra_config_path: "{{ kayobe_config_path }}/kolla/config"

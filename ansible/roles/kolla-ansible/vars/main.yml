@@ -118,4 +118,5 @@ kolla_feature_flags:
   - tempest
   - trove
   - watcher
+  - zookeeper
   - zun

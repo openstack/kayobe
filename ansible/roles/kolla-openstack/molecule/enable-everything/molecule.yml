@@ -78,6 +78,10 @@ provisioner:
           [extra-sahara.conf]
           foo=bar
         kolla_enable_swift: True
+        kolla_enable_zookeeper: True
+        kolla_extra_zookeeper: |
+          [extra-zookeeper.cfg]
+          foo=bar
   lint:
     name: ansible-lint
 scenario:

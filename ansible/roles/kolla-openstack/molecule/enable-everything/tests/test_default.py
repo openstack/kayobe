@@ -44,7 +44,8 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
      'neutron',
      'nova',
      'sahara',
-     'swift'])
+     'swift',
+     'zookeeper'])
 def test_service_config_directory(host, path):
     path = os.path.join('/etc/kolla/config', path)
     utils.test_directory(host, path)
@@ -65,7 +66,8 @@ def test_service_config_directory(host, path):
      'murano.conf',
      'neutron.conf',
      'nova.conf',
-     'sahara.conf'])
+     'sahara.conf',
+     'zookeeper.cfg'])
 def test_service_ini_file(host, path):
     # TODO(mgoddard): Check more of config file contents.
     path = os.path.join('/etc/kolla/config', path)
