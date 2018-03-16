@@ -28,6 +28,8 @@ copy_logs() {
     parted -l > ${LOG_DIR}/system_logs/parted-l.txt
     mount > ${LOG_DIR}/system_logs/mount.txt
     env > ${LOG_DIR}/system_logs/env.txt
+    ip address > ${LOG_DIR}/system_logs/ip-address.txt
+    ip route > ${LOG_DIR}/system_logs/ip-route.txt
 
     if [ `command -v dpkg` ]; then
         dpkg -l > ${LOG_DIR}/system_logs/dpkg-l.txt
@@ -50,13 +52,6 @@ copy_logs() {
     # logs.openstack.org clicking results in the browser shows the
     # files, rather than trying to send it to another app or make you
     # download it, etc.
-
-    # Rename files to .txt; this is so that when displayed via
-    # logs.openstack.org clicking results in the browser shows the
-    # files, rather than trying to send it to another app or make you
-    # download it, etc.
-
-    # Rename all .log files to .txt files
     for f in $(find ${LOG_DIR}/{system_logs,kolla,docker_logs} -name "*.log"); do
         mv $f ${f/.log/.txt}
     done
