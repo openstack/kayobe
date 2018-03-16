@@ -12,3 +12,20 @@
     parent: openstack-tox-with-sudo
     vars:
       tox_envlist: ansible
+
+# Base job for testing overcloud deployment.
+- job:
+    name: kayobe-overcloud-base
+    pre-run: playbooks/kayobe-overcloud-base/pre.yml
+    run: playbooks/kayobe-overcloud-base/run.yml
+    post-run: playbooks/kayobe-overcloud-base/post.yml
+    attempts: 1
+    timeout: 5400
+    irrelevant-files:
+      - ^.*\.rst$
+      - ^doc/.*
+
+- job:
+    name: kayobe-overcloud-centos
+    parent: kayobe-overcloud-base
+    nodeset: kayobe-centos

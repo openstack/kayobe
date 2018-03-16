@@ -1,0 +1,21 @@
+---
+- name: Write host variables to a file
+  copy:
+    content: "{{ hostvars[inventory_hostname] | to_nice_json }}"
+    dest: "{{ kayobe_diagnostics_log_dir }}/facts.json"
+
+- name: Run diagnostics script
+  script: get_logs.sh
+  register: get_logs_result
+  become: true
+  failed_when: false
+
+- name: Print get_logs.sh output
+  debug:
+    msg: "{{ get_logs_result.stdout }}"
+
+- name: Download logs to executor
+  synchronize:
+    src: "{{ kayobe_diagnostics_log_dir }}"
+    dest: "{{ kayobe_diagnostics_executor_log_dir }}/"
+    mode: pull

@@ -1,0 +1,2 @@
+---
+- include: "{{ kayobe_diagnostics_phase }}.yml"
