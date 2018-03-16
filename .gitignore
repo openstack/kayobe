@@ -43,6 +43,10 @@ output/*/index.html
 # Sphinx
 doc/build
 
+# pbr generates these
+AUTHORS
+ChangeLog
+
 # Editors
 *~
 .*.swp
