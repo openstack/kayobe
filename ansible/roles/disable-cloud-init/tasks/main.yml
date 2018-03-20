@@ -1,9 +1,9 @@
 ---
 - name: Disable cloud init service
   file:
-    path: /etc/cloud/cloud-init.disabled 
+    path: /etc/cloud/cloud-init.disabled
     state: touch
-    mode: "u=rw,g=r,o=r" 
+    mode: "u=rw,g=r,o=r"
   notify:
-    - restart cloud-init daemon 
+    - reload systemd daemon
   become: True
