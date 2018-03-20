@@ -41,6 +41,10 @@ provisioner:
           [extra-heat.conf]
           foo=bar
         kolla_enable_horizon: True
+        kolla_enable_influxdb: True
+        kolla_extra_influxdb: |
+          [extra-influxdb.conf]
+          foo=bar
         kolla_enable_ironic: True
         kolla_extra_ironic: |
           [extra-ironic.conf]

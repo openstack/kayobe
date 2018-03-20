@@ -19,6 +19,7 @@
     - { src: glance.conf.j2, dest: glance.conf, enabled: "{{ kolla_enable_glance }}" }
     - { src: grafana.ini.j2, dest: grafana.ini, enabled: "{{ kolla_enable_grafana }}" }
     - { src: heat.conf.j2, dest: heat.conf, enabled: "{{ kolla_enable_heat }}" }
+    - { src: influxdb.conf.j2, dest: influxdb.conf, enabled: "{{ kolla_enable_influxdb }}" }
     - { src: ironic.conf.j2, dest: ironic.conf, enabled: "{{ kolla_enable_ironic }}" }
     - { src: ironic-dnsmasq.conf.j2, dest: ironic/ironic-dnsmasq.conf, enabled: "{{ kolla_enable_ironic }}" }
     - { src: ironic-inspector.conf.j2, dest: ironic-inspector.conf, enabled: "{{ kolla_enable_ironic }}" }

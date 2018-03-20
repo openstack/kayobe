@@ -140,6 +140,8 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_heat | bool }}"
   - regex: horizon
     enabled: "{{ kolla_enable_horizon | bool }}"
+  - regex: influxdb
+    enabled: "{{ kolla_enable_influxdb | bool }}"
   - regex: ironic
     enabled: "{{ kolla_enable_ironic | bool }}"
   - regex: iscsid
@@ -302,6 +304,7 @@ kolla_enable_gnocchi: "no"
 kolla_enable_haproxy: "yes"
 kolla_enable_heat: "yes"
 kolla_enable_horizon: "yes"
+kolla_enable_influxdb: "no"
 kolla_enable_ironic: "yes"
 kolla_enable_kafka: "no"
 kolla_enable_kibana: "{{ 'yes' if kolla_enable_central_logging | bool else 'no' }}"

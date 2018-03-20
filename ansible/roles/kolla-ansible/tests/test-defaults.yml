@@ -117,6 +117,7 @@
               - enable_glance
               - enable_ironic
               - enable_kafka
+              - enable_influxdb
               - enable_neutron
               - enable_nova
               - enable_zookeeper

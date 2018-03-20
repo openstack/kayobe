@@ -104,6 +104,7 @@
             - { name: glance, file: glance.conf }
             - { name: grafana, file: grafana.ini }
             - { name: heat, file: heat.conf }
+            - { name: influxdb, file: influxdb.conf }
             - { name: inspector, file: ironic-inspector.conf }
             - { name: ironic, file: ironic.conf }
             - { name: ironic_dnsmasq, file: ironic/ironic-dnsmasq.conf }
@@ -207,6 +208,7 @@
       kolla_extra_grafana: "{{ kolla_extra_config.grafana | default }}"
       kolla_extra_heat: "{{ kolla_extra_config.heat | default }}"
       kolla_extra_inspector: "{{ kolla_extra_config.inspector | default }}"
+      kolla_extra_influxdb: "{{ kolla_extra_config.influxdb | default }}"
       kolla_extra_ironic: "{{ kolla_extra_config.ironic | default }}"
       kolla_extra_ironic_dnsmasq: "{{ kolla_extra_config.ironic_dnsmasq | default }}"
       kolla_extra_kafka: "{{ kolla_extra_config.kafka | default }}"
