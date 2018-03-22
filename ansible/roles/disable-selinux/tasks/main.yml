@@ -47,7 +47,7 @@
         state: started
         # Wait for 10 seconds before polling to ensure the node has shutdown.
         delay: 10
-        timeout: "{{ disable_selinux_do_reboot_timeout }}"
+        timeout: "{{ disable_selinux_reboot_timeout }}"
       when: not is_local | bool
   when:
     - disable_selinux_do_reboot | bool
