@@ -1,0 +1,4 @@
+---
+features:
+  - Add support for OpenStack Monasca which provides monitoring-as-a-service
+    for OpenStack at scale.
