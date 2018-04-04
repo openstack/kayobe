@@ -40,7 +40,7 @@ Preparation
 
 Clone the kayobe repository::
 
-    git clone https://github.com/stackhpc/kayobe
+    git clone https://git.openstack.org/openstack/kayobe.git
 
 Change the current directory to the kayobe repository::
 
@@ -106,7 +106,7 @@ The following commands should be executed on the seed hypervisor.
 
 Clone the kayobe repository::
 
-    git clone https://github.com/stackhpc/kayobe
+    git clone https://git.openstack.org/openstack/kayobe.git
 
 Change the current directory to the kayobe repository::
 
@@ -149,7 +149,7 @@ The following commands should be executed on the seed hypervisor.
 
 Change the current directory to the kayobe repository::
 
-    git clone https://github.com/stackhpc/kayobe
+    git clone https://git.openstack.org/openstack/kayobe.git
 
 Change to the ``kayobe`` directory::
 

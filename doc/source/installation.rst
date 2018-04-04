@@ -52,7 +52,7 @@ code repositories and python virtual environments::
 Next, obtain the Kayobe source code. For example::
 
     $ cd <base_path>/src
-    $ git clone https://github.com/stackhpc/kayobe
+    $ git clone https://git.openstack.org/openstack/kayobe.git
 
 Create a virtualenv for Kayobe::
 
