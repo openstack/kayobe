@@ -8,6 +8,9 @@ In Development
 Features
 --------
 
+* Adds support for configuration of custom repositories. ``yum_custom_repos``
+  should be a dict of repositories.
+
 Upgrade Notes
 -------------
 
