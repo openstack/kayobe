@@ -10,6 +10,9 @@ Features
 
 * Adds support for configuration of custom repositories. ``yum_custom_repos``
   should be a dict of repositories.
+* Adds support for configuration of live-restore option in docker. This is
+  enabled by setting the variable ``docker_daemon_live_restore``. Option is
+  set to true by default.
 
 Upgrade Notes
 -------------
