@@ -82,12 +82,13 @@
 
   roles:
     - role: stackhpc.libvirt-vm
+      seed_vm_configdrive_device: cdrom
       seed_vm_configdrive_volume:
         name: "{{ hostvars[seed_host].seed_vm_name }}-configdrive"
         pool: "{{ hostvars[seed_host].seed_vm_pool }}"
         # Round size up to next multiple of 4096.
         capacity: "{{ (stat_result.stat.size + 4095) // 4096 * 4096 }}"
-        device: "cdrom"
+        device: "{{ seed_vm_configdrive_device }}"
         format: "raw"
         image: "{{ seed_vm_configdrive_path }}"
       libvirt_vm_image_cache_path: "{{ image_cache_path }}"

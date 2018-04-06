@@ -171,3 +171,20 @@
     name: kayobe-seed-upgrade-centos8
     parent: kayobe-seed-upgrade-base
     nodeset: kayobe-centos8
+
+- job:
+    name: kayobe-seed-vm-base
+    parent: kayobe-base
+    description: |
+      Base job for testing seed VM provisioning.
+
+      Configures the primary VM as a libvirt hypervisor, and provisions a seed
+      as a VM.
+    pre-run: playbooks/kayobe-seed-vm-base/pre.yml
+    run: playbooks/kayobe-seed-vm-base/run.yml
+    timeout: 5400
+
+- job:
+    name: kayobe-seed-vm-centos8
+    parent: kayobe-seed-vm-base
+    nodeset: kayobe-centos8
