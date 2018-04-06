@@ -15,6 +15,7 @@
         - kayobe-overcloud-upgrade-centos8
         - kayobe-seed-centos8
         - kayobe-seed-upgrade-centos8
+        - kayobe-seed-vm-centos8
 
     gate:
       queue: kayobe
@@ -27,3 +28,4 @@
         - kayobe-overcloud-upgrade-centos8
         - kayobe-seed-centos8
         - kayobe-seed-upgrade-centos8
+        - kayobe-seed-vm-centos8
