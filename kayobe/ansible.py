@@ -99,7 +99,10 @@ def _validate_args(parsed_args, playbooks):
 
 
 def _get_vars_files(config_path):
-    """Return a list of Kayobe Ansible configuration variable files."""
+    """Return a list of Kayobe Ansible configuration variable files.
+
+    The files will be sorted alphabetically by name.
+    """
     vars_files = []
     for vars_file in os.listdir(config_path):
         abs_path = os.path.join(config_path, vars_file)
@@ -107,7 +110,7 @@ def _get_vars_files(config_path):
             root, ext = os.path.splitext(vars_file)
             if ext in (".yml", ".yaml", ".json"):
                 vars_files.append(abs_path)
-    return vars_files
+    return sorted(vars_files)
 
 
 def build_args(parsed_args, playbooks,

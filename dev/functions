@@ -27,6 +27,9 @@ function config_defaults {
     # Path to the kayobe virtual environment.
     export KAYOBE_VENV_PATH="${KAYOBE_VENV_PATH:-${HOME}/kayobe-venv}"
 
+    # Whether to provision a VM for the seed host.
+    export KAYOBE_SEED_VM_PROVISION=${KAYOBE_SEED_VM_PROVISION:-1}
+
     # Whether to build container images for the seed services. If 0, they will
     # be pulled.
     export KAYOBE_SEED_CONTAINER_IMAGE_BUILD=${KAYOBE_SEED_CONTAINER_IMAGE_BUILD:-0}
@@ -34,6 +37,9 @@ function config_defaults {
     # Whether to build container images for the overcloud services. If 0, they
     # will be pulled.
     export KAYOBE_OVERCLOUD_CONTAINER_IMAGE_BUILD=${KAYOBE_OVERCLOUD_CONTAINER_IMAGE_BUILD:-0}
+
+    # Additional arguments to pass to kayobe commands.
+    export KAYOBE_EXTRA_ARGS=${KAYOBE_EXTRA_ARGS:-}
 }
 
 function config_set {
@@ -115,15 +121,21 @@ function environment_setup {
     cd "${KAYOBE_SOURCE_PATH}"
 }
 
+function run_kayobe {
+    # Run a kayobe command, including extra arguments provided via
+    # $KAYOBE_EXTRA_ARGS.
+    kayobe ${KAYOBE_EXTRA_ARGS} $*
+}
+
 function seed_hypervisor_deploy {
     # Deploy a seed hypervisor.
     environment_setup
 
     echo "Bootstrapping the ansible control host"
-    kayobe control host bootstrap
+    run_kayobe control host bootstrap
 
     echo "Configuring the seed hypervisor"
-    kayobe seed hypervisor host configure
+    run_kayobe seed hypervisor host configure
 }
 
 function seed_deploy {
@@ -131,34 +143,36 @@ function seed_deploy {
     environment_setup
 
     echo "Bootstrapping the ansible control host"
-    kayobe control host bootstrap
+    run_kayobe control host bootstrap
 
-    echo "Provisioning the seed VM"
-    kayobe seed vm provision
+    if [[ ${KAYOBE_SEED_VM_PROVISION} = 1 ]]; then
+        echo "Provisioning the seed VM"
+        run_kayobe seed vm provision
+    fi
 
     echo "Configuring the seed host"
-    kayobe seed host configure
+    run_kayobe seed host configure
 
     # Note: This must currently be before host configure, because host
     # configure runs kolla-ansible.yml, which validates the presence of the
     # built deploy images.
     if is_deploy_image_built_locally; then
         echo "Building seed deployment images"
-        kayobe seed deployment image build
+        run_kayobe seed deployment image build
     else
         echo "Not building seed deployment images"
     fi
 
     if [[ ${KAYOBE_SEED_CONTAINER_IMAGE_BUILD} = 1 ]]; then
         echo "Building seed container images"
-        kayobe seed container image build
+        run_kayobe seed container image build
     else
         echo "Not pulling seed container images - no such command yet"
-        #kayobe seed container image pull
+        #run_kayobe seed container image pull
     fi
 
     echo "Deploying containerised seed services"
-    kayobe seed service deploy
+    run_kayobe seed service deploy
 }
 
 function overcloud_deploy {
@@ -169,35 +183,35 @@ function overcloud_deploy {
     environment_setup
 
     echo "Bootstrapping the ansible control host"
-    kayobe control host bootstrap
+    run_kayobe control host bootstrap
 
     echo "Configuring the controller host"
-    kayobe overcloud host configure
+    run_kayobe overcloud host configure
 
     # Note: This must currently be before host configure, because host
     # configure runs kolla-ansible.yml, which validates the presence of the
     # built deploy images.
     if is_deploy_image_built_locally; then
         echo "Building overcloud deployment images"
-        kayobe overcloud deployment image build
+        run_kayobe overcloud deployment image build
     else
         echo "Not building overcloud deployment images"
     fi
 
     if [[ ${KAYOBE_OVERCLOUD_CONTAINER_IMAGE_BUILD} = 1 ]]; then
         echo "Building overcloud container images"
-        kayobe overcloud container image build
+        run_kayobe overcloud container image build
     else
         echo "Pulling overcloud container images"
-        kayobe overcloud container image pull
+        run_kayobe overcloud container image pull
     fi
 
     echo "Deploying containerised overcloud services"
-    kayobe overcloud service deploy
+    run_kayobe overcloud service deploy
 
     echo "Performing post-deployment configuration"
     source "${KOLLA_CONFIG_PATH:-/etc/kolla}/admin-openrc.sh"
-    kayobe overcloud post configure
+    run_kayobe overcloud post configure
 
     echo "Control plane deployment complete"
 }

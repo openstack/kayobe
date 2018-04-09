@@ -10,6 +10,7 @@
         - kayobe-tox-ansible-syntax
         - kayobe-tox-ansible
         - kayobe-overcloud-centos
+        - kayobe-seed-centos
 
     gate:
       queue: kayobe
@@ -22,3 +23,4 @@
         - kayobe-tox-ansible-syntax
         - kayobe-tox-ansible
         - kayobe-overcloud-centos
+        - kayobe-seed-centos
