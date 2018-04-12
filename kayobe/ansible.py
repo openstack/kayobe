@@ -12,6 +12,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import errno
 import logging
 import os
 import os.path
@@ -20,6 +21,7 @@ import subprocess
 import sys
 import tempfile
 
+from kayobe import exception
 from kayobe import utils
 from kayobe import vault
 
@@ -224,3 +226,39 @@ def config_dump(parsed_args, host=None, hosts=None, var_name=None,
         return hostvars
     finally:
         shutil.rmtree(dump_dir)
+
+
+def install_galaxy_roles(parsed_args, force=False):
+    """Install Ansible Galaxy role dependencies.
+
+    Installs dependencies specified in kayobe, and if present, in kayobe
+    configuration.
+
+    :param parsed_args: Parsed command line arguments.
+    :param force: Whether to force reinstallation of roles.
+    """
+    LOG.info("Installing galaxy role dependencies from kayobe")
+    utils.galaxy_install("requirements.yml", "ansible/roles", force=force)
+
+    # Check for requirements in kayobe configuration.
+    kc_reqs_path = os.path.join(parsed_args.config_path,
+                                "ansible", "requirements.yml")
+    if not utils.is_readable_file(kc_reqs_path)["result"]:
+        LOG.info("Not installing galaxy role dependencies from kayobe config "
+                 "- requirements.yml not present")
+        return
+
+    LOG.info("Installing galaxy role dependencies from kayobe config")
+    # Ensure a roles directory exists in kayobe-config.
+    kc_roles_path = os.path.join(parsed_args.config_path,
+                                 "ansible", "roles")
+    try:
+        os.makedirs(kc_roles_path)
+    except OSError as e:
+        if e.errno != errno.EEXIST:
+            raise exception.Error("Failed to create directory ansible/roles/ "
+                                  "in kayobe configuration at %s: %s" %
+                                  (parsed_args.config_path, str(e)))
+
+    # Install roles from kayobe-config.
+    utils.galaxy_install(kc_reqs_path, kc_roles_path, force=force)

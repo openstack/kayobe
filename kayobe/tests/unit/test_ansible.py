@@ -13,6 +13,7 @@
 # under the License.
 
 import argparse
+import errno
 import os
 import shutil
 import subprocess
@@ -22,6 +23,7 @@ import unittest
 import mock
 
 from kayobe import ansible
+from kayobe import exception
 from kayobe import utils
 from kayobe import vault
 
@@ -305,6 +307,86 @@ class TestCase(unittest.TestCase):
             mock.call(os.path.join(dump_dir, "host1.yml")),
             mock.call(os.path.join(dump_dir, "host2.yml")),
         ])
+
+    @mock.patch.object(utils, 'galaxy_install', autospec=True)
+    @mock.patch.object(utils, 'is_readable_file', autospec=True)
+    @mock.patch.object(os, 'makedirs', autospec=True)
+    def test_install_galaxy_roles(self, mock_mkdirs, mock_is_readable,
+                                  mock_install):
+        parser = argparse.ArgumentParser()
+        ansible.add_args(parser)
+        parsed_args = parser.parse_args([])
+        mock_is_readable.return_value = {"result": False}
+
+        ansible.install_galaxy_roles(parsed_args)
+
+        mock_install.assert_called_once_with("requirements.yml",
+                                             "ansible/roles", force=False)
+        mock_is_readable.assert_called_once_with(
+            "/etc/kayobe/ansible/requirements.yml")
+        self.assertFalse(mock_mkdirs.called)
+
+    @mock.patch.object(utils, 'galaxy_install', autospec=True)
+    @mock.patch.object(utils, 'is_readable_file', autospec=True)
+    @mock.patch.object(os, 'makedirs', autospec=True)
+    def test_install_galaxy_roles_with_kayobe_config(
+            self, mock_mkdirs, mock_is_readable, mock_install):
+        parser = argparse.ArgumentParser()
+        ansible.add_args(parser)
+        parsed_args = parser.parse_args([])
+        mock_is_readable.return_value = {"result": True}
+
+        ansible.install_galaxy_roles(parsed_args)
+
+        expected_calls = [
+            mock.call("requirements.yml", "ansible/roles", force=False),
+            mock.call("/etc/kayobe/ansible/requirements.yml",
+                      "/etc/kayobe/ansible/roles", force=False)]
+        self.assertEqual(expected_calls, mock_install.call_args_list)
+        mock_is_readable.assert_called_once_with(
+            "/etc/kayobe/ansible/requirements.yml")
+        mock_mkdirs.assert_called_once_with("/etc/kayobe/ansible/roles")
+
+    @mock.patch.object(utils, 'galaxy_install', autospec=True)
+    @mock.patch.object(utils, 'is_readable_file', autospec=True)
+    @mock.patch.object(os, 'makedirs', autospec=True)
+    def test_install_galaxy_roles_with_kayobe_config_forced(
+            self, mock_mkdirs, mock_is_readable, mock_install):
+        parser = argparse.ArgumentParser()
+        ansible.add_args(parser)
+        parsed_args = parser.parse_args([])
+        mock_is_readable.return_value = {"result": True}
+
+        ansible.install_galaxy_roles(parsed_args, force=True)
+
+        expected_calls = [
+            mock.call("requirements.yml", "ansible/roles", force=True),
+            mock.call("/etc/kayobe/ansible/requirements.yml",
+                      "/etc/kayobe/ansible/roles", force=True)]
+        self.assertEqual(expected_calls, mock_install.call_args_list)
+        mock_is_readable.assert_called_once_with(
+            "/etc/kayobe/ansible/requirements.yml")
+        mock_mkdirs.assert_called_once_with("/etc/kayobe/ansible/roles")
+
+    @mock.patch.object(utils, 'galaxy_install', autospec=True)
+    @mock.patch.object(utils, 'is_readable_file', autospec=True)
+    @mock.patch.object(os, 'makedirs', autospec=True)
+    def test_install_galaxy_roles_with_kayobe_config_mkdirs_failure(
+            self, mock_mkdirs, mock_is_readable, mock_install):
+        parser = argparse.ArgumentParser()
+        ansible.add_args(parser)
+        parsed_args = parser.parse_args([])
+        mock_is_readable.return_value = {"result": True}
+        mock_mkdirs.side_effect = OSError(errno.EPERM)
+
+        self.assertRaises(exception.Error,
+                          ansible.install_galaxy_roles, parsed_args)
+
+        mock_install.assert_called_once_with("requirements.yml",
+                                             "ansible/roles", force=False)
+        mock_is_readable.assert_called_once_with(
+            "/etc/kayobe/ansible/requirements.yml")
+        mock_mkdirs.assert_called_once_with("/etc/kayobe/ansible/roles")
 
     @mock.patch.object(utils, 'read_file')
     def test__read_vault_password_file(self, mock_read):
