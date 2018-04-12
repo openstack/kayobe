@@ -1,6 +1,10 @@
 ---
 # Roughly follows kolla-ansible's service deployment patterns.
 
+# Action to perform. One of 'deploy', 'destroy', 'pull', 'reconfigure',
+# 'upgrade'.
+inspection_store_action: deploy
+
 # Whether an inspection store is enabled.
 inspection_store_enabled: true
 

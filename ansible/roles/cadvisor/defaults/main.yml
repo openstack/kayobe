@@ -1,6 +1,10 @@
 ---
 # Roughly follows kolla-ansible's service deployment patterns.
 
+# Action to perform. One of 'deploy', 'destroy', 'pull', 'reconfigure',
+# 'upgrade'.
+cadvisor_action: deploy
+
 # Whether cAdvisor is enabled.
 cadvisor_enabled: false
 

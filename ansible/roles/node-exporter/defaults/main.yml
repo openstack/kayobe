@@ -1,6 +1,10 @@
 ---
 # Roughly follows kolla-ansible's service deployment patterns.
 
+# Action to perform. One of 'deploy', 'destroy', 'pull', 'reconfigure',
+# 'upgrade'.
+nodeexporter_action: deploy
+
 # Whether Node Exporter is enabled.
 nodeexporter_enabled: false
 

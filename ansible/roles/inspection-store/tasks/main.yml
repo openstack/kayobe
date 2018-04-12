@@ -1,2 +1,2 @@
 ---
-- include: "{{ action }}.yml"
+- include: "{{ inspection_store_action }}.yml"

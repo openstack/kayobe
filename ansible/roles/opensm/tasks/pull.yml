@@ -7,4 +7,4 @@
   with_dict: "{{ opensm_services }}"
   when:
     - item.value.enabled
-    - action != 'destroy'
+    - opensm_action != 'destroy'

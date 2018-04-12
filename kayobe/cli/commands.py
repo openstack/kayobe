@@ -855,7 +855,7 @@ class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 
         # Deploy kayobe extra services.
         playbooks = _build_playbook_list("overcloud-extras")
-        extra_vars = {"action": "deploy"}
+        extra_vars = {"kayobe_action": "deploy"}
         self.run_kayobe_playbooks(parsed_args, playbooks,
                                   extra_vars=extra_vars)
 
@@ -912,7 +912,7 @@ class OvercloudServiceReconfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
 
         # Reconfigure kayobe extra services.
         playbooks = _build_playbook_list("overcloud-extras")
-        extra_vars = {"action": "reconfigure"}
+        extra_vars = {"kayobe_action": "reconfigure"}
         self.run_kayobe_playbooks(parsed_args, playbooks,
                                   extra_vars=extra_vars)
 
@@ -965,7 +965,7 @@ class OvercloudServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin,
 
         # Upgrade kayobe extra services.
         playbooks = _build_playbook_list("overcloud-extras")
-        extra_vars = {"action": "upgrade"}
+        extra_vars = {"kayobe_action": "upgrade"}
         self.run_kayobe_playbooks(parsed_args, playbooks,
                                   extra_vars=extra_vars)
 
@@ -1011,7 +1011,7 @@ class OvercloudServiceDestroy(KollaAnsibleMixin, KayobeAnsibleMixin,
 
         # Destroy kayobe extra services.
         playbooks = _build_playbook_list("overcloud-extras")
-        extra_vars = {"action": "destroy"}
+        extra_vars = {"kayobe_action": "destroy"}
         self.run_kayobe_playbooks(parsed_args, playbooks,
                                   extra_vars=extra_vars)
 
@@ -1032,7 +1032,7 @@ class OvercloudContainerImagePull(KayobeAnsibleMixin, KollaAnsibleMixin,
 
         # Pull container images for kayobe extra services.
         playbooks = _build_playbook_list("overcloud-extras")
-        extra_vars = {"action": "pull"}
+        extra_vars = {"kayobe_action": "pull"}
         self.run_kayobe_playbooks(parsed_args, playbooks,
                                   extra_vars=extra_vars)
 

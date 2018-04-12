@@ -12,3 +12,4 @@
     - docker-registry
   roles:
     - role: docker-registry
+      docker_registry_action: "{{ kayobe_action }}"

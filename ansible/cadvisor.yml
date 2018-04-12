@@ -12,3 +12,4 @@
     - cadvisor
   roles:
     - role: cadvisor
+      cadvisor_action: "{{ kayobe_action }}"

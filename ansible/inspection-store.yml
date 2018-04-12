@@ -12,6 +12,7 @@
     - inspection-store
   roles:
     - role: inspection-store
+      inspection_store_action: "{{ kayobe_action }}"
       inspection_store_enabled: "{{ inspector_store_enabled }}"
       inspection_store_port: "{{ inspector_store_port }}"
       inspection_store_config_path: "{{ config_path }}/inspection-store"

@@ -1,6 +1,10 @@
 ---
 # Roughly follows kolla-ansible's service deployment patterns.
 
+# Action to perform. One of 'deploy', 'destroy', 'pull', 'reconfigure',
+# 'upgrade'.
+docker_registry_action: deploy
+
 # Whether a docker registry is enabled.
 docker_registry_enabled: true
 
