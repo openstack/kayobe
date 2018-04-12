@@ -1,6 +1,41 @@
 ---
-- name: Ensure the Kayobe Ansible user account exists
+# NOTE(mgoddard): The bootstrap user may be used to create the kayobe user
+# account and configure passwordless sudo. We can't assume that the bootstrap
+# user account will exist after the initial bootstrapping, or that the
+# current operator's key is authorised for the bootstrap user. We therefore
+# attempt to access the kayobe user account via SSH, and only perform the
+# bootstrap process if the account is inaccessible.
+
+- name: Determine whether user bootstrapping is required
   hosts: seed:overcloud
+  gather_facts: false
+  tags:
+    - kayobe-ansible-user
+  tasks:
+    - name: Check whether the host is accessible via SSH
+      local_action:
+        module: command ssh -p {{ ssh_port }} {{ ssh_user }}@{{ ssh_host }} hostname
+      failed_when: false
+      changed_when: false
+      register: ssh_result
+      vars:
+        ssh_user: "{{ ansible_user }}"
+        ssh_host: "{{ ansible_host | default(inventory_hostname) }}"
+        ssh_port: "{{ ansible_ssh_port | default('22') }}"
+
+    - name: Group hosts requiring kayobe user bootstrapping
+      group_by:
+        key: kayobe_user_bootstrap_required_{{ ssh_result.rc != 0 }}
+
+    - name: Display a message when bootstrapping is required
+      debug:
+        msg: >
+          Cannot access host via SSH using Kayobe Ansible user account -
+          attempting bootstrap
+      when: ssh_result.rc != 0
+
+- name: Ensure the Kayobe Ansible user account exists
+  hosts: kayobe_user_bootstrap_required_True
   tags:
     - kayobe-ansible-user
   vars:
@@ -25,3 +60,22 @@
         dest: "/etc/sudoers.d/kayobe-ansible-user"
         mode: 0440
       become: True
+
+- name: Verify that the Kayobe Ansible user account is accessible
+  hosts: seed:overcloud
+  gather_facts: false
+  tags:
+    - kayobe-ansible-user
+  vars:
+    # We can't assume that a virtualenv exists at this point, so use the system
+    # python interpreter.
+    ansible_python_interpreter: /usr/bin/python
+  tasks:
+    - name: Verify that a command can be executed
+      command: hostname
+      changed_when: false
+
+    - name: Verify that a command can be executed with become
+      command: hostname
+      changed_when: false
+      become: true
