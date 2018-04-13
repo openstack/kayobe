@@ -95,36 +95,8 @@ docker_registry_password: "{{ kolla_docker_registry_password }}"
 # interface on all hosts and give the bond name here. Similar strategy can be
 # followed for other types of interfaces.
 #
-# NOTE: The following interfaces are configured via the inventory and are
-# therefore not set here:
-#
-# - api_interface
-
-network_interface: "{{ kolla_network_interface }}"
-
-# These can be adjusted for even more customization. The default is the same as
-# the 'network_interface'. These interfaces must contain an IPv4 address.
-kolla_external_vip_interface: "{{ kolla_external_vip_interface }}"
-storage_interface: "{{ kolla_storage_interface }}"
-cluster_interface: "{{ kolla_cluster_interface }}"
-dns_interface: "{{ kolla_dns_interface }}"
-tunnel_interface: "{{ kolla_tunnel_interface }}"
-
-# This is the raw interface given to neutron as its external network port. Even
-# though an IP address can exist on this interface, it will be unusable in most
-# configurations. It is recommended this interface not be configured with any IP
-# addresses for that reason.
-neutron_external_interface: "{{ kolla_neutron_external_interfaces | join(',') }}"
-
-# Name of the Neutron external bridge.
-neutron_bridge_name: "{{ kolla_neutron_bridge_names | join(',') }}"
-
-# This is the interface to use for Bifrost bare metal provisioning of the
-# control plane.
-bifrost_network_interface: "{{ kolla_bifrost_network_interface }}"
-
-# Interface on which the inspector dnsmasq service listens.
-ironic_dnsmasq_interface: "{{ kolla_inspector_dnsmasq_interface }}"
+# NOTE: Most network interfaces are configured via the inventory and are
+# therefore not set here.
 
 # Valid options are [ openvswitch, linuxbridge ]
 neutron_plugin_agent: "openvswitch"

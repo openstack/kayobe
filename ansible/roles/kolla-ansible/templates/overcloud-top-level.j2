@@ -17,7 +17,7 @@
 # These hostnames must be resolvable from your deployment host
 {% for host in groups.get(group, []) %}
 {% set host_hv=hostvars[host] %}
-{{ host }}{% for hv_name in kolla_overcloud_inventory_pass_through_host_vars %}{% if hv_name in host_hv %} {{ hv_name | regex_replace('^kolla_(.*)$', '\1') }}={{ host_hv[hv_name] }}{% endif %}{% endfor %}
+{{ host }}{% for hv_name in kolla_overcloud_inventory_pass_through_host_vars %}{% if hv_name in host_hv %} {{ kolla_overcloud_inventory_pass_through_host_vars_map.get(hv_name, hv_name) }}='{{ host_hv[hv_name] | to_json }}'{% endif %}{% endfor %}
 
 {% endfor %}
 

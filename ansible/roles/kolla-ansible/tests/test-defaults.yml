@@ -29,22 +29,6 @@
             kolla_internal_fqdn: "fake.internal.fqdn"
             kolla_external_vip_address: "10.0.0.2"
             kolla_external_fqdn: "fake.external.fqdn"
-            kolla_network_interface: "eth0"
-            kolla_external_vip_interface: "eth1"
-            kolla_api_interface: "eth2"
-            kolla_storage_interface: "eth3"
-            kolla_cluster_interface: "eth4"
-            kolla_dns_interface: "eth5"
-            kolla_neutron_external_interfaces:
-              - "eth6"
-              - "eth7"
-            kolla_neutron_bridge_names:
-              - "br0"
-              - "br1"
-            kolla_bifrost_network_interface: "eth8"
-            kolla_provision_interface: "eth9"
-            kolla_inspector_dnsmasq_interface: "eth10"
-            kolla_tunnel_interface: "eth11"
             kolla_enable_tls_external: False
             kolla_enable_grafana: False
             kolla_external_fqdn_cert: "fake-cert"
@@ -83,16 +67,6 @@
               kolla_external_fqdn: "fake.external.fqdn"
               node_custom_config: "{{ temp_path }}/etc/kolla/config"
               docker_namespace: "fake-namespace"
-              network_interface: "eth0"
-              kolla_external_vip_interface: "eth1"
-              storage_interface: "eth3"
-              cluster_interface: "eth4"
-              dns_interface: "eth5"
-              neutron_external_interface: "eth6,eth7"
-              neutron_bridge_name: "br0,br1"
-              bifrost_network_interface: "eth8"
-              ironic_dnsmasq_interface: "eth10"
-              tunnel_interface: "eth11"
               neutron_plugin_agent: "openvswitch"
               kolla_enable_tls_external: False
               kolla_external_fqdn_cert: "fake-cert"
@@ -127,6 +101,18 @@
               - enable_nova
               - enable_zookeeper
               - grafana_admin_username
+              - network_interface
+              - api_interface
+              - kolla_external_vip_interface
+              - storage_interface
+              - cluster_interface
+              - provision_interface
+              - inspector_dnsmasq_interface
+              - dns_interface
+              - tunnel_interface
+              - bifrost_network_interface
+              - neutron_external_interface
+              - neutron_bridge_name
 
         - name: Check whether inventory files exist
           stat:

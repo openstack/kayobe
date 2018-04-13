@@ -2,6 +2,43 @@
 - hosts: localhost
   connection: local
   tasks:
+    - name: Add a seed host to the inventory
+      add_host:
+        name: test-seed
+        groups: seed
+        ansible_host: "1.2.3.4"
+        kolla_api_interface: "eth0"
+        kolla_bifrost_network_interface: "eth1"
+
+    - name: Add a controller host to the inventory
+      add_host:
+        name: test-controller
+        groups: controllers
+        ansible_host: "1.2.3.5"
+        kolla_network_interface: "eth0"
+        kolla_external_vip_interface: "eth1"
+        kolla_api_interface: "eth2"
+        kolla_storage_interface: "eth3"
+        kolla_cluster_interface: "eth4"
+        kolla_dns_interface: "eth5"
+        kolla_neutron_external_interfaces: "eth6,eth7"
+        kolla_neutron_bridge_names: "br0,br1"
+        kolla_provision_interface: "eth8"
+        kolla_inspector_dnsmasq_interface: "eth9"
+        kolla_tunnel_interface: "eth10"
+
+    - name: Add a compute host to the inventory
+      add_host:
+        name: test-compute
+        groups: compute
+        ansible_host: "1.2.3.6"
+        kolla_network_interface: "eth0"
+        kolla_api_interface: "eth2"
+        kolla_storage_interface: "eth3"
+        kolla_neutron_external_interfaces: "eth4,eth5"
+        kolla_neutron_bridge_names: "br0,br1"
+        kolla_tunnel_interface: "eth6"
+
     - name: Create a temporary directory
       tempfile:
         state: directory
@@ -36,22 +73,17 @@
             kolla_internal_fqdn: "fake.internal.fqdn"
             kolla_external_vip_address: "10.0.0.2"
             kolla_external_fqdn: "fake.external.fqdn"
-            kolla_network_interface: "eth0"
-            kolla_external_vip_interface: "eth1"
-            kolla_api_interface: "eth2"
-            kolla_storage_interface: "eth3"
-            kolla_cluster_interface: "eth4"
-            kolla_dns_interface: "eth5"
-            kolla_neutron_external_interfaces:
-              - "eth6"
-              - "eth7"
-            kolla_neutron_bridge_names:
-              - "br0"
-              - "br1"
-            kolla_bifrost_network_interface: "eth8"
-            kolla_provision_interface: "eth9"
-            kolla_inspector_dnsmasq_interface: "eth10"
-            kolla_tunnel_interface: "eth11"
+            # Inventory mapping.
+            kolla_overcloud_inventory_top_level_group_map:
+              control:
+                groups:
+                  - controllers
+              compute:
+                groups:
+                  - compute
+            kolla_overcloud_inventory_kolla_top_level_groups:
+              - "control"
+              - "compute"
             kolla_neutron_ml2_type_drivers:
               - "fake-ml2-type-1"
               - "fake-ml2-type-2"
@@ -183,16 +215,6 @@
               docker_registry: "fake-registry"
               docker_registry_username: "fake-username"
               docker_registry_password: "fake-password"
-              network_interface: "eth0"
-              kolla_external_vip_interface: "eth1"
-              storage_interface: "eth3"
-              cluster_interface: "eth4"
-              dns_interface: "eth5"
-              neutron_external_interface: "eth6,eth7"
-              neutron_bridge_name: "br0,br1"
-              bifrost_network_interface: "eth8"
-              ironic_dnsmasq_interface: "eth10"
-              tunnel_interface: "eth11"
               neutron_plugin_agent: "openvswitch"
               kolla_enable_tls_external: False
               kolla_external_fqdn_cert: "fake-cert"
@@ -286,6 +308,18 @@
               - enable_ironic
               - enable_neutron
               - enable_nova
+              - network_interface
+              - api_interface
+              - kolla_external_vip_interface
+              - storage_interface
+              - cluster_interface
+              - provision_interface
+              - inspector_dnsmasq_interface
+              - dns_interface
+              - tunnel_interface
+              - bifrost_network_interface
+              - neutron_external_interface
+              - neutron_bridge_name
 
         - name: Create a vault password file
           copy:
@@ -326,11 +360,55 @@
             expected_variables:
               custom-password-1: custom-password-1
               custom-password-2: custom-password-2
+
+        - name: Check whether inventory files exist
+          stat:
+            path: "{{ temp_path ~ '/etc/kolla/inventory/' ~ item }}"
+          with_items:
+            - seed
+            - overcloud
+          register: inventory_stat
+
+        - name: Validate inventory files
+          assert:
+            that:
+              - item.stat.exists
+              - item.stat.size > 0
+            msg: >
+              Inventory file {{ item.item }} was not found.
+          with_items: "{{ inventory_stat.results }}"
+
+        - name: Read inventory files
+          slurp:
+            src: "{{ item.stat.path }}"
+          with_items: "{{ inventory_stat.results }}"
+          register: inventory_slurp
+
+        - name: Validate seed inventory file contents
+          vars:
+            inventory_lines: "{{ (inventory_slurp.results[0].content | b64decode).splitlines() }}"
+          assert:
+            that: item in inventory_lines
+          with_items:
+            - test-seed ansible_host='"1.2.3.4"' api_interface='"eth0"' bifrost_network_interface='"eth1"'
+
+        - name: Validate overcloud inventory file contents
+          vars:
+            inventory_lines: "{{ (inventory_slurp.results[1].content | b64decode).splitlines() }}"
+          assert:
+            that: item in inventory_lines
+          with_items:
+            - test-controller ansible_host='"1.2.3.5"' network_interface='"eth0"' api_interface='"eth2"' storage_interface='"eth3"' cluster_interface='"eth4"' provision_interface='"eth8"' inspector_dnsmasq_interface='"eth9"' dns_interface='"eth5"' tunnel_interface='"eth10"' kolla_external_vip_interface='"eth1"' neutron_external_interface='"eth6,eth7"' neutron_bridge_name='"br0,br1"'
+            - test-compute ansible_host='"1.2.3.6"' network_interface='"eth0"' api_interface='"eth2"' storage_interface='"eth3"' tunnel_interface='"eth6"' neutron_external_interface='"eth4,eth5"' neutron_bridge_name='"br0,br1"'
+
       always:
         - name: Ensure the temporary directory is removed
           file:
             path: "{{ temp_path }}"
             state: absent
+
+        - name: Refresh the inventory
+          meta: refresh_inventory
       rescue:
         - name: Flag that a failure occurred
           set_fact:

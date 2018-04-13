@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Adds support for configuration of per-host network interfaces in Kolla
+    Ansible. Previously, all interfaces were configured in ``globals.yml``,
+    meaning that all hosts used the same interface names. Now, interfaces are
+    configured for each host via inventory files.
