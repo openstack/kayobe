@@ -33,6 +33,9 @@
     pre-run: playbooks/kayobe-tox-molecule/pre.yml
     timeout: 3600
     required-projects:
+      # Use stable/rocky upper-constraints for molecule since pytest 3.10 fails
+      # with the following error:
+      # AttributeError: 'Config' object has no attribute 'cache'
       - name: openstack/requirements
         override-checkout: stable/rocky
     vars:
@@ -59,11 +62,8 @@
       - name: openstack/kayobe
       - name: openstack/kayobe-config-dev
       - name: openstack/kolla
-        override-checkout: stable/rocky
       - name: openstack/kolla-ansible
-        override-checkout: stable/rocky
       - name: openstack/requirements
-        override-checkout: stable/rocky
       - name: openstack/tenks
     irrelevant-files:
       - ^.*\.rst$
@@ -95,15 +95,12 @@
       - name: openstack/kayobe
       - name: openstack/kayobe-config-dev
       - name: openstack/kolla
-        override-checkout: stable/rocky
       - name: openstack/kolla-ansible
-        override-checkout: stable/rocky
       - name: openstack/requirements
-        override-checkout: stable/rocky
       - name: openstack/tenks
     vars:
       # Name of the release to upgrade from.
-      previous_release: queens
+      previous_release: rocky
     irrelevant-files:
       - ^.*\.rst$
       - ^doc/.*
@@ -133,11 +130,8 @@
       - name: openstack/kayobe
       - name: openstack/kayobe-config-dev
       - name: openstack/kolla
-        override-checkout: stable/rocky
       - name: openstack/kolla-ansible
-        override-checkout: stable/rocky
       - name: openstack/requirements
-        override-checkout: stable/rocky
     irrelevant-files:
       - ^.*\.rst$
       - ^doc/.*
@@ -168,14 +162,11 @@
       - name: openstack/kayobe
       - name: openstack/kayobe-config-dev
       - name: openstack/kolla
-        override-checkout: stable/queens
       - name: openstack/kolla-ansible
-        override-checkout: stable/queens
       - name: openstack/requirements
-        override-checkout: stable/queens
     vars:
       # Name of the release to upgrade from.
-      previous_release: pike
+      previous_release: rocky
     irrelevant-files:
       - ^.*\.rst$
       - ^doc/.*
