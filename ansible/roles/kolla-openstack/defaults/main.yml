@@ -70,6 +70,15 @@ kolla_extra_heat:
 kolla_enable_horizon:
 
 ###############################################################################
+# InfluxDB configuration.
+
+# Whether to enable InfluxDB.
+kolla_enable_influxdb:
+
+# Free form extra configuration to append to influxdb.conf.
+kolla_extra_influxdb:
+
+###############################################################################
 # Ironic configuration.
 
 # Whether to enable Ironic.
