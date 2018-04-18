@@ -8,7 +8,7 @@
 kolla_bifrost_source_url: "https://git.openstack.org/openstack/bifrost"
 
 # Version (branch, tag, etc.) of Bifrost source code repository.
-kolla_bifrost_source_version: "stable/queens"
+kolla_bifrost_source_version: "stable/rocky"
 
 ###############################################################################
 # Diskimage-builder configuration.

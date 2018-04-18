@@ -16,7 +16,11 @@
         - kayobe-tox-molecule
         - kayobe-overcloud-centos
         - kayobe-overcloud-upgrade-centos
-        - kayobe-seed-centos
+        # TODO(mgoddard): make this voting again when
+        # https://review.openstack.org/#/c/618740 has merged, been released,
+        # and the kolla bifrost image uses the new package.
+        - kayobe-seed-centos:
+            voting: false
 
     gate:
       queue: kayobe
@@ -27,4 +31,7 @@
         - kayobe-tox-molecule
         - kayobe-overcloud-centos
         - kayobe-overcloud-upgrade-centos
-        - kayobe-seed-centos
+        # TODO(mgoddard): make this gating again when
+        # https://review.openstack.org/#/c/618740 has merged, been released,
+        # and the kolla bifrost image uses the new package.
+        # - kayobe-seed-centos

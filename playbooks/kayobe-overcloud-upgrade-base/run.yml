@@ -54,9 +54,7 @@
         - name: Perform testing of the overcloud prior to upgrade
           shell:
             cmd: dev/overcloud-test.sh > {{ logs_dir }}/ansible/overcloud-test-pre-upgrade
-            # NOTE(mgoddard): Currently need to use the new kayobe repo for
-            # testing, since the overcloud-test.sh script is not available in Pike.
-            chdir: "{{ kayobe_src_dir }}"
+            chdir: "{{ previous_kayobe_src_dir }}"
 
         # Upgrade Kayobe, and use it to perform an upgrade of the control plane.
 

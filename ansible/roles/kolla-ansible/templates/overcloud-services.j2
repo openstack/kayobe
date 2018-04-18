@@ -67,10 +67,10 @@ neutron
 [neutron-metadata-agent:children]
 neutron
 
-[neutron-vpnaas-agent:children]
+[neutron-bgp-dragent:children]
 neutron
 
-[neutron-bgp-dragent:children]
+[neutron-infoblox-ipam-agent:children]
 neutron
 
 [ironic-neutron-agent:children]
@@ -119,11 +119,14 @@ cloudkitty
 [freezer-api:children]
 freezer
 
+[freezer-scheduler:children]
+freezer
+
 # iSCSI
 [iscsid:children]
 compute
 storage
-ironic-conductor
+ironic
 
 [tgtd:children]
 storage
@@ -184,6 +187,13 @@ heat
 [heat-engine:children]
 heat
 
+# Murano
+[murano-api:children]
+murano
+
+[murano-engine:children]
+murano
+
 # Monasca
 [monasca-api:children]
 monasca
@@ -215,13 +225,6 @@ storm
 
 [storm-nimbus:children]
 storm
-
-# Murano
-[murano-api:children]
-murano
-
-[murano-engine:children]
-murano
 
 # Ironic
 [ironic-api:children]
@@ -344,6 +347,7 @@ trove
 # Multipathd
 [multipathd:children]
 compute
+storage
 
 # Watcher
 [watcher-api:children]
@@ -412,6 +416,9 @@ placement
 [zun-api:children]
 zun
 
+[zun-wsproxy:children]
+zun
+
 [zun-compute:children]
 compute
 
@@ -452,3 +459,30 @@ blazar
 
 [blazar-manager:children]
 blazar
+
+# Prometheus
+[prometheus-node-exporter:children]
+monitoring
+control
+compute
+network
+storage
+
+[prometheus-mysqld-exporter:children]
+mariadb
+
+[prometheus-haproxy-exporter:children]
+haproxy
+
+[prometheus-memcached-exporter:children]
+memcached
+
+[prometheus-cadvisor:children]
+monitoring
+control
+compute
+network
+storage
+
+[prometheus-alertmanager:children]
+monitoring

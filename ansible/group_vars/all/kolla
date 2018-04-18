@@ -13,7 +13,7 @@ kolla_source_url: "https://git.openstack.org/openstack/kolla"
 
 # Version (branch, tag, etc.) of Kolla source code repository if type is
 # 'source'.
-kolla_source_version: "stable/queens"
+kolla_source_version: "stable/rocky"
 
 # Path to virtualenv in which to install kolla.
 kolla_venv: "{{ virtualenv_path ~ '/kolla' }}"
@@ -35,7 +35,7 @@ kolla_ansible_source_url: "https://git.openstack.org/openstack/kolla-ansible"
 
 # Version (branch, tag, etc.) of Kolla Ansible source code repository if type
 # is 'source'.
-kolla_ansible_source_version: "stable/queens"
+kolla_ansible_source_version: "stable/rocky"
 
 # Path to virtualenv in which to install kolla-ansible.
 kolla_ansible_venv: "{{ lookup('env', 'KOLLA_VENV_PATH') | default(lookup('env', 'PWD') ~ '/venvs/kolla-ansible', true) }}"
@@ -71,7 +71,7 @@ kolla_docker_registry_username:
 kolla_docker_registry_password:
 
 # Kolla OpenStack release version. This should be a Docker image tag.
-kolla_openstack_release: "queens"
+kolla_openstack_release: "rocky"
 
 # Dict mapping names of sources to their definitions for
 # kolla_install_type=source. See kolla.common.config for details.
@@ -315,7 +315,7 @@ kolla_enable_tls_external: "no"
 kolla_openstack_logging_debug: "False"
 
 # Upper constraints file for installation of Kolla.
-kolla_upper_constraints_file: "https://raw.githubusercontent.com/openstack/requirements/stable/queens/upper-constraints.txt"
+kolla_upper_constraints_file: "https://git.openstack.org/cgit/openstack/requirements/plain/upper-constraints.txt?h=stable/rocky"
 
 # User account to use for Kolla SSH access.
 kolla_ansible_user: kolla

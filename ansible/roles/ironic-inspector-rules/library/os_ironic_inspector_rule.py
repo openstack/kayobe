@@ -80,8 +80,9 @@ def _build_client(module):
     """Create and return an Ironic inspector client."""
     cloud = shade.operator_cloud(**module.params)
     session = cloud.cloud_config.get_session()
-    # API 1.12 is the latest API version available in Queens.
-    api_version = (1, 12)
+    # Ensure the requested API version is supported.
+    # API 1.14 is the latest API version available in Rocky.
+    api_version = (1, 14)
     client = ironic_inspector_client.v1.ClientV1(
         inspector_url=module.params['inspector_url'],
         session=session, region_name=module.params['region_name'],

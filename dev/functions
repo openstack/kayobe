@@ -212,6 +212,12 @@ function overcloud_deploy {
     echo "Configuring the controller host"
     run_kayobe overcloud host configure
 
+    # FIXME(mgoddard): Perform host upgrade workarounds to ensure hostname
+    # resolves to IP address of API interface for RabbitMQ. This seems to be
+    # required since https://review.openstack.org/#/c/584427 was merged.
+    echo "Workaround: upgrading the controller host"
+    run_kayobe overcloud host upgrade
+
     # Note: This must currently be before host configure, because host
     # configure runs kolla-ansible.yml, which validates the presence of the
     # built deploy images.

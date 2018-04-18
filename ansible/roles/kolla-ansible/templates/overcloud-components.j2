@@ -37,6 +37,9 @@ compute
 [influxdb:children]
 monitoring
 
+[prometheus:children]
+monitoring
+
 [kafka:children]
 control
 
@@ -80,6 +83,12 @@ control
 
 [qdrouterd:children]
 control
+
+[monasca:children]
+monitoring
+
+[storm:children]
+monitoring
 
 [mongodb:children]
 control
@@ -128,12 +137,6 @@ control
 [heat:children]
 control
 
-[monasca:children]
-monitoring
-
-[storm:children]
-monitoring
-
 [murano:children]
 control
 
@@ -169,35 +172,6 @@ control
 
 [panko:children]
 control
-
-[prometheus:children]
-monitoring
-
-[prometheus-alertmanager:children]
-monitoring
-
-[prometheus-node-exporter:children]
-monitoring
-control
-compute
-network
-storage
-
-[prometheus-mysqld-exporter:children]
-mariadb
-
-[prometheus-haproxy-exporter:children]
-haproxy
-
-[prometheus-memcached-exporter:children]
-memcached
-
-[prometheus-cadvisor:children]
-monitoring
-control
-compute
-network
-storage
 
 [gnocchi:children]
 control
@@ -242,6 +216,9 @@ control
 [bifrost:children]
 deployment
 
+[zookeeper:children]
+control
+
 [zun:children]
 control
 
@@ -252,7 +229,4 @@ monitoring
 control
 
 [blazar:children]
-control
-
-[zookeeper:children]
 control

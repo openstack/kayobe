@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    Updates dependencies to use the OpenStack Rocky release.
