@@ -107,6 +107,7 @@
             - { name: inspector, file: ironic-inspector.conf }
             - { name: ironic, file: ironic.conf }
             - { name: ironic_dnsmasq, file: ironic/ironic-dnsmasq.conf }
+            - { name: kafka, file: kafka.server.properties }
             - { name: magnum, file: magnum.conf }
             - { name: murano, file: murano.conf }
             - { name: neutron, file: neutron.conf }
@@ -208,6 +209,7 @@
       kolla_extra_inspector: "{{ kolla_extra_config.inspector | default }}"
       kolla_extra_ironic: "{{ kolla_extra_config.ironic | default }}"
       kolla_extra_ironic_dnsmasq: "{{ kolla_extra_config.ironic_dnsmasq | default }}"
+      kolla_extra_kafka: "{{ kolla_extra_config.kafka | default }}"
       kolla_extra_magnum: "{{ kolla_extra_config.magnum | default }}"
       kolla_extra_murano: "{{ kolla_extra_config.murano | default }}"
       kolla_extra_neutron: "{{ kolla_extra_config.neutron | default }}"

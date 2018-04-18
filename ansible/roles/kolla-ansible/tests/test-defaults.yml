@@ -116,6 +116,7 @@
               - neutron_tenant_network_types
               - enable_glance
               - enable_ironic
+              - enable_kafka
               - enable_neutron
               - enable_nova
               - enable_zookeeper

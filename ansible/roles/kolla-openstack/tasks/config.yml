@@ -22,6 +22,7 @@
     - { src: ironic.conf.j2, dest: ironic.conf, enabled: "{{ kolla_enable_ironic }}" }
     - { src: ironic-dnsmasq.conf.j2, dest: ironic/ironic-dnsmasq.conf, enabled: "{{ kolla_enable_ironic }}" }
     - { src: ironic-inspector.conf.j2, dest: ironic-inspector.conf, enabled: "{{ kolla_enable_ironic }}" }
+    - { src: kafka.server.properties.j2, dest: kafka.server.properties, enabled: "{{ kolla_enable_kafka }}" }
     - { src: magnum.conf.j2, dest: magnum.conf, enabled: "{{ kolla_enable_magnum }}" }
     - { src: ml2_conf.ini.j2, dest: neutron/ml2_conf.ini, enabled: "{{ kolla_enable_neutron }}" }
     - { src: murano.conf.j2, dest: murano.conf, enabled: "{{ kolla_enable_murano }}" }

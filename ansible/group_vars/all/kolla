@@ -144,6 +144,8 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_ironic | bool }}"
   - regex: iscsid
     enabled: "{{ kolla_enable_cinder | bool or kolla_enable_ironic | bool }}"
+  - regex: kafka
+    enabled: "{{ kolla_enable_kafka | bool }}"
   - regex: keepalived
     enabled: "{{ kolla_enable_haproxy | bool }}"
   - regex: keystone
@@ -301,7 +303,6 @@ kolla_enable_haproxy: "yes"
 kolla_enable_heat: "yes"
 kolla_enable_horizon: "yes"
 kolla_enable_ironic: "yes"
-# Kafka is not currently supported
 kolla_enable_kafka: "no"
 kolla_enable_kibana: "{{ 'yes' if kolla_enable_central_logging | bool else 'no' }}"
 kolla_enable_magnum: "no"
@@ -316,7 +317,7 @@ kolla_enable_osprofiler: "no"
 kolla_enable_sahara: "no"
 kolla_enable_skydive: "no"
 kolla_enable_swift: "no"
-kolla_enable_zookeeper: "no"
+kolla_enable_zookeeper: "{{ 'yes' if kolla_enable_kafka | bool else 'no' }}"
 
 ###############################################################################
 # Passwords and credentials.
