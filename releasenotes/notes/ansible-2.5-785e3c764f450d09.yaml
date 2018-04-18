@@ -1,0 +1,4 @@
+---
+features:
+  - Adds support for the Ansible 2.5 release.  The version requirement has been
+    increased for both kayobe and kolla ansible.
