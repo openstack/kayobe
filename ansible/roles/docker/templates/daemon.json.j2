@@ -3,6 +3,9 @@
 {% if docker_daemon_mtu %}
   "mtu": {{ docker_daemon_mtu }},
 {% endif %}
+{% if docker_daemon_live_restore %}
+  "live-restore": {{ docker_daemon_live_restore | to_json }},
+{% endif %}
   "storage-opts": [
 {% if docker_storage_driver == 'devicemapper' %}
     "dm.thinpooldev=/dev/mapper/{{ docker_storage_volume_group | replace('-', '--') }}-{{ docker_storage_volume_thinpool | replace('-', '--') }}",
