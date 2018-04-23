@@ -25,4 +25,4 @@
   retries: 3
   delay: 10
   until: "'failed' not in register_yum_command"
-  when: ansible_os_family == 'RedHat'
+  become: true
