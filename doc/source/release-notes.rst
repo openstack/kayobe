@@ -13,9 +13,17 @@ Features
 * Adds support for configuration of live-restore option in docker. This is
   enabled by setting the variable ``docker_daemon_live_restore``. Option is
   set to true by default.
+* Facilitates deployment of TLS certificate bundles in environments
+  where SSL is required.  To use this feature, populate the contents
+  of the variable ``kolla_tls_cert`` - this will then be copied in to
+  place for use by HAProxy.
 
 Upgrade Notes
 -------------
+
+* The reference to ``kolla_external_fqdn_cert`` has been removed in
+  favour of the ``kolla_tls_cert`` option, which handles setting this
+  on the user's behalf.
 
 Kayobe 3.1.0
 ============
