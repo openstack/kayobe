@@ -1,5 +1,7 @@
 ---
 - project:
+    templates:
+      - release-notes-jobs
     check:
       jobs:
         - openstack-tox-pep8
