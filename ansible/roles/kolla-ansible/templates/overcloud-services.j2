@@ -181,6 +181,13 @@ heat
 [heat-engine:children]
 heat
 
+# Monasca
+[monasca-api:children]
+monasca
+
+[monasca-log-api:children]
+monasca
+
 # Murano
 [murano-api:children]
 murano
