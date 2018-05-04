@@ -35,7 +35,7 @@ docker_registry_ca:
 docker_daemon_mtu: 1500
 
 # Enable live-restore on docker daemon
-docker_daemon_live_restore: true
+docker_daemon_live_restore: false
 
 # Upper constraints file which is passed to pip when installing packages
 # into a venv.

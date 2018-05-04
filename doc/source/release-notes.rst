@@ -14,7 +14,7 @@ Features
   should be a dict of repositories.
 * Adds support for configuration of live-restore option in docker. This is
   enabled by setting the variable ``docker_daemon_live_restore``. Option is
-  set to true by default.
+  set to false by default.
 * Facilitates deployment of TLS certificate bundles in environments
   where SSL is required.  To use this feature, populate the contents
   of the variable ``kolla_tls_cert`` - this will then be copied in to
