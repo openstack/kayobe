@@ -50,6 +50,7 @@
 
   roles:
     - role: ahuffman.resolv
+      when: resolv_is_managed | bool
       become: True
 
     - role: MichaelRigart.interfaces

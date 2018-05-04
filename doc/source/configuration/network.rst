@@ -368,6 +368,25 @@ VLAN to be forwarded by the bridge, whereas adding a VLAN interface to an
 Ethernet or bond interface that is a bridge member port will prevent tagged
 traffic for that VLAN being forwarded by the bridge.
 
+Domain Name Service (DNS) Resolver Configuration
+================================================
+
+Kayobe supports configuration of hosts' DNS resolver via ``resolv.conf``.  DNS
+configuration should be added to ``dns.yml``.  For example:
+
+.. code-block:: yaml
+   :caption: ``dns.yml``
+
+   resolv_nameservers:
+     - 8.8.8.8
+     - 8.8.4.4
+   resolv_domain: example.com
+   resolv_search:
+     - kayobe.example.com
+
+It is also possible to prevent kayobe from modifying ``resolv.conf`` by setting
+``resolv_is_managed`` to ``false``.
+
 Network Role Configuration
 ==========================
 

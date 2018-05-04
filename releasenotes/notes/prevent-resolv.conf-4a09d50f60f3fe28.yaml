@@ -1,0 +1,4 @@
+---
+features:
+  - Adds the ability to prevent configuration of the DNS resolver. This can be
+    done by setting ``resolv_is_managed`` to ``false``.
