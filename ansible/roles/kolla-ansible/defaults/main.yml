@@ -255,3 +255,9 @@ kolla_ansible_custom_passwords: {}
 # When set, this will copy the contents of this variable into place for
 # use by HAProxy.
 kolla_tls_cert:
+
+###############################################################################
+# SELinux
+
+# Desired SELinux state.
+kolla_selinux_state:

@@ -223,3 +223,10 @@
     - role: kolla-ansible
       kolla_external_fqdn_cert: "{{ kolla_config_path }}/certificates/haproxy.pem"
       kolla_ansible_passwords_path: "{{ kayobe_config_path }}/kolla/passwords.yml"
+      # NOTE: This differs from the default SELinux mode in kolla ansible,
+      # which is permissive. The justification for using this mode is twofold:
+      # 1. it avoids filling up the audit log
+      # 2. it avoids an issue seen when using diskimage-builder in the bifrost
+      # container.
+      # We could look at making the SELinux mode configurable in future.
+      kolla_selinux_state: disabled

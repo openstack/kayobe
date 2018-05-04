@@ -398,6 +398,10 @@ bifrost_install_type: source
 grafana_admin_username: "{{ grafana_local_admin_user_name }}"
 {% endif %}
 
+{% if kolla_selinux_state is not none %}
+selinux_state: {{ kolla_selinux_state }}
+{% endif %}
+
 {% if kolla_extra_globals %}
 #######################
 # Extra configuration
