@@ -28,6 +28,18 @@
             state: installed
           become: True
 
+        - name: Ensure global virtualenv directory exists
+          file:
+            path: "{{ virtualenv_path }}"
+            state: directory
+            owner: "{{ ansible_user }}"
+            group: "{{ ansible_user }}"
+            mode: 0755
+          # Check whether the virtualenv directory is a subdirectory of the
+          # global virtualenv directory.
+          when: virtualenv.startswith(virtualenv_path)
+          become: True
+
         - name: Ensure kayobe virtualenv directory exists
           file:
             path: "{{ virtualenv }}"
