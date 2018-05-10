@@ -20,20 +20,28 @@
     - ipa-build
   vars:
     ipa_image_name: "ipa"
+    ipa_image_force_rebuild: false
   tasks:
-    - name: Ensure Ironic Python Agent images are built
-      include_role:
-        name: stackhpc.os-images
-      vars:
-        os_images_venv: "{{ virtualenv_path }}/ipa-build-dib"
-        os_images_cache: "{{ image_cache_path }}"
-        os_images_common: ""
-        os_images_list:
-          - name: "{{ ipa_image_name }}"
-            elements: "{{ ipa_build_dib_elements }}"
-            env: "{{ ipa_build_dib_env }}"
-            # Avoid needing to install qemu-img for qcow2 image.
-            type: raw
-        os_images_git_elements: "{{ ipa_build_dib_git_elements }}"
-        os_images_upload: False
+    - block:
+        - name: Ensure existing Ironic Python Agent images are removed (force rebuild)
+          file:
+            path: "{{ image_cache_path }}/{{ ipa_image_name }}"
+            state: absent
+          when: ipa_image_force_rebuild | bool
+
+        - name: Ensure Ironic Python Agent images are built
+          include_role:
+            name: stackhpc.os-images
+          vars:
+            os_images_venv: "{{ virtualenv_path }}/ipa-build-dib"
+            os_images_cache: "{{ image_cache_path }}"
+            os_images_common: ""
+            os_images_list:
+              - name: "{{ ipa_image_name }}"
+                elements: "{{ ipa_build_dib_elements }}"
+                env: "{{ ipa_build_dib_env }}"
+                # Avoid needing to install qemu-img for qcow2 image.
+                type: raw
+            os_images_git_elements: "{{ ipa_build_dib_git_elements }}"
+            os_images_upload: False
       when: ipa_build_images | bool

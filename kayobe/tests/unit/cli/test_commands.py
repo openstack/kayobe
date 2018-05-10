@@ -389,6 +389,48 @@ class TestCase(unittest.TestCase):
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
+    def test_seed_deployment_image_build(self, mock_run):
+        command = commands.SeedDeploymentImageBuild(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    "ansible/seed-ipa-build.yml",
+                ],
+                extra_vars={},
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_seed_deployment_image_build_force_rebuild(self, mock_run):
+        command = commands.SeedDeploymentImageBuild(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args(["--force-rebuild"])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    "ansible/seed-ipa-build.yml",
+                ],
+                extra_vars={"ipa_image_force_rebuild": True},
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
     @mock.patch.object(commands.KollaAnsibleMixin,
                        "run_kolla_ansible_seed")
     def test_service_deploy(self, mock_kolla_run, mock_run):
@@ -670,6 +712,48 @@ class TestCase(unittest.TestCase):
                     "container_image_regexes": "'^regex1$ ^regex2$'",
                     "push_images": True,
                 }
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_overcloud_deployment_image_build(self, mock_run):
+        command = commands.OvercloudDeploymentImageBuild(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    "ansible/overcloud-ipa-build.yml",
+                ],
+                extra_vars={},
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_overcloud_deployment_image_build_force_rebuild(self, mock_run):
+        command = commands.OvercloudDeploymentImageBuild(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args(["--force-rebuild"])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    "ansible/overcloud-ipa-build.yml",
+                ],
+                extra_vars={"ipa_image_force_rebuild": True},
             ),
         ]
         self.assertEqual(expected_calls, mock_run.call_args_list)
