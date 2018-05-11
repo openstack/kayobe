@@ -1,0 +1,5 @@
+---
+features:
+  - Adds support for setting the boot protocol of a network interface. Valid
+    values are ``static`` and ``dhcp``.  The default is ``static``. When set to
+    an external DHCP server must be provided.

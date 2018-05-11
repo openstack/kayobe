@@ -127,6 +127,7 @@ net_mtu = _make_attr_filter('mtu')
 net_routes = _make_attr_filter('routes')
 net_rules = _make_attr_filter('rules')
 net_physical_network = _make_attr_filter('physical_network')
+net_bootproto = _make_attr_filter('bootproto')
 
 
 @jinja2.contextfilter
@@ -200,6 +201,7 @@ def net_interface_obj(context, name, inventory_hostname=None):
     if routes:
         routes = [_route_obj(route) for route in routes]
     rules = net_rules(context, name, inventory_hostname)
+    bootproto = net_bootproto(context, name, inventory_hostname)
     interface = {
         'device': device,
         'address': ip,
@@ -209,7 +211,7 @@ def net_interface_obj(context, name, inventory_hostname=None):
         'mtu': mtu,
         'route': routes,
         'rules': rules,
-        'bootproto': 'static',
+        'bootproto': bootproto or 'static',
         'onboot': 'yes',
     }
     interface = {k: v for k, v in interface.items() if v is not None}
@@ -241,6 +243,7 @@ def net_bridge_obj(context, name, inventory_hostname=None):
     if routes:
         routes = [_route_obj(route) for route in routes]
     rules = net_rules(context, name, inventory_hostname)
+    bootproto = net_bootproto(context, name, inventory_hostname)
     interface = {
         'device': device,
         'address': ip,
@@ -251,7 +254,7 @@ def net_bridge_obj(context, name, inventory_hostname=None):
         'ports': ports,
         'route': routes,
         'rules': rules,
-        'bootproto': 'static',
+        'bootproto': bootproto or 'static',
         'onboot': 'yes',
     }
     interface = {k: v for k, v in interface.items() if v is not None}
@@ -289,6 +292,7 @@ def net_bond_obj(context, name, inventory_hostname=None):
     if routes:
         routes = [_route_obj(route) for route in routes]
     rules = net_rules(context, name, inventory_hostname)
+    bootproto = net_bootproto(context, name, inventory_hostname)
     interface = {
         'device': device,
         'address': ip,
@@ -305,7 +309,7 @@ def net_bond_obj(context, name, inventory_hostname=None):
         'bond_lacp_rate': lacp_rate,
         'route': routes,
         'rules': rules,
-        'bootproto': 'static',
+        'bootproto': bootproto or 'static',
         'onboot': 'yes',
     }
     interface = {k: v for k, v in interface.items() if v is not None}
@@ -389,14 +393,14 @@ def net_configdrive_network_device(context, name, inventory_hostname=None):
     cidr = net_cidr(context, name, inventory_hostname)
     netmask = net_mask(context, name, inventory_hostname)
     gateway = net_gateway(context, name, inventory_hostname)
-    bootproto = 'static' if ip is not None else 'dhcp'
+    bootproto = net_bootproto(context, name, inventory_hostname)
     mtu = net_mtu(context, name, inventory_hostname)
     interface = {
         'device': device,
         'address': ip,
         'netmask': netmask,
         'gateway': gateway,
-        'bootproto': bootproto,
+        'bootproto': bootproto or 'static',
         'mtu': mtu,
     }
     interface = {k: v for k, v in interface.items() if v is not None}
@@ -459,6 +463,7 @@ class FilterModule(object):
             'net_routes': net_routes,
             'net_rules': net_rules,
             'net_physical_network': net_physical_network,
+            'net_bootproto': net_bootproto,
             'net_interface_obj': net_interface_obj,
             'net_bridge_obj': net_bridge_obj,
             'net_bond_obj': net_bond_obj,

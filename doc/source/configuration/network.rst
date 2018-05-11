@@ -236,6 +236,10 @@ The following attributes are supported:
 
 ``interface``
     The name of the network interface attached to the network.
+``bootproto``
+    Boot protocol for the interface. Valid values are ``static`` and ``dhcp``.
+    The default is ``static``. When set to ``dhcp``, an external DHCP server
+    must be provided.
 ``bridge_ports``
     For bridge interfaces, a list of names of network interfaces to add to the
     bridge.
