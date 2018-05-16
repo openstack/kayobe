@@ -28,12 +28,12 @@ kolla_openstack_custom_config:
   - src: "{{ kolla_extra_config_path }}//fluentd/filter"
     dest: "{{ kolla_node_custom_config_path }}/fluentd/filter"
     patterns: "*.conf"
-    enabled: True
+    enabled: true
   # Fluentd outputs.
   - src: "{{ kolla_extra_config_path }}/fluentd/output"
     dest: "{{ kolla_node_custom_config_path }}/fluentd/output"
     patterns: "*.conf"
-    enabled: True
+    enabled: true
   # Glance.
   - src: "{{ kolla_extra_config_path }}/glance"
     dest: "{{ kolla_node_custom_config_path }}/glance"
@@ -79,7 +79,7 @@ kolla_openstack_custom_config:
   - src: "{{ kolla_extra_config_path }}/keystone"
     dest: "{{ kolla_node_custom_config_path }}/keystone"
     patterns: "*"
-    enabled: True
+    enabled: true
   # Magnum.
   - src: "{{ kolla_extra_config_path }}/magnum"
     dest: "{{ kolla_node_custom_config_path }}/magnum"
