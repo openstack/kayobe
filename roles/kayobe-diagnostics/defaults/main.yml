@@ -5,5 +5,8 @@ kayobe_diagnostics_phase:
 # Directory on the remote host in which to save diagnostics.
 kayobe_diagnostics_logs_dir:
 
+# Directory on the remote host in which configuration is stored.
+kayobe_diagnostics_config_dir:
+
 # Directory on the executor in which to save logs.
 kayobe_diagnostics_executor_log_dir:

@@ -3,13 +3,21 @@
 # NOTE(mgoddard): This has been adapted from tests/get_logs.sh in Kolla
 # Ansible.
 
+# Environment variables:
+# $LOG_DIR is the directory to copy logs to.
+# $CONFIG_DIR is the directory to copy configuration from.
+
 set +o errexit
 
 copy_logs() {
-    LOG_DIR=/tmp/logs
-
     cp -rnL /var/lib/docker/volumes/kolla_logs/_data/* ${LOG_DIR}/kolla/
-    # TODO(mgoddard): Copy kayobe config
+    if [[ -d ${CONFIG_DIR} ]]; then
+        cp -rnL ${CONFIG_DIR}/etc/kayobe/* ${LOG_DIR}/kayobe_configs
+        cp -rnL ${CONFIG_DIR}/etc/kolla/* ${LOG_DIR}/kolla_configs
+        # Don't save the IPA images.
+        rm ${LOG_DIR}/kayobe_configs/kolla/config/ironic/ironic-agent.{kernel,initramfs}
+        rm ${LOG_DIR}/kolla_configs/config/ironic/ironic-agent.{kernel,initramfs}
+    fi
     cp -rvnL /var/log/* ${LOG_DIR}/system_logs/
 
 

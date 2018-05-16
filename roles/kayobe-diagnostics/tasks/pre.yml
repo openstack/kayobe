@@ -11,6 +11,7 @@
     mode: 0777
   with_items:
     - "docker_logs"
+    - "kayobe_configs"
     - "kolla_configs"
     - "system_logs"
     - "kolla"

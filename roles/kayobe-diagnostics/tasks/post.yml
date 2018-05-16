@@ -9,6 +9,9 @@
   register: get_logs_result
   become: true
   failed_when: false
+  environment:
+    LOG_DIR: "{{ kayobe_diagnostics_log_dir }}"
+    CONFIG_DIR: "{{ kayobe_diagnostics_config_dir }}"
 
 - name: Print get_logs.sh output
   debug:
