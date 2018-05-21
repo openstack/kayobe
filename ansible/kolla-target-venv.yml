@@ -3,7 +3,7 @@
 # when running kolla-ansible.
 
 - name: Ensure a virtualenv exists for kolla-ansible
-  hosts: seed:seed-hypervisor:overcloud
+  hosts: seed:overcloud
   gather_facts: False
   tags:
     - kolla-ansible
