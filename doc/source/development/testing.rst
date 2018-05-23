@@ -38,7 +38,7 @@ install the ``python-tox`` package. Otherwise install this on all distros::
 
     sudo pip install -U tox
 
-You may need to explicitly upgrade ``virtualenv`` if you’ve installed the one from
+You may need to explicitly upgrade ``virtualenv`` if you've installed the one from
 your OS distribution and it is too old (tox will complain). You can upgrade it
 individually, if you need to::
 
@@ -47,7 +47,7 @@ individually, if you need to::
 Running Unit Tests Locally
 ==========================
 
-If you haven’t already, the kayobe source code should be pulled directly from
+If you haven't already, the kayobe source code should be pulled directly from
 git::
 
     # from your home or source directory
