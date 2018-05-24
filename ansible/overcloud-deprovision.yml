@@ -81,7 +81,7 @@
         -m command
         -a "ironic node-set-provision-state {% raw %}{{ inventory_hostname }}{% endraw %} deleted"'
       register: delete_result
-      until: "{{ delete_result | success or 'is locked by host' in delete_result.stdout }}"
+      until: delete_result | success or 'is locked by host' in delete_result.stdout
       retries: "{{ ironic_retries }}"
       delay: "{{ ironic_retry_interval }}"
       when: initial_provision_state != 'available'
@@ -109,7 +109,7 @@
         -a "openstack baremetal node show {% raw %}{{ inventory_hostname }}{% endraw %} -f value -c provision_state"'
       register: show_result
       # Wait until the node is no longer in one of the deleting states.
-      until: "{{ not show_result.stdout_lines[1:] | intersect(deleting_states) }}"
+      until: not show_result.stdout_lines[1:] | intersect(deleting_states)
       retries: "{{ wait_available_timeout // wait_available_interval }}"
       delay: "{{ wait_available_interval }}"
       when:

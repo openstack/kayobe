@@ -30,7 +30,7 @@
       raw: "racadm set BIOS.BiosBootSettings.BootMode {{ drac_boot_mode | lower | capitalize }}"
       register: result
       failed_when: "'ERROR' in result.stdout"
-      until: "{{ drac_boot_mode_busy_message not in result.stdout }}"
+      until: drac_boot_mode_busy_message not in result.stdout
       retries: "{{ drac_boot_mode_retries }}"
       delay: "{{ drac_boot_mode_interval }}"
 
@@ -38,7 +38,7 @@
       raw: "racadm jobqueue create BIOS.Setup.1-1 -s TIME_NOW"
       register: result
       failed_when: "'ERROR' in result.stdout"
-      until: "{{ drac_boot_mode_busy_message not in result.stdout }}"
+      until: drac_boot_mode_busy_message not in result.stdout
       retries: "{{ drac_boot_mode_retries }}"
       delay: "{{ drac_boot_mode_interval }}"
 
@@ -57,7 +57,7 @@
       raw: "racadm jobqueue view -i {{ drac_boot_mode_bios_job_id }}"
       register: result
       failed_when: "'ERROR' in result.stdout"
-      until: "{{ 'Status=Completed' in result.stdout }}"
+      until: "'Status=Completed' in result.stdout"
       retries: "{{ drac_boot_mode_timeout // drac_boot_mode_interval }}"
       delay: "{{ drac_boot_mode_interval }}"
 
