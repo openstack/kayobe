@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Adds support for configuration of Dell PowerConnect switches. This is
+    integrated with the `kayobe physical network configure` command.

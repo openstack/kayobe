@@ -81,6 +81,18 @@
       dell_switch_config: "{{ switch_config }}"
       dell_switch_interface_config: "{{ switch_interface_config }}"
 
+- name: Ensure Dell PowerConnect physical switches are configured
+  hosts: switches_of_type_dell-powerconnect:&switches_in_display_mode_False
+  gather_facts: no
+  roles:
+    - role: ssh-known-host
+
+    - role: stackhpc.dell-powerconnect-switch
+      dell_powerconnect_switch_type: "{{ switch_type }}"
+      dell_powerconnect_switch_provider: "{{ switch_dell_powerconnect_provider }}"
+      dell_powerconnect_switch_config: "{{ switch_config }}"
+      dell_powerconnect_switch_interface_config: "{{ switch_interface_config }}"
+
 - name: Ensure Juniper physical switches are configured
   hosts: switches_of_type_junos:&switches_in_display_mode_False
   gather_facts: no

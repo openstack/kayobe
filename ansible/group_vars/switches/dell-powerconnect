@@ -1,0 +1,12 @@
+---
+# Switch configuration.
+
+###############################################################################
+# Authentication configuration.
+
+# For DellOS switches, this defines a 'provider' argument to the
+# dell_powerconnect_switch role.
+switch_dell_powerconnect_provider:
+  host: "{{ ansible_host }}"
+  username: "{{ ansible_user }}"
+  auth_pass: "{{ switch_auth_pass }}"

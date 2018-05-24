@@ -8,6 +8,7 @@
 - src: https://github.com/stackhpc/ansible-users
   version: append
   name: singleplatform-eng.users
+- src: stackhpc.dell-powerconnect-switch
 - src: stackhpc.drac
 - src: stackhpc.drac-facts
 - src: stackhpc.grafana-conf
