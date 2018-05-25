@@ -60,7 +60,7 @@ ansible_python_interpreter={{ kolla_ansible_target_venv }}/bin/python
 {% endif %}
 {% endfor %}
 {% for group in kolla_overcloud_inventory_kolla_top_level_groups %}
-{% if group not in kolla_overcloud_inventory_top_level_group_map %}
+{% if not kolla_overcloud_inventory_top_level_group_map.get(group, {}).get('groups') %}
 # Empty group definition for {{ group }}.
 [{{ group }}]
 
