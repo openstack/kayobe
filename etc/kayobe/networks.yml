@@ -43,6 +43,10 @@
 # workload hosts.
 #inspection_net_name:
 
+# Name of the network used to perform cleaning on the bare metal workload
+# hosts
+#cleaning_net_name:
+
 ###############################################################################
 # Network definitions.
 
@@ -135,6 +139,17 @@
 # storage_mgmt_net_vlan:
 # storage_mgmt_net_mtu:
 # storage_mgmt_net_routes:
+
+# Cleaning network IP information.
+# cleaning_net_cidr:
+# cleaning_net_allocation_pool_start:
+# cleaning_net_allocation_pool_end:
+# cleaning_net_neutron_allocation_pool_start:
+# cleaning_net_neutron_allocation_pool_end:
+# cleaning_net_gateway:
+# cleaning_net_vlan:
+# cleaning_net_mtu:
+# cleaning_net_routes:
 
 ###############################################################################
 # Network virtual patch link configuration.

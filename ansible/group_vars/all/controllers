@@ -24,7 +24,8 @@ controller_default_network_interfaces: >
       inspection_net_name,
       internal_net_name,
       storage_net_name,
-      storage_mgmt_net_name] | unique | list }}
+      storage_mgmt_net_name,
+      cleaning_net_name] | unique | list }}
 
 # List of extra networks to which controller nodes are attached.
 controller_extra_network_interfaces: []

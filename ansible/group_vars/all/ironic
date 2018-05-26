@@ -112,7 +112,7 @@ kolla_ironic_default_vendor_interface: no-vendor
 kolla_ironic_default_boot_option: local
 
 # Name of the Neutron network to use for cleaning.
-kolla_ironic_cleaning_network: 'provision-net'
+kolla_ironic_cleaning_network: "{{ kolla_ironic_provisioning_network if cleaning_net_name == provision_wl_net_name else 'cleaning-net' }}"
 
 # Name of the Neutron network to use for provisioning.
 kolla_ironic_provisioning_network: 'provision-net'

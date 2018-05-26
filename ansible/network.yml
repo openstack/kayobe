@@ -88,7 +88,7 @@
       set_fact:
         veth_bridge_mtu_map: >
           {{ veth_bridge_mtu_map | combine({interface: mtu}) }}
-      with_items: "{{ [provision_wl_net_name] + external_net_names }}"
+      with_items: "{{ [provision_wl_net_name, cleaning_net_name] + external_net_names | unique | list }}"
       when: item in network_interfaces
       vars:
         interface: "{{ item | net_interface | replace('.' ~ item | net_vlan | default('!nomatch!'), '') }}"

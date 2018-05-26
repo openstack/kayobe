@@ -47,6 +47,10 @@ storage_mgmt_net_name: 'storage_mgmt_net'
 # workload hosts.
 inspection_net_name: 'inspection_net'
 
+# Name of the network used to perform cleaning on the bare metal workload
+# hosts
+cleaning_net_name: "{{ provision_wl_net_name }}"
+
 ###############################################################################
 # Network interface naming conventions.
 

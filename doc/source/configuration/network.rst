@@ -410,6 +410,9 @@ Workload out-of-band network (``oob_wl_net_name``)
 Workload provisioning network (``provision_wl_net_name``)
     Name of the network used by the overcloud hosts to provision the bare metal
     workload hosts.
+Workload cleaning network (``cleaning_net_name``)
+    Name of the network used by the overcloud hosts to clean the baremetal
+    workload hosts.
 Internal network (``internal_net_name``)
     Name of the network used to expose the internal OpenStack API endpoints.
 Public network (``public_net_name``)
@@ -447,6 +450,7 @@ To configure network roles in a system with two networks, ``example1`` and
    storage_net_name: example2
    storage_mgmt_net_name: example2
    inspection_net_name: example2
+   cleaning_net_name: example2
 
 Overcloud Provisioning Network
 ------------------------------
@@ -472,6 +476,35 @@ To configure a network called ``example`` with an inspection allocation pool:
 
    This pool should not overlap with a kayobe allocation pool on the same
    network.
+
+Workload Cleaning Network
+-------------------------
+
+A separate cleaning network, which is used by the overcloud to clean baremetal
+workload (compute) hosts, may optionally be specified. Otherwise,
+the Workload Provisoning network is used. It is necessary to define an IP
+allocation pool for neutron using the
+``neutron_allocation_pool_start`` and ``neutron_allocation_pool_end``
+attributes of the cleaning network. This controls the IP addresses that are
+assigned to workload hosts during cleaning.
+
+.. note::
+
+   This example assumes that the ``example`` network is mapped to
+   ``cleaning_net_name``.
+
+To configure a network called ``example`` with a neutron provisioning
+allocation pool:
+
+.. code-block:: yaml
+
+   example_neutron_allocation_pool_start: 10.0.1.128
+   example_neutron_allocation_pool_end: 10.0.1.195
+
+.. note::
+
+   This pool should not overlap with a kayobe or inspection allocation pool on
+   the same network.
 
 Workload Provisioning Network
 -----------------------------
@@ -588,6 +621,7 @@ By default, controllers are attached to the following networks:
 * workload (compute) out-of-band network
 * workload (compute) provisioning network
 * workload (compute) inspection network
+* workload (compute) cleaning network
 * internal network
 * storage network
 * storage management network

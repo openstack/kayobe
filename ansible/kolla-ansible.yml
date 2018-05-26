@@ -126,7 +126,7 @@
               {{ kolla_neutron_bridge_interfaces |
                  union([item | net_interface(network_host) | replace('.' ~ item | net_vlan(network_host) | default('!nomatch!'), '')]) |
                  list }}
-          with_items: "{{ [provision_wl_net_name] + external_net_names }}"
+          with_items: "{{ [provision_wl_net_name, cleaning_net_name] + external_net_names | unique | list }}"
           when: item in hostvars[network_host].network_interfaces
 
         - name: Set facts containing the Neutron bridge and interface names
