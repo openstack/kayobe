@@ -37,7 +37,7 @@
       os_networks:
         - name: "{{ kolla_ironic_provisioning_network }}"
           provider_network_type: "{% if provision_wl_net_name | net_vlan %}vlan{% else %}flat{% endif %}"
-          provider_physical_network: "physnet1"
+          provider_physical_network: "{{ provision_wl_net_name | net_physical_network | default('physnet1', True) }}"
           provider_segmentation_id: "{{ provision_wl_net_name | net_vlan }}"
           shared: True
           subnets:
