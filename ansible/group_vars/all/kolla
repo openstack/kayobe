@@ -112,6 +112,8 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_barbican | bool }}"
   - regex: ceilometer
     enabled: "{{ kolla_enable_ceilometer | bool }}"
+  - regex: ceph
+    enabled: "{{ kolla_enable_ceph | bool }}"
   - regex: cinder
     enabled: "{{ kolla_enable_cinder | bool }}"
   - regex: collectd
@@ -171,6 +173,8 @@ overcloud_container_image_regex_map:
   # Neutron SFC agent not currently supported on CentOS binary builds.
   - regex: "neutron-\\(dhcp\\|l3\\|metadata\\|openvswitch\\)-agent"
     enabled: "{{ kolla_enable_neutron | bool }}"
+  - regex: neutron-lbaas-agent
+    enabled: "{{ kolla_enable_neutron_lbaas | bool }}"
   - regex: nova
     enabled: "{{ kolla_enable_nova | bool }}"
   - regex: openvswitch
@@ -183,6 +187,8 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_skydive | bool }}"
   - regex: swift
     enabled: "{{ kolla_enable_swift | bool }}"
+  - regex: telegraf
+    enabled: "{{ kolla_enable_telegraf | bool }}"
   - regex: tgtd
     enabled: "{{ kolla_enable_cinder | bool or kolla_enable_ironic | bool }}"
   - regex: zookeeper
@@ -317,11 +323,13 @@ kolla_enable_manila: "no"
 kolla_enable_monasca: "no"
 kolla_enable_murano: "no"
 kolla_enable_neutron: "yes"
+kolla_enable_neutron_lbaas: "no"
 kolla_enable_nova: "yes"
 kolla_enable_osprofiler: "no"
 kolla_enable_sahara: "no"
 kolla_enable_skydive: "no"
 kolla_enable_swift: "no"
+kolla_enable_telegraf: "no"
 kolla_enable_zookeeper: "{{ 'yes' if kolla_enable_kafka | bool else 'no' }}"
 
 ###############################################################################
