@@ -4,4 +4,5 @@
     - role: kayobe-diagnostics
       kayobe_diagnostics_phase: "post"
       kayobe_diagnostics_log_dir: "/tmp/logs"
+      kayobe_diagnostics_config_dir: "{{ zuul.project.src_dir }}/config/src/kayobe-config"
       kayobe_diagnostics_executor_log_dir: "{{ zuul.executor.log_root }}/{{ inventory_hostname }}"
