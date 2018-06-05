@@ -587,6 +587,7 @@ By default, controllers are attached to the following networks:
 * overcloud provisioning network
 * workload (compute) out-of-band network
 * workload (compute) provisioning network
+* workload (compute) inspection network
 * internal network
 * storage network
 * storage management network

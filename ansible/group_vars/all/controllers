@@ -21,6 +21,7 @@ controller_default_network_interfaces: >
   {{ [provision_oc_net_name,
       oob_wl_net_name,
       provision_wl_net_name,
+      inspection_net_name,
       internal_net_name,
       storage_net_name,
       storage_mgmt_net_name] | unique | list }}
