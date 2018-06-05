@@ -83,7 +83,7 @@
       when: item.current != item.required
       register: result
       failed_when: "'ERROR' in result.stdout"
-      until: "{{ drac_pxe_busy_message not in result.stdout }}"
+      until: drac_pxe_busy_message not in result.stdout
       retries: "{{ drac_pxe_retries }}"
       delay: "{{ drac_pxe_interval }}"
 
@@ -93,7 +93,7 @@
       when: item.current != item.required
       register: result
       failed_when: "'ERROR' in result.stdout"
-      until: "{{ drac_pxe_busy_message not in result.stdout }}"
+      until: drac_pxe_busy_message not in result.stdout
       retries: "{{ drac_pxe_retries }}"
       delay: "{{ drac_pxe_interval }}"
 
@@ -128,7 +128,7 @@
       raw: "racadm set BIOS.PxeDev1Settings.PxeDev1Interface NIC.Integrated.1-{{ drac_pxe_interface }}-1"
       register: result
       failed_when: "'ERROR' in result.stdout"
-      until: "{{ drac_pxe_busy_message not in result.stdout }}"
+      until: drac_pxe_busy_message not in result.stdout
       retries: "{{ drac_pxe_retries }}"
       delay: "{{ drac_pxe_interval }}"
       when: current_pxe_interface != required_pxe_interface
@@ -144,7 +144,7 @@
   raw: "racadm set BIOS.BiosBootSettings.BootSeq {{ drac_pxe_bios_boot_sequence }}"
   register: result
   failed_when: "'ERROR' in result.stdout"
-  until: "{{ drac_pxe_busy_message not in result.stdout }}"
+  until: drac_pxe_busy_message not in result.stdout
   retries: "{{ drac_pxe_retries }}"
   delay: "{{ drac_pxe_interval }}"
   when: current_boot_sequence != required_boot_sequence
@@ -158,7 +158,7 @@
   raw: "racadm jobqueue create BIOS.Setup.1-1 -s TIME_NOW"
   register: result
   failed_when: "'ERROR' in result.stdout"
-  until: "{{ drac_pxe_busy_message not in result.stdout }}"
+  until: drac_pxe_busy_message not in result.stdout
   retries: "{{ drac_pxe_retries }}"
   delay: "{{ drac_pxe_interval }}"
   when: bios_job_required
@@ -181,6 +181,6 @@
   when: job_ids | length > 0
   register: result
   failed_when: "'ERROR' in result.stdout"
-  until: "{{ 'Status=Completed' in result.stdout }}"
+  until: "'Status=Completed' in result.stdout"
   retries: "{{ drac_pxe_timeout // drac_pxe_interval }}"
   delay: "{{ drac_pxe_interval }}"

@@ -84,7 +84,7 @@
         -m command
         -a "ironic node-set-provision-state {% raw %}{{ inventory_hostname }}{% endraw %} manage"'
       register: manage_result
-      until: "{{ manage_result | success or 'is locked by host' in manage_result.stdout }}"
+      until: manage_result | success or 'is locked by host' in manage_result.stdout
       retries: "{{ ironic_retries }}"
       delay: "{{ ironic_retry_interval }}"
       when: initial_provision_state == 'enroll'
@@ -108,7 +108,7 @@
         -m command
         -a "ironic node-set-provision-state {% raw %}{{ inventory_hostname }}{% endraw %} provide"'
       register: provide_result
-      until: "{{ provide_result | success or 'is locked by host' in provide_result.stdout }}"
+      until: provide_result | success or 'is locked by host' in provide_result.stdout
       retries: "{{ ironic_retries }}"
       delay: "{{ ironic_retry_interval }}"
       when: initial_provision_state in ['enroll', 'manageable']
@@ -165,7 +165,7 @@
         -a "openstack baremetal node show {% raw %}{{ inventory_hostname }}{% endraw %} -f value -c provision_state"'
       register: show_result
       # Wait until the node is no longer in one of the deploying states.
-      until: "{{ not show_result.stdout_lines[1:] | intersect(deploying_states) }}"
+      until: not show_result.stdout_lines[1:] | intersect(deploying_states)
       retries: "{{ wait_active_timeout // wait_active_interval }}"
       delay: "{{ wait_active_interval }}"
       when:

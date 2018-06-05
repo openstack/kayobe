@@ -74,7 +74,7 @@
         -m command
         -a "ironic node-set-provision-state {% raw %}{{ inventory_hostname }}{% endraw %} manage"'
       register: manage_result
-      until: "{{ manage_result | success or 'is locked by host' in manage_result.stdout }}"
+      until: manage_result | success or 'is locked by host' in manage_result.stdout
       retries: "{{ ironic_retries }}"
       delay: "{{ ironic_retry_interval }}"
       when: initial_provision_state != 'manageable'
@@ -98,7 +98,7 @@
         -m command
         -a "ironic node-set-provision-state {% raw %}{{ inventory_hostname }}{% endraw %} inspect"'
       register: provide_result
-      until: "{{ provide_result | success or 'is locked by host' in provide_result.stdout }}"
+      until: provide_result | success or 'is locked by host' in provide_result.stdout
       retries: "{{ ironic_retries }}"
       delay: "{{ ironic_retry_interval }}"
       delegate_to: "{{ seed_host }}"
@@ -124,7 +124,7 @@
         -a "openstack baremetal node show {% raw %}{{ inventory_hostname }}{% endraw %} -f value -c provision_state"'
       register: show_result
       # Wait until the node is no longer in one of the inspecting states.
-      until: "{{ not show_result.stdout_lines[1:] | intersect(inspecting_states) }}"
+      until: not show_result.stdout_lines[1:] | intersect(inspecting_states)
       retries: "{{ wait_inspected_timeout // wait_inspected_interval }}"
       delay: "{{ wait_inspected_interval }}"
       when: wait_inspected | bool
