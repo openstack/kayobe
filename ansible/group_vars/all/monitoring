@@ -18,7 +18,7 @@ monitoring_network_interfaces: >
 
 # List of default networks to which monitoring nodes are attached.
 monitoring_default_network_interfaces: >
-  {{ [provision_oc_net_name,
+  {{ [admin_oc_net_name,
       internal_net_name,
       public_net_name] | unique | list }}
 

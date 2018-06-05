@@ -30,17 +30,17 @@
   vars:
     seed_host: "{{ groups['seed'][0] }}"
     bifrost_hostvars:
-      # Also supports vlan_id and network_mtu.
       addressing_mode: static
       ipv4_interface_mac: "{% raw %}{{ extra.pxe_interface_mac | default }}{% endraw %}"
-      ipv4_address: "{{ provision_oc_net_name | net_ip }}"
-      ipv4_subnet_mask: "{{ provision_oc_net_name | net_cidr | ipaddr('netmask') }}"
-      # If the provisioning network does not have a gateway defined, use the
+      ipv4_address: "{{ admin_oc_net_name | net_ip }}"
+      ipv4_subnet_mask: "{{ admin_oc_net_name | net_cidr | ipaddr('netmask') }}"
+      # If the admin network does not have a gateway defined, use the
       # seed as a gateway to allow external access until other networks have
       # been configured.
-      ipv4_gateway: "{{ provision_oc_net_name | net_gateway or provision_oc_net_name | net_ip(seed_host) }}"
+      ipv4_gateway: "{{ admin_oc_net_name | net_gateway or admin_oc_net_name | net_ip(seed_host) }}"
       ipv4_nameserver: "{{ resolv_nameservers }}"
-      network_mtu: "{{ provision_oc_net_name | net_mtu or '1500' }}"
+      network_mtu: "{{ admin_oc_net_name | net_mtu or '1500' }}"
+      vlan_id: "{{ '' if admin_oc_net_name == provision_oc_net_name else (admin_oc_net_name | net_vlan) }}"
   tasks:
     - name: Ensure the Bifrost host variable files exist
       copy:

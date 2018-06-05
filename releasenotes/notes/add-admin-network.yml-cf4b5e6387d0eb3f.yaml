@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Adds a new overcloud admin network to improve network separation.
+    The network is intended to be used for remote admin access e.g SSH.
+    If ``admin_oc_net_name`` is not set, Kayobe will use the previous
+    behaviour of using the overcloud provisioning network for this purpose.
+    See `Story 2002096
+    <https://storyboard.openstack.org/#!/story/2002096>`_

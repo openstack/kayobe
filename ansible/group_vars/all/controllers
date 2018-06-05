@@ -18,7 +18,7 @@ controller_network_interfaces: >
 
 # List of default networks to which controller nodes are attached.
 controller_default_network_interfaces: >
-  {{ [provision_oc_net_name,
+  {{ [admin_oc_net_name,
       oob_wl_net_name,
       provision_wl_net_name,
       inspection_net_name,

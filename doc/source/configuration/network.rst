@@ -398,6 +398,9 @@ In order to provide flexibility in the system's network topology, Kayobe maps
 the named networks to logical network roles.  A single named network may
 perform multiple roles, or even none at all.  The available roles are:
 
+Overcloud admin network (``admin_oc_net_name``)
+    Name of the network used to access the overcloud for admin purposes, e.g
+    for remote SSH access.
 Overcloud out-of-band network (``oob_oc_net_name``)
     Name of the network used by the seed to access the out-of-band management
     controllers of the bare metal overcloud hosts.
@@ -440,6 +443,7 @@ To configure network roles in a system with two networks, ``example1`` and
 .. code-block:: yaml
    :caption: ``networks.yml``
 
+   admin_oc_net_name: example1
    oob_oc_net_name: example1
    provision_oc_net_name: example1
    oob_wl_net_name: example1
@@ -451,6 +455,31 @@ To configure network roles in a system with two networks, ``example1`` and
    storage_mgmt_net_name: example2
    inspection_net_name: example2
    cleaning_net_name: example2
+
+Overcloud Admin Network
+-----------------------
+
+The admin network is intended to be used for remote access to the overcloud hosts.
+Kayobe will use the address assigned to the host on this network as the
+``ansible_host`` when executing playbooks. It is therefore a necessary requirement
+to configure this network.
+
+By default Kayobe will use the overcloud provisioning network as the admin network.
+It is, however, possible to configure a separate network. To do so, you should
+override ``admin_oc_net_name`` in your networking configuration.
+
+If a separate network is configured, the following requirements should be taken into
+consideration:
+
+* The admin network must be configured to use the same physical network interface
+  as the provisioning network. This is because the PXE MAC address is used to
+  lookup the interface for the cloud-init network configuration that occurs
+  during bifrost provisioning of the overcloud.
+
+* If the admin network is configured as a tagged VLAN, you must configure Kayobe
+  to upgrade cloud-init. This is a temporary workaround for a bug in the current
+  version of cloud-init shipped with CentOS 7.5. Please see :ref:`workaround-cloud-init`
+  for more details.
 
 Overcloud Provisioning Network
 ------------------------------
@@ -593,6 +622,7 @@ Seed
 
 By default, the seed is attached to the following networks:
 
+* overcloud admin network
 * overcloud out-of-band network
 * overcloud provisioning network
 
@@ -617,7 +647,7 @@ Controllers
 
 By default, controllers are attached to the following networks:
 
-* overcloud provisioning network
+* overcloud admin network
 * workload (compute) out-of-band network
 * workload (compute) provisioning network
 * workload (compute) inspection network
@@ -645,7 +675,7 @@ controllers when they are in the ``controllers`` group.  If the monitoring
 hosts are not in the ``controllers`` group, they are attached to the following
 networks by default:
 
-* overcloud provisioning network
+* overcloud admin network
 * internal network
 * public network
 
@@ -659,7 +689,7 @@ Virtualised Compute Hosts
 
 By default, virtualised compute hosts are attached to the following networks:
 
-* overcloud provisioning network
+* overcloud admin network
 * internal network
 * storage network
 

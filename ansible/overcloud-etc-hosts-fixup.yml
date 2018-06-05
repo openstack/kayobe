@@ -1,29 +1,29 @@
 ---
 # For some currently unknown reason, overcloud hosts end up with multiple
-# entries in /etc/hosts that map their own hostname to their provisioning
+# entries in /etc/hosts that map their own hostname to their admin
 # network IP address, in addition to one that maps their own hostname to their
 # internal network IP address. This causes RabbitMQ upgrades to fail, as
 # RabbitMQ expects the system's hostname to resolve to the IP address on
 # which it is listening. As a workaround, we remove the stale entries from
 # /etc/hosts.  See https://github.com/stackhpc/kayobe/issues/14.
 
-- name: Ensure overcloud hosts' /etc/hosts does not contain provisioning network IP
+- name: Ensure overcloud hosts' /etc/hosts does not contain admin network IP
   hosts: overcloud
   tags:
     - etc-hosts-fixup
   tasks:
-    - name: Ensure overcloud hosts' /etc/hosts does not contain provisioning network or loopback IPs
+    - name: Ensure overcloud hosts' /etc/hosts does not contain admin network or loopback IPs
       lineinfile:
         dest: /etc/hosts
         regexp: "^{{ item }}[ \t]*{{ inventory_hostname }}"
         state: absent
       with_items:
         - "127.0.0.1"
-        - "{{ provision_oc_net_name | net_ip }}"
-      when: provision_oc_net_name | net_ip != None
+        - "{{ admin_oc_net_name | net_ip }}"
+      when: admin_oc_net_name | net_ip != None
       become: True
 
-- name: Ensure rabbitmq containers' /etc/hosts does not contain provisioning network or loopback IPs
+- name: Ensure rabbitmq containers' /etc/hosts does not contain admin network or loopback IPs
   hosts: overcloud
   tags:
     - etc-hosts-fixup
@@ -40,7 +40,7 @@
           with_items: "{{ rabbitmq_containers }}"
           register: ps_result
 
-        - name: Ensure rabbitmq containers' /etc/hosts does not contain provisioning network or loopback IPs
+        - name: Ensure rabbitmq containers' /etc/hosts does not contain admin network or loopback IPs
           command: >
             docker exec -u root {{ item.0.item }}
             bash -c
@@ -55,7 +55,7 @@
           with_nested:
             - "{{ ps_result.results }}"
             - - "127.0.0.1"
-              - "{{ provision_oc_net_name | net_ip }}"
+              - "{{ admin_oc_net_name | net_ip }}"
           when: item.0.rc == 0
           register: sed_result
-      when: provision_oc_net_name | net_ip != None
+      when: admin_oc_net_name | net_ip != None

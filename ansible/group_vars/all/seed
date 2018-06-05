@@ -16,7 +16,8 @@ seed_network_interfaces: >
 
 # List of default networks to which seed nodes are attached.
 seed_default_network_interfaces: >
-  {{ [oob_oc_net_name,
+  {{ [admin_oc_net_name,
+      oob_oc_net_name,
       provision_oc_net_name] | unique | list }}
 
 # List of extra networks to which seed nodes are attached.

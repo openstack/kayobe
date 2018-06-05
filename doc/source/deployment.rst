@@ -133,6 +133,8 @@ image name regular expressions::
 In order to push images to a registry after they are built, add the ``--push``
 argument.
 
+.. _workaround-cloud-init:
+
 Workaround VLAN cloud-init issue
 --------------------------------
 
