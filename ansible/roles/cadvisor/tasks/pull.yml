@@ -7,4 +7,4 @@
   with_dict: "{{ cadvisor_services }}"
   when:
     - item.value.enabled
-    - action != 'destroy'
+    - cadvisor_action != 'destroy'

@@ -7,4 +7,4 @@
   with_dict: "{{ nodeexporter_services }}"
   when:
     - item.value.enabled
-    - action != 'destroy'
+    - nodeexporter_action != 'destroy'

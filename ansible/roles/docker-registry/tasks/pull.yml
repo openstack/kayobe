@@ -7,4 +7,4 @@
   with_dict: "{{ docker_registry_services }}"
   when:
     - item.value.enabled
-    - action != 'destroy'
+    - docker_registry_action != 'destroy'

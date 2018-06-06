@@ -7,4 +7,4 @@
   with_dict: "{{ inspection_store_services }}"
   when:
     - item.value.enabled
-    - action != 'destroy'
+    - inspection_store_action != 'destroy'

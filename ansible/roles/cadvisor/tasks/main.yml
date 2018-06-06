@@ -1,2 +1,2 @@
 ---
-- include: "{{ action }}.yml"
+- include: "{{ cadvisor_action }}.yml"

@@ -1,2 +1,2 @@
 ---
-- include: "{{ action }}.yml"
+- include: "{{ docker_registry_action }}.yml"

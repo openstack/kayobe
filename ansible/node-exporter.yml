@@ -12,3 +12,4 @@
     - node-exporter
   roles:
     - role: node-exporter
+      nodeexporter_action: "{{ kayobe_action }}"
