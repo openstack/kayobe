@@ -18,8 +18,8 @@ import cliff.app
 import cliff.commandmanager
 import mock
 
+from kayobe import ansible
 from kayobe.cli import commands
-from kayobe import utils
 
 
 class TestApp(cliff.app.App):
@@ -33,7 +33,7 @@ class TestApp(cliff.app.App):
 
 class TestCase(unittest.TestCase):
 
-    @mock.patch.object(utils, "galaxy_install", spec=True)
+    @mock.patch.object(ansible, "install_galaxy_roles", autospec=True)
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
     def test_control_host_bootstrap(self, mock_run, mock_install):
@@ -42,8 +42,7 @@ class TestCase(unittest.TestCase):
         parsed_args = parser.parse_args([])
         result = command.run(parsed_args)
         self.assertEqual(0, result)
-        mock_install.assert_called_once_with("requirements.yml",
-                                             "ansible/roles")
+        mock_install.assert_called_once_with(parsed_args)
         expected_calls = [
             mock.call(mock.ANY, ["ansible/bootstrap.yml"]),
             mock.call(mock.ANY, ["ansible/kolla-ansible.yml"],
@@ -51,7 +50,7 @@ class TestCase(unittest.TestCase):
         ]
         self.assertEqual(expected_calls, mock_run.call_args_list)
 
-    @mock.patch.object(utils, "galaxy_install", spec=True)
+    @mock.patch.object(ansible, "install_galaxy_roles", autospec=True)
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
     def test_control_host_upgrade(self, mock_run, mock_install):
@@ -60,8 +59,7 @@ class TestCase(unittest.TestCase):
         parsed_args = parser.parse_args([])
         result = command.run(parsed_args)
         self.assertEqual(0, result)
-        mock_install.assert_called_once_with("requirements.yml",
-                                             "ansible/roles", force=True)
+        mock_install.assert_called_once_with(parsed_args, force=True)
         expected_calls = [
             mock.call(mock.ANY, ["ansible/bootstrap.yml"]),
             mock.call(mock.ANY, ["ansible/kolla-ansible.yml"],

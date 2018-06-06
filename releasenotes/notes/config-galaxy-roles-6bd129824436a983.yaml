@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Adds support for installing custom Ansible Galaxy roles during ``kayobe
+    control host bootstrap`` and ``kayobe control host upgrade``. Custom roles
+    are defined in a requirements file at
+    ``$KAYOBE_CONFIG_PATH/ansible/requirements.yml``. The roles will be
+    installed to ``$KAYOBE_CONFIG_PATH/ansible/roles/``.
