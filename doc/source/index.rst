@@ -35,6 +35,7 @@ Advanced Documentation
    :maxdepth: 2
 
    control-plane-service-placement
+   custom-ansible-playbooks
 
 Developer Documentation
 -----------------------
