@@ -37,7 +37,7 @@ pxe_append_params = {{ kolla_ironic_pxe_append_params | join(',') }}
 {% endif %}
 
 {% raw %}
-tftp_server = {{ hostvars[inventory_hostname]['ansible_' + provision_interface | replace('-', '_')]['ipv4']['address'] }}
+tftp_server = {{ hostvars[inventory_hostname]['ansible_' + api_interface | replace('-', '_')]['ipv4']['address'] }}
 {% endraw %}
 
 {% if kolla_extra_ironic %}

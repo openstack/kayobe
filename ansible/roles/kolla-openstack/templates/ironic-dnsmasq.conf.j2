@@ -4,9 +4,9 @@ interface={% raw %}{{ ironic_dnsmasq_interface }}{% endraw %}
 bind-interfaces
 dhcp-range={{ kolla_inspector_dhcp_pool_start }},{{ kolla_inspector_dhcp_pool_end }},12h
 dhcp-sequential-ip
-dhcp-option=option:tftp-server,{% raw %}{{ hostvars[inventory_hostname]['ansible_' ~ provision_interface | replace('-', '_')]['ipv4']['address'] }}{% endraw %}
+dhcp-option=option:tftp-server,{% raw %}{{ hostvars[inventory_hostname]['ansible_' ~ api_interface | replace('-', '_')]['ipv4']['address'] }}{% endraw %}
 
-dhcp-option=option:server-ip-address,{% raw %}{{ hostvars[inventory_hostname]['ansible_' ~ provision_interface | replace('-', '_')]['ipv4']['address'] }}{% endraw %}
+dhcp-option=option:server-ip-address,{% raw %}{{ hostvars[inventory_hostname]['ansible_' ~ api_interface | replace('-', '_')]['ipv4']['address'] }}{% endraw %}
 
 {% if kolla_inspector_default_gateway %}
 dhcp-option=3,{{ kolla_inspector_default_gateway }}

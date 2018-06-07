@@ -117,10 +117,6 @@ neutron_bridge_name: "{{ kolla_neutron_bridge_names | join(',') }}"
 # control plane.
 bifrost_network_interface: "{{ kolla_bifrost_network_interface }}"
 
-# This is the interface to use for bare metal provisioning. It is not a
-# standard kolla variable.
-provision_interface: "{{ kolla_provision_interface }}"
-
 # Interface on which the inspector dnsmasq service listens.
 ironic_dnsmasq_interface: "{{ kolla_inspector_dnsmasq_interface }}"
 

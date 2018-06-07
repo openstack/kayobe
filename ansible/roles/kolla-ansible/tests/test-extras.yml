@@ -184,7 +184,6 @@
               neutron_external_interface: "eth6,eth7"
               neutron_bridge_name: "br0,br1"
               bifrost_network_interface: "eth8"
-              provision_interface: "eth9"
               ironic_dnsmasq_interface: "eth10"
               neutron_plugin_agent: "openvswitch"
               kolla_enable_tls_external: False

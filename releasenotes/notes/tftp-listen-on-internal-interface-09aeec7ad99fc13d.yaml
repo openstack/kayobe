@@ -1,0 +1,3 @@
+---
+upgrade:
+  - Ironic is now configured to use the internal network to reach the TFTP server (by default).
