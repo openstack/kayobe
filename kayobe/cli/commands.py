@@ -1137,3 +1137,12 @@ class BaremetalComputeProvide(KayobeAnsibleMixin, VaultMixin, Command):
         self.app.LOG.debug("Making baremetal compute nodes available")
         playbooks = _build_playbook_list("baremetal-compute-provide")
         self.run_kayobe_playbooks(parsed_args, playbooks)
+
+
+class BaremetalComputeRename(KayobeAnsibleMixin, VaultMixin, Command):
+    """Rename baremetal compute nodes to match inventory hostname"""
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Renaming baremetal compute nodes")
+        playbooks = _build_playbook_list("baremetal-compute-rename")
+        self.run_kayobe_playbooks(parsed_args, playbooks)

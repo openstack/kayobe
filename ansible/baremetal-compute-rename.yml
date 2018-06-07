@@ -1,0 +1,58 @@
+---
+# This playbook will ensure that all baremetal compute nodes are named after
+# their inventory host names. It matches the ipmi address in the inventory to
+# the one gathered from inspection
+
+- name: Rename baremetal compute nodes
+  hosts: controllers[0]
+  gather_facts: False
+  vars:
+    venv: "{{ virtualenv_path }}/openstack-cli"
+  pre_tasks:
+    - name: Set up openstack cli virtualenv
+      pip:
+        virtualenv: "{{ venv }}"
+        name:
+          - python-openstackclient
+          - python-ironicclient
+
+- name: Rename baremetal compute nodes
+  hosts: baremetal-compute
+  gather_facts: False
+  vars:
+    venv: "{{ virtualenv_path }}/openstack-cli"
+    controller_host: "{{ groups['controllers'][0] }}"
+  tasks:
+    - name: Fail if ipmi host variable not set
+      vars:
+        ipmi_address: "{{ hostvars[inventory_hostname].ipmi_address }}"
+      fail:
+        msg: >
+          The host variable, ipmi_address is not defined for {{ inventory_hostname }}. This variable is required
+          to run this playbook.
+      when: ipmi_address is not defined or not ipmi_address
+    - name: Get list of nodes
+      command: >
+        {{ venv }}/bin/openstack baremetal node list -f json --fields uuid name driver_info
+      register: nodes
+      delegate_to: "{{ controller_host }}"
+      environment: "{{ openstack_auth_env }}"
+      run_once: true
+      changed_when: false
+      vars:
+        # NOTE: Without this, the controller's ansible_host variable will not
+        # be respected when using delegate_to.
+        ansible_host: "{{ hostvars[controller_host].ansible_host | default(controller_host) }}"
+
+    - name: Rename baremetal compute nodes
+      command: >
+        {{ venv }}/bin/openstack baremetal node set --name "{{ inventory_hostname }}" "{{ node['UUID'] }}"
+      delegate_to: "{{ controller_host }}"
+      environment: "{{ openstack_auth_env }}"
+      vars:
+        # NOTE: Without this, the controller's ansible_host variable will not
+        # be respected when using delegate_to.
+        ansible_host: "{{ hostvars[controller_host].ansible_host | default(controller_host) }}"
+        ipmi_address: "{{ hostvars[inventory_hostname].ipmi_address }}"
+        node: "{{ (nodes.stdout | from_json) | selectattr('Driver Info.ipmi_address', 'equalto', ipmi_address) | first }}"
+      when: node['Name'] != inventory_hostname
