@@ -55,6 +55,7 @@ def test_service_config_directory(host, path):
      'neutron',
      'nova',
      'sahara',
+     'storm',
      'swift',
      'zookeeper'])
 def test_service_config_directory_absent(host, path):

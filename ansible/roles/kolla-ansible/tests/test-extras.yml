@@ -153,6 +153,7 @@
             kolla_enable_senlin: True
             kolla_enable_skydive: True
             kolla_enable_solum: True
+            kolla_enable_storm: True
             kolla_enable_swift: True
             kolla_enable_tacker: True
             kolla_enable_telegraf: True
@@ -282,6 +283,7 @@
               #enable_skydive: True
               #enable_solum: True
               #enable_senlin: True
+              #enable_storm: True
               #enable_swift: True
               #enable_tacker: True
               #enable_telegraf: True

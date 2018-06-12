@@ -243,6 +243,7 @@ kolla_openstack_logging_debug:
 #kolla_enable_rally:
 #kolla_enable_sahara:
 #kolla_enable_senlin:
+#kolla_enable_storm:
 #kolla_enable_swift:
 #kolla_enable_telegraf:
 #kolla_enable_tempest:

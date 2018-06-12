@@ -100,6 +100,7 @@
               - enable_monasca
               - enable_neutron
               - enable_nova
+              - enable_storm
               - enable_zookeeper
               - grafana_admin_username
               - network_interface

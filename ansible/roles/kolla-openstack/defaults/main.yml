@@ -371,6 +371,12 @@ kolla_enable_sahara:
 kolla_extra_sahara:
 
 ###############################################################################
+# Storm configuration.
+
+# Whether to enable Storm.
+kolla_enable_storm:
+
+###############################################################################
 # Swift configuration.
 
 # Whether to enable swift.

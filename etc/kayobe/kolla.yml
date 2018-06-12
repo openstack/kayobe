@@ -224,6 +224,7 @@
 #kolla_enable_senlin:
 #kolla_enable_skydive:
 #kolla_enable_solum:
+#kolla_enable_storm:
 #kolla_enable_swift:
 #kolla_enable_tacker:
 #kolla_enable_telegraf:
