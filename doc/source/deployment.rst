@@ -133,6 +133,40 @@ image name regular expressions::
 In order to push images to a registry after they are built, add the ``--push``
 argument.
 
+Workaround VLAN cloud-init issue
+--------------------------------
+
+If you wish to configure the overcloud hosts to use a tagged VLAN for the admin
+network interface, you must set
+``overcloud_host_image_workaround_cloud_init_enabled``
+to True in ``${KAYOBE_CONFIG_PATH}/etc/kayobe/overcloud.yml``::
+
+    overcloud_host_image_workaround_cloud_init_enabled: True
+
+prior to deploying the containerised services with::
+
+    (kayobe) $ kayobe seed service deploy
+
+Kayobe will then patch the overcloud host image to include a more recent
+version of cloud-init. This is to workaround a bug in the version of
+cloud-init currently shipped with CentOS 7.5 (0.7.9-24 at the time of writing),
+which doesn't set the IP address of VLAN subinterfaces. See:
+https://bugs.centos.org/view.php?id=14964.
+
+The default repository used to obtain the package is currently hosted on github
+in the `cloud-init-repo <https://github.com/stackhpc/cloud-init-repo>`_
+repository. You can override this by setting ``overcloud_host_image_workaround_cloud_init_repo``
+in ``${KAYOBE_CONFIG_PATH}/etc/kayobe/overcloud.yml``::
+
+   overcloud_host_image_workaround_cloud_init_repo: https://stackhpc.github.io/cloud-init-repo/
+
+The source code used to build the updated package can be obtained from
+the `cloud-init-repo-source <https://github.com/stackhpc/cloud-init-repo-source>`_
+repository.
+
+As this is not an offical package, there may be latent bugs when using
+functionality the kayobe developers have not used themselves.
+
 Deploying Containerised Services
 --------------------------------
 

@@ -449,6 +449,7 @@ class SeedServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     * Deploys the bifrost container using kolla-ansible.
     * Builds disk images for the overcloud hosts using Diskimage Builder (DIB).
     * Performs a workaround in the overcloud host image to fix resolv.conf.
+    * Performs a workaround in the overcloud host image to update cloud-init
     * Configures ironic inspector introspection rules in the bifrost inspector
       service.
     * When enabled, configures a Bare Metal Provisioning (BMP) environment for
@@ -465,6 +466,7 @@ class SeedServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         self.run_kolla_ansible_seed(parsed_args, "deploy-bifrost")
         playbooks = _build_playbook_list(
             "overcloud-host-image-workaround-resolv",
+            "overcloud-host-image-workaround-cloud-init",
             "seed-introspection-rules",
             "dell-switch-bmp")
         self.run_kayobe_playbooks(parsed_args, playbooks)

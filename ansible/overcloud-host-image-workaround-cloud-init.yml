@@ -1,0 +1,66 @@
+---
+# Workaround a CentOS 7.5 bug: cloud-init 0.7.9-24 does not correctly set
+# an IP address for VLAN subinterfaces configured with the Openstack metadata
+# format/Config drive. # See, https://bugs.centos.org/view.php?id=14964.
+- name: Ensure the overcloud host image uses an updated version of cloud-init
+  hosts: seed
+  tags:
+    - overcloud-host-image-workaround
+  vars:
+    custom_repo_tmp_path: /tmp/cloud-init-upstream.repo
+  tasks:
+    - block:
+        - name: Ensure libguestfs-tools is installed
+          command: >
+            docker exec bifrost_deploy
+            bash -c '
+            ansible localhost
+            --connection local
+            --become
+            -m yum
+            -a "name=libguestfs-tools state=installed"'
+        - name: Template cloud-init-repo
+          copy:
+            content: |
+              [cloudinit]
+              name=StackHPC cloud-init
+              baseurl={{ overcloud_host_image_workaround_cloud_init_repo }}
+              gpgcheck=0
+              enabled=1
+            dest: "{{ custom_repo_tmp_path }}"
+        - name: Copy cloud init repo into docker container
+          command: docker cp {{ custom_repo_tmp_path }} bifrost_deploy:{{ custom_repo_tmp_path }}
+        - name: Clean up template on seed
+          file:
+            path: "{{ custom_repo_tmp_path }}"
+            state: absent
+        - name: Install custom repo
+          command: >
+            docker exec bifrost_deploy
+            bash -c '
+            export LIBGUESTFS_BACKEND=direct &&
+            ansible localhost
+            --connection local
+            --become
+            -m command
+            -a "virt-customize -a /httpboot/deployment_image.qcow2 --upload {{ custom_repo_tmp_path }}:/etc/yum.repos.d/"'
+        - name: Clean up tmp file in docker container
+          command: >
+            docker exec bifrost_deploy
+            bash -c '
+            ansible localhost
+            --connection local
+            --become
+            -m file
+            -a "path=\"{{ custom_repo_tmp_path }}\" state=absent"'
+        - name: upgrade cloud init
+          command: >
+            docker exec bifrost_deploy
+            bash -c '
+            export LIBGUESTFS_BACKEND=direct &&
+            ansible localhost
+            --connection local
+            --become
+            -m command
+            -a "virt-customize -a /httpboot/deployment_image.qcow2 --install cloud-init"'
+      when: overcloud_host_image_workaround_cloud_init_enabled | bool

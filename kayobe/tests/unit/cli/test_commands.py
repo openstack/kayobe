@@ -411,6 +411,7 @@ class TestCase(unittest.TestCase):
                 mock.ANY,
                 [
                     "ansible/overcloud-host-image-workaround-resolv.yml",
+                    "ansible/overcloud-host-image-workaround-cloud-init.yml",
                     "ansible/seed-introspection-rules.yml",
                     "ansible/dell-switch-bmp.yml",
                 ],
