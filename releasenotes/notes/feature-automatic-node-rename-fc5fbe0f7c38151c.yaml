@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Adds a command to rename baremetal compute nodes to match
+    their inventory host name - ``kayobe baremetal compute rename``

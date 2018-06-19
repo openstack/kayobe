@@ -169,6 +169,18 @@ compute nodes::
 
     (kayobe) $ kayobe baremetal compute inspect
 
+Rename
+------
+
+Once nodes have been discovered, it is helpful to associate them with a name
+to make them easier to work with. If you would like the nodes to be named
+according to their inventory host names, you can run the following command:
+
+    (kayobe) $ kayobe baremetal compute rename
+
+This command will use the ``ipmi_address`` host variable from the inventory
+to map the inventory host name to the correct node.
+
 Running Kayobe Playbooks on Demand
 ==================================
 
