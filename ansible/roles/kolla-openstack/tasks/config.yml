@@ -78,6 +78,19 @@
   with_items: "{{ kolla_openstack_custom_config }}"
   register: find_dest_result
 
+- name: Ensure extra configuration parent directories are present
+  file:
+    path: "{{ item.0.item.dest }}/{{ item.1.path | relpath(item.0.item.src) | dirname }}"
+    recurse: true
+    state: directory
+  with_subelements:
+    - "{{ find_src_result.results }}"
+    - files
+    - skip_missing: true
+  when:
+    - item.0.item.enabled | bool
+    - item.1.path | basename not in item.0.item.ignore | default([])
+
 - name: Ensure extra configuration files exist
   template:
     src: "{{ item.1.path }}"
