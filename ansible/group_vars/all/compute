@@ -16,9 +16,10 @@ compute_network_interfaces: >
 
 # List of default networks to which compute nodes are attached.
 compute_default_network_interfaces: >
-  {{ [provision_oc_net_name,
-      internal_net_name,
-      storage_net_name] | unique | list }}
+  {{ ([provision_oc_net_name,
+       internal_net_name,
+       storage_net_name] +
+      (external_net_names if kolla_enable_neutron_provider_networks | bool else [])) | unique | list }}
 
 # List of extra networks to which compute nodes are attached.
 compute_extra_network_interfaces: []

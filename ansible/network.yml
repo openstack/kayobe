@@ -72,7 +72,7 @@
 # Configure virtual ethernet patch links to connect the workload provision
 # and external network bridges to the Neutron OVS bridge.
 - name: Ensure OVS patch links exist
-  hosts: network
+  hosts: network:compute
   tags:
     - config
     - network
