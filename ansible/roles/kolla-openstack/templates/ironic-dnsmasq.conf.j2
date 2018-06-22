@@ -8,12 +8,25 @@ dhcp-option=option:tftp-server,{% raw %}{{ hostvars[inventory_hostname]['ansible
 
 dhcp-option=option:server-ip-address,{% raw %}{{ hostvars[inventory_hostname]['ansible_' ~ api_interface | replace('-', '_')]['ipv4']['address'] }}{% endraw %}
 
+dhcp-option=210,/tftpboot/
+
 {% if kolla_inspector_default_gateway %}
 dhcp-option=3,{{ kolla_inspector_default_gateway }}
 {% endif %}
 
-dhcp-option=option:bootfile-name,pxelinux.0
-dhcp-option=210,/tftpboot/
+{% raw %}{% if enable_ironic_ipxe | bool %}
+dhcp-match=ipxe,175
+dhcp-match=set:efi,option:client-arch,7
+dhcp-match=set:efi,option:client-arch,9
+# Client is already running iPXE; move to next stage of chainloading
+dhcp-option=tag:ipxe,option:bootfile-name,{{ ironic_ipxe_url }}/inspector.ipxe
+# Client is PXE booting over EFI without iPXE ROM,
+# send EFI version of iPXE chainloader
+dhcp-option=tag:efi,tag:!ipxe,option:bootfile-name,ipxe.efi
+dhcp-option=option:bootfile-name,{{ ironic_dnsmasq_boot_file | default('undionly.kpxe') }}
+{% else %}
+dhcp-option=option:bootfile-name,{{ ironic_dnsmasq_boot_file | default('pxelinux.0') }}
+{% endif %}{% endraw %}
 
 {% if kolla_extra_ironic_dnsmasq %}
 {{ kolla_extra_ironic_dnsmasq }}

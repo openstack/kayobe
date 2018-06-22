@@ -207,6 +207,7 @@ kolla_openstack_logging_debug:
 #kolla_enable_horizon:
 #kolla_enable_influxdb:
 #kolla_enable_ironic:
+#kolla_enable_ironic_ipxe:
 #kolla_enable_kafka:
 #kolla_enable_kuryr:
 #kolla_enable_magnum:
