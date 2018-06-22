@@ -1,5 +1,4 @@
 ---
-# (ktibi) Need to remove parted_1_1 module when kayobe will support ansible 2.4
 
 - name: Ensure required packages are installed
   package:
@@ -10,18 +9,18 @@
 
 - name: Check the presence of a partition on the OSD disks
   become: True
-  parted_1_1:
+  parted:
     device: "{{ item.osd }}"
   with_items: "{{ ceph_disks }}"
   register: "disk_osd_info"
 
 - name: Check the presence of a partition on the journal disks
   become: True
-  parted_1_1:
+  parted:
     device: "{{ item.journal }}"
   with_items: "{{ ceph_disks }}"
   register: "disk_journal_info"
-  when: 
+  when:
     - item.journal is defined
 
 - name: Fail if the Ceph OSD disks have already a partition
@@ -51,7 +50,7 @@
 
 - name: Create tag partition for Ceph OSD
   become: True
-  parted_1_1:
+  parted:
     device: "{{ item.item.osd }}"
     number: 1
     label: gpt
@@ -68,7 +67,7 @@
 
 - name: Create tag partition for Ceph external journal
   become: True
-  parted_1_1:
+  parted:
     device: "{{ item.item.journal }}"
     number: 1
     label: gpt

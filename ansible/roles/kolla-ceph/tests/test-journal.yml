@@ -20,10 +20,6 @@
       command: fallocate -l 10M {{ journal_tempfile.path }}
 
     - block:
-        - name: Import parted role
-          include_role:
-            name: ../../stackhpc.parted-1-1
-
         - name: Test the kolla-ceph role
           include_role:
             name:  ../../kolla-ceph
@@ -33,7 +29,7 @@
                    journal: "{{ journal_tempfile.path }}"
 
         - name: Get name of fake OSD partition
-          parted_1_1:
+          parted:
             device: "{{ osd_tempfile.path }}"
           register: "disk_osd_info"
           become: True
@@ -55,7 +51,7 @@
             expected: "{{ 'KOLLA_CEPH_OSD_BOOTSTRAP_' ~ ((osd_tempfile.path | basename ~ ansible_hostname)| hash('md5'))[:9] }}"
 
         - name: Get name of fake journal partition
-          parted_1_1:
+          parted:
             device: "{{ journal_tempfile.path }}"
           register: "disk_journal_info"
           become: True

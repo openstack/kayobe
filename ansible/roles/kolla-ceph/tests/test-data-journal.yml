@@ -21,7 +21,7 @@
 
     - name: Create tag partition for the fake OSD
       become: True
-      parted_1_1:
+      parted:
         device: "{{ osd_tempfile.path }}"
         number: 1
         label: gpt
@@ -33,7 +33,7 @@
 
     - name: Create tag partition for the fake journal
       become: True
-      parted_1_1:
+      parted:
         device: "{{ journal_tempfile.path }}"
         number: 1
         label: gpt
@@ -44,10 +44,6 @@
         osd_id: "{{ (osd_tempfile.path | basename ~ ansible_hostname) }}"
 
     - block:
-        - name: Import parted role
-          include_role:
-            name: ../../stackhpc.parted-1-1
-
         - name: Test the kolla-ceph role
           include_role:
             name:  ../../kolla-ceph
@@ -57,7 +53,7 @@
                    journal: "{{ journal_tempfile.path }}"
 
         - name: Get name of fake OSD partition
-          parted_1_1:
+          parted:
             device: "{{ osd_tempfile.path }}"
           register: "disk_osd_info"
           become: True
@@ -79,7 +75,7 @@
             expected: "{{ 'KOLLA_CEPH_DATA_' ~ ((osd_tempfile.path | basename ~ ansible_hostname)| hash('md5'))[:9] }}"
 
         - name: Get name of fake journal partition
-          parted_1_1:
+          parted:
             device: "{{ journal_tempfile.path }}"
           register: "disk_journal_info"
           become: True

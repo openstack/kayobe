@@ -13,10 +13,6 @@
       command: fallocate -l 10M {{ tempfile.path }}
 
     - block:
-        - name: Import parted role
-          include_role:
-            name: ../../stackhpc.parted-1-1
-
         - name: Test the kolla-ceph role
           include_role:
             name:  ../../kolla-ceph
@@ -25,7 +21,7 @@
                  - osd: "{{ tempfile.path }}"
 
         - name: Get name of fake partition
-          parted_1_1:
+          parted:
             device: "{{ tempfile.path }}"
           register: "disk_osd_info"
           become: True
