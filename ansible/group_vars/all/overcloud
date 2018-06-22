@@ -30,3 +30,11 @@ disable_cloud_init: False
 # from the image using virt-customize, if it exists. See
 # https://bugs.centos.org/view.php?id=14369.
 overcloud_host_image_workaround_resolv_enabled: True
+
+# Workaround a CentOS 7.5 bug: cloud-init 0.7.9-24 does not correctly set
+# an IP address for VLAN subinterfaces configured with the Openstack metadata
+# format/Config drive. # See, https://bugs.centos.org/view.php?id=14964.
+overcloud_host_image_workaround_cloud_init_enabled: False
+
+# cloud-init repository for overcloud_host_image_workaround_cloud_init_enabled
+overcloud_host_image_workaround_cloud_init_repo: https://stackhpc.github.io/cloud-init-repo/

@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Adds an option to upgrade cloud-init in the overcloud host images,
+    ``overcloud_host_image_workaround_cloud_init_enabled``. Please see:
+    `Story 2002610 <https://storyboard.openstack.org/#!/story/2002610>`_
+    for full details.
