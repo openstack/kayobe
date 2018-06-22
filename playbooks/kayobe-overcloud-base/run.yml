@@ -8,3 +8,8 @@
       shell:
         cmd: dev/overcloud-deploy.sh > {{ logs_dir }}/ansible/overcloud-deploy
         chdir: "{{ kayobe_src_dir }}"
+
+    - name: Perform testing of the overcloud
+      shell:
+        cmd: dev/overcloud-test.sh > {{ logs_dir }}/ansible/overcloud-test
+        chdir: "{{ kayobe_src_dir }}"
