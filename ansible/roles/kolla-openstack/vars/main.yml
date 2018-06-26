@@ -90,6 +90,11 @@ kolla_openstack_custom_config:
     dest: "{{ kolla_node_custom_config_path }}/manila"
     patterns: "*"
     enabled: "{{ kolla_enable_manila }}"
+  # MariaDB.
+  - src: "{{ kolla_extra_config_path }}/mariadb"
+    dest: "{{ kolla_node_custom_config_path }}/mariadb"
+    patterns: "*"
+    enabled: "{{ kolla_enable_mariadb }}"
   # Murano.
   - src: "{{ kolla_extra_config_path }}/murano"
     dest: "{{ kolla_node_custom_config_path }}/murano"

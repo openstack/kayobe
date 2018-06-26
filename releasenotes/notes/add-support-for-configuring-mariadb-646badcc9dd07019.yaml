@@ -1,0 +1,4 @@
+---
+features:
+  - Add support for configuring MariaDB to support customising the Kolla
+    deployment, or using an external DB.

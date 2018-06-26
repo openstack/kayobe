@@ -1,0 +1,9 @@
+# {{ ansible_managed }}
+
+{% if kolla_extra_mariadb %}
+#######################
+# Extra configuration
+#######################
+
+{{ kolla_extra_mariadb }}
+{% endif %}

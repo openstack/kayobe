@@ -274,6 +274,15 @@ kolla_enable_magnum:
 kolla_extra_magnum:
 
 ###############################################################################
+# MariaDB configuration.
+
+# Whether to enable MariaDB.
+kolla_enable_mariadb:
+
+# Free form extra configuration to append to galera.cnf.
+kolla_extra_mariadb:
+
+###############################################################################
 # Manila configuration.
 
 # Whether to enable Manila.

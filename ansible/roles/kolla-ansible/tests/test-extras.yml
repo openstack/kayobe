@@ -93,6 +93,7 @@
             kolla_enable_manila: True
             kolla_enable_manila_backend_generic: True
             kolla_enable_manila_backend_hnas: True
+            kolla_enable_mariadb: True
             kolla_enable_mistral: True
             kolla_enable_monasca: True
             kolla_enable_mongodb: True
@@ -227,6 +228,7 @@
               #enable_manila: True
               #enable_manila_backend_generic: True
               #enable_manila_backend_hnas: True
+              #enable_mariadb: True
               #enable_mistral: True
               #enable_mongodb: True
               #enable_murano: True

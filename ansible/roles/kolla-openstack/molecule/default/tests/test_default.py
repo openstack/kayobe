@@ -49,6 +49,7 @@ def test_service_config_directory(host, path):
      'kafka',
      'magnum',
      'manila',
+     'mariadb',
      'murano',
      'neutron',
      'nova',

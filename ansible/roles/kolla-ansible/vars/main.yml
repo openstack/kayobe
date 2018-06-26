@@ -99,6 +99,7 @@ kolla_feature_flags:
   - manila_backend_hnas
   - manila_backend_cephfs_native
   - manila_backend_cephfs_nfs
+  - mariadb
   - mistral
   - mongodb
   - monasca
