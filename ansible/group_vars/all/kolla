@@ -162,6 +162,8 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_magnum | bool }}"
   - regex: manila
     enabled: "{{ kolla_enable_manila | bool }}"
+  - regex: mariadb
+    enabled: "{{ kolla_enable_mariadb | bool }}"
   - regex: murano
     enabled: "{{ kolla_enable_murano | bool }}"
   - regex: mariadb
@@ -319,6 +321,7 @@ kolla_enable_kafka: "no"
 kolla_enable_kibana: "{{ 'yes' if kolla_enable_central_logging | bool else 'no' }}"
 kolla_enable_magnum: "no"
 kolla_enable_manila: "no"
+kolla_enable_mariadb: "yes"
 # Support for Monasca in Kolla is a work in progress. This currently relies
 # on an out-of-band Monasca installation.
 kolla_enable_monasca: "no"
