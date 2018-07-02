@@ -59,8 +59,9 @@ ansible/roles/*/tests/*.retry
 # Ansible Galaxy roles
 ansible/roles/*\.*/
 
-# Virtualenv
+# Virtualenvs
 ansible/kolla-venv/
+venvs
 
 # Vagrant
 .vagrant
