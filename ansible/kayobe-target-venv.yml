@@ -22,6 +22,9 @@
           include_role:
             name: deactivate-virtualenv
 
+        - name: Gather facts
+          setup:
+
         - name: Ensure the python-virtualenv package is installed
           package:
             name: python-virtualenv
@@ -32,8 +35,8 @@
           file:
             path: "{{ virtualenv_path }}"
             state: directory
-            owner: "{{ ansible_user }}"
-            group: "{{ ansible_user }}"
+            owner: "{{ ansible_user_uid }}"
+            group: "{{ ansible_user_gid }}"
             mode: 0755
           # Check whether the virtualenv directory is a subdirectory of the
           # global virtualenv directory.
@@ -44,8 +47,8 @@
           file:
             path: "{{ virtualenv }}"
             state: directory
-            owner: "{{ ansible_user }}"
-            group: "{{ ansible_user }}"
+            owner: "{{ ansible_user_uid }}"
+            group: "{{ ansible_user_gid }}"
             mode: 0700
           become: True
 

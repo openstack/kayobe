@@ -22,8 +22,8 @@
   file:
     path: "{{ kolla_source_path | dirname }}"
     state: directory
-    owner: "{{ ansible_user_id }}"
-    group: "{{ ansible_user_id }}"
+    owner: "{{ ansible_user_uid }}"
+    group: "{{ ansible_user_gid }}"
   become: True
   when: kolla_ctl_install_type == 'source'
 
@@ -38,8 +38,8 @@
   file:
     path: "{{ kolla_venv | dirname }}"
     state: directory
-    owner: "{{ ansible_user_id }}"
-    group: "{{ ansible_user_id }}"
+    owner: "{{ ansible_user_uid }}"
+    group: "{{ ansible_user_gid }}"
   become: True
   when: kolla_venv is not none
 
