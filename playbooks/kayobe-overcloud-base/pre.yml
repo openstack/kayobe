@@ -30,6 +30,15 @@
       when: ansible_os_family == 'RedHat'
       become: true
 
+    # NOTE(mgoddard): Copying upper constraints to somewhere accessible by both
+    # the zuul and stack users.
+    - name: Ensure upper-contraints.txt exists
+      copy:
+        src: "{{ zuul.projects['git.openstack.org/openstack/requirements'].src_dir ~ '/upper-constraints.txt' }}"
+        dest: "/tmp"
+        mode: 0644
+        remote_src: true
+
     - name: Ensure kayobe-config directory exists
       file:
         path: "{{ kayobe_config_src_dir }}"
