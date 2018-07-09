@@ -19,6 +19,12 @@
     # Set this variable to True in order to display the candidate switch
     # configuration and exit without applying it.
     physical_network_display: False
+    # List of supported values for the 'switch_type' variable.
+    supported_switch_types:
+      - dell
+      - dell-powerconnect
+      - junos
+      - mellanox
   tasks:
     - name: Fail if both interface name and description limits are specified
       fail:
@@ -28,6 +34,14 @@
       when:
         - physical_network_interface_limit != ''
         - physical_network_interface_description_limit != ''
+
+    - name: Fail if the switch type is not defined
+      fail:
+        msg: >
+          The switch type is not defined or is unrecognised. Configure the type
+          of each host in the 'switches' group via the 'switch_type' variable.
+      when: switch_type is not defined or
+            switch_type not in supported_switch_types
 
     - name: Group hosts by their switch type
       group_by:
