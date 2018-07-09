@@ -95,6 +95,8 @@
               kolla_enable_tls_external: False
               kolla_external_fqdn_cert: "fake-cert"
               openstack_logging_debug: False
+              kolla_user: "kolla"
+              kolla_group: "kolla"
 
         - name: Validate variables are absent from globals.yml
           assert:

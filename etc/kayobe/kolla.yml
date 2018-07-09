@@ -141,6 +141,19 @@
 # Whether debug logging is enabled.
 #kolla_openstack_logging_debug:
 
+# Upper constraints file for installation of Kolla.
+#kolla_upper_constraints_file:
+
+# User account to use for Kolla SSH access.
+#kolla_ansible_user:
+
+# Primary group of Kolla SSH user.
+#kolla_ansible_group:
+
+# Whether to use privilege escalation for all operations performed via Kolla
+# Ansible.
+#kolla_ansible_become:
+
 ###############################################################################
 # Kolla feature flag configuration.
 

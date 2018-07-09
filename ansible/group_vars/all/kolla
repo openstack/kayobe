@@ -294,6 +294,16 @@ kolla_openstack_logging_debug: "False"
 # Upper constraints file for installation of Kolla.
 kolla_upper_constraints_file: "https://raw.githubusercontent.com/openstack/requirements/stable/queens/upper-constraints.txt"
 
+# User account to use for Kolla SSH access.
+kolla_ansible_user: kolla
+
+# Primary group of Kolla SSH user.
+kolla_ansible_group: kolla
+
+# Whether to use privilege escalation for all operations performed via Kolla
+# Ansible.
+kolla_ansible_become: true
+
 ###############################################################################
 # Kolla feature flag configuration.
 

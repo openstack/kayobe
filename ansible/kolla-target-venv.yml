@@ -39,7 +39,7 @@
             path: "{{ kolla_ansible_target_venv }}"
             recurse: True
             state: directory
-            owner: kolla
-            group: kolla
+            owner: "{{ kolla_ansible_user }}"
+            group: "{{ kolla_ansible_group }}"
           become: True
       when: kolla_ansible_target_venv is not none

@@ -23,6 +23,8 @@
             kolla_node_custom_config_path: "{{ temp_path }}/etc/kolla/config"
             kolla_ansible_passwords_path: "{{ temp_path }}/passwords.yml"
             # Config.
+            kolla_ansible_user: "fake-user"
+            kolla_ansible_group: "fake-group"
             kolla_base_distro: "fake-distro"
             kolla_install_type: "fake-install-type"
             kolla_docker_namespace: "fake-namespace"
@@ -165,6 +167,8 @@
             globals_yml: "{{ lookup('file', temp_path ~ '/etc/kolla/globals.yml') | from_yaml }}"
             expected_variables:
               config_strategy: "COPY_ALWAYS"
+              kolla_user: "fake-user"
+              kolla_group: "fake-group"
               kolla_base_distro: "fake-distro"
               kolla_install_type: "fake-install-type"
               openstack_release: "fake-release"

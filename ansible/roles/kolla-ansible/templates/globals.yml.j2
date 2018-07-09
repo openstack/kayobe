@@ -48,6 +48,12 @@ kolla_external_vip_address: "{{ kolla_external_vip_address }}"
 # kolla_external_vip_address.
 kolla_external_fqdn: "{{ kolla_external_fqdn }}"
 
+# User account to use for Kolla SSH access.
+kolla_user: "{{ kolla_ansible_user }}"
+
+# Primary group of Kolla SSH user.
+kolla_group: "{{ kolla_ansible_group }}"
+
 ################
 # Docker options
 ################

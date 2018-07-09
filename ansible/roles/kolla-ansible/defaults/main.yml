@@ -35,6 +35,16 @@ kolla_node_custom_config_path:
 # Path to kolla-ansible passwords.yml input file.
 kolla_ansible_passwords_path:
 
+# User account to use for Kolla SSH access.
+kolla_ansible_user: kolla
+
+# Primary group of Kolla SSH user.
+kolla_ansible_group: kolla
+
+# Whether to use privilege escalation for all operations performed via Kolla
+# Ansible.
+kolla_ansible_become: true
+
 ###############################################################################
 # Kolla-ansible inventory configuration.
 

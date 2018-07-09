@@ -55,8 +55,8 @@
     src: "{{ swift_ring_build_path }}/{{ item[0] }}.{{ item[1] }}"
     dest: "{{ kolla_config_path }}/config/swift/{{ item[0] }}.{{ item[1] }}"
     remote_src: True
-    owner: kolla
-    group: kolla
+    owner: "{{ ansible_user_uid }}"
+    group: "{{ ansible_user_gid }}"
     mode: 0644
   with_nested:
     - "{{ swift_service_names }}"
