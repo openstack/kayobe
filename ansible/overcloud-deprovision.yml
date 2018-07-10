@@ -67,7 +67,7 @@
           states are: {{ deprovisionable_states | join(',') }}.
       when: initial_provision_state not in deprovisionable_states
 
-    - name: Ensure the the ironic node is deprovisioned
+    - name: Ensure the ironic node is deprovisioned
       command: >
         docker exec bifrost_deploy
         bash -c '. env-vars &&
