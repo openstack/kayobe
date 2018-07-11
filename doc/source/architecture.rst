@@ -7,9 +7,10 @@ Hosts in the System
 
 In a system deployed by Kayobe we define a number of classes of hosts.
 
-Control host
-    The control host is the host on which kayobe, kolla and kolla-ansible will
-    be installed, and is typically where the cloud will be managed from.
+Ansible control host
+    The Ansible control host is the host on which kayobe, kolla and
+    kolla-ansible will be installed, and is typically where the cloud will be
+    managed from.
 Seed host
     The seed host runs the bifrost deploy container and is used to provision
     the cloud hosts.  By default, container images are built on the seed.

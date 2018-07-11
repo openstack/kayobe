@@ -10,8 +10,8 @@ Reconfiguring Containerised Services
 
 When configuration is changed, it is necessary to apply these changes across
 the system in an automated manner.  To reconfigure the overcloud, first make
-any changes required to the configuration on the control host.  Next, run the
-following command::
+any changes required to the configuration on the Ansible control host.  Next,
+run the following command::
 
     (kayobe) $ kayobe overcloud service reconfigure
 
@@ -86,7 +86,7 @@ Saving Overcloud Service Configuration
 It is often useful to be able to save the configuration of the control
 plane services for inspection or comparison with another configuration set
 prior to a reconfiguration or upgrade. This command will gather and save the
-control plane configuration for all hosts to the ansible control host::
+control plane configuration for all hosts to the Ansible control host::
 
     (kayobe) $ kayobe overcloud service configuration save
 
@@ -109,7 +109,7 @@ generated in a directory other than the default configuration directory of
 The configuration will be generated remotely on the overcloud hosts in the
 specified directory, with one subdirectory per container. This command may be
 followed by ``kayobe ovecloud service configuration save`` to gather the
-generated configuration to the ansible control host.
+generated configuration to the Ansible control host.
 
 Checking Network Connectivity
 =============================

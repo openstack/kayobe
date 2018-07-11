@@ -113,12 +113,12 @@ class ControlHostBootstrap(KayobeAnsibleMixin, VaultMixin, Command):
     """Bootstrap the Kayobe control environment.
 
     * Downloads and installs Ansible roles from Galaxy.
-    * Generates an SSH key for the ansible control host, if one does not exist.
-    * Installs kolla-ansible on the ansible control host.
+    * Generates an SSH key for the Ansible control host, if one does not exist.
+    * Installs kolla-ansible on the Ansible control host.
     """
 
     def take_action(self, parsed_args):
-        self.app.LOG.debug("Bootstrapping Kayobe control host")
+        self.app.LOG.debug("Bootstrapping Kayobe Ansible control host")
         ansible.install_galaxy_roles(parsed_args)
         playbooks = _build_playbook_list("bootstrap")
         self.run_kayobe_playbooks(parsed_args, playbooks)
@@ -130,12 +130,12 @@ class ControlHostUpgrade(KayobeAnsibleMixin, VaultMixin, Command):
     """Upgrade the Kayobe control environment.
 
     * Downloads and installs updated Ansible roles from Galaxy.
-    * Generates an SSH key for the ansible control host, if one does not exist.
-    * Updates kolla-ansible on the ansible control host.
+    * Generates an SSH key for the Ansible control host, if one does not exist.
+    * Updates kolla-ansible on the Ansible control host.
     """
 
     def take_action(self, parsed_args):
-        self.app.LOG.debug("Upgrading Kayobe control host")
+        self.app.LOG.debug("Upgrading Kayobe Ansible control host")
         # Use force to upgrade roles.
         ansible.install_galaxy_roles(parsed_args, force=True)
         playbooks = _build_playbook_list("bootstrap")
@@ -552,7 +552,7 @@ class OvercloudIntrospectionDataSave(KayobeAnsibleMixin, VaultMixin, Command):
     """Save hardware introspection data for the overcloud.
 
     Save hardware introspection data from the seed's ironic inspector service
-    to the control host.
+    to the Ansible control host.
     """
 
     def get_parser(self, prog_name):

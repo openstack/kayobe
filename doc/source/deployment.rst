@@ -219,7 +219,7 @@ To see the active Docker containers::
 
     $ docker ps
 
-Leave the seed VM and return to the shell on the control host::
+Leave the seed VM and return to the shell on the Ansible control host::
 
     $ exit
 
@@ -398,7 +398,7 @@ OpenStack admin endpoints as the admin user::
 
 Kayobe also generates an environment file that can be used to access the
 OpenStack public endpoints as the admin user which may be required if the
-admin endpoints are not available from the control host::
+admin endpoints are not available from the Ansible control host::
 
     $ source ${KOLLA_CONFIG_PATH:-/etc/kolla}/public-openrc.sh
 

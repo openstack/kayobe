@@ -3,7 +3,7 @@ Kolla-ansible Configuration
 ===========================
 
 Kayobe relies heavily on kolla-ansible for deployment of the OpenStack control
-plane. Kolla-ansible is installed locally on the ansible control host (the host
+plane. Kolla-ansible is installed locally on the Ansible control host (the host
 from which kayobe commands are executed), and kolla-ansible commands are
 executed from there.
 
@@ -18,12 +18,12 @@ kolla-ansible is installed and executed.
    ====================== ================================================== ============================
    Variable               Purpose                                            Default
    ====================== ================================================== ============================
-   ``$KOLLA_CONFIG_PATH`` Path on the ansible control host in which          ``/etc/kolla``
+   ``$KOLLA_CONFIG_PATH`` Path on the Ansible control host in which          ``/etc/kolla``
                           the kolla-ansible configuration will be generated.
                           These files should not be manually edited.
-   ``$KOLLA_SOURCE_PATH`` Path on the ansible control host in which          ``$PWD/src/kolla-ansible``
+   ``$KOLLA_SOURCE_PATH`` Path on the Ansible control host in which          ``$PWD/src/kolla-ansible``
                           the kolla-ansible source code will be cloned.
-   ``$KOLLA_VENV_PATH``   Path on the ansible control host in which          ``$PWD/venvs/kolla-ansible``
+   ``$KOLLA_VENV_PATH``   Path on the Ansible control host in which          ``$PWD/venvs/kolla-ansible``
                           the kolla-ansible virtualenv will be created.
    ====================== ================================================== ============================
 

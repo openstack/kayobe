@@ -81,7 +81,7 @@ Inventory
 
 The inventory should contain the following hosts:
 
-Control host
+Ansible Control host
     This should be localhost.
 Seed hypervisor
     If provisioning a seed VM, a host should exist for the hypervisor that

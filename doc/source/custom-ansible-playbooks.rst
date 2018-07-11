@@ -76,11 +76,11 @@ installed from Galaxy.  These roles may then be used by custom playbooks.
 Galaxy role dependencies may be defined in
 ``$KAYOBE_CONFIG_PATH/ansible/requirements.yml``.  These roles will be
 installed in ``$KAYOBE_CONFIG_PATH/ansible/roles/`` when bootstrapping the
-control host::
+Ansible control host::
 
     (kayobe) $ kayobe control host bootstrap
 
-And updated when upgrading the control host::
+And updated when upgrading the Ansible control host::
 
     (kayobe) $ kayobe control host upgrade
 

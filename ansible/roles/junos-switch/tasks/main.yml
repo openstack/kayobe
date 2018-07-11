@@ -16,7 +16,7 @@
   become: True
 
 # For ansible 2.3+, only the NETCONF client ncclient is required. This must be
-# installed on the ansible control host where the ansible-connection subprocess
+# installed on the Ansible control host where the ansible-connection subprocess
 # is executed.
 - name: Ensure python dependencies are installed
   local_action:

@@ -8,10 +8,10 @@ ssh_key_type: "rsa"
 # Name of SSH key.
 ssh_key_name: "{{ 'id_' ~ ssh_key_type }}"
 
-# Path to SSH private key on the control host.
+# Path to SSH private key on the Ansible control host.
 ssh_private_key_path: "{{ lookup('env', 'HOME') ~ '/.ssh/' ~ ssh_key_name }}"
 
-# Path to SSH public key on the control host.
+# Path to SSH public key on the Ansible control host.
 ssh_public_key_path: "{{ ssh_private_key_path ~ '.pub' }}"
 
 ###############################################################################

@@ -5,17 +5,18 @@ Installation
 Prerequisites
 =============
 
-Currently Kayobe supports the following Operating Systems on the control host:
+Currently Kayobe supports the following Operating Systems on the Ansible
+control host:
 
 - CentOS 7.3
 - Ubuntu 16.04
 
 To avoid conflicts with python packages installed by the system package manager
 it is recommended to install Kayobe in a virtualenv. Ensure that the
-``virtualenv`` python module is available on the control host. It is necessary
-to install the GCC compiler chain in order to build the extensions of some of
-kayobe's python dependencies. Finally, for cloning and working with the kayobe
-source code repository, Git is required.
+``virtualenv`` python module is available on the Ansible control host. It is
+necessary to install the GCC compiler chain in order to build the extensions of
+some of kayobe's python dependencies. Finally, for cloning and working with the
+kayobe source code repository, Git is required.
 
 On CentOS::
 
@@ -30,9 +31,9 @@ Installation
 
 This guide will describe how to install Kayobe from source in a virtualenv.
 
-The directory structure for a kayobe control host environment is configurable,
-but the following is recommended, where ``<base_path>`` is the path to a top
-level directory::
+The directory structure for a kayobe Ansible control host environment is
+configurable, but the following is recommended, where ``<base_path>`` is the
+path to a top level directory::
 
     <base_path>/
         src/

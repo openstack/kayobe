@@ -38,7 +38,7 @@ Source the kayobe environment file::
 
     source kayobe-env
 
-Bootstrap the kayobe control host::
+Bootstrap the kayobe Ansible control host::
 
     kayobe control host bootstrap
 

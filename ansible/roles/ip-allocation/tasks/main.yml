@@ -1,6 +1,6 @@
 ---
-# Facts may not be available for the control host, so read the OS release
-# manually.
+# Facts may not be available for the Ansible control host, so read the OS
+# release manually.
 - name: Check the OS release
   local_action:
     module: shell . /etc/os-release && echo $ID

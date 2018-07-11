@@ -118,7 +118,7 @@ Features
 --------
 
 * Adds support for the OpenStack Pike release.
-* Adds support for saving overcloud service configuration to the ansible
+* Adds support for saving overcloud service configuration to the Ansible
   control host.
 * Adds support for generating overcloud service configuration, without applying
   it to the running system.
@@ -177,7 +177,7 @@ Features
   inspection data in environments without Swift.
 * Adds configuration of gatewys in provisioning and inspection networks.
 * Adds support for free-form configuration of Glance.
-* Adds support for Ubuntu control hosts.
+* Adds support for Ubuntu Ansible control hosts.
 * Adds support for passing through host variables from kayobe to kolla-ansible.
   By default ``ansible_host``, ``ansible_port``, and
   ``ansible_ssh_private_key_file``.
@@ -192,8 +192,8 @@ Upgrade Notes
   set the ``seed_vm_root_image`` variable.
 * The default value of ``kolla_enable_haproxy`` has been changed to ``True``.
 * If using a custom inventory, a ``network`` group should be added to it. If
-  the control hosts are providing networking services, then the ``network``
-  group should be a subgroup of the ``controllers`` group.
+  the Ansible control hosts are providing networking services, then the
+  ``network`` group should be a subgroup of the ``controllers`` group.
 * The ``overcloud_groups`` variable is now determined more intelligently, and
   it is generally no longer necessary to set it manually.
 * The provisioning network is now used to access the TFTP server during
@@ -213,7 +213,7 @@ Features
 * Support static routes on control plane networks
 * Improve documentation
 * Initial support for in-development Pike release
-* Upgrade kayobe control host & control plane
+* Upgrade kayobe Ansible control host & control plane
 * Support overcloud service destroy command
 * Support fluentd custom output configuration
 
