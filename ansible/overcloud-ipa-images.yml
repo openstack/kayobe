@@ -73,8 +73,8 @@
       file:
         path: "{{ image_cache_path }}"
         state: directory
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
+        owner: "{{ ansible_user_uid }}"
+        group: "{{ ansible_user_gid }}"
       become: True
       when: >-
         not image_cache_stat.stat.exists or

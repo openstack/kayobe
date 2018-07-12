@@ -17,8 +17,8 @@
       file:
         path: "{{ image_cache_path }}"
         state: directory
-        owner: "{{ ansible_env.USER }}"
-        group: "{{ ansible_env.USER }}"
+        owner: "{{ ansible_user_uid }}"
+        group: "{{ ansible_user_gid }}"
       become: True
 
     # The user data script is used to bring up the network interfaces that will

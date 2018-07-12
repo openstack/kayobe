@@ -3,8 +3,8 @@
   file:
     path: "{{ ipa_images_cache_path }}"
     state: directory
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
+    owner: "{{ ansible_user_uid }}"
+    group: "{{ ansible_user_gid }}"
   become: True
 
 - name: Ensure Ironic Python Agent (IPA) images are downloaded

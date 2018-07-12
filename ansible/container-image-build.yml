@@ -28,10 +28,10 @@
       file:
         path: "{{ kolla_build_log_path }}"
         state: touch
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
+        owner: "{{ ansible_user_uid }}"
+        group: "{{ ansible_user_gid }}"
       become: True
-      
+
     - name: Login to docker registry
       docker_login:
         registry_url: "{{ kolla_docker_registry or omit }}"
