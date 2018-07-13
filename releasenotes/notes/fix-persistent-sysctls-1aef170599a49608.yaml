@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an issue where persistent sysctls were not being applied after a
+    reboot.  See `story 2002972
+    <https://storyboard.openstack.org/#!/story/2002972>`__ for details.

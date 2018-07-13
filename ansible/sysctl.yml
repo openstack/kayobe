@@ -5,5 +5,5 @@
     - sysctl
   roles:
     - role: sysctl
-      sysctl_file: "/etc/sysctl.d/kayobe"
+      sysctl_file: "/etc/sysctl.d/kayobe.conf"
       sysctl_set: "yes"
