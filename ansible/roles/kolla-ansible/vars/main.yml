@@ -88,6 +88,7 @@ kolla_feature_flags:
   - influxdb
   - ironic
   - ironic_ipxe
+  - ironic_neutron_agent
   - ironic_pxe_uefi
   - kafka
   - karbor
