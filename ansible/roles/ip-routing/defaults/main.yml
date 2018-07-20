@@ -1,0 +1,4 @@
+---
+
+# See kernel doc for more detail: /Documentation/networking/ip-sysctl.txt
+ip_routing_rp_filter_mode: 0
