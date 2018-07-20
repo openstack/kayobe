@@ -27,6 +27,7 @@ oob_wl_net_name: aio
 provision_wl_net_name: aio
 internal_net_name: aio
 public_net_name: aio
+tunnel_net_name: aio
 external_net_name: aio
 storage_net_name: aio
 storage_mgmt_net_name: aio

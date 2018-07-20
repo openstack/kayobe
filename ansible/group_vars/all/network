@@ -40,6 +40,9 @@ public_net_name: >
      if external_net_names | length > 0 else
      None }}
 
+# Name of the network used by Neutron to carry tenant overlay network traffic.
+tunnel_net_name: "{{ internal_net_name }}"
+
 # Name of the network used to carry storage data traffic.
 storage_net_name: 'storage_net'
 

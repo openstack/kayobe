@@ -65,6 +65,7 @@
             kolla_provision_interface: "{{ provision_wl_net_name | net_interface(controller_host) | replace('-', '_') }}"
             kolla_inspector_dnsmasq_interface: "{{ inspection_net_name | net_interface(controller_host) | replace('-', '_') }}"
             kolla_dns_interface: "{{ public_net_name | net_interface(controller_host) | replace('-', '_') }}"
+            kolla_tunnel_interface: "{{ tunnel_net_name | net_interface(controller_host) | replace('-', '_') }}"
 
         - name: Validate controller Kolla Ansible network configuration
           fail:
