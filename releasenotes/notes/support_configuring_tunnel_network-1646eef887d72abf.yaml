@@ -1,0 +1,4 @@
+---
+features:
+  - Support configuring tunnel network and interface for VM to VM
+    communication.

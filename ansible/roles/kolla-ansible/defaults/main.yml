@@ -143,6 +143,7 @@ kolla_api_interface:
 kolla_storage_interface:
 kolla_cluster_interface:
 kolla_dns_interface:
+kolla_tunnel_interface:
 
 # This is the raw interface given to neutron as its external network port. Even
 # though an IP address can exist on this interface, it will be unusable in most

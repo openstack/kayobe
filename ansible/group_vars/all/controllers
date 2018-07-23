@@ -32,7 +32,8 @@ controller_extra_network_interfaces: []
 
 # List of network interfaces to which network nodes are attached.
 controller_network_host_network_interfaces: >
-  {{ ([public_net_name] +
+  {{ ([public_net_name,
+       tunnel_net_name] +
       external_net_names) | unique | list }}
 
 ###############################################################################

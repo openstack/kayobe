@@ -102,7 +102,7 @@ kolla_external_vip_interface: "{{ kolla_external_vip_interface }}"
 storage_interface: "{{ kolla_storage_interface }}"
 cluster_interface: "{{ kolla_cluster_interface }}"
 dns_interface: "{{ kolla_dns_interface }}"
-# NOTE: tunnel_interface is unused.
+tunnel_interface: "{{ kolla_tunnel_interface }}"
 
 # This is the raw interface given to neutron as its external network port. Even
 # though an IP address can exist on this interface, it will be unusable in most

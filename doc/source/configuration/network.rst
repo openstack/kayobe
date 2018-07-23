@@ -420,6 +420,9 @@ Internal network (``internal_net_name``)
     Name of the network used to expose the internal OpenStack API endpoints.
 Public network (``public_net_name``)
     Name of the network used to expose the public OpenStack API endpoints.
+Tunnel network (``tunnel_net_name``)
+    Name of the network used by Neutron to carry tenant overlay network
+    traffic.
 External networks (``external_net_names``, deprecated: ``external_net_name``)
     List of names of networks used to provide external network access via
     Neutron. If ``external_net_name`` is defined, ``external_net_names``
@@ -450,6 +453,7 @@ To configure network roles in a system with two networks, ``example1`` and
    provision_wl_net_name: example2
    internal_net_name: example2
    public_net_name: example2
+   tunnel_net_name: example2
    external_net_name: example2
    storage_net_name: example2
    storage_mgmt_net_name: example2
@@ -661,6 +665,7 @@ attached to the following networks:
 
 * public network
 * external network
+* tunnel network
 
 This list may be extended by setting ``controller_extra_network_interfaces`` to a
 list of names of additional networks to attach.  Alternatively, the list may be
@@ -692,6 +697,7 @@ By default, virtualised compute hosts are attached to the following networks:
 * overcloud admin network
 * internal network
 * storage network
+* tunnel network
 
 This list may be extended by setting ``compute_extra_network_interfaces`` to a
 list of names of additional networks to attach.  Alternatively, the list may be
