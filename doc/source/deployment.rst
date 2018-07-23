@@ -200,6 +200,9 @@ should be set to ``True``.  To build images locally::
 
     (kayobe) $ kayobe seed deployment image build
 
+If images have been built previously, they will not be rebuilt.  To force
+rebuilding images, use the ``--force-rebuild`` argument.
+
 Accessing the Seed via SSH (Optional)
 -------------------------------------
 
@@ -369,6 +372,11 @@ Building Deployment Images
    It is possible to use prebuilt deployment images. In this case, this step
    can be skipped.
 
+.. note::
+
+   Deployment images are only required for the overcloud when Ironic is in use.
+   Otherwise, this step can be skipped.
+
 It is possible to use prebuilt deployment images from the `OpenStack hosted
 tarballs <https://tarballs.openstack.org/ironic-python-agent>`_ or another
 source.  In some cases it may be necessary to build images locally either to
@@ -377,6 +385,9 @@ Agent (IPA).  In order to build IPA images, the ``ipa_build_images`` variable
 should be set to ``True``.  To build images locally::
 
     (kayobe) $ kayobe overcloud deployment image build
+
+If images have been built previously, they will not be rebuilt.  To force
+rebuilding images, use the ``--force-rebuild`` argument.
 
 Deploying Containerised Services
 --------------------------------

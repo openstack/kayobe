@@ -11,8 +11,15 @@
     ipa_images:
       - "{{ ipa_image_name }}.vmlinuz"
       - "{{ ipa_image_name }}.initramfs"
+    ipa_image_force_rebuild: false
   tasks:
     - block:
+        - name: Ensure existing Ironic Python Agent images are removed (force rebuild)
+          file:
+            path: "{{ image_cache_path }}/{{ ipa_image_name }}"
+            state: absent
+          when: ipa_image_force_rebuild | bool
+
         - name: Ensure Ironic Python Agent images are built
           include_role:
             name: stackhpc.os-images
