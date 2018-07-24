@@ -167,6 +167,35 @@ control
 [panko:children]
 control
 
+[prometheus:children]
+monitoring
+
+[prometheus-alertmanager:children]
+monitoring
+
+[prometheus-node-exporter:children]
+monitoring
+control
+compute
+network
+storage
+
+[prometheus-mysqld-exporter:children]
+mariadb
+
+[prometheus-haproxy-exporter:children]
+haproxy
+
+[prometheus-memcached-exporter:children]
+memcached
+
+[prometheus-cadvisor:children]
+monitoring
+control
+compute
+network
+storage
+
 [gnocchi:children]
 control
 
