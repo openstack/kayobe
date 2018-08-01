@@ -30,6 +30,7 @@ All this and more, automated from top to bottom using Ansible.
 * Documentation: https://kayobe.readthedocs.io/en/latest/
 * Source: https://git.openstack.org/cgit/openstack/kayobe
 * Bugs: https://storyboard.openstack.org/
+* Release Notes: https://docs.openstack.org/releasenotes/kayobe
 * IRC: #openstack-kayobe
 
 Features
