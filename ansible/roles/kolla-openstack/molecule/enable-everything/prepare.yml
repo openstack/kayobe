@@ -8,7 +8,7 @@
         module: file
         path: "{{ item | dirname }}"
         state: directory
-        recurse: True
+        recurse: true
       with_items:
         - "{{ kolla_inspector_ipa_kernel_path }}"
         - "{{ kolla_inspector_ipa_ramdisk_path }}"

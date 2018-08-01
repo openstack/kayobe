@@ -39,6 +39,7 @@
       git:
         repo: https://github.com/stackhpc/dev-kayobe-config
         dest: "{{ kayobe_config_src_dir }}"
+        version: stable/pike
 
     # NOTE(mgoddard): Use the name zz-overrides.yml to ensure this takes
     # precedence over the standard config files.

@@ -64,7 +64,7 @@
   find:
     path: "{{ item.src }}"
     patterns: "{{ item.patterns }}"
-    recurse: yes
+    recurse: true
   with_items: "{{ kolla_openstack_custom_config }}"
   register: find_src_result
 
@@ -83,7 +83,7 @@
   with_subelements:
     - "{{ find_src_result.results }}"
     - files
-    - skip_missing: True
+    - skip_missing: true
   when:
     - item.0.item.enabled | bool
     - item.1.path | basename not in item.0.item.ignore | default([])
@@ -95,7 +95,7 @@
   with_subelements:
     - "{{ find_dest_result.results }}"
     - files
-    - skip_missing: True
+    - skip_missing: true
   when:
     - not item.0.item.enabled or
       item.1.path | basename not in src_files
