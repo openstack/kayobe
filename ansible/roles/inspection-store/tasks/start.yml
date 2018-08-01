@@ -10,6 +10,7 @@
     restart_retries: "{{ inspection_store_restart_retries | default(omit) }}"
     state: "{{ item.value.enabled | ternary('started', 'absent') }}"
     volumes: "{{ item.value.volumes }}"
+    network_mode: "{{ item.value.network_mode | default(omit) }}"
   with_dict: "{{ inspection_store_services }}"
   notify:
     - Ensure inspection store data directory exists
