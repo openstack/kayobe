@@ -19,6 +19,9 @@ kolla_venv: "{{ ansible_env['PWD'] }}/kolla-venv"
 # into the kolla venv.
 kolla_upper_constraints_file:
 
+# Whether to install the epel-release package.
+kolla_install_epel: true
+
 # Directory where Kolla config files will be installed.
 kolla_build_config_path:
 

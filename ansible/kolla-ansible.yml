@@ -222,6 +222,7 @@
 
   roles:
     - role: kolla-ansible
+      kolla_ansible_install_epel: "{{ yum_install_epel }}"
       kolla_external_fqdn_cert: "{{ kolla_config_path }}/certificates/haproxy.pem"
       kolla_ansible_passwords_path: "{{ kayobe_config_path }}/kolla/passwords.yml"
       # NOTE: This differs from the default SELinux mode in kolla ansible,

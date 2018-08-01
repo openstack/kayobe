@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Adds support for skipping installation of the ``epel-release`` package, by
+    setting ``yum_install_epel`` to ``false``.  In some cases this is
+    desirable, such as when a local EPEL mirror is available, or access to the
+    public repositories is not possible.

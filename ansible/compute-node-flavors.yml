@@ -12,6 +12,7 @@
   roles:
     - role: stackhpc.os-openstackclient
       os_openstackclient_venv: "{{ venv }}"
+      os_openstackclient_install_epel: "{{ yum_install_epel }}"
 
   tasks:
     - name: Get a list of ironic nodes
@@ -85,3 +86,4 @@
         os_flavors_venv: "{{ venv }}"
         os_flavors_auth_type: "{{ openstack_auth_type }}"
         os_flavors_auth: "{{ openstack_auth }}"
+        os_shade_install_epel: "{{ yum_install_epel }}"

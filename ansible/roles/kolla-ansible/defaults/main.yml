@@ -23,6 +23,9 @@ kolla_ansible_target_venv:
 # into the kolla-ansible venv.
 kolla_upper_constraints_file:
 
+# Whether to install the epel-release package.
+kolla_ansible_install_epel: true
+
 # Password to use to encrypt the passwords.yml file.
 kolla_ansible_vault_password:
 

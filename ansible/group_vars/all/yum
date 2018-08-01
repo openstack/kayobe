@@ -1,3 +1,8 @@
 ---
 
+# Whether or not to use a local Yum mirror.
 yum_use_local_mirror: false
+
+# Whether to install the epel-release package. This affects RedHat-based
+# systems only.
+yum_install_epel: true
