@@ -39,6 +39,13 @@
     post-run: playbooks/kayobe-overcloud-base/post.yml
     attempts: 1
     timeout: 5400
+    required-projects:
+      - name: openstack/kolla
+        override-checkout: stable/queens
+      - name: openstack/kolla-ansible
+        override-checkout: stable/queens
+      - name: openstack/requirements
+        override-checkout: stable/queens
     irrelevant-files:
       - ^.*\.rst$
       - ^doc/.*
@@ -59,6 +66,13 @@
     post-run: playbooks/kayobe-seed-base/post.yml
     attempts: 1
     timeout: 5400
+    required-projects:
+      - name: openstack/kolla
+        override-checkout: stable/queens
+      - name: openstack/kolla-ansible
+        override-checkout: stable/queens
+      - name: openstack/requirements
+        override-checkout: stable/queens
     irrelevant-files:
       - ^.*\.rst$
       - ^doc/.*
