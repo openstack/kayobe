@@ -1,0 +1,4 @@
+---
+features:
+  - Support configuration of the Ironic Neutron Agent and Neutron ML2 baremetal
+    plugin.

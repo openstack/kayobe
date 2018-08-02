@@ -146,6 +146,8 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_influxdb | bool }}"
   - regex: ironic
     enabled: "{{ kolla_enable_ironic | bool }}"
+  - regex: ironic-neutron-agent
+    enabled: "{{ kolla_enable_ironic_neutron_agent | bool }}"
   - regex: iscsid
     enabled: "{{ kolla_enable_cinder | bool or kolla_enable_ironic | bool }}"
   - regex: kafka
@@ -317,6 +319,7 @@ kolla_enable_horizon: "yes"
 kolla_enable_influxdb: "no"
 kolla_enable_ironic: "yes"
 kolla_enable_ironic_ipxe: "no"
+kolla_enable_ironic_neutron_agent: "{{ 'yes' if kolla_enable_neutron | bool and kolla_enable_ironic | bool else 'no' }}"
 kolla_enable_kafka: "no"
 kolla_enable_kibana: "{{ 'yes' if kolla_enable_central_logging | bool else 'no' }}"
 kolla_enable_magnum: "no"
