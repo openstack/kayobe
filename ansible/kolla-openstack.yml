@@ -86,6 +86,7 @@
   vars:
     switch_type_to_device_type:
       dellos9: netmiko_dell_force10
+      dell-powerconnect: netmiko_dell_powerconnect
       junos: netmiko_juniper
     ipa_image_name: "ipa"
   pre_tasks:
