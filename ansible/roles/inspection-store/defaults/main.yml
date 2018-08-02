@@ -14,8 +14,7 @@ inspection_store_services:
     container_name: inspection_store
     enabled: "{{ inspection_store_enabled }}"
     image: "{{ inspection_store_image_full }}"
-    ports:
-      - "{{ inspection_store_port }}:80"
+    network_mode: host
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "{{ inspection_store_config_path }}/nginx.conf:/etc/nginx/nginx.conf:ro"
