@@ -116,6 +116,7 @@
 
   roles:
     - role: ironic-inspector-rules
+      os_shade_install_epel: "{{ yum_install_epel }}"
       ironic_inspector_venv: "{{ virtualenv_path }}/shade"
       ironic_inspector_auth_type: "{{ openstack_auth_type }}"
       ironic_inspector_auth: "{{ openstack_auth }}"

@@ -19,6 +19,7 @@
     os_shade_venv: "{{ virtualenv_path }}/shade"
   roles:
     - role: stackhpc.os-shade
+      os_shade_install_epel: "{{ yum_install_epel }}"
   tasks:
     - name: Ensure diskimage-builder package is installed
       yum:

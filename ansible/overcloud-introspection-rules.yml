@@ -35,6 +35,7 @@
         name: stackhpc.os-openstackclient
       vars:
         os_openstackclient_venv: "{{ venv }}"
+        os_openstackclient_install_epel: "{{ yum_install_epel }}"
 
     - name: Retrieve the IPA kernel Glance image UUID
       shell: >
@@ -54,6 +55,7 @@
 
   roles:
     - role: ironic-inspector-rules
+      os_shade_install_epel: "{{ yum_install_epel }}"
       ironic_inspector_venv: "{{ venv }}"
       ironic_inspector_auth_type: "{{ openstack_auth_type }}"
       ironic_inspector_auth: "{{ openstack_auth }}"

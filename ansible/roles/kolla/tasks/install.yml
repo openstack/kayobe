@@ -4,6 +4,9 @@
     name: epel-release
     state: installed
   become: True
+  when:
+    - ansible_os_family == 'RedHat'
+    - kolla_install_epel | bool
 
 - name: Ensure required packages are installed
   yum:

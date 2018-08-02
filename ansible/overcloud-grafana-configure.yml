@@ -18,6 +18,7 @@
   roles:
     - role: stackhpc.os-openstackclient
       os_openstackclient_venv: "{{ venv }}"
+      os_openstackclient_install_epel: "{{ yum_install_epel }}"
       when: kolla_enable_monasca | bool
 
   tasks:
