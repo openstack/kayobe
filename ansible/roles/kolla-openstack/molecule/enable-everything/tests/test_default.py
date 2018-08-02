@@ -86,7 +86,6 @@ def test_service_ini_file(host, path):
     'path',
     ['ironic/ironic-agent.initramfs',
      'ironic/ironic-agent.kernel',
-     'ironic/ironic-dnsmasq.conf',
      'ironic/pxelinux.default'])
 def test_service_non_ini_file(host, path):
     # TODO(mgoddard): Check config file contents.

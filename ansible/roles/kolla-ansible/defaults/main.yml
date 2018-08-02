@@ -198,6 +198,17 @@ kolla_neutron_ml2_tenant_network_types: []
 kolla_enable_tls_external:
 kolla_external_fqdn_cert:
 
+#############################
+# Ironic options
+#############################
+# Start of range of IP addresses for dnsmasq to allocate from.
+kolla_inspector_dhcp_pool_start:
+
+# End of range of IP addresses for dnsmasq to allocate from.
+kolla_inspector_dhcp_pool_end:
+
+# Default gateway to use for inspection network.
+kolla_inspector_default_gateway:
 
 ####################
 # OpenStack options

@@ -108,7 +108,6 @@
             - { name: heat, file: heat.conf }
             - { name: inspector, file: ironic-inspector.conf }
             - { name: ironic, file: ironic.conf }
-            - { name: ironic_dnsmasq, file: ironic/ironic-dnsmasq.conf }
             - { name: kafka, file: kafka.server.properties }
             - { name: magnum, file: magnum.conf }
             - { name: mariadb, file: galera.cnf }
@@ -198,10 +197,6 @@
         auth_type: token_endpoint
         url: "http://{% raw %}{{ api_interface_address }}{% endraw %}:{{ inspector_store_port }}"
         token: fake-token
-      # Ironic inspector's dnsmasq configuration.
-      kolla_inspector_dhcp_pool_start: "{{ inspection_net_name | net_inspection_allocation_pool_start }}"
-      kolla_inspector_dhcp_pool_end: "{{ inspection_net_name | net_inspection_allocation_pool_end }}"
-      kolla_inspector_default_gateway: "{{ inspection_net_name | net_inspection_gateway or inspection_net_name | net_gateway }}"
       # Extra free-form user-provided configuration.
       kolla_extra_ceph: "{{ kolla_extra_config.ceph | default }}"
       kolla_extra_cinder: "{{ kolla_extra_config.cinder | default }}"
@@ -211,7 +206,6 @@
       kolla_extra_heat: "{{ kolla_extra_config.heat | default }}"
       kolla_extra_inspector: "{{ kolla_extra_config.inspector | default }}"
       kolla_extra_ironic: "{{ kolla_extra_config.ironic | default }}"
-      kolla_extra_ironic_dnsmasq: "{{ kolla_extra_config.ironic_dnsmasq | default }}"
       kolla_extra_kafka: "{{ kolla_extra_config.kafka | default }}"
       kolla_extra_magnum: "{{ kolla_extra_config.magnum | default }}"
       kolla_extra_mariadb: "{{ kolla_extra_config.mariadb | default }}"

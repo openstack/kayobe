@@ -247,21 +247,6 @@ kolla_inspector_swift_auth: {}
 kolla_extra_inspector:
 
 ###############################################################################
-# Ironic inspector dnsmasq configuration.
-
-# Start of range of IP addresses for dnsmasq to allocate from.
-kolla_inspector_dhcp_pool_start:
-
-# End of range of IP addresses for dnsmasq to allocate from.
-kolla_inspector_dhcp_pool_end:
-
-# IP address of default gateway to advertise via DHCP.
-kolla_inspector_default_gateway:
-
-# Free form extra configuration to append to dnsmasq.conf.
-kolla_extra_ironic_dnsmasq:
-
-###############################################################################
 # Kafka configuration.
 
 # Whether to enable Kafka.
