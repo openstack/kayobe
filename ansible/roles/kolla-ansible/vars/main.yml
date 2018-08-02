@@ -120,6 +120,7 @@ kolla_feature_flags:
   - octavia
   - osprofiler
   - panko
+  - prometheus
   - qdrouterd
   - rally
   - sahara

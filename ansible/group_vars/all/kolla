@@ -185,6 +185,8 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_neutron | bool }}"
   - regex: rabbitmq
     enabled: True
+  - regex: prometheus
+    enabled: "{{ kolla_enable_prometheus | bool }}"
   - regex: sahara
     enabled: "{{ kolla_enable_sahara | bool }}"
   - regex: skydive
@@ -334,6 +336,7 @@ kolla_enable_neutron_lbaas: "no"
 kolla_enable_neutron_provider_networks: "no"
 kolla_enable_nova: "yes"
 kolla_enable_osprofiler: "no"
+kolla_enable_prometheus: "no"
 kolla_enable_sahara: "no"
 kolla_enable_skydive: "no"
 kolla_enable_swift: "no"
