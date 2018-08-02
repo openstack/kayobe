@@ -119,3 +119,15 @@
       junos_switch_config_format: "{{ switch_junos_config_format }}"
       junos_switch_config: "{{ switch_config }}"
       junos_switch_interface_config: "{{ switch_interface_config }}"
+
+- name: Ensure Mellanox physical switches are configured
+  hosts: switches_of_type_mellanox:&switches_in_display_mode_False
+  gather_facts: no
+  roles:
+    - role: ssh-known-host
+
+    - role: stackhpc.mellanox-switch
+      mellanox_switch_type: "{{ switch_type }}"
+      mellanox_switch_provider: "{{ switch_mellanox_provider }}"
+      mellanox_switch_config: "{{ switch_config }}"
+      mellanox_switch_interface_config: "{{ switch_interface_config }}"
