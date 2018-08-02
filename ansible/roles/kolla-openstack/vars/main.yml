@@ -70,6 +70,7 @@ kolla_openstack_custom_config:
       - ironic-agent.kernel
       - ironic-dnsmasq.conf
       - pxelinux.default
+      - inspector.ipxe
   # Kafka.
   - src: "{{ kolla_extra_config_path }}/kafka"
     dest: "{{ kolla_node_custom_config_path }}/kafka"
