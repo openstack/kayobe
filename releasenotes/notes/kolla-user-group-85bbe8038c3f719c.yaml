@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Adds support for configuration of the user used by Kolla Ansible for remote
+    execution. The user is configured via ``kolla_ansible_user``, its primary
+    group via ``kolla_ansible_group``, and ``kolla_ansible_become`` determines
+    whether privilege escalation is used by Kolla Ansible for all tasks or only
+    required tasks.
