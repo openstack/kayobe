@@ -10,7 +10,7 @@ Command Line Interface
    Where a prompt starts with ``(kayobe)`` it is implied that the user has
    activated the Kayobe virtualenv. This can be done as follows::
 
-       $ source kayobe/bin/activate
+       $ source /path/to/venv/bin/activate
 
    To deactivate the virtualenv::
 
