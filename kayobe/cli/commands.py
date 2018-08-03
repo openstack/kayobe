@@ -425,6 +425,31 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed")
 
 
+class SeedHostPackageUpdate(KayobeAnsibleMixin, VaultMixin, Command):
+    """Update packages on the seed host."""
+
+    def get_parser(self, prog_name):
+        parser = super(SeedHostPackageUpdate, self).get_parser(prog_name)
+        group = parser.add_argument_group("Host Package Updates")
+        group.add_argument("--packages", required=True,
+                           help="List of packages to update. Use '*' to "
+                                "update all packages.")
+        group.add_argument("--security", action='store_true',
+                           help="Only install updates that have been marked "
+                                "security related.")
+        return parser
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Updating seed host packages")
+        extra_vars = {
+            "host_package_update_packages": parsed_args.packages,
+            "host_package_update_security": parsed_args.security,
+        }
+        playbooks = _build_playbook_list("host-package-update")
+        self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed",
+                                  extra_vars=extra_vars)
+
+
 class SeedHostUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
                       Command):
     """Upgrade the seed host services.
@@ -730,6 +755,31 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         playbooks = _build_playbook_list(
             "kolla-target-venv", "kolla-host", "docker", "ceph-block-devices")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
+
+
+class OvercloudHostPackageUpdate(KayobeAnsibleMixin, VaultMixin, Command):
+    """Update packages on the overcloud hosts."""
+
+    def get_parser(self, prog_name):
+        parser = super(OvercloudHostPackageUpdate, self).get_parser(prog_name)
+        group = parser.add_argument_group("Host Package Updates")
+        group.add_argument("--packages", required=True,
+                           help="List of packages to update. Use '*' to "
+                                "update all packages.")
+        group.add_argument("--security", action='store_true',
+                           help="Only install updates that have been marked "
+                                "security related.")
+        return parser
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Updating overcloud host packages")
+        extra_vars = {
+            "host_package_update_packages": parsed_args.packages,
+            "host_package_update_security": parsed_args.security,
+        }
+        playbooks = _build_playbook_list("host-package-update")
+        self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud",
+                                  extra_vars=extra_vars)
 
 
 class OvercloudHostUpgrade(KayobeAnsibleMixin, VaultMixin, Command):
