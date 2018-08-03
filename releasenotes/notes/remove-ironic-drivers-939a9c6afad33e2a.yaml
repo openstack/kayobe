@@ -1,0 +1,12 @@
+---
+upgrade:
+  - |
+    Overcloud Ironic must now be configured with the variable
+    ``kolla_ironic_enabled_hardware_types``; ``kolla_ironic_drivers`` has been
+    removed.
+  - |
+    Bifrost's ``kolla_bifrost_enable_ipmitool_drivers`` and
+    ``kolla_bifrost_enable_pxe_drivers`` variables have been removed. Bifrost
+    must now be configured by setting the variable
+    ``kolla_bifrost_enabled_hardware_types`` to be a list of hardware types to
+    enable.

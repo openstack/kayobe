@@ -20,14 +20,8 @@ kolla_bifrost_dib_env_vars: {}
 # List of DIB image packages.
 kolla_bifrost_dib_packages: []
 
-# List of Ironic drivers to enable.
-kolla_bifrost_enabled_drivers: []
-
-# Whether to enable the Ironic PXE drivers.
-kolla_bifrost_enable_pxe_drivers: false
-
-# List of Ironic PXE drivers to enable if kolla_bifrost_enable_pxe_drivers.
-kolla_bifrost_pxe_drivers: []
+# List of hardware types to enable for Bifrost's Ironic.
+kolla_bifrost_enabled_hardware_types: []
 
 # IP address range for DHCP.
 kolla_bifrost_dhcp_pool_start:

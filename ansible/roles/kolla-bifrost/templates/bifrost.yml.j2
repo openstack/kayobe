@@ -1,12 +1,6 @@
 ---
-# List of enabled Ironic drivers.
-enabled_drivers: "{{ kolla_bifrost_enabled_drivers | join(',') }}"
-
-# Whether to enable legacy PXE/iscsi drivers.
-enable_pxe_drivers: {{ kolla_bifrost_enable_pxe_drivers | bool }}
-
-# List of legacy PXE/iscsi drivers to enable.
-pxe_drivers: "{{ kolla_bifrost_pxe_drivers | join(',') }}"
+# List of enabled Ironic hardware types.
+enabled_hardware_types: "{{ kolla_bifrost_enabled_hardware_types | join(',') }}"
 
 # IP address range for DHCP.
 dhcp_pool_start: "{{ kolla_bifrost_dhcp_pool_start }}"

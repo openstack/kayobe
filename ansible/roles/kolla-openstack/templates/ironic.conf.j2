@@ -1,11 +1,7 @@
 # {{ ansible_managed }}
 
 [DEFAULT]
-enabled_drivers = {{ kolla_ironic_drivers | join(',') }}
-
-{% if kolla_ironic_enabled_hardware_types %}
 enabled_hardware_types: {{ kolla_ironic_enabled_hardware_types | join(',') }}
-{% endif %}
 
 {# Add configuration of enabled and default dynamic driver interfaces. #}
 {% set interfaces=['boot', 'console', 'deploy', 'inspect', 'management',

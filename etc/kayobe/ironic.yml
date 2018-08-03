@@ -2,9 +2,6 @@
 ###############################################################################
 # Ironic configuration.
 
-# List of enabled Ironic drivers.
-#kolla_ironic_drivers:
-
 # Specify the list of hardware types to load during service initialization.
 #kolla_ironic_enabled_hardware_types:
 

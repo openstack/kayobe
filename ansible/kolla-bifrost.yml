@@ -5,8 +5,6 @@
     - kolla-bifrost
   vars:
     kolla_bifrost_extra_globals_path: "{{ kayobe_config_path ~ '/kolla/config/bifrost/bifrost.yml' }}"
-    kolla_bifrost_driver_map:
-      - { name: agent_ipmitool, enabled: "{{ kolla_bifrost_enable_ipmitool_drivers | bool }}" }
 
   pre_tasks:
     - name: Check whether a Kolla Bifrost extra globals configuration file exists
@@ -24,11 +22,6 @@
 
   roles:
     - role: kolla-bifrost
-
-      # Generate a list of enabled drivers from the map.
-      kolla_bifrost_enabled_drivers: >
-        {{ kolla_bifrost_driver_map | selectattr('enabled') | map(attribute='name') | list }}
-      kolla_bifrost_enable_pxe_drivers: false
 
       # Network configuration.
       kolla_bifrost_dhcp_pool_start: "{{ provision_oc_net_name | net_inspection_allocation_pool_start }}"
