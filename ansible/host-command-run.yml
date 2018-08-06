@@ -1,0 +1,6 @@
+---
+- name: Run a command
+  hosts: seed-hypervisor:seed:overcloud
+  tasks:
+    - name: Run a command
+      shell: "{{ host_command_to_run }}"

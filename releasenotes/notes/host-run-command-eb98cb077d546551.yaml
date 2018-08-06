@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Add commands to run commands on seed hypervisor, seed and overcloud hosts:
+
+    ``kayobe seed hypervisor host command run --command <command>``
+    ``kayobe seed host command run --command <command>``
+    ``kayobe overcloud host command run --command <command>``
