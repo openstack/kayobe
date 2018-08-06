@@ -1,0 +1,6 @@
+---
+- include_tasks: pip_local_mirror.yml
+  loop: "{{ pip_applicable_users }}"
+  loop_control:
+    loop_var: user
+  when: pip_local_mirror | bool

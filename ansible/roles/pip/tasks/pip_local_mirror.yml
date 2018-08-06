@@ -1,0 +1,51 @@
+---
+- name: Set a fact about the virtualenv
+  set_fact:
+    virtualenv: "{{ ansible_python_interpreter | dirname | dirname }}"
+  when:
+    - ansible_python_interpreter is defined
+    - not ansible_python_interpreter.startswith('/bin')
+    - not ansible_python_interpreter.startswith('/usr/bin')
+
+- name: Deactivate the virtualenv
+  include_role:
+    name: deactivate-virtualenv
+  when: virtualenv is defined
+
+- name: Create local .pip directory for {{ user }}
+  file:
+    path: "~{{ user }}/.pip"
+    state: directory
+  become: True
+  become_user: "{{ user }}"
+
+- name: Create pip.conf for {{ user }}
+  copy:
+    content: |
+      [global]
+      index-url = {{ pip_index_url }}
+      {% if pip_trusted_hosts | length > 0 -%}
+      trusted-host =
+        {% for host in pip_trusted_hosts | unique -%}
+        {{ host }}
+        {% endfor -%}
+      {% endif -%}
+    dest: "~{{ user}}/.pip/pip.conf"
+  become: True
+  become_user: "{{ user }}"
+
+- name: Create .pydistutils.cfg for {{ user }}
+  copy:
+    content: |
+      [easy_install]
+      index-url = {{ pip_index_url }}
+    dest: "~{{ user}}/.pydistutils.cfg"
+  become: True
+  become_user: "{{ user }}"
+
+- name: Activate the virtualenv
+  include_role:
+    name: activate-virtualenv
+  vars:
+    activate_virtualenv_path: "{{ virtualenv }}"
+  when: virtualenv is defined
