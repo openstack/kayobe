@@ -68,8 +68,15 @@
             activate_virtualenv_path: "{{ virtualenv }}"
       when: virtualenv is defined
 
-    - name: Ensure pip is installed
-      easy_install:
-        name: pip
-      become: True
+    - block:
+        - name: Ensure the python-setuptools package is installed
+          package:
+            name: python-setuptools
+            state: installed
+          become: True
+
+        - name: Ensure pip is installed
+          easy_install:
+            name: pip
+          become: True
       when: virtualenv is not defined
