@@ -26,8 +26,6 @@
   version: v1.1.0
 - src: stackhpc.mellanox-switch
   version: v1.0.0
-- src: stackhpc.os-flavors
-  version: v1.0.0
 - src: stackhpc.os-images
   version: v1.0.0
 - src: stackhpc.os-ironic-state
@@ -36,8 +34,6 @@
   version: v1.0.0
 - src: stackhpc.os-openstackclient
   version: v1.2.0
-- src: stackhpc.os-projects
-  version: v1.1.2
 - src: stackhpc.os-shade
   version: v1.2.0
 - src: yatesr.timezone
