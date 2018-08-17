@@ -1,0 +1,21 @@
+---
+- name: Install dbus for debian system
+  apt:
+    name: dbus
+  when:
+    - ansible_os_family == 'Debian'
+  become: true
+
+- block:
+    # NOTE(mgoddard): The CentOS image used in CI has epel-release installed,
+    # but the configure-mirrors role used by Zuul disables epel. Since we
+    # install epel-release and expect epel to be enabled, enable it here.
+    - name: Ensure yum-utils is installed
+      yum:
+        name: yum-utils
+        state: installed
+
+    - name: Enable the EPEL yum repository
+      command: yum-config-manager --enable epel
+  when: ansible_os_family == 'RedHat'
+  become: true
