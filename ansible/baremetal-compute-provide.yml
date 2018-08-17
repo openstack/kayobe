@@ -8,7 +8,7 @@
 
 - name: Ensure baremetal compute nodes are available in ironic
   hosts: controllers[0]
-  gather_facts: False
+  gather_facts: true
   vars:
     venv: "{{ virtualenv_path }}/shade"
   roles:

@@ -54,5 +54,8 @@
         # be respected when using delegate_to.
         ansible_host: "{{ hostvars[controller_host].ansible_host | default(controller_host) }}"
         ipmi_address: "{{ hostvars[inventory_hostname].ipmi_address }}"
-        node: "{{ (nodes.stdout | from_json) | selectattr('Driver Info.ipmi_address', 'equalto', ipmi_address) | first }}"
-      when: node['Name'] != inventory_hostname
+        matching_nodes: "{{ (nodes.stdout | from_json) | selectattr('Driver Info.ipmi_address', 'defined') | selectattr('Driver Info.ipmi_address', 'equalto', ipmi_address) | list }}"
+        node: "{{ matching_nodes | first }}"
+      when:
+        - matching_nodes | length > 0
+        - node['Name'] != inventory_hostname
