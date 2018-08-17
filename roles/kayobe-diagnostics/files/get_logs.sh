@@ -33,6 +33,7 @@ copy_logs() {
 
     df -h > ${LOG_DIR}/system_logs/df.txt
     free  > ${LOG_DIR}/system_logs/free.txt
+    cat /etc/hosts  > ${LOG_DIR}/system_logs/hosts.txt
     parted -l > ${LOG_DIR}/system_logs/parted-l.txt
     mount > ${LOG_DIR}/system_logs/mount.txt
     env > ${LOG_DIR}/system_logs/env.txt

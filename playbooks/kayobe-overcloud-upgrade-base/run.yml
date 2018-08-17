@@ -1,0 +1,83 @@
+---
+- hosts: primary
+  vars:
+    kayobe_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['git.openstack.org/openstack/kayobe'].src_dir }}"
+    kayobe_config_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['git.openstack.org/openstack/kayobe-config-dev'].src_dir }}"
+    previous_kayobe_src_dir: "{{ ansible_env.PWD ~ '/previous/kayobe' }}"
+    previous_kayobe_config_src_dir: "{{ ansible_env.PWD ~ '/previous/kayobe-config' }}"
+    logs_dir: "/tmp/logs"
+  tasks:
+
+    # Install the previous release of Kayobe, and use it to deploy a control
+    # plane.
+
+    - block:
+        - name: Ensure kayobe is installed
+          shell:
+            cmd: dev/install.sh > {{ logs_dir }}/ansible/install-pre-upgrade
+            chdir: "{{ previous_kayobe_src_dir }}"
+
+        - name: Ensure overcloud is deployed
+          shell:
+            cmd: dev/overcloud-deploy.sh > {{ logs_dir }}/ansible/overcloud-deploy-pre-upgrade
+            chdir: "{{ previous_kayobe_src_dir }}"
+      environment:
+        KAYOBE_CONFIG_SOURCE_PATH: "{{ previous_kayobe_config_src_dir }}"
+
+    # Update the Kayobe configuration to the current release.
+
+    - name: Ensure kolla config directory exists
+      file:
+        path: "{{ kayobe_config_src_dir }}/etc/kolla"
+        state: directory
+
+    - name: Copy across relevant kayobe-config files
+      copy:
+        src: "{{ previous_kayobe_config_src_dir }}/{{ item }}"
+        dest: "{{ kayobe_config_src_dir }}/{{ item }}"
+        remote_src: true
+      with_items:
+        - etc/kayobe/kolla/passwords.yml
+        - etc/kolla/admin-openrc.sh
+        - etc/kolla/public-openrc.sh
+
+    # NOTE(mgoddard): Use the name zz-overrides.yml to ensure this takes
+    # precedence over the standard config files.
+    - name: Ensure kayobe-config override config file exists
+      template:
+        src: overrides.yml.j2
+        dest: "{{ kayobe_config_src_dir }}/etc/kayobe/zz-overrides.yml"
+
+    # Perform a smoke test against the previous release.
+
+    - block:
+        - name: Perform testing of the overcloud prior to upgrade
+          shell:
+            cmd: dev/overcloud-test.sh > {{ logs_dir }}/ansible/overcloud-test-pre-upgrade
+            # NOTE(mgoddard): Currently need to use the new kayobe repo for
+            # testing, since the overcloud-test.sh script is not available in Pike.
+            chdir: "{{ kayobe_src_dir }}"
+
+        # Upgrade Kayobe, and use it to perform an upgrade of the control plane.
+
+        - name: Ensure overcloud is upgraded
+          shell:
+            cmd: dev/overcloud-upgrade.sh > {{ logs_dir }}/ansible/overcloud-upgrade
+            chdir: "{{ kayobe_src_dir }}"
+
+        # FIXME(mgoddard): The nova-compute service does not seem to be correctly
+        # handling the SIGHUP after being upgraded, leading to "In shutdown, no new
+        # events can be scheduled" errors when booting an instance.
+        - name: Workaround for SIGHUP issue - restart nova-compute service
+          shell:
+            cmd: docker restart nova_compute
+          become: true
+
+        # Perform a smoke test against the upgraded current release.
+
+        - name: Perform testing of the upgraded overcloud
+          shell:
+            cmd: dev/overcloud-test.sh > {{ logs_dir }}/ansible/overcloud-test-post-upgrade
+            chdir: "{{ kayobe_src_dir }}"
+      environment:
+        KAYOBE_CONFIG_SOURCE_PATH: "{{ kayobe_config_src_dir }}"

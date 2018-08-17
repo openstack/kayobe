@@ -4,8 +4,8 @@
     logs_dir: "/tmp/logs"
     kayobe_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['git.openstack.org/openstack/kayobe'].src_dir }}"
     kayobe_config_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['git.openstack.org/openstack/kayobe-config-dev'].src_dir }}"
-  environment:
-    KAYOBE_CONFIG_SOURCE_PATH: "{{ kayobe_config_src_dir }}"
+    previous_kayobe_src_dir: "{{ ansible_env.PWD ~ '/previous/kayobe' }}"
+    previous_kayobe_config_src_dir: "{{ ansible_env.PWD ~ '/previous/kayobe-config' }}"
   roles:
     - role: kayobe-diagnostics
       kayobe_diagnostics_phase: "pre"
@@ -22,34 +22,48 @@
         mode: 0644
         remote_src: true
 
+    - name: Ensure previous kayobe directory exists
+      file:
+        path: "{{ previous_kayobe_src_dir }}"
+        state: directory
+
+    - name: Ensure previous kayobe repository is cloned
+      git:
+        repo: https://git.openstack.org/openstack/kayobe
+        dest: "{{ previous_kayobe_src_dir }}"
+        version: "stable/{{ previous_release | lower }}"
+
+    - name: Ensure previous kayobe-config directory exists
+      file:
+        path: "{{ previous_kayobe_config_src_dir }}"
+        state: directory
+
+    - name: Ensure kayobe-config repository is cloned
+      git:
+        repo: https://git.openstack.org/openstack/kayobe-config-dev
+        dest: "{{ previous_kayobe_config_src_dir }}"
+        version: "stable/{{ previous_release | lower }}"
+
     # NOTE(mgoddard): Use the name zz-overrides.yml to ensure this takes
     # precedence over the standard config files.
     - name: Ensure kayobe-config override config file exists
       template:
         src: overrides.yml.j2
-        dest: "{{ kayobe_config_src_dir }}/etc/kayobe/zz-overrides.yml"
+        dest: "{{ previous_kayobe_config_src_dir }}/etc/kayobe/zz-overrides.yml"
+      vars:
+        is_previous_release: true
 
-    - name: Ensure bifrost overrides directory exists
-      file:
-        path: "{{ kayobe_config_src_dir }}/etc/kayobe/kolla/config/bifrost"
-        state: "directory"
-
-    - name: Ensure bifrost overrides file exists
+    - name: Ensure kayobe-config globals.yml config file exists
       template:
-        src: bifrost-overrides.yml.j2
-        dest: "{{ kayobe_config_src_dir }}/etc/kayobe/kolla/config/bifrost/bifrost.yml"
+        src: globals.yml.j2
+        dest: "{{ previous_kayobe_config_src_dir }}/etc/kayobe/kolla/globals.yml"
 
     # NOTE(mgoddard): The kayobe dev config by default expects a bridge -
-    # breth1 - to exist on the seed with an IP address of 192.168.33.5.
+    # breth1 - to exist with an IP address of 192.168.33.3.
     - name: Ensure all-in-one network bridge interface exists
       command: "{{ item }}"
       become: true
       with_items:
         - "ip l add breth1 type bridge"
         - "ip l set breth1 up"
-        - "ip a add 192.168.33.5/24 dev breth1"
-
-    - name: Ensure kayobe is installed
-      shell:
-        cmd: dev/install.sh > {{ logs_dir }}/ansible/install
-        chdir: "{{ kayobe_src_dir }}"
+        - "ip a add 192.168.33.3/24 dev breth1"
