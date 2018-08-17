@@ -16,9 +16,13 @@
         paths: "{{ node_config_directory }}"
         recurse: True
       register: find_result
+      become: true
 
     - name: Save overcloud service configuration
       fetch:
         src: "{{ item.path }}"
         dest: "{{ config_save_path }}"
       with_items: "{{ find_result.files }}"
+      become: true
+      loop_control:
+        label: "{{ item.path }}"
