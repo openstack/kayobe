@@ -8,7 +8,7 @@
 
 - name: Ensure dependencies are installed and the virtual environment is activated
   hosts: controllers[0]
-  gather_facts: False
+  gather_facts: true
   vars:
     venv: "{{ virtualenv_path }}/shade"
   roles:
