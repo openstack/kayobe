@@ -33,7 +33,7 @@ inspection_store_config_path: "/etc/inspection-store"
 # container to never update to new images.
 inspection_store_namespace: ""
 inspection_store_image: "{{ inspection_store ~ '/' if inspection_store | default else '' }}{{ inspection_store_namespace ~ '/' if inspection_store_namespace else '' }}nginx"
-inspection_store_tag: "latest"
+inspection_store_tag: "stable"
 inspection_store_image_full: "{{ inspection_store_image }}:{{ inspection_store_tag }}"
 
 inspection_store_restart_policy: "unless-stopped"
