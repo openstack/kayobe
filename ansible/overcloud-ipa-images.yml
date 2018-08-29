@@ -58,7 +58,11 @@
       set_fact:
         # Don't pass the kernel and ramdisk image URLs if using built images.
         ipa_images_kernel_url: "{{ ipa_kernel_upstream_url }}"
+        ipa_images_kernel_checksum_url: "{{ ipa_kernel_checksum_url }}"
+        ipa_images_kernel_checksum_algorithm: "{{ ipa_kernel_checksum_algorithm }}"
         ipa_images_ramdisk_url: "{{ ipa_ramdisk_upstream_url }}"
+        ipa_images_ramdisk_checksum_url: "{{ ipa_ramdisk_checksum_url }}"
+        ipa_images_ramdisk_checksum_algorithm: "{{ ipa_ramdisk_checksum_algorithm }}"
       when: not ipa_build_images | bool
 
     - name: Check whether the image cache directory exists

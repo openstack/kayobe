@@ -24,12 +24,24 @@ ipa_images_kernel_name:
 # image in ipa_images_cache_path will be used.
 ipa_images_kernel_url:
 
+# URL of checksum of Ironic deployment kernel image.
+ipa_images_kernel_checksum_url:
+
+# Algorithm of checksum of Ironic deployment kernel image.
+ipa_images_kernel_checksum_algorithm:
+
 # Name of Ironic deployment ramdisk image to register in Glance.
 ipa_images_ramdisk_name:
 
 # URL of Ironic deployment ramdisk image to download. If unset, an existing
 # image in ipa_images_cache_path will be used.
 ipa_images_ramdisk_url:
+
+# URL of checksum of Ironic deployment ramdisk image.
+ipa_images_ramdisk_checksum_url:
+
+# Algorithm of checksum of Ironic deployment ramdisk image.
+ipa_images_ramdisk_checksum_algorithm:
 
 # Ansible host pattern for limiting which nodes are updated with deploy_ramdisk
 # and deploy_kernel properties

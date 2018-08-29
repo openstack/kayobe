@@ -1,0 +1,19 @@
+---
+# URL of the image.
+# Mutually exclusive with image_download_path.
+image_download_url:
+
+# URL of a checksum of the image.
+# Mutually exclusive with image_download_path.
+image_download_checksum_url:
+
+# Algorithm of a checksum of the image.
+# Mutually exclusive with image_download_path.
+image_download_checksum_algorithm:
+
+# Path to a local file containing the image.
+# Mutually exclusive with image_download_url.
+image_download_path:
+
+# Path to the image's destination.
+image_download_dest:

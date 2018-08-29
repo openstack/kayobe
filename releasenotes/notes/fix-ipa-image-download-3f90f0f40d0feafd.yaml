@@ -1,0 +1,36 @@
+---
+upgrade:
+  - |
+    It is now possible to specify a URL of a file containing a checksum of the
+    Ironic Python Agent (IPA) images for the seed and overcloud Ironic and
+    Ironic Inspector services. This allows Kayobe to detect changes in the
+    image content and download as necessary. If specifying IPA images via URL,
+    the checksums should be configured accordingly.
+
+    The checksum URLs and algorithms are configured via these variables:
+
+    * ``{{ ipa_kernel_checksum_url }}``
+    * ``{{ ipa_kernel_checksum_algorithm }}``
+    * ``{{ ipa_ramdisk_checksum_url }}``
+    * ``{{ ipa_ramdisk_checksum_algorithm }}``
+
+    For the seed this may be customised via these variables:
+
+    * ``{{ kolla_bifrost_ipa_kernel_checksum_url }}``
+    * ``{{ kolla_bifrost_ipa_kernel_checksum_algorithm }}``
+    * ``{{ kolla_bifrost_ipa_ramdisk_checksum_url }}``
+    * ``{{ kolla_bifrost_ipa_ramdisk_checksum_algorithm }}``
+
+    For the overcloud Ironic Inspector service this may be customised via these
+    variables:
+
+    * ``{{ inspector_ipa_kernel_checksum_url }}``
+    * ``{{ inspector_ipa_kernel_checksum_algorithm }}``
+    * ``{{ inspector_ipa_ramdisk_checksum_url }}``
+    * ``{{ inspector_ipa_ramdisk_checksum_algorithm }}``
+fixes:
+  - |
+    Fixes an issue with downloading Ironic Python Agent (IPA) images where new
+    images would not be downloaded if the image had been downloaded previously.
+    See `Story 2001660 <https://storyboard.openstack.org/#!/story/2001660>`__
+    for details.

@@ -227,9 +227,25 @@ kolla_inspector_extra_kernel_options: []
 # Mutually exclusive with kolla_inspector_ipa_kernel_path.
 kolla_inspector_ipa_kernel_upstream_url:
 
+# URL of checksum of Ironic Python Agent (IPA) kernel image for Ironic
+# inspector. Mutually exclusive with kolla_inspector_ipa_kernel_path.
+kolla_inspector_ipa_kernel_checksum_url:
+
+# Algorithm of checksum of Ironic Python Agent (IPA) kernel image for Ironic
+# inspector. Mutually exclusive with kolla_inspector_ipa_kernel_path.
+kolla_inspector_ipa_kernel_checksum_algorithm:
+
 # URL of Ironic Python Agent (IPA) ramdisk image for Ironic Inspector.
 # Mutually exclusive with kolla_inspector_ipa_ramdisk_path.
 kolla_inspector_ipa_ramdisk_upstream_url:
+
+# URL of checksum of Ironic Python Agent (IPA) ramdisk image for Ironic
+# Inspector. Mutually exclusive with kolla_inspector_ipa_ramdisk_path.
+kolla_inspector_ipa_ramdisk_checksum_url:
+
+# Algorithm of checksum of Ironic Python Agent (IPA) ramdisk image for Ironic
+# Inspector. Mutually exclusive with kolla_inspector_ipa_ramdisk_path.
+kolla_inspector_ipa_ramdisk_checksum_algorithm:
 
 # Path to Ironic Python Agent (IPA) kernel image for Ironic Inspector.
 # Mutually exclusive with kolla_inspector_ipa_kernel_upstream_url.
