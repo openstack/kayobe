@@ -66,17 +66,6 @@
         src: bifrost-overrides.yml.j2
         dest: "{{ kayobe_config_src_dir }}/etc/kayobe/kolla/config/bifrost/bifrost.yml"
 
-    # NOTE(mgoddard): Create a loopback device backed by a file for docker
-    # storage.  We do this since the overlay driver doesn't work with the
-    # ansible template module until ansible 2.4.0, and this is required by
-    # bifrost.
-    - name: Ensure a docker storage backing file exists
-      command: truncate -s 20G /tmp/docker-storage
-
-    - name: Ensure the docker storage loopback device is created
-      command: losetup /dev/loop0 /tmp/docker-storage
-      become: true
-
     # NOTE(mgoddard): The kayobe dev config by default expects a bridge -
     # breth1 - to exist on the seed with an IP address of 192.168.33.5.
     - name: Ensure all-in-one network bridge interface exists

@@ -12,9 +12,3 @@ kolla_upper_constraints_file: "/tmp/upper-constraints.txt"
 # NOTE(mgoddard): We're using a cirros image, which doesn't require the
 # resolv.conf work around used for CentOS.
 overcloud_host_image_workaround_resolv_enabled: false
-
-# NOTE(mgoddard): Use a loopback-mounted LVM volume for docker storage since
-# the overlay driver doesn't work with the ansible template module until
-# ansible 2.4.0, and this is required by bifrost.
-seed_lvm_group_data_disks:
-  - /dev/loop0
