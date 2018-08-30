@@ -1,0 +1,9 @@
+---
+fixes:
+  - |
+    Fixes an issue with introspection data not being collected
+    when iPXE was enabled. This meant that certain
+    introspection rules were not being applied. Notably, the
+    local_link_connection field would not be updated on the
+    ironic ports.
+

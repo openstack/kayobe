@@ -189,6 +189,9 @@ kolla_ironic_pxe_append_params: []
 # Free form extra configuration to append to ironic.conf.
 kolla_extra_ironic:
 
+# Enable iPXE support in Ironic
+kolla_enable_ironic_ipxe:
+
 ###############################################################################
 # Ironic inspector configuration.
 
