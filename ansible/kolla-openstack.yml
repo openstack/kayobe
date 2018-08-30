@@ -88,6 +88,7 @@
       dellos9: netmiko_dell_force10
       dell-powerconnect: netmiko_dell_powerconnect
       junos: netmiko_juniper
+      openvswitch: netmiko_ovs_linux
     ipa_image_name: "ipa"
   pre_tasks:
     - block:

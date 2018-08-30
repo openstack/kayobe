@@ -25,6 +25,7 @@
       - dell-powerconnect
       - junos
       - mellanox
+      - openvswitch
   tasks:
     - name: Fail if both interface name and description limits are specified
       fail:
