@@ -1,0 +1,16 @@
+---
+- name: Update host packages
+  hosts: seed:overcloud
+  vars:
+    # Optionally set this to a list of packages to update. Default behaviour is
+    # to update all packages.
+    host_package_update_packages: "*"
+    host_package_update_security: false
+  tasks:
+    - name: Update host packages
+      yum:
+        name: "{{ host_package_update_packages }}"
+        security: "{{ host_package_update_security | bool }}"
+        state: latest
+      when: ansible_os_family == 'RedHat'
+      become: true

@@ -5,6 +5,28 @@ Administration
 This section describes how to use kayobe to simplify post-deployment
 administrative tasks.
 
+Updating Packages
+=================
+
+It is possible to update packages on the seed and overcloud hosts. To update
+one or more packages::
+
+    (kayobe) $ kayobe seed host package update --packages <package1>,<package2>
+    (kayobe) $ kayobe overcloud host package update --packages <package1>,<package2>
+
+To update all eligible packages, use ``*``, escaping if necessary::
+
+    (kayobe) $ kayobe seed host package update --packages *
+    (kayobe) $ kayobe overcloud host package update --packages *
+
+To only install updates that have been marked security related::
+
+    (kayobe) $ kayobe seed host package update --packages <packages> --security
+    (kayobe) $ kayobe overcloud host package update --packages <packages> --security
+
+Note that these commands do not affect packages installed in containers, only
+those installed on the host.
+
 Reconfiguring Containerised Services
 ====================================
 

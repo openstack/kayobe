@@ -316,6 +316,81 @@ class TestCase(unittest.TestCase):
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
+    def test_seed_host_package_update_all(self, mock_run):
+        command = commands.SeedHostPackageUpdate(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args(["--packages", "*"])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    "ansible/host-package-update.yml",
+                ],
+                limit="seed",
+                extra_vars={
+                    "host_package_update_packages": "*",
+                    "host_package_update_security": False,
+                },
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_seed_host_package_update_list(self, mock_run):
+        command = commands.SeedHostPackageUpdate(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args(["--packages", "p1,p2"])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    "ansible/host-package-update.yml",
+                ],
+                limit="seed",
+                extra_vars={
+                    "host_package_update_packages": "p1,p2",
+                    "host_package_update_security": False,
+                },
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_seed_host_package_update_security(self, mock_run):
+        command = commands.SeedHostPackageUpdate(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args(["--packages", "*", "--security"])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    "ansible/host-package-update.yml",
+                ],
+                limit="seed",
+                extra_vars={
+                    "host_package_update_packages": "*",
+                    "host_package_update_security": True,
+                },
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
     def test_seed_host_upgrade(self, mock_run):
         command = commands.SeedHostUpgrade(TestApp(), [])
         parser = command.get_parser("test")
@@ -641,6 +716,81 @@ class TestCase(unittest.TestCase):
             ),
         ]
         self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_overcloud_host_package_update_all(self, mock_run):
+        command = commands.OvercloudHostPackageUpdate(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args(["--packages", "*"])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    "ansible/host-package-update.yml",
+                ],
+                limit="overcloud",
+                extra_vars={
+                    "host_package_update_packages": "*",
+                    "host_package_update_security": False,
+                },
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_overcloud_host_package_update_list(self, mock_run):
+        command = commands.OvercloudHostPackageUpdate(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args(["--packages", "p1,p2"])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    "ansible/host-package-update.yml",
+                ],
+                limit="overcloud",
+                extra_vars={
+                    "host_package_update_packages": "p1,p2",
+                    "host_package_update_security": False,
+                },
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_overcloud_host_package_update_security(self, mock_run):
+        command = commands.OvercloudHostPackageUpdate(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args(["--packages", "*", "--security"])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    "ansible/host-package-update.yml",
+                ],
+                limit="overcloud",
+                extra_vars={
+                    "host_package_update_packages": "*",
+                    "host_package_update_security": True,
+                },
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")

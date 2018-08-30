@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Add commands to update packages on seed and overcloud hosts:
+
+    ``kayobe seed host package update --packages <packages>``
+    ``kayobe overcloud host package update --packages <packages>``
