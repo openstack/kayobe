@@ -53,3 +53,4 @@
         {% if push_images | bool %}--push{% endif %} \
         {{ item.regexes }} 2>&1 | tee --append {{ kolla_build_log_path }}
       with_items: "{{ container_image_sets }}"
+      when: item.regexes != ''

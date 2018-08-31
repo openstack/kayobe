@@ -204,10 +204,24 @@ overcloud_container_image_regex_map:
 # overcloud hosts.
 overcloud_container_image_regexes: "{{ overcloud_container_image_regex_map | selectattr('enabled') | map(attribute='regex') | list }}"
 
+# List of regular expressions matching names of container images to build for
+# overcloud hosts. These images only support source builds.
+overcloud_container_image_regex_map_source:
+  - regex: monasca
+    enabled: "{{ kolla_enable_monasca | bool }}"
+
+# List of regular expressions matching names of container images to build for
+# overcloud hosts. These images onlt support source builds.
+overcloud_container_image_regexes_source: "{{ overcloud_container_image_regex_map_source | selectattr('enabled') | map(attribute='regex') | list }}"
+
 # List of container image sets for overcloud hosts. This is used when building
 # container images to determine which images to build.
 overcloud_container_image_sets:
+  # Default image type.
   - regexes: "{{ overcloud_container_image_regexes | join(' ') }}"
+  # Source-only images.
+  - regexes: "{{ overcloud_container_image_regexes_source | join(' ') }}"
+    type: source
 
 # Dict mapping Jinja2 block names in kolla's Docker images to their contents.
 kolla_build_blocks: {}
