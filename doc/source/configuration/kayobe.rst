@@ -71,7 +71,8 @@ should be merged to incorporate any upstream changes with local modifications.
 Alternatively, the baseline Kayobe configuration may be copied from a checkout
 of the Kayobe repository to the Kayobe configuration path::
 
-    $ cp -r etc/ ${KAYOBE_CONFIG_PATH:-/etc/kayobe}
+    $ mkdir -p ${KAYOBE_CONFIG_PATH:-/etc/kayobe/}
+    $ cp -r etc/kayobe/* ${KAYOBE_CONFIG_PATH:-/etc/kayobe/}
 
 Once in place, each of the YAML and inventory files should be manually
 inspected and configured as required.
