@@ -94,8 +94,29 @@ instead perform a targeted upgrade of specific services where necessary.
 Upgrading the Seed
 ==================
 
-Currently, upgrading the seed services is not supported.  It may however be
-necessary to upgrade some host services::
+Currently, upgrading the seed services is not supported.
+
+Upgrading Host Packages
+-----------------------
+
+Prior to upgrading the seed, it may be desirable to upgrade system packages on
+the seed host.
+
+To update all eligible packages, use ``*``, escaping if necessary::
+
+    (kayobe) $ kayobe seed host package update --packages *
+
+To only install updates that have been marked security related::
+
+    (kayobe) $ kayobe seed host package update --packages <packages> --security
+
+Note that these commands do not affect packages installed in containers, only
+those installed on the host.
+
+Upgrading Host Services
+-----------------------
+
+It may be necessary to upgrade some host services::
 
     (kayobe) $ kayobe seed host upgrade
 
@@ -109,6 +130,23 @@ The overcloud services are upgraded in two steps.  First, new container images
 should be obtained either by building them locally or pulling them from an
 image registry.  Second, the overcloud services should be replaced with new
 containers created from the new container images.
+
+Upgrading Host Packages
+-----------------------
+
+Prior to upgrading the OpenStack control plane, it may be desirable to upgrade
+system packages on the overcloud hosts.
+
+To update all eligible packages, use ``*``, escaping if necessary::
+
+    (kayobe) $ kayobe overcloud host package update --packages *
+
+To only install updates that have been marked security related::
+
+    (kayobe) $ kayobe overcloud host package update --packages <packages> --security
+
+Note that these commands do not affect packages installed in containers, only
+those installed on the host.
 
 Upgrading Host Services
 -----------------------
