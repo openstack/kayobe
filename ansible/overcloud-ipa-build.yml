@@ -23,12 +23,6 @@
     ipa_image_force_rebuild: false
   tasks:
     - block:
-        - name: Ensure existing Ironic Python Agent images are removed (force rebuild)
-          file:
-            path: "{{ image_cache_path }}/{{ ipa_image_name }}"
-            state: absent
-          when: ipa_image_force_rebuild | bool
-
         - name: Ensure Ironic Python Agent images are built
           include_role:
             name: stackhpc.os-images
@@ -44,4 +38,5 @@
                 type: raw
             os_images_git_elements: "{{ ipa_build_dib_git_elements }}"
             os_images_upload: False
+            os_images_force_rebuild: "{{ ipa_image_force_rebuild }}"
       when: ipa_build_images | bool
