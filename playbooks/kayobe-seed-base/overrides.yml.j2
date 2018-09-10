@@ -8,6 +8,7 @@ kolla_source_version: "{{ zuul.projects['git.openstack.org/openstack/kolla'].che
 kolla_ansible_source_url: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['git.openstack.org/openstack/kolla-ansible'].src_dir }}"
 kolla_ansible_source_version: "{{ zuul.projects['git.openstack.org/openstack/kolla-ansible'].checkout }}"
 kolla_upper_constraints_file: "/tmp/upper-constraints.txt"
+kolla_openstack_logging_debug: True
 
 # NOTE(mgoddard): We're using a cirros image, which doesn't require the
 # resolv.conf work around used for CentOS.

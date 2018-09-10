@@ -1,0 +1,36 @@
+---
+# This file holds the config given to Tenks when running `tenks-deploy.sh`. It
+# assumes the existence of the bridge `breth1`.
+
+node_types:
+  type0:
+    memory_mb: 1024
+    vcpus: 1
+    volumes:
+      # There is a minimum disk space capacity requirement of 4GiB when using Ironic Python Agent:
+      # https://github.com/openstack/ironic-python-agent/blob/master/ironic_python_agent/utils.py#L290
+      - capacity: 4GiB
+    physical_networks:
+      - physnet1
+    console_log_enabled: true
+
+specs:
+  - type: type0
+    count: 2
+    ironic_config:
+      resource_class: test-rc
+      network_interface: flat
+
+nova_flavors:
+  - resource_class: test-rc
+    node_type: type0
+
+physnet_mappings:
+  physnet1: breth1
+
+deploy_kernel: ipa.vmlinuz
+deploy_ramdisk: ipa.initramfs
+
+# Use a custom socket path to avoid a conflict with the nova_libvirt kolla
+# container which bind mounts /var/run/libvirt.
+libvirt_custom_socket_path: /var/run/libvirt-tenks

@@ -4,6 +4,7 @@
     kayobe_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['git.openstack.org/openstack/kayobe'].src_dir }}"
     kayobe_config_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['git.openstack.org/openstack/kayobe-config-dev'].src_dir }}"
     logs_dir: "/tmp/logs"
+    tenks_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['git.openstack.org/openstack/tenks'].src_dir }}"
   environment:
     KAYOBE_CONFIG_SOURCE_PATH: "{{ kayobe_config_src_dir }}"
   tasks:
@@ -12,7 +13,21 @@
         cmd: dev/overcloud-deploy.sh > {{ logs_dir }}/ansible/overcloud-deploy
         chdir: "{{ kayobe_src_dir }}"
 
-    - name: Perform testing of the overcloud
+    - name: Ensure test Tenks cluster is deployed
       shell:
-        cmd: dev/overcloud-test.sh > {{ logs_dir }}/ansible/overcloud-test
+        # Pass absolute source directory, since otherwise the `chdir` will
+        # cause this to fail.
+        cmd: dev/tenks-deploy.sh '{{ tenks_src_dir }}' > {{ logs_dir }}/ansible/tenks-deploy
+        chdir: "{{ kayobe_src_dir }}"
+
+    - name: Perform testing of the virtualized machines
+      # We must do this before tenks-deploy as that will stop the nova_libvirt
+      # container
+      shell:
+        cmd: dev/overcloud-test-vm.sh > {{ logs_dir }}/ansible/overcloud-test-vm
+        chdir: "{{ kayobe_src_dir }}"
+
+    - name: Perform testing of the baremetal machines
+      shell:
+        cmd: dev/overcloud-test-baremetal.sh > {{ logs_dir }}/ansible/overcloud-test-baremetal
         chdir: "{{ kayobe_src_dir }}"

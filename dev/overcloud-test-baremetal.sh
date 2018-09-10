@@ -10,7 +10,7 @@ source "${PARENT}/functions"
 
 function main {
     config_init
-    overcloud_test
+    overcloud_test bm1 test-rc provision-net
 }
 
 main

@@ -41,6 +41,8 @@ copy_logs() {
     ip address > ${LOG_DIR}/system_logs/ip-address.txt
     ip route > ${LOG_DIR}/system_logs/ip-route.txt
 
+    iptables-save > ${LOG_DIR}/system_logs/iptables.txt
+
     if [ `command -v dpkg` ]; then
         dpkg -l > ${LOG_DIR}/system_logs/dpkg-l.txt
     fi

@@ -27,6 +27,9 @@ function config_defaults {
     # Path to the kayobe virtual environment.
     export KAYOBE_VENV_PATH="${KAYOBE_VENV_PATH:-${HOME}/kayobe-venv}"
 
+    # Path to the Tenks virtual environment.
+    export TENKS_VENV_PATH="${TENKS_VENV_PATH:-${HOME}/tenks-test-venv}"
+
     # Whether to provision a VM for the seed host.
     export KAYOBE_SEED_VM_PROVISION=${KAYOBE_SEED_VM_PROVISION:-1}
 
@@ -84,27 +87,37 @@ function install_dependencies {
 }
 
 function install_venv {
-    local venv_parent="$(dirname ${KAYOBE_VENV_PATH})"
+    # Install a virtualenv at $1. Install all the packages in proceeding
+    # arguments using pip.
+    venv_path="$1"
+    shift
+    pip_paths="$@"
+    local venv_parent="$(dirname ${venv_path})"
     if [[ ! -d "$venv_parent" ]]; then
         mkdir -p "$venv_parent"
     fi
-    if [[ ! -f "${KAYOBE_VENV_PATH}/bin/activate" ]]; then
-        echo "Creating kayobe virtual environment in ${KAYOBE_VENV_PATH}"
-        virtualenv "${KAYOBE_VENV_PATH}"
+    if [[ ! -f "${venv_path}/bin/activate" ]]; then
+        echo "Creating virtual environment in ${venv_path}"
+        virtualenv "${venv_path}"
         # NOTE: Virtualenv's activate and deactivate scripts reference an
         # unbound variable.
         set +u
-        source "${KAYOBE_VENV_PATH}/bin/activate"
+        source "${venv_path}/bin/activate"
         pip install -U pip
-        pip install "${KAYOBE_SOURCE_PATH}"
+        pip install $pip_paths
         deactivate
         set -u
     else
-        echo "Using existing kayobe virtual environment in ${KAYOBE_VENV_PATH}"
+        echo "Using existing virtual environment in ${venv_path}"
     fi
 }
 
-function upgrade_venv {
+function install_kayobe_venv {
+    # Install the Kayobe venv.
+    install_venv "${KAYOBE_VENV_PATH}" "${KAYOBE_SOURCE_PATH}"
+}
+
+function upgrade_kayobe_venv {
     echo "Upgrading kayobe virtual environment in ${KAYOBE_VENV_PATH}"
     virtualenv "${KAYOBE_VENV_PATH}"
     # NOTE: Virtualenv's activate and deactivate scripts reference an
@@ -252,7 +265,7 @@ function overcloud_upgrade {
     echo "single node OpenStack control plane."
 
     echo "Upgrading Kayobe"
-    upgrade_venv
+    upgrade_kayobe_venv
 
     environment_setup
 
@@ -301,32 +314,240 @@ function overcloud_upgrade {
     echo "Control plane upgrade complete"
 }
 
-function overcloud_test {
-    # Perform a simple smoke test against the cloud.
-    echo "Performing a simple smoke test"
+function overcloud_test_init {
 
+    echo "Performing overcloud test init"
     environment_setup
 
     pip install python-openstackclient
-
     source "${KOLLA_CONFIG_PATH:-/etc/kolla}/admin-openrc.sh"
-    if ! openstack image show cirros >/dev/null 2>&1; then
+
+    # This guards init-runonce from running more than once
+    if mkdir /tmp/init-runonce > /dev/null 2>&1; then
         echo "Running kolla-ansible init-runonce"
         ${KOLLA_VENV_PATH:-$HOME/kolla-venv}/share/kolla-ansible/init-runonce
     else
         echo "Not running kolla-ansible init-runonce - resources exist"
     fi
+}
 
-    echo "Creating a VM"
-    openstack server create --wait --image cirros --flavor m1.tiny --key-name mykey --network demo-net demo1
-    openstack server show demo1
-    status=$(openstack server show demo1 -f value -c status)
+function overcloud_test {
+    set -eu
+
+    # function arguments
+    name="$1"
+    flavor="$2"
+    network="$3"
+
+    node_config="{ 'name': '$name', 'flavor': '$flavor', 'network': '$network' }"
+
+    overcloud_test_init
+
+    # Perform a simple smoke test against the cloud.
+    echo "Performing a simple smoke test with node config: $node_config"
+
+    echo "$name: Creating a server"
+    openstack server create --wait --image cirros --flavor "$flavor" --key-name mykey --network "$network" "$name"
+    echo "$name: Server created"
+    openstack server show "$name"
+    status=$(openstack server show "$name" -f value -c status)
     if [[ $status != ACTIVE ]]; then
-        echo "VM creation failed"
+        echo "$name: Node creation failed"
         return 1
     fi
     # TODO(mgoddard): Test SSH connectivity to the VM.
 
-    echo "Deleting the VM"
-    openstack server delete --wait demo1
+    echo "$name: Deleting the Node"
+    openstack server delete --wait "$name"
+}
+
+function tenks_deploy {
+    set -eu
+    # Create a simple test Tenks deployment. Assumes that a bridge named
+    # 'breth1' exists.  Arguments:
+    # $1: The path to the Tenks repo.
+    local tenks_path="$1"
+
+    echo "Configuring Tenks"
+
+    environment_setup
+
+    # We don't want to use the Kayobe venv.
+    deactivate
+
+    # Install the Tenks venv.
+    install_venv "${TENKS_VENV_PATH}" "$tenks_path"
+    source ${TENKS_VENV_PATH:-$HOME/tenks-test-venv}/bin/activate
+
+    ansible-galaxy install \
+        --role-file="$tenks_path/requirements.yml" \
+        --roles-path="$tenks_path/ansible/roles/"
+
+    local parent="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+    # Install a trivial script for ovs-vsctl that talks to containerised Open
+    # vSwitch.
+    sudo cp --no-clobber "$parent/ovs-vsctl" /usr/bin/ovs-vsctl
+
+    source "${KOLLA_CONFIG_PATH:-/etc/kolla}/admin-openrc.sh"
+
+    pip install python-openstackclient
+
+    ansible-playbook \
+        -vvv \
+        --inventory "$tenks_path/ansible/inventory" \
+        --extra-vars=@"$parent/tenks-deploy-config.yml" \
+        "$tenks_path/ansible/deploy.yml"
+}
+
+# General purpose
+
+# Prints backtrace info
+# filename:lineno:function
+# backtrace level
+function backtrace {
+    local level=$1
+    local deep
+    deep=$((${#BASH_SOURCE[@]} - 1))
+    echo "[Call Trace]"
+    while [ $level -le $deep ]; do
+        echo "${BASH_SOURCE[$deep]}:${BASH_LINENO[$deep-1]}:${FUNCNAME[$deep-1]}"
+        deep=$((deep - 1))
+    done
+}
+
+# Prints line number and "message" then exits
+# die $LINENO "message"
+function die {
+    local exitcode=$?
+    set +o xtrace
+    local line=$1; shift
+    if [ $exitcode == 0 ]; then
+        exitcode=1
+    fi
+    backtrace 2
+    err $line "$*"
+    # Give buffers a second to flush
+    sleep 1
+    exit $exitcode
+}
+
+
+# Prints line number and "message" in error format
+# err $LINENO "message"
+function err {
+    local exitcode=$?
+    local xtrace
+    xtrace=$(set +o | grep xtrace)
+    set +o xtrace
+    local msg="[ERROR] ${BASH_SOURCE[2]}:$1 $2"
+    echo "$msg" 1>&2;
+    if [[ -n ${LOGDIR} ]]; then
+        echo "$msg" >> "${LOGDIR}/error.log"
+    fi
+    $xtrace
+    return $exitcode
+}
+
+
+function die_if_module_not_loaded {
+    if ! grep -q $1 /proc/modules; then
+        die $LINENO "$1 kernel module is not loaded"
+    fi
+}
+
+# running_in_container - Returns true otherwise false
+function running_in_container {
+    [[ $(systemd-detect-virt --container) != 'none' ]]
+}
+
+# enable_kernel_bridge_firewall - Enable kernel support for bridge firewalling
+function enable_kernel_bridge_firewall {
+    # Load bridge module. This module provides access to firewall for bridged
+    # frames; and also on older kernels (pre-3.18) it provides sysctl knobs to
+    # enable/disable bridge firewalling
+    sudo modprobe bridge
+    # For newer kernels (3.18+), those sysctl settings are split into a separate
+    # kernel module (br_netfilter). Load it too, if present.
+    sudo modprobe br_netfilter 2>> /dev/null || :
+    # Enable bridge firewalling in case it's disabled in kernel (upstream
+    # default is enabled, but some distributions may decide to change it).
+    # This is at least needed for RHEL 7.2 and earlier releases.
+    for proto in ip ip6; do
+        sudo sysctl -w net.bridge.bridge-nf-call-${proto}tables=1
+    done
+}
+
+function to_bool {
+    if [[ "$1" =~ (y|Y|yes|Yes|YES|true|True|TRUE|on|On|ON) ]]; then
+        true
+    elif [[ "$1" =~ (n|N|no|No|NO|false|False|FALSE|off|Off|OFF) ]]; then
+        false
+    else
+        die $LINENO "$1 was not a valid yaml boolean"
+    fi
+}
+
+function is_ipxe_enabled {
+    flag="$(run_kayobe configuration dump --host controllers[0] --var-name kolla_enable_ironic_ipxe)"
+    to_bool "$flag"
+}
+
+function is_cinder_enabled {
+    flag="$(run_kayobe configuration dump --host controllers[0] --var-name kolla_enable_cinder)"
+    to_bool "$flag"
+}
+
+function configure_iptables {
+    # NOTE(wszumski): adapted from the ironic devstack plugin, see:
+    # https://github.com/openstack/ironic/blob/36e87dc5b472d79470b783fbba9ce396e3cbb96e/devstack/lib/ironic#L2132
+
+    set -eu
+    environment_setup
+
+    # FIXME(wszumski): set these variables with values from kayobe-config
+    HOST_IP='192.168.33.3'
+    INTERNAL_VIP='192.168.33.2'
+    IRONIC_TFTPSERVER_IP="$HOST_IP"
+    IRONIC_SERVICE_PORT=6385
+    IRONIC_INSPECTOR_PORT=5050
+    IRONIC_HTTP_SERVER="$INTERNAL_VIP"
+    GLANCE_SERVICE_PORT=9292
+    IRONIC_HTTP_PORT=8089
+    ISCSI_SERVICE_PORT=3260
+
+    # enable tftp natting for allowing connections to HOST_IP's tftp server
+    if ! running_in_container; then
+        sudo modprobe nf_conntrack_tftp
+        sudo modprobe nf_nat_tftp
+
+        enable_kernel_bridge_firewall
+    else
+        die_if_module_not_loaded nf_conntrack_tftp
+        die_if_module_not_loaded nf_nat_tftp
+    fi
+    # explicitly allow DHCP - packets are occasionally being dropped here
+    sudo iptables -I INPUT -p udp --dport 67:68 --sport 67:68 -j ACCEPT || true
+    # nodes boot from TFTP and callback to the API server listening on $HOST_IP
+    sudo iptables -I INPUT -d $IRONIC_TFTPSERVER_IP -p udp --dport 69 -j ACCEPT || true
+
+    sudo iptables -I INPUT -d $HOST_IP -p tcp --dport $IRONIC_SERVICE_PORT -j ACCEPT || true
+    # open ironic API on baremetal network
+    sudo iptables -I INPUT -d $IRONIC_HTTP_SERVER -p tcp --dport $IRONIC_SERVICE_PORT -j ACCEPT || true
+    # allow IPA to connect to ironic API
+    sudo iptables -I FORWARD -p tcp --dport $IRONIC_SERVICE_PORT -j ACCEPT || true
+    # allow IPA to connect to ironic inspector
+    sudo iptables -I FORWARD -p tcp --dport $IRONIC_INSPECTOR_PORT -j ACCEPT || true
+
+    # agent ramdisk gets instance image from swift
+    sudo iptables -I INPUT -d $INTERNAL_VIP -p tcp --dport ${SWIFT_DEFAULT_BIND_PORT:-8080} -j ACCEPT || true
+    sudo iptables -I INPUT -d $INTERNAL_VIP -p tcp --dport $GLANCE_SERVICE_PORT -j ACCEPT || true
+
+    if is_ipxe_enabled; then
+        sudo iptables -I INPUT -d $HOST_IP -p tcp --dport $IRONIC_HTTP_PORT -j ACCEPT || true
+    fi
+
+    if is_cinder_enabled; then
+        sudo iptables -I INPUT -d $HOST_IP -p tcp --dport $ISCSI_SERVICE_PORT -j ACCEPT || true
+    fi
 }

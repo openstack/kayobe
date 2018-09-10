@@ -16,7 +16,7 @@ function main {
     KAYOBE_CONFIG_REQUIRED=0
     config_init
     install_dependencies
-    install_venv
+    install_kayobe_venv
 }
 
 main

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+
+sudo docker exec openvswitch_vswitchd ovs-vsctl "$@"

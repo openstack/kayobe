@@ -10,6 +10,7 @@ kolla_ansible_source_url: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['git.opensta
 kolla_ansible_source_version: "{{ zuul.projects['git.openstack.org/openstack/kolla-ansible'].checkout }}"
 kolla_upper_constraints_file: "/tmp/upper-constraints.txt"
 {% endif %}
+kolla_openstack_logging_debug: true
 
 # Use the CI infra's PyPI mirror.
 pip_local_mirror: true
