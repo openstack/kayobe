@@ -1,13 +1,15 @@
 ---
 - hosts: primary
   vars:
-    kayobe_src_dir: "{{ zuul.project.src_dir }}"
+    kayobe_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['git.openstack.org/openstack/kayobe'].src_dir }}"
+    kayobe_config_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['git.openstack.org/openstack/kayobe-config-dev'].src_dir }}"
     logs_dir: "/tmp/logs"
+  environment:
+    KAYOBE_CONFIG_SOURCE_PATH: "{{ kayobe_config_src_dir }}"
+    # Don't provision a seed VM - use the Zuul VM as the seed host.
+    KAYOBE_SEED_VM_PROVISION: 0
   tasks:
     - name: Ensure seed is deployed
       shell:
         cmd: dev/seed-deploy.sh > {{ logs_dir }}/ansible/seed-deploy
         chdir: "{{ kayobe_src_dir }}"
-      environment:
-        # Don't provision a seed VM - use the Zuul VM as the seed host.
-        KAYOBE_SEED_VM_PROVISION: 0
