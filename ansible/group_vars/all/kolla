@@ -166,12 +166,10 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_manila | bool }}"
   - regex: mariadb
     enabled: "{{ kolla_enable_mariadb | bool }}"
-  - regex: murano
-    enabled: "{{ kolla_enable_murano | bool }}"
-  - regex: mariadb
-    enabled: True
   - regex: memcached
     enabled: True
+  - regex: murano
+    enabled: "{{ kolla_enable_murano | bool }}"
   - regex: neutron-server
     enabled: "{{ kolla_enable_neutron | bool }}"
   # Neutron SFC agent not currently supported on CentOS binary builds.
