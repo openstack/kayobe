@@ -28,6 +28,10 @@ dhcp-option=option:bootfile-name,{{ ironic_dnsmasq_boot_file | default('undionly
 dhcp-option=option:bootfile-name,{{ ironic_dnsmasq_boot_file | default('pxelinux.0') }}
 {% endif %}{% endraw %}
 
+{% raw %}{% if ironic_inspector_pxe_filter | default == 'dnsmasq' %}
+dhcp-hostsdir=/etc/dnsmasq/dhcp-hostsdir
+{% endif %}{% endraw %}
+
 {% if kolla_extra_ironic_dnsmasq %}
 {{ kolla_extra_ironic_dnsmasq }}
 {% endif %}
