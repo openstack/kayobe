@@ -106,6 +106,7 @@ class TestCase(unittest.TestCase):
                     "ansible/ip-allocation.yml",
                     "ansible/ssh-known-host.yml",
                     "ansible/kayobe-ansible-user.yml",
+                    "ansible/pip.yml",
                     "ansible/kayobe-target-venv.yml",
                     "ansible/users.yml",
                     "ansible/yum.yml",
@@ -171,6 +172,7 @@ class TestCase(unittest.TestCase):
                     "ansible/ip-allocation.yml",
                     "ansible/ssh-known-host.yml",
                     "ansible/kayobe-ansible-user.yml",
+                    "ansible/pip.yml",
                     "ansible/kayobe-target-venv.yml",
                     "ansible/users.yml",
                     "ansible/yum.yml",
@@ -194,11 +196,13 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
+                    "ansible/pip.yml",
                     "ansible/kolla-target-venv.yml",
                     "ansible/kolla-host.yml",
                     "ansible/docker.yml",
                 ],
                 limit="seed",
+                extra_vars={'pip_applicable_users': [None]},
             ),
         ]
         self.assertEqual(expected_calls, mock_run.call_args_list)
@@ -574,6 +578,7 @@ class TestCase(unittest.TestCase):
                     "ansible/ip-allocation.yml",
                     "ansible/ssh-known-host.yml",
                     "ansible/kayobe-ansible-user.yml",
+                    "ansible/pip.yml",
                     "ansible/kayobe-target-venv.yml",
                     "ansible/users.yml",
                     "ansible/yum.yml",
@@ -596,12 +601,14 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
+                    "ansible/pip.yml",
                     "ansible/kolla-target-venv.yml",
                     "ansible/kolla-host.yml",
                     "ansible/docker.yml",
                     "ansible/ceph-block-devices.yml",
                 ],
                 limit="overcloud",
+                extra_vars={"pip_applicable_users": [None]},
             ),
         ]
         self.assertEqual(expected_calls, mock_run.call_args_list)

@@ -264,6 +264,7 @@ class SeedHypervisorHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
     * Configure a user account for use by kayobe for SSH access.
     * Optionally, create a virtualenv for remote target hosts.
     * Configure user accounts, group associations, and authorised SSH keys.
+    * Configure a PyPI mirror.
     * Configure Yum repos.
     * Configure the host's network interfaces.
     * Set sysctl parameters.
@@ -284,8 +285,8 @@ class SeedHypervisorHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
             sys.exit(1)
         playbooks = _build_playbook_list(
             "ip-allocation", "ssh-known-host", "kayobe-ansible-user",
-            "kayobe-target-venv", "users", "yum", "dev-tools", "network",
-            "sysctl", "ntp", "seed-hypervisor-libvirt-host")
+            "pip", "kayobe-target-venv", "users", "yum", "dev-tools",
+            "network", "sysctl", "ntp", "seed-hypervisor-libvirt-host")
         self.run_kayobe_playbooks(parsed_args, playbooks,
                                   limit="seed-hypervisor")
 
@@ -347,6 +348,7 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     * Optionally, create a virtualenv for remote target hosts.
     * Optionally, wipe unmounted disk partitions (--wipe-disks).
     * Configure user accounts, group associations, and authorised SSH keys.
+    * Configure a PyPI mirror.
     * Configure Yum repos.
     * Disable SELinux.
     * Configure the host's network interfaces.
@@ -392,7 +394,7 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         # Run kayobe playbooks.
         playbooks = _build_playbook_list(
             "ip-allocation", "ssh-known-host", "kayobe-ansible-user",
-            "kayobe-target-venv")
+            "pip", "kayobe-target-venv")
         if parsed_args.wipe_disks:
             playbooks += _build_playbook_list("wipe-disks")
         playbooks += _build_playbook_list(
@@ -419,10 +421,16 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         self.run_kolla_ansible_seed(parsed_args, "bootstrap-servers",
                                     extra_vars=extra_vars)
 
+        # Re-run the Pip role after we've bootstrapped the Kolla user
+        extra_vars = {}
+        kolla_ansible_user = hostvars.get("kolla_ansible_user")
+        extra_vars["pip_applicable_users"] = [kolla_ansible_user]
+
         # Run final kayobe playbooks.
         playbooks = _build_playbook_list(
-            "kolla-target-venv", "kolla-host", "docker")
-        self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed")
+            "pip", "kolla-target-venv", "kolla-host", "docker")
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  extra_vars=extra_vars, limit="seed")
 
 
 class SeedHostPackageUpdate(KayobeAnsibleMixin, VaultMixin, Command):
@@ -679,6 +687,7 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     * Optionally, create a virtualenv for remote target hosts.
     * Optionally, wipe unmounted disk partitions (--wipe-disks).
     * Configure user accounts, group associations, and authorised SSH keys.
+    * Configure a PyPI mirror.
     * Configure Yum repos.
     * Disable SELinux.
     * Configure the host's network interfaces.
@@ -723,7 +732,7 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         # Kayobe playbooks.
         playbooks = _build_playbook_list(
             "ip-allocation", "ssh-known-host", "kayobe-ansible-user",
-            "kayobe-target-venv")
+            "pip", "kayobe-target-venv")
         if parsed_args.wipe_disks:
             playbooks += _build_playbook_list("wipe-disks")
         playbooks += _build_playbook_list(
@@ -751,10 +760,17 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         self.run_kolla_ansible_overcloud(parsed_args, "bootstrap-servers",
                                          extra_vars=extra_vars)
 
+        # Re-run the Pip role after we've bootstrapped the Kolla user
+        extra_vars = {}
+        kolla_ansible_user = hostvars.get("kolla_ansible_user")
+        extra_vars["pip_applicable_users"] = [kolla_ansible_user]
+
         # Further kayobe playbooks.
         playbooks = _build_playbook_list(
-            "kolla-target-venv", "kolla-host", "docker", "ceph-block-devices")
-        self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
+            "pip", "kolla-target-venv", "kolla-host",
+            "docker", "ceph-block-devices")
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  extra_vars=extra_vars, limit="overcloud")
 
 
 class OvercloudHostPackageUpdate(KayobeAnsibleMixin, VaultMixin, Command):

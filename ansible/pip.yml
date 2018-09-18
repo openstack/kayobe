@@ -1,0 +1,8 @@
+---
+- name: Configure local PyPi mirror
+  hosts: seed-hypervisor:seed:overcloud
+  tags:
+    - pip
+  roles:
+    - role: pip
+  gather_facts: false

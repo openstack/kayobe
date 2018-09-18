@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Introduces a new option - ``pip_local_mirror`` - to configure Pip package installation via a user-defined (often local) PyPi mirror.  This is set on a per-user basis, and by default this is for the Kayobe Ansible user, the Kolla Ansible user, and root.
+    See `Story 2003315 <https://storyboard.openstack.org/#!/story/2003315>`_
