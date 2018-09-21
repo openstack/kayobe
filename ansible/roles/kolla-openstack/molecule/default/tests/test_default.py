@@ -50,6 +50,7 @@ def test_service_config_directory(host, path):
      'magnum',
      'manila',
      'mariadb',
+     'monasca',
      'murano',
      'neutron',
      'nova',

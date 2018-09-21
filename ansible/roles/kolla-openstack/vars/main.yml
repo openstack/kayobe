@@ -96,6 +96,11 @@ kolla_openstack_custom_config:
     dest: "{{ kolla_node_custom_config_path }}/mariadb"
     patterns: "*"
     enabled: "{{ kolla_enable_mariadb }}"
+  # Monasca.
+  - src: "{{ kolla_extra_config_path }}/monasca"
+    dest: "{{ kolla_node_custom_config_path }}/monasca"
+    patterns: "*"
+    enabled: "{{ kolla_enable_monasca }}"
   # Murano.
   - src: "{{ kolla_extra_config_path }}/murano"
     dest: "{{ kolla_node_custom_config_path }}/murano"
