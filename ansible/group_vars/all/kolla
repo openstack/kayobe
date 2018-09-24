@@ -125,7 +125,7 @@ overcloud_container_image_regex_map:
   - regex: dnsmasq
     enabled: "{{ kolla_enable_ironic | bool }}"
   - regex: elasticsearch
-    enabled: "{{ kolla_enable_elasticsearch | bool or kolla_enable_monasca | bool }}"
+    enabled: "{{ kolla_enable_elasticsearch | bool }}"
   - regex: etcd
     enabled: "{{ kolla_enable_etcd | bool }}"
   - regex: fluentd
@@ -133,7 +133,7 @@ overcloud_container_image_regex_map:
   - regex: glance
     enabled: "{{ kolla_enable_glance | bool }}"
   - regex: grafana
-    enabled: "{{ kolla_enable_grafana | bool or kolla_enable_monasca | bool }}"
+    enabled: "{{ kolla_enable_grafana | bool }}"
   - regex: gnocchi
     enabled: "{{ kolla_enable_gnocchi | bool }}"
   - regex: ^haproxy$
@@ -143,7 +143,7 @@ overcloud_container_image_regex_map:
   - regex: horizon
     enabled: "{{ kolla_enable_horizon | bool }}"
   - regex: influxdb
-    enabled: "{{ kolla_enable_influxdb | bool or kolla_enable_monasca | bool }}"
+    enabled: "{{ kolla_enable_influxdb | bool }}"
   - regex: ironic
     enabled: "{{ kolla_enable_ironic | bool }}"
   - regex: ironic-neutron-agent
@@ -151,13 +151,13 @@ overcloud_container_image_regex_map:
   - regex: iscsid
     enabled: "{{ kolla_enable_cinder | bool or kolla_enable_ironic | bool }}"
   - regex: kafka
-    enabled: "{{ kolla_enable_kafka | bool or kolla_enable_monasca | bool }}"
+    enabled: "{{ kolla_enable_kafka | bool }}"
   - regex: keepalived
     enabled: "{{ kolla_enable_haproxy | bool }}"
   - regex: keystone
     enabled: True
   - regex: kibana
-    enabled: "{{ kolla_enable_kibana | bool or kolla_enable_monasca | bool }}"
+    enabled: "{{ kolla_enable_kibana | bool }}"
   - regex: kolla-toolbox
     enabled: True
   - regex: magnum
@@ -198,7 +198,7 @@ overcloud_container_image_regex_map:
   - regex: tgtd
     enabled: "{{ kolla_enable_cinder | bool or kolla_enable_ironic | bool }}"
   - regex: zookeeper
-    enabled: "{{ kolla_enable_zookeeper | bool or kolla_enable_kafka | bool }}"
+    enabled: "{{ kolla_enable_zookeeper | bool }}"
 
 # List of regular expressions matching names of container images to build for
 # overcloud hosts.
@@ -333,26 +333,24 @@ kolla_enable_ceilometer: "no"
 kolla_enable_cinder: "no"
 kolla_enable_collectd: "no"
 kolla_enable_designate: "no"
-kolla_enable_elasticsearch: "{{ 'yes' if kolla_enable_central_logging | bool or kolla_enable_freezer | bool or kolla_enable_osprofiler | bool or kolla_enable_skydive | bool else 'no' }}"
+kolla_enable_elasticsearch: "{{ 'yes' if kolla_enable_central_logging | bool or kolla_enable_freezer | bool or kolla_enable_osprofiler | bool or kolla_enable_skydive | bool or kolla_enable_monasca | bool else 'no' }}"
 kolla_enable_etcd: "no"
 kolla_enable_freezer: "no"
 kolla_enable_glance: "yes"
-kolla_enable_grafana: "no"
+kolla_enable_grafana: "{{ 'yes' if kolla_enable_monasca | bool else 'no' }}"
 kolla_enable_gnocchi: "no"
 kolla_enable_haproxy: "yes"
 kolla_enable_heat: "yes"
 kolla_enable_horizon: "yes"
-kolla_enable_influxdb: "no"
+kolla_enable_influxdb: "{{ 'yes' if kolla_enable_monasca | bool else 'no' }}"
 kolla_enable_ironic: "yes"
 kolla_enable_ironic_ipxe: "no"
 kolla_enable_ironic_neutron_agent: "{{ 'yes' if kolla_enable_neutron | bool and kolla_enable_ironic | bool else 'no' }}"
-kolla_enable_kafka: "no"
-kolla_enable_kibana: "{{ 'yes' if kolla_enable_central_logging | bool else 'no' }}"
+kolla_enable_kafka: "{{ 'yes' if kolla_enable_monasca | bool else 'no' }}"
+kolla_enable_kibana: "{{ 'yes' if kolla_enable_central_logging | bool or kolla_enable_monasca | bool  else 'no' }}"
 kolla_enable_magnum: "no"
 kolla_enable_manila: "no"
 kolla_enable_mariadb: "yes"
-# Support for Monasca in Kolla is a work in progress. This currently relies
-# on an out-of-band Monasca installation.
 kolla_enable_monasca: "no"
 kolla_enable_murano: "no"
 kolla_enable_neutron: "yes"
