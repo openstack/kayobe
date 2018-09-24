@@ -189,6 +189,8 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_sahara | bool }}"
   - regex: skydive
     enabled: "{{ kolla_enable_skydive | bool }}"
+  - regex: storm
+    enabled: "{{ kolla_enable_storm | bool }}"
   - regex: swift
     enabled: "{{ kolla_enable_swift | bool }}"
   - regex: telegraf
@@ -361,9 +363,10 @@ kolla_enable_osprofiler: "no"
 kolla_enable_prometheus: "no"
 kolla_enable_sahara: "no"
 kolla_enable_skydive: "no"
+kolla_enable_storm: "{{ 'yes' if kolla_enable_monasca | bool else 'no' }}"
 kolla_enable_swift: "no"
 kolla_enable_telegraf: "no"
-kolla_enable_zookeeper: "{{ 'yes' if kolla_enable_kafka | bool else 'no' }}"
+kolla_enable_zookeeper: "{{ 'yes' if kolla_enable_kafka | bool or kolla_enable_storm | bool else 'no' }}"
 
 ###############################################################################
 # Passwords and credentials.

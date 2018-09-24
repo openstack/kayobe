@@ -1,0 +1,4 @@
+---
+features:
+  - Add support for deploying Apache Storm which is used by Monasca
+    for alerting.

@@ -88,6 +88,7 @@ provisioner:
           [extra-sahara.conf]
           foo=bar
         kolla_enable_swift: true
+        kolla_enable_storm: true
         kolla_enable_zookeeper: true
         kolla_extra_zookeeper: |
           [extra-zookeeper.cfg]
