@@ -231,6 +231,11 @@ function overcloud_test {
     echo "Creating a VM"
     openstack server create --wait --image cirros --flavor m1.tiny --key-name mykey --network demo-net demo1
     openstack server show demo1
+    status=$(openstack server show demo1 -f value -c status)
+    if [[ $status != ACTIVE ]]; then
+        echo "VM creation failed"
+        return 1
+    fi
     # TODO(mgoddard): Test SSH connectivity to the VM.
 
     echo "Deleting the VM"
