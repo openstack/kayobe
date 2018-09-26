@@ -6,6 +6,12 @@ kolla_extra_config_path:
 kolla_node_custom_config_path: /etc/kolla/config
 
 ###############################################################################
+# Barbican configuration.
+
+# Whether to enable Barbican.
+kolla_enable_barbican:
+
+###############################################################################
 # ceph configuration.
 
 # Whether to enable ceph.
