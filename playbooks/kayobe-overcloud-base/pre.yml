@@ -2,8 +2,10 @@
 - hosts: primary
   vars:
     logs_dir: "/tmp/logs"
-    kayobe_src_dir: "{{ zuul.project.src_dir }}"
-    kayobe_config_src_dir: "{{ kayobe_src_dir }}/config/src/kayobe-config"
+    kayobe_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['git.openstack.org/openstack/kayobe'].src_dir }}"
+    kayobe_config_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['git.openstack.org/openstack/kayobe-config-dev'].src_dir }}"
+  environment:
+    KAYOBE_CONFIG_SOURCE_PATH: "{{ kayobe_config_src_dir }}"
   roles:
     - role: kayobe-diagnostics
       kayobe_diagnostics_phase: "pre"
@@ -38,16 +40,6 @@
         dest: "/tmp"
         mode: 0644
         remote_src: true
-
-    - name: Ensure kayobe-config directory exists
-      file:
-        path: "{{ kayobe_config_src_dir }}"
-        state: directory
-
-    - name: Ensure kayobe-config repository is cloned
-      git:
-        repo: https://github.com/stackhpc/dev-kayobe-config
-        dest: "{{ kayobe_config_src_dir }}"
 
     # NOTE(mgoddard): Use the name zz-overrides.yml to ensure this takes
     # precedence over the standard config files.

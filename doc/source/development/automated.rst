@@ -15,10 +15,11 @@ Overview
 The kayobe development environment automation tooling is built using simple
 shell scripts.  Some minimal configuration can be applied by setting the
 environment variables in `dev/config.sh`.  Control plane configuration is
-typically provided via the `dev-kayobe-config
-<https://github.com/stackhpc/dev-kayobe-config/>`_ repository, although it is
-also possible to use your own kayobe configuration.  This allows us to build a
-development environment that is as close to production as possible.
+typically provided via the `kayobe-config-dev
+<https://git.openstack.org/cgit/openstack/kayobe-config-dev>`_ repository,
+although it is also possible to use your own kayobe configuration.  This allows
+us to build a development environment that is as close to production as
+possible.
 
 Environments
 ============
@@ -46,10 +47,10 @@ Change the current directory to the kayobe repository::
 
     cd kayobe
 
-Clone the ``dev-kayobe-config`` repository to ``config/src/kayobe-config``::
+Clone the ``kayobe-config-dev`` repository to ``config/src/kayobe-config``::
 
     mkdir -p config/src
-    git clone https://github.com/stackhpc/dev-kayobe-config config/src/kayobe-config
+    git clone https://git.openstack.org/openstack/kayobe-config-dev.git config/src/kayobe-config
 
 Inspect the kayobe configuration and make any changes necessary for your
 environment.
@@ -112,11 +113,11 @@ Change the current directory to the kayobe repository::
 
     cd kayobe
 
-Clone the ``add-seed-and-hv`` branch of the ``dev-kayobe-config`` repository to
+Clone the ``add-seed-and-hv`` branch of the ``kayobe-config-dev`` repository to
 ``config/src/kayobe-config``::
 
     mkdir -p config/src
-    git clone https://github.com/stackhpc/dev-kayobe-config -b add-seed-and-hv config/src/kayobe-config
+    git clone https://github.com/markgoddard/dev-kayobe-config -b add-seed-and-hv config/src/kayobe-config
 
 Inspect the kayobe configuration and make any changes necessary for your
 environment.
@@ -155,11 +156,11 @@ Change to the ``kayobe`` directory::
 
     cd kayobe
 
-Clone the ``add-seed-and-hv`` branch of the ``dev-kayobe-config`` repository to
+Clone the ``add-seed-and-hv`` branch of the ``kayobe-config-dev`` repository to
 ``config/src/kayobe-config``::
 
     mkdir -p config/src
-    git clone https://github.com/stackhpc/dev-kayobe-config -b add-seed-and-hv config/src/kayobe-config
+    git clone https://github.com/markgoddard/dev-kayobe-config -b add-seed-and-hv config/src/kayobe-config
 
 Inspect the kayobe configuration and make any changes necessary for your
 environment.
