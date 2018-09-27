@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Adds support for installing extra Python packages inside the kolla-ansible
+    virtualenv, such as when required by Ansible plugins. A list of extra
+    requirements can be configured via the
+    ``kolla_ansible_venv_extra_requirements`` variable in
+    ``$KAYOBE_CONFIG_PATH/kolla.yml``. No extra packages are installed by
+    default.

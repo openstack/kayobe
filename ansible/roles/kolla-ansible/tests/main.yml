@@ -10,6 +10,7 @@
 
 - include: test-defaults.yml
 - include: test-extras.yml
+- include: test-requirements.yml
 
 - hosts: localhost
   connection: local

@@ -40,6 +40,9 @@ kolla_ansible_source_version: "stable/queens"
 # Path to virtualenv in which to install kolla-ansible.
 kolla_ansible_venv: "{{ lookup('env', 'KOLLA_VENV_PATH') | default(lookup('env', 'PWD') ~ '/venvs/kolla-ansible', true) }}"
 
+# Extra requirements to install inside the kolla-ansible virtualenv.
+kolla_ansible_venv_extra_requirements: []
+
 # Path to Kolla-ansible configuration directory.
 kolla_config_path: "{{ lookup('env', 'KOLLA_CONFIG_PATH') | default('/etc/kolla', true) }}"
 

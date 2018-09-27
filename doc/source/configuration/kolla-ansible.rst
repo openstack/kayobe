@@ -27,6 +27,22 @@ kolla-ansible is installed and executed.
                           the kolla-ansible virtualenv will be created.
    ====================== ================================================== ============================
 
+Extra Python packages can be installed inside the kolla-ansible virtualenv,
+such as when required by Ansible plugins, using the
+``kolla_ansible_venv_extra_requirements`` list variable in
+``$KAYOBE_CONFIG_PATH/kolla.yml``. For example, to use the `hashi_vault Ansible
+lookup plugin
+<https://docs.ansible.com/ansible/devel/plugins/lookup/hashi_vault.html>`_, its
+``hvac`` dependency can be installed using:
+
+.. code-block:: yaml
+   :caption: ``$KAYOBE_CONFIG_PATH/kolla.yml``
+
+   ---
+   # Extra requirements to install inside the kolla-ansible virtualenv.
+   kolla_ansible_venv_extra_requirements:
+     - "hvac"
+
 Remote Execution Environment
 ============================
 

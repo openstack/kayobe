@@ -42,6 +42,9 @@
 # Path to virtualenv in which to install kolla-ansible.
 #kolla_ansible_venv:
 
+# Extra requirements to install inside the kolla-ansible virtualenv.
+#kolla_ansible_venv_extra_requirements:
+
 # Path to Kolla-ansible configuration directory.
 #kolla_config_path:
 
