@@ -10,6 +10,8 @@
         name: "{{ seed_hostvars.seed_vm_name }}-configdrive"
         pool: "{{ seed_hostvars.seed_vm_pool }}"
       libvirt_vm_name: "{{ seed_hostvars.seed_vm_name }}"
+      libvirt_vm_memory_mb: "{{ seed_hostvars.seed_vm_memory_mb }}"
+      libvirt_vm_vcpus: "{{ seed_hostvars.seed_vm_vcpus }}"
       libvirt_vm_volumes: "{{ seed_hostvars.seed_vm_volumes + [seed_vm_configdrive_volume] }}"
       libvirt_vm_state: "absent"
       become: True
