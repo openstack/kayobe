@@ -1,5 +1,5 @@
 ---
-- name: Ensure the Kolla OpenStack configuration directores exist
+- name: Ensure the Kolla OpenStack configuration directories exist
   file:
     path: "{{ item.dest }}"
     state: directory

@@ -1,5 +1,5 @@
 ---
-- name: Ensure the Kolla Ansible configuration directores exist
+- name: Ensure the Kolla Ansible configuration directories exist
   file:
     path: "{{ item }}"
     state: directory

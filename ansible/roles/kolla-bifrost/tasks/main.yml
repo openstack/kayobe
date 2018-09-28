@@ -1,5 +1,5 @@
 ---
-- name: Ensure the Kolla Bifrost configuration directores exist
+- name: Ensure the Kolla Bifrost configuration directories exist
   file:
     path: "{{ kolla_node_custom_config_path }}/bifrost"
     state: directory
