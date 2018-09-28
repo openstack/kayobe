@@ -13,6 +13,7 @@
     - "docker_logs"
     - "kayobe_configs"
     - "kolla_configs"
+    - "kolla_node_configs"
     - "system_logs"
     - "kolla"
     - "ansible"
