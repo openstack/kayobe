@@ -1,0 +1,59 @@
+---
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: Create a temporary directory
+      tempfile:
+        state: directory
+      register: tempfile_result
+
+    - block:
+        - name: Test the kolla-ansible role with extra Python requirements
+          include_role:
+            name: ../../kolla-ansible
+          vars:
+            kolla_ansible_source_path: "{{ temp_path }}/src"
+            kolla_ansible_ctl_install_type: "source"
+            kolla_ansible_source_url: "http://github.com/openstack/kolla-ansible"
+            kolla_ansible_source_version: "master"
+            kolla_ansible_venv: "{{ temp_path }}/venv"
+            kolla_ansible_venv_extra_requirements:
+              - "hvac"
+            kolla_config_path: "{{ temp_path }}/etc/kolla"
+            kolla_node_custom_config_path: "{{ temp_path }}/etc/kolla/config"
+            kolla_ansible_passwords_path: "{{ temp_path }}/passwords.yml"
+            # Required config.
+            kolla_base_distro: "fake-distro"
+            kolla_install_type: "fake-install-type"
+            kolla_docker_namespace: "fake-namespace"
+            kolla_openstack_release: "fake-release"
+            kolla_internal_vip_address: "10.0.0.1"
+            kolla_internal_fqdn: "fake.internal.fqdn"
+            kolla_external_vip_address: "10.0.0.2"
+            kolla_external_fqdn: "fake.external.fqdn"
+            kolla_enable_tls_external: False
+            kolla_enable_grafana: False
+            kolla_external_fqdn_cert: "fake-cert"
+            kolla_openstack_logging_debug: False
+
+        - name: List Python packages installed in virtualenv
+          command: "{{ temp_path }}/venv/bin/pip list"
+          register: kolla_ansible_venv_pip_list
+          changed_when: False
+
+        - name: Verify extra requirements are installed in virtualenv
+          assert:
+            that:
+              - "'hvac' in kolla_ansible_venv_pip_list.stdout"
+
+      always:
+        - name: Ensure the temporary directory is removed
+          file:
+            path: "{{ temp_path }}"
+            state: absent
+      rescue:
+        - name: Flag that a failure occurred
+          set_fact:
+            test_failures: "{{ test_failures | default(0) | int + 1 }}"
+      vars:
+        temp_path: "{{ tempfile_result.path }}"

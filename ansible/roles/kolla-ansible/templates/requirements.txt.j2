@@ -8,3 +8,8 @@ kolla-ansible=={{ kolla_openstack_release }}
 # Limit the version of ansible used by kolla-ansible to avoid new releases from
 # breaking tested code. Changes to this limit should be tested.
 ansible<2.6
+{% if kolla_ansible_venv_extra_requirements is defined %}
+{% for item in kolla_ansible_venv_extra_requirements %}
+{{ item }}
+{% endfor %}
+{% endif %}
