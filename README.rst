@@ -41,18 +41,18 @@ Features
 * Deployment of a *seed* VM used to manage the OpenStack control plane
 * Configuration of physical network infrastructure
 * Discovery, introspection and provisioning of control plane hardware using
-  `OpenStack bifrost <https://docs.openstack.org/developer/bifrost/>`_
+  `OpenStack bifrost <https://docs.openstack.org/bifrost/latest/>`_
 * Deployment of an OpenStack control plane using `OpenStack kolla-ansible
-  <https://docs.openstack.org/developer/kolla-ansible/>`_
+  <https://docs.openstack.org/kolla-ansible/latest/>`_
 * Discovery, introspection and provisioning of bare metal compute hosts
-  using `OpenStack ironic <https://docs.openstack.org/developer/ironic/>`_ and
-  `ironic inspector <https://docs.openstack.org/developer/ironic-inspector/>`_
+  using `OpenStack ironic <https://docs.openstack.org/ironic/latest/>`_ and
+  `ironic inspector <https://docs.openstack.org/ironic-inspector/latest/>`_
 * Virtualised compute using `OpenStack nova
-  <https://docs.openstack.org/developer/nova/>`_
+  <https://docs.openstack.org/nova/latest/>`_
 * Containerised workloads on bare metal using `OpenStack magnum
-  <https://docs.openstack.org/developer/magnum/>`_
+  <https://docs.openstack.org/magnum/latest/>`_
 * Big data on bare metal using `OpenStack sahara
-  <https://docs.openstack.org/developer/sahara/>`_
+  <https://docs.openstack.org/sahara/latest/>`_
 
 In the near future we aim to add support for the following:
 
