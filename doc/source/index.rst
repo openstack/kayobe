@@ -48,7 +48,7 @@ Developer Documentation
 Release Notes
 -------------
 
-`Release Notes <https://docs.openstack.org/releasenotes/kayobe/>`__
+`Release Notes <https://kayobe-release-notes.readthedocs.io/en/latest/>`__
 
 Release notes for the Kayobe 3.1.0 release and earlier are found here:
 
