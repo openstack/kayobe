@@ -1,8 +1,9 @@
 [DEFAULT]
 
-[firewall]
-# Whether inspector should manage the firewall.
-manage_firewall = {{ kolla_inspector_manage_firewall }}
+[pxe_filter]
+# The filter ironic inspector will use to prevent nodes from undergoing
+# inspection unless explicitly requested.
+driver = {{ 'iptables' if kolla_inspector_manage_firewall else 'noop' }}
 
 [processing]
 {% if kolla_inspector_processing_hooks %}
