@@ -1,0 +1,60 @@
+---
+
+- name: Retrieve deployment image uuids
+  os_image_facts:
+    auth_type: "{{ ipa_images_openstack_auth_type }}"
+    auth: "{{ ipa_images_openstack_auth }}"
+    image: "{{ item.name }}"
+  with_items:
+    - name: "{{ ipa_images_kernel_name }}"
+    - name: "{{ ipa_images_ramdisk_name }}"
+  register: ipa_images_glance
+
+- name: Set fact containing kernel uuid
+  set_fact:
+    ipa_images_kernel_uuid: "{{ ipa_images_glance.results[0].ansible_facts.openstack_image.id }}"
+
+- name: Set fact containing ramdisk uuid
+  set_fact:
+    ipa_images_ramdisk_uuid: "{{ ipa_images_glance.results[1].ansible_facts.openstack_image.id }}"
+
+- name: Get a list of ironic nodes
+  command: |
+    {{ ipa_images_venv }}/bin/openstack baremetal node list --fields name uuid driver_info -f json
+  register: ipa_images_ironic_node_list
+  changed_when: False
+  environment: "{{ ipa_images_openstack_auth_env }}"
+
+- name: Make sure openstack nodes are in baremetal-compute group
+  add_host:
+    name: "{{ item.Name }}"
+    groups: baremetal-compute
+  when:
+    - item.Name is not none
+    - item.Name not in groups["baremetal-compute"]
+  with_items: "{{ ipa_images_ironic_node_list.stdout | from_json }}"
+
+- name: Set fact containing filtered list of nodes
+  set_fact:
+    ipa_images_compute_node_whitelist: "{{ query('inventory_hostnames', ipa_images_compute_node_limit) | unique }}"
+
+- name: Initialise a fact containing the ironic nodes
+  set_fact:
+    ipa_images_ironic_nodes: []
+
+- name: Update a fact containing the ironic nodes
+  set_fact:
+    ipa_images_ironic_nodes: "{{ ipa_images_ironic_nodes + [item] }}"
+  with_items: "{{ ipa_images_ironic_node_list.stdout | from_json }}"
+  when: item['Name'] in ipa_images_compute_node_whitelist
+
+- name: Ensure ironic nodes use the new Ironic Python Agent (IPA) images
+  command: >
+    {{ ipa_images_venv }}/bin/openstack baremetal node set {{ item.UUID }}
+    --driver-info deploy_kernel={{ ipa_images_kernel_uuid }}
+    --driver-info deploy_ramdisk={{ ipa_images_ramdisk_uuid }}
+  with_items: "{{ ipa_images_ironic_nodes }}"
+  when:
+    item["Driver Info"].deploy_kernel != ipa_images_kernel_uuid or
+    item["Driver Info"].deploy_ramdisk != ipa_images_ramdisk_uuid
+  environment: "{{ ipa_images_openstack_auth_env }}"

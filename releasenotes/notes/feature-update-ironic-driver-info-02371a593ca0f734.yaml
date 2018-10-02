@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds a new command, ``kayobe baremetal compute update deployment image``,
+    which will update the deploy_kernel and deploy_ramdisk ironic node
+    properties.

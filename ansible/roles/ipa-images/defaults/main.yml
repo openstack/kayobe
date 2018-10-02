@@ -10,6 +10,10 @@ ipa_images_openstack_auth_type:
 # auth argument.
 ipa_images_openstack_auth: {}
 
+# Authentication parameters in environment variable form, as accepted by the
+# openstack client.
+ipa_images_openstack_auth_env: {}
+
 # Path to directory in which to store downloaded images.
 ipa_images_cache_path:
 
@@ -26,3 +30,11 @@ ipa_images_ramdisk_name:
 # URL of Ironic deployment ramdisk image to download. If unset, an existing
 # image in ipa_images_cache_path will be used.
 ipa_images_ramdisk_url:
+
+# Ansible host pattern for limiting which nodes are updated with deploy_ramdisk
+# and deploy_kernel properties
+ipa_images_compute_node_limit: baremetal-compute
+
+# Whether or not to update the deploy_ramdisk and deploy_kernel Ironic node
+# properties
+ipa_images_update_ironic_nodes: False

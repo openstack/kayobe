@@ -203,6 +203,31 @@ according to their inventory host names, you can run the following command::
 This command will use the ``ipmi_address`` host variable from the inventory
 to map the inventory host name to the correct node.
 
+.. _update_deployment_image:
+
+Update Deployment Image
+-----------------------
+
+When the overcloud deployment images have been rebuilt or there has been a change
+to one of the following variables:
+
+- ``ipa_kernel_upstream_url``
+- ``ipa_ramdisk_upstream_url``
+
+either by changing the url, or if the image to which they point
+has been changed, you need to update the ``deploy_ramdisk``
+and ``deploy_kernel`` properties on the Ironic nodes. To do
+this you can run::
+
+    (kayobe) $ kayobe baremetal compute update deployment image
+
+You can optionally limit the nodes in which this affects by setting ``baremetal-compute-limit``::
+
+    (kayobe) $ kayobe baremetal compute update deployment image --baremetal-compute-limit sand-6-1
+
+which should take the form of an `ansible host pattern <https://docs.ansible.com/ansible/latest/user_guide/intro_patterns.html>`_.
+This is matched against the Ironic node name.
+
 Running Kayobe Playbooks on Demand
 ==================================
 
