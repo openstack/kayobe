@@ -40,9 +40,6 @@ provisioner:
           foo=bar
         kolla_enable_horizon: true
         kolla_enable_influxdb: true
-        kolla_extra_influxdb: |
-          [extra-influxdb.conf]
-          foo=bar
         kolla_enable_ironic: true
         kolla_extra_ironic: |
           [extra-ironic.conf]

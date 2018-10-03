@@ -60,9 +60,9 @@ kolla_openstack_custom_config:
     patterns: "*"
     enabled: "{{ kolla_enable_horizon }}"
   # InfluxDB.
-  - src: "{{ kolla_extra_config_path }}/influxdb"
-    dest: "{{ kolla_node_custom_config_path }}/influxdb"
-    patterns: "*"
+  - src: "{{ kolla_extra_config_path }}/"
+    dest: "{{ kolla_node_custom_config_path }}/"
+    patterns: "influx*"
     enabled: "{{ kolla_enable_influxdb }}"
   # Storm.
   - src: "{{ kolla_extra_config_path }}/storm"

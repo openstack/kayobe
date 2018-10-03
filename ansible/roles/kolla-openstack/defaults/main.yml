@@ -81,9 +81,6 @@ kolla_enable_horizon:
 # Whether to enable InfluxDB.
 kolla_enable_influxdb:
 
-# Free form extra configuration to append to influxdb.conf.
-kolla_extra_influxdb:
-
 ###############################################################################
 # Ironic configuration.
 
