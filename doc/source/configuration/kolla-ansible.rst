@@ -151,6 +151,7 @@ which files are supported.
    ``glance.conf``                 Glance configuration.
    ``glance/*``                    Extended glance configuration.
    ``fluentd/filter``              Fluentd filter configuration.
+   ``fluentd/input``               Fluentd input configuration.
    ``fluentd/output``              Fluentd output configuration.
    ``heat.conf``                   Heat configuration.
    ``heat/*``                      Extended heat configuration.

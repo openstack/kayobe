@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    Supports fluentd custom input configuration

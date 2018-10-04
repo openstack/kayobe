@@ -34,6 +34,11 @@ kolla_openstack_custom_config:
     dest: "{{ kolla_node_custom_config_path }}/fluentd/filter"
     patterns: "*.conf"
     enabled: true
+  # Fluentd inputs.
+  - src: "{{ kolla_extra_config_path }}//fluentd/input"
+    dest: "{{ kolla_node_custom_config_path }}/fluentd/input"
+    patterns: "*.conf"
+    enabled: true
   # Fluentd outputs.
   - src: "{{ kolla_extra_config_path }}/fluentd/output"
     dest: "{{ kolla_node_custom_config_path }}/fluentd/output"
