@@ -127,7 +127,7 @@ kolla_overcloud_inventory_pass_through_host_vars_map:
   kolla_storage_interface: "storage_interface"
   kolla_cluster_interface: "cluster_interface"
   kolla_provision_interface: "provision_interface"
-  kolla_inspector_dnsmasq_interface: "inspector_dnsmasq_interface"
+  kolla_inspector_dnsmasq_interface: "ironic_dnsmasq_interface"
   kolla_dns_interface: "dns_interface"
   kolla_tunnel_interface: "tunnel_interface"
   kolla_neutron_external_interfaces: "neutron_external_interface"
