@@ -79,8 +79,20 @@ kolla_bifrost_inspector_deploy_ramdisk: "http://{{ provision_oc_net_name | net_i
 # URL of Ironic Python Agent (IPA) kernel image.
 kolla_bifrost_ipa_kernel_upstream_url: "{{ inspector_ipa_kernel_upstream_url }}"
 
+# URL of checksum of Ironic Python Agent (IPA) kernel image.
+kolla_bifrost_ipa_kernel_checksum_url: "{{ inspector_ipa_kernel_checksum_url }}"
+
+# Algorithm of checksum of Ironic Python Agent (IPA) kernel image.
+kolla_bifrost_ipa_kernel_checksum_algorithm: "{{ inspector_ipa_kernel_checksum_algorithm }}"
+
 # URL of Ironic Python Agent (IPA) ramdisk image.
 kolla_bifrost_ipa_ramdisk_upstream_url: "{{ inspector_ipa_ramdisk_upstream_url }}"
+
+# URL of checksum of Ironic Python Agent (IPA) ramdisk image.
+kolla_bifrost_ipa_ramdisk_checksum_url: "{{ inspector_ipa_ramdisk_checksum_url }}"
+
+# Algorithm of checksum of Ironic Python Agent (IPA) ramdisk image.
+kolla_bifrost_ipa_ramdisk_checksum_algorithm: "{{ inspector_ipa_ramdisk_checksum_algorithm }}"
 
 ###############################################################################
 # Inventory configuration.

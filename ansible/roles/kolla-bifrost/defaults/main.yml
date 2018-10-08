@@ -58,8 +58,20 @@ kolla_bifrost_download_ipa: true
 # URL of Ironic Python Agent (IPA) kernel image.
 kolla_bifrost_ipa_kernel_upstream_url:
 
+# URL of checksum of Ironic Python Agent (IPA) kernel image.
+kolla_bifrost_ipa_kernel_checksum_url:
+
+# Algorithm of checksum of Ironic Python Agent (IPA) kernel image.
+kolla_bifrost_ipa_kernel_checksum_algorithm:
+
 # URL of Ironic Python Agent (IPA) ramdisk image.
 kolla_bifrost_ipa_ramdisk_upstream_url:
+
+# URL of checksum of Ironic Python Agent (IPA) ramdisk image.
+kolla_bifrost_ipa_ramdisk_checksum_url:
+
+# Algorithm of checksum of Ironic Python Agent (IPA) ramdisk image.
+kolla_bifrost_ipa_ramdisk_checksum_algorithm:
 
 # Server inventory to be configured in {{ kolla_node_custom_config_path }}/bifrost/servers.yml.
 kolla_bifrost_servers: {}

@@ -1,0 +1,42 @@
+---
+- block:
+    - block:
+        - name: Fail if the checksum algorithm is not set
+          fail:
+            msg: "Checksum algorithm for image {{ image_download_url }} not set"
+          when: image_download_checksum_algorithm is none or
+                image_download_checksum_algorithm == ""
+
+        - name: Get the expected checksum
+          uri:
+            url: "{{ image_download_checksum_url }}"
+            return_content: true
+          register: expected_checksum
+      when:
+        - image_download_checksum_url is not none
+        - image_download_checksum_url != ""
+
+    - name: Ensure the image is downloaded
+      vars:
+        checksum: "{{ image_download_checksum_algorithm }}:{{ expected_checksum.content.split(' ')[0] }}"
+      get_url:
+        url: "{{ image_download_url }}"
+        dest: "{{ image_download_dest }}"
+        mode: 0640
+        # If the file exists locally, its checksum will be compared with this.
+        checksum: "{{ checksum if expected_checksum is not skipped else omit }}"
+        # Always download the image if we have no checksum to compare with.
+        force: "{{ expected_checksum is skipped }}"
+        backup: true
+  when:
+    - image_download_url is not none
+    - image_download_url != ""
+
+- name: Ensure the local image is copied
+  copy:
+    src: "{{ image_download_path }}"
+    dest: "{{ image_download_dest }}"
+    mode: 0640
+  when:
+    - image_download_path is not none
+    - image_download_path != ""

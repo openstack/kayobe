@@ -7,18 +7,26 @@
     group: "{{ ansible_user_gid }}"
   become: True
 
-- name: Ensure Ironic Python Agent (IPA) images are downloaded
-  get_url:
-    url: "{{ item.url }}"
-    dest: "{{ ipa_images_cache_path }}/{{ item.filename }}"
-    force: true
-    backup: true
+- name: Ensure Ironic Python Agent (IPA) images are present
+  vars:
+    image_download_url: "{{ item.url }}"
+    image_download_checksum_url: "{{ item.checksum_url }}"
+    image_download_checksum_algorithm: "{{ item.checksum_algorithm }}"
+    image_download_dest: "{{ item.dest }}"
+  include_role:
+    name: image-download
   with_items:
     - url: "{{ ipa_images_kernel_url }}"
-      filename: "{{ ipa_images_kernel_name }}"
+      checksum_url: "{{ ipa_images_kernel_checksum_url }}"
+      checksum_algorithm: "{{ ipa_images_kernel_checksum_algorithm }}"
+      dest: "{{ ipa_images_cache_path }}/{{ ipa_images_kernel_name }}"
     - url: "{{ ipa_images_ramdisk_url }}"
-      filename: "{{ ipa_images_ramdisk_name }}"
-  when: item.url != None
+      checksum_url: "{{ ipa_images_ramdisk_checksum_url }}"
+      checksum_algorithm: "{{ ipa_images_ramdisk_checksum_algorithm }}"
+      dest: "{{ ipa_images_cache_path }}/{{ ipa_images_ramdisk_name }}"
+  when: item.url is not none
+  loop_control:
+    label: "{{ item.dest }}"
 
 - name: Compute the MD5 checksum of the Ironic Python Agent (IPA) images
   stat:

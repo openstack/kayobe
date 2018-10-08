@@ -35,29 +35,29 @@
     - { src: zookeeper.cfg.j2, dest: zookeeper.cfg, enabled: "{{ kolla_enable_zookeeper }}" }
   when: item.enabled | bool
 
-- name: Ensure the ironic inspector kernel and ramdisk are downloaded
-  get_url:
-    url: "{{ item.url }}"
-    dest: "{{ kolla_node_custom_config_path }}/ironic/{{ item.dest }}"
-    mode: 0640
+- name: Ensure ironic inspector kernel and ramdisk images are present
+  vars:
+    image_download_url: "{{ item.url }}"
+    image_download_checksum_url: "{{ item.checksum_url }}"
+    image_download_checksum_algorithm: "{{ item.checksum_algorithm }}"
+    image_download_path: "{{ item.path }}"
+    image_download_dest: "{{ item.dest }}"
+  include_role:
+    name: image-download
   with_items:
-    - { url: "{{ kolla_inspector_ipa_kernel_upstream_url }}", dest: "ironic-agent.kernel" }
-    - { url: "{{ kolla_inspector_ipa_ramdisk_upstream_url }}", dest: "ironic-agent.initramfs" }
-  when:
-    - kolla_enable_ironic | bool
-    - item.url != None
-
-- name: Ensure the ironic inspector kernel and ramdisk are copied
-  copy:
-    src: "{{ item.path }}"
-    dest: "{{ kolla_node_custom_config_path }}/ironic/{{ item.dest }}"
-    mode: 0640
-  with_items:
-    - { path: "{{ kolla_inspector_ipa_kernel_path }}", dest: "ironic-agent.kernel" }
-    - { path: "{{ kolla_inspector_ipa_ramdisk_path }}", dest: "ironic-agent.initramfs" }
-  when:
-    - kolla_enable_ironic | bool
-    - item.path != None
+    - url: "{{ kolla_inspector_ipa_kernel_upstream_url }}"
+      checksum_url: "{{ kolla_inspector_ipa_kernel_checksum_url }}"
+      checksum_algorithm: "{{ kolla_inspector_ipa_kernel_checksum_algorithm }}"
+      path: "{{ kolla_inspector_ipa_kernel_path }}"
+      dest: "{{ kolla_node_custom_config_path }}/ironic/ironic-agent.kernel"
+    - url: "{{ kolla_inspector_ipa_ramdisk_upstream_url }}"
+      checksum_url: "{{ kolla_inspector_ipa_ramdisk_checksum_url }}"
+      checksum_algorithm: "{{ kolla_inspector_ipa_ramdisk_checksum_algorithm }}"
+      path: "{{ kolla_inspector_ipa_ramdisk_path }}"
+      dest: "{{ kolla_node_custom_config_path }}/ironic/ironic-agent.initramfs"
+  when: kolla_enable_ironic | bool
+  loop_control:
+    label: "{{ item.dest }}"
 
 # We support a fairly flexible mechanism of dropping config file templates into
 # an 'extra' config directory, and passing these through to kolla-ansible. We

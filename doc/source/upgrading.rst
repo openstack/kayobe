@@ -145,9 +145,17 @@ Upgrading Ironic Deployment Images
 
 Prior to upgrading the OpenStack control plane you should upgrade
 the deployment images. If you are using prebuilt images, update
-``ipa_kernel_upstream_url`` and ``ipa_ramdisk_upstream_url`` in
-``etc/kayobe/ipa.yml``, alternatively, you can update the files that the URLs
-point to. If building the images locally, follow the process outlined in
+the following variables in ``etc/kayobe/ipa.yml`` accordingly:
+
+* ``ipa_kernel_upstream_url``
+* ``ipa_kernel_checksum_url``
+* ``ipa_kernel_checksum_algorithm``
+* ``ipa_ramdisk_upstream_url``
+* ``ipa_ramdisk_checksum_url``
+* ``ipa_ramdisk_checksum_algorithm``
+
+Alternatively, you can update the files that the URLs point to. If building the
+images locally, follow the process outlined in
 :ref:`building_ironic_deployment_images`.
 
 To get Ironic to use an updated set of overcloud deployment images, you can run::
