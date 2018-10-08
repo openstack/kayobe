@@ -1,14 +1,13 @@
 ---
 - project:
     templates:
-      - release-notes-jobs
+      - build-openstack-sphinx-docs
+      - openstack-cover-jobs
+      - openstack-python35-jobs
+      - openstack-python-jobs
     check:
       jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
-        - openstack-tox-py35
-        - openstack-tox-cover
-        - build-openstack-sphinx-docs
+        - build-openstack-releasenotes
         - kayobe-tox-ansible-syntax
         - kayobe-tox-ansible
         - kayobe-tox-molecule
@@ -18,11 +17,7 @@
     gate:
       queue: kayobe
       jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
-        - openstack-tox-py35
-        - openstack-tox-cover
-        - build-openstack-sphinx-docs
+        - build-openstack-releasenotes
         - kayobe-tox-ansible-syntax
         - kayobe-tox-ansible
         - kayobe-tox-molecule
