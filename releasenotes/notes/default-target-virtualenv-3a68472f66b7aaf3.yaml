@@ -1,0 +1,14 @@
+---
+fixes:
+  - |
+    Fixes an issue introduced by the release of ``pip`` version 10, whereby the
+    Python ``docker`` package would fail to install. This is resolved by using
+    a remote Python virtual environment for executing Kayobe Ansible tasks by
+    default. See `Story 2002010
+    <https://storyboard.openstack.org/#!/story/2002010>`__ for details.
+upgrade:
+  - |
+    Modifies the default ``kayobe-config`` configuration to use a remote Python
+    virtual environment for executing Kayobe Ansible tasks. This affects hosts
+    in the ``seed``, ``seed-hypervisor``, and ``overcloud`` groups.  See `Story
+    2002010 <https://storyboard.openstack.org/#!/story/2002010>`__ for details.
