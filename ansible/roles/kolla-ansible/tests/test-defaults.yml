@@ -109,7 +109,7 @@
               - storage_interface
               - cluster_interface
               - provision_interface
-              - inspector_dnsmasq_interface
+              - ironic_dnsmasq_interface
               - dns_interface
               - tunnel_interface
               - bifrost_network_interface
