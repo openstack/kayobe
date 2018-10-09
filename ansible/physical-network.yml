@@ -21,7 +21,8 @@
     physical_network_display: False
     # List of supported values for the 'switch_type' variable.
     supported_switch_types:
-      - dell
+      - dellos6
+      - dellos9
       - dell-powerconnect
       - junos
       - mellanox
