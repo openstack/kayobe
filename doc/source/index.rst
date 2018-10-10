@@ -44,15 +44,3 @@ Developer Documentation
    :maxdepth: 2
 
    development/index
-
-Release Notes
--------------
-
-`Release Notes <https://kayobe-release-notes.readthedocs.io/en/latest/>`__
-
-Release notes for the Kayobe 3.1.0 release and earlier are found here:
-
-.. toctree::
-   :maxdepth: 2
-
-   release-notes
