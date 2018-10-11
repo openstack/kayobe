@@ -1,0 +1,14 @@
+---
+features:
+  - |
+    Adds support for a ``--disable-discovery`` argument to the ``kayobe
+    physical network configure`` command. This can be used to configure the
+    physical network after discovery of bare metal compute nodes is complete,
+    to return the network to a normal state. The interface configuration to be
+    applied is configured via ``switch_interface_config_disable_discovery``.
+deprecations:
+  - |
+    The switch configuration variable ``switch_interface_config_discovery`` has
+    been deprecated in favour of ``switch_interface_config_enable_discovery``.
+    Support for ``switch_interface_config_discovery`` will be removed in the T*
+    release.

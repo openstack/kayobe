@@ -68,6 +68,146 @@ class TestCase(unittest.TestCase):
         self.assertEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbook")
+    def test_physical_network_configure(self, mock_run):
+        command = commands.PhysicalNetworkConfigure(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args(["--group", "switches"])
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                "ansible/physical-network.yml",
+                limit="switches",
+                extra_vars={
+                    "physical_network_display": False
+                }
+            )
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbook")
+    def test_physical_network_configure_display(self, mock_run):
+        command = commands.PhysicalNetworkConfigure(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args(["--group", "switches", "--display"])
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                "ansible/physical-network.yml",
+                limit="switches",
+                extra_vars={
+                    "physical_network_display": True
+                }
+            )
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbook")
+    def test_physical_network_configure_enable_disco(self, mock_run):
+        command = commands.PhysicalNetworkConfigure(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args(
+            ["--group", "switches", "--enable-discovery"])
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                "ansible/physical-network.yml",
+                limit="switches",
+                extra_vars={
+                    "physical_network_display": False,
+                    "physical_network_enable_discovery": True
+                }
+            )
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbook")
+    def test_physical_network_configure_disable_disco(self, mock_run):
+        command = commands.PhysicalNetworkConfigure(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args(
+            ["--group", "switches", "--disable-discovery"])
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                "ansible/physical-network.yml",
+                limit="switches",
+                extra_vars={
+                    "physical_network_display": False,
+                    "physical_network_disable_discovery": True
+                }
+            )
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    def test_physical_network_configure_enable_disable_disco(self):
+        command = commands.PhysicalNetworkConfigure(TestApp(), [])
+        parser = command.get_parser("test")
+        self.assertRaises(
+            SystemExit,
+            parser.parse_args,
+            ["--group", "switches", "--enable-discovery",
+             "--disable-discovery"])
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbook")
+    def test_physical_network_configure_interface_limit(self, mock_run):
+        command = commands.PhysicalNetworkConfigure(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args(
+            ["--group", "switches", "--interface-limit", "eth0,eth1"])
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                "ansible/physical-network.yml",
+                limit="switches",
+                extra_vars={
+                    "physical_network_display": False,
+                    "physical_network_interface_limit": "eth0,eth1"
+                }
+            )
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbook")
+    def test_physical_network_configure_interface_description_limit(
+            self, mock_run):
+        command = commands.PhysicalNetworkConfigure(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args(
+            ["--group", "switches",
+             "--interface-description-limit", "host1,host2"])
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                "ansible/physical-network.yml",
+                limit="switches",
+                extra_vars={
+                    "physical_network_display": False,
+                    "physical_network_interface_description_limit": (
+                        "host1,host2")
+                }
+            )
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
     def test_network_connectivity_check(self, mock_run):
         command = commands.NetworkConnectivityCheck(TestApp(), [])

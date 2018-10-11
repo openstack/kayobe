@@ -9,6 +9,9 @@
     # Set this variable to True to configure the network for hardware
     # discovery.
     physical_network_enable_discovery: False
+    # Set this variable to True to deconfigure the network for hardware
+    # discovery.
+    physical_network_disable_discovery: False
     # Set this variable to a comma-separated list of names of interfaces to
     # configure in order to restrict configuration to a subset of interfaces.
     physical_network_interface_limit: ''
@@ -53,11 +56,17 @@
       group_by:
         key: "switches_in_display_mode_{{ physical_network_display | bool }}"
 
-    - name: Add discovery interface configuration when performing discovery
+    - name: Add discovery interface configuration when enabling discovery
       set_fact:
         switch_interface_config: >
-          {{ switch_interface_config | combine(switch_interface_config_discovery) }}
+          {{ switch_interface_config | combine(switch_interface_config_enable_discovery) }}
       when: physical_network_enable_discovery | bool
+
+    - name: Add discovery interface configuration when disabling discovery
+      set_fact:
+        switch_interface_config: >
+          {{ switch_interface_config | combine(switch_interface_config_disable_discovery) }}
+      when: physical_network_disable_discovery | bool
 
     - name: Restrict switch interfaces to requested subset by name
       set_fact:
