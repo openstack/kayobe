@@ -1,7 +1,7 @@
 ---
 - block:
-    - include: redhat.yml
+    - include_tasks: redhat.yml
       when: yum_use_local_mirror | bool
 
-    - include: custom_repo.yml
+    - include_tasks: custom_repo.yml
   when: ansible_os_family == 'RedHat'

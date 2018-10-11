@@ -2,7 +2,7 @@
 # Configure the Dell baremetal compute nodes to PXE boot.
 
 # Add Dell baremetal compute nodes to the Ansible inventory.
-- include: dell-compute-node-inventory.yml
+- import_playbook: dell-compute-node-inventory.yml
 
 - name: Ensure Dell baremetal compute nodes are PXE booted
   hosts: baremetal-compute

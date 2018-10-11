@@ -1,2 +1,2 @@
 ---
-- include: "{{ cadvisor_action }}.yml"
+- include_tasks: "{{ cadvisor_action }}.yml"

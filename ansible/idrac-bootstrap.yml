@@ -142,7 +142,7 @@
 
     # Iterate over each switch port with an iDRAC attached in turn.
     - name: Ensure iDRACs are (sequentially) bootstrapped
-      include: idrac-bootstrap-one.yml
+      include_tasks: idrac-bootstrap-one.yml
       vars:
         dell_switch_type: "{{ switch_type }}"
         dell_switch_provider: "{{ switch_dellos_provider }}"

@@ -1,2 +1,2 @@
 ---
-- include: "{{ nodeexporter_action }}.yml"
+- include_tasks: "{{ nodeexporter_action }}.yml"

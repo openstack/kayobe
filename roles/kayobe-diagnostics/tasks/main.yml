@@ -1,2 +1,2 @@
 ---
-- include: "{{ kayobe_diagnostics_phase }}.yml"
+- include_tasks: "{{ kayobe_diagnostics_phase }}.yml"

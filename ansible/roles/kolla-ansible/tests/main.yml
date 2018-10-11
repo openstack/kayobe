@@ -6,9 +6,9 @@
 #   - Pass through variables
 # - Nova ironic compute host
 
-- include: test-defaults.yml
-- include: test-extras.yml
-- include: test-requirements.yml
+- import_playbook: test-defaults.yml
+- import_playbook: test-extras.yml
+- import_playbook: test-requirements.yml
 
 - hosts: localhost
   connection: local
