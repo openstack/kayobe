@@ -25,6 +25,7 @@ from kayobe import vault
 
 
 @mock.patch.object(os, "getcwd", new=lambda: "/path/to/cwd")
+@mock.patch.dict(os.environ, clear=True)
 class TestCase(unittest.TestCase):
 
     @mock.patch.object(utils, "run_command")
@@ -41,7 +42,8 @@ class TestCase(unittest.TestCase):
             "--inventory", "/etc/kolla/inventory/overcloud",
         ]
         expected_cmd = " ".join(expected_cmd)
-        mock_run.assert_called_once_with(expected_cmd, shell=True, quiet=False)
+        mock_run.assert_called_once_with(expected_cmd, shell=True, quiet=False,
+                                         env={})
 
     @mock.patch.object(utils, "run_command")
     @mock.patch.object(kolla_ansible, "_validate_args")
@@ -69,14 +71,17 @@ class TestCase(unittest.TestCase):
             "--tags", "tag1,tag2",
         ]
         expected_cmd = " ".join(expected_cmd)
-        mock_run.assert_called_once_with(expected_cmd, shell=True, quiet=False)
+        mock_run.assert_called_once_with(expected_cmd, shell=True, quiet=False,
+                                         env={})
 
     @mock.patch.object(utils, "run_command")
     @mock.patch.object(kolla_ansible, "_validate_args")
-    def test_run_all_the_long_args(self, mock_validate, mock_run):
+    @mock.patch.object(vault, "_ask_vault_pass")
+    def test_run_all_the_long_args(self, mock_ask, mock_validate, mock_run):
         parser = argparse.ArgumentParser()
         kolla_ansible.add_args(parser)
         vault.add_args(parser)
+        mock_ask.return_value = "test-pass"
         args = [
             "--ask-vault-pass",
             "--kolla-config-path", "/path/to/config",
@@ -87,10 +92,12 @@ class TestCase(unittest.TestCase):
             "--kolla-tags", "tag1,tag2",
         ]
         parsed_args = parser.parse_args(args)
+        mock_run.return_value = "/path/to/kayobe-vault-password-helper"
         kolla_ansible.run(parsed_args, "command", "overcloud")
         expected_cmd = [
             ".", "/path/to/cwd/venvs/kolla-ansible/bin/activate", "&&",
             "kolla-ansible", "command",
+            "--key", "/path/to/kayobe-vault-password-helper",
             "--inventory", "/path/to/inventory",
             "--configdir", "/path/to/config",
             "--passwords", "/path/to/config/passwords.yml",
@@ -100,11 +107,19 @@ class TestCase(unittest.TestCase):
             "--tags", "tag1,tag2",
         ]
         expected_cmd = " ".join(expected_cmd)
-        mock_run.assert_called_once_with(expected_cmd, shell=True, quiet=False)
+        expected_env = {"KAYOBE_VAULT_PASSWORD": "test-pass"}
+        expected_calls = [
+            mock.call(["which", "kayobe-vault-password-helper"],
+                      check_output=True),
+            mock.call(expected_cmd, shell=True, quiet=False, env=expected_env)
+        ]
+        self.assertEqual(expected_calls, mock_run.mock_calls)
 
     @mock.patch.object(utils, "run_command")
     @mock.patch.object(kolla_ansible, "_validate_args")
-    def test_run_vault_password_file(self, mock_validate, mock_run):
+    @mock.patch.object(vault, "update_environment")
+    def test_run_vault_password_file(self, mock_update, mock_validate,
+                                     mock_run):
         parser = argparse.ArgumentParser()
         kolla_ansible.add_args(parser)
         vault.add_args(parser)
@@ -120,12 +135,15 @@ class TestCase(unittest.TestCase):
             "--inventory", "/etc/kolla/inventory/overcloud",
         ]
         expected_cmd = " ".join(expected_cmd)
-        mock_run.assert_called_once_with(expected_cmd, shell=True, quiet=False)
+        mock_run.assert_called_once_with(expected_cmd, shell=True, quiet=False,
+                                         env={})
+        mock_update.assert_called_once_with(mock.ANY, {})
 
     @mock.patch.dict(os.environ, {"KAYOBE_VAULT_PASSWORD": "test-pass"})
     @mock.patch.object(utils, "run_command")
     @mock.patch.object(kolla_ansible, "_validate_args")
-    def test_run_vault_password_helper(self, mock_vars, mock_run):
+    @mock.patch.object(vault, "update_environment")
+    def test_run_vault_password_helper(self, mock_update, mock_vars, mock_run):
         mock_vars.return_value = []
         parser = argparse.ArgumentParser()
         mock_run.return_value = "/path/to/kayobe-vault-password-helper"
@@ -143,7 +161,10 @@ class TestCase(unittest.TestCase):
             "--inventory", "/etc/kolla/inventory/overcloud",
         ]
         expected_cmd = " ".join(expected_cmd)
-        mock_run.assert_called_once_with(expected_cmd, shell=True, quiet=False)
+        expected_env = {"KAYOBE_VAULT_PASSWORD": "test-pass"}
+        mock_run.assert_called_once_with(expected_cmd, shell=True, quiet=False,
+                                         env=expected_env)
+        mock_update.assert_called_once_with(mock.ANY, expected_env)
 
     @mock.patch.object(utils, "run_command")
     @mock.patch.object(kolla_ansible, "_validate_args")
@@ -174,7 +195,8 @@ class TestCase(unittest.TestCase):
             "--arg1", "--arg2",
         ]
         expected_cmd = " ".join(expected_cmd)
-        mock_run.assert_called_once_with(expected_cmd, shell=True, quiet=False)
+        mock_run.assert_called_once_with(expected_cmd, shell=True, quiet=False,
+                                         env={})
 
     @mock.patch.object(utils, "run_command")
     @mock.patch.object(kolla_ansible, "_validate_args")
