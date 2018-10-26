@@ -107,5 +107,16 @@
 #kolla_ironic_pxe_append_params:
 
 ###############################################################################
+# Ironic Node Configuration
+
+# This defines the start of the range of TCP ports to used for the IPMI socat
+# serial consoles
+#ironic_serial_console_tcp_pool_start:
+
+# This defines the end of the range of TCP ports to used for the IPMI socat
+# serial consoles
+#ironic_serial_console_tcp_pool_end:
+
+###############################################################################
 # Dummy variable to allow Ansible to accept this file.
 workaround_ansible_issue_8743: yes

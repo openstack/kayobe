@@ -1,0 +1,13 @@
+---
+# Path to file in which to store console allocations.
+console_allocation_filename:
+
+# List of Names or UUIDs corresponding to Ironic nodes that you want to allocate
+# serial consoles for
+console_allocation_ironic_nodes: []
+
+# allocation_pool_start: First TCP port in the allocation pool
+console_allocation_pool_start:
+
+# allocation_pool_end: Last TCP port in the allocation pool
+console_allocation_pool_end:

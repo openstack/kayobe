@@ -203,6 +203,53 @@ according to their inventory host names, you can run the following command::
 This command will use the ``ipmi_address`` host variable from the inventory
 to map the inventory host name to the correct node.
 
+
+Ironic Serial Console
+---------------------
+
+To access the baremetal nodes from within Horizon you need to enable the serial
+console. For this to work the you must set ``kolla_enable_nova_serialconsole_proxy``
+to ``true`` in ``etc/kayobe/kolla.yml``::
+
+    kolla_enable_nova_serialconsole_proxy: true
+
+The console interface on the Ironic nodes is expected to be ``ipmitool-socat``, you
+can check this with::
+
+    openstack baremetal node show <node_id> --fields console_interface
+
+where <node_id> should be the UUID or name of the Ironic node you want to check.
+
+If you have set ``kolla_ironic_enabled_console_interfaces`` in ``etc/kayobe/ironic.yml``,
+it should include ``ipmitool-socat`` in the list of enabled interfaces.
+
+The playbook to enable the serial console currently only works if the Ironic node
+name matches the inventory hostname.
+
+Once these requirements have been satisfied, you can run::
+
+    (kayobe) $ kayobe baremetal compute serial console enable
+
+This will reserve a TCP port for each node to use for the serial console interface.
+The allocations are stored in ``${KAYOBE_CONFIG_PATH}/console-allocation.yml``. The
+current implementation uses a global pool, which is specified by
+``ironic_serial_console_tcp_pool_start`` and ``ironic_serial_console_tcp_pool_end``;
+these variables can set in ``etc/kayobe/ironic.yml``.
+
+To disable the serial console you can use::
+
+    (kayobe) $ kayobe baremetal compute serial console disable
+
+The port allocated for each node is retained and must be manually removed from
+``${KAYOBE_CONFIG_PATH}/console-allocation.yml`` if you want it to be reused by another
+Ironic node with a different name.
+
+You can optionally limit the nodes targeted by setting ``baremetal-compute-limit``::
+
+    (kayobe) $ kayobe baremetal compute serial console enable --baremetal-compute-limit sand-6-1
+
+which should take the form of an `ansible host pattern <https://docs.ansible.com/ansible/latest/user_guide/intro_patterns.html>`_.
+
 .. _update_deployment_image:
 
 Update Deployment Image

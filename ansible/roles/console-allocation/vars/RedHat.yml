@@ -1,0 +1,7 @@
+---
+# Package manager to use.
+console_allocation_package_manager: yum
+
+# List of packages to install.
+console_allocation_package_dependencies:
+  - PyYAML
