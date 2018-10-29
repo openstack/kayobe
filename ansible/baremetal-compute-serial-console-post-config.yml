@@ -1,0 +1,6 @@
+---
+# This is a wrapper around baremetal-compute-serial-console which only runs the playbook when
+# ironic_serial_console_autoenable is set to true.
+
+- import_playbook: baremetal-compute-serial-console.yml
+  when: ironic_serial_console_autoenable | bool

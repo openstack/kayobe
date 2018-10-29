@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Added the ability to configure baremetal serial consoles during the
+    post configure step. This is controlled via ``ironic_serial_console_autoenable``
+    in ``etc/kayobe/ironic.yml``.
