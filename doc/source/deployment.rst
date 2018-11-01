@@ -50,7 +50,7 @@ The names or descriptions should be separated by commas.  This may be useful
 when adding compute nodes to an existing deployment, in order to avoid changing
 the configuration interfaces in use by active nodes.
 
-The ``display`` argument will display the candidate switch configuration,
+The ``--display`` argument will display the candidate switch configuration,
 without actually applying it.
 
 Seed Hypervisor
