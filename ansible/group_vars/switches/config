@@ -18,7 +18,19 @@ switch_config: []
 # file.
 switch_interface_config: {}
 
-# Interface configuration for hardware discovery. After discovery Neutron owns
-# the configuration of these ports. Has the same format as
+# Interface configuration for enabling hardware discovery. After discovery
+# Neutron owns the configuration of these ports. Has the same format as
 # switch_interface_config.
+# [DEPRECATED] Use switch_interface_config_enable_discovery.
 switch_interface_config_discovery: {}
+
+# Interface configuration for enabling hardware discovery. After discovery
+# Neutron owns the configuration of these ports. Has the same format as
+# switch_interface_config.
+# [DEPRECATED NAME] switch_interface_config_discovery.
+switch_interface_config_enable_discovery: "{{ switch_interface_config_discovery }}"
+
+# Interface configuration for disabling hardware discovery. After discovery
+# Neutron owns the configuration of these ports. Has the same format as
+# switch_interface_config.
+switch_interface_config_disable_discovery: {}

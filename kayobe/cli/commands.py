@@ -228,14 +228,19 @@ class PhysicalNetworkConfigure(KayobeAnsibleMixin, VaultMixin, Command):
         group.add_argument("--display", action="store_true",
                            help="display the candidate configuration and exit "
                                 "without applying it")
-        group.add_argument("--enable-discovery", action="store_true",
-                           help="configure the network for hardware discovery")
         group.add_argument("--interface-limit",
                            help="limit the switch interfaces to be configured "
                                 "by interface name")
         group.add_argument("--interface-description-limit",
                            help="limit the switch interfaces to be configured "
                                 "by interface description")
+        discovery = parser.add_mutually_exclusive_group()
+        discovery.add_argument("--enable-discovery", action="store_true",
+                               help="configure the network for hardware "
+                                    "discovery")
+        discovery.add_argument("--disable-discovery", action="store_true",
+                               help="deconfigure the network for hardware "
+                                    "discovery")
         return parser
 
     def take_action(self, parsed_args):
@@ -244,6 +249,8 @@ class PhysicalNetworkConfigure(KayobeAnsibleMixin, VaultMixin, Command):
         extra_vars["physical_network_display"] = parsed_args.display
         if parsed_args.enable_discovery:
             extra_vars["physical_network_enable_discovery"] = True
+        if parsed_args.disable_discovery:
+            extra_vars["physical_network_disable_discovery"] = True
         if parsed_args.interface_limit:
             extra_vars["physical_network_interface_limit"] = (
                 parsed_args.interface_limit)
