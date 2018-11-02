@@ -381,6 +381,12 @@ kolla_enable_nova:
 kolla_extra_nova:
 
 ###############################################################################
+# Octavia configuration.
+
+# Whether to enable Octavia.
+kolla_enable_octavia:
+
+###############################################################################
 # Sahara configuration.
 
 # Whether to enable sahara.
