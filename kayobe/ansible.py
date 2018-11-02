@@ -58,8 +58,8 @@ def add_args(parser):
                         help="further limit selected hosts to an additional "
                              "pattern")
     parser.add_argument("--skip-tags", metavar="TAGS",
-                        help="only run plays and tasks whose tags do not match"
-                             "these values")
+                        help="only run plays and tasks whose tags do not "
+                             "match these values")
     parser.add_argument("-t", "--tags", metavar="TAGS",
                         help="only run plays and tasks tagged with these "
                              "values")
