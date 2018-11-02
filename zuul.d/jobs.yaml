@@ -6,6 +6,11 @@
     parent: openstack-tox
     vars:
       tox_envlist: ansible-syntax
+    irrelevant-files:
+      - ^.*\.rst$
+      - ^doc/.*
+      - ^releasenotes/.*
+      - ^setup.cfg$
 
 - job:
     name: kayobe-tox-ansible
@@ -14,6 +19,11 @@
     parent: openstack-tox-with-sudo
     vars:
       tox_envlist: ansible
+    irrelevant-files:
+      - ^.*\.rst$
+      - ^doc/.*
+      - ^releasenotes/.*
+      - ^setup.cfg$
 
 - job:
     name: kayobe-tox-molecule
@@ -27,6 +37,11 @@
         override-checkout: stable/queens
     vars:
       tox_envlist: molecule
+    irrelevant-files:
+      - ^.*\.rst$
+      - ^doc/.*
+      - ^releasenotes/.*
+      - ^setup.cfg$
 
 - job:
     name: kayobe-overcloud-base
@@ -52,6 +67,10 @@
     irrelevant-files:
       - ^.*\.rst$
       - ^doc/.*
+      - ^releasenotes/.*
+      - ^setup.cfg$
+      - ^tools/.*$
+      - ^tox.ini$
 
 - job:
     name: kayobe-overcloud-centos
@@ -82,6 +101,10 @@
     irrelevant-files:
       - ^.*\.rst$
       - ^doc/.*
+      - ^releasenotes/.*
+      - ^setup.cfg$
+      - ^tools/.*$
+      - ^tox.ini$
 
 - job:
     name: kayobe-seed-centos
