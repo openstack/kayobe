@@ -14,6 +14,7 @@ copy_logs() {
     if [[ -d ${CONFIG_DIR} ]]; then
         cp -rnL ${CONFIG_DIR}/etc/kayobe/* ${LOG_DIR}/kayobe_configs
         cp -rnL ${CONFIG_DIR}/etc/kolla/* ${LOG_DIR}/kolla_configs
+        cp -rnL /etc/kolla/* ${LOG_DIR}/kolla_node_configs
         # Don't save the IPA images.
         rm ${LOG_DIR}/kayobe_configs/kolla/config/ironic/ironic-agent.{kernel,initramfs}
         rm ${LOG_DIR}/kolla_configs/config/ironic/ironic-agent.{kernel,initramfs}
