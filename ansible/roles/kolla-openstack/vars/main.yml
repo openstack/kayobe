@@ -78,7 +78,6 @@ kolla_openstack_custom_config:
       # These are templated by kayobe, so don't remove them.
       - ironic-agent.initramfs
       - ironic-agent.kernel
-      - ironic-dnsmasq.conf
       - pxelinux.default
       - inspector.ipxe
   # Kafka.

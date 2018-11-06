@@ -49,8 +49,6 @@ provisioner:
           foo=bar
         kolla_inspector_ipa_kernel_path: ${MOLECULE_TEMP_PATH:-/tmp}/ironic-agent.kernel
         kolla_inspector_ipa_ramdisk_path: ${MOLECULE_TEMP_PATH:-/tmp}/ironic-agent.initramfs
-        kolla_extra_ironic_dnsmasq: |
-          extra=bar
         kolla_enable_kafka: true
         kolla_extra_kafka: |
           [extra-kafka.server.properties]

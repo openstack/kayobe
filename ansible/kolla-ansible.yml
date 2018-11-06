@@ -256,3 +256,6 @@
       # container.
       # We could look at making the SELinux mode configurable in future.
       kolla_selinux_state: disabled
+      kolla_inspector_dhcp_pool_start: "{{ inspection_net_name | net_inspection_allocation_pool_start }}"
+      kolla_inspector_dhcp_pool_end: "{{ inspection_net_name | net_inspection_allocation_pool_end }}"
+      kolla_inspector_default_gateway: "{{ inspection_net_name | net_inspection_gateway or inspection_net_name | net_gateway }}"
