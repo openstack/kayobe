@@ -10,28 +10,9 @@
     - role: kayobe-diagnostics
       kayobe_diagnostics_phase: "pre"
       kayobe_diagnostics_log_dir: "{{ logs_dir }}"
+
+    - role: kayobe-ci-prep
   tasks:
-    - name: Install dbus for debian system
-      apt:
-        name: dbus
-      when:
-        - ansible_os_family == 'Debian'
-      become: true
-
-    - block:
-        # NOTE(mgoddard): The CentOS image used in CI has epel-release installed,
-        # but the configure-mirrors role used by Zuul disables epel. Since we
-        # install epel-release and expect epel to be enabled, enable it here.
-        - name: Ensure yum-utils is installed
-          yum:
-            name: yum-utils
-            state: installed
-
-        - name: Enable the EPEL yum repository
-          command: yum-config-manager --enable epel
-      when: ansible_os_family == 'RedHat'
-      become: true
-
     # NOTE(mgoddard): Copying upper constraints to somewhere accessible by both
     # the zuul and stack users.
     - name: Ensure upper-contraints.txt exists

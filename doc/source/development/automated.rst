@@ -93,6 +93,18 @@ plane::
 
 Upon successful completion of this script, the control plane will be active.
 
+The control plane can be tested by running the ``dev/overcloud-test.sh``
+script. This will run the ``init-runonce`` setup script provided by Kolla
+Ansible that registers images, networks, flavors etc. It will then deploy a
+virtual server instance, and delete it once it becomes active::
+
+    ./dev/overcloud-test.sh
+
+It is possible to test an upgrade by running the ``dev/overcloud-upgrade.sh``
+script::
+
+    ./dev/overcloud-upgrade.sh
+
 Seed Hypervisor
 ===============
 

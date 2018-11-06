@@ -15,6 +15,7 @@
         - kayobe-tox-ansible
         - kayobe-tox-molecule
         - kayobe-overcloud-centos
+        - kayobe-overcloud-upgrade-centos
         - kayobe-seed-centos
 
     gate:
@@ -25,4 +26,5 @@
         - kayobe-tox-ansible
         - kayobe-tox-molecule
         - kayobe-overcloud-centos
+        - kayobe-overcloud-upgrade-centos
         - kayobe-seed-centos

@@ -1,0 +1,10 @@
+---
+# The Queens kayobe configuration uses the fernet token provider. To avoid
+# issues during upgrade, set the provider to fernet in the Pike deployment
+# also.
+keystone_token_provider: 'fernet'
+
+# Most development environments will use nested virtualisation, and we can't
+# guarantee that nested KVM support is available. Use QEMU as a lowest common
+# denominator.
+nova_compute_virt_type: qemu
