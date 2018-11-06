@@ -19,6 +19,7 @@ import subprocess
 import sys
 
 from kayobe import utils
+from kayobe import vault
 
 
 DEFAULT_CONFIG_PATH = "/etc/kolla"
@@ -78,6 +79,7 @@ def _get_inventory_path(parsed_args, inventory_filename):
 
 def _validate_args(parsed_args, inventory_filename):
     """Validate Kayobe Ansible arguments."""
+    vault.validate_args(parsed_args)
     result = utils.is_readable_dir(parsed_args.kolla_config_path)
     if not result["result"]:
         LOG.error("Kolla configuration path %s is invalid: %s",
@@ -106,8 +108,7 @@ def build_args(parsed_args, command, inventory_filename, extra_vars=None,
     cmd += ["kolla-ansible", command]
     if verbose_level:
         cmd += ["-" + "v" * verbose_level]
-    if parsed_args.vault_password_file:
-        cmd += ["--key", parsed_args.vault_password_file]
+    cmd += vault.build_args(parsed_args, "--key")
     inventory = _get_inventory_path(parsed_args, inventory_filename)
     cmd += ["--inventory", inventory]
     if parsed_args.kolla_config_path != DEFAULT_CONFIG_PATH:
@@ -144,8 +145,10 @@ def run(parsed_args, command, inventory_filename, extra_vars=None,
                      verbose_level=verbose_level,
                      extra_args=extra_args,
                      limit=limit)
+    env = os.environ.copy()
+    vault.update_environment(parsed_args, env)
     try:
-        utils.run_command(" ".join(cmd), quiet=quiet, shell=True)
+        utils.run_command(" ".join(cmd), quiet=quiet, shell=True, env=env)
     except subprocess.CalledProcessError as e:
         LOG.error("kolla-ansible %s exited %d", command, e.returncode)
         sys.exit(e.returncode)

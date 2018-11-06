@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Fixes an issue with the ``--ask-vault-pass`` argument, where Kayobe would
+    fail to generate the Kolla Ansible ``passwords.yml`` file. Also ensures
+    that the user is only prompted for the password once per execution of
+    kayobe.
