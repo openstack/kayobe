@@ -1,29 +1,11 @@
 ---
-# NOTE: We are installing this into the system python packages because it does
-# not seem to be possible to use ansible_python_interpreter in combination with
-# delegate_to. This should be investigated in future as modification of system
-# packages via pip is not ideal.
-
-# For ansible 2.2, Juniper specific python packages are required.
-- name: Ensure python dependencies are installed
-  pip:
-    name: "{{ item }}"
-  delegate_to: "{{ junos_switch_delegate_to }}"
-  with_items:
-    - junos-eznc
-    - jxmlease
-  when: ansible_version | version_compare('2.3', 'lt')
-  become: True
-
-# For ansible 2.3+, only the NETCONF client ncclient is required. This must be
-# installed on the Ansible control host where the ansible-connection subprocess
-# is executed.
+# The NETCONF client ncclient is required. This must be installed on the
+# Ansible control host where the ansible-connection subprocess is executed.
 - name: Ensure python dependencies are installed
   local_action:
     module: pip
     name: ncclient
     virtualenv: "{{ lookup('env', 'VIRTUAL_ENV') | default(omit, true) }}"
-  when: ansible_version | version_compare('2.3', 'ge')
   become: "{{ lookup('env', 'VIRTUAL_ENV') == None }}"
 
 - name: Ensure Juniper switches are configured
