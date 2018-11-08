@@ -14,6 +14,7 @@
         - kayobe-overcloud-centos
         - kayobe-overcloud-upgrade-centos
         - kayobe-seed-centos
+        - kayobe-seed-upgrade-centos
 
     gate:
       queue: kayobe
@@ -25,3 +26,4 @@
         - kayobe-overcloud-centos
         - kayobe-overcloud-upgrade-centos
         - kayobe-seed-centos
+        - kayobe-seed-upgrade-centos

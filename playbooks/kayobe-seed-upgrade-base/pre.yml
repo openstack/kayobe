@@ -1,0 +1,85 @@
+---
+- hosts: primary
+  vars:
+    logs_dir: "/tmp/logs"
+    previous_kayobe_src_dir: "{{ ansible_env.PWD ~ '/previous/kayobe' }}"
+    previous_kayobe_config_src_dir: "{{ ansible_env.PWD ~ '/previous/kayobe-config' }}"
+  roles:
+    - role: kayobe-diagnostics
+      kayobe_diagnostics_phase: "pre"
+      kayobe_diagnostics_log_dir: "{{ logs_dir }}"
+
+    - role: kayobe-ci-prep
+  tasks:
+    # NOTE(mgoddard): Copying upper constraints to somewhere accessible by both
+    # the zuul and stack users.
+    - name: Ensure upper-contraints.txt exists
+      copy:
+        src: "{{ zuul.projects['git.openstack.org/openstack/requirements'].src_dir ~ '/upper-constraints.txt' }}"
+        dest: "/tmp"
+        mode: 0644
+        remote_src: true
+
+    - name: Ensure previous kayobe directory exists
+      file:
+        path: "{{ previous_kayobe_src_dir }}"
+        state: directory
+
+    - name: Ensure previous kayobe repository is cloned
+      git:
+        repo: https://git.openstack.org/openstack/kayobe
+        dest: "{{ previous_kayobe_src_dir }}"
+        version: "stable/{{ previous_release | lower }}"
+
+    - name: Ensure previous kayobe-config directory exists
+      file:
+        path: "{{ previous_kayobe_config_src_dir }}"
+        state: directory
+
+    - name: Ensure kayobe-config repository is cloned
+      git:
+        repo: https://git.openstack.org/openstack/kayobe-config-dev
+        dest: "{{ previous_kayobe_config_src_dir }}"
+        version: "stable/{{ previous_release | lower }}"
+
+    # NOTE(mgoddard): Use the name zz-overrides.yml to ensure this takes
+    # precedence over the standard config files.
+    - name: Ensure kayobe-config override config file exists
+      template:
+        src: overrides.yml.j2
+        dest: "{{ previous_kayobe_config_src_dir }}/etc/kayobe/zz-overrides.yml"
+      vars:
+        is_previous_release: true
+
+    - name: Ensure bifrost overrides directory exists
+      file:
+        path: "{{ previous_kayobe_config_src_dir }}/etc/kayobe/kolla/config/bifrost"
+        state: "directory"
+
+    - name: Ensure bifrost overrides file exists
+      template:
+        src: bifrost-overrides.yml.j2
+        dest: "{{ previous_kayobe_config_src_dir }}/etc/kayobe/kolla/config/bifrost/bifrost.yml"
+
+    - block:
+        # NOTE(mgoddard): Create a loopback device backed by a file for docker
+        # storage.  We do this since the overlay driver doesn't work with the
+        # ansible template module until ansible 2.4.0, and this is required by
+        # bifrost.
+        - name: Ensure a docker storage backing file exists
+          command: truncate -s 20G /tmp/docker-storage
+
+        - name: Ensure the docker storage loopback device is created
+          command: losetup /dev/loop0 /tmp/docker-storage
+          become: true
+      when: previous_release == "pike"
+
+    # NOTE(mgoddard): The kayobe dev config by default expects a bridge -
+    # breth1 - to exist on the seed with an IP address of 192.168.33.5.
+    - name: Ensure all-in-one network bridge interface exists
+      command: "{{ item }}"
+      become: true
+      with_items:
+        - "ip l add breth1 type bridge"
+        - "ip l set breth1 up"
+        - "ip a add 192.168.33.5/24 dev breth1"

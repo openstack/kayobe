@@ -1,0 +1,33 @@
+---
+# NOTE(mgoddard): Don't reboot after disabling SELinux during CI testing, as
+# Ansible is run directly on the controller.
+disable_selinux_do_reboot: false
+
+{% if not is_previous_release | default(false) %}
+kolla_source_url: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['git.openstack.org/openstack/kolla'].src_dir }}"
+kolla_source_version: "{{ zuul.projects['git.openstack.org/openstack/kolla'].checkout }}"
+kolla_ansible_source_url: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['git.openstack.org/openstack/kolla-ansible'].src_dir }}"
+kolla_ansible_source_version: "{{ zuul.projects['git.openstack.org/openstack/kolla-ansible'].checkout }}"
+kolla_upper_constraints_file: "/tmp/upper-constraints.txt"
+{% endif %}
+
+# NOTE(mgoddard): We're using a cirros image, which doesn't require the
+# resolv.conf work around used for CentOS.
+overcloud_host_image_workaround_resolv_enabled: false
+
+# Use the CI infra's PyPI mirror.
+pip_local_mirror: true
+pip_index_url: "http://{{ zuul_site_mirror_fqdn }}/pypi/simple"
+
+{% if previous_release == "pike" %}
+# kayobe-config-dev in queens changed to use overlay by default. Specify
+# devicemapper explicitly to avoid changing.
+docker_storage_driver: devicemapper
+docker_storage_volume_thinpool_size: 45%VG
+
+# NOTE(mgoddard): Use a loopback-mounted LVM volume for docker storage since
+# the overlay driver doesn't work with the ansible template module until
+# ansible 2.4.0, and this is required by bifrost.
+seed_lvm_group_data_disks:
+  - /dev/loop0
+{% endif %}
