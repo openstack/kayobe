@@ -12,6 +12,7 @@
   environment:
     LOG_DIR: "{{ kayobe_diagnostics_log_dir }}"
     CONFIG_DIR: "{{ kayobe_diagnostics_config_dir }}"
+    PREVIOUS_CONFIG_DIR: "{{ kayobe_diagnostics_previous_config_dir }}"
 
 - name: Print get_logs.sh output
   debug:

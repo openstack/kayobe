@@ -6,6 +6,8 @@
 # Environment variables:
 # $LOG_DIR is the directory to copy logs to.
 # $CONFIG_DIR is the directory to copy configuration from.
+# $PREVIOUS_CONFIG_DIR is the directory to copy previous configuration, prior
+# to an upgrade, from.
 
 set +o errexit
 
@@ -18,6 +20,16 @@ copy_logs() {
         # Don't save the IPA images.
         rm ${LOG_DIR}/kayobe_configs/kolla/config/ironic/ironic-agent.{kernel,initramfs}
         rm ${LOG_DIR}/kolla_configs/config/ironic/ironic-agent.{kernel,initramfs}
+    fi
+    if [[ -n ${PREVIOUS_CONFIG_DIR} ]] && [[ -d ${PREVIOUS_CONFIG_DIR} ]]; then
+        mkdir -p ${LOG_DIR}/previous_{kayobe,kolla}_configs
+        cp -rnL ${PREVIOUS_CONFIG_DIR}/etc/kayobe/* ${LOG_DIR}/previous_kayobe_configs
+        cp -rnL ${PREVIOUS_CONFIG_DIR}/etc/kolla/* ${LOG_DIR}/previous_kolla_configs
+        # NOTE: we can't save node configs in /etc/kolla for the pervious
+        # release since they'll have been overwritten at this point.
+        # Don't save the IPA images.
+        rm ${LOG_DIR}/previous_kayobe_configs/kolla/config/ironic/ironic-agent.{kernel,initramfs}
+        rm ${LOG_DIR}/previous_kolla_configs/config/ironic/ironic-agent.{kernel,initramfs}
     fi
     cp -rvnL /var/log/* ${LOG_DIR}/system_logs/
 
