@@ -510,7 +510,7 @@ class TestCase(unittest.TestCase):
                        "run_kayobe_playbooks")
     @mock.patch.object(commands.KollaAnsibleMixin,
                        "run_kolla_ansible_seed")
-    def test_service_deploy(self, mock_kolla_run, mock_run):
+    def test_seed_service_deploy(self, mock_kolla_run, mock_run):
         command = commands.SeedServiceDeploy(TestApp(), [])
         parser = command.get_parser("test")
         parsed_args = parser.parse_args([])
@@ -527,6 +527,51 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 ["ansible/kolla-bifrost.yml"],
+            ),
+            mock.call(
+                mock.ANY,
+                [
+                    "ansible/overcloud-host-image-workaround-resolv.yml",
+                    "ansible/overcloud-host-image-workaround-cloud-init.yml",
+                    "ansible/seed-introspection-rules.yml",
+                    "ansible/dell-switch-bmp.yml",
+                ],
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                "deploy-bifrost",
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    @mock.patch.object(commands.KollaAnsibleMixin,
+                       "run_kolla_ansible_seed")
+    def test_seed_service_upgrade(self, mock_kolla_run, mock_run):
+        command = commands.SeedServiceUpgrade(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                ["ansible/kolla-ansible.yml"],
+                tags="config",
+            ),
+            mock.call(
+                mock.ANY,
+                [
+                    "ansible/kolla-bifrost.yml",
+                    "ansible/seed-service-upgrade-prep.yml"
+                ],
             ),
             mock.call(
                 mock.ANY,

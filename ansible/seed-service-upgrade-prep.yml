@@ -1,0 +1,48 @@
+---
+- name: Prepare for an upgrade of the seed services
+  hosts: seed
+  tasks:
+    # Bifrost fails if IPA images exist with a different checksum. Move them
+    # out of the way.
+    - block:
+        - name: Find IPA deployment images
+          find:
+            path: /var/lib/docker/volumes/bifrost_httpboot/_data
+            patterns:
+              # Specify filenames individually to avoid movind previously moved
+              # images.
+              - ipa.initramfs
+              - ipa.initramfs.sha256
+              - ipa.vmlinuz
+              - ipa.vmlinuz.sha256
+          register: find_result
+          become: true
+
+        - name: Set a fact about the current time
+          set_fact:
+            ipa_extension: "{{ ansible_date_time.iso8601 }}"
+
+        - name: Move old IPA deployment images to make way for new ones
+          command: mv {{ item.path }} {{ item.path }}.{{ ipa_extension }}
+          with_items: "{{ find_result.files }}"
+          loop_control:
+            label: "{{ item.path }}"
+          become: true
+
+      when: not ipa_build_images | bool
+
+    # Bifrost does not perform ironic's online data migrations, which can
+    # prevent upgrading the database. If the upgrade fails early on, then the
+    # ironic config file may not exist. On subsequent attempts, this would
+    # cause the migrations to fail, so skip online migrations if ironic.conf
+    # doesn't exist.
+    # TODO: If the ironic config file does exist, we need to check
+    # the return code, since 2 means that the DB is not compatible
+    - name: Perform ironic online data migrations
+      command: >
+        docker exec bifrost_deploy
+        bash -c '
+        if [[ -f /etc/ironic/ironic.conf ]]; then
+            ironic-dbsync online_data_migrations
+        fi'
+      changed_when: true
