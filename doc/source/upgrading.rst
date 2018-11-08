@@ -94,7 +94,10 @@ instead perform a targeted upgrade of specific services where necessary.
 Upgrading the Seed
 ==================
 
-Currently, upgrading the seed services is not supported.
+The seed services are upgraded in two steps.  First, new container images
+should be obtained either by building them locally or pulling them from an
+image registry.  Second, the seed services should be replaced with new
+containers created from the new container images.
 
 Upgrading Host Packages
 -----------------------
@@ -113,6 +116,25 @@ To only install updates that have been marked security related::
 Note that these commands do not affect packages installed in containers, only
 those installed on the host.
 
+Building Ironic Deployment Images
+---------------------------------
+
+.. note::
+
+   It is possible to use prebuilt deployment images. In this case, this step
+   can be skipped.
+
+It is possible to use prebuilt deployment images from the `OpenStack hosted
+tarballs <https://tarballs.openstack.org/ironic-python-agent>`_ or another
+source.  In some cases it may be necessary to build images locally either to
+apply local image customisation or to use a downstream version of Ironic Python
+Agent (IPA).  In order to build IPA images, the ``ipa_build_images`` variable
+should be set to ``True``.  To build images locally::
+
+    (kayobe) $ kayobe seed deployment image build
+
+To overwrite existing images, add the ``--force-rebuild`` argument.
+
 Upgrading Host Services
 -----------------------
 
@@ -122,6 +144,58 @@ It may be necessary to upgrade some host services::
 
 Note that this will not perform full configuration of the host, and will
 instead perform a targeted upgrade of specific services where necessary.
+
+Building Container Images
+-------------------------
+
+.. note::
+
+   It is possible to use prebuilt container images from an image registry such
+   as Dockerhub.  In this case, this step can be skipped.
+
+In some cases it may be necessary to build images locally either to apply local
+image customisation or to use a downstream version of kolla.  To build images
+locally::
+
+    (kayobe) $ kayobe seed container image build
+
+In order to push images to a registry after they are built, add the ``--push``
+argument.
+
+Migrating to Ironic Hardware Types
+----------------------------------
+
+Classic drivers in ironic were `deprecated
+<https://docs.openstack.org/releasenotes/ironic/queens.html#relnotes-10-1-0-stable-queens-deprecation-notes>`__
+in the Queens release, and `removed
+<https://docs.openstack.org/releasenotes/ironic/rocky.html#relnotes-11-0-0-stable-rocky-upgrade-notes>`__
+in the Rocky release. Nodes registered with ironic in Pike and earlier releases
+of Bifrost use the classic drivers by default, and will need to be migrated to
+use the new hardware types. The `ironic documentation
+<https://docs.openstack.org/ironic/latest/admin/upgrade-to-hardware-types.html>`__
+provides details for how to do this, but for the default case of the
+``agent_ipmitool`` driver the following procedure may be used, replacing
+``<node>`` with the name of the host to migrate:
+
+.. code-block:: console
+
+   $ docker exec -it bifrost_deploy bash
+   (bifrost_deploy) $ export OS_URL=http://localhost:6385
+   (bifrost_deploy) $ export OS_TOKEN=fake
+   (bifrost_deploy) $ openstack baremetal node maintenance set <node>
+   (bifrost_deploy) $ openstack baremetal node set <node> --driver ipmi
+   (bifrost_deploy) $ openstack baremetal node maintenance unset <node>
+
+Upgrading Containerised Services
+--------------------------------
+
+Containerised seed services may be upgraded by replacing existing containers
+with new containers using updated images which have been pulled from
+a registry or built locally.
+
+To upgrade the containerised seed services::
+
+    (kayobe) $ kayobe seed service upgrade
 
 Upgrading the Overcloud
 =======================
@@ -177,6 +251,8 @@ Agent (IPA).  In order to build IPA images, the ``ipa_build_images`` variable
 should be set to ``True``.  To build images locally::
 
     (kayobe) $ kayobe overcloud deployment image build
+
+To overwrite existing images, add the ``--force-rebuild`` argument.
 
 Upgrading Ironic Deployment Images
 ----------------------------------
