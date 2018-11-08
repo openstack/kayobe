@@ -193,3 +193,8 @@ Upon successful completion of this script, the seed VM will be active.  The
 seed VM may be accessed via SSH as the ``stack`` user::
 
     ssh stack@192.168.33.5
+
+It is possible to test an upgrade by running the ``dev/seed-upgrade.sh``
+script::
+
+    ./dev/seed-upgrade.sh

@@ -153,6 +153,38 @@ function run_kayobe {
     kayobe ${KAYOBE_EXTRA_ARGS} $*
 }
 
+function control_host_bootstrap {
+    echo "Bootstrapping the Ansible control host"
+    for i in $(seq 1 3); do
+        if run_kayobe control host bootstrap; then
+            chb_success=1
+            break
+        fi
+        echo "Control host bootstrap failed - likely Ansible Galaxy flakiness. Retrying"
+    done
+    if [[ -z ${chb_success+x} ]]; then
+        die $LINENO "Failed to bootstrap control host"
+        exit 1
+    fi
+    echo "Bootstrapped control host after $i attempts"
+}
+
+function control_host_upgrade {
+    echo "Upgrading the Ansible control host"
+    for i in $(seq 1 3); do
+        if run_kayobe control host upgrade; then
+            chu_success=1
+            break
+        fi
+        echo "Control host upgrade failed - likely Ansible Galaxy flakiness. Retrying"
+    done
+    if [[ -z ${chu_success+x} ]]; then
+        die $LINENO "Failed to upgrade control host"
+        exit 1
+    fi
+    echo "Upgraded control host after $i attempts"
+}
+
 function seed_hypervisor_deploy {
     # Deploy a seed hypervisor.
     environment_setup
@@ -168,8 +200,7 @@ function seed_deploy {
     # Deploy a kayobe seed in a VM.
     environment_setup
 
-    echo "Bootstrapping the Ansible control host"
-    run_kayobe control host bootstrap
+    control_host_bootstrap
 
     if [[ ${KAYOBE_SEED_VM_PROVISION} = 1 ]]; then
         echo "Provisioning the seed VM"
@@ -179,7 +210,7 @@ function seed_deploy {
     echo "Configuring the seed host"
     run_kayobe seed host configure
 
-    # Note: This must currently be before host configure, because host
+    # Note: This must currently be done before host configure, because host
     # configure runs kolla-ansible.yml, which validates the presence of the
     # built deploy images.
     if is_deploy_image_built_locally; then
@@ -201,6 +232,37 @@ function seed_deploy {
     run_kayobe seed service deploy
 }
 
+function seed_upgrade {
+    # Upgrade a kayobe seed in a VM.
+    echo "Upgrading Kayobe"
+    upgrade_kayobe_venv
+
+    environment_setup
+
+    control_host_upgrade
+
+    echo "Upgrading the seed host"
+    run_kayobe seed host upgrade
+
+    if is_deploy_image_built_locally; then
+        echo "Building seed deployment images"
+        run_kayobe seed deployment image build --force-rebuild
+    else
+        echo "Not building seed deployment images"
+    fi
+
+    if [[ ${KAYOBE_SEED_CONTAINER_IMAGE_BUILD} = 1 ]]; then
+        echo "Building seed container images"
+        run_kayobe seed container image build
+    else
+        echo "Not pulling seed container images - no such command yet"
+        #run_kayobe seed container image pull
+    fi
+
+    echo "Upgrading containerised seed services"
+    run_kayobe seed service upgrade
+}
+
 function overcloud_deploy {
     # Deploy a kayobe control plane.
     echo "Deploying a kayobe development environment. This consists of a "
@@ -208,19 +270,7 @@ function overcloud_deploy {
 
     environment_setup
 
-    echo "Bootstrapping the Ansible control host"
-    for i in $(seq 1 3); do
-        if run_kayobe control host bootstrap; then
-            chb_success=1
-            break
-        fi
-        echo "Control host bootstrap failed - likely Ansible Galaxy flakiness. Retrying"
-    done
-    if [[ -z ${chb_success+x} ]]; then
-        echo "Failed to bootstrap control host"
-        exit 1
-    fi
-    echo "Bootstrapped control host after $i attempts"
+    control_host_bootstrap
 
     echo "Configuring the controller host"
     run_kayobe overcloud host configure
@@ -269,19 +319,7 @@ function overcloud_upgrade {
 
     environment_setup
 
-    echo "Upgrading the Ansible control host"
-    for i in $(seq 1 3); do
-        if run_kayobe control host upgrade; then
-            chu_success=1
-            break
-        fi
-        echo "Control host upgrade failed - likely Ansible Galaxy flakiness. Retrying"
-    done
-    if [[ -z ${chu_success+x} ]]; then
-        echo "Failed to upgrade control host"
-        exit 1
-    fi
-    echo "Upgraded control host after $i attempts"
+    control_host_upgrade
 
     echo "Upgrading the controller host"
     run_kayobe overcloud host upgrade
