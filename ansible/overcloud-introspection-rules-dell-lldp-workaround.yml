@@ -7,6 +7,13 @@
 # description. We work around this here by creating an introspection rule for
 # each ironic node that matches against the switch system and the relevant
 # interface name, then sets the node's name appropriately.
+#
+# Note that some Dell switches running Dell Networking OS version 9.11(2.0P1)
+# and newer do *not* need this workaround. The interface description can be
+# sent using the following configuration:
+#
+# (conf-if-interface)#protocol lldp
+# (conf-if-interface-lldp)#advertise interface-port-desc description
 
 - name: Check whether Ironic is enabled
   hosts: controllers
