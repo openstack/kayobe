@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Adds a new command to upgrade containerised seed services, ``kayobe seed
+    service upgrade``.
