@@ -31,6 +31,9 @@ docker_registry:
 # CA of docker registry
 docker_registry_ca:
 
+# List of Docker registry mirrors.
+docker_registry_mirrors: []
+
 # MTU to pass through to containers not using net=host
 docker_daemon_mtu: 1500
 

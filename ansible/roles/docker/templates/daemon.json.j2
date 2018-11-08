@@ -1,4 +1,11 @@
 {
+{%- if docker_registry_mirrors | length > 0 %}
+  "registry-mirrors": [
+{%- for mirror in docker_registry_mirrors %}
+      "{{ mirror }}"{%- if not loop.last -%},{%- endif %}
+{%- endfor %}
+  ],
+{%- endif %}
   "storage-driver": "{% if docker_storage_driver == 'devicemapper' %}devicemapper{% else %}overlay{% endif %}",
 {% if docker_daemon_mtu %}
   "mtu": {{ docker_daemon_mtu }},
