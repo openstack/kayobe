@@ -31,6 +31,7 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
      'cinder',
      'designate',
      'fluentd/filter',
+     'fluentd/input',
      'fluentd/output',
      'glance',
      'grafana',

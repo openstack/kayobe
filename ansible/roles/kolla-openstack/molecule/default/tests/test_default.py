@@ -28,6 +28,7 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 @pytest.mark.parametrize(
     'path',
     ['fluentd/filter',
+     'fluentd/input',
      'fluentd/output',
      'keystone'])
 def test_service_config_directory(host, path):
