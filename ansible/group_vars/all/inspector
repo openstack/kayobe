@@ -223,7 +223,7 @@ inspector_rule_lldp_switch_port_desc_to_name:
 
 # Ironic inspector rule to initialise system vendor data in the node's metadata.
 inspector_rule_save_system_vendor_init:
-  description: "Intiialise system vendor data in Ironic node metadata"
+  description: "Initialise system vendor data in Ironic node metadata"
   conditions:
     - field: "data://inventory.system_vendor"
       op: "is-empty"
