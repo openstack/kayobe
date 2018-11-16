@@ -182,6 +182,8 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_neutron_lbaas | bool }}"
   - regex: nova
     enabled: "{{ kolla_enable_nova | bool }}"
+  - regex: octavia
+    enabled: "{{ kolla_enable_octavia | bool }}"
   - regex: openvswitch
     enabled: "{{ kolla_enable_neutron | bool }}"
   - regex: rabbitmq
@@ -360,6 +362,7 @@ kolla_enable_neutron: "yes"
 kolla_enable_neutron_lbaas: "no"
 kolla_enable_neutron_provider_networks: "no"
 kolla_enable_nova: "yes"
+kolla_enable_octavia: "no"
 kolla_enable_osprofiler: "no"
 kolla_enable_prometheus: "no"
 kolla_enable_sahara: "no"

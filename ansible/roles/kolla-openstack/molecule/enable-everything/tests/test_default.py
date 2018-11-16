@@ -47,6 +47,7 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
      'murano',
      'neutron',
      'nova',
+     'octavia',
      'sahara',
      'storm',
      'swift',

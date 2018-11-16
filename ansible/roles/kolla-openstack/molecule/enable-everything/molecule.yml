@@ -78,6 +78,7 @@ provisioner:
         kolla_extra_nova: |
           [extra-nova.conf]
           foo=bar
+        kolla_enable_octavia: true
         kolla_enable_sahara: true
         kolla_extra_sahara: |
           [extra-sahara.conf]
