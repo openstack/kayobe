@@ -116,3 +116,19 @@ def run_command(cmd, quiet=False, check_output=False, **kwargs):
         return subprocess.check_output(cmd, **kwargs)
     else:
         subprocess.check_call(cmd, **kwargs)
+
+
+def quote_and_escape(value):
+    """Quote and escape a string.
+
+    Adds enclosing single quotes to the string passed, and escapes single
+    quotes within the string using backslashes. This is useful for passing
+    'extra vars' to Ansible. Without this, Ansible only uses the part of the
+    string up to the first whitespace.
+
+    :param value: the string to quote and escape.
+    :returns: the quoted and escaped string.
+    """
+    if not isinstance(value, six.string_types):
+        return value
+    return "'" + value.replace("'", "'\\''") + "'"

@@ -133,9 +133,13 @@ def build_args(parsed_args, playbooks,
         cmd += ["-e", "@%s" % vars_file]
     if parsed_args.extra_vars:
         for extra_var in parsed_args.extra_vars:
+            # Don't quote or escape variables passed via the kayobe -e CLI
+            # argument, to match Ansible's behaviour.
             cmd += ["-e", extra_var]
     if extra_vars:
         for extra_var_name, extra_var_value in extra_vars.items():
+            # Quote and escape variables originating within the python CLI.
+            extra_var_value = utils.quote_and_escape(extra_var_value)
             cmd += ["-e", "%s=%s" % (extra_var_name, extra_var_value)]
     if parsed_args.become:
         cmd += ["--become"]

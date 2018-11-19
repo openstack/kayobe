@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an issue where CLI arguments containing whitespace that are passed to
+    Ansible needed to be quoted. See `Story 2004379
+    <https://storyboard.openstack.org/#!/story/2004379>`__ for details.
