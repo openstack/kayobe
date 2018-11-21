@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Fixes an issue where the seed hypervisor user bootstrapping is not
+    performed when executing ``kayobe seed hypervisor host configure``. See
+    `story 2004401 <https://storyboard.openstack.org/#!/story/2004401>`__ for
+    details.
