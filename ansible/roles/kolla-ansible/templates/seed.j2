@@ -1,9 +1,7 @@
 # Simple inventory for bootstrapping Kolla seed node.
 [seed]
 {% for seed in groups.get('seed', []) %}
-{% set seed_hv=hostvars[seed] %}
-{{ seed }}{% for hv_name in kolla_seed_inventory_pass_through_host_vars %}{% if hv_name in seed_hv %} {{ kolla_seed_inventory_pass_through_host_vars_map.get(hv_name, hv_name) }}='{{ seed_hv[hv_name] | to_json }}'{% endif %}{% endfor %}
-
+{{ seed }}
 {% endfor %}
 
 [seed:vars]

@@ -4,26 +4,17 @@
 # Components define groups of services, e.g. nova or ironic.
 # Services define single containers, e.g. nova-compute or ironic-api.
 
-{% set top_level_groups = kolla_overcloud_inventory_top_level_group_map.values() |
-                          selectattr('groups', 'defined') |
-                          map(attribute='groups') |
-                          sum(start=[]) |
-                          unique |
-                          list %}
-
-{% for group in top_level_groups %}
+{% for group in kolla_overcloud_top_level_groups %}
 # Top level {{ group }} group.
 [{{ group }}]
 # These hostnames must be resolvable from your deployment host
 {% for host in groups.get(group, []) %}
-{% set host_hv=hostvars[host] %}
-{{ host }}{% for hv_name in kolla_overcloud_inventory_pass_through_host_vars %}{% if hv_name in host_hv %} {{ kolla_overcloud_inventory_pass_through_host_vars_map.get(hv_name, hv_name) }}='{{ host_hv[hv_name] | to_json }}'{% endif %}{% endfor %}
-
+{{ host }}
 {% endfor %}
 
 {% endfor %}
 [overcloud:children]
-{% for group in top_level_groups %}
+{% for group in kolla_overcloud_top_level_groups %}
 {{ group }}
 {% endfor %}
 

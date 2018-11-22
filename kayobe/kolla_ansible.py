@@ -87,11 +87,16 @@ def _validate_args(parsed_args, inventory_filename):
         sys.exit(1)
 
     inventory = _get_inventory_path(parsed_args, inventory_filename)
-    result = utils.is_readable_file(inventory)
+    result = utils.is_readable_dir(parsed_args.kolla_venv)
     if not result["result"]:
-        LOG.error("Kolla inventory %s is invalid: %s",
-                  inventory, result["message"])
-        sys.exit(1)
+        # NOTE(mgoddard): Previously the inventory was a file, now it is a
+        # directory to allow us to support inventory host_vars. Support both
+        # formats for now.
+        result_f = utils.is_readable_file(inventory)
+        if not result_f["result"]:
+            LOG.error("Kolla inventory %s is invalid: %s",
+                      inventory, result["message"])
+            sys.exit(1)
 
     result = utils.is_readable_dir(parsed_args.kolla_venv)
     if not result["result"]:

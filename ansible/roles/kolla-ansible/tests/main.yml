@@ -1,7 +1,5 @@
 ---
 # TODO:
-# - Check inventory file.
-# - Add hosts to inventory.
 # - Seed custom inventory
 # - Overcloud custom inventory
 #   - Group map

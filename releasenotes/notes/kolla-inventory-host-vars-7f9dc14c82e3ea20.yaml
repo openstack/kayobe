@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Fixes an issue where if a host has the same name as a group that it is in,
+    configuration of kolla ansible inventory host variables could fail to
+    override the defaults. See `story 2004418
+    <https://storyboard.openstack.org/#!/story/2004418>`__ for details.

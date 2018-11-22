@@ -1,4 +1,31 @@
 ---
+# NOTE: We're not looping over the two inventory files to avoid having the file
+# content displayed in the ansible-playbook output.
+
+- name: Check whether the legacy Kolla overcloud inventory files exist
+  stat:
+    path: "{{ item }}"
+    get_attributes: no
+    get_checksum: no
+    get_mime: no
+  register: inventory_stat
+  with_items:
+    - "{{ kolla_seed_inventory_path }}"
+    - "{{ kolla_overcloud_inventory_path }}"
+  loop_control:
+    label: "{{ item | basename }}"
+
+- name: Ensure the legacy Kolla overcloud inventory file is absent
+  file:
+    path: "{{ item.item }}"
+    state: absent
+  with_items: "{{ inventory_stat.results }}"
+  when:
+    - item.stat.exists
+    - item.stat.isreg
+  loop_control:
+    label: "{{ item.item | basename }}"
+
 - name: Ensure the Kolla Ansible configuration directories exist
   file:
     path: "{{ item }}"
@@ -9,7 +36,8 @@
   become: True
   with_items:
     - "{{ kolla_config_path }}"
-    - "{{ kolla_config_path }}/inventory"
+    - "{{ kolla_seed_inventory_path }}/host_vars"
+    - "{{ kolla_overcloud_inventory_path }}/host_vars"
     - "{{ kolla_node_custom_config_path }}"
 
 - name: Ensure the Kolla global configuration file exists
@@ -18,20 +46,41 @@
     dest: "{{ kolla_config_path }}/globals.yml"
     mode: 0640
 
-# NOTE: We're not looping over the two inventory files to avoid having the file
-# content displayed in the ansible-playbook output.
-
 - name: Ensure the Kolla seed inventory file exists
   copy:
     content: "{{ kolla_seed_inventory }}"
-    dest: "{{ kolla_config_path }}/inventory/seed"
+    dest: "{{ kolla_seed_inventory_path }}/hosts"
     mode: 0640
+
+- name: Ensure the Kolla seed host vars files exist
+  template:
+    src: host-vars.j2
+    dest: "{{ kolla_seed_inventory_path }}/host_vars/{{ host }}"
+    mode: 0640
+  with_inventory_hostnames: "seed"
+  vars:
+    host_vars: "{{ kolla_seed_inventory_pass_through_host_vars }}"
+    host_vars_map: "{{ kolla_seed_inventory_pass_through_host_vars_map }}"
+  loop_control:
+    loop_var: host
 
 - name: Ensure the Kolla overcloud inventory file exists
   copy:
     content: "{{ kolla_overcloud_inventory }}"
-    dest: "{{ kolla_config_path }}/inventory/overcloud"
+    dest: "{{ kolla_overcloud_inventory_path }}/hosts"
     mode: 0640
+
+- name: Ensure the Kolla overcloud host vars files exist
+  template:
+    src: host-vars.j2
+    dest: "{{ kolla_overcloud_inventory_path }}/host_vars/{{ host }}"
+    mode: 0640
+  with_inventory_hostnames: "{{ kolla_overcloud_top_level_groups }}"
+  vars:
+    host_vars: "{{ kolla_overcloud_inventory_pass_through_host_vars }}"
+    host_vars_map: "{{ kolla_overcloud_inventory_pass_through_host_vars_map }}"
+  loop_control:
+    loop_var: host
 
 - name: Ensure the Kolla passwords file exists
   kolla_passwords:

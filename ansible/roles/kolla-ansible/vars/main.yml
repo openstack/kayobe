@@ -51,6 +51,21 @@ kolla_overcloud_inventory_default: |
 # of the top level, component, and service inventories.
 kolla_overcloud_inventory: "{{ kolla_overcloud_inventory_custom or kolla_overcloud_inventory_default }}"
 
+# List of names of all top level groups in the inventory.
+kolla_overcloud_top_level_groups: >
+  {{ kolla_overcloud_inventory_top_level_group_map.values() |
+     selectattr('groups', 'defined') |
+     map(attribute='groups') |
+     sum(start=[]) |
+     unique |
+     list }}
+
+# Path to the kolla ansible seed inventory directory.
+kolla_seed_inventory_path: "{{ kolla_config_path }}/inventory/seed"
+
+# Path to the kolla ansible overcloud inventory directory.
+kolla_overcloud_inventory_path: "{{ kolla_config_path }}/inventory/overcloud"
+
 ###############################################################################
 # Feature configuration.
 
