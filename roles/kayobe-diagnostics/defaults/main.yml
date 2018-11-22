@@ -8,5 +8,9 @@ kayobe_diagnostics_logs_dir:
 # Directory on the remote host in which configuration is stored.
 kayobe_diagnostics_config_dir:
 
+# Directory on the remote host in which configuration for the previous release,
+# prior to an upgrade, is stored.
+kayobe_diagnostics_previous_config_dir:
+
 # Directory on the executor in which to save logs.
 kayobe_diagnostics_executor_log_dir:
