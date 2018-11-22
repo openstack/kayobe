@@ -74,6 +74,7 @@ def test_service_config_directory(host, path):
      'murano.conf',
      'neutron.conf',
      'nova.conf',
+     'octavia.conf',
      'sahara.conf',
      'zookeeper.cfg'])
 def test_service_ini_file(host, path):

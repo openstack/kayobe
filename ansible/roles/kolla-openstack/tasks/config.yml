@@ -28,6 +28,7 @@
     - { src: murano.conf.j2, dest: murano.conf, enabled: "{{ kolla_enable_murano }}" }
     - { src: neutron.conf.j2, dest: neutron.conf, enabled: "{{ kolla_enable_neutron }}" }
     - { src: nova.conf.j2, dest: nova.conf, enabled: "{{ kolla_enable_nova }}" }
+    - { src: octavia.conf.j2, dest: octavia.conf, enabled: "{{ kolla_enable_octavia }}" }
     - { src: pxelinux.default.j2, dest: ironic/pxelinux.default, enabled: "{{ kolla_enable_ironic }}" }
     - { src: inspector.ipxe.j2, dest: ironic/inspector.ipxe, enabled: "{{ kolla_enable_ironic_ipxe }}" }
     - { src: sahara.conf.j2, dest: sahara.conf, enabled: "{{ kolla_enable_sahara }}" }
