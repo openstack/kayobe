@@ -19,6 +19,7 @@
     # List of valid states while a node is being inspected.
     inspecting_states:
       - inspecting
+      - inspect wait
     # Retries to use when using Ironic API and hitting node locked errors.
     ironic_retries: 6
     ironic_retry_interval: 5
@@ -28,9 +29,8 @@
     - name: Check the ironic node's initial provision state
       command: >
         docker exec bifrost_deploy
-        bash -c '. env-vars &&
-        export OS_URL=$IRONIC_URL &&
-        export OS_TOKEN=$OS_AUTH_TOKEN &&
+        bash -c '
+        export OS_CLOUD=bifrost &&
         export BIFROST_INVENTORY_SOURCE=ironic &&
         ansible baremetal
         --connection local
@@ -63,7 +63,8 @@
     - name: Ensure the ironic node is manageable
       command: >
         docker exec bifrost_deploy
-        bash -c '. env-vars &&
+        bash -c '
+        export OS_CLOUD=bifrost &&
         export BIFROST_INVENTORY_SOURCE=ironic &&
         ansible baremetal -vvvv
         --connection local
@@ -72,7 +73,7 @@
         -e @/etc/bifrost/dib.yml
         --limit {{ inventory_hostname }}
         -m command
-        -a "ironic node-set-provision-state {% raw %}{{ inventory_hostname }}{% endraw %} manage"'
+        -a "openstack baremetal node manage {% raw %}{{ inventory_hostname }}{% endraw %}"'
       register: manage_result
       until: manage_result | success or 'is locked by host' in manage_result.stdout
       retries: "{{ ironic_retries }}"
@@ -87,7 +88,8 @@
     - name: Ensure the ironic node is inspected
       command: >
         docker exec bifrost_deploy
-        bash -c '. env-vars &&
+        bash -c '
+        export OS_CLOUD=bifrost &&
         export BIFROST_INVENTORY_SOURCE=ironic &&
         ansible baremetal -vvvv
         --connection local
@@ -96,7 +98,7 @@
         -e @/etc/bifrost/dib.yml
         --limit {{ inventory_hostname }}
         -m command
-        -a "ironic node-set-provision-state {% raw %}{{ inventory_hostname }}{% endraw %} inspect"'
+        -a "openstack baremetal node inspect {% raw %}{{ inventory_hostname }}{% endraw %}"'
       register: provide_result
       until: provide_result | success or 'is locked by host' in provide_result.stdout
       retries: "{{ ironic_retries }}"
@@ -110,9 +112,8 @@
     - name: Wait for the ironic node to be inspected
       command: >
         docker exec bifrost_deploy
-        bash -c '. env-vars &&
-        export OS_URL=$IRONIC_URL &&
-        export OS_TOKEN=$OS_AUTH_TOKEN &&
+        bash -c '
+        export OS_CLOUD=bifrost &&
         export BIFROST_INVENTORY_SOURCE=ironic &&
         ansible baremetal
         --connection local
