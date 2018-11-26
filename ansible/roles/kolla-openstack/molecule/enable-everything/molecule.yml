@@ -58,6 +58,9 @@ provisioner:
           [extra-magnum.conf]
           foo=bar
         kolla_enable_manila: true
+        kolla_extra_manila: |
+          [extra-manila.conf]
+          foo=bar
         kolla_enable_mariadb: true
         kolla_extra_mariadb: |
           [extra-galera.cnf]

@@ -110,6 +110,7 @@
             - { name: ironic, file: ironic.conf }
             - { name: kafka, file: kafka.server.properties }
             - { name: magnum, file: magnum.conf }
+            - { name: manila, file: manila.conf }
             - { name: mariadb, file: galera.cnf }
             - { name: murano, file: murano.conf }
             - { name: neutron, file: neutron.conf }
@@ -212,6 +213,7 @@
       kolla_extra_ironic: "{{ kolla_extra_config.ironic | default }}"
       kolla_extra_kafka: "{{ kolla_extra_config.kafka | default }}"
       kolla_extra_magnum: "{{ kolla_extra_config.magnum | default }}"
+      kolla_extra_manila: "{{ kolla_extra_config.manila | default }}"
       kolla_extra_mariadb: "{{ kolla_extra_config.mariadb | default }}"
       kolla_extra_murano: "{{ kolla_extra_config.murano | default }}"
       kolla_extra_neutron: "{{ kolla_extra_config.neutron | default }}"
