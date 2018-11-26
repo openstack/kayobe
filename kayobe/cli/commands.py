@@ -578,8 +578,6 @@ class OvercloudInventoryDiscover(KayobeAnsibleMixin, VaultMixin, Command):
     * Query the ironic inventory on the seed, and use this to populate kayobe's
       ansible inventory.
     * Allocate IP addresses for all configured networks.
-    * Configure the bifrost service with host variables for provisioning the
-      overcloud hosts.
     * Update the kolla-ansible configuration for the new overcloud hosts.
     """
 
@@ -593,9 +591,7 @@ class OvercloudInventoryDiscover(KayobeAnsibleMixin, VaultMixin, Command):
         # If necessary, allocate IP addresses for the discovered hosts.
         self.run_kayobe_playbook(parsed_args,
                                  "ansible/ip-allocation.yml")
-        # Now populate the Kolla Ansible and Bifrost inventories.
-        self.run_kayobe_playbook(parsed_args,
-                                 "ansible/kolla-bifrost-hostvars.yml")
+        # Now populate the Kolla Ansible inventory.
         self.run_kayobe_playbook(parsed_args, "ansible/kolla-ansible.yml",
                                  tags="config")
 
@@ -652,7 +648,8 @@ class OvercloudHardwareInspect(KayobeAnsibleMixin, VaultMixin, Command):
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Inspecting overcloud")
-        playbooks = _build_playbook_list("overcloud-hardware-inspect")
+        playbooks = _build_playbook_list("kolla-bifrost-hostvars",
+                                         "overcloud-hardware-inspect")
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
 
@@ -666,7 +663,8 @@ class OvercloudProvision(KayobeAnsibleMixin, VaultMixin, Command):
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Provisioning overcloud")
-        playbooks = _build_playbook_list("overcloud-provision")
+        playbooks = _build_playbook_list("kolla-bifrost-hostvars",
+                                         "overcloud-provision")
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
 
