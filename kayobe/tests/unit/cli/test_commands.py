@@ -596,6 +596,95 @@ class TestCase(unittest.TestCase):
         self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbook")
+    def test_overcloud_inventory_discover(self, mock_run):
+        command = commands.OvercloudInventoryDiscover(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                'ansible/overcloud-inventory-discover.yml',
+            ),
+            mock.call(
+                mock.ANY,
+                'ansible/ip-allocation.yml',
+            ),
+            mock.call(
+                mock.ANY,
+                'ansible/kolla-ansible.yml',
+                tags="config",
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_overcloud_hardware_inspect(self, mock_run):
+        command = commands.OvercloudHardwareInspect(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    'ansible/kolla-bifrost-hostvars.yml',
+                    'ansible/overcloud-hardware-inspect.yml',
+                ],
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_overcloud_provision(self, mock_run):
+        command = commands.OvercloudProvision(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    'ansible/kolla-bifrost-hostvars.yml',
+                    'ansible/overcloud-provision.yml',
+                ],
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_overcloud_deprovision(self, mock_run):
+        command = commands.OvercloudDeprovision(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    'ansible/overcloud-deprovision.yml',
+                ],
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_config_dump")
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
