@@ -162,6 +162,7 @@ which files are supported.
    ``keystone/*``                  Extended keystone configuration.
    ``magnum.conf``                 Magnum configuration.
    ``magnum/*``                    Extended magnum configuration.
+   ``manila.conf``                 Manila configuration.
    ``manila/*``                    Extended manila configuration.
    ``murano.conf``                 Murano configuration.
    ``murano/*``                    Extended murano configuration.
