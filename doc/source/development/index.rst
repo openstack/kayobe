@@ -10,4 +10,5 @@ Kayobe Development Guide
    automated
    development
    testing
+   releases
    contributing
