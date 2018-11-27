@@ -8,4 +8,5 @@ Configuration Guide
    kayobe
    physical-network
    network
+   hosts
    kolla-ansible

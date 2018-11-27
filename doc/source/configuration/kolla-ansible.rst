@@ -43,6 +43,8 @@ lookup plugin
    kolla_ansible_venv_extra_requirements:
      - "hvac"
 
+.. _configuration-kolla-ansible-venv:
+
 Remote Execution Environment
 ============================
 
@@ -50,7 +52,7 @@ By default, ansible executes modules remotely using the system python
 interpreter, even if the ansible control process is executed from within a
 virtual environment (unless the ``local`` connection plugin is used).
 This is not ideal if there are python dependencies that must be installed
-without isolation from the system python packages. Ansible can be configured to
+with isolation from the system python packages. Ansible can be configured to
 use a virtualenv by setting the host variable ``ansible_python_interpreter``
 to a path to a python interpreter in an existing virtual environment.
 

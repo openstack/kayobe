@@ -1,3 +1,5 @@
+.. _configuration-network:
+
 =====================
 Network Configuration
 =====================
@@ -39,6 +41,10 @@ supported:
     VLAN ID.
 ``mtu``
     Maximum Transmission Unit (MTU).
+``vip_address``
+    Virtual IP address (VIP) used by API services on this network.
+``fqdn``
+    Fully Qualified Domain Name (FQDN) used by API services on this network.
 ``routes``
     List of static IP routes. Each item should be a dict containing the
     item ``cidr``, and optionally ``gateway`` and ``table``. ``cidr`` is the CIDR
@@ -85,6 +91,36 @@ This gateway will be configured on all hosts to which the network is mapped.
 Note that configuring multiple IP gateways on a single host will lead to
 unpredictable results.
 
+Configuring an API Virtual IP Address
+-------------------------------------
+
+A virtual IP (VIP) address may be configured for use by Kolla Ansible on the
+internal and external networks, on which the API services will be exposed.
+The variable will be passed through to the ``kolla_internal_vip_address`` or
+``kolla_external_vip_address`` Kolla Ansible variable.
+
+To configure a network called ``example`` with a VIP at ``10.0.0.2``:
+
+.. code-block:: yaml
+   :caption: ``networks.yml``
+
+   example_vip_address: 10.0.0.2
+
+Configuring an API Fully Qualified Domain Name
+----------------------------------------------
+
+A Fully Qualified Domain Name (FQDN) may be configured for use by Kolla Ansible
+on the internal and external networks, on which the API services will be
+exposed.  The variable will be passed through to the ``kolla_internal_fqdn`` or
+``kolla_external_fqdn`` Kolla Ansible variable.
+
+To configure a network called ``example`` with an FQDN at ``api.example.com``:
+
+.. code-block:: yaml
+   :caption: ``networks.yml``
+
+   example_fqdn: api.example.com
+
 Configuring Static IP Routes
 ----------------------------
 
@@ -115,6 +151,8 @@ To configure a network called ``example`` with VLAN ID ``123``:
    :caption: ``networks.yml``
 
    example_vlan: 123
+
+.. _configuration-network-ip-allocation:
 
 IP Address Allocation
 =====================
