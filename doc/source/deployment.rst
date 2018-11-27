@@ -23,6 +23,8 @@ To bootstrap the Ansible control host::
 
     (kayobe) $ kayobe control host bootstrap
 
+.. _physical-network:
+
 Physical Network
 ================
 
