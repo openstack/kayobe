@@ -23,3 +23,7 @@
     src: "{{ kayobe_diagnostics_log_dir }}/"
     dest: "{{ kayobe_diagnostics_executor_log_dir }}/"
     mode: pull
+    copy_links: true
+    verify_host: true
+    rsync_opts:
+      - "--quiet"
