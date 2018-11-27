@@ -1,0 +1,73 @@
+---
+# Facts may not be available for the Ansible control host, so read the OS
+# release manually.
+- name: Check the OS release
+  local_action:
+    module: shell . /etc/os-release && echo $ID
+  changed_when: False
+  register: console_allocation_os_release
+
+- name: Include RedHat family-specific variables
+  include_vars: "RedHat.yml"
+  when: console_allocation_os_release.stdout in ['centos', 'fedora', 'rhel']
+
+- name: Include Debian family-specific variables
+  include_vars: "Debian.yml"
+  when: console_allocation_os_release.stdout in ['debian', 'ubuntu']
+
+# Note: Currently we install these using the system package manager rather than
+# pip to a virtualenv. This is because Yum is required elsewhere and cannot
+# easily be installed in a virtualenv.
+- name: Ensure package dependencies are installed
+  local_action:
+    module: package
+    name: "{{ item }}"
+    state: installed
+    use: "{{ console_allocation_package_manager }}"
+  become: True
+  with_items: "{{ console_allocation_package_dependencies }}"
+  run_once: True
+
+- name: Validate allocation pool start
+  vars:
+    port: "{{ console_allocation_pool_start | int(default=-1) }}"
+  fail:
+    msg: >-
+      You must must define an console_allocation_pool_start. This should
+      be a valid TCP port.
+  when: >-
+    console_allocation_pool_end is none or
+    port | int < 0 or port | int > 65535
+
+- name: Validate allocation pool end
+  vars:
+    port: "{{ console_allocation_pool_end | int(default=-1) }}"
+  fail:
+    msg: >-
+      You must must define an console_allocation_pool_end. This should
+      be a valid TCP port.
+  when: >-
+    console_allocation_pool_end is none or
+    port | int < 0 or port | int > 65535
+
+- name: Validate that allocation start is less than allocation end
+  fail:
+    msg: >-
+      console_allocation_start and console_allocation_end define a range
+      of TCP ports. You have defined a range with a start that is less than
+      the end
+  when:
+    - (console_allocation_pool_start | int) > (console_allocation_pool_end | int)
+
+- name: Ensure Ironic serial console ports are allocated
+  local_action:
+    module: console_allocation
+    allocation_file: "{{ console_allocation_filename }}"
+    nodes: "{{ console_allocation_ironic_nodes }}"
+    allocation_pool_start: "{{ console_allocation_pool_start }}"
+    allocation_pool_end: "{{ console_allocation_pool_end }}"
+  register: result
+
+- name: Register a fact containing the console allocation result
+  set_fact:
+    console_allocation_result: "{{ result }}"

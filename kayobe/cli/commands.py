@@ -1247,6 +1247,57 @@ class BaremetalComputeRename(KayobeAnsibleMixin, VaultMixin, Command):
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
 
+class BaremetalComputeSerialConsoleBase(KayobeAnsibleMixin, VaultMixin,
+                                        Command):
+
+    """Base class for the baremetal serial console commands"""
+
+    @staticmethod
+    def process_limit(parsed_args, extra_vars):
+        if parsed_args.baremetal_compute_limit:
+            extra_vars["console_compute_node_limit"] = (
+                parsed_args.baremetal_compute_limit
+            )
+
+    def get_parser(self, prog_name):
+        parser = super(BaremetalComputeSerialConsoleBase, self).get_parser(
+            prog_name)
+        group = parser.add_argument_group("Baremetal Serial Consoles")
+        group.add_argument("--baremetal-compute-limit",
+                           help="Limit the change to the hosts specified in "
+                                "this limit"
+                           )
+        return parser
+
+
+class BaremetalComputeSerialConsoleEnable(BaremetalComputeSerialConsoleBase):
+    """Enable Serial Console for Baremetal Compute Nodes"""
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Enabling serial console for ironic nodes")
+        extra_vars = {}
+        BaremetalComputeSerialConsoleBase.process_limit(parsed_args,
+                                                        extra_vars)
+        extra_vars["cmd"] = "enable"
+        playbooks = _build_playbook_list("baremetal-compute-serial-console")
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  extra_vars=extra_vars)
+
+
+class BaremetalComputeSerialConsoleDisable(BaremetalComputeSerialConsoleBase):
+    """Disable Serial Console for Baremetal Compute Nodes"""
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Disable serial console for ironic nodes")
+        extra_vars = {}
+        BaremetalComputeSerialConsoleBase.process_limit(parsed_args,
+                                                        extra_vars)
+        extra_vars["cmd"] = "disable"
+        playbooks = _build_playbook_list("baremetal-compute-serial-console")
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  extra_vars=extra_vars)
+
+
 class BaremetalComputeUpdateDeploymentImage(KayobeAnsibleMixin, VaultMixin,
                                             Command):
     """Update the Ironic nodes to use the new  kernel and ramdisk images."""

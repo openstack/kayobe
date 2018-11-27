@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Added commands to enable and disable the Ironic serial console.
+    This allows you to use the serial console from within Horizon.

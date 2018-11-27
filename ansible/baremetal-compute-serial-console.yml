@@ -1,0 +1,130 @@
+---
+# This playbook will enable a serial console on all ironic nodes. This
+# will allow you to access the serial console from within Horizon.
+# See: https://docs.openstack.org/ironic/latest/admin/console.html
+
+- name: Setup OpenStack Environment
+  hosts: controllers[0]
+  gather_facts: False
+  vars:
+    venv: "{{ virtualenv_path }}/openstack-cli"
+  pre_tasks:
+    - name: Set up openstack cli virtualenv
+      pip:
+        virtualenv: "{{ venv }}"
+        name:
+          - python-openstackclient
+          - python-ironicclient
+
+    - block:
+       - name: Fail if allocation pool start not defined
+         fail:
+           msg: >
+             The variable, ironic_serial_console_tcp_pool_start is not defined.
+             This variable is required to run this playbook.
+         when: not ironic_serial_console_tcp_pool_start
+
+       - name: Fail if allocation pool end not defined
+         fail:
+           msg: >
+             The variable, ironic_serial_console_tcp_pool_end is not defined.
+             This variable is required to run this playbook.
+         when:
+           - not ironic_serial_console_tcp_pool_end
+
+       - name: Get list of nodes that we should configure serial consoles on
+         set_fact:
+           baremetal_nodes: >-
+             {{ query('inventory_hostnames', console_compute_node_limit |
+             default('baremetal-compute') ) | unique }}
+
+       - name: Reserve TCP ports for ironic serial consoles
+         include_role:
+           name: console-allocation
+         vars:
+           console_allocation_pool_start: "{{ ironic_serial_console_tcp_pool_start }}"
+           console_allocation_pool_end: "{{ ironic_serial_console_tcp_pool_end }}"
+           console_allocation_ironic_nodes: "{{ baremetal_nodes }}"
+           console_allocation_filename: "{{ kayobe_config_path }}/console-allocation.yml"
+      when: cmd == "enable"
+
+- name: Enable serial console
+  hosts: "{{ console_compute_node_limit | default('baremetal-compute') }}"
+  gather_facts: False
+  vars:
+    venv: "{{ virtualenv_path }}/openstack-cli"
+    controller_host: "{{ groups['controllers'][0] }}"
+  tasks:
+    - name: Get list of nodes
+      command: >
+        {{ venv }}/bin/openstack baremetal node list -f json --long
+      register: nodes
+      delegate_to: "{{ controller_host }}"
+      environment: "{{ openstack_auth_env }}"
+      run_once: true
+      changed_when: false
+      vars:
+        # NOTE: Without this, the controller's ansible_host variable will not
+        # be respected when using delegate_to.
+        ansible_host: "{{ hostvars[controller_host].ansible_host | default(controller_host) }}"
+
+    - block:
+      - name: Fail if console interface is not ipmitool-socat
+        fail:
+          msg: >-
+            In order to use the serial console you must set the console_interface to ipmitool-socat.
+        when: node["Console Interface"] != "ipmitool-socat"
+
+      - name: Set IPMI serial console terminal port
+        vars:
+          name: "{{ node['Name'] }}"
+          port: "{{ hostvars[controller_host].console_allocation_result.ports[name] }}"
+          # NOTE: Without this, the controller's ansible_host variable will not
+          # be respected when using delegate_to.
+          ansible_host: "{{ hostvars[controller_host].ansible_host | default(controller_host) }}"
+        command: >
+          {{ venv }}/bin/openstack baremetal node set {{ name }} --driver-info ipmi_terminal_port={{ port }}
+        delegate_to: "{{ controller_host }}"
+        environment: "{{ openstack_auth_env }}"
+        when: >-
+          node['Driver Info'].ipmi_terminal_port is not defined or
+          node['Driver Info'].ipmi_terminal_port | int != port | int
+
+      - name: Enable the IPMI socat serial console
+        vars:
+          # NOTE: Without this, the controller's ansible_host variable will not
+          # be respected when using delegate_to.
+          ansible_host: "{{ hostvars[controller_host].ansible_host | default(controller_host) }}"
+        command: >
+          {{ venv }}/bin/openstack baremetal node console enable {{ node['Name'] }}
+        delegate_to: "{{ controller_host }}"
+        environment: "{{ openstack_auth_env }}"
+        when: not node['Console Enabled']
+      vars:
+        matching_nodes: >-
+          {{ (nodes.stdout | from_json) | selectattr('Name', 'defined') |
+          selectattr('Name', 'equalto', inventory_hostname ) | list }}
+        node: "{{ matching_nodes | first }}"
+      when:
+        - cmd == "enable"
+        - matching_nodes | length > 0
+
+    - block:
+        - name: Disable the IPMI socat serial console
+          vars:
+            # NOTE: Without this, the controller's ansible_host variable will not
+            # be respected when using delegate_to.
+            ansible_host: "{{ hostvars[controller_host].ansible_host | default(controller_host) }}"
+          command: >
+            {{ venv }}/bin/openstack baremetal node console disable {{ node['Name'] }}
+          delegate_to: "{{ controller_host }}"
+          environment: "{{ openstack_auth_env }}"
+          when: node['Console Enabled']
+      vars:
+        matching_nodes: >-
+          {{ (nodes.stdout | from_json) | selectattr('Name', 'defined') |
+          selectattr('Name', 'equalto', inventory_hostname ) | list }}
+        node: "{{ matching_nodes | first }}"
+      when:
+        - cmd == "disable"
+        - matching_nodes | length > 0
