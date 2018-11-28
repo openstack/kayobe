@@ -182,7 +182,7 @@ Configuration for these devices is applied using the ``dellos6_config`` and
 Provider
 ^^^^^^^^
 
-* ``ansible_host`` is the hostname or IP address.
+* ``ansible_host`` is the hostname or IP address.  Optional.
 
 * ``ansible_user`` is the SSH username.
 
@@ -205,7 +205,7 @@ Configuration for these devices is applied using the
 Provider
 ^^^^^^^^
 
-* ``ansible_host`` is the hostname or IP address.
+* ``ansible_host`` is the hostname or IP address.  Optional.
 
 * ``ansible_user`` is the SSH username.
 
@@ -254,7 +254,7 @@ Ansible module to automate interaction with the switch CLI via SSH.
 Provider
 ^^^^^^^^
 
-* ``ansible_host`` is the hostname or IP address.
+* ``ansible_host`` is the hostname or IP address.  Optional.
 
 * ``ansible_user`` is the SSH username.
 
