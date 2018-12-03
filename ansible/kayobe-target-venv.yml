@@ -52,6 +52,12 @@
             mode: 0700
           become: True
 
+        - name: Ensure pip is installed
+          easy_install:
+            name: pip
+            virtualenv: "{{ virtualenv }}"
+            virtualenv_site_packages: True
+
         - name: Ensure kayobe virtualenv has the latest version of pip installed
           pip:
             name: pip
