@@ -26,7 +26,7 @@ Documentation
    configuration/index
    deployment
    upgrading
-   administration
+   administration/index
 
 Advanced Documentation
 ----------------------

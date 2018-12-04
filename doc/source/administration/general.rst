@@ -1,0 +1,49 @@
+======================
+General Administration
+======================
+
+Running Kayobe Playbooks on Demand
+==================================
+
+In some situations it may be necessary to run an individual Kayobe playbook.
+Playbooks are stored in ``<kayobe repo>/ansible/*.yml``.  To run an arbitrary
+Kayobe playbook::
+
+    (kayobe) $ kayobe playbook run <playbook> [<playbook>]
+
+Running Kolla-ansible Commands
+==============================
+
+To execute a kolla-ansible command::
+
+    (kayobe) $ kayobe kolla ansible run <command>
+
+Dumping Kayobe Configuration
+============================
+
+The Ansible configuration space is quite large, and it can be hard to determine
+the final values of Ansible variables.  We can use Kayobe's
+``configuration dump`` command to view individual variables or the variables
+for one or more hosts.  To dump Kayobe configuration for one or more hosts::
+
+    (kayobe) $ kayobe configuration dump
+
+The output is a JSON-formatted object mapping hosts to their hostvars.
+
+We can use the ``--var-name`` argument to inspect a particular variable or the
+``--host`` or ``--hosts`` arguments to view a variable or variables for a
+specific host or set of hosts.
+
+Checking Network Connectivity
+=============================
+
+In complex networking environments it can be useful to be able to automatically
+check network connectivity and diagnose networking issues.  To perform some
+simple connectivity checks::
+
+    (kayobe) $ kayobe network connectivity check
+
+Note that this will run on the seed, seed hypervisor, and overcloud hosts. If
+any of these hosts are not expected to be active (e.g. prior to overcloud
+deployment), the set of target hosts may be limited using the ``--limit``
+argument.
