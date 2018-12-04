@@ -19,7 +19,7 @@
 - src: stackhpc.drac-facts
   version: 1.0.0
 - src: stackhpc.grafana-conf
-  version: 1.0
+  version: 1.1.0
 - src: stackhpc.libvirt-host
   version: v1.1.0
 - src: stackhpc.libvirt-vm
