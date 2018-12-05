@@ -260,7 +260,7 @@ the following on the seed::
     (bifrost_deploy) $ ironic node-list
 
 In order to interact with these nodes using Kayobe, run the following command
-to add them to the Kayobe and bifrost Ansible inventories::
+to add them to the Kayobe and Kolla-Ansible inventories::
 
     (kayobe) $ kayobe overcloud inventory discover
 
