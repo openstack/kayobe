@@ -8,9 +8,9 @@
     - public-openrc
   vars:
     public_api_proto: "{% if kolla_enable_tls_external | bool %}https{% else %}http{% endif %}"
-    public_api_vip_address: "{{ public_net_name | net_vip_address }}"
+    public_api_host: "{{ public_net_name | net_fqdn or public_net_name | net_vip_address }}"
     public_api_keystone_port: 5000
   roles:
     - role: public-openrc
       public_openrc_kolla_config_path: "{{ kolla_config_path }}"
-      public_openrc_auth_url: "{{ public_api_proto }}://{{ public_api_vip_address }}:{{ public_api_keystone_port }}"
+      public_openrc_auth_url: "{{ public_api_proto }}://{{ public_api_host }}:{{ public_api_keystone_port }}"
