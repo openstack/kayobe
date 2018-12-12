@@ -9,4 +9,5 @@ Configuration Guide
    physical-network
    network
    hosts
+   kolla
    kolla-ansible
