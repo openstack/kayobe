@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Fixes a compatibility issue with Ansible modules for Dell switches which
+    was preventing physical network configuration for this type of hardware.
+    See `Story 2004588 <https://storyboard.openstack.org/#!/story/2004588>`__
+    for details.
