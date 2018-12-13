@@ -63,11 +63,14 @@ For example, to install from a custom Git repository:
    kolla_source_url: https://git.example.com/kolla
    kolla_source_version: downstream
 
+.. _configuration-kolla-global:
+
 Global Configuration
 ====================
 
 The following variables are global, affecting all container images. They are
-used to generate the Kolla configuration file, ``kolla-build.conf``.
+used to generate the Kolla configuration file, ``kolla-build.conf``, and also
+affect :ref:`Kolla Ansible configuration <configuration-kolla-ansible-global>`.
 
 ``kolla_base_distro``
     Kolla base container image distribution. Default is ``centos``.
