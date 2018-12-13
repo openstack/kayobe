@@ -57,7 +57,6 @@ passwords.  It applies global configuration for LLDP, and enables two
             host: "{{ switch_host }}"
             username: "{{ switch_user }}"
             password: "{{ switch_password }}"
-            transport: cli
             authorize: yes
             auth_pass: "{{ switch_auth_pass }}"
           dell_switch_config:
