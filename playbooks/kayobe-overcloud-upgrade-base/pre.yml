@@ -51,7 +51,7 @@
         src: overrides.yml.j2
         dest: "{{ previous_kayobe_config_src_dir }}/etc/kayobe/zz-overrides.yml"
       vars:
-        previous_release: true
+        is_previous_release: true
 
     # NOTE(mgoddard): The kayobe dev config by default expects a bridge -
     # breth1 - to exist with an IP address of 192.168.33.3.
