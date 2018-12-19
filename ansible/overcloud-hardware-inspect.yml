@@ -22,6 +22,7 @@
     # Retries to use when using Ironic API and hitting node locked errors.
     ironic_retries: 6
     ironic_retry_interval: 5
+    ironic_api_version: 1.34
     seed_host: "{{ groups['seed'][0] }}"
   gather_facts: no
   tasks:
@@ -31,6 +32,7 @@
         bash -c '. env-vars &&
         export OS_URL=$IRONIC_URL &&
         export OS_TOKEN=$OS_AUTH_TOKEN &&
+        export OS_BAREMETAL_API_VERSION={{ ironic_api_version }} &&
         export BIFROST_INVENTORY_SOURCE=ironic &&
         ansible baremetal
         --connection local
@@ -113,6 +115,7 @@
         bash -c '. env-vars &&
         export OS_URL=$IRONIC_URL &&
         export OS_TOKEN=$OS_AUTH_TOKEN &&
+        export OS_BAREMETAL_API_VERSION={{ ironic_api_version }} &&
         export BIFROST_INVENTORY_SOURCE=ironic &&
         ansible baremetal
         --connection local
