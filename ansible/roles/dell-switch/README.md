@@ -14,9 +14,6 @@ The switches should be configured to allow SSH access.
 Role Variables
 --------------
 
-`dell_switch_delegate_to` is the host on which to execute the `dellos` Ansible
-modules.
-
 `dell_switch_type` is the type of Dell switch. One of `dellos6`, `dellos9`.
 
 `dell_switch_provider` is authentication provider information passed as the
@@ -51,7 +48,6 @@ passwords.  It applies global configuration for LLDP, and enables two
       gather_facts: no
       roles:
         - role: dell-switch
-          dell_switch_delegate_to: localhost
           dell_switch_type: "dellos9"
           dell_switch_provider:
             host: "{{ switch_host }}"

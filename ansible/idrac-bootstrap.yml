@@ -113,7 +113,6 @@
     # Configure bootstrap VLAN on the switch and add controller and trunk
     # interfaces to it.
     - role: dell-switch
-      dell_switch_delegate_to: localhost
       dell_switch_type: "{{ switch_type }}"
       dell_switch_provider: "{{ switch_dellos_provider }}"
       dell_switch_config:
@@ -145,7 +144,6 @@
     - name: Ensure iDRACs are (sequentially) bootstrapped
       include: idrac-bootstrap-one.yml
       vars:
-        dell_switch_delegate_to: localhost
         dell_switch_type: "{{ switch_type }}"
         dell_switch_provider: "{{ switch_dellos_provider }}"
         switch_interface_name: "{{ item.key }}"
@@ -180,7 +178,6 @@
     # Remove bootstrap VLAN from the switch and remove controller and trunk
     # interfaces from it.
     - role: dell-switch
-      dell_switch_delegate_to: localhost
       dell_switch_type: "{{ switch_type }}"
       dell_switch_provider: "{{ switch_dellos_provider }}"
       dell_switch_config:
