@@ -47,7 +47,7 @@
   run_once: True
   when:
     - group_result|changed
-    - ansible_version | version_compare('2.3', 'lt')
+    - ansible_version.full | version_compare('2.3', 'lt')
   vars:
     cp_hostname: "{{ hostvars[item].ansible_host|default(inventory_hostname) }}"
     cp_username: "{{ hostvars[item].ansible_user }}"
@@ -71,7 +71,7 @@
   run_once: True
   when:
     - group_result|changed
-    - ansible_version | version_compare('2.3', 'ge')
+    - ansible_version.full | version_compare('2.3', 'ge')
 
 - name: Drop all persistent SSH connections to activate the new group membership
   local_action:
