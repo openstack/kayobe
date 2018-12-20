@@ -3,6 +3,7 @@
   hosts: seed:overcloud
   tags:
     - lvm
+    - upgrade-check
   pre_tasks:
     - name: Fail if the LVM physical disks have not been configured
       fail:
@@ -12,6 +13,14 @@
           has a valid 'disks' list.
       with_items: "{{ lvm_groups | default([]) }}"
       when: not item.disks | default([]) or 'changeme' in item.disks | default([])
+    - name: Fail if the LVM physical disks are configured as a comma-separated string
+      fail:
+        msg: >
+          The physical disk list for volume {{ item.vgname }} must be
+          configured as a list instead of a comma-separated string. Ensure that
+          each volume group in 'lvm_groups' has a valid 'disks' list.
+      with_items: "{{ lvm_groups | default([]) }}"
+      when: item.disks | string() == item.disks
   roles:
     - role: mrlesmithjr.manage-lvm
       manage_lvm: True
