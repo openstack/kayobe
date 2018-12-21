@@ -81,10 +81,17 @@ If using Vagrant, SSH into the Vagrant VM and change to the shared directory::
     vagrant ssh
     cd /vagrant
 
-If not using Vagrant, run the ``dev/install.sh`` script to install kayobe and
+If not using Vagrant, run the ``dev/install-dev.sh`` script to install kayobe and
 its dependencies in a virtual environment::
 
-    ./dev/install.sh
+    ./dev/install-dev.sh
+
+.. note::
+
+   This will create an :ref:`editable install <installation-editable>`.
+   It is also possible to install kayobe in a non-editable way, such that
+   changes will not been seen until you reinstall the package. To do this you
+   can run ``./dev/install.sh``.
 
 Run the ``dev/overcloud-deploy.sh`` script to deploy the OpenStack control
 plane::
@@ -137,10 +144,17 @@ environment.
 Usage
 -----
 
-Run the ``dev/install.sh`` script to install kayobe and its dependencies in a
+Run the ``dev/install-dev.sh`` script to install kayobe and its dependencies in a
 virtual environment::
 
-    ./dev/install.sh
+    ./dev/install-dev.sh
+
+.. note::
+
+   This will create an :ref:`editable install <installation-editable>`.
+   It is also possible to install kayobe in a non-editable way, such that
+   changes will not been seen until you reinstall the package. To do this you
+   can run ``./dev/install.sh``.
 
 Run the ``dev/seed-hypervisor-deploy.sh`` script to deploy the seed
 hypervisor::
@@ -180,10 +194,17 @@ environment.
 Usage
 =====
 
-Run the ``dev/install.sh`` script to install kayobe and its dependencies in a
+Run the ``dev/install-dev.sh`` script to install kayobe and its dependencies in a
 virtual environment::
 
-    ./dev/install.sh
+    ./dev/install-dev.sh
+
+.. note::
+
+   This will create an :ref:`editable install <installation-editable>`.
+   It is also possible to install kayobe in a non-editable way, such that
+   changes will not been seen until you reinstall the package. To do this you
+   can run ``./dev/install.sh``.
 
 Run the ``dev/seed-deploy.sh`` script to deploy the seed VM::
 

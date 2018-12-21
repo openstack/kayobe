@@ -1,0 +1,15 @@
+---
+features:
+  - |
+    Kayobe no longer requires a checkout of the source code repository to
+    function. The files needed to run kayobe are now shipped as part of the
+    python package. Please see: `Story 2004252 <https://storyboard.openstack.org/#!/story/2004252/>`_
+    for more details.
+upgrade:
+  - |
+    Modifications to the kayobe source tree will no longer have an immediate
+    effect. This is because the ansible playbooks are now shipped as part of the
+    kayobe package. You must reinstall the package, or use an editable package
+    install, see: `pip editable-installs
+    <https://pip.pypa.io/en/stable/reference/pip_install/#editable-installs>`_,
+    to replicate the old behaviour.

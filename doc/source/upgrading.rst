@@ -16,17 +16,63 @@ Upgrading Kayobe
 ================
 
 If a new, suitable version of kayobe is available, it should be installed.
-If using kayobe from a git checkout, this may be done by pulling down the new
-version from Github.  Make sure that any local changes to kayobe are committed.
-For example, to pull version 1.0.0 from the ``origin`` remote::
+As described in :ref:`installation`, Kayobe can be installed via the released
+Python packages on PyPI, or from source. Installation from a Python package is
+supported from Kayobe 5.0.0 onwards.
 
-    $ git pull origin 1.0.0
+Upgrading from PyPI
+-------------------
 
-If local changes were made to kayobe, these should now be reapplied.
+This section describes how to upgrade Kayobe from a Python package in a
+virtualenv. This is supported from Kayobe 5.0.0 onwards.
 
-The upgraded kayobe python module and dependencies should be installed::
+Ensure that the virtualenv is activated::
 
+    $ source <base_path>/venvs/kayobe/bin/activate
+
+Update the pip package::
+
+    (kayobe) $ pip install -U pip
+
+If upgrading to the latest version of Kayobe::
+
+    (kayobe) $ pip install -U kayobe
+
+Alternatively, to upgrade to a specific release of Kayobe::
+
+    (kayobe) $ pip install kayobe==5.0.0
+
+Upgrading from source
+---------------------
+
+This section describes how to install Kayobe from source in a virtualenv.
+
+First, check out the required version of the Kayobe source code.  This may be
+done by pulling down the new version from Github.  Make sure that any local
+changes to kayobe are committed and merged with the new upstream code as
+necessary.  For example, to pull version 5.0.0 from the ``origin`` remote::
+
+    $ cd <base_path>/src/kayobe
+    $ git pull origin 5.0.0
+
+Ensure that the virtualenv is activated::
+
+    $ source <base_path>/venvs/kayobe/bin/activate
+
+Update the pip package::
+
+    (kayobe) $ pip install -U pip
+
+If using a non-editable install of Kayobe::
+
+    (kayobe) $ cd <base_path>/src/kayobe
     (kayobe) $ pip install -U .
+
+Alternatively, if using an editable install of Kayobe (version 5.0.0 onwards,
+see :ref:`installation-editable` for details)::
+
+    (kayobe) $ cd <base_path>/src/kayobe
+    (kayobe) $ pip install -U -e .
 
 Migrating Kayobe Configuration
 ------------------------------

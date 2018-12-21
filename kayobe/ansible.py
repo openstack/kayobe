@@ -199,7 +199,8 @@ def config_dump(parsed_args, host=None, hosts=None, var_name=None,
             extra_vars["dump_facts"] = facts
         # Don't use check mode for configuration dumps as we won't get any
         # results back.
-        run_playbook(parsed_args, "ansible/dump-config.yml",
+        playbook_path = utils.get_data_files_path("ansible", "dump-config.yml")
+        run_playbook(parsed_args, playbook_path,
                      extra_vars=extra_vars, tags=tags, quiet=True,
                      verbose_level=verbose_level, check=False)
         hostvars = {}
@@ -230,7 +231,9 @@ def install_galaxy_roles(parsed_args, force=False):
     :param force: Whether to force reinstallation of roles.
     """
     LOG.info("Installing galaxy role dependencies from kayobe")
-    utils.galaxy_install("requirements.yml", "ansible/roles", force=force)
+    requirements = utils.get_data_files_path("requirements.yml")
+    roles_destination = utils.get_data_files_path('ansible', 'roles')
+    utils.galaxy_install(requirements, roles_destination, force=force)
 
     # Check for requirements in kayobe configuration.
     kc_reqs_path = os.path.join(parsed_args.config_path,

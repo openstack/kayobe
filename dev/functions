@@ -87,8 +87,8 @@ function install_dependencies {
 }
 
 function install_venv {
-    # Install a virtualenv at $1. Install all the packages in proceeding
-    # arguments using pip.
+    # Install a virtualenv at $1. The rest of the arguments are passed
+    # directly to pip.
     venv_path="$1"
     shift
     pip_paths="$@"
@@ -117,6 +117,11 @@ function install_kayobe_venv {
     install_venv "${KAYOBE_VENV_PATH}" "${KAYOBE_SOURCE_PATH}"
 }
 
+function install_kayobe_dev_venv {
+    # Install Kayobe in the venv in editable mode.
+    install_venv "${KAYOBE_VENV_PATH}" -e "${KAYOBE_SOURCE_PATH}"
+}
+
 function upgrade_kayobe_venv {
     echo "Upgrading kayobe virtual environment in ${KAYOBE_VENV_PATH}"
     virtualenv "${KAYOBE_VENV_PATH}"
@@ -143,8 +148,16 @@ function environment_setup {
     source "${KAYOBE_VENV_PATH}/bin/activate"
     set -u
     source "${KAYOBE_CONFIG_SOURCE_PATH}/kayobe-env"
-
-    cd "${KAYOBE_SOURCE_PATH}"
+    # FIXME: For upgrades to work, we must change the working directory to the kayobe
+    # source checkout. This can be removed once the previous version is based on
+    # the rocky release.
+    if [ ! -d "${KAYOBE_VENV_PATH}/share/kayobe/ansible" ]; then
+        cd "${KAYOBE_SOURCE_PATH}"
+    else
+        # kayobe should still be able to function when the current working directory
+        # is not the source checkout
+        cd /tmp
+    fi
 }
 
 function run_kayobe {

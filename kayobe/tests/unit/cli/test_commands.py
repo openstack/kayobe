@@ -20,6 +20,7 @@ import mock
 
 from kayobe import ansible
 from kayobe.cli import commands
+from kayobe import utils
 
 
 class TestApp(cliff.app.App):
@@ -44,9 +45,11 @@ class TestCase(unittest.TestCase):
         self.assertEqual(0, result)
         mock_install.assert_called_once_with(parsed_args)
         expected_calls = [
-            mock.call(mock.ANY, ["ansible/bootstrap.yml"]),
-            mock.call(mock.ANY, ["ansible/kolla-ansible.yml"],
-                      tags="install"),
+            mock.call(mock.ANY, [utils.get_data_files_path(
+                "ansible", "bootstrap.yml")]),
+            mock.call(mock.ANY, [
+                utils.get_data_files_path("ansible", "kolla-ansible.yml")
+            ], tags="install"),
         ]
         self.assertEqual(expected_calls, mock_run.call_args_list)
 
@@ -63,9 +66,11 @@ class TestCase(unittest.TestCase):
         mock_install.assert_called_once_with(parsed_args, force=True)
         mock_prune.assert_called_once_with(parsed_args)
         expected_calls = [
-            mock.call(mock.ANY, ["ansible/bootstrap.yml"]),
-            mock.call(mock.ANY, ["ansible/kolla-ansible.yml"],
-                      tags="install"),
+            mock.call(mock.ANY, [utils.get_data_files_path(
+                "ansible", "bootstrap.yml")]),
+            mock.call(mock.ANY, [
+                utils.get_data_files_path("ansible", "kolla-ansible.yml")
+            ], tags="install"),
         ]
         self.assertEqual(expected_calls, mock_run.call_args_list)
 
@@ -80,7 +85,7 @@ class TestCase(unittest.TestCase):
         expected_calls = [
             mock.call(
                 mock.ANY,
-                "ansible/physical-network.yml",
+                utils.get_data_files_path("ansible", "physical-network.yml"),
                 limit="switches",
                 extra_vars={
                     "physical_network_display": False
@@ -100,7 +105,7 @@ class TestCase(unittest.TestCase):
         expected_calls = [
             mock.call(
                 mock.ANY,
-                "ansible/physical-network.yml",
+                utils.get_data_files_path("ansible", "physical-network.yml"),
                 limit="switches",
                 extra_vars={
                     "physical_network_display": True
@@ -121,7 +126,7 @@ class TestCase(unittest.TestCase):
         expected_calls = [
             mock.call(
                 mock.ANY,
-                "ansible/physical-network.yml",
+                utils.get_data_files_path("ansible", "physical-network.yml"),
                 limit="switches",
                 extra_vars={
                     "physical_network_display": False,
@@ -143,7 +148,7 @@ class TestCase(unittest.TestCase):
         expected_calls = [
             mock.call(
                 mock.ANY,
-                "ansible/physical-network.yml",
+                utils.get_data_files_path("ansible", "physical-network.yml"),
                 limit="switches",
                 extra_vars={
                     "physical_network_display": False,
@@ -174,7 +179,7 @@ class TestCase(unittest.TestCase):
         expected_calls = [
             mock.call(
                 mock.ANY,
-                "ansible/physical-network.yml",
+                utils.get_data_files_path("ansible", "physical-network.yml"),
                 limit="switches",
                 extra_vars={
                     "physical_network_display": False,
@@ -198,7 +203,7 @@ class TestCase(unittest.TestCase):
         expected_calls = [
             mock.call(
                 mock.ANY,
-                "ansible/physical-network.yml",
+                utils.get_data_files_path("ansible", "physical-network.yml"),
                 limit="switches",
                 extra_vars={
                     "physical_network_display": False,
@@ -218,7 +223,8 @@ class TestCase(unittest.TestCase):
         result = command.run(parsed_args)
         self.assertEqual(0, result)
         expected_calls = [
-            mock.call(mock.ANY, ["ansible/network-connectivity.yml"]),
+            mock.call(mock.ANY, [utils.get_data_files_path(
+                "ansible", "network-connectivity.yml")]),
         ]
         self.assertEqual(expected_calls, mock_run.call_args_list)
 
@@ -245,19 +251,22 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/ip-allocation.yml",
-                    "ansible/ssh-known-host.yml",
-                    "ansible/kayobe-ansible-user.yml",
-                    "ansible/pip.yml",
-                    "ansible/kayobe-target-venv.yml",
-                    "ansible/users.yml",
-                    "ansible/yum.yml",
-                    "ansible/dev-tools.yml",
-                    "ansible/network.yml",
-                    "ansible/sysctl.yml",
-                    "ansible/ntp.yml",
-                    "ansible/lvm.yml",
-                    "ansible/seed-hypervisor-libvirt-host.yml",
+                    utils.get_data_files_path("ansible", "ip-allocation.yml"),
+                    utils.get_data_files_path("ansible", "ssh-known-host.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "kayobe-ansible-user.yml"),
+                    utils.get_data_files_path("ansible", "pip.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "kayobe-target-venv.yml"),
+                    utils.get_data_files_path("ansible", "users.yml"),
+                    utils.get_data_files_path("ansible", "yum.yml"),
+                    utils.get_data_files_path("ansible", "dev-tools.yml"),
+                    utils.get_data_files_path("ansible", "network.yml"),
+                    utils.get_data_files_path("ansible", "sysctl.yml"),
+                    utils.get_data_files_path("ansible", "ntp.yml"),
+                    utils.get_data_files_path("ansible", "lvm.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "seed-hypervisor-libvirt-host.yml"),
                 ],
                 limit="seed-hypervisor",
             ),
@@ -278,8 +287,10 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/kayobe-target-venv.yml",
-                    "ansible/kolla-target-venv.yml",
+                    utils.get_data_files_path(
+                        "ansible", "kayobe-target-venv.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "kolla-target-venv.yml"),
                 ],
                 limit="seed-hypervisor",
             ),
@@ -312,37 +323,41 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/ip-allocation.yml",
-                    "ansible/ssh-known-host.yml",
-                    "ansible/kayobe-ansible-user.yml",
-                    "ansible/pip.yml",
-                    "ansible/kayobe-target-venv.yml",
-                    "ansible/users.yml",
-                    "ansible/yum.yml",
-                    "ansible/dev-tools.yml",
-                    "ansible/disable-selinux.yml",
-                    "ansible/network.yml",
-                    "ansible/sysctl.yml",
-                    "ansible/ip-routing.yml",
-                    "ansible/snat.yml",
-                    "ansible/disable-glean.yml",
-                    "ansible/ntp.yml",
-                    "ansible/lvm.yml",
+                    utils.get_data_files_path("ansible", "ip-allocation.yml"),
+                    utils.get_data_files_path("ansible", "ssh-known-host.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "kayobe-ansible-user.yml"),
+                    utils.get_data_files_path("ansible", "pip.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "kayobe-target-venv.yml"),
+                    utils.get_data_files_path("ansible", "users.yml"),
+                    utils.get_data_files_path("ansible", "yum.yml"),
+                    utils.get_data_files_path("ansible", "dev-tools.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "disable-selinux.yml"),
+                    utils.get_data_files_path("ansible", "network.yml"),
+                    utils.get_data_files_path("ansible", "sysctl.yml"),
+                    utils.get_data_files_path("ansible", "ip-routing.yml"),
+                    utils.get_data_files_path("ansible", "snat.yml"),
+                    utils.get_data_files_path("ansible", "disable-glean.yml"),
+                    utils.get_data_files_path("ansible", "ntp.yml"),
+                    utils.get_data_files_path("ansible", "lvm.yml"),
                 ],
                 limit="seed",
             ),
             mock.call(
                 mock.ANY,
-                ["ansible/kolla-ansible.yml"],
+                [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
                 tags="config",
             ),
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/pip.yml",
-                    "ansible/kolla-target-venv.yml",
-                    "ansible/kolla-host.yml",
-                    "ansible/docker.yml",
+                    utils.get_data_files_path("ansible", "pip.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "kolla-target-venv.yml"),
+                    utils.get_data_files_path("ansible", "kolla-host.yml"),
+                    utils.get_data_files_path("ansible", "docker.yml"),
                 ],
                 limit="seed",
                 extra_vars={'pip_applicable_users': [None]},
@@ -350,7 +365,8 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/docker-registry.yml",
+                    utils.get_data_files_path("ansible",
+                                              "docker-registry.yml"),
                 ],
                 limit="seed",
                 extra_vars={'kayobe_action': 'deploy'},
@@ -483,7 +499,8 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/host-package-update.yml",
+                    utils.get_data_files_path(
+                        "ansible", "host-package-update.yml"),
                 ],
                 limit="seed",
                 extra_vars={
@@ -508,7 +525,8 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/host-package-update.yml",
+                    utils.get_data_files_path(
+                        "ansible", "host-package-update.yml"),
                 ],
                 limit="seed",
                 extra_vars={
@@ -533,7 +551,8 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/host-package-update.yml",
+                    utils.get_data_files_path(
+                        "ansible", "host-package-update.yml"),
                 ],
                 limit="seed",
                 extra_vars={
@@ -558,8 +577,10 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/kayobe-target-venv.yml",
-                    "ansible/kolla-target-venv.yml",
+                    utils.get_data_files_path(
+                        "ansible", "kayobe-target-venv.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "kolla-target-venv.yml"),
                 ],
                 limit="seed",
             ),
@@ -578,9 +599,11 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/container-image-builders-check.yml",
-                    "ansible/kolla-build.yml",
-                    "ansible/container-image-build.yml"
+                    utils.get_data_files_path(
+                        "ansible", "container-image-builders-check.yml"),
+                    utils.get_data_files_path("ansible", "kolla-build.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "container-image-build.yml")
                 ],
                 extra_vars={
                     "container_image_sets": (
@@ -603,9 +626,11 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/container-image-builders-check.yml",
-                    "ansible/kolla-build.yml",
-                    "ansible/container-image-build.yml"
+                    utils.get_data_files_path(
+                        "ansible", "container-image-builders-check.yml"),
+                    utils.get_data_files_path("ansible", "kolla-build.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "container-image-build.yml")
                 ],
                 extra_vars={
                     "container_image_regexes": "'^regex1$ ^regex2$'",
@@ -629,7 +654,7 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/seed-ipa-build.yml",
+                    utils.get_data_files_path("ansible", "seed-ipa-build.yml"),
                 ],
                 extra_vars={},
             ),
@@ -650,7 +675,7 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/seed-ipa-build.yml",
+                    utils.get_data_files_path("ansible", "seed-ipa-build.yml"),
                 ],
                 extra_vars={"ipa_image_force_rebuild": True},
             ),
@@ -672,20 +697,24 @@ class TestCase(unittest.TestCase):
         expected_calls = [
             mock.call(
                 mock.ANY,
-                ["ansible/kolla-ansible.yml"],
+                [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
                 tags="config",
             ),
             mock.call(
                 mock.ANY,
-                ["ansible/kolla-bifrost.yml"],
+                [utils.get_data_files_path("ansible", "kolla-bifrost.yml")],
             ),
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/overcloud-host-image-workaround-resolv.yml",
-                    "ansible/overcloud-host-image-workaround-cloud-init.yml",
-                    "ansible/seed-introspection-rules.yml",
-                    "ansible/dell-switch-bmp.yml",
+                    utils.get_data_files_path(
+                        "ansible", "overcloud-host-image-workaround-resolv.yml"),  # noqa
+                    utils.get_data_files_path(
+                        "ansible", "overcloud-host-image-workaround-cloud-init.yml"),  # noqa
+                    utils.get_data_files_path(
+                        "ansible", "seed-introspection-rules.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "dell-switch-bmp.yml"),
                 ],
             ),
         ]
@@ -714,23 +743,32 @@ class TestCase(unittest.TestCase):
         expected_calls = [
             mock.call(
                 mock.ANY,
-                ["ansible/kolla-ansible.yml"],
+                [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
                 tags="config",
             ),
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/kolla-bifrost.yml",
-                    "ansible/seed-service-upgrade-prep.yml"
+                    utils.get_data_files_path("ansible", "kolla-bifrost.yml"),
+                    utils.get_data_files_path("ansible",
+                                              "seed-service-upgrade-prep.yml")
                 ],
             ),
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/overcloud-host-image-workaround-resolv.yml",
-                    "ansible/overcloud-host-image-workaround-cloud-init.yml",
-                    "ansible/seed-introspection-rules.yml",
-                    "ansible/dell-switch-bmp.yml",
+                    utils.get_data_files_path(
+                        "ansible",
+                        "overcloud-host-image-workaround-resolv.yml"),
+                    utils.get_data_files_path(
+                        "ansible",
+                        "overcloud-host-image-workaround-cloud-init.yml"),
+                    utils.get_data_files_path(
+                        "ansible",
+                        "seed-introspection-rules.yml"),
+                    utils.get_data_files_path(
+                        "ansible",
+                        "dell-switch-bmp.yml"),
                 ],
             ),
         ]
@@ -757,15 +795,16 @@ class TestCase(unittest.TestCase):
         expected_calls = [
             mock.call(
                 mock.ANY,
-                'ansible/overcloud-inventory-discover.yml',
+                utils.get_data_files_path(
+                    "ansible", "overcloud-inventory-discover.yml"),
             ),
             mock.call(
                 mock.ANY,
-                'ansible/ip-allocation.yml',
+                utils.get_data_files_path("ansible", "ip-allocation.yml"),
             ),
             mock.call(
                 mock.ANY,
-                'ansible/kolla-ansible.yml',
+                utils.get_data_files_path("ansible", "kolla-ansible.yml"),
                 tags="config",
             ),
         ]
@@ -785,8 +824,10 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    'ansible/kolla-bifrost-hostvars.yml',
-                    'ansible/overcloud-hardware-inspect.yml',
+                    utils.get_data_files_path(
+                        "ansible", "kolla-bifrost-hostvars.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "overcloud-hardware-inspect.yml"),
                 ],
             ),
         ]
@@ -806,8 +847,10 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    'ansible/kolla-bifrost-hostvars.yml',
-                    'ansible/overcloud-provision.yml',
+                    utils.get_data_files_path(
+                        "ansible", "kolla-bifrost-hostvars.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "overcloud-provision.yml"),
                 ],
             ),
         ]
@@ -827,7 +870,8 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    'ansible/overcloud-deprovision.yml',
+                    utils.get_data_files_path(
+                        "ansible", "overcloud-deprovision.yml"),
                 ],
             ),
         ]
@@ -860,37 +904,43 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/ip-allocation.yml",
-                    "ansible/ssh-known-host.yml",
-                    "ansible/kayobe-ansible-user.yml",
-                    "ansible/pip.yml",
-                    "ansible/kayobe-target-venv.yml",
-                    "ansible/users.yml",
-                    "ansible/yum.yml",
-                    "ansible/dev-tools.yml",
-                    "ansible/disable-selinux.yml",
-                    "ansible/network.yml",
-                    "ansible/sysctl.yml",
-                    "ansible/disable-glean.yml",
-                    "ansible/disable-cloud-init.yml",
-                    "ansible/ntp.yml",
-                    "ansible/lvm.yml",
+                    utils.get_data_files_path("ansible", "ip-allocation.yml"),
+                    utils.get_data_files_path("ansible", "ssh-known-host.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "kayobe-ansible-user.yml"),
+                    utils.get_data_files_path("ansible", "pip.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "kayobe-target-venv.yml"),
+                    utils.get_data_files_path("ansible", "users.yml"),
+                    utils.get_data_files_path("ansible", "yum.yml"),
+                    utils.get_data_files_path("ansible", "dev-tools.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "disable-selinux.yml"),
+                    utils.get_data_files_path("ansible", "network.yml"),
+                    utils.get_data_files_path("ansible", "sysctl.yml"),
+                    utils.get_data_files_path("ansible", "disable-glean.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "disable-cloud-init.yml"),
+                    utils.get_data_files_path("ansible", "ntp.yml"),
+                    utils.get_data_files_path("ansible", "lvm.yml"),
                 ],
                 limit="overcloud",
             ),
             mock.call(
                 mock.ANY,
-                ["ansible/kolla-ansible.yml"],
+                [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
                 tags="config",
             ),
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/pip.yml",
-                    "ansible/kolla-target-venv.yml",
-                    "ansible/kolla-host.yml",
-                    "ansible/docker.yml",
-                    "ansible/ceph-block-devices.yml",
+                    utils.get_data_files_path("ansible", "pip.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "kolla-target-venv.yml"),
+                    utils.get_data_files_path("ansible", "kolla-host.yml"),
+                    utils.get_data_files_path("ansible", "docker.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "ceph-block-devices.yml"),
                 ],
                 limit="overcloud",
                 extra_vars={"pip_applicable_users": [None]},
@@ -1023,7 +1073,8 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/host-package-update.yml",
+                    utils.get_data_files_path(
+                        "ansible", "host-package-update.yml"),
                 ],
                 limit="overcloud",
                 extra_vars={
@@ -1048,7 +1099,8 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/host-package-update.yml",
+                    utils.get_data_files_path(
+                        "ansible", "host-package-update.yml"),
                 ],
                 limit="overcloud",
                 extra_vars={
@@ -1073,7 +1125,8 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/host-package-update.yml",
+                    utils.get_data_files_path(
+                        "ansible", "host-package-update.yml"),
                 ],
                 limit="overcloud",
                 extra_vars={
@@ -1098,10 +1151,14 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/kayobe-target-venv.yml",
-                    "ansible/kolla-target-venv.yml",
-                    "ansible/overcloud-docker-sdk-upgrade.yml",
-                    "ansible/overcloud-etc-hosts-fixup.yml",
+                    utils.get_data_files_path(
+                        "ansible", "kayobe-target-venv.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "kolla-target-venv.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "overcloud-docker-sdk-upgrade.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "overcloud-etc-hosts-fixup.yml"),
                 ],
                 limit="overcloud",
             ),
@@ -1120,9 +1177,11 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/container-image-builders-check.yml",
-                    "ansible/kolla-build.yml",
-                    "ansible/container-image-build.yml"
+                    utils.get_data_files_path(
+                        "ansible", "container-image-builders-check.yml"),
+                    utils.get_data_files_path("ansible", "kolla-build.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "container-image-build.yml")
                 ],
                 extra_vars={
                     "container_image_sets": (
@@ -1145,9 +1204,11 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/container-image-builders-check.yml",
-                    "ansible/kolla-build.yml",
-                    "ansible/container-image-build.yml"
+                    utils.get_data_files_path(
+                        "ansible", "container-image-builders-check.yml"),
+                    utils.get_data_files_path("ansible", "kolla-build.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "container-image-build.yml")
                 ],
                 extra_vars={
                     "container_image_regexes": "'^regex1$ ^regex2$'",
@@ -1171,7 +1232,8 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/overcloud-ipa-build.yml",
+                    utils.get_data_files_path(
+                        "ansible", "overcloud-ipa-build.yml"),
                 ],
                 extra_vars={},
             ),
@@ -1192,7 +1254,8 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/overcloud-ipa-build.yml",
+                    utils.get_data_files_path(
+                        "ansible", "overcloud-ipa-build.yml"),
                 ],
                 extra_vars={"ipa_image_force_rebuild": True},
             ),
@@ -1213,11 +1276,14 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    'ansible/overcloud-ipa-images.yml',
-                    'ansible/overcloud-introspection-rules.yml',
-                    'ansible/overcloud-introspection-rules-dell-lldp-workaround.yml',  # noqa
-                    'ansible/provision-net.yml',
-                    'ansible/overcloud-grafana-configure.yml'
+                    utils.get_data_files_path(
+                        "ansible", "overcloud-ipa-images.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "overcloud-introspection-rules.yml"),
+                    utils.get_data_files_path("ansible", "overcloud-introspection-rules-dell-lldp-workaround.yml"),  # noqa
+                    utils.get_data_files_path("ansible", "provision-net.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "overcloud-grafana-configure.yml")
                 ],
             ),
         ]
@@ -1235,7 +1301,8 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/baremetal-compute-inspect.yml",
+                    utils.get_data_files_path(
+                        "ansible", "baremetal-compute-inspect.yml"),
                 ],
             ),
         ]
@@ -1253,7 +1320,8 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/baremetal-compute-manage.yml",
+                    utils.get_data_files_path(
+                        "ansible", "baremetal-compute-manage.yml"),
                 ],
             ),
         ]
@@ -1271,7 +1339,8 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/baremetal-compute-provide.yml",
+                    utils.get_data_files_path(
+                        "ansible", "baremetal-compute-provide.yml"),
                 ],
             ),
         ]
@@ -1289,7 +1358,8 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/baremetal-compute-rename.yml",
+                    utils.get_data_files_path(
+                        "ansible", "baremetal-compute-rename.yml"),
                 ],
             ),
         ]
@@ -1307,7 +1377,8 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/baremetal-compute-serial-console.yml",
+                    utils.get_data_files_path(
+                        "ansible", "baremetal-compute-serial-console.yml"),
 
                 ],
                 extra_vars={
@@ -1331,7 +1402,8 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/baremetal-compute-serial-console.yml",
+                    utils.get_data_files_path(
+                        "ansible", "baremetal-compute-serial-console.yml"),
 
                 ],
                 extra_vars={
@@ -1354,7 +1426,8 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/baremetal-compute-serial-console.yml",
+                    utils.get_data_files_path(
+                        "ansible", "baremetal-compute-serial-console.yml"),
 
                 ],
                 extra_vars={
@@ -1378,7 +1451,8 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/baremetal-compute-serial-console.yml",
+                    utils.get_data_files_path(
+                        "ansible", "baremetal-compute-serial-console.yml"),
 
                 ],
                 extra_vars={
@@ -1401,7 +1475,8 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/overcloud-ipa-images.yml",
+                    utils.get_data_files_path(
+                        "ansible", "overcloud-ipa-images.yml"),
                 ],
                 extra_vars={
                     "ipa_images_update_ironic_nodes": True,
@@ -1424,7 +1499,8 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    "ansible/overcloud-ipa-images.yml",
+                    utils.get_data_files_path(
+                        "ansible", "overcloud-ipa-images.yml"),
                 ],
                 extra_vars={
                     "ipa_images_compute_node_limit": "sand-6-1",

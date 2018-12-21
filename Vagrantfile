@@ -44,7 +44,7 @@ NM_CONTROLLED=no
 EOF
     sudo ifup eth1
 
-    /vagrant/dev/install.sh
+    /vagrant/dev/install-dev.sh
 
     # Configure the legacy development environment. This has been retained
     # while transitioning to the new development environment.

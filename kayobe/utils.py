@@ -12,6 +12,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import glob
 import logging
 import os
 import six
@@ -22,6 +23,23 @@ import yaml
 
 
 LOG = logging.getLogger(__name__)
+
+_BASE_PATH = os.path.join(sys.prefix, "share", "kayobe")
+
+
+def get_data_files_path(*relative_path):
+    """Given a relative path to a data file, return the absolute path"""
+    # Detect editable pip install / python setup.py develop and use a path
+    # relative to the source directory
+    egg_glob = os.path.join(
+        sys.prefix, 'lib*', 'python*', '*-packages', 'kayobe.egg-link'
+    )
+    egg_link = glob.glob(egg_glob)
+    if egg_link:
+        with open(egg_link[0], "r") as f:
+            realpath = f.readline().strip()
+        return os.path.join(realpath, *relative_path)
+    return os.path.join(_BASE_PATH, *relative_path)
 
 
 def yum_install(packages):

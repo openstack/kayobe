@@ -19,12 +19,21 @@ from cliff.command import Command
 
 from kayobe import ansible
 from kayobe import kolla_ansible
+from kayobe import utils
 from kayobe import vault
 
 
 def _build_playbook_list(*playbooks):
     """Return a list of names of playbook files given their basenames."""
-    return ["ansible/%s.yml" % playbook for playbook in playbooks]
+    return [
+        _get_playbook_path(playbook)
+        for playbook in playbooks
+    ]
+
+
+def _get_playbook_path(playbook):
+    """Return the absolute path of a playbook"""
+    return utils.get_data_files_path("ansible", "%s.yml" % playbook)
 
 
 class VaultMixin(object):
@@ -260,7 +269,8 @@ class PhysicalNetworkConfigure(KayobeAnsibleMixin, VaultMixin, Command):
         if parsed_args.interface_description_limit:
             extra_vars["physical_network_interface_description_limit"] = (
                 parsed_args.interface_description_limit)
-        self.run_kayobe_playbook(parsed_args, "ansible/physical-network.yml",
+        self.run_kayobe_playbook(parsed_args,
+                                 _get_playbook_path('physical-network'),
                                  limit=parsed_args.group,
                                  extra_vars=extra_vars)
 
@@ -342,11 +352,14 @@ class SeedVMProvision(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Provisioning seed VM")
-        self.run_kayobe_playbook(parsed_args, "ansible/ip-allocation.yml",
+        self.run_kayobe_playbook(parsed_args,
+                                 _get_playbook_path("ip-allocation"),
                                  limit="seed")
-        self.run_kayobe_playbook(parsed_args, "ansible/seed-vm-provision.yml")
+        self.run_kayobe_playbook(parsed_args,
+                                 _get_playbook_path("seed-vm-provision"))
         # Now populate the Kolla Ansible inventory.
-        self.run_kayobe_playbook(parsed_args, "ansible/kolla-ansible.yml",
+        self.run_kayobe_playbook(parsed_args,
+                                 _get_playbook_path("kolla-ansible"),
                                  tags="config")
 
 
@@ -360,7 +373,7 @@ class SeedVMDeprovision(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     def take_action(self, parsed_args):
         self.app.LOG.debug("Deprovisioning seed VM")
         self.run_kayobe_playbook(parsed_args,
-                                 "ansible/seed-vm-deprovision.yml")
+                                 _get_playbook_path("seed-vm-deprovision"))
 
 
 class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
@@ -647,13 +660,14 @@ class OvercloudInventoryDiscover(KayobeAnsibleMixin, VaultMixin, Command):
         # hosts will not be present in the following playbooks in which they
         # are used to populate other inventories.
         self.run_kayobe_playbook(parsed_args,
-                                 "ansible/overcloud-inventory-discover.yml")
+                                 _get_playbook_path(
+                                     "overcloud-inventory-discover"))
         # If necessary, allocate IP addresses for the discovered hosts.
         self.run_kayobe_playbook(parsed_args,
-                                 "ansible/ip-allocation.yml")
+                                 _get_playbook_path("ip-allocation"))
         # Now populate the Kolla Ansible inventory.
-        self.run_kayobe_playbook(parsed_args, "ansible/kolla-ansible.yml",
-                                 tags="config")
+        self.run_kayobe_playbook(parsed_args, _get_playbook_path(
+            "kolla-ansible"), tags="config")
 
 
 class OvercloudIntrospectionDataSave(KayobeAnsibleMixin, VaultMixin, Command):

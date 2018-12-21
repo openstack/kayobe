@@ -296,15 +296,17 @@ class TestCase(unittest.TestCase):
             "host2": {"var2": "value2"},
         }
         self.assertEqual(result, expected_result)
+        dump_config_path = utils.get_data_files_path(
+            "ansible", "dump-config.yml")
         mock_run.assert_called_once_with(parsed_args,
-                                         "ansible/dump-config.yml",
+                                         dump_config_path,
                                          extra_vars={
                                              "dump_path": dump_dir,
                                          },
                                          quiet=True, tags=None,
                                          verbose_level=None, check=False)
         mock_rmtree.assert_called_once_with(dump_dir)
-        mock_listdir.assert_called_once_with(dump_dir)
+        mock_listdir.assert_any_call(dump_dir)
         mock_read.assert_has_calls([
             mock.call(os.path.join(dump_dir, "host1.yml")),
             mock.call(os.path.join(dump_dir, "host2.yml")),
@@ -322,8 +324,9 @@ class TestCase(unittest.TestCase):
 
         ansible.install_galaxy_roles(parsed_args)
 
-        mock_install.assert_called_once_with("requirements.yml",
-                                             "ansible/roles", force=False)
+        mock_install.assert_called_once_with(utils.get_data_files_path(
+            "requirements.yml"), utils.get_data_files_path(
+            "ansible", "roles"), force=False)
         mock_is_readable.assert_called_once_with(
             "/etc/kayobe/ansible/requirements.yml")
         self.assertFalse(mock_mkdirs.called)
@@ -341,7 +344,9 @@ class TestCase(unittest.TestCase):
         ansible.install_galaxy_roles(parsed_args)
 
         expected_calls = [
-            mock.call("requirements.yml", "ansible/roles", force=False),
+            mock.call(utils.get_data_files_path("requirements.yml"),
+                      utils.get_data_files_path("ansible", "roles"),
+                      force=False),
             mock.call("/etc/kayobe/ansible/requirements.yml",
                       "/etc/kayobe/ansible/roles", force=False)]
         self.assertEqual(expected_calls, mock_install.call_args_list)
@@ -362,7 +367,9 @@ class TestCase(unittest.TestCase):
         ansible.install_galaxy_roles(parsed_args, force=True)
 
         expected_calls = [
-            mock.call("requirements.yml", "ansible/roles", force=True),
+            mock.call(utils.get_data_files_path("requirements.yml"),
+                      utils.get_data_files_path("ansible", "roles"),
+                      force=True),
             mock.call("/etc/kayobe/ansible/requirements.yml",
                       "/etc/kayobe/ansible/roles", force=True)]
         self.assertEqual(expected_calls, mock_install.call_args_list)
@@ -384,8 +391,9 @@ class TestCase(unittest.TestCase):
         self.assertRaises(exception.Error,
                           ansible.install_galaxy_roles, parsed_args)
 
-        mock_install.assert_called_once_with("requirements.yml",
-                                             "ansible/roles", force=False)
+        mock_install.assert_called_once_with(utils.get_data_files_path(
+            "requirements.yml"), utils.get_data_files_path("ansible", "roles"),
+            force=False)
         mock_is_readable.assert_called_once_with(
             "/etc/kayobe/ansible/requirements.yml")
         mock_mkdirs.assert_called_once_with("/etc/kayobe/ansible/roles")
