@@ -1,0 +1,13 @@
+---
+upgrade:
+  - |
+    The manage-lvm Ansible role was upgraded to version v0.1.4. If you are
+    overriding variables to customize definitions of volume groups, you need to
+    change the value of the ``disks`` parameter from a comma-separated string to a
+    list. For example, change ``disks: "/dev/sda,/dev/sdb"`` to:
+
+    .. code-block:: text
+
+      disks:
+        - "/dev/sda"
+        - "/dev/sdb"
