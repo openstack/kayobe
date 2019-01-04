@@ -96,3 +96,16 @@ key2: value2
         mock_call.side_effect = subprocess.CalledProcessError(1, "command")
         self.assertRaises(subprocess.CalledProcessError, utils.run_command,
                           ["command", "to", "run"])
+
+    def test_quote_and_escape_no_whitespace(self):
+        self.assertEqual("'foo'", utils.quote_and_escape("foo"))
+
+    def test_quote_and_escape_whitespace(self):
+        self.assertEqual("'foo bar'", utils.quote_and_escape("foo bar"))
+
+    def test_quote_and_escape_whitespace_with_quotes(self):
+        self.assertEqual("'foo '\\''bar'\\'''",
+                         utils.quote_and_escape("foo 'bar'"))
+
+    def test_quote_and_escape_non_string(self):
+        self.assertEqual(True, utils.quote_and_escape(True))

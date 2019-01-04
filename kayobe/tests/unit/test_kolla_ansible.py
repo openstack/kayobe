@@ -190,7 +190,7 @@ class TestCase(unittest.TestCase):
             "-v",
             "--inventory", "/etc/kolla/inventory/overcloud",
             "-e", "ev_name1=ev_value1",
-            "-e", "ev_name2=ev_value2",
+            "-e", "ev_name2='ev_value2'",
             "--tags", "tag1,tag2,tag3,tag4",
             "--arg1", "--arg2",
         ]
