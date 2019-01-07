@@ -30,3 +30,19 @@
           become: true
 
       when: not ipa_build_images | bool
+
+    # Bifrost does not perform ironic's online data migrations, which can
+    # prevent upgrading the database. If the upgrade fails early on, then the
+    # ironic config file may not exist. On subsequent attempts, this would
+    # cause the migrations to fail, so skip online migrations if ironic.conf
+    # doesn't exist.
+    # TODO: If the ironic config file does exist, we need to check
+    # the return code, since 2 means that the DB is not compatible
+    - name: Perform ironic online data migrations
+      command: >
+        docker exec bifrost_deploy
+        bash -c '
+        if [[ -f /etc/ironic/ironic.conf ]]; then
+            ironic-dbsync online_data_migrations
+        fi'
+      changed_when: true
