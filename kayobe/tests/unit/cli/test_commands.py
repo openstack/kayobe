@@ -254,6 +254,7 @@ class TestCase(unittest.TestCase):
                     "ansible/network.yml",
                     "ansible/sysctl.yml",
                     "ansible/ntp.yml",
+                    "ansible/lvm.yml",
                     "ansible/seed-hypervisor-libvirt-host.yml",
                 ],
                 limit="seed-hypervisor",

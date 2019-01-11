@@ -1,0 +1,6 @@
+---
+###############################################################################
+# Seed hypervisor node LVM configuration.
+
+# List of LVM volume groups.
+lvm_groups: "{{ seed_hypervisor_lvm_groups }}"

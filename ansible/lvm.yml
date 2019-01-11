@@ -1,6 +1,6 @@
 ---
 - name: Ensure LVM configuration is applied
-  hosts: seed:overcloud
+  hosts: seed-hypervisor:seed:overcloud
   tags:
     - lvm
     - upgrade-check
