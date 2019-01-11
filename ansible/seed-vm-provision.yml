@@ -3,7 +3,6 @@
   hosts: seed-hypervisor
   vars:
     seed_host: "{{ groups['seed'][0] }}"
-    seed_hostvars: "{{ hostvars[seed_host] }}"
     seed_user_data_path: "{{ image_cache_path }}/seed-vm-user-data"
   pre_tasks:
     - name: Verify the seed host exists in the Ansible inventory
@@ -28,7 +27,7 @@
       copy:
         content: |
           #!/bin/bash
-          {% for interface in seed_hostvars.network_interfaces | map('net_interface', seed_host) %}
+          {% for interface in hostvars[seed_host].network_interfaces | map('net_interface', seed_host) %}
           # Bounce {{ interface }}.
           ifdown {{ interface }}
           ifup {{ interface }}
@@ -49,11 +48,11 @@
       configdrive_volume_path: "{{ image_cache_path }}"
       configdrive_config_dir_delete: True
       configdrive_resolv:
-        domain: "{{ seed_hostvars.resolv_domain | default }}"
-        search: "{{ seed_hostvars.resolv_search | default }}"
-        dns: "{{ seed_hostvars.resolv_nameservers | default([]) }}"
+        domain: "{{ hostvars[seed_host].resolv_domain | default }}"
+        search: "{{ hostvars[seed_host].resolv_search | default }}"
+        dns: "{{ hostvars[seed_host].resolv_nameservers | default([]) }}"
       configdrive_network_device_list: >
-        {{ seed_hostvars.network_interfaces |
+        {{ hostvars[seed_host].network_interfaces |
            map('net_configdrive_network_device', seed_host) |
            list }}
       configdrive_config_user_data_path: "{{ seed_user_data_path }}"
@@ -81,7 +80,6 @@
   hosts: seed-hypervisor
   vars:
     seed_host: "{{ groups['seed'][0] }}"
-    seed_hostvars: "{{ hostvars[seed_host] }}"
   pre_tasks:
     - name: Check the size of the configdrive image
       stat:
@@ -94,19 +92,19 @@
   roles:
     - role: stackhpc.libvirt-vm
       seed_vm_configdrive_volume:
-        name: "{{ seed_hostvars.seed_vm_name }}-configdrive"
-        pool: "{{ seed_hostvars.seed_vm_pool }}"
+        name: "{{ hostvars[seed_host].seed_vm_name }}-configdrive"
+        pool: "{{ hostvars[seed_host].seed_vm_pool }}"
         # Round size up to next multiple of 4096.
         capacity: "{{ (stat_result.stat.size + 4095) // 4096 * 4096 }}"
         device: "cdrom"
         format: "raw"
         image: "{{ seed_vm_configdrive_path }}"
-      libvirt_vm_name: "{{ seed_hostvars.seed_vm_name }}"
-      libvirt_vm_memory_mb: "{{ seed_hostvars.seed_vm_memory_mb }}"
-      libvirt_vm_vcpus: "{{ seed_hostvars.seed_vm_vcpus }}"
-      libvirt_vm_volumes: "{{ seed_hostvars.seed_vm_volumes + [seed_vm_configdrive_volume] }}"
+      libvirt_vm_name: "{{ hostvars[seed_host].seed_vm_name }}"
+      libvirt_vm_memory_mb: "{{ hostvars[seed_host].seed_vm_memory_mb }}"
+      libvirt_vm_vcpus: "{{ hostvars[seed_host].seed_vm_vcpus }}"
+      libvirt_vm_volumes: "{{ hostvars[seed_host].seed_vm_volumes + [seed_vm_configdrive_volume] }}"
       libvirt_vm_interfaces: >
-        {{ seed_hostvars.network_interfaces | map('net_libvirt_vm_network') | list }}
+        {{ hostvars[seed_host].network_interfaces | map('net_libvirt_vm_network') | list }}
       libvirt_vm_image_cache_path: "{{ image_cache_path }}"
       become: True
 
@@ -114,7 +112,7 @@
     - name: Wait for SSH access to the seed VM
       local_action:
         module: wait_for
-        host: "{{ seed_hostvars.ansible_host }}"
+        host: "{{ hostvars[seed_host].ansible_host }}"
         port: 22
         state: started
         # NOTE: Ensure we exceed the 5 minute DHCP timeout of the eth0
