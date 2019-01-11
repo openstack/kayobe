@@ -99,13 +99,15 @@
         device: "cdrom"
         format: "raw"
         image: "{{ seed_vm_configdrive_path }}"
-      libvirt_vm_name: "{{ hostvars[seed_host].seed_vm_name }}"
-      libvirt_vm_memory_mb: "{{ hostvars[seed_host].seed_vm_memory_mb }}"
-      libvirt_vm_vcpus: "{{ hostvars[seed_host].seed_vm_vcpus }}"
-      libvirt_vm_volumes: "{{ hostvars[seed_host].seed_vm_volumes + [seed_vm_configdrive_volume] }}"
-      libvirt_vm_interfaces: >
-        {{ hostvars[seed_host].network_interfaces | map('net_libvirt_vm_network') | list }}
       libvirt_vm_image_cache_path: "{{ image_cache_path }}"
+      libvirt_vms:
+        - name: "{{ hostvars[seed_host].seed_vm_name }}"
+          memory_mb: "{{ hostvars[seed_host].seed_vm_memory_mb }}"
+          vcpus: "{{ hostvars[seed_host].seed_vm_vcpus }}"
+          volumes: "{{ hostvars[seed_host].seed_vm_volumes + [seed_vm_configdrive_volume] }}"
+          interfaces: >
+            {{ hostvars[seed_host].network_interfaces | map('net_libvirt_vm_network') | list }}
+          console_log_enabled: true
       become: True
 
   tasks:
