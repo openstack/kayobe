@@ -94,6 +94,8 @@
             kolla_external_fqdn_cert: "fake-cert"
             kolla_openstack_logging_debug: True
             grafana_local_admin_user_name: "grafana-admin"
+            kolla_inspector_dhcp_pool_start: "1.2.3.4"
+            kolla_inspector_dhcp_pool_end: "1.2.3.5"
             # Enable everything.
             kolla_enable_aodh: True
             kolla_enable_barbican: True
@@ -221,6 +223,7 @@
               kolla_external_fqdn_cert: "fake-cert"
               openstack_logging_debug: True
               grafana_admin_username: "grafana-admin"
+              ironic_dnsmasq_dhcp_range: "1.2.3.4,1.2.3.5"
               # NOTE: The following options are not present in globals.yml.
               # It's possible this is related to the use of hostvars and
               # include_role, caused by something like

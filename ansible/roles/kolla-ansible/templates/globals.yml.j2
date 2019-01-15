@@ -287,7 +287,9 @@ enable_{{ feature_flag }}: {{ hostvars[inventory_hostname]['kolla_enable_' ~ fea
 #############################
 # Ironic options
 #############################
-#ironic_dnsmasq_dhcp_range:
+{% if kolla_inspector_dhcp_pool_start is not none and kolla_inspector_dhcp_pool_end is not none %}
+ironic_dnsmasq_dhcp_range: {{ kolla_inspector_dhcp_pool_start }},{{ kolla_inspector_dhcp_pool_end }}
+{% endif %}
 
 ######################################
 # Manila - Shared File Systems Options

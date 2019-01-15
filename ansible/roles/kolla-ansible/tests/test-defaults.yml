@@ -115,6 +115,7 @@
               - bifrost_network_interface
               - neutron_external_interface
               - neutron_bridge_name
+              - ironic_dnsmasq_dhcp_range
 
         - name: Check whether inventory files exist
           stat:
