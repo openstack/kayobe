@@ -1,4 +1,31 @@
 ---
+# NOTE: We're not looping over the two inventory files to avoid having the file
+# content displayed in the ansible-playbook output.
+
+- name: Check whether the incompatible Kolla inventory directories exist
+  stat:
+    path: "{{ item }}"
+    get_attributes: no
+    get_checksum: no
+    get_mime: no
+  register: inventory_stat
+  with_items:
+    - "{{ kolla_config_path }}/inventory/seed"
+    - "{{ kolla_config_path }}/inventory/overcloud"
+  loop_control:
+    label: "{{ item | basename }}"
+
+- name: Ensure the incompatible Kolla directory is absent
+  file:
+    path: "{{ item.item }}"
+    state: absent
+  with_items: "{{ inventory_stat.results }}"
+  when:
+    - item.stat.exists
+    - item.stat.isdir
+  loop_control:
+    label: "{{ item.item | basename }}"
+
 - name: Ensure the Kolla Ansible configuration directories exist
   file:
     path: "{{ item }}"
