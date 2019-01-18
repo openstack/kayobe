@@ -977,7 +977,7 @@ class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         playbooks = _build_playbook_list("overcloud-extras")
         extra_vars = {"kayobe_action": "deploy"}
         self.run_kayobe_playbooks(parsed_args, playbooks,
-                                  extra_vars=extra_vars)
+                                  extra_vars=extra_vars, limit="overcloud")
 
         # Post-deployment configuration.
         # FIXME: Fudge to work around incorrect configuration path.
@@ -1034,7 +1034,7 @@ class OvercloudServiceReconfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
         playbooks = _build_playbook_list("overcloud-extras")
         extra_vars = {"kayobe_action": "reconfigure"}
         self.run_kayobe_playbooks(parsed_args, playbooks,
-                                  extra_vars=extra_vars)
+                                  extra_vars=extra_vars, limit="overcloud")
 
         # Post-deployment configuration.
         # FIXME: Fudge to work around incorrect configuration path.
@@ -1087,7 +1087,7 @@ class OvercloudServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin,
         playbooks = _build_playbook_list("overcloud-extras")
         extra_vars = {"kayobe_action": "upgrade"}
         self.run_kayobe_playbooks(parsed_args, playbooks,
-                                  extra_vars=extra_vars)
+                                  extra_vars=extra_vars, limit="overcloud")
 
 
 class OvercloudServiceDestroy(KollaAnsibleMixin, KayobeAnsibleMixin,
@@ -1133,7 +1133,7 @@ class OvercloudServiceDestroy(KollaAnsibleMixin, KayobeAnsibleMixin,
         playbooks = _build_playbook_list("overcloud-extras")
         extra_vars = {"kayobe_action": "destroy"}
         self.run_kayobe_playbooks(parsed_args, playbooks,
-                                  extra_vars=extra_vars)
+                                  extra_vars=extra_vars, limit="overcloud")
 
 
 class OvercloudContainerImagePull(KayobeAnsibleMixin, KollaAnsibleMixin,
@@ -1154,7 +1154,7 @@ class OvercloudContainerImagePull(KayobeAnsibleMixin, KollaAnsibleMixin,
         playbooks = _build_playbook_list("overcloud-extras")
         extra_vars = {"kayobe_action": "pull"}
         self.run_kayobe_playbooks(parsed_args, playbooks,
-                                  extra_vars=extra_vars)
+                                  extra_vars=extra_vars, limit="overcloud")
 
 
 class OvercloudContainerImageBuild(KayobeAnsibleMixin, VaultMixin, Command):
