@@ -32,6 +32,7 @@
     - role: stackhpc.os-ironic-state
       os_ironic_state_auth_type: "{{ openstack_auth_type }}"
       os_ironic_state_auth: "{{ openstack_auth }}"
+      os_ironic_state_cacert: "{{ openstack_cacert }}"
       os_ironic_state_name: "{{ inventory_hostname }}"
       os_ironic_state_provision_state: "manage"
       os_ironic_state_wait: "{{ baremetal_compute_wait }}"

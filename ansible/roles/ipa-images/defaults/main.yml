@@ -14,6 +14,9 @@ ipa_images_openstack_auth: {}
 # openstack client.
 ipa_images_openstack_auth_env: {}
 
+# CA certificate path.
+ipa_images_openstack_caert:
+
 # Path to directory in which to store downloaded images.
 ipa_images_cache_path:
 

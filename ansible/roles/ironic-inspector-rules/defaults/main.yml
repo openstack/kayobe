@@ -8,6 +8,9 @@ ironic_inspector_auth_type:
 # Authentication information.
 ironic_inspector_auth: {}
 
+# CA certificate path.
+ironic_inspector_cacert:
+
 # URL of Ironic Inspector API endpoint.
 ironic_inspector_url:
 
