@@ -197,6 +197,7 @@ kolla_neutron_ml2_tenant_network_types: []
 # allow clients to perform authentication.
 kolla_enable_tls_external:
 kolla_external_fqdn_cert:
+kolla_external_fqdn_cacert:
 
 #############################
 # Ironic options

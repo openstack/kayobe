@@ -260,6 +260,10 @@
 # Note that this should be formatted as a literal style block scalar.
 #kolla_tls_cert:
 
+# Path to a CA certificate file to use for the OS_CACERT environment variable in
+# openrc files when TLS is enabled, instead of Kolla-Ansible's default.
+#kolla_external_fqdn_cacert:
+
 ###############################################################################
 # Dummy variable to allow Ansible to accept this file.
 workaround_ansible_issue_8743: yes

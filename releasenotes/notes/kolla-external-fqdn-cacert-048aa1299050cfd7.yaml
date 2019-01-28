@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds support for setting the `kolla_external_fqdn_cacert` variable which
+    allows customizing the CA certificate file to be used as the OS_CACERT
+    environment variable in openrc files when TLS is enabled.

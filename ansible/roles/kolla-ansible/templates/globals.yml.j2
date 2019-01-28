@@ -128,6 +128,7 @@ neutron_tenant_network_types: {{ kolla_neutron_ml2_tenant_network_types | join('
 # allow clients to perform authentication.
 kolla_enable_tls_external: {{ kolla_enable_tls_external | bool }}
 kolla_external_fqdn_cert: "{{ kolla_external_fqdn_cert }}"
+kolla_external_fqdn_cacert: "{{ kolla_external_fqdn_cacert }}"
 
 
 ##############
