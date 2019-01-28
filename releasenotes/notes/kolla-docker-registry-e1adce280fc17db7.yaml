@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    Modifies the default value of ``kolla_docker_registry`` variable to the
+    value of the ``docker_registry`` variable. The default value of
+    ``docker_registry`` is unset. This avoids needing to set the same value in
+    two places when a private Docker registry is in use.
