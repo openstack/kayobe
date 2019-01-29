@@ -344,6 +344,14 @@ class TestCase(unittest.TestCase):
                 limit="seed",
                 extra_vars={'pip_applicable_users': [None]},
             ),
+            mock.call(
+                mock.ANY,
+                [
+                    "ansible/docker-registry.yml",
+                ],
+                limit="seed",
+                extra_vars={'kayobe_action': 'deploy'},
+            ),
         ]
         self.assertEqual(expected_calls, mock_run.call_args_list)
 

@@ -367,6 +367,7 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     * Optionally, create a virtualenv for kolla-ansible.
     * Configure a user account for kolla-ansible.
     * Configure Docker engine.
+    * Optionally, deploy a Docker Registry.
     """
 
     def get_parser(self, prog_name):
@@ -436,6 +437,12 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         # Run final kayobe playbooks.
         playbooks = _build_playbook_list(
             "pip", "kolla-target-venv", "kolla-host", "docker")
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  extra_vars=extra_vars, limit="seed")
+
+        # Optionally, deploy a Docker Registry.
+        playbooks = _build_playbook_list("docker-registry")
+        extra_vars = {"kayobe_action": "deploy"}
         self.run_kayobe_playbooks(parsed_args, playbooks,
                                   extra_vars=extra_vars, limit="seed")
 

@@ -1,0 +1,9 @@
+---
+upgrade:
+  - |
+    When enabled, a Docker Registry is now deployed on hosts in the
+    ``docker-registry`` group, which defaults to include the seed. The existing
+    behaviour of deploying on the first controller can be retained by removing
+    the seed group from ``[docker-registry:children]`` in
+    ``$KAYOBE_CONFIG_PATH/inventory/groups` and creating a
+    ``[docker-registry]`` group including the name of the first controller.

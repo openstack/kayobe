@@ -7,7 +7,7 @@
 # action: One of deploy, destroy, pull, reconfigure, upgrade
 
 - name: Ensure a local Docker registry is deployed
-  hosts: controllers[0]
+  hosts: docker-registry
   tags:
     - docker-registry
   roles:
