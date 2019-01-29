@@ -51,15 +51,17 @@ class TestCase(unittest.TestCase):
         self.assertEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(ansible, "install_galaxy_roles", autospec=True)
+    @mock.patch.object(ansible, "prune_galaxy_roles", autospec=True)
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
-    def test_control_host_upgrade(self, mock_run, mock_install):
+    def test_control_host_upgrade(self, mock_run, mock_prune, mock_install):
         command = commands.ControlHostUpgrade(TestApp(), [])
         parser = command.get_parser("test")
         parsed_args = parser.parse_args([])
         result = command.run(parsed_args)
         self.assertEqual(0, result)
         mock_install.assert_called_once_with(parsed_args, force=True)
+        mock_prune.assert_called_once_with(parsed_args)
         expected_calls = [
             mock.call(mock.ANY, ["ansible/bootstrap.yml"]),
             mock.call(mock.ANY, ["ansible/kolla-ansible.yml"],

@@ -48,6 +48,20 @@ class TestCase(unittest.TestCase):
                           utils.galaxy_install, "/path/to/role/file",
                           "/path/to/roles")
 
+    @mock.patch.object(utils, "run_command")
+    def test_galaxy_remove(self, mock_run):
+        utils.galaxy_remove(["role1", "role2"], "/path/to/roles")
+        mock_run.assert_called_once_with(["ansible-galaxy", "remove",
+                                          "--roles-path", "/path/to/roles",
+                                          "role1", "role2"])
+
+    @mock.patch.object(utils, "run_command")
+    def test_galaxy_remove_failure(self, mock_run):
+        mock_run.side_effect = subprocess.CalledProcessError(1, "command")
+        self.assertRaises(SystemExit,
+                          utils.galaxy_install, ["role1", "role2"],
+                          "/path/to/roles")
+
     @mock.patch.object(utils, "read_file")
     def test_read_yaml_file(self, mock_read):
         mock_read.return_value = """---
