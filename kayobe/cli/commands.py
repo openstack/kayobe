@@ -136,6 +136,9 @@ class ControlHostUpgrade(KayobeAnsibleMixin, VaultMixin, Command):
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Upgrading Kayobe Ansible control host")
+        # Remove roles that are no longer used. Do this before installing new
+        # ones, just in case a custom role dependency includes any.
+        ansible.prune_galaxy_roles(parsed_args)
         # Use force to upgrade roles.
         ansible.install_galaxy_roles(parsed_args, force=True)
         playbooks = _build_playbook_list("bootstrap")

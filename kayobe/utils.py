@@ -51,6 +51,21 @@ def galaxy_install(role_file, roles_path, force=False):
         sys.exit(e.returncode)
 
 
+def galaxy_remove(roles_to_remove, roles_path):
+
+    """Remove Ansible roles via Ansible Galaxy."""
+    cmd = ["ansible-galaxy", "remove"]
+    cmd += ["--roles-path", roles_path]
+    cmd += roles_to_remove
+    try:
+        run_command(cmd)
+    except subprocess.CalledProcessError as e:
+        LOG.error("Failed to remove Ansible roles %s via Ansible "
+                  "Galaxy: returncode %d",
+                  ",".join(roles_to_remove), e.returncode)
+        sys.exit(e.returncode)
+
+
 def read_file(path, mode="r"):
     """Read the content of a file."""
     with open(path, mode) as f:

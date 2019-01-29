@@ -389,3 +389,20 @@ class TestCase(unittest.TestCase):
         mock_is_readable.assert_called_once_with(
             "/etc/kayobe/ansible/requirements.yml")
         mock_mkdirs.assert_called_once_with("/etc/kayobe/ansible/roles")
+
+    @mock.patch.object(utils, 'galaxy_remove', autospec=True)
+    def test_prune_galaxy_roles(self, mock_remove):
+        parser = argparse.ArgumentParser()
+        ansible.add_args(parser)
+        parsed_args = parser.parse_args([])
+
+        ansible.prune_galaxy_roles(parsed_args)
+
+        expected_roles = [
+            'stackhpc.os-flavors',
+            'stackhpc.os-projects',
+            'stackhpc.parted-1-1',
+            'yatesr.timezone',
+        ]
+        mock_remove.assert_called_once_with(expected_roles,
+                                            "ansible/roles")
