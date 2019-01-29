@@ -105,6 +105,94 @@ script::
 
     ./dev/overcloud-upgrade.sh
 
+.. _development-automated-seed:
+
+Seed
+====
+
+These instructions cover deploying the seed services directly rather than in a
+VM. See :ref:`development-automated-seed-vm` for instructions covering
+deployment of the seed services in a VM.
+
+Preparation
+-----------
+
+Clone the kayobe repository::
+
+    git clone https://git.openstack.org/openstack/kayobe.git
+
+Change to the ``kayobe`` directory::
+
+    cd kayobe
+
+Clone the ``kayobe-config-dev`` repository to ``config/src/kayobe-config``::
+
+    mkdir -p config/src
+    git clone https://git.openstack.org/openstack/kayobe-config-dev.git config/src/kayobe-config
+
+Inspect the kayobe configuration and make any changes necessary for your
+environment.
+
+The default development configuration expects the presence of a bridge
+interface on the seed host to carry provisioning traffic.  The bridge should be
+named ``breth1`` with a single port ``eth1``, and an IP address of
+``192.168.33.5/24``.  This can be modified by editing
+``config/src/kayobe-config/etc/kayobe/inventory/group_vars/seed/network-interfaces``.
+Alternatively, this can be added using the following commands::
+
+    sudo ip l add breth1 type bridge
+    sudo ip l set breth1 up
+    sudo ip a add 192.168.33.5/24 dev breth1
+    sudo ip l add eth1 type dummy
+    sudo ip l set eth1 up
+    sudo ip l set eth1 master breth1
+
+Usage
+-----
+
+Run the ``dev/install.sh`` script to install kayobe and its dependencies in a
+virtual environment::
+
+    ./dev/install.sh
+
+Run the ``dev/seed-deploy.sh`` script to deploy the seed services::
+
+    ./dev/seed-deploy.sh
+
+Upon successful completion of this script, the seed will be active.
+
+Testing
+-------
+
+The seed services may be tested using the `Tenks
+<https://tenks.readthedocs.io/en/latest/>`__ project to create fake bare metal
+nodes.
+
+Clone the tenks repository::
+
+    git clone https://git.openstack.org/openstack/tenks.git
+
+Edit the Tenks configuration file, ``dev/tenks-deploy-config-seed.yml``.
+
+Run the ``dev/tenks-deploy.sh`` script to deploy Tenks::
+
+    ./dev/tenks-deploy.sh ./tenks
+
+Check that Tenks has created a VM called ``controller0``::
+
+    sudo virsh list --all
+
+Verify that VirtualBMC is running::
+
+    ~/tenks-venv/bin/vbmc list
+
+The machines and networking created by Tenks can be cleaned up via
+``dev/tenks-teardown.sh``::
+
+    ./dev/tenks-teardown.sh ./tenks
+
+.. _development-automated-seed-hypervisor:
+
 Seed Hypervisor
 ===============
 
@@ -149,18 +237,20 @@ hypervisor::
 
 Upon successful completion of this script, the seed hypervisor will be active.
 
+.. _development-automated-seed-vm:
+
 Seed VM
 =======
 
 The seed VM should be deployed on a system configured as a libvirt/KVM
-hypervisor, using the kayobe seed hypervisor support or otherwise.
+hypervisor, using :ref:`development-automated-seed-hypervisor` or otherwise.
 
 Preparation
 -----------
 
 The following commands should be executed on the seed hypervisor.
 
-Change the current directory to the kayobe repository::
+Clone the kayobe repository::
 
     git clone https://git.openstack.org/openstack/kayobe.git
 
@@ -178,7 +268,7 @@ Inspect the kayobe configuration and make any changes necessary for your
 environment.
 
 Usage
-=====
+-----
 
 Run the ``dev/install.sh`` script to install kayobe and its dependencies in a
 virtual environment::
