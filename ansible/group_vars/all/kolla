@@ -55,7 +55,7 @@ kolla_node_custom_config_path: "{{ kolla_config_path }}/config"
 # Kolla base container image distribution.
 kolla_base_distro: "centos"
 
-# Kolla installation type: binary or source.
+# Kolla container image type: binary or source.
 kolla_install_type: "binary"
 
 # Docker namespace to use for Kolla images.
