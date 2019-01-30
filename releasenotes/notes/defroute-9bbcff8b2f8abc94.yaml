@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Adds support for the ``defroute`` network attribute. This attribute can be
+    used to disable configuration of the default gateway by a specific
+    interface. This is particularly useful to ignore a gateway address provided
+    via DHCP. Note that this attribute is only supported on distributions of
+    the Red Hat family.

@@ -240,6 +240,12 @@ The following attributes are supported:
     Boot protocol for the interface. Valid values are ``static`` and ``dhcp``.
     The default is ``static``. When set to ``dhcp``, an external DHCP server
     must be provided.
+``defroute``
+    Whether to set the interface as the default route. This attribute can be
+    used to disable configuration of the default gateway by a specific
+    interface. This is particularly useful to ignore a gateway address provided
+    via DHCP. Should be set to a boolean value. The default is unset. This
+    attribute is only supported on distributions of the Red Hat family.
 ``bridge_ports``
     For bridge interfaces, a list of names of network interfaces to add to the
     bridge.
