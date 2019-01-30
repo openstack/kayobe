@@ -12,18 +12,22 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+from __future__ import absolute_import
 import sys
 
 from cliff.app import App
 from cliff.commandmanager import CommandManager
 
+from kayobe import version
+
 
 class KayobeApp(App):
 
     def __init__(self):
+        release_version = version.version_info.release_string()
         super(KayobeApp, self).__init__(
             description='Kayobe Command Line Interface (CLI)',
-            version='0.1',
+            version=release_version,
             command_manager=CommandManager('kayobe.cli'),
             deferred_help=True,
             )
