@@ -270,14 +270,25 @@ class SeedHypervisorHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
     * Add the host to SSH known hosts.
     * Configure a user account for use by kayobe for SSH access.
     * Optionally, create a virtualenv for remote target hosts.
+    * Optionally, wipe unmounted disk partitions (--wipe-disks).
     * Configure user accounts, group associations, and authorised SSH keys.
     * Configure a PyPI mirror.
     * Configure Yum repos.
     * Configure the host's network interfaces.
     * Set sysctl parameters.
     * Configure NTP.
+    * Configure LVM volumes.
     * Configure the host as a libvirt hypervisor.
     """
+
+    def get_parser(self, prog_name):
+        parser = super(SeedHypervisorHostConfigure, self).get_parser(prog_name)
+        group = parser.add_argument_group("Host Configuration")
+        group.add_argument("--wipe-disks", action='store_true',
+                           help="wipe partition and LVM data from all disks "
+                                "that are not mounted. Warning: this can "
+                                "result in the loss of data")
+        return parser
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Configuring seed hypervisor host OS")
@@ -292,8 +303,12 @@ class SeedHypervisorHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
             sys.exit(1)
         playbooks = _build_playbook_list(
             "ip-allocation", "ssh-known-host", "kayobe-ansible-user",
-            "pip", "kayobe-target-venv", "users", "yum", "dev-tools",
-            "network", "sysctl", "ntp", "seed-hypervisor-libvirt-host")
+            "pip", "kayobe-target-venv")
+        if parsed_args.wipe_disks:
+            playbooks += _build_playbook_list("wipe-disks")
+        playbooks += _build_playbook_list(
+            "users", "yum", "dev-tools", "network", "sysctl", "ntp", "lvm",
+            "seed-hypervisor-libvirt-host")
         self.run_kayobe_playbooks(parsed_args, playbooks,
                                   limit="seed-hypervisor")
 
