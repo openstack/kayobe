@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Adds support for specifying a CA certificate when accessing APIs.  The path
+    to the CA certificate may be specified via ``openstack_cacert`` , which
+    takes its default value from the ``OS_CACERT`` environment variable.  See
+    `story 2004911 <https://storyboard.openstack.org/#!/story/2004911>`__ for
+    details.

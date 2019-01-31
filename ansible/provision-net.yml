@@ -62,5 +62,6 @@
       os_networks_venv: "{{ virtualenv_path }}/shade"
       os_networks_auth_type: "{{ openstack_auth_type }}"
       os_networks_auth: "{{ openstack_auth }}"
+      os_networks_cacert: "{{ openstack_cacert | default(omit, true) }}"
       # Network configuration.
       os_networks: "{{ network_registrations + ([] if cleaning_net_name == provision_wl_net_name else [cleaning_net]) }}"

@@ -24,6 +24,8 @@ the `auth_type` argument of `os_*` Ansible modules.
 `ironic_inspector_auth` is a dict containing authentication information
 compatible with the `auth` argument of `os_*` Ansible modules.
 
+`ironic_inspector_cacert` is an optional path to a CA certificate.
+
 `ironic_inspector_url` is the URL of Ironic Inspector API endpoint,
 required if no authentication is used.
 

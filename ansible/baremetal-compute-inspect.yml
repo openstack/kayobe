@@ -34,6 +34,7 @@
       os_ironic_inspect:
         auth_type: "{{ openstack_auth_type }}"
         auth: "{{ openstack_auth }}"
+        cacert: "{{ openstack_cacert | default(omit, true) }}"
         name: "{{ inventory_hostname }}"
         timeout: "{{ baremetal_compute_timeout }}"
         wait: "{{ baremetal_compute_wait }}"

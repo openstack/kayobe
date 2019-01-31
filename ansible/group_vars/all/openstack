@@ -17,6 +17,9 @@ openstack_auth:
   password: "{{ lookup('env', 'OS_PASSWORD') }}"
   auth_url: "{{ lookup('env', 'OS_AUTH_URL') }}"
 
+# Overcloud CA certificate path.
+openstack_cacert: "{{ lookup('env', 'OS_CACERT') }}"
+
 # Overcloud authentication environment variables. These should be compatible
 # with the openstack client.
 # By default we pull these from the environment of the shell executing Ansible.
@@ -29,6 +32,7 @@ openstack_auth_env:
   OS_AUTH_URL: "{{ lookup('env', 'OS_AUTH_URL') }}"
   OS_INTERFACE: "{{ lookup('env', 'OS_INTERFACE') }}"
   OS_IDENTITY_API_VERSION: "{{ lookup('env', 'OS_IDENTITY_API_VERSION') }}"
+  OS_CACERT: "{{ lookup('env', 'OS_CACERT') }}"
 
 # List of parameters required in openstack_auth when openstack_auth_type is
 # password.

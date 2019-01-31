@@ -127,3 +127,4 @@
       ironic_inspector_venv: "{{ virtualenv_path }}/shade"
       ironic_inspector_auth_type: "{{ openstack_auth_type }}"
       ironic_inspector_auth: "{{ openstack_auth }}"
+      ironic_inspector_cacert: "{{ openstack_cacert }}"
