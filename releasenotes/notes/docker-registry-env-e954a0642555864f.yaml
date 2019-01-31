@@ -1,0 +1,18 @@
+---
+features:
+  - |
+    Adds support for configuring the Docker Registry by providing environment
+    variables to its container via the ``docker_registry_env`` Ansible
+    variable. For example, the registry can be configured as a pull through
+    cache to Docker Hub using:
+
+    .. code-block:: text
+
+      docker_registry_env:
+        REGISTRY_PROXY_REMOTEURL: "https://registry-1.docker.io"
+
+    Note that it is not possible to push to a registry configured as a
+    pull through cache. See `story 2004817
+    <https://storyboard.openstack.org/#!/story/2004817>`__ for details and the
+    `Docker documentation <https://docs.docker.com/registry/configuration/>`__
+    for the full list of configuration options.
