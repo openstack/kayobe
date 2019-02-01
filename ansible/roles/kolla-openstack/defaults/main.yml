@@ -61,6 +61,12 @@ grafana_local_admin_user_name:
 kolla_extra_grafana:
 
 ###############################################################################
+# HAProxy configuration.
+
+# Whether to enable HAProxy.
+kolla_enable_haproxy:
+
+###############################################################################
 # Heat configuration.
 
 # Whether to enable Heat.
