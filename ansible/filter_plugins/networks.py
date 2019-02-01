@@ -123,7 +123,14 @@ def net_vlan(context, name, inventory_hostname=None):
     return net_attr(context, name, 'vlan', inventory_hostname)
 
 
-net_mtu = _make_attr_filter('mtu')
+@jinja2.contextfilter
+def net_mtu(context, name, inventory_hostname=None):
+    mtu = net_attr(context, name, 'mtu', inventory_hostname)
+    if mtu is not None:
+        mtu = int(mtu)
+    return mtu
+
+
 net_routes = _make_attr_filter('routes')
 net_rules = _make_attr_filter('rules')
 net_physical_network = _make_attr_filter('physical_network')
