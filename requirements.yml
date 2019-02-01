@@ -27,11 +27,11 @@
 - src: stackhpc.mellanox-switch
   version: v1.0.0
 - src: stackhpc.os-images
-  version: v1.0.0
+  version: v1.2.0
 - src: stackhpc.os-ironic-state
-  version: v1.0.0
+  version: v1.1.0
 - src: stackhpc.os-networks
-  version: v1.0.0
+  version: v1.1.0
 - src: stackhpc.os-openstackclient
   version: v1.2.0
 - src: stackhpc.os-shade
