@@ -1,6 +1,15 @@
 ---
 - block:
-    - include_tasks: redhat.yml
+    - name: Ensure yum.conf configuration exists
+      ini_file:
+        path: /etc/yum.conf
+        section: "main"
+        option: "{{ item.key }}"
+        value:  "{{ item.value }}"
+      loop: "{{ query('dict', yum_config) }}"
+      become: true
+
+    - include_tasks: local-mirror.yml
       when: yum_use_local_mirror | bool
 
     - include_tasks: custom_repo.yml

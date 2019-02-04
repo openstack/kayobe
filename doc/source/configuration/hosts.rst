@@ -176,6 +176,19 @@ Package Repositories
 Kayobe supports configuration of package repositories via Yum, via variables in
 ``${KAYOBE_CONFIG_PATH}/yum.yml``.
 
+Configuration of yum.conf
+-------------------------
+
+Global configuration of Yum is stored in ``/etc/yum.conf``, and options can be
+set via the ``yum_config`` variable. Options are added to the ``[main]``
+section of the file. For example, to configure Yum to use a proxy server:
+
+.. code-block:: yaml
+   :caption: ``yum.yml``
+
+   yum_config:
+     proxy: https://proxy.example.com
+
 CentOS and EPEL Mirrors
 -----------------------
 

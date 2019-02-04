@@ -1,5 +1,4 @@
 ---
-
 - name: Replace | Disable YUM fastestmirror plugin (CentOS)
   replace:
     dest: /etc/yum/pluginconf.d/fastestmirror.conf
