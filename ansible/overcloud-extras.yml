@@ -10,4 +10,3 @@
 - import_playbook: docker-registry.yml
 - import_playbook: inspection-store.yml
 - import_playbook: opensm.yml
-- import_playbook: cadvisor.yml
