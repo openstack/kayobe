@@ -1,8 +1,8 @@
 ---
-- include: test-no-journal.yml
-- include: test-journal.yml
-- include: test-bootstrapped-journal.yml
-- include: test-data-journal.yml
+- import_playbook: test-no-journal.yml
+- import_playbook: test-journal.yml
+- import_playbook: test-bootstrapped-journal.yml
+- import_playbook: test-data-journal.yml
 
 - hosts: localhost
   connection: local

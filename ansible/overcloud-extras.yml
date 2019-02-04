@@ -7,8 +7,8 @@
 # Variables:
 # action: One of deploy, destroy, pull, reconfigure, upgrade
 
-- include: docker-registry.yml
-- include: inspection-store.yml
-- include: opensm.yml
-- include: node-exporter.yml
-- include: cadvisor.yml
+- import_playbook: docker-registry.yml
+- import_playbook: inspection-store.yml
+- import_playbook: opensm.yml
+- import_playbook: node-exporter.yml
+- import_playbook: cadvisor.yml

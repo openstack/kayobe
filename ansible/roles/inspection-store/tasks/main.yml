@@ -1,2 +1,2 @@
 ---
-- include: "{{ inspection_store_action }}.yml"
+- include_tasks: "{{ inspection_store_action }}.yml"

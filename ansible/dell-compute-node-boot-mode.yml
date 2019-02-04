@@ -2,7 +2,7 @@
 # Set the boot mode (BIOS, UEFI) of Dell baremetal compute nodes.
 
 # Add Dell baremetal compute nodes to the Ansible inventory.
-- include: dell-compute-node-inventory.yml
+- import_playbook: dell-compute-node-inventory.yml
 
 - name: Ensure Dell baremetal compute nodes boot mode is set
   hosts: baremetal-compute

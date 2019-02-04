@@ -78,7 +78,7 @@
     - "'Data loop file' in docker_info.stdout or docker_storage_driver not in docker_info.stdout"
     - "'Images: 0' not in docker_info.stdout or 'Containers: 0' not in docker_info.stdout"
 
-- include: storage.yml
+- include_tasks: storage.yml
   when: "'Data loop file' in docker_info.stdout or docker_storage_driver not in docker_info.stdout"
 
-- include: config.yml
+- include_tasks: config.yml

@@ -1,2 +1,2 @@
 ---
-- include: "{{ opensm_action }}.yml"
+- include_tasks: "{{ opensm_action }}.yml"
