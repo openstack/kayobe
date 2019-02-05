@@ -27,9 +27,6 @@ function config_defaults {
     # Path to the kayobe virtual environment.
     export KAYOBE_VENV_PATH="${KAYOBE_VENV_PATH:-${HOME}/kayobe-venv}"
 
-    # Path to the Tenks virtual environment.
-    export TENKS_VENV_PATH="${TENKS_VENV_PATH:-${HOME}/tenks-test-venv}"
-
     # Whether to provision a VM for the seed host.
     export KAYOBE_SEED_VM_PROVISION=${KAYOBE_SEED_VM_PROVISION:-1}
 
@@ -43,6 +40,14 @@ function config_defaults {
 
     # Additional arguments to pass to kayobe commands.
     export KAYOBE_EXTRA_ARGS=${KAYOBE_EXTRA_ARGS:-}
+
+    # Path to the Tenks virtual environment.
+    export TENKS_VENV_PATH="${TENKS_VENV_PATH:-${HOME}/tenks-test-venv}"
+
+    # Path to a Tenks YAML configuration file. If unset,
+    # tenks-deploy-config-overcloud.yml or tenks-deploy-config-compute.yml will
+    # be used.
+    export TENKS_CONFIG_PATH=${TENKS_CONFIG_PATH:-}
 }
 
 function config_set {
@@ -410,6 +415,50 @@ function overcloud_test {
     openstack server delete --wait "$name"
 }
 
+function write_bifrost_clouds_yaml {
+    # Generate a clouds.yaml for accessing the Ironic API in Bifrost.
+    if [[ ! -f ~/.config/openstack/clouds.yaml ]]; then
+        mkdir -p ~/.config/openstack
+        cat << EOF > ~/.config/openstack/clouds.yaml
+---
+clouds:
+  bifrost:
+    auth_type: "none"
+    endpoint: http://192.168.33.5:6385
+EOF
+    fi
+}
+
+function run_tenks_playbook {
+    # Run a Tenks playbook. Arguments:
+    # $1: The path to the Tenks repo.
+    # $2: The name of the playbook to run.
+    local tenks_path="$1"
+    local tenks_playbook="$2"
+    local parent="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+    if [[ -f "${KOLLA_CONFIG_PATH:-/etc/kolla}/admin-openrc.sh" ]]; then
+        # Overcloud
+        default_tenks_config=tenks-deploy-config-compute.yml
+        source "${KOLLA_CONFIG_PATH:-/etc/kolla}/admin-openrc.sh"
+    else
+        # Seed
+        default_tenks_config=tenks-deploy-config-overcloud.yml
+        write_bifrost_clouds_yaml
+        export OS_CLOUD=bifrost
+    fi
+
+    # Allow a specific Tenks config file to be specified via
+    # $TENKS_CONFIG_PATH.
+    tenks_config="${TENKS_CONFIG_PATH:-$parent/$default_tenks_config}"
+
+    ansible-playbook \
+        -vvv \
+        --inventory "$tenks_path/ansible/inventory" \
+        --extra-vars=@"$tenks_config" \
+        "$tenks_path/ansible/$tenks_playbook"
+}
+
 function tenks_deploy {
     set -eu
     # Create a simple test Tenks deployment. Assumes that a bridge named
@@ -438,15 +487,27 @@ function tenks_deploy {
     # vSwitch.
     sudo cp --no-clobber "$parent/ovs-vsctl" /usr/bin/ovs-vsctl
 
-    source "${KOLLA_CONFIG_PATH:-/etc/kolla}/admin-openrc.sh"
+    run_tenks_playbook "$tenks_path" deploy.yml
+}
 
-    pip install python-openstackclient
+function tenks_teardown {
+    set -eu
+    # Tear down a test Tenks deployment.
+    # Arguments:
+    # $1: The path to the Tenks repo.
+    local tenks_path="$1"
 
-    ansible-playbook \
-        -vvv \
-        --inventory "$tenks_path/ansible/inventory" \
-        --extra-vars=@"$parent/tenks-deploy-config.yml" \
-        "$tenks_path/ansible/deploy.yml"
+    echo "Tearing down Tenks"
+
+    environment_setup
+
+    # We don't want to use the Kayobe venv.
+    deactivate
+
+    # Source the Tenks venv.
+    source ${TENKS_VENV_PATH:-$HOME/tenks-test-venv}/bin/activate
+
+    run_tenks_playbook "$tenks_path" teardown.yml
 }
 
 # General purpose

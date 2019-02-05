@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Save the current shell options.
+oldstate=$(set +o)
+
 set -eu
 set -o pipefail
 
@@ -19,3 +22,6 @@ function main {
 }
 
 main
+
+# Restore previous shell options.
+eval "$oldstate"
