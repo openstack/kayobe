@@ -509,6 +509,8 @@ Kolla-ansible Remote Virtual Environment
 See :ref:`configuration-kolla-ansible-venv` for information about remote Python
 virtual environments for Kolla Ansible.
 
+.. _configuration-hosts-docker:
+
 Docker Engine
 =============
 

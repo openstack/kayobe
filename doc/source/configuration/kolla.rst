@@ -75,8 +75,8 @@ used to generate the Kolla configuration file, ``kolla-build.conf``.
 ``kolla_docker_namespace``
     Docker namespace to use for Kolla images. Default is ``kolla``.
 ``kolla_docker_registry``
-    URL of docker registry to use for Kolla images. Default is not set, in
-    which case Dockerhub will be used.
+    URL of docker registry to use for Kolla images. Default is to use the value
+    of ``docker_registry`` variable (see :ref:`configuration-hosts-docker`).
 ``kolla_docker_registry_username``
     Username to use to access a docker registry. Default is not set, in which
     case the registry will be used without authentication.
