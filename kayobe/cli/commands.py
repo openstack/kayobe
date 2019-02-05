@@ -314,8 +314,14 @@ class SeedHypervisorHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
             self.app.LOG.error("Could not determine kayobe_ansible_user "
                                "variable for seed hypervisor host")
             sys.exit(1)
+
+        # Allocate IP addresses.
+        playbooks = _build_playbook_list("ip-allocation")
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  limit="seed-hypervisor")
+
         playbooks = _build_playbook_list(
-            "ip-allocation", "ssh-known-host", "kayobe-ansible-user",
+            "ssh-known-host", "kayobe-ansible-user",
             "pip", "kayobe-target-venv")
         if parsed_args.wipe_disks:
             playbooks += _build_playbook_list("wipe-disks")
@@ -451,9 +457,13 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         python_interpreter = hostvars.get("ansible_python_interpreter")
         kolla_target_venv = hostvars.get("kolla_ansible_target_venv")
 
+        # Allocate IP addresses.
+        playbooks = _build_playbook_list("ip-allocation")
+        self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed")
+
         # Run kayobe playbooks.
         playbooks = _build_playbook_list(
-            "ip-allocation", "ssh-known-host", "kayobe-ansible-user",
+            "ssh-known-host", "kayobe-ansible-user",
             "pip", "kayobe-target-venv")
         if parsed_args.wipe_disks:
             playbooks += _build_playbook_list("wipe-disks")
@@ -848,9 +858,13 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         python_interpreter = hostvars.get("ansible_python_interpreter")
         kolla_target_venv = hostvars.get("kolla_ansible_target_venv")
 
+        # Allocate IP addresses.
+        playbooks = _build_playbook_list("ip-allocation")
+        self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
+
         # Kayobe playbooks.
         playbooks = _build_playbook_list(
-            "ip-allocation", "ssh-known-host", "kayobe-ansible-user",
+            "ssh-known-host", "kayobe-ansible-user",
             "pip", "kayobe-target-venv")
         if parsed_args.wipe_disks:
             playbooks += _build_playbook_list("wipe-disks")
