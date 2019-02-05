@@ -250,8 +250,12 @@ class TestCase(unittest.TestCase):
         expected_calls = [
             mock.call(
                 mock.ANY,
+                [utils.get_data_files_path("ansible", "ip-allocation.yml")],
+                limit="seed-hypervisor",
+            ),
+            mock.call(
+                mock.ANY,
                 [
-                    utils.get_data_files_path("ansible", "ip-allocation.yml"),
                     utils.get_data_files_path("ansible", "ssh-known-host.yml"),
                     utils.get_data_files_path(
                         "ansible", "kayobe-ansible-user.yml"),
@@ -346,8 +350,12 @@ class TestCase(unittest.TestCase):
         expected_calls = [
             mock.call(
                 mock.ANY,
+                [utils.get_data_files_path("ansible", "ip-allocation.yml")],
+                limit="seed",
+            ),
+            mock.call(
+                mock.ANY,
                 [
-                    utils.get_data_files_path("ansible", "ip-allocation.yml"),
                     utils.get_data_files_path("ansible", "ssh-known-host.yml"),
                     utils.get_data_files_path(
                         "ansible", "kayobe-ansible-user.yml"),
@@ -951,8 +959,12 @@ class TestCase(unittest.TestCase):
         expected_calls = [
             mock.call(
                 mock.ANY,
+                [utils.get_data_files_path("ansible", "ip-allocation.yml")],
+                limit="overcloud",
+            ),
+            mock.call(
+                mock.ANY,
                 [
-                    utils.get_data_files_path("ansible", "ip-allocation.yml"),
                     utils.get_data_files_path("ansible", "ssh-known-host.yml"),
                     utils.get_data_files_path(
                         "ansible", "kayobe-ansible-user.yml"),
