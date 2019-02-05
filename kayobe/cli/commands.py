@@ -326,6 +326,27 @@ class SeedHypervisorHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
                                   limit="seed-hypervisor")
 
 
+class SeedHypervisorHostCommandRun(KayobeAnsibleMixin, VaultMixin, Command):
+    """Run command on the seed hypervisor host."""
+
+    def get_parser(self, prog_name):
+        parser = super(SeedHypervisorHostCommandRun, self).get_parser(
+            prog_name)
+        group = parser.add_argument_group("Host Command Run")
+        group.add_argument("--command", required=True,
+                           help="Command to run (required).")
+        return parser
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Run command on seed hypervisor host")
+        extra_vars = {
+            "host_command_to_run": utils.escape_jinja(parsed_args.command)}
+        playbooks = _build_playbook_list("host-command-run")
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  limit="seed-hypervisor",
+                                  extra_vars=extra_vars)
+
+
 class SeedHypervisorHostUpgrade(KayobeAnsibleMixin, VaultMixin, Command):
     """Upgrade the seed hypervisor host services.
 
@@ -499,6 +520,25 @@ class SeedHostPackageUpdate(KayobeAnsibleMixin, VaultMixin, Command):
             "host_package_update_security": parsed_args.security,
         }
         playbooks = _build_playbook_list("host-package-update")
+        self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed",
+                                  extra_vars=extra_vars)
+
+
+class SeedHostCommandRun(KayobeAnsibleMixin, VaultMixin, Command):
+    """Run command on the seed host."""
+
+    def get_parser(self, prog_name):
+        parser = super(SeedHostCommandRun, self).get_parser(prog_name)
+        group = parser.add_argument_group("Host Command Run")
+        group.add_argument("--command", required=True,
+                           help="Command to run (required).")
+        return parser
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Run command on seed host")
+        extra_vars = {
+            "host_command_to_run": utils.escape_jinja(parsed_args.command)}
+        playbooks = _build_playbook_list("host-command-run")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed",
                                   extra_vars=extra_vars)
 
@@ -873,6 +913,25 @@ class OvercloudHostPackageUpdate(KayobeAnsibleMixin, VaultMixin, Command):
             "host_package_update_security": parsed_args.security,
         }
         playbooks = _build_playbook_list("host-package-update")
+        self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud",
+                                  extra_vars=extra_vars)
+
+
+class OvercloudHostCommandRun(KayobeAnsibleMixin, VaultMixin, Command):
+    """Run command on the overcloud host."""
+
+    def get_parser(self, prog_name):
+        parser = super(OvercloudHostCommandRun, self).get_parser(prog_name)
+        group = parser.add_argument_group("Host Command Run")
+        group.add_argument("--command", required=True,
+                           help="Command to run (required).")
+        return parser
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Run command on overcloud host")
+        extra_vars = {
+            "host_command_to_run": utils.escape_jinja(parsed_args.command)}
+        playbooks = _build_playbook_list("host-command-run")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud",
                                   extra_vars=extra_vars)
 

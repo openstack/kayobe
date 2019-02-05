@@ -122,3 +122,21 @@ Finally, start the Ironic and Ironic Inspector services again::
 
     docker exec -it bifrost_deploy \
     systemctl start ironic-api ironic-conductor ironic-inspector
+
+Running Commands
+================
+
+It is possible to run a command on the seed host::
+
+    (kayobe) $ kayobe seed host command run --command "<command>"
+
+For example::
+
+    (kayobe) $ kayobe seed host command run --command "service docker restart"
+
+Commands can also be run on the seed hypervisor host, if one is in use::
+
+    (kayobe) $ kayobe seed hypervisor host command run --command "<command>"
+
+To execute the command with root privileges, add the ``--become`` argument.
+Adding the ``--verbose`` argument allows the output of the command to be seen.

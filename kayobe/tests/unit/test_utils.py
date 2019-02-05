@@ -123,3 +123,8 @@ key2: value2
 
     def test_quote_and_escape_non_string(self):
         self.assertEqual(True, utils.quote_and_escape(True))
+
+    def test_escape_jinja(self):
+        value = "string to escape"
+        expected = "{{'c3RyaW5nIHRvIGVzY2FwZQ==' | b64decode }}"
+        self.assertEqual(expected, utils.escape_jinja(value))

@@ -21,6 +21,20 @@ To only install updates that have been marked security related::
 Note that these commands do not affect packages installed in containers, only
 those installed on the host.
 
+Running Commands
+================
+
+It is possible to run a command on the overcloud hosts::
+
+    (kayobe) $ kayobe overcloud host command run --command "<command>"
+
+For example::
+
+    (kayobe) $ kayobe overcloud host command run --command "service docker restart"
+
+To execute the command with root privileges, add the ``--become`` argument.
+Adding the ``--verbose`` argument allows the output of the command to be seen.
+
 Reconfiguring Containerised Services
 ====================================
 

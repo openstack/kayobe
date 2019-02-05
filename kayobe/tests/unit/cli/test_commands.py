@@ -275,6 +275,30 @@ class TestCase(unittest.TestCase):
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
+    def test_seed_hypervisor_host_command_run(self, mock_run):
+        command = commands.SeedHypervisorHostCommandRun(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args(["--command", "ls -a"])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    utils.get_data_files_path("ansible",
+                                              "host-command-run.yml"),
+                ],
+                limit="seed-hypervisor",
+                extra_vars={
+                    "host_command_to_run": utils.escape_jinja("ls -a")},
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
     def test_seed_hypervisor_host_upgrade(self, mock_run):
         command = commands.SeedHypervisorHostUpgrade(TestApp(), [])
         parser = command.get_parser("test")
@@ -484,6 +508,30 @@ class TestCase(unittest.TestCase):
             ),
         ]
         self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_seed_host_command_run(self, mock_run):
+        command = commands.SeedHostCommandRun(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args(["--command", "ls -a"])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    utils.get_data_files_path("ansible",
+                                              "host-command-run.yml"),
+                ],
+                limit="seed",
+                extra_vars={
+                    "host_command_to_run": utils.escape_jinja("ls -a")},
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -1058,6 +1106,30 @@ class TestCase(unittest.TestCase):
             ),
         ]
         self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_overcloud_host_command_run(self, mock_run):
+        command = commands.OvercloudHostCommandRun(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args(["--command", "ls -a"])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    utils.get_data_files_path("ansible",
+                                              "host-command-run.yml"),
+                ],
+                limit="overcloud",
+                extra_vars={
+                    "host_command_to_run": utils.escape_jinja("ls -a")},
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
