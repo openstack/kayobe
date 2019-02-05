@@ -56,9 +56,9 @@
 
         - name: Ensure seed is upgraded
           shell:
-            cmd: dev/seed-upgrade.sh > {{ logs_dir }}/ansible/seed-upgrade
-            chdir: "{{ kayobe_src_dir }}"
+            cmd: "{{ kayobe_src_dir }}/dev/seed-upgrade.sh > {{ logs_dir }}/ansible/seed-upgrade"
 
         # TODO(mgoddard): Perform a smoke test against the upgraded current release.
       environment:
         KAYOBE_CONFIG_SOURCE_PATH: "{{ kayobe_config_src_dir }}"
+        KAYOBE_SOURCE_PATH: "{{ kayobe_src_dir }}"

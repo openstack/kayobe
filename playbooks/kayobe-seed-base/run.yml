@@ -11,5 +11,4 @@
   tasks:
     - name: Ensure seed is deployed
       shell:
-        cmd: dev/seed-deploy.sh > {{ logs_dir }}/ansible/seed-deploy
-        chdir: "{{ kayobe_src_dir }}"
+        cmd: "{{ kayobe_src_dir }}/dev/seed-deploy.sh > {{ logs_dir }}/ansible/seed-deploy"
