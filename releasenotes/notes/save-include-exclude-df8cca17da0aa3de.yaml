@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds support for including or excluding files from the output of ``kayobe
+    overcloud service configuration save``. This is particularly useful for
+    large files such as the Ironic IPA images.

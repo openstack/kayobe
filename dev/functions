@@ -353,11 +353,9 @@ function overcloud_upgrade {
     fi
 
     echo "Saving overcloud service configuration"
-    if ! run_kayobe overcloud service configuration save; then
-        # NOTE(mgoddard): This fails in CI due to a memory error while copying
-        # the IPA deployment images.
-        echo "FIXME: Saving service configuration failed. Ignoring for now"
-    fi
+    # Don't copy the ironic IPA kernel and ramdisk, since these files can be
+    # quite large.
+    run_kayobe overcloud service configuration save --exclude 'ironic-agent.*'
 
     echo "Deploying containerised overcloud services"
     run_kayobe overcloud service upgrade

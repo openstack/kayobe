@@ -952,6 +952,12 @@ class OvercloudServiceConfigurationSave(KayobeAnsibleMixin, VaultMixin,
         parser = super(OvercloudServiceConfigurationSave, self).get_parser(
             prog_name)
         group = parser.add_argument_group("Service configuration")
+        group.add_argument("--exclude",
+                           help="optional comma-separated list of patterns "
+                                "matching filenames to exclude")
+        group.add_argument("--include",
+                           help="optional comma-separated list of patterns "
+                                "matching filenames to include")
         group.add_argument("--node-config-dir",
                            help="the directory to store the config files on "
                                 "the remote node (default /etc/kolla)")
@@ -964,6 +970,10 @@ class OvercloudServiceConfigurationSave(KayobeAnsibleMixin, VaultMixin,
         self.app.LOG.debug("Saving overcloud service configuration")
         playbooks = _build_playbook_list("overcloud-service-config-save")
         extra_vars = {}
+        if parsed_args.exclude:
+            extra_vars["exclude_patterns"] = parsed_args.exclude
+        if parsed_args.include:
+            extra_vars["include_patterns"] = parsed_args.include
         if parsed_args.output_dir:
             extra_vars["config_save_path"] = parsed_args.output_dir
         if parsed_args.node_config_dir:
