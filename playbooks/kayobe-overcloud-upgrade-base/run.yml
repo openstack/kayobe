@@ -83,8 +83,7 @@
 
         - name: Ensure overcloud is upgraded
           shell:
-            cmd: dev/overcloud-upgrade.sh > {{ logs_dir }}/ansible/overcloud-upgrade
-            chdir: "{{ kayobe_src_dir }}"
+            cmd: "{{ kayobe_src_dir }}/dev/overcloud-upgrade.sh > {{ logs_dir }}/ansible/overcloud-upgrade"
 
         # FIXME(mgoddard): The nova-compute service does not seem to be correctly
         # handling the SIGHUP after being upgraded, leading to "In shutdown, no new
@@ -108,3 +107,4 @@
 
       environment:
         KAYOBE_CONFIG_SOURCE_PATH: "{{ kayobe_config_src_dir }}"
+        KAYOBE_SOURCE_PATH: "{{ kayobe_src_dir }}"

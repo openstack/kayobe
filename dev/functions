@@ -158,10 +158,6 @@ function environment_setup {
     # the rocky release.
     if [ ! -d "${KAYOBE_VENV_PATH}/share/kayobe/ansible" ]; then
         cd "${KAYOBE_SOURCE_PATH}"
-    else
-        # kayobe should still be able to function when the current working directory
-        # is not the source checkout
-        cd /tmp
     fi
 }
 
