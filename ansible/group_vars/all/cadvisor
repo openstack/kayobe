@@ -1,6 +1,0 @@
----
-###############################################################################
-# cAdvisor configuration.
-
-# Whether cAdvisor is enabled.
-cadvisor_enabled: False

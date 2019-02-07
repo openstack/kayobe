@@ -1,0 +1,4 @@
+---
+deprecations:
+  - First class support in Kayobe for deploying cAdvisor
+    has been removed since this is now supported via Kolla-Ansible.

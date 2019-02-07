@@ -1,3 +1,0 @@
----
-- include_tasks: pull.yml
-- include_tasks: deploy.yml
