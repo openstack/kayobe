@@ -368,17 +368,27 @@ Logical Volume Manager (LVM) physical volumes, volume groups, and logical
 volumes may be configured via the ``lvm_groups`` variable. For convenience,
 this is mapped to the following variables:
 
+* ``seed_hypervisor_lvm_groups``
 * ``seed_lvm_groups``
 * ``compute_lvm_groups``
 * ``controller_lvm_groups``
 * ``monitoring_lvm_groups``
 * ``storage_lvm_groups``
 
-Note that LVM is not configured on the seed hypervisor.
-
 The format of these variables is as defined by the ``lvm_groups`` variable of
 the `mrlesmithjr.manage-lvm
 <https://galaxy.ansible.com/mrlesmithjr/manage-lvm>`__ Ansible role.
+
+LVM for libvirt
+---------------
+
+LVM is not configured by default on the seed hypervisor. It is possible to
+configure LVM to provide storage for a ``libvirt`` storage pool, typically
+mounted at ``/var/lib/libvirt/images``.
+
+To use this configuration, set the ``seed_hypervisor_lvm_groups`` variable to
+``"{{ seed_hypervisor_lvm_groups_with_data }}"`` and provide a list of disks
+via the ``seed_hypervisor_lvm_group_data_disks`` variable.
 
 LVM for Docker
 --------------
