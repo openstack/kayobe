@@ -54,6 +54,11 @@ kolla_openstack_custom_config:
     dest: "{{ kolla_node_custom_config_path }}/grafana"
     patterns: "*"
     enabled: "{{ kolla_enable_grafana }}"
+  # HAProxy.
+  - src: "{{ kolla_extra_config_path }}/haproxy"
+    dest: "{{ kolla_node_custom_config_path }}/haproxy"
+    patterns: "*"
+    enabled: "{{ kolla_enable_haproxy }}"
   # Heat.
   - src: "{{ kolla_extra_config_path }}/heat"
     dest: "{{ kolla_node_custom_config_path }}/heat"

@@ -34,6 +34,7 @@ provisioner:
         kolla_extra_grafana: |
           [extra-grafana.ini]
           foo=bar
+        kolla_enable_haproxy: true
         kolla_enable_heat: true
         kolla_extra_heat: |
           [extra-heat.conf]
