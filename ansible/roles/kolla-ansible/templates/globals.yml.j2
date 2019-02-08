@@ -288,10 +288,10 @@ enable_{{ feature_flag }}: {{ hostvars[inventory_hostname]['kolla_enable_' ~ fea
 #############################
 # Ironic options
 #############################
-{% if kolla_inspector_dhcp_pool_start is not none and kolla_inspector_dhcp_pool_end is not none %}
+{% if kolla_inspector_dhcp_pool_start and kolla_inspector_dhcp_pool_end %}
 ironic_dnsmasq_dhcp_range: {{ kolla_inspector_dhcp_pool_start }},{{ kolla_inspector_dhcp_pool_end }}
 {% endif %}
-{% if kolla_inspector_default_gateway is not none %}
+{% if kolla_inspector_default_gateway %}
 ironic_dnsmasq_default_gateway: {{ kolla_inspector_default_gateway }}
 {% endif %}
 
