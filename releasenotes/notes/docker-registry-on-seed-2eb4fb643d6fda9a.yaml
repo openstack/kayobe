@@ -7,3 +7,7 @@ upgrade:
     the seed group from ``[docker-registry:children]`` in
     ``$KAYOBE_CONFIG_PATH/inventory/groups` and creating a
     ``[docker-registry]`` group including the name of the first controller.
+  - |
+    Modifies the default value of ``docker_registry_image`` variable to not use
+    a private registry in the image name by default. This avoids a potential
+    circular dependency during deployment of the registry container.
