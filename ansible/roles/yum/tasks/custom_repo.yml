@@ -24,5 +24,5 @@
   register: register_yum_command
   retries: 3
   delay: 10
-  until: "'failed' not in register_yum_command"
+  until: register_yum_command is success
   become: true
