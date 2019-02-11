@@ -7,7 +7,7 @@
 # bootstrap process if the account is inaccessible.
 
 - name: Determine whether user bootstrapping is required
-  hosts: seed:overcloud
+  hosts: seed-hypervisor:seed:overcloud
   gather_facts: false
   tags:
     - kayobe-ansible-user
@@ -62,7 +62,7 @@
       become: True
 
 - name: Verify that the Kayobe Ansible user account is accessible
-  hosts: seed:overcloud
+  hosts: seed-hypervisor:seed:overcloud
   gather_facts: false
   tags:
     - kayobe-ansible-user
