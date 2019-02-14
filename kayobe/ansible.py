@@ -159,7 +159,7 @@ def build_args(parsed_args, playbooks,
 
 def run_playbooks(parsed_args, playbooks,
                   extra_vars=None, limit=None, tags=None, quiet=False,
-                  verbose_level=None, check=None):
+                  check_output=False, verbose_level=None, check=None):
     """Run a Kayobe Ansible playbook."""
     _validate_args(parsed_args, playbooks)
     cmd = build_args(parsed_args, playbooks,
@@ -172,10 +172,12 @@ def run_playbooks(parsed_args, playbooks,
     # playbooks.
     env.setdefault(CONFIG_PATH_ENV, parsed_args.config_path)
     try:
-        utils.run_command(cmd, quiet=quiet, env=env)
+        utils.run_command(cmd, check_output=check_output, quiet=quiet, env=env)
     except subprocess.CalledProcessError as e:
         LOG.error("Kayobe playbook(s) %s exited %d",
                   ", ".join(playbooks), e.returncode)
+        if check_output:
+            LOG.error("The output was:\n%s", e.output)
         sys.exit(e.returncode)
 
 
@@ -201,7 +203,7 @@ def config_dump(parsed_args, host=None, hosts=None, var_name=None,
         # results back.
         playbook_path = utils.get_data_files_path("ansible", "dump-config.yml")
         run_playbook(parsed_args, playbook_path,
-                     extra_vars=extra_vars, tags=tags, quiet=True,
+                     extra_vars=extra_vars, tags=tags, check_output=True,
                      verbose_level=verbose_level, check=False)
         hostvars = {}
         for path in os.listdir(dump_dir):

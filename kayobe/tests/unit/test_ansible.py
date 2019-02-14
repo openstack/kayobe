@@ -51,8 +51,8 @@ class TestCase(unittest.TestCase):
             "playbook2.yml",
         ]
         expected_env = {"KAYOBE_CONFIG_PATH": "/etc/kayobe"}
-        mock_run.assert_called_once_with(expected_cmd, quiet=False,
-                                         env=expected_env)
+        mock_run.assert_called_once_with(expected_cmd, check_output=False,
+                                         quiet=False, env=expected_env)
         mock_vars.assert_called_once_with("/etc/kayobe")
 
     @mock.patch.object(utils, "run_command")
@@ -94,8 +94,8 @@ class TestCase(unittest.TestCase):
             "playbook2.yml",
         ]
         expected_env = {"KAYOBE_CONFIG_PATH": "/path/to/config"}
-        mock_run.assert_called_once_with(expected_cmd, quiet=False,
-                                         env=expected_env)
+        mock_run.assert_called_once_with(expected_cmd, check_output=False,
+                                         quiet=False, env=expected_env)
         mock_vars.assert_called_once_with("/path/to/config")
 
     @mock.patch.object(utils, "run_command")
@@ -146,7 +146,8 @@ class TestCase(unittest.TestCase):
         expected_calls = [
             mock.call(["which", "kayobe-vault-password-helper"],
                       check_output=True),
-            mock.call(expected_cmd, quiet=False, env=expected_env)
+            mock.call(expected_cmd, check_output=False, quiet=False,
+                      env=expected_env)
         ]
         self.assertEqual(expected_calls, mock_run.mock_calls)
         mock_vars.assert_called_once_with("/path/to/config")
@@ -174,8 +175,8 @@ class TestCase(unittest.TestCase):
             "playbook1.yml",
         ]
         expected_env = {"KAYOBE_CONFIG_PATH": "/etc/kayobe"}
-        mock_run.assert_called_once_with(expected_cmd, quiet=False,
-                                         env=expected_env)
+        mock_run.assert_called_once_with(expected_cmd, check_output=False,
+                                         quiet=False, env=expected_env)
         mock_update.assert_called_once_with(mock.ANY, expected_env)
 
     @mock.patch.dict(os.environ, {"KAYOBE_VAULT_PASSWORD": "test-pass"},
@@ -203,8 +204,8 @@ class TestCase(unittest.TestCase):
         ]
         expected_env = {"KAYOBE_CONFIG_PATH": "/etc/kayobe",
                         "KAYOBE_VAULT_PASSWORD": "test-pass"}
-        mock_run.assert_called_once_with(expected_cmd, quiet=False,
-                                         env=expected_env)
+        mock_run.assert_called_once_with(expected_cmd, check_output=False,
+                                         quiet=False, env=expected_env)
 
     @mock.patch.object(utils, "run_command")
     @mock.patch.object(ansible, "_get_vars_files")
@@ -259,8 +260,8 @@ class TestCase(unittest.TestCase):
             "playbook2.yml",
         ]
         expected_env = {"KAYOBE_CONFIG_PATH": "/etc/kayobe"}
-        mock_run.assert_called_once_with(expected_cmd, quiet=False,
-                                         env=expected_env)
+        mock_run.assert_called_once_with(expected_cmd, check_output=False,
+                                         quiet=False, env=expected_env)
         mock_vars.assert_called_once_with("/etc/kayobe")
 
     @mock.patch.object(utils, "run_command")
@@ -303,7 +304,7 @@ class TestCase(unittest.TestCase):
                                          extra_vars={
                                              "dump_path": dump_dir,
                                          },
-                                         quiet=True, tags=None,
+                                         check_output=True, tags=None,
                                          verbose_level=None, check=False)
         mock_rmtree.assert_called_once_with(dump_dir)
         mock_listdir.assert_any_call(dump_dir)
