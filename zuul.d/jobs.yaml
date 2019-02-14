@@ -168,14 +168,14 @@
       - name: openstack/kayobe
       - name: openstack/kayobe-config-dev
       - name: openstack/kolla
-        override-checkout: stable/queens
+        override-checkout: stable/rocky
       - name: openstack/kolla-ansible
-        override-checkout: stable/queens
+        override-checkout: stable/rocky
       - name: openstack/requirements
-        override-checkout: stable/queens
+        override-checkout: stable/rocky
     vars:
       # Name of the release to upgrade from.
-      previous_release: pike
+      previous_release: queens
     irrelevant-files:
       - ^.*\.rst$
       - ^doc/.*
