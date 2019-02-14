@@ -250,3 +250,19 @@ def install_galaxy_roles(parsed_args, force=False):
 
     # Install roles from kayobe-config.
     utils.galaxy_install(kc_reqs_path, kc_roles_path, force=force)
+
+
+def prune_galaxy_roles(parsed_args):
+    """Prune galaxy roles that are no longer necessary.
+
+    :param parsed_args: Parsed command line arguments.
+    """
+    LOG.info("Removing unnecessary galaxy roles from kayobe")
+    roles_to_remove = [
+        'stackhpc.os-flavors',
+        'stackhpc.os-projects',
+        'stackhpc.parted-1-1',
+        'yatesr.timezone',
+    ]
+    LOG.debug("Removing roles: %s", ",".join(roles_to_remove))
+    utils.galaxy_remove(roles_to_remove, "ansible/roles")
