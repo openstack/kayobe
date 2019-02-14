@@ -1340,6 +1340,7 @@ class OvercloudPostConfigure(KayobeAnsibleMixin, VaultMixin, Command):
       inspector service.
     * Register a provisioning network with glance.
     * Configure Grafana for control plane.
+    * Configure serial consoles for the ironic nodes
     """
 
     def take_action(self, parsed_args):
@@ -1347,7 +1348,8 @@ class OvercloudPostConfigure(KayobeAnsibleMixin, VaultMixin, Command):
         playbooks = _build_playbook_list(
             "overcloud-ipa-images", "overcloud-introspection-rules",
             "overcloud-introspection-rules-dell-lldp-workaround",
-            "provision-net", "overcloud-grafana-configure")
+            "provision-net", "overcloud-grafana-configure",
+            "baremetal-compute-serial-console-post-config")
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
 

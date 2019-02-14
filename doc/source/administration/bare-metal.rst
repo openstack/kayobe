@@ -131,3 +131,11 @@ You can optionally limit the nodes targeted by setting
 
 which should take the form of an `ansible host pattern
 <https://docs.ansible.com/ansible/latest/user_guide/intro_patterns.html>`_.
+
+Serial console auto-enable
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To enable the serial consoles automatically on ``kayobe overcloud post configure``, you can set
+``ironic_serial_console_autoenable`` in ``etc/kayobe/ironic.yml``::
+
+    ironic_serial_console_autoenable: true
