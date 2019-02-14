@@ -11,7 +11,7 @@ project, it cannot use the official release tooling in the
 There are various `useful files
 <http://git.openstack.org/cgit/openstack-infra/project-config/tree/roles/copy-release-tools-scripts/files/release-tools/>`__
 in the ``openstack-infra/project-config`` repository. In particular, see the
-``releases.sh`` and ``make_branch.sh`` scripts.
+``release.sh`` and ``make_branch.sh`` scripts.
 
 Preparing for a release
 =======================
@@ -43,6 +43,25 @@ Add a prelude to release notes
 
 It's possible to add a prelude to the release notes for a particular release
 using a ``prelude`` section in a ``reno`` note.
+
+Creating a release candidate
+============================
+
+Prior to cutting a stable branch, the ``master`` branch should be tagged as a
+release candidate.  This allows the ``reno`` tool to determine where to stop
+searching for release notes for the next release.  The tag should take the
+following form: ``<release tag>.0rc$n``, where ``$n`` is the release candidate
+number.
+
+The ``tools/release.sh`` script in the ``kayobe`` repository can be used to tag
+a release and push it to Gerrit. For example, to tag and release the ``kayobe``
+deliverable release candidate ``4.0.0.0rc1`` in the Queens series from the base
+of the ``stable/queens`` branch:
+
+.. code-block:: console
+
+   ref=$(git merge-base origin/stable/queens origin/master)
+   ./tools/release.sh kayobe 4.0.0.0rc1 $ref queens
 
 Creating a stable branch
 ========================
@@ -105,7 +124,4 @@ Post-release activites
 An email will be sent to the release-announce mailing list about the new
 release.
 
-.. TODO: Setup RTD integration for release notes.
-
-The release notes need to be rebuilt manually since there is no readthedocs
-webhook integration for these yet.
+The release notes and documentation are built automatically via a webhook.
