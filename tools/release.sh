@@ -30,12 +30,21 @@ REPO=$1
 VERSION=$2
 REF=$3
 SERIES=$4
-RELEASETYPE=release
 
 [[ -n $REPO ]] || (echo "Repo not specified"; exit 1)
 [[ -n $VERSION ]] || (echo "Version not specified"; exit 1)
 [[ -n $REF ]] || (echo "Ref not specified"; exit 1)
 [[ -n $SERIES ]] || (echo "Series not specified"; exit 1)
+
+pre_release_pat='\.[[:digit:]]+[ab][[:digit:]]+'
+rc_release_pat='\.[[:digit:]]+rc[[:digit:]]+'
+if [[ $VERSION =~ $pre_release_pat ]]; then
+    RELEASETYPE="development milestone"
+elif [[ $VERSION =~ $rc_release_pat ]]; then
+    RELEASETYPE="release candidate"
+else
+    RELEASETYPE="release"
+fi
 
 TARGETSHA=`git log -1 $REF --format='%H'`
 
