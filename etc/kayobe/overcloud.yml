@@ -34,7 +34,7 @@
 #overcloud_host_image_workaround_cloud_init_enabled:
 
 # cloud-init repository for overcloud_host_image_workaround_cloud_init_enabled
-#overcloud_host_image_workaround_cloud_init_repo: https://stackhpc.github.io/cloud-init-repo/
+#overcloud_host_image_workaround_cloud_init_repo:
 
 ###############################################################################
 # Dummy variable to allow Ansible to accept this file.
