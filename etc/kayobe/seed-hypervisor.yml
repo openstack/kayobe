@@ -26,7 +26,8 @@
 # volume group for libvirt storage.
 #seed_hypervisor_lvm_groups:
 
-# Suggested list of seed hypervisor volume groups for libvirt. Not used by default.
+# Suggested list of seed hypervisor volume groups for libvirt. Not used by
+# default.
 #seed_hypervisor_lvm_groups_with_data:
 
 # Seed LVM volume group for data. See mrlesmithjr.manage-lvm role for format.
