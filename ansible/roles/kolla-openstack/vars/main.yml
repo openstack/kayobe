@@ -100,6 +100,11 @@ kolla_openstack_custom_config:
     dest: "{{ kolla_node_custom_config_path }}/keystone"
     patterns: "*"
     enabled: true
+  # Keepalived.
+  - src: "{{ kolla_extra_config_path }}/keepalived"
+    dest: "{{ kolla_node_custom_config_path }}/keepalived"
+    patterns: "*"
+    enabled: "{{ kolla_enable_haproxy }}"
   # Magnum.
   - src: "{{ kolla_extra_config_path }}/magnum"
     dest: "{{ kolla_node_custom_config_path }}/magnum"

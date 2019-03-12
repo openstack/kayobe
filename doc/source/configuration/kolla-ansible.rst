@@ -162,6 +162,7 @@ which files are supported.
    ``ironic.conf``                 Ironic configuration.
    ``ironic/*``                    Extended ironic configuration.
    ``keystone/*``                  Extended keystone configuration.
+   ``keepalived/*``                Extended keepalived configuration.
    ``magnum.conf``                 Magnum configuration.
    ``magnum/*``                    Extended magnum configuration.
    ``manila.conf``                 Manila configuration.
