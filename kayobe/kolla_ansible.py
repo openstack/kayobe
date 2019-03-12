@@ -57,8 +57,8 @@ def add_args(parser):
                         help="further limit selected hosts to an additional "
                              "pattern")
     parser.add_argument("--kolla-skip-tags", metavar="TAGS",
-                        help="only run plays and tasks whose tags do not match"
-                             "these values in Kolla Ansible")
+                        help="only run plays and tasks whose tags do not "
+                             "match these values in Kolla Ansible")
     parser.add_argument("-kt", "--kolla-tags", metavar="TAGS",
                         help="only run plays and tasks tagged with these "
                              "values in Kolla Ansible")
