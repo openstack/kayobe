@@ -1,0 +1,11 @@
+---
+# Label used to create partitions. This is used by kolla-ansible to determine
+# which disks to mount.
+swift_block_devices_part_label: KOLLA_SWIFT_DATA
+
+# List of block devices to use for Swift. Each item is a dict with the
+# following items:
+# - 'device': Block device path. Required.
+# - 'fs_label': Name of the label used to create the file system on the device.
+#   Optional. Default is to use the basename of the device.
+swift_block_devices: []

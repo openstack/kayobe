@@ -25,7 +25,9 @@ controller_default_network_interfaces: >
       internal_net_name,
       storage_net_name,
       storage_mgmt_net_name,
-      cleaning_net_name] | unique | list }}
+      ceph_storage_net_name,
+      swift_storage_net_name,
+      cleaning_net_name] | reject('none') | unique | list }}
 
 # List of extra networks to which controller nodes are attached.
 controller_extra_network_interfaces: []

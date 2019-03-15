@@ -18,6 +18,16 @@
 # List of extra networks to which storage nodes are attached.
 #storage_extra_network_interfaces:
 
+# Whether this host requires access to Ceph networks.
+#storage_needs_ceph_network:
+
+#storage_needs_ceph_mgmt_network:
+
+# Whether this host requires access to Swift networks.
+#storage_needs_swift_network:
+
+#storage_needs_swift_replication_network:
+
 ###############################################################################
 # Storage node BIOS configuration.
 

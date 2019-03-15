@@ -4,42 +4,45 @@
 
 # Short name of the kolla container image used to build rings. Default is the
 # swift=object image.
-#swift_ring_build_image_name:
+swift_ring_build_image_name: swift-object
 
 # Full name of the kolla container image used to build rings.
-#swift_ring_build_image:
+swift_ring_build_image: "{{ kolla_docker_registry ~ '/' if kolla_docker_registry else '' }}{{ kolla_docker_namespace }}/{{ kolla_base_distro }}-{{ kolla_install_type }}-{{ swift_ring_build_image_name }}:{{ kolla_openstack_release }}"
 
 # Ansible host pattern matching hosts on which Swift object storage services
 # are deployed. The default is to use hosts in the 'storage' group.
-#swift_hosts:
+swift_hosts: "storage"
 
 # Name of the host used to build Swift rings. Default is the first host of
 # 'swift_hosts'.
-#swift_ring_build_host:
+swift_ring_build_host: "{{ query('inventory_hostnames', swift_hosts)[0] }}"
 
 # ID of the Swift region for this host. Default is 1.
-#swift_region:
+swift_region: 1
 
 # ID of the Swift zone. This can be set to different values for different hosts
 # to place them in different zones. Default is 0.
-#swift_zone:
+swift_zone: 0
 
 # Base-2 logarithm of the number of partitions.
 # i.e. num_partitions=2^<swift_part_power>. Default is 10.
-#swift_part_power:
+swift_part_power: 10
 
 # Object replication count. Default is the smaller of the number of Swift
 # hosts, or 3.
-#swift_replication_count:
+swift_replication_count: "{{ [query('inventory_hostnames', swift_hosts) | length, 3] | min }}"
 
 # Minimum time in hours between moving a given partition. Default is 1.
-#swift_min_part_hours:
+swift_min_part_hours: 1
 
 # Ports on which Swift services listen. Default is:
 #  object: 6000
 #  account: 6001
 #  container: 6002
-#swift_service_ports:
+swift_service_ports:
+  object: 6000
+  account: 6001
+  container: 6002
 
 # List of block devices to use for Swift. Each item is a dict with the
 # following items:
@@ -51,15 +54,14 @@
 #   'account', 'container', and 'object'.
 # - 'weight': Weight of the block device. Optional. Default is
 #   'swift_block_device_default_weight'.
-#swift_block_devices:
+swift_block_devices: []
 
 # Default weight to assign to block devices in the ring. Default is 100.
-#swift_block_device_default_weight:
+swift_block_device_default_weight: 100
 
 # Default list of services to assign block devices to. Allowed items are
 # 'account', 'container', and 'object'. Default value is all of these.
-#swift_block_device_default_services:
-
-###############################################################################
-# Dummy variable to allow Ansible to accept this file.
-workaround_ansible_issue_8743: yes
+swift_block_device_default_services:
+  - account
+  - container
+  - object

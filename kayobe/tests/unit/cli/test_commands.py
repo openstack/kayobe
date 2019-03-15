@@ -1001,6 +1001,8 @@ class TestCase(unittest.TestCase):
                     utils.get_data_files_path("ansible", "docker.yml"),
                     utils.get_data_files_path(
                         "ansible", "ceph-block-devices.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "swift-block-devices.yml"),
                 ],
                 limit="overcloud",
                 extra_vars={"pip_applicable_users": [None]},
@@ -1420,6 +1422,26 @@ class TestCase(unittest.TestCase):
                         "ansible", "overcloud-grafana-configure.yml"),
                     utils.get_data_files_path(
                         "ansible", "baremetal-compute-serial-console-post-config.yml"),  # noqa
+                ],
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_overcloud_swift_rings_generate(self, mock_run):
+        command = commands.OvercloudSwiftRingsGenerate(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    utils.get_data_files_path("ansible", "swift-rings.yml"),
                 ],
             ),
         ]

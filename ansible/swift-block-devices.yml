@@ -1,0 +1,11 @@
+---
+- name: Ensure Swift block devices are prepared
+  hosts: "{{ swift_hosts }}"
+  vars:
+    swift_hosts: storage
+  tags:
+    - swift
+    - swift-block-devices
+  roles:
+    - role: swift-block-devices
+      when: kolla_enable_swift | bool

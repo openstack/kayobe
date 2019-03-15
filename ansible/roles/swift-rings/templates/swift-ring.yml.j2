@@ -1,0 +1,21 @@
+---
+part_power: {{ swift_part_power }}
+replication_count: {{ swift_replication_count }}
+min_part_hours: {{ swift_min_part_hours }}
+hosts:
+{% for host_config in swift_host_config %}
+  - host: {{ host_config.host }}
+    region: {{ host_config.region }}
+    zone: {{ host_config.zone }}
+    ip: {{ host_config.ip }}
+    port: {{ host_config.ports[service_name] }}
+    replication_ip: {{ host_config.replication_ip }}
+    replication_port: {{ host_config.replication_ports[service_name] }}
+    devices:
+{% for device in host_config.block_devices %}
+{% if service_name in (device.services | default(host_config.block_device_default_services)) %}
+      - device: {{ device.fs_label | default(device.device | basename) }}
+        weight: {{ device.weight | default(host_config.block_device_default_weight) }}
+{% endif %}
+{% endfor %}
+{% endfor %}

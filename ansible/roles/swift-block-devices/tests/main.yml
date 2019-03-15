@@ -1,0 +1,13 @@
+---
+- include: test-invalid-format.yml
+- include: test-mount.yml
+- include: test-bootstrapped.yml
+
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: Fail if any tests failed
+      fail:
+        msg: >
+          Test failures: {{ test_failures }}
+      when: test_failures is defined

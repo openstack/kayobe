@@ -391,6 +391,18 @@ should be set to ``True``.  To build images locally::
 If images have been built previously, they will not be rebuilt.  To force
 rebuilding images, use the ``--force-rebuild`` argument.
 
+Building Swift Rings
+--------------------
+
+.. note::
+
+   This section can be skipped if Swift is not in use.
+
+Swift uses ring files to control placement of data across a cluster. These
+files can be generated automatically using the following command::
+
+   (kayobe) $ kayobe overcloud swift rings generate
+
 Deploying Containerised Services
 --------------------------------
 
