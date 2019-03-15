@@ -285,7 +285,8 @@ class TestCase(unittest.TestCase):
                          mock_rmtree):
         parser = argparse.ArgumentParser()
         parsed_args = parser.parse_args([])
-        dump_dir = mock_mkdtemp.return_value
+        dump_dir = "/path/to/dump"
+        mock_mkdtemp.return_value = dump_dir
         mock_listdir.return_value = ["host1.yml", "host2.yml"]
         mock_read.side_effect = [
             {"var1": "value1"},
