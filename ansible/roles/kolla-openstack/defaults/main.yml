@@ -204,9 +204,6 @@ kolla_enable_ironic_ipxe:
 ###############################################################################
 # Ironic inspector configuration.
 
-# Whether inspector should manage the firewall.
-kolla_inspector_manage_firewall:
-
 # Comma-separated list of inspector processing plugins.
 kolla_inspector_processing_hooks:
 
