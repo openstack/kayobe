@@ -16,6 +16,7 @@ import subprocess
 import unittest
 
 import mock
+import yaml
 
 from kayobe import utils
 
@@ -63,14 +64,17 @@ class TestCase(unittest.TestCase):
                           "/path/to/roles")
 
     @mock.patch.object(utils, "read_file")
-    def test_read_yaml_file(self, mock_read):
-        mock_read.return_value = """---
+    @mock.patch.object(yaml, "safe_load", wraps=yaml.safe_load)
+    def test_read_yaml_file(self, mock_load, mock_read):
+        config = """---
 key1: value1
 key2: value2
 """
+        mock_read.return_value = config
         result = utils.read_yaml_file("/path/to/file")
         self.assertEqual(result, {"key1": "value1", "key2": "value2"})
         mock_read.assert_called_once_with("/path/to/file")
+        mock_load.assert_called_once_with(config)
 
     @mock.patch.object(utils, "read_file")
     def test_read_yaml_file_open_failure(self, mock_read):
