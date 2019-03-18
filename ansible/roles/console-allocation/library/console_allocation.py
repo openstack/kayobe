@@ -78,7 +78,7 @@ def read_allocations(module):
     filename = module.params['allocation_file']
     try:
         with open(filename, 'r') as f:
-            content = yaml.load(f)
+            content = yaml.safe_load(f)
     except IOError as e:
         if e.errno == errno.ENOENT:
             # Ignore ENOENT - we will create the file.
@@ -87,7 +87,7 @@ def read_allocations(module):
     except yaml.YAMLError as e:
         module.fail_json(msg="Failed to parse allocation file %s as YAML" % filename)
     if content is None:
-        # If the file is empty, yaml.load() will return None.
+        # If the file is empty, yaml.safe_load() will return None.
         content = {}
     return content
 

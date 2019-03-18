@@ -100,7 +100,7 @@ def read_yaml_file(path):
               (path, repr(e)))
         sys.exit(1)
     try:
-        return yaml.load(content)
+        return yaml.safe_load(content)
     except yaml.YAMLError as e:
         print("Failed to decode config dump YAML file %s: %s" %
               (path, repr(e)))
