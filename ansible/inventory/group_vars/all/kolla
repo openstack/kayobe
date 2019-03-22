@@ -136,6 +136,8 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_barbican | bool }}"
   - regex: ^blazar
     enabled: "{{ kolla_enable_blazar | bool }}"
+  - regex: ^caso
+    enabled: "{{ kolla_enable_caso | bool }}"
   - regex: ^ceilometer
     enabled: "{{ kolla_enable_ceilometer | bool }}"
   - regex: ^cinder
@@ -516,6 +518,7 @@ kolla_enable_rabbitmq: "yes"
 kolla_enable_aodh: "no"
 kolla_enable_barbican: "no"
 kolla_enable_blazar: "no"
+kolla_enable_caso: "no"
 kolla_enable_ceilometer: "no"
 kolla_enable_central_logging: "no"
 kolla_enable_cinder: "no"
