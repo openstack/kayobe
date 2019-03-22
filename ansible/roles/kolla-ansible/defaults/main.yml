@@ -303,3 +303,9 @@ kolla_tls_cert:
 
 # Desired SELinux state.
 kolla_selinux_state:
+
+###############################################################################
+# NTP
+
+# Whether to enable the NTP daemon.
+kolla_enable_host_ntp:

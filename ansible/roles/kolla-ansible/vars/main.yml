@@ -80,6 +80,7 @@ kolla_feature_flags:
   - ceph_mds
   - ceph_nfs
   - ceph_rgw
+  - chrony
   - cinder
   - cinder_backend_hnas_iscsi
   - cinder_backend_hnas_nfs

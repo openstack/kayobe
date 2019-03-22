@@ -1424,6 +1424,202 @@ class TestCase(unittest.TestCase):
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
+    @mock.patch.object(commands.KollaAnsibleMixin,
+                       "run_kolla_ansible_overcloud")
+    def test_overcloud_service_deploy(self, mock_kolla_run, mock_run):
+        command = commands.OvercloudServiceDeploy(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
+                tags="config",
+            ),
+            mock.call(
+                mock.ANY,
+                [
+                    utils.get_data_files_path("ansible",
+                                              "kolla-openstack.yml"),
+                ],
+            ),
+            mock.call(
+                mock.ANY,
+                [
+                    utils.get_data_files_path("ansible", "stop-chrony.yml"),
+                ],
+                limit="overcloud",
+            ),
+            mock.call(
+                mock.ANY,
+                [
+                    utils.get_data_files_path("ansible",
+                                              "overcloud-extras.yml"),
+                ],
+                limit="overcloud",
+                extra_vars={
+                    "kayobe_action": "deploy",
+                },
+            ),
+            mock.call(
+                mock.ANY,
+                [
+                    utils.get_data_files_path("ansible", "public-openrc.yml"),
+                ],
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                "prechecks",
+            ),
+            mock.call(
+                mock.ANY,
+                "deploy",
+            ),
+            mock.call(
+                mock.ANY,
+                "post-deploy",
+                extra_vars={
+                    "node_config_directory": "/etc/kolla",
+                }
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    @mock.patch.object(commands.KollaAnsibleMixin,
+                       "run_kolla_ansible_overcloud")
+    def test_overcloud_service_reconfigure(self, mock_kolla_run, mock_run):
+        command = commands.OvercloudServiceReconfigure(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
+                tags="config",
+            ),
+            mock.call(
+                mock.ANY,
+                [
+                    utils.get_data_files_path("ansible",
+                                              "kolla-openstack.yml"),
+                ],
+            ),
+            mock.call(
+                mock.ANY,
+                [
+                    utils.get_data_files_path("ansible", "stop-chrony.yml"),
+                ],
+                limit="overcloud",
+            ),
+            mock.call(
+                mock.ANY,
+                [
+                    utils.get_data_files_path("ansible",
+                                              "overcloud-extras.yml"),
+                ],
+                limit="overcloud",
+                extra_vars={
+                    "kayobe_action": "reconfigure",
+                },
+            ),
+            mock.call(
+                mock.ANY,
+                [
+                    utils.get_data_files_path("ansible", "public-openrc.yml"),
+                ],
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                "prechecks",
+            ),
+            mock.call(
+                mock.ANY,
+                "reconfigure",
+            ),
+            mock.call(
+                mock.ANY,
+                "post-deploy",
+                extra_vars={
+                    "node_config_directory": "/etc/kolla",
+                }
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    @mock.patch.object(commands.KollaAnsibleMixin,
+                       "run_kolla_ansible_overcloud")
+    def test_overcloud_service_upgrade(self, mock_kolla_run, mock_run):
+        command = commands.OvercloudServiceUpgrade(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    utils.get_data_files_path("ansible", "kolla-ansible.yml"),
+                    utils.get_data_files_path("ansible",
+                                              "kolla-openstack.yml"),
+                ]
+            ),
+            mock.call(
+                mock.ANY,
+                [
+                    utils.get_data_files_path("ansible", "stop-chrony.yml"),
+                ],
+                limit="overcloud"
+            ),
+            mock.call(
+                mock.ANY,
+                [
+                    utils.get_data_files_path("ansible",
+                                              "overcloud-extras.yml"),
+                ],
+                limit="overcloud",
+                extra_vars={
+                    "kayobe_action": "upgrade",
+                }
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                "prechecks"
+            ),
+            mock.call(
+                mock.ANY,
+                "upgrade"
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
     def test_overcloud_service_configuration_save_args(self, mock_run):
         command = commands.OvercloudServiceConfigurationSave(TestApp(), [])
         parser = command.get_parser("test")

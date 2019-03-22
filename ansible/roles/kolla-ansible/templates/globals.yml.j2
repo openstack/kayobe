@@ -384,6 +384,10 @@ selinux_state: {{ kolla_selinux_state }}
 
 install_epel: {{ kolla_ansible_install_epel | bool }}
 
+{% if kolla_enable_host_ntp is not none %}
+enable_host_ntp: {{ kolla_enable_host_ntp | bool }}
+{% endif %}
+
 {% if kolla_extra_globals %}
 #######################
 # Extra configuration

@@ -1,0 +1,24 @@
+---
+fixes:
+  - |
+    Fixes an issue where multiple NTP daemons could be running on the overcloud
+    hosts, due to Kolla Ansible deploying a chrony container by default
+    starting with the Rocky release.
+
+    Kayobe now overrides this default, to ensure that chrony does not conflict
+    with the NTP daemon deployed on the host. To use the containerised chrony
+    daemon instead, set ``kolla_enable_chrony`` to ``true`` in
+    ``${KAYOBE_CONFIG_PATH}/kolla.yml``. This will also disable the host NTP
+    daemon.
+
+    To ensure that chrony is not running, Kayobe removes the chrony container
+    if ``kolla_enable_chrony`` is ``false`` in the following commands:
+
+    * ``kayobe overcloud service deploy``
+    * ``kayobe overcloud service reconfigure``
+    * ``kayobe overcloud service upgrade``
+
+    The play in Kayobe is tagged with ``stop-chrony``.
+
+    See `story 2005272 <https://storyboard.openstack.org/#!/story/2005272>`__
+    for details.
