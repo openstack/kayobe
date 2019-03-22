@@ -337,6 +337,9 @@ kolla_enable_barbican: "no"
 kolla_enable_central_logging: "no"
 kolla_enable_ceph: "no"
 kolla_enable_ceilometer: "no"
+# The chrony container is disabled by default because we enable an NTP daemon
+# on the host. Setting this to true will disable NTP on the host.
+kolla_enable_chrony: "no"
 kolla_enable_cinder: "no"
 kolla_enable_collectd: "no"
 kolla_enable_designate: "no"

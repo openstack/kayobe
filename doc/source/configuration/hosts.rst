@@ -355,9 +355,20 @@ The NTP service may be disabled as follows:
 .. code-block:: yaml
    :caption: ``ntp.yml``
 
-   ntp_package_state: absent
-   ntp_service_state: stopped
    ntp_service_enabled: false
+
+Chrony
+------
+
+Kolla Ansible can deploy a chrony container. This is disabled by default in
+Kayobe to avoid conflicting with the NTP daemon on the host.
+
+To use the containerised chrony daemon and disable the host NTP daemon, set the
+following in ``${KAYOBE_CONFIG_PATH}/kolla.yml``:
+
+.. code-block:: yaml
+
+   kolla_enable_chrony: true
 
 .. _configuration-hosts-lvm:
 
