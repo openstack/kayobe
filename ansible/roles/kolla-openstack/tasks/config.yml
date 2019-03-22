@@ -34,6 +34,7 @@
     - { src: pxelinux.default.j2, dest: ironic/pxelinux.default, enabled: "{{ kolla_enable_ironic }}" }
     - { src: inspector.ipxe.j2, dest: ironic/inspector.ipxe, enabled: "{{ kolla_enable_ironic_ipxe }}" }
     - { src: sahara.conf.j2, dest: sahara.conf, enabled: "{{ kolla_enable_sahara }}" }
+    - { src: backup.my.cnf.j2, dest: backup.my.cnf, enabled: "{{ kolla_enable_xtrabackup }}" }
     - { src: zookeeper.cfg.j2, dest: zookeeper.cfg, enabled: "{{ kolla_enable_zookeeper }}" }
   when: item.enabled | bool
 

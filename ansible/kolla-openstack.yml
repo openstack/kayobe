@@ -119,6 +119,7 @@
             - { name: nova, file: nova.conf }
             - { name: octavia, file: octavia.conf }
             - { name: sahara, file: sahara.conf }
+            - { name: xtrabackup, file: backup.my.cnf }
             - { name: zookeeper, file: zookeeper.cfg }
 
         - name: Initialise a fact containing extra configuration
@@ -223,5 +224,6 @@
       kolla_extra_nova: "{{ kolla_extra_config.nova | default }}"
       kolla_extra_octavia: "{{ kolla_extra_config.octavia | default }}"
       kolla_extra_sahara: "{{ kolla_extra_config.sahara | default }}"
+      kolla_extra_xtrabackup: "{{ kolla_extra_config.xtrabackup | default }}"
       kolla_extra_zookeeper: "{{ kolla_extra_config.zookeeper | default }}"
       kolla_extra_config_path: "{{ kayobe_config_path }}/kolla/config"

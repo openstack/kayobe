@@ -1254,6 +1254,76 @@ class TestCase(unittest.TestCase):
         ]
         self.assertEqual(expected_calls, mock_run.call_args_list)
 
+    @mock.patch.object(commands.KollaAnsibleMixin,
+                       "run_kolla_ansible_overcloud")
+    def test_overcloud_database_backup(self, mock_run):
+        command = commands.OvercloudDatabaseBackup(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                "mariadb_backup",
+                extra_args=[]
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KollaAnsibleMixin,
+                       "run_kolla_ansible_overcloud")
+    def test_overcloud_database_backup_incremental(self, mock_run):
+        command = commands.OvercloudDatabaseBackup(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args(["--incremental"])
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                "mariadb_backup",
+                extra_args=["--incremental"]
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KollaAnsibleMixin,
+                       "run_kolla_ansible_overcloud")
+    def test_overcloud_database_recover(self, mock_run):
+        command = commands.OvercloudDatabaseRecover(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                "mariadb_recovery",
+                extra_vars={}
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KollaAnsibleMixin,
+                       "run_kolla_ansible_overcloud")
+    def test_overcloud_database_recover_force_host(self, mock_run):
+        command = commands.OvercloudDatabaseRecover(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args(["--force-recovery-host", "foo"])
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                "mariadb_recovery",
+                extra_vars={
+                    "mariadb_recover_inventory_name": "foo"
+                }
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
     def test_overcloud_service_configuration_save(self, mock_run):

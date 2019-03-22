@@ -152,5 +152,6 @@ kolla_feature_flags:
   - vitrage
   - vmtp
   - watcher
+  - xtrabackup
   - zookeeper
   - zun

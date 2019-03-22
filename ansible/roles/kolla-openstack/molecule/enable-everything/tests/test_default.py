@@ -78,6 +78,7 @@ def test_service_config_directory(host, path):
      'nova.conf',
      'octavia.conf',
      'sahara.conf',
+     'backup.my.cnf',
      'zookeeper.cfg'])
 def test_service_ini_file(host, path):
     # TODO(mgoddard): Check more of config file contents.

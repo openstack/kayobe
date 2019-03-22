@@ -405,6 +405,15 @@ kolla_enable_storm:
 kolla_enable_swift:
 
 ###############################################################################
+# Xtrabackup configuration.
+
+# Whether to enable Xtrabackup.
+kolla_enable_xtrabackup:
+
+# Free form extra configuration to append to backup.my.cnf.
+kolla_extra_xtrabackup:
+
+###############################################################################
 # Zookeeper configuration.
 
 # Whether to enable Zookeeper.
