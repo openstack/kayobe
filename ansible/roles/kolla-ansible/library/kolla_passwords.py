@@ -111,13 +111,13 @@ def kolla_passwords(module):
     temp_file_path = create_named_tempfile()
     try:
         # Start with kolla's sample password file.
-        shutil.copy2(module.params['sample'], temp_file_path)
+        shutil.copyfile(module.params['sample'], temp_file_path)
 
         # If passwords exist, decrypt and merge these in.
         if module.params['src'] and os.path.isfile(module.params['src']):
             src_path = create_named_tempfile()
             try:
-                shutil.copy2(module.params['src'], src_path)
+                shutil.copyfile(module.params['src'], src_path)
                 if module.params['vault_password']:
                     vault_decrypt(module, src_path)
                 kolla_mergepwd(module, src_path, temp_file_path, temp_file_path)
@@ -142,7 +142,7 @@ def kolla_passwords(module):
             if module.params['vault_password']:
                 dest_path = create_named_tempfile()
                 try:
-                    shutil.copy2(module.params['dest'], dest_path)
+                    shutil.copyfile(module.params['dest'], dest_path)
                     vault_decrypt(module, dest_path)
                     checksum_dest = module.sha1(dest_path)
                 finally:
@@ -162,10 +162,10 @@ def kolla_passwords(module):
         if changed and not module.check_mode:
             module.atomic_move(temp_file_path, module.params['dest'])
     except Exception as e:
-        try:
+        module.fail_json(msg="Failed to generate kolla passwords: %s" % repr(e))
+    finally:
+        if os.path.isfile(temp_file_path):
             os.unlink(temp_file_path)
-        finally:
-            module.fail_json(msg="Failed to generate kolla passwords: %s" % repr(e))
 
     if not module.check_mode:
         # Update the file's attributes.
