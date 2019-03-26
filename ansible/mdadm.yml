@@ -1,0 +1,11 @@
+---
+- name: Ensure software RAID configuration is applied
+  hosts: seed-hypervisor:seed:overcloud
+  tags:
+    - mdadm
+  roles:
+    - name: mrlesmithjr.mdadm
+      become: True
+      when:
+        - mdadm_arrays is defined
+        - mdadm_arrays | length > 0

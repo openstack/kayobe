@@ -55,6 +55,12 @@ storage_raid_config_default: []
 storage_raid_config_extra: []
 
 ###############################################################################
+# Storage node software RAID configuration.
+
+# List of software RAID arrays. See mrlesmithjr.mdadm role for format.
+storage_mdadm_arrays: []
+
+###############################################################################
 # Storage node LVM configuration.
 
 # List of storage volume groups. See mrlesmithjr.manage-lvm role for

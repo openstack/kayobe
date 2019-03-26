@@ -1,0 +1,6 @@
+---
+###############################################################################
+# Compute node software RAID configuration.
+
+# List of software RAID arrays. See mrlesmithjr.mdadm role for format.
+mdadm_arrays: "{{ compute_mdadm_arrays }}"

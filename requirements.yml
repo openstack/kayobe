@@ -8,6 +8,9 @@
   version: v1.2.0
 - src: mrlesmithjr.manage-lvm
   version: v0.1.4
+- src: mrlesmithjr.mdadm
+  # There are no versioned releases of this role.
+  version: 5be3ee7d330aa17317897bd104dc87ff0df11915
 - src: resmo.ntp
   version: 0.4.0
 - src: singleplatform-eng.users
