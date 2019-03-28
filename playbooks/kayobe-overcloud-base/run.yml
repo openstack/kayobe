@@ -26,7 +26,10 @@
         cmd: dev/overcloud-test-vm.sh > {{ logs_dir }}/ansible/overcloud-test-vm
         chdir: "{{ kayobe_src_dir }}"
 
-    - name: Perform testing of the baremetal machines
-      shell:
-        cmd: dev/overcloud-test-baremetal.sh > {{ logs_dir }}/ansible/overcloud-test-baremetal
-        chdir: "{{ kayobe_src_dir }}"
+    # NOTE(mgoddard): Bare metal testing in CI is currently very unreliable,
+    # making it difficult to merge patches. Skip this part of the testing until
+    # this can be improved.
+    # - name: Perform testing of the baremetal machines
+    #   shell:
+    #     cmd: dev/overcloud-test-baremetal.sh > {{ logs_dir }}/ansible/overcloud-test-baremetal
+    #     chdir: "{{ kayobe_src_dir }}"
