@@ -47,16 +47,12 @@
       - ^setup.cfg$
 
 - job:
-    name: kayobe-overcloud-base
+    name: kayobe-base
     description: |
-      Base job for testing overcloud deployment.
-
-      Configures the primary VM as an overcloud controller.
-    pre-run: playbooks/kayobe-overcloud-base/pre.yml
-    run: playbooks/kayobe-overcloud-base/run.yml
-    post-run: playbooks/kayobe-overcloud-base/post.yml
+      Base job for all deployment jobs.
+    pre-run: playbooks/kayobe-base/pre.yml
+    post-run: playbooks/kayobe-base/post.yml
     attempts: 1
-    timeout: 7200
     required-projects:
       # Include kayobe to ensure other projects can use this job.
       - name: x/kayobe
@@ -72,6 +68,27 @@
       - ^setup.cfg$
       - ^tools/.*$
       - ^tox.ini$
+    vars:
+      # Name of the release to upgrade from for upgrade jobs.
+      previous_release: rocky
+      logs_dir: "/tmp/logs"
+      kayobe_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/x/kayobe'].src_dir }}"
+      kayobe_config_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/x/kayobe-config-dev'].src_dir }}"
+      previous_kayobe_src_dir: "{{ ansible_env.PWD ~ '/previous/kayobe' }}"
+      previous_kayobe_config_src_dir: "{{ ansible_env.PWD ~ '/previous/kayobe-config' }}"
+      requirements_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/requirements'].src_dir }}"
+      tenks_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/tenks'].src_dir }}"
+
+- job:
+    name: kayobe-overcloud-base
+    parent: kayobe-base
+    description: |
+      Base job for testing overcloud deployment.
+
+      Configures the primary VM as an overcloud controller.
+    pre-run: playbooks/kayobe-overcloud-base/pre.yml
+    run: playbooks/kayobe-overcloud-base/run.yml
+    timeout: 7200
 
 - job:
     name: kayobe-overcloud-centos
@@ -80,6 +97,7 @@
 
 - job:
     name: kayobe-overcloud-upgrade-base
+    parent: kayobe-base
     description: |
       Base job for testing overcloud upgrades.
 
@@ -87,27 +105,7 @@
       OpenStack release, and upgrades it to the current release.
     pre-run: playbooks/kayobe-overcloud-upgrade-base/pre.yml
     run: playbooks/kayobe-overcloud-upgrade-base/run.yml
-    post-run: playbooks/kayobe-overcloud-upgrade-base/post.yml
-    attempts: 1
     timeout: 9000
-    required-projects:
-      # Include kayobe to ensure other projects can use this job.
-      - name: x/kayobe
-      - name: x/kayobe-config-dev
-      - name: openstack/kolla
-      - name: openstack/kolla-ansible
-      - name: openstack/requirements
-      - name: openstack/tenks
-    vars:
-      # Name of the release to upgrade from.
-      previous_release: rocky
-    irrelevant-files:
-      - ^.*\.rst$
-      - ^doc/.*
-      - ^releasenotes/.*
-      - ^setup.cfg$
-      - ^tools/.*$
-      - ^tox.ini$
 
 - job:
     name: kayobe-overcloud-upgrade-centos
@@ -116,29 +114,14 @@
 
 - job:
     name: kayobe-seed-base
+    parent: kayobe-base
     description: |
       Base job for testing seed deployment.
 
       Configures the primary VM as a seed.
     pre-run: playbooks/kayobe-seed-base/pre.yml
     run: playbooks/kayobe-seed-base/run.yml
-    post-run: playbooks/kayobe-seed-base/post.yml
-    attempts: 1
     timeout: 5400
-    required-projects:
-      # Include kayobe to ensure other projects can use this job.
-      - name: x/kayobe
-      - name: x/kayobe-config-dev
-      - name: openstack/kolla
-      - name: openstack/kolla-ansible
-      - name: openstack/requirements
-    irrelevant-files:
-      - ^.*\.rst$
-      - ^doc/.*
-      - ^releasenotes/.*
-      - ^setup.cfg$
-      - ^tools/.*$
-      - ^tox.ini$
 
 - job:
     name: kayobe-seed-centos
@@ -147,6 +130,7 @@
 
 - job:
     name: kayobe-seed-upgrade-base
+    parent: kayobe-base
     description: |
       Base job for testing seed upgrades.
 
@@ -154,26 +138,7 @@
       and upgrades it to the current release.
     pre-run: playbooks/kayobe-seed-upgrade-base/pre.yml
     run: playbooks/kayobe-seed-upgrade-base/run.yml
-    post-run: playbooks/kayobe-seed-upgrade-base/post.yml
-    attempts: 1
     timeout: 5400
-    required-projects:
-      # Include kayobe to ensure other projects can use this job.
-      - name: x/kayobe
-      - name: x/kayobe-config-dev
-      - name: openstack/kolla
-      - name: openstack/kolla-ansible
-      - name: openstack/requirements
-    vars:
-      # Name of the release to upgrade from.
-      previous_release: rocky
-    irrelevant-files:
-      - ^.*\.rst$
-      - ^doc/.*
-      - ^releasenotes/.*
-      - ^setup.cfg$
-      - ^tools/.*$
-      - ^tox.ini$
 
 - job:
     name: kayobe-seed-upgrade-centos

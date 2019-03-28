@@ -1,0 +1,17 @@
+---
+- hosts: primary
+  roles:
+    - role: kayobe-diagnostics
+      kayobe_diagnostics_phase: "pre"
+      kayobe_diagnostics_log_dir: "{{ logs_dir }}"
+
+    - role: kayobe-ci-prep
+  tasks:
+    # NOTE(mgoddard): Copying upper constraints to somewhere accessible by both
+    # the zuul and stack users.
+    - name: Ensure upper-contraints.txt exists
+      copy:
+        src: "{{ requirements_src_dir }}/upper-constraints.txt"
+        dest: "/tmp"
+        mode: 0644
+        remote_src: true
