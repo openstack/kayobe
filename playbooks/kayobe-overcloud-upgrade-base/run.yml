@@ -74,13 +74,10 @@
             cmd: dev/overcloud-test.sh > {{ logs_dir }}/ansible/overcloud-test-vm-pre-upgrade
             chdir: "{{ previous_kayobe_src_dir }}"
 
-        # NOTE(mgoddard): Bare metal testing in CI is currently very
-        # unreliable, making it difficult to merge patches. Skip this part of
-        # the testing until # this can be improved.
-        # - name: Perform testing of the baremetal machines in the overcloud prior to upgrade
-        #   shell:
-        #     cmd: dev/overcloud-test-baremetal.sh > {{ logs_dir }}/ansible/overcloud-test-bm-pre-upgrade
-        #     chdir: "{{ kayobe_src_dir }}"
+        - name: Perform testing of the baremetal machines in the overcloud prior to upgrade
+          shell:
+            cmd: dev/overcloud-test-baremetal.sh > {{ logs_dir }}/ansible/overcloud-test-bm-pre-upgrade
+            chdir: "{{ kayobe_src_dir }}"
 
         # Upgrade Kayobe, and use it to perform an upgrade of the control plane.
 
@@ -103,13 +100,10 @@
             cmd: dev/overcloud-test-vm.sh > {{ logs_dir }}/ansible/overcloud-test-vm-post-upgrade
             chdir: "{{ kayobe_src_dir }}"
 
-        # NOTE(mgoddard): Bare metal testing in CI is currently very
-        # unreliable, making it difficult to merge patches. Skip this part of
-        # the testing until # this can be improved.
-        # - name: Perform testing of the baremetal machines in the upgraded overcloud
-        #   shell:
-        #     cmd: dev/overcloud-test-baremetal.sh > {{ logs_dir }}/ansible/overcloud-test-bm-post-upgrade
-        #     chdir: "{{ kayobe_src_dir }}"
+        - name: Perform testing of the baremetal machines in the upgraded overcloud
+          shell:
+            cmd: dev/overcloud-test-baremetal.sh > {{ logs_dir }}/ansible/overcloud-test-bm-post-upgrade
+            chdir: "{{ kayobe_src_dir }}"
 
       environment:
         KAYOBE_CONFIG_SOURCE_PATH: "{{ kayobe_config_src_dir }}"
