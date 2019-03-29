@@ -34,3 +34,7 @@ deploy_ramdisk: ipa.initramfs
 # Use a custom socket path to avoid a conflict with the nova_libvirt kolla
 # container which bind mounts /var/run/libvirt.
 libvirt_custom_socket_path: /var/run/libvirt-tenks
+
+# Nested virtualisation is not working well in CI currently. Force the use of
+# QEMU.
+libvirt_vm_engine: "qemu"

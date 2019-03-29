@@ -31,3 +31,7 @@ physnet_mappings:
 
 # No placement service.
 wait_for_placement: false
+
+# Nested virtualisation is not working well in CI currently. Force the use of
+# QEMU.
+libvirt_vm_engine: "qemu"
