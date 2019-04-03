@@ -27,6 +27,7 @@ Environments
 The following development environments are supported:
 
 * Overcloud (single OpenStack controller)
+* Seed
 * Seed hypervisor
 * Seed VM
 
@@ -100,15 +101,65 @@ plane::
 
 Upon successful completion of this script, the control plane will be active.
 
-The control plane can be tested by running the ``dev/overcloud-test.sh``
+Testing
+-------
+
+Scripts are provided for testing the creation of virtual and bare metal
+instances.
+
+Virtual Machines
+^^^^^^^^^^^^^^^^
+
+The control plane can be tested by running the ``dev/overcloud-test-vm.sh``
 script. This will run the ``init-runonce`` setup script provided by Kolla
 Ansible that registers images, networks, flavors etc. It will then deploy a
 virtual server instance, and delete it once it becomes active::
 
-    ./dev/overcloud-test.sh
+    ./dev/overcloud-test-vm.sh
 
-It is possible to test an upgrade by running the ``dev/overcloud-upgrade.sh``
-script::
+Bare Metal Compute
+^^^^^^^^^^^^^^^^^^
+
+For a control plane with Ironic enabled, a "bare metal" instance can be
+deployed. We can use the `Tenks <https://tenks.readthedocs.io/en/latest/>`__
+project to create fake bare metal nodes.
+
+Clone the tenks repository::
+
+    git clone https://opendev.org/openstack/tenks.git
+
+Optionally, edit the Tenks configuration file,
+``dev/tenks-deploy-config-compute.yml``.
+
+Run the ``dev/tenks-deploy.sh`` script to deploy Tenks::
+
+    ./dev/tenks-deploy.sh ./tenks
+
+Check that Tenks has created VMs called ``tk0`` and ``tk1``::
+
+    sudo virsh list --all
+
+Verify that VirtualBMC is running::
+
+    ~/tenks-venv/bin/vbmc list
+
+We are now ready to run the ``dev/overcloud-test-baremetal.sh`` script. This
+will run the ``init-runonce`` setup script provided by Kolla Ansible that
+registers images, networks, flavors etc. It will then deploy a bare metal
+server instance, and delete it once it becomes active::
+
+    ./dev/overcloud-test-baremetal.sh
+
+The machines and networking created by Tenks can be cleaned up via
+``dev/tenks-teardown.sh``::
+
+    ./dev/tenks-teardown.sh ./tenks
+
+Upgrading
+---------
+
+It is possible to test an upgrade from a previous release by running the
+``dev/overcloud-upgrade.sh`` script::
 
     ./dev/overcloud-upgrade.sh
 
@@ -179,7 +230,8 @@ Clone the tenks repository::
 
     git clone https://opendev.org/openstack/tenks.git
 
-Edit the Tenks configuration file, ``dev/tenks-deploy-config-seed.yml``.
+Optionally, edit the Tenks configuration file,
+``dev/tenks-deploy-config-overcloud.yml``.
 
 Run the ``dev/tenks-deploy.sh`` script to deploy Tenks::
 
