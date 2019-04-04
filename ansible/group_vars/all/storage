@@ -12,14 +12,14 @@ storage_bootstrap_user: "{{ lookup('env', 'USER') }}"
 # List of networks to which storage nodes are attached.
 storage_network_interfaces: >
   {{ (storage_default_network_interfaces +
-      storage_extra_network_interfaces) | unique | list }}
+      storage_extra_network_interfaces) | reject('none') | unique | list }}
 
 # List of default networks to which storage nodes are attached.
 storage_default_network_interfaces: >
   {{ [admin_oc_net_name,
       internal_net_name,
       storage_mgmt_net_name,
-      storage_net_name] | unique | list }}
+      storage_net_name] | reject('none') | unique | list }}
 
 # List of extra networks to which storage nodes are attached.
 storage_extra_network_interfaces: []

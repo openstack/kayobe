@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Adds support for skipping configuration of a network, by setting its name
+    to ``None``.  This is done in ``networks.yml`` as follows::
+
+        admin_oc_net_name:
+  - |
+    Adds support for custom configuration of ``keystone.conf``.
