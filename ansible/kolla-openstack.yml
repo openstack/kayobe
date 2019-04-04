@@ -109,6 +109,7 @@
             - { name: inspector, file: ironic-inspector.conf }
             - { name: ironic, file: ironic.conf }
             - { name: kafka, file: kafka.server.properties }
+            - { name: keystone, file: keystone.conf }
             - { name: magnum, file: magnum.conf }
             - { name: manila, file: manila.conf }
             - { name: mariadb, file: galera.cnf }
@@ -212,6 +213,7 @@
       kolla_extra_inspector: "{{ kolla_extra_config.inspector | default }}"
       kolla_extra_ironic: "{{ kolla_extra_config.ironic | default }}"
       kolla_extra_kafka: "{{ kolla_extra_config.kafka | default }}"
+      kolla_extra_keystone: "{{ kolla_extra_config.keystone | default }}"
       kolla_extra_magnum: "{{ kolla_extra_config.magnum | default }}"
       kolla_extra_manila: "{{ kolla_extra_config.manila | default }}"
       kolla_extra_mariadb: "{{ kolla_extra_config.mariadb | default }}"

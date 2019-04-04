@@ -1,0 +1,8 @@
+# {{ ansible_managed }}
+{% if kolla_extra_keystone %}
+#######################
+# Extra configuration
+#######################
+{{ kolla_extra_keystone }}
+{% endif %}
+

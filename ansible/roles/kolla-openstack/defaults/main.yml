@@ -67,6 +67,15 @@ kolla_extra_grafana:
 kolla_enable_haproxy:
 
 ###############################################################################
+# Keystone configuration.
+
+# Whether to enable Keystone.
+kolla_enable_keystone:
+
+# Free form extra configuration to append to Keystone.conf
+kolla_extra_keystone:
+
+##############################################################################
 # Heat configuration.
 
 # Whether to enable Heat.

@@ -12,13 +12,13 @@ seed_bootstrap_user: "{{ lookup('env', 'USER') }}"
 # List of networks to which seed nodes are attached.
 seed_network_interfaces: >
   {{ (seed_default_network_interfaces +
-      seed_extra_network_interfaces) | unique | list }}
+      seed_extra_network_interfaces) | reject('none') | unique | list }}
 
 # List of default networks to which seed nodes are attached.
 seed_default_network_interfaces: >
   {{ [admin_oc_net_name,
       oob_oc_net_name,
-      provision_oc_net_name] | unique | list }}
+      provision_oc_net_name] | reject('none') | unique | list }}
 
 # List of extra networks to which seed nodes are attached.
 seed_extra_network_interfaces: []

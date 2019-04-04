@@ -23,6 +23,7 @@
     - { src: ironic.conf.j2, dest: ironic.conf, enabled: "{{ kolla_enable_ironic }}" }
     - { src: ironic-inspector.conf.j2, dest: ironic-inspector.conf, enabled: "{{ kolla_enable_ironic }}" }
     - { src: kafka.server.properties.j2, dest: kafka.server.properties, enabled: "{{ kolla_enable_kafka }}" }
+    - { src: keystone.conf.j2, dest: keystone.conf, enabled: "{{ kolla_enable_keystone }}" }
     - { src: magnum.conf.j2, dest: magnum.conf, enabled: "{{ kolla_enable_magnum }}" }
     - { src: manila.conf.j2, dest: manila.conf, enabled: "{{ kolla_enable_manila }}" }
     - { src: ml2_conf.ini.j2, dest: neutron/ml2_conf.ini, enabled: "{{ kolla_enable_neutron }}" }

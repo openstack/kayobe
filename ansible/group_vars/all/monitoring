@@ -14,13 +14,13 @@ monitoring_network_interfaces: >
   {{ controller_network_interfaces | unique | list
      if inventory_hostname in groups['controllers'] else
      (monitoring_default_network_interfaces +
-      monitoring_extra_network_interfaces) | unique | list }}
+      monitoring_extra_network_interfaces) | reject('none') | unique | list }}
 
 # List of default networks to which monitoring nodes are attached.
 monitoring_default_network_interfaces: >
   {{ [admin_oc_net_name,
       internal_net_name,
-      public_net_name] | unique | list }}
+      public_net_name] | reject('none') | unique | list }}
 
 # List of extra networks to which monitoring nodes are attached.
 monitoring_extra_network_interfaces: []

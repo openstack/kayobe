@@ -173,6 +173,7 @@ which files are supported.
    ``kafka.server.properties``     Kafka configuration.
    ``kafka/*``                     Extended Kafka configuration.
    ``keepalived/*``                Extended keepalived configuration.
+   ``keystone.conf``               Keystone configuration.
    ``keystone/*``                  Extended keystone configuration.
    ``magnum.conf``                 Magnum configuration.
    ``magnum/*``                    Extended magnum configuration.
