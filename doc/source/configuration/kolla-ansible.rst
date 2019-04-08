@@ -149,33 +149,53 @@ which files are supported.
    =============================== =======================================================
    File                            Purpose
    =============================== =======================================================
-   ``ceph/*``                      Ceph configuration.
-   ``glance.conf``                 Glance configuration.
-   ``glance/*``                    Extended glance configuration.
+   ``barbican/*``                  Extended Barbican configuration.
+   ``ceph.conf``                   Ceph configuration.
+   ``ceph/*``                      Extended Ceph configuration.
+   ``cinder.conf``                 Cinder configuration.
+   ``cinder/*``                    Extended Cinder configuration.
+   ``designate.conf``              Designate configuration.
+   ``designate/*``                 Extended Designate configuration.
    ``fluentd/filter``              Fluentd filter configuration.
    ``fluentd/input``               Fluentd input configuration.
    ``fluentd/output``              Fluentd output configuration.
+   ``glance.conf``                 Glance configuration.
+   ``glance/*``                    Extended Glance configuration.
+   ``grafana/*``                   Extended Grafana configuration.
+   ``haproxy/*``                   HAProxy configuration.
    ``heat.conf``                   Heat configuration.
    ``heat/*``                      Extended heat configuration.
    ``horizon/*``                   Extended horizon configuration.
+   ``influx*``                     InfluxDB configuration.
    ``ironic-inspector.conf``       Ironic inspector configuration.
    ``ironic.conf``                 Ironic configuration.
    ``ironic/*``                    Extended ironic configuration.
-   ``keystone/*``                  Extended keystone configuration.
+   ``kafka.server.properties``     Kafka configuration.
+   ``kafka/*``                     Extended Kafka configuration.
    ``keepalived/*``                Extended keepalived configuration.
+   ``keystone/*``                  Extended keystone configuration.
    ``magnum.conf``                 Magnum configuration.
    ``magnum/*``                    Extended magnum configuration.
    ``manila.conf``                 Manila configuration.
    ``manila/*``                    Extended manila configuration.
+   ``galera.cnf``                  MariaDB configuration.
+   ``mariadb/*``                   Extended MariaDB configuration.
+   ``monasca/*``                   Extended Monasca configuration.
    ``murano.conf``                 Murano configuration.
    ``murano/*``                    Extended murano configuration.
    ``neutron.conf``                Neutron configuration.
+   ``neutron/ml2_conf.ini``        Neutron ML2 configuration.
    ``neutron/*``                   Extended neutron configuration.
    ``nova.conf``                   Nova configuration.
    ``nova/*``                      Extended nova configuration.
+   ``octavia.conf``                Octavia configuration.
+   ``octavia/*``                   Extended Octavia configuration.
    ``sahara.conf``                 Sahara configuration.
    ``sahara/*``                    Extended sahara configuration.
+   ``storm/*``                     Extended Storm configuration.
    ``swift/*``                     Extended swift configuration.
+   ``zookeeper.cfg``               Zookeeper configuration.
+   ``zookeeper/*``                 Extended Zookeeper configuration.
    =============================== =======================================================
 
 Configuring an OpenStack Component
