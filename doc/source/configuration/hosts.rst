@@ -359,6 +359,43 @@ The NTP service may be disabled as follows:
    ntp_service_state: stopped
    ntp_service_enabled: false
 
+.. _configuration-hosts-mdadm:
+
+Software RAID
+=============
+
+While it is possible to use RAID directly with LVM, some operators may prefer
+the userspace tools provided by ``mdadm`` or may have existing software RAID
+arrays they want to manage with Kayobe.
+
+Software RAID arrays may be configured via the ``mdadm_arrays`` variable. For
+convenience, this is mapped to the following variables:
+
+* ``seed_hypervisor_mdadm_arrays``
+* ``seed_mdadm_arrays``
+* ``compute_mdadm_arrays``
+* ``controller_mdadm_arrays``
+* ``monitoring_mdadm_arrays``
+* ``storage_mdadm_arrays``
+
+The format of these variables is as defined by the ``mdadm_arrays`` variable of
+the `mrlesmithjr.mdadm <https://galaxy.ansible.com/mrlesmithjr/mdadm>`__
+Ansible role.
+
+For example, to configure two of the seed's disks as a RAID1 ``mdadm`` array
+available as ``/dev/md0``:
+
+.. code-block:: yaml
+   :caption: ``seed.yml``
+
+   seed_mdadm_arrays:
+     - name: md0
+       devices:
+         - /dev/sdb
+         - /dev/sdc
+       level: '1'
+       state: present
+
 .. _configuration-hosts-lvm:
 
 LVM

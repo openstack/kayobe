@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Adds support for configuring software RAID arrays using ``mdadm``. Software
+    RAID configuration is applied before LVM configuration, which allows
+    creating LVM volumes on top of software RAID arrays. See `story 2005017
+    <https://storyboard.openstack.org/#!/story/2005017>`__ for details.
