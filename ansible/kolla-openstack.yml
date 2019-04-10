@@ -189,7 +189,6 @@
   roles:
     - role: kolla-openstack
       # Ironic inspector configuration.
-      kolla_inspector_manage_firewall: "{{ inspector_manage_firewall }}"
       kolla_inspector_processing_hooks: "{{ inspector_processing_hooks }}"
       kolla_inspector_add_ports: "{{ inspector_add_ports }}"
       kolla_inspector_keep_ports: "{{ inspector_keep_ports }}"

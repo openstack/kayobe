@@ -1,0 +1,9 @@
+---
+upgrade:
+  - |
+    Removes the ``inspector_manage_firewall`` variable. This is supported in
+    Kolla Ansible via the ``ironic_inspector_pxe_filter`` variable, which can
+    be added to ``${KAYOBE_CONFIG_PATH}/kolla/globals.yml``. The default value
+    for that variable changed in the Stein release from 'iptables' to
+    'dnsmasq', since the iptables filter `does not work with Docker CE
+    <https://bugs.launchpad.net/kolla-ansible/+bug/1823044>`__.

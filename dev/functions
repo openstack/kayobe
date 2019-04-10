@@ -644,6 +644,9 @@ function configure_iptables {
     sudo iptables -I FORWARD -p tcp --dport $IRONIC_SERVICE_PORT -j ACCEPT || true
     # allow IPA to connect to ironic inspector
     sudo iptables -I FORWARD -p tcp --dport $IRONIC_INSPECTOR_PORT -j ACCEPT || true
+    # Docker CE has added a default DROP policy to the FORWARD chain. Allow
+    # DHCP packets to be forwarded across the bridge.
+    sudo iptables -I FORWARD -p udp --dport 67:68 --sport 67:68 -j ACCEPT || true
 
     # agent ramdisk gets instance image from swift
     sudo iptables -I INPUT -d $INTERNAL_VIP -p tcp --dport ${SWIFT_DEFAULT_BIND_PORT:-8080} -j ACCEPT || true
