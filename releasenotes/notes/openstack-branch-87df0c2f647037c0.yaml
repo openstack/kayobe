@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds two new variables, ``openstack_release`` and ``openstack_branch``, in
+    ``${KAYOBE_CONFIG_PATH}/openstack.yml`` for setting the current OpenStack
+    release and branch in a single place.

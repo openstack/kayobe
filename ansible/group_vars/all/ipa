@@ -10,8 +10,8 @@ ipa_build_images: False
 # URL of IPA source repository.
 ipa_build_source_url: "https://git.openstack.org/openstack/ironic-python-agent"
 
-# Version of IPA source repository.
-ipa_build_source_version: "master"
+# Version of IPA source repository. Default is {{ openstack_branch }}.
+ipa_build_source_version: "{{ openstack_branch }}"
 
 # URL of IPA upper constraints file.
 ipa_build_upper_constraints_file_url:
@@ -59,11 +59,16 @@ ipa_build_dib_git_elements: []
 ###############################################################################
 # Ironic Python Agent (IPA) images configuration.
 
+# Suffix of upstream Ironic deployment image files. Default is based on
+# {{ openstack_branch }}.
+ipa_images_upstream_url_suffix: >-
+  {% if openstack_branch != 'master' %}-{{ openstack_branch | replace('/', '-') }}{% endif %}
+
 # Name of Ironic deployment kernel image to register in Glance.
 ipa_images_kernel_name: "ipa.vmlinuz"
 
 # URL of Ironic deployment kernel image to download.
-ipa_kernel_upstream_url: "https://tarballs.openstack.org/ironic-python-agent/coreos/files/coreos_production_pxe.vmlinuz"
+ipa_kernel_upstream_url: "https://tarballs.openstack.org/ironic-python-agent/coreos/files/coreos_production_pxe{{ ipa_images_upstream_url_suffix }}.vmlinuz"
 
 # URL of checksum of Ironic deployment kernel image.
 ipa_kernel_checksum_url: "{{ ipa_kernel_upstream_url }}.{{ ipa_kernel_checksum_algorithm }}"
@@ -75,7 +80,7 @@ ipa_kernel_checksum_algorithm: "sha256"
 ipa_images_ramdisk_name: "ipa.initramfs"
 
 # URL of Ironic deployment ramdisk image to download.
-ipa_ramdisk_upstream_url: "https://tarballs.openstack.org/ironic-python-agent/coreos/files/coreos_production_pxe_image-oem.cpio.gz"
+ipa_ramdisk_upstream_url: "https://tarballs.openstack.org/ironic-python-agent/coreos/files/coreos_production_pxe_image-oem{{ ipa_images_upstream_url_suffix }}.cpio.gz"
 
 # URL of checksum of Ironic deployment ramdisk image.
 ipa_ramdisk_checksum_url: "{{ ipa_ramdisk_upstream_url }}.{{ ipa_ramdisk_checksum_algorithm }}"

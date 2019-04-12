@@ -1,5 +1,15 @@
 ---
 ###############################################################################
+# OpenStack release configuration.
+
+# Name of the current OpenStack release. Default is "master".
+openstack_release: "master"
+
+# Name of the current OpenStack branch. Default is "master".
+openstack_branch: >-
+  {% if openstack_release != 'master' %}stable/{% endif %}{{ openstack_release | lower }}
+
+###############################################################################
 # OpenStack authentication configuration.
 
 # Overcloud authentication type. This should be a string compatible with the
