@@ -54,8 +54,14 @@
       - name: openstack/kayobe
       - name: openstack/kayobe-config-dev
       - name: openstack/kolla
+        # TODO(wszumski): Remove when kayobe stable/train exists.
+        override-checkout: stable/train
       - name: openstack/kolla-ansible
+        # TODO(wszumski): Remove when kayobe stable/train exists.
+        override-checkout: stable/train
       - name: openstack/requirements
+        # TODO(wszumski): Remove when kayobe stable/train exists.
+        override-checkout: stable/train
       - name: openstack/tenks
     irrelevant-files:
       - ^.*\.rst$
