@@ -14,7 +14,7 @@
 #kolla_source_url:
 
 # Version (branch, tag, etc.) of Kolla source code repository if type is
-# 'source'.
+# 'source'. Default is {{ openstack_branch }}.
 #kolla_source_version:
 
 # Path to virtualenv in which to install kolla.
@@ -36,7 +36,7 @@
 #kolla_ansible_source_url:
 
 # Version (branch, tag, etc.) of Kolla Ansible source code repository if type
-# is 'source'.
+# is 'source'. Default is {{ openstack_branch }}.
 #kolla_ansible_source_version:
 
 # Path to virtualenv in which to install kolla-ansible.
@@ -73,6 +73,7 @@
 #kolla_docker_registry_password:
 
 # Kolla OpenStack release version. This should be a Docker image tag.
+# Default is {{ openstack_release }}.
 #kolla_openstack_release:
 
 # Dict mapping names of sources to their definitions for
