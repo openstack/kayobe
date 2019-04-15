@@ -15,9 +15,6 @@
 [glance-api:children]
 glance
 
-[glance-registry:children]
-glance
-
 # Nova
 [nova-api:children]
 nova
@@ -71,6 +68,9 @@ neutron
 neutron
 
 [neutron-infoblox-ipam-agent:children]
+neutron
+
+[neutron-metering-agent:children]
 neutron
 
 [ironic-neutron-agent:children]
@@ -195,7 +195,19 @@ murano
 murano
 
 # Monasca
+[monasca-agent-collector:children]
+monasca-agent
+
+[monasca-agent-forwarder:children]
+monasca-agent
+
+[monasca-agent-statsd:children]
+monasca-agent
+
 [monasca-api:children]
+monasca
+
+[monasca-grafana:children]
 monasca
 
 [monasca-log-api:children]
@@ -277,6 +289,12 @@ solum
 [solum-conductor:children]
 solum
 
+[solum-application-deployment:children]
+solum
+
+[solum-image-builder:children]
+solum
+
 # Mistral
 [mistral-api:children]
 mistral
@@ -287,6 +305,9 @@ mistral
 [mistral-engine:children]
 mistral
 
+[mistral-event-engine:children]
+mistral
+
 # Ceilometer
 [ceilometer-central:children]
 ceilometer
@@ -295,6 +316,9 @@ ceilometer
 ceilometer
 
 [ceilometer-compute:children]
+compute
+
+[ceilometer-ipmi:children]
 compute
 
 # Aodh
@@ -309,6 +333,16 @@ aodh
 
 [aodh-notifier:children]
 aodh
+
+# Cyborg
+[cyborg-api:children]
+cyborg
+
+[cyborg-agent:children]
+compute
+
+[cyborg-conductor:children]
+cyborg
 
 # Congress
 [congress-api:children]
@@ -447,9 +481,6 @@ vitrage
 [vitrage-graph:children]
 vitrage
 
-[vitrage-collector:children]
-vitrage
-
 [vitrage-ml:children]
 vitrage
 
@@ -489,3 +520,6 @@ monitoring
 
 [prometheus-openstack-exporter:children]
 monitoring
+
+[prometheus-elasticsearch-exporter:children]
+elasticsearch
