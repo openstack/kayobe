@@ -2,8 +2,8 @@
 - hosts: primary
   vars:
     logs_dir: "/tmp/logs"
-    kayobe_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['git.openstack.org/openstack/kayobe'].src_dir }}"
-    kayobe_config_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['git.openstack.org/openstack/kayobe-config-dev'].src_dir }}"
+    kayobe_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/x/kayobe'].src_dir }}"
+    kayobe_config_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/x/kayobe-config-dev'].src_dir }}"
     previous_kayobe_src_dir: "{{ ansible_env.PWD ~ '/previous/kayobe' }}"
     previous_kayobe_config_src_dir: "{{ ansible_env.PWD ~ '/previous/kayobe-config' }}"
   roles:
@@ -17,7 +17,7 @@
     # the zuul and stack users.
     - name: Ensure upper-contraints.txt exists
       copy:
-        src: "{{ zuul.projects['git.openstack.org/openstack/requirements'].src_dir ~ '/upper-constraints.txt' }}"
+        src: "{{ zuul.projects['opendev.org/openstack/requirements'].src_dir ~ '/upper-constraints.txt' }}"
         dest: "/tmp"
         mode: 0644
         remote_src: true
@@ -29,7 +29,7 @@
 
     - name: Ensure previous kayobe repository is cloned
       git:
-        repo: https://git.openstack.org/openstack/kayobe
+        repo: https://opendev.org/x/kayobe
         dest: "{{ previous_kayobe_src_dir }}"
         version: "stable/{{ previous_release | lower }}"
 
@@ -40,7 +40,7 @@
 
     - name: Ensure kayobe-config repository is cloned
       git:
-        repo: https://git.openstack.org/openstack/kayobe-config-dev
+        repo: https://opendev.org/x/kayobe-config-dev
         dest: "{{ previous_kayobe_config_src_dir }}"
         version: "stable/{{ previous_release | lower }}"
 

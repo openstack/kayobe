@@ -56,8 +56,8 @@
     timeout: 7200
     required-projects:
       # Include kayobe to ensure other projects can use this job.
-      - name: openstack/kayobe
-      - name: openstack/kayobe-config-dev
+      - name: x/kayobe
+      - name: x/kayobe-config-dev
       - name: openstack/kolla
         override-checkout: stable/rocky
       - name: openstack/kolla-ansible
@@ -92,8 +92,8 @@
     timeout: 9000
     required-projects:
       # Include kayobe to ensure other projects can use this job.
-      - name: openstack/kayobe
-      - name: openstack/kayobe-config-dev
+      - name: x/kayobe
+      - name: x/kayobe-config-dev
       - name: openstack/kolla
         override-checkout: stable/rocky
       - name: openstack/kolla-ansible
@@ -130,8 +130,8 @@
     timeout: 5400
     required-projects:
       # Include kayobe to ensure other projects can use this job.
-      - name: openstack/kayobe
-      - name: openstack/kayobe-config-dev
+      - name: x/kayobe
+      - name: x/kayobe-config-dev
       - name: openstack/kolla
         override-checkout: stable/rocky
       - name: openstack/kolla-ansible
@@ -165,8 +165,8 @@
     timeout: 5400
     required-projects:
       # Include kayobe to ensure other projects can use this job.
-      - name: openstack/kayobe
-      - name: openstack/kayobe-config-dev
+      - name: x/kayobe
+      - name: x/kayobe-config-dev
       - name: openstack/kolla
         override-checkout: stable/rocky
       - name: openstack/kolla-ansible
