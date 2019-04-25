@@ -9,7 +9,7 @@ kolla_ctl_install_type: source
 kolla_source_path: "{{ source_checkout_path ~ '/kolla' }}"
 
 # URL of Kolla source code repository if type is 'source'.
-kolla_source_url: "https://git.openstack.org/openstack/kolla"
+kolla_source_url: "https://opendev.org/openstack/kolla"
 
 # Version (branch, tag, etc.) of Kolla source code repository if type is
 # 'source'.
@@ -31,7 +31,7 @@ kolla_ansible_ctl_install_type: source
 kolla_ansible_source_path: "{{ lookup('env', 'KOLLA_SOURCE_PATH') | default(lookup('env', 'PWD') ~ '/src/kolla-ansible', true) }}"
 
 # URL of Kolla Ansible source code repository if type is 'source'.
-kolla_ansible_source_url: "https://git.openstack.org/openstack/kolla-ansible"
+kolla_ansible_source_url: "https://opendev.org/openstack/kolla-ansible"
 
 # Version (branch, tag, etc.) of Kolla Ansible source code repository if type
 # is 'source'.
@@ -313,7 +313,7 @@ kolla_enable_tls_external: "no"
 kolla_openstack_logging_debug: "False"
 
 # Upper constraints file for installation of Kolla.
-kolla_upper_constraints_file: "https://raw.githubusercontent.com/openstack/requirements/stable/queens/upper-constraints.txt"
+kolla_upper_constraints_file: "https://opendev.org/openstack/requirements/raw/branch/stable/queens/upper-constraints.txt"
 
 # User account to use for Kolla SSH access.
 kolla_ansible_user: kolla
