@@ -86,6 +86,7 @@ provisioner:
         kolla_extra_octavia: |
           [extra-octavia.conf]
           foo=bar
+        kolla_enable_prometheus: true
         kolla_enable_sahara: true
         kolla_extra_sahara: |
           [extra-sahara.conf]

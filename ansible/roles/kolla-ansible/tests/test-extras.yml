@@ -150,6 +150,7 @@
             kolla_enable_octavia: True
             kolla_enable_osprofiler: True
             kolla_enable_panko: True
+            kolla_enable_prometheus: True
             kolla_enable_rally: True
             kolla_enable_searchlight: True
             kolla_enable_sahara: True
@@ -282,6 +283,7 @@
               #enable_octavia: True
               #enable_osprofiler: True
               #enable_panko: True
+              #enable_prometheus: True
               #enable_rally: True
               #enable_sahara: True
               #enable_searchlight: True

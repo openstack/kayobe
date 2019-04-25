@@ -54,6 +54,7 @@ def test_service_config_directory(host, path):
      'murano',
      'neutron',
      'nova',
+     'prometheus',
      'sahara',
      'storm',
      'swift',
