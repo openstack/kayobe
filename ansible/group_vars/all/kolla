@@ -279,7 +279,7 @@ kolla_external_fqdn_cert:
 kolla_openstack_logging_debug: "False"
 
 # Upper constraints file for the stable/pike branch of Kolla
-kolla_upper_constraints_file: "https://raw.githubusercontent.com/openstack/requirements/stable/pike/upper-constraints.txt"
+kolla_upper_constraints_file: "https://opendev.org/openstack/requirements/raw/branch/stable/pike/upper-constraints.txt"
 
 ###############################################################################
 # Kolla feature flag configuration.
