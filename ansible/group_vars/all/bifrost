@@ -5,7 +5,7 @@
 # Bifrost installation.
 
 # URL of Bifrost source code repository.
-kolla_bifrost_source_url: "https://git.openstack.org/openstack/bifrost"
+kolla_bifrost_source_url: "https://opendev.org/openstack/bifrost"
 
 # Version (branch, tag, etc.) of Bifrost source code repository.
 kolla_bifrost_source_version: "stable/rocky"
