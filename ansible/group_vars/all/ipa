@@ -8,7 +8,7 @@
 ipa_build_images: False
 
 # URL of IPA source repository.
-ipa_build_source_url: "https://git.openstack.org/openstack/ironic-python-agent"
+ipa_build_source_url: "https://opendev.org/openstack/ironic-python-agent"
 
 # Version of IPA source repository.
 ipa_build_source_version: "stable/rocky"

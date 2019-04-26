@@ -9,7 +9,7 @@ project, it cannot use the official release tooling in the
 ``openstack/releases`` repository.
 
 There are various `useful files
-<http://git.openstack.org/cgit/openstack-infra/project-config/tree/roles/copy-release-tools-scripts/files/release-tools/>`__
+<http://opendev.org/openstack-infra/project-config/src/branch/master/roles/copy-release-tools-scripts/files/release-tools/>`__
 in the ``openstack-infra/project-config`` repository. In particular, see the
 ``releases.sh`` and ``make_branch.sh`` scripts.
 

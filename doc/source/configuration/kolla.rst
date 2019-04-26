@@ -42,7 +42,7 @@ installation of Kolla:
     source_checkout_path ~ '/kolla' }}``.
 ``kolla_source_url``
     URL of Kolla source code repository if type is ``source``. Default is
-    https://git.openstack.org/openstack/kolla.
+    https://opendev.org/openstack/kolla.
 ``kolla_source_version``
     Version (branch, tag, etc.) of Kolla source code repository if type is
     ``source``. Default is the same as the Kayobe upstream branch name.
@@ -260,7 +260,7 @@ This will result in Kayobe adding the following configuration to
 
    [bifrost-base]
    type = git
-   location = https://git.openstack.org/openstack/bifrost
+   location = https://opendev.org/openstack/bifrost
    reference = stable/rocky
 
    [ironic-base]
