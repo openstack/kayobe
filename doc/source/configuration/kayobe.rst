@@ -116,3 +116,25 @@ configuration files may be encrypted.  Since encryption can make working with
 Kayobe difficult, it is recommended to follow `best practice
 <http://docs.ansible.com/ansible/playbooks_best_practices.html#best-practices-for-variables-and-vaults>`_,
 adding a layer of indirection and using encryption only where necessary.
+
+Location of data files
+----------------------
+
+Kayobe needs to know where to find any files not contained within its python package;
+this includes its Ansible playbooks and any other files it needs for runtime operation.
+These files are known collectively as 'data files'.
+
+Kayobe will attempt to detect the location of its data files automatically. However, if
+you have installed kayobe to a non-standard location this auto-detection may fail.
+It is possible to manually override the path using the environment variable:
+``KAYOBE_DATA_FILES_PATH``. This should be set to a path with the following structure::
+
+    requirements.yml
+    ansible/
+        roles/
+            ...
+        ...
+
+Where ``ansible`` is the ``ansible`` directory from the source checkout and ``...``
+is an elided representation of any files and subdirectories contained within
+that directory.

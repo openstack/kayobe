@@ -14,6 +14,7 @@
 
 import base64
 import glob
+import itertools
 import logging
 import os
 import six
@@ -25,13 +26,33 @@ import yaml
 
 LOG = logging.getLogger(__name__)
 
-_BASE_PATH = os.path.join(sys.prefix, "share", "kayobe")
-
 
 def get_data_files_path(*relative_path):
     """Given a relative path to a data file, return the absolute path"""
     # Detect editable pip install / python setup.py develop and use a path
     # relative to the source directory
+    return os.path.join(_get_base_path(), *relative_path)
+
+
+def _detect_install_prefix(path):
+    script_path = os.path.realpath(path)
+    script_path = os.path.normpath(script_path)
+    components = script_path.split(os.sep)
+    # use heuristic: anything before 'lib' in path is the prefix
+    if 'lib' not in components:
+        return None
+    prefix = itertools.takewhile(
+        lambda x: x != "lib",
+        components
+    )
+    prefix_path = os.sep.join(prefix)
+    return prefix_path
+
+
+def _get_base_path():
+    override = os.environ.get("KAYOBE_DATA_FILES_PATH")
+    if override:
+        return os.path.join(override)
     egg_glob = os.path.join(
         sys.prefix, 'lib*', 'python*', '*-packages', 'kayobe.egg-link'
     )
@@ -39,8 +60,14 @@ def get_data_files_path(*relative_path):
     if egg_link:
         with open(egg_link[0], "r") as f:
             realpath = f.readline().strip()
-        return os.path.join(realpath, *relative_path)
-    return os.path.join(_BASE_PATH, *relative_path)
+        return os.path.join(realpath)
+
+    prefix = _detect_install_prefix(__file__)
+    if prefix:
+        return os.path.join(prefix, "share", "kayobe")
+
+    # Assume uninstalled
+    return os.path.join(os.path.realpath(__file__), "..")
 
 
 def yum_install(packages):
