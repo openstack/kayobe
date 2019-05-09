@@ -28,8 +28,8 @@ All this and more, automated from top to bottom using Ansible.
 
 * Free software: Apache license
 * Documentation: https://kayobe.readthedocs.io/en/latest/
-* Source: https://git.openstack.org/cgit/openstack/kayobe
-* Bugs: https://storyboard.openstack.org/#!/project/openstack/kayobe
+* Source: https://opendev.org/x/kayobe
+* Bugs: https://storyboard.openstack.org/#!/project/x/kayobe
 * Release Notes: https://kayobe-release-notes.readthedocs.io/en/latest/
 * IRC: #openstack-kayobe
 
