@@ -597,11 +597,28 @@ via the ``seed_hypervisor_lvm_group_data_disks`` variable.
 LVM for Docker
 --------------
 
-The default LVM configuration is optimised for the ``devicemapper`` Docker
-storage driver, which requires a thin provisioned LVM volume. A second logical
-volume is used for storing Docker volume data, mounted at
-``/var/lib/docker/volumes``. Both logical volumes are created from a single
-``data`` volume group.
+.. note::
+
+   In Train and earlier releases of Kayobe, the ``data`` volume group was
+   always enabled by default.
+
+If the ``devicemapper`` Docker storage driver is in use, the default LVM
+configuration is optimised for it.  The ``devicemapper`` driver requires a thin
+provisioned LVM volume. A second logical volume is used for storing Docker
+volume data, mounted at ``/var/lib/docker/volumes``. Both logical volumes are
+created from a single ``data`` volume group.
+
+This configuration is enabled by the following variables, which default to
+``true`` if the ``devicemapper`` driver is in use or ``false`` otherwise:
+
+* ``compute_lvm_group_data_enabled``
+* ``controller_lvm_group_data_enabled``
+* ``seed_lvm_group_data_enabled``
+* ``storage_lvm_group_data_enabled``
+
+These variables can be set to ``true`` to enable the data volume group if the
+``devicemapper`` driver is not in use. This may be useful where the
+``docker-volumes`` logical volume is required.
 
 To use this configuration, a list of disks must be configured via the following
 variables:

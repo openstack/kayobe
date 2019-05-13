@@ -37,12 +37,18 @@ seed_lvm_groups: "{{ seed_lvm_groups_default + seed_lvm_groups_extra }}"
 
 # Default list of seed volume groups. See mrlesmithjr.manage-lvm role for
 # format.
-seed_lvm_groups_default:
-  - "{{ seed_lvm_group_data }}"
+seed_lvm_groups_default: "{{ [seed_lvm_group_data] if seed_lvm_group_data_enabled | bool else [] }}"
 
 # Additional list of seed volume groups. See mrlesmithjr.manage-lvm role for
 # format.
 seed_lvm_groups_extra: []
+
+# Whether a 'data' LVM volume group should exist on the seed. By default this
+# contains a 'docker-volumes' logical volume for Docker volume storage. It will
+# also be used for Docker container and image storage if
+# 'docker_storage_driver' is set to 'devicemapper'. Default is true if
+# 'docker_storage_driver' is set to 'devicemapper', or false otherwise.
+seed_lvm_group_data_enabled: "{{ docker_storage_driver == 'devicemapper' }}"
 
 # Seed LVM volume group for data. See mrlesmithjr.manage-lvm role for format.
 seed_lvm_group_data:
