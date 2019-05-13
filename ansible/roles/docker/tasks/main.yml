@@ -1,11 +1,4 @@
 ---
-- name: Fail when the storage driver is invalid
-  fail:
-    msg: >
-      Storage driver {{ docker_storage_driver }} is invalid. Valid drivers
-      include 'devicemapper' and 'overlay'.
-  when: docker_storage_driver not in ['devicemapper', 'overlay']
-
 - name: Set a fact about the virtualenv on the remote system
   set_fact:
     virtualenv: "{{ ansible_python_interpreter | dirname | dirname }}"
