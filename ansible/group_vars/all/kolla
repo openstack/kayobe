@@ -342,7 +342,7 @@ kolla_enable_elasticsearch: "{{ 'yes' if kolla_enable_central_logging | bool or 
 kolla_enable_etcd: "no"
 kolla_enable_freezer: "no"
 kolla_enable_glance: "yes"
-kolla_enable_grafana: "{{ 'yes' if kolla_enable_monasca | bool else 'no' }}"
+kolla_enable_grafana: "no"
 kolla_enable_gnocchi: "no"
 kolla_enable_haproxy: "yes"
 kolla_enable_heat: "yes"

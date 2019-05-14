@@ -87,6 +87,13 @@ control
 [monasca:children]
 monitoring
 
+[monasca-agent:children]
+compute
+control
+monitoring
+network
+storage
+
 [storm:children]
 monitoring
 
