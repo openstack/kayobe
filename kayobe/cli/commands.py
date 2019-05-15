@@ -906,7 +906,7 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         # Further kayobe playbooks.
         playbooks = _build_playbook_list(
             "pip", "kolla-target-venv", "kolla-host",
-            "docker", "ceph-block-devices")
+            "docker", "ceph-block-devices", "swift-block-devices")
         self.run_kayobe_playbooks(parsed_args, playbooks,
                                   extra_vars=extra_vars, limit="overcloud")
 
@@ -1001,7 +1001,8 @@ class OvercloudServiceConfigurationGenerate(KayobeAnsibleMixin,
         playbooks = _build_playbook_list("kolla-ansible")
         self.run_kayobe_playbooks(parsed_args, playbooks, tags="config")
 
-        playbooks = _build_playbook_list("kolla-openstack", "swift-setup")
+        playbooks = _build_playbook_list("kolla-openstack")
+
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
         # Run kolla-ansible prechecks before deployment.
@@ -1090,7 +1091,8 @@ class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         playbooks = _build_playbook_list("kolla-ansible")
         self.run_kayobe_playbooks(parsed_args, playbooks, tags="config")
 
-        playbooks = _build_playbook_list("kolla-openstack", "swift-setup")
+        playbooks = _build_playbook_list("kolla-openstack")
+
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
         # Run kolla-ansible prechecks before deployment.
@@ -1147,7 +1149,8 @@ class OvercloudServiceReconfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
         playbooks = _build_playbook_list("kolla-ansible")
         self.run_kayobe_playbooks(parsed_args, playbooks, tags="config")
 
-        playbooks = _build_playbook_list("kolla-openstack", "swift-setup")
+        playbooks = _build_playbook_list("kolla-openstack")
+
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
         # Run kolla-ansible prechecks before reconfiguration.
@@ -1355,6 +1358,15 @@ class OvercloudPostConfigure(KayobeAnsibleMixin, VaultMixin, Command):
             "overcloud-introspection-rules-dell-lldp-workaround",
             "provision-net", "overcloud-grafana-configure",
             "baremetal-compute-serial-console-post-config")
+        self.run_kayobe_playbooks(parsed_args, playbooks)
+
+
+class OvercloudSwiftRingsGenerate(KayobeAnsibleMixin, VaultMixin, Command):
+    """Generate Swift rings."""
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Generating Swift rings")
+        playbooks = _build_playbook_list("swift-rings")
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
 

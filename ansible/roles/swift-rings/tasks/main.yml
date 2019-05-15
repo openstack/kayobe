@@ -1,0 +1,69 @@
+---
+# We generate a configuration file and execute a python script in a container
+# that builds a ring based on the config file contents. Doing it this way
+# avoids a large task loop with docker container for each step, which would be
+# quite slow.
+
+# Execute the following commands on the ring build host.
+- block:
+    # Facts required for ansible_user_uid and ansible_user_gid.
+    - name: Gather facts for swift ring build host
+      setup:
+
+    - name: Ensure Swift ring build directory exists
+      file:
+        path: "{{ swift_ring_build_path }}"
+        state: directory
+
+    - name: Ensure Swift ring builder script exists
+      copy:
+        src: swift-ring-builder.py
+        dest: "{{ swift_ring_build_path }}"
+
+    - name: Ensure Swift ring builder configuration exists
+      template:
+        src: swift-ring.yml.j2
+        dest: "{{ swift_ring_build_path }}/{{ service_name }}-ring.yml"
+      with_items: "{{ swift_service_names }}"
+      loop_control:
+        loop_var: service_name
+
+    - name: Ensure Swift rings exist
+      docker_container:
+        cleanup: true
+        command: >-
+          python {{ swift_container_build_path }}/swift-ring-builder.py
+          {{ swift_container_build_path }}/{{ item }}-ring.yml
+          {{ swift_container_build_path }}
+          {{ item }}
+        detach: false
+        image: "{{ swift_ring_build_image }}"
+        name: "swift_{{ item }}_ring_builder"
+        user: "{{ ansible_user_uid }}:{{ ansible_user_gid }}"
+        volumes:
+          - "{{ swift_ring_build_path }}/:{{ swift_container_build_path }}/"
+      with_items: "{{ swift_service_names }}"
+
+    - name: Ensure Swift ring files are copied
+      fetch:
+        src: "{{ swift_ring_build_path }}/{{ item[0] }}.{{ item[1] }}"
+        dest: "{{ swift_config_path }}/{{ item[0] }}.{{ item[1] }}"
+        flat: true
+        mode: 0644
+      with_nested:
+        - "{{ swift_service_names }}"
+        - - ring.gz
+          - builder
+      become: true
+
+  always:
+    - name: Remove Swift ring build directory from build host
+      file:
+        path: "{{ swift_ring_build_path }}"
+        state: absent
+
+  delegate_to: "{{ swift_ring_build_host }}"
+  vars:
+    # NOTE: Without this, the seed's ansible_host variable will not be
+    # respected when using delegate_to.
+    ansible_host: "{{ hostvars[swift_ring_build_host].ansible_host | default(swift_ring_build_host) }}"

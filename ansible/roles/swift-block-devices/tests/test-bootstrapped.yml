@@ -1,0 +1,68 @@
+---
+# Test case with one device that has already been partitioned.
+
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: Allocate a temporary file for a fake device
+      tempfile:
+      register: tempfile
+
+    - name: Allocate a fake device file
+      command: fallocate -l 32M {{ tempfile.path }}
+
+    - name: Find a free loopback device
+      command: losetup -f
+      register: loopback
+      become: true
+ 
+    - name: Create a loopback device
+      command: losetup {{ loopback.stdout }} {{ tempfile.path }}
+      become: true
+
+    - name: Add a partition
+      become: True
+      parted:
+        device: "{{ loopback.stdout }}"
+        number: 1
+        label: gpt
+        name: KOLLA_SWIFT_DATA
+        state: present
+
+    - block:
+        - name: Test the swift-block-devices role
+          include_role:
+            name:  ../../swift-block-devices
+          vars:
+              swift_block_devices:
+                 - device: "{{ loopback.stdout }}"
+
+        - name: Get name of fake partition
+          parted:
+            device: "{{ loopback.stdout }}"
+          register: "disk_info"
+          become: True
+
+        - name: Validate number of partition
+          assert:
+            that: disk_info.partitions | length == 1
+            msg: >
+              Number of partitions is not correct.
+
+        - name: Validate partition label is present
+          assert:
+            that: "disk_info.partitions.0.name == 'KOLLA_SWIFT_DATA'"
+            msg: >
+              Name of partition is not correct.
+
+      always:
+        - name: Remove the fake file
+          file:
+            name: "{{ loopback.stdout }}"
+            state: absent
+          become: true
+
+      rescue:
+        - name: Flag that a failure occurred
+          set_fact:
+            test_failures: "{{ test_failures | default(0) | int + 1 }}"

@@ -475,6 +475,18 @@ Storage network (``storage_net_name``)
     Name of the network used to carry storage data traffic.
 Storage management network (``storage_mgmt_net_name``)
     Name of the network used to carry storage management traffic.
+Ceph storage network (``ceph_storage_net_name``)
+    Name of the network used to carry Ceph storage data traffic.
+    Defaults to the storage network (``storage_net_name``).
+Ceph storage management network (``ceph_storage_mgmt_net_name``)
+    Name of the network used to carry storage management traffic.
+    Defaults to the storage management network (``storage_mgmt_net_name``)
+Swift storage network (``swift_storage_net_name``)
+    Name of the network used to carry Swift storage data traffic.
+    Defaults to the storage network (``storage_net_name``).
+Swift storage replication network (``swift_storage_replication_net_name``)
+    Name of the network used to carry storage management traffic.
+    Defaults to the storage management network (``storage_mgmt_net_name``)
 Workload inspection network (``inspection_net_name``)
     Name of the network used to perform hardware introspection on the bare
     metal workload hosts.
@@ -501,6 +513,10 @@ To configure network roles in a system with two networks, ``example1`` and
    external_net_name: example2
    storage_net_name: example2
    storage_mgmt_net_name: example2
+   ceph_storage_net_name: example2
+   ceph_storage_mgmt_net_name: example2
+   swift_storage_net_name: example2
+   swift_replication_net_name: example2
    inspection_net_name: example2
    cleaning_net_name: example2
 
@@ -732,6 +748,19 @@ This list may be extended by setting ``monitoring_extra_network_interfaces`` to
 a list of names of additional networks to attach.  Alternatively, the list may
 be completely overridden by setting ``monitoring_network_interfaces``.  These
 variables are found in ``${KAYOBE_CONFIG_PATH}/monitoring.yml``.
+
+Storage Hosts
+-------------
+
+By default, the storage hosts are attached to the following networks:
+
+* overcloud admin network
+* internal network
+* storage network
+* storage management network
+
+In addition, if Ceph or Swift is enabled, they can also be attached to the Ceph and Swift
+mangagment and replication networks.
 
 Virtualised Compute Hosts
 -------------------------

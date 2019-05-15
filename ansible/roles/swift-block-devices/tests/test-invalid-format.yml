@@ -1,0 +1,23 @@
+---
+# Test case with swift_block_devices in an invalid format.
+
+- hosts: localhost
+  connection: local
+  tasks:
+    - block:
+        - name: Test the swift-block-devices role
+          include_role:
+            name:  ../../swift-block-devices
+          vars:
+              swift_block_devices:
+                 - /dev/fake
+
+      rescue:
+        - name: Flag that the error was raised
+          set_fact:
+            raised_error: true
+
+    - name: Flag that a failure occurred
+      set_fact:
+        test_failures: "{{ test_failures | default(0) | int + 1 }}"
+      when: raised_error is not defined

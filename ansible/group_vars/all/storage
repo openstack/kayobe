@@ -12,7 +12,15 @@ storage_bootstrap_user: "{{ lookup('env', 'USER') }}"
 # List of networks to which storage nodes are attached.
 storage_network_interfaces: >
   {{ (storage_default_network_interfaces +
-      storage_extra_network_interfaces) | unique | list }}
+      storage_extra_network_interfaces +
+      ([ceph_storage_net_name]
+       if storage_needs_ceph_network else []) +
+      ([ceph_storage_mgmt_net_name]
+       if storage_needs_ceph_mgmt_network else []) +
+      ([swift_storage_net_name]
+       if storage_needs_swift_network else []) +
+      ([swift_storage_replication_net_name]
+       if storage_needs_swift_replication_network else [])) | reject('none') | unique | list }}
 
 # List of default networks to which storage nodes are attached.
 storage_default_network_interfaces: >
@@ -23,6 +31,24 @@ storage_default_network_interfaces: >
 
 # List of extra networks to which storage nodes are attached.
 storage_extra_network_interfaces: []
+
+# Whether this host requires access to Ceph networks.
+storage_needs_ceph_network: >-
+  {{ kolla_enable_ceph | bool and
+     inventory_hostname in query('inventory_hostnames', ceph_hosts) }}
+
+storage_needs_ceph_mgmt_network: >-
+  {{ kolla_enable_ceph | bool and
+     inventory_hostname in query('inventory_hostnames', ceph_hosts) }}
+
+# Whether this host requires access to Swift networks.
+storage_needs_swift_network: >-
+  {{ kolla_enable_swift | bool and
+     inventory_hostname in query('inventory_hostnames', swift_hosts) }}
+
+storage_needs_swift_replication_network: >-
+  {{ kolla_enable_swift | bool and
+     inventory_hostname in query('inventory_hostnames', swift_hosts) }}
 
 ###############################################################################
 # Storage node BIOS configuration.

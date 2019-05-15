@@ -1,0 +1,35 @@
+---
+- name: Ensure swift ring files exist
+  hosts: localhost
+  tags:
+    - swift
+    - swift-rings
+  tasks:
+    - name: Initialise a fact about swift hosts
+      set_fact:
+        swift_host_config: []
+
+    - name: Update a fact about Swift hosts
+      set_fact:
+        swift_host_config: "{{ swift_host_config + [swift_host] }}"
+      vars:
+        swift_host:
+          host: "{{ host }}"
+          region: "{{ hostvars[host]['swift_region'] }}"
+          zone: "{{ hostvars[host]['swift_zone'] }}"
+          ip: "{{ swift_storage_net_name | net_ip(inventory_hostname=host) }}"
+          ports: "{{ hostvars[host]['swift_service_ports'] }}"
+          replication_ip: "{{ swift_storage_replication_net_name | net_ip(inventory_hostname=host) }}"
+          replication_ports: "{{ hostvars[host]['swift_service_ports'] }}"
+          block_devices: "{{ hostvars[host]['swift_block_devices'] }}"
+          block_device_default_services: "{{ hostvars[host]['swift_block_device_default_services'] }}"
+          block_device_default_weight: "{{ hostvars[host]['swift_block_device_default_weight'] }}"
+      with_inventory_hostnames: "{{ swift_hosts }}"
+      loop_control:
+        loop_var: host
+
+    - include_role:
+        name: swift-rings
+      vars:
+        swift_config_path: "{{ kayobe_config_path }}/kolla/config/swift"
+      when: kolla_enable_swift | bool

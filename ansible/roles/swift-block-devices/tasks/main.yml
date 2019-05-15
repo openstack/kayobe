@@ -1,0 +1,72 @@
+---
+- name: Fail if swift_block_devices is not in the expected format
+  fail:
+    msg: >-
+      Device {{ device_index }} in swift_block_devices is in an invalid format.
+      Items should be a dict, containing at least a 'device' field.
+  with_items: "{{ swift_block_devices }}"
+  when: item is not mapping or 'device' not in item
+  loop_control:
+    index_var: device_index
+
+- name: Ensure required packages are installed
+  package:
+    name: "{{ item }}"
+    state: installed
+  become: True
+  when: swift_block_devices | length > 0
+  with_items:
+    - parted
+    - xfsprogs
+
+- name: Check the presence of a partition on the Swift block devices
+  become: True
+  parted:
+    device: "{{ item.device }}"
+  with_items: "{{ swift_block_devices }}"
+  loop_control:
+    label: "{{ item.device }}"
+  register: swift_disk_info
+
+- name: Fail if the Swift block devices have already a partition
+  fail:
+    msg: >
+      The physical disk {{ item.item.device }} already has a partition.
+      Ensure that each disk in 'swift_block_devices' does not have any
+      partitions.
+  with_items: "{{ swift_disk_info.results }}"
+  when:
+    - item.partitions | length > 0
+    - item.partitions.0.name != swift_block_devices_part_label
+  loop_control:
+    label: "{{ item.item.device }}"
+
+- name: Ensure partitions exist for Swift block device
+  become: True
+  parted:
+    device: "{{ item.item.device }}"
+    number: 1
+    label: gpt
+    name: "{{ swift_block_devices_part_label }}"
+    state: present
+  with_items: "{{ swift_disk_info.results }}"
+  when: item.partitions | length == 0
+  loop_control:
+    label: "{{ item.item.device }}"
+
+- name: Ensure Swift XFS file systems exist
+  become: true
+  filesystem:
+    dev: "{{ partition_name }}"
+    force: true
+    fstype: xfs
+    opts: "-L {{ fs_label }}"
+  with_items: "{{ swift_disk_info.results }}"
+  when: item.partitions | length == 0
+  loop_control:
+    label: "{{ device }}"
+    index_var: index
+  vars:
+    device: "{{ item.item.device }}"
+    partition_name: "{{ device }}{% if device.startswith('/dev/loop') %}p{% endif %}1"
+    fs_label: "{{ item.item.fs_label | default(device | basename) }}"
