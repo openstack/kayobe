@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds support for arbitrary Docker storage drivers, configured via
+    ``docker_storage_driver``. Previously only ``devicemapper`` and ``overlay``
+    were supported.

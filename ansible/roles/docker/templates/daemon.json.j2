@@ -6,7 +6,7 @@
 {%- endfor %}
   ],
 {%- endif %}
-  "storage-driver": "{% if docker_storage_driver == 'devicemapper' %}devicemapper{% else %}overlay{% endif %}",
+  "storage-driver": "{{ docker_storage_driver }}",
 {% if docker_daemon_mtu %}
   "mtu": {{ docker_daemon_mtu }},
 {% endif %}
