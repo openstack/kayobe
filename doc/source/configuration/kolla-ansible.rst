@@ -144,7 +144,7 @@ has a more restricted set of files that it will process.  In some cases, it may
 be necessary to inspect the kolla-ansible configuration tasks to determine
 which files are supported.
 
-.. table: Kolla-ansible configuration files
+.. table:: Kolla-ansible configuration files
 
    =============================== =======================================================
    File                            Purpose
