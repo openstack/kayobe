@@ -13,7 +13,7 @@
       command: >
         docker exec bifrost_deploy
         bash -c '
-        export OS_TOKEN=fake-token &&
+        export OS_CLOUD=bifrost &&
         export BIFROST_INVENTORY_SOURCE=ironic &&
         ansible baremetal
         --connection local
@@ -22,7 +22,7 @@
         -e @/etc/bifrost/dib.yml
         --limit {{ inventory_hostname }}
         -m shell
-        -a "env OS_URL=http://localhost:5050 openstack baremetal introspection data save {% raw %}{{ inventory_hostname }}{% endraw %}"'
+        -a "unset OS_CLOUD && env OS_URL=http://localhost:5050 OS_TOKEN=fake-token openstack baremetal introspection data save {% raw %}{{ inventory_hostname }}{% endraw %}"'
       register: save_result
       changed_when: False
       # Ignore errors, log a message later.
