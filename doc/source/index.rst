@@ -3,13 +3,29 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+==================================
 Welcome to Kayobe's documentation!
 ==================================
+
+Overview
+========
+
+Welcome to the Kayobe documentation, the official source of information for
+understanding and using Kayobe.
+
+This documentation is maintained at opendev.org
+`here <https://opendev.org/x/kayobe.git>`_. Feedback and contributions welcome,
+see :doc:`contributing <development/contributing>` for information on how.
 
 .. include:: ../../README.rst
 
 Documentation
--------------
+=============
+
+.. include:: getting-started.rst
+
+Contents
+========
 
 .. toctree::
    :maxdepth: 2

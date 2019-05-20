@@ -4,6 +4,8 @@ Resources
 
 This section contains links to external Kayobe resources.
 
+.. _a-universe-from-nothing:
+
 A Universe From Nothing
 ========================
 
