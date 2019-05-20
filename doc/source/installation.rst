@@ -15,7 +15,7 @@ Prerequisites
 Currently Kayobe supports the following Operating Systems on the Ansible
 control host:
 
-- CentOS 7.3
+- CentOS 7.6
 - Ubuntu 16.04
 
 To avoid conflicts with python packages installed by the system package manager
