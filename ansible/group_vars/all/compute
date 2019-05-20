@@ -12,7 +12,7 @@ compute_bootstrap_user: "{{ lookup('env', 'USER') }}"
 # List of networks to which compute nodes are attached.
 compute_network_interfaces: >
   {{ (compute_default_network_interfaces +
-      compute_extra_network_interfaces) | unique | list }}
+      compute_extra_network_interfaces) | reject('none') | unique | list }}
 
 # List of default networks to which compute nodes are attached.
 compute_default_network_interfaces: >

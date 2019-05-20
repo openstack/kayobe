@@ -213,6 +213,7 @@
   hosts: localhost
   tags:
     - kolla-ansible
+  gather_facts: true
   vars:
     # We need to reference configuration for the network node.
     # We pick the first host from the group for this. It is possible that at
