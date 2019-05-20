@@ -2,6 +2,8 @@
 - name: Check whether Ironic is enabled
   hosts: controllers
   tags:
+    - config
+    - config-validation
     - kolla-ansible
     - kolla-openstack
   tasks:
