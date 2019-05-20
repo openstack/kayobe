@@ -27,6 +27,7 @@ Documentation
    deployment
    upgrading
    administration/index
+   resources
 
 Advanced Documentation
 ----------------------
