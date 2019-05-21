@@ -11,12 +11,6 @@ Welcome to Kayobe's documentation!
 Documentation
 -------------
 
-.. note::
-
-   Kayobe and its documentation is currently under heavy development, and
-   therefore may be incomplete or out of date.  If in doubt, contact the
-   project's maintainers.
-
 .. toctree::
    :maxdepth: 2
 

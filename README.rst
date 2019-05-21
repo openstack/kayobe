@@ -53,8 +53,5 @@ Features
   <https://docs.openstack.org/magnum/latest/>`_
 * Big data on bare metal using `OpenStack sahara
   <https://docs.openstack.org/sahara/latest/>`_
-
-In the near future we aim to add support for the following:
-
 * Control plane and workload monitoring and log aggregation using `OpenStack
   monasca <https://wiki.openstack.org/wiki/Monasca>`_
