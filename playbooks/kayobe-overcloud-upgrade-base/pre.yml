@@ -1,27 +1,6 @@
 ---
 - hosts: primary
-  vars:
-    logs_dir: "/tmp/logs"
-    kayobe_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/x/kayobe'].src_dir }}"
-    kayobe_config_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/x/kayobe-config-dev'].src_dir }}"
-    previous_kayobe_src_dir: "{{ ansible_env.PWD ~ '/previous/kayobe' }}"
-    previous_kayobe_config_src_dir: "{{ ansible_env.PWD ~ '/previous/kayobe-config' }}"
-  roles:
-    - role: kayobe-diagnostics
-      kayobe_diagnostics_phase: "pre"
-      kayobe_diagnostics_log_dir: "{{ logs_dir }}"
-
-    - role: kayobe-ci-prep
   tasks:
-    # NOTE(mgoddard): Copying upper constraints to somewhere accessible by both
-    # the zuul and stack users.
-    - name: Ensure upper-contraints.txt exists
-      copy:
-        src: "{{ zuul.projects['opendev.org/openstack/requirements'].src_dir ~ '/upper-constraints.txt' }}"
-        dest: "/tmp"
-        mode: 0644
-        remote_src: true
-
     - name: Ensure previous kayobe directory exists
       file:
         path: "{{ previous_kayobe_src_dir }}"
