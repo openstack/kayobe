@@ -62,7 +62,7 @@ variables.
 Configuring Kayobe
 ==================
 
-The `kayobe-config <https://github.com/openstack/kayobe-config>`_ git
+The `kayobe-config <https://opendev.org/x/kayobe-config>`_ git
 repository contains a Kayobe configuration directory structure and unmodified
 configuration files.  This repository can be used as a mechanism for version
 controlling Kayobe configuration.  As Kayobe is updated, the configuration

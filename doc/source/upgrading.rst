@@ -79,7 +79,7 @@ Migrating Kayobe Configuration
 
 Kayobe configuration options may be changed between releases of kayobe. Ensure
 that all site local configuration is migrated to the target version format. If
-using the `kayobe-config <https://github.com/openstack/kayobe-config>`_ git
+using the `kayobe-config <https://opendev.org/x/kayobe-config>`_ git
 repository to manage local configuration, this process can be managed via git.
 For example, to fetch version 1.0.0 of the configuration from the ``origin``
 remote and merge it into the current branch::
