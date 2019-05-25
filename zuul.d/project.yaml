@@ -1,7 +1,6 @@
 ---
 - project:
     templates:
-      - build-openstack-sphinx-docs
       - docs-on-readthedocs
       - openstack-cover-jobs
       - openstack-python35-jobs
