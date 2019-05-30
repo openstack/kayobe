@@ -166,6 +166,11 @@ kolla_openstack_custom_config:
       - container.ring.gz
       - object.builder
       - object.ring.gz
+  # Xtrabackup.
+  - src: "{{ kolla_extra_config_path }}/xtrabackup"
+    dest: "{{ kolla_node_custom_config_path }}/xtrabackup"
+    patterns: "*"
+    enabled: "{{ kolla_enable_xtrabackup }}"
   # Zookeeper.
   - src: "{{ kolla_extra_config_path }}/zookeeper"
     dest: "{{ kolla_node_custom_config_path }}/zookeeper"

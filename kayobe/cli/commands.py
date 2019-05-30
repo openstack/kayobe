@@ -970,6 +970,49 @@ class OvercloudHostUpgrade(KayobeAnsibleMixin, VaultMixin, Command):
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
 
 
+class OvercloudDatabaseBackup(KollaAnsibleMixin, VaultMixin, Command):
+    """Backup the overcloud database."""
+
+    def get_parser(self, prog_name):
+        parser = super(OvercloudDatabaseBackup, self).get_parser(prog_name)
+        group = parser.add_argument_group("Overcloud Database Backup")
+        group.add_argument("--incremental", action='store_true',
+                           help="Whether to perform an incremental database "
+                                "backup. Default is false.")
+        return parser
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Performing overcloud database backup")
+        extra_args = []
+        if parsed_args.incremental:
+            extra_args.append('--incremental')
+        self.run_kolla_ansible_overcloud(parsed_args, "mariadb_backup",
+                                         extra_args=extra_args)
+
+
+class OvercloudDatabaseRecover(KollaAnsibleMixin, VaultMixin, Command):
+    """Recover the overcloud database."""
+
+    def get_parser(self, prog_name):
+        parser = super(OvercloudDatabaseRecover, self).get_parser(prog_name)
+        group = parser.add_argument_group("Overcloud Database Recovery")
+        group.add_argument("--force-recovery-host",
+                           help="Name of a host to use to perform the "
+                                "recovery. By default kolla-ansible will "
+                                "automatically determine which host to use, "
+                                "and this option should not be used.")
+        return parser
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Performing overcloud database recovery")
+        extra_vars = {}
+        if parsed_args.force_recovery_host:
+            extra_vars['mariadb_recover_inventory_name'] = (
+                parsed_args.force_recovery_host)
+        self.run_kolla_ansible_overcloud(parsed_args, "mariadb_recovery",
+                                         extra_vars=extra_vars)
+
+
 class OvercloudServiceConfigurationGenerate(KayobeAnsibleMixin,
                                             KollaAnsibleMixin, VaultMixin,
                                             Command):

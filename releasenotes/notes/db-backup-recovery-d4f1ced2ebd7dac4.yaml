@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    Adds commands to make use of the database backup and recovery features in
+    Kolla Ansible.
+
+    ``kayobe overcloud database backup [--incremental]`` can be used to take a
+    full or incremental backup of the database using Xtrabackup.
+
+    ``kayobe overcloud database recover [--force-recovery-host <host>]`` can be
+    used to recover a database cluster that has lost Quorum.

@@ -35,6 +35,8 @@ For example::
 To execute the command with root privileges, add the ``--become`` argument.
 Adding the ``--verbose`` argument allows the output of the command to be seen.
 
+.. _overcloud-administration-reconfigure:
+
 Reconfiguring Containerised Services
 ====================================
 
@@ -129,3 +131,35 @@ The configuration will be generated remotely on the overcloud hosts in the
 specified directory, with one subdirectory per container. This command may be
 followed by ``kayobe ovecloud service configuration save`` to gather the
 generated configuration to the Ansible control host.
+
+Performing Database Backups
+===========================
+
+Database backups can be performed using the underlying support in Kolla
+Ansible.
+
+In order to enable backups, enable Xtrabackup in
+``${KAYOBE_CONFIG_PATH}/kolla.yml``:
+
+.. code-block:: console
+
+   kolla_enable_xtrabackup: true
+
+To apply this change, use the :ref:`kayobe overcloud service reconfigure
+<overcloud-administration-reconfigure>` command.
+
+To perform a full backup, run the following command:
+
+.. code-block:: console
+
+   kayobe overcloud database backup
+
+Or to perform an incremental backup, run the following command:
+
+.. code-block:: console
+
+   kayobe overcloud database backup --incremental
+
+Further information on backing up and restoring the database is available in
+the `Kolla Ansible documentation
+<https://docs.openstack.org/kolla-ansible/latest/admin/mariadb-backup-and-restore.html>`__.

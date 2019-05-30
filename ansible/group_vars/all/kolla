@@ -369,6 +369,7 @@ kolla_enable_skydive: "no"
 kolla_enable_storm: "{{ 'yes' if kolla_enable_monasca | bool else 'no' }}"
 kolla_enable_swift: "no"
 kolla_enable_telegraf: "no"
+kolla_enable_xtrabackup: "no"
 kolla_enable_zookeeper: "{{ 'yes' if kolla_enable_kafka | bool or kolla_enable_storm | bool else 'no' }}"
 
 ###############################################################################
