@@ -21,6 +21,15 @@ kolla_enable_blazar:
 kolla_extra_blazar:
 
 ###############################################################################
+# Ceilometer configuration.
+
+# Whether to enable Ceilometer.
+kolla_enable_ceilometer:
+
+# Free form extra configuration to append to ceilometer.conf.
+kolla_extra_ceilometer:
+
+###############################################################################
 # ceph configuration.
 
 # Whether to enable ceph.

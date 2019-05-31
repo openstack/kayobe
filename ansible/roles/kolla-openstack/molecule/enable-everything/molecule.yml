@@ -18,6 +18,10 @@ provisioner:
         kolla_extra_blazar: |
           [extra-blazar.conf]
           foo=bar
+        kolla_enable_ceilometer: true
+        kolla_extra_ceilometer: |
+          [extra-ceilometer.conf]
+          foo=bar
         kolla_enable_ceph: true
         kolla_extra_ceph: |
           [extra-ceph.conf]
