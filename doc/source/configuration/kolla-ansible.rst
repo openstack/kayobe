@@ -150,6 +150,8 @@ which files are supported.
    File                            Purpose
    =============================== =======================================================
    ``barbican/*``                  Extended Barbican configuration.
+   ``blazar.conf``                 Blazar configuration.
+   ``blazar/*``                    Extended Blazar configuration.
    ``ceph.conf``                   Ceph configuration.
    ``ceph/*``                      Extended Ceph configuration.
    ``cinder.conf``                 Cinder configuration.
