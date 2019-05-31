@@ -49,6 +49,15 @@ kolla_enable_glance:
 kolla_extra_glance:
 
 ###############################################################################
+# Gnocchi configuration.
+
+# Whether to enable Gnocchi.
+kolla_enable_gnocchi:
+
+# Free form extra configuration to append to gnocchi.conf.
+kolla_extra_gnocchi:
+
+###############################################################################
 # Grafana configuration.
 
 # Whether to enable Grafana.
