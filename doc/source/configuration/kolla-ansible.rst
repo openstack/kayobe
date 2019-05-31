@@ -149,6 +149,7 @@ which files are supported.
    =============================== =======================================================
    File                            Purpose
    =============================== =======================================================
+   ``backup.my.cnf``               Xtrabackup configuration.
    ``barbican/*``                  Extended Barbican configuration.
    ``ceph.conf``                   Ceph configuration.
    ``ceph/*``                      Extended Ceph configuration.
