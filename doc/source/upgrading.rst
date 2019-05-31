@@ -360,7 +360,7 @@ Pulling Container Images
    image registry such as Dockerhub.  In this case, this step can be skipped.
 
 In most cases suitable prebuilt kolla images will be available on Dockerhub.
-The `stackhpc account <https://hub.docker.com/r/stackhpc/>`_ provides image
+The `kolla account <https://hub.docker.com/u/kolla>`_ provides image
 repositories suitable for use with kayobe and will be used by default.  To
 pull images from the configured image registry::
 
