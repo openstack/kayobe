@@ -181,9 +181,9 @@ Clone the tenks repository::
 
 Edit the Tenks configuration file, ``dev/tenks-deploy-config-seed.yml``.
 
-Run the ``dev/tenks-deploy.sh`` script to deploy Tenks::
+Run the ``dev/tenks-deploy-overcloud.sh`` script to deploy Tenks::
 
-    ./dev/tenks-deploy.sh ./tenks
+    ./dev/tenks-deploy-overcloud.sh ./tenks
 
 Check that Tenks has created a VM called ``controller0``::
 
@@ -194,9 +194,9 @@ Verify that VirtualBMC is running::
     ~/tenks-venv/bin/vbmc list
 
 The machines and networking created by Tenks can be cleaned up via
-``dev/tenks-teardown.sh``::
+``dev/tenks-teardown-overcloud.sh``::
 
-    ./dev/tenks-teardown.sh ./tenks
+    ./dev/tenks-teardown-overcloud.sh ./tenks
 
 .. _development-automated-seed-hypervisor:
 

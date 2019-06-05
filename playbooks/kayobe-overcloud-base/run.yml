@@ -16,7 +16,7 @@
       shell:
         # Pass absolute source directory, since otherwise the `chdir` will
         # cause this to fail.
-        cmd: dev/tenks-deploy.sh '{{ tenks_src_dir }}' > {{ logs_dir }}/ansible/tenks-deploy
+        cmd: dev/tenks-deploy-compute.sh '{{ tenks_src_dir }}' > {{ logs_dir }}/ansible/tenks-deploy
         chdir: "{{ kayobe_src_dir }}"
 
     - name: Perform testing of the virtualized machines
