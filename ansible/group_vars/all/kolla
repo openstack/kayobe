@@ -163,6 +163,8 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_kibana | bool }}"
   - regex: kolla-toolbox
     enabled: True
+  - regex: logstash
+    enabled: "{{ kolla_enable_monasca | bool }}"
   - regex: magnum
     enabled: "{{ kolla_enable_magnum | bool }}"
   - regex: manila
