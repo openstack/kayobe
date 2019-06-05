@@ -131,9 +131,9 @@ Clone the tenks repository::
 Optionally, edit the Tenks configuration file,
 ``dev/tenks-deploy-config-compute.yml``.
 
-Run the ``dev/tenks-deploy.sh`` script to deploy Tenks::
+Run the ``dev/tenks-deploy-compute.sh`` script to deploy Tenks::
 
-    ./dev/tenks-deploy.sh ./tenks
+    ./dev/tenks-deploy-compute.sh ./tenks
 
 Check that Tenks has created VMs called ``tk0`` and ``tk1``::
 
@@ -151,9 +151,9 @@ server instance, and delete it once it becomes active::
     ./dev/overcloud-test-baremetal.sh
 
 The machines and networking created by Tenks can be cleaned up via
-``dev/tenks-teardown.sh``::
+``dev/tenks-teardown-compute.sh``::
 
-    ./dev/tenks-teardown.sh ./tenks
+    ./dev/tenks-teardown-compute.sh ./tenks
 
 Upgrading
 ---------
@@ -233,9 +233,9 @@ Clone the tenks repository::
 Optionally, edit the Tenks configuration file,
 ``dev/tenks-deploy-config-overcloud.yml``.
 
-Run the ``dev/tenks-deploy.sh`` script to deploy Tenks::
+Run the ``dev/tenks-deploy-overcloud.sh`` script to deploy Tenks::
 
-    ./dev/tenks-deploy.sh ./tenks
+    ./dev/tenks-deploy-overcloud.sh ./tenks
 
 Check that Tenks has created a VM called ``controller0``::
 
@@ -246,9 +246,9 @@ Verify that VirtualBMC is running::
     ~/tenks-venv/bin/vbmc list
 
 The machines and networking created by Tenks can be cleaned up via
-``dev/tenks-teardown.sh``::
+``dev/tenks-teardown-overcloud.sh``::
 
-    ./dev/tenks-teardown.sh ./tenks
+    ./dev/tenks-teardown-overcloud.sh ./tenks
 
 .. _development-automated-seed-hypervisor:
 

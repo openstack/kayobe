@@ -431,17 +431,35 @@ function run_tenks_playbook {
     # $2: The name of the playbook to run.
     local tenks_path="$1"
     local tenks_playbook="$2"
+    local tenks_deploy_type="${3:-default}"
+
     local parent="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-    if [[ -f "${KOLLA_CONFIG_PATH:-/etc/kolla}/admin-openrc.sh" ]]; then
-        # Overcloud
+    if [[ ! -f "${KOLLA_CONFIG_PATH:-/etc/kolla}/admin-openrc.sh" &&
+              "${tenks_deploy_type}" = "compute" ]]; then
+
+        die $LINENO "Missing admin-openrc.sh & tenks_deploy_type is compute."
+        exit 1
+    fi
+    if [[ -f "${KOLLA_CONFIG_PATH:-/etc/kolla}/admin-openrc.sh" &&
+              ( "${tenks_deploy_type}" = "default" ||
+                    "${tenks_deploy_type}" = "compute" ) ]]; then
+
+        # Deploys Compute from Overcloud
         default_tenks_config=tenks-deploy-config-compute.yml
         source "${KOLLA_CONFIG_PATH:-/etc/kolla}/admin-openrc.sh"
-    else
-        # Seed
+
+    elif [[ "${tenks_deploy_type}" = "default" ||
+               "${tenks_deploy_type}" = "overcloud" ]]; then
+
+        # Deploys Overcloud from Seed
         default_tenks_config=tenks-deploy-config-overcloud.yml
         write_bifrost_clouds_yaml
         export OS_CLOUD=bifrost
+
+    else
+        die $LINENO "Bad tenks_deploy_type: ${tenks_deploy_type}"
+        exit 1
     fi
 
     # Allow a specific Tenks config file to be specified via
@@ -461,6 +479,7 @@ function tenks_deploy {
     # 'breth1' exists.  Arguments:
     # $1: The path to the Tenks repo.
     local tenks_path="$1"
+    local tenks_deploy_type="${2:-default}"
 
     echo "Configuring Tenks"
 
@@ -483,7 +502,7 @@ function tenks_deploy {
     # vSwitch.
     sudo cp --no-clobber "$parent/ovs-vsctl" /usr/bin/ovs-vsctl
 
-    run_tenks_playbook "$tenks_path" deploy.yml
+    run_tenks_playbook "$tenks_path" deploy.yml "$tenks_deploy_type"
 }
 
 function tenks_teardown {
@@ -492,6 +511,7 @@ function tenks_teardown {
     # Arguments:
     # $1: The path to the Tenks repo.
     local tenks_path="$1"
+    local tenks_deploy_type="${2:-default}"
 
     echo "Tearing down Tenks"
 
@@ -503,7 +523,7 @@ function tenks_teardown {
     # Source the Tenks venv.
     source ${TENKS_VENV_PATH:-$HOME/tenks-test-venv}/bin/activate
 
-    run_tenks_playbook "$tenks_path" teardown.yml
+    run_tenks_playbook "$tenks_path" teardown.yml "$tenks_deploy_type"
 }
 
 # General purpose
