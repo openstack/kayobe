@@ -5,8 +5,21 @@ Overcloud Administration
 Updating Packages
 =================
 
-It is possible to update packages on the overcloud hosts. To update one or more
-packages::
+It is possible to update packages on the overcloud hosts.
+
+Package Repositories
+--------------------
+
+If using custom package repositories, it may be necessary to update these prior
+to running a package update. To do this, update the configuration in
+``${KAYOBE_CONFIG_PATH}/yum.yml`` and run the following command::
+
+    (kayobe) $ kayobe overcloud host configure --tags yum --kolla-tags none
+
+Package Update
+--------------
+
+To update one or more packages::
 
     (kayobe) $ kayobe overcloud host package update --packages <package1>,<package2>
 
@@ -20,6 +33,20 @@ To only install updates that have been marked security related::
 
 Note that these commands do not affect packages installed in containers, only
 those installed on the host.
+
+Kernel Updates
+--------------
+
+If the kernel has been updated, you will probably want to reboot the hosts to
+boot into the new kernel. This can be done using a command such as the
+following::
+
+    (kayobe) $ kayobe overcloud host command run --command "shutdown -r" --become
+
+It is normally best to apply this to control plane hosts in batches to avoid
+clustered services from losing quorum. This can be achieved using the
+``--limit`` argument, and ensuring services are fully up after rebooting before
+proceeding with the next batch.
 
 Running Commands
 ================
