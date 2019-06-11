@@ -14,7 +14,7 @@
   tasks:
     - name: Check whether the host is accessible via SSH
       local_action:
-        module: command ssh -p {{ ssh_port }} {{ ssh_user }}@{{ ssh_host }} hostname
+        module: command ssh -o BatchMode=yes -p {{ ssh_port }} {{ ssh_user }}@{{ ssh_host }} hostname
       failed_when: false
       changed_when: false
       register: ssh_result
