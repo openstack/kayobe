@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Uses BatchMode to check whether a host is accessible via SSH. This prevents
+    Kayobe from hanging on a password prompt when password authentication is
+    enabled on the host and the Kayobe Ansible user is not yet configured.
