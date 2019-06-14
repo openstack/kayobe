@@ -28,10 +28,8 @@
         state: directory
 
     - name: Ensure previous kayobe repository is cloned
-      git:
-        repo: https://opendev.org/x/kayobe
-        dest: "{{ previous_kayobe_src_dir }}"
-        version: "stable/{{ previous_release | lower }}"
+      command: >-
+        git clone {{ kayobe_src_dir }} {{ previous_kayobe_src_dir }} -b stable/{{ previous_release | lower }}
 
     - name: Ensure previous kayobe-config directory exists
       file:
@@ -39,10 +37,8 @@
         state: directory
 
     - name: Ensure kayobe-config repository is cloned
-      git:
-        repo: https://opendev.org/x/kayobe-config-dev
-        dest: "{{ previous_kayobe_config_src_dir }}"
-        version: "stable/{{ previous_release | lower }}"
+      command: >-
+        git clone {{ kayobe_config_src_dir }} {{ previous_kayobe_config_src_dir }} -b stable/{{ previous_release | lower }}
 
     # NOTE(mgoddard): Use the name zz-overrides.yml to ensure this takes
     # precedence over the standard config files.

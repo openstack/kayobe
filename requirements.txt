@@ -8,7 +8,7 @@ pbr>=2.0 # Apache-2.0
 # line and commenting the one after.
 # -e git+https://github.com/stackhpc/ansible@issue-30350-2.3#egg=ansible-issue-30350-2.3 # GPLv3
 ansible>=2.4.0,<2.7.0 # GPLv3
-cliff>=2.5.0 # Apache
+cliff>=2.5.0,<2.15.0 # Apache
 netaddr!=0.7.16,>=0.7.13 # BSD
 # paramiko 2.5.0 makes the kayobe-tox-molecule job fail.
 paramiko<2.5.0
