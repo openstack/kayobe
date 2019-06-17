@@ -164,6 +164,7 @@ which files are supported.
    ``fluentd/output``              Fluentd output configuration.
    ``glance.conf``                 Glance configuration.
    ``glance/*``                    Extended Glance configuration.
+   ``global.conf``                 Global configuration for all OpenStack services.
    ``gnocchi.conf``                Gnocchi configuration.
    ``gnocchi/*``                   Extended Gnocchi configuration.
    ``grafana/*``                   Extended Grafana configuration.
