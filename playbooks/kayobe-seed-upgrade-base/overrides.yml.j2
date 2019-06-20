@@ -8,7 +8,7 @@ kolla_source_url: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/opensta
 kolla_source_version: "{{ zuul.projects['opendev.org/openstack/kolla'].checkout }}"
 kolla_ansible_source_url: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/kolla-ansible'].src_dir }}"
 kolla_ansible_source_version: "{{ zuul.projects['opendev.org/openstack/kolla-ansible'].checkout }}"
-kolla_upper_constraints_file: "/tmp/upper-constraints.txt"
+pip_upper_constraints_file: "/tmp/upper-constraints.txt"
 {% endif %}
 
 # NOTE(mgoddard): We're using a cirros image, which doesn't require the

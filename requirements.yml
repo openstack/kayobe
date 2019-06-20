@@ -27,15 +27,15 @@
 - src: stackhpc.mellanox-switch
   version: v1.0.0
 - src: stackhpc.os-images
-  version: v1.2.0
+  version: v1.4.0
 - src: stackhpc.os-ironic-state
   version: v1.1.0
 - src: stackhpc.os-networks
   version: v1.1.0
 - src: stackhpc.os-openstackclient
-  version: v1.2.0
+  version: v1.3.0
 - src: stackhpc.os-shade
-  version: v1.2.0
+  version: v1.3.0
 # We are currently using a fork of this role since the upstream yatesr.timezone
 # role includes symlinks which do not play nicely with PBR. Once that issue has
 # been resolved in PBR, we can revert to using the upstream yatesr.timezone

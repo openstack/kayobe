@@ -59,7 +59,9 @@
 - name: Ensure we have python-ironicclient installed
   pip:
     name: python-ironicclient
+    state: latest
     virtualenv: "{{ ipa_images_venv }}"
+    extra_args: "{% if ipa_images_upper_constraints_file %}-c {{ ipa_images_upper_constraints_file }}{% endif %}"
 
 # To support updating the IPA image, we check the MD5 sum of the cached image
 # files, and compare with the images in Glance (if there are any).
