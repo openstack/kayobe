@@ -100,7 +100,9 @@
   roles:
     - role: ipa-images
       os_shade_install_epel: "{{ yum_install_epel }}"
+      os_shade_state: latest
       ipa_images_venv: "{{ virtualenv_path }}/shade"
+      ipa_images_upper_constraints_file: "{{ pip_upper_constraints_file }}"
       ipa_images_openstack_auth_type: "{{ openstack_auth_type }}"
       ipa_images_openstack_auth: "{{ openstack_auth }}"
       ipa_images_openstack_auth_env: "{{ openstack_auth_env }}"

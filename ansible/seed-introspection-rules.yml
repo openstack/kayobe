@@ -6,7 +6,9 @@
   roles:
     - role: ironic-inspector-rules
       os_shade_install_epel: "{{ yum_install_epel }}"
+      os_shade_state: latest
       ironic_inspector_venv: "{{ virtualenv_path }}/shade"
+      ironic_inspector_upper_constraints_file: "{{ pip_upper_constraints_file }}"
       # No auth required for Bifrost.
       ironic_inspector_auth_type: None
       ironic_inspector_auth: {}

@@ -4,7 +4,7 @@
   tags:
     - docker
   vars:
-    - docker_upper_constraints_file: "{{ kolla_upper_constraints_file }}"
+    - docker_upper_constraints_file: "{{ pip_upper_constraints_file }}"
   roles:
     - role: docker
       docker_daemon_mtu: "{{ public_net_name | net_mtu | default }}"
