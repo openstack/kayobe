@@ -36,6 +36,8 @@
       vars:
         os_openstackclient_venv: "{{ venv }}"
         os_openstackclient_install_epel: "{{ yum_install_epel }}"
+        os_openstackclient_state: latest
+        os_openstackclient_upper_constraints_file: "{{ pip_upper_constraints_file }}"
 
     - name: Retrieve the IPA kernel Glance image UUID
       shell: >
@@ -56,7 +58,9 @@
   roles:
     - role: ironic-inspector-rules
       os_shade_install_epel: "{{ yum_install_epel }}"
+      os_shade_state: latest
       ironic_inspector_venv: "{{ venv }}"
+      ironic_inspector_upper_constraints_file: "{{ pip_upper_constraints_file }}"
       ironic_inspector_auth_type: "{{ openstack_auth_type }}"
       ironic_inspector_auth: "{{ openstack_auth }}"
       ironic_inspector_cacert: "{{ openstack_cacert }}"

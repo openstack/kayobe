@@ -2,6 +2,9 @@
 # Path to virtualenv in which to install shade and its dependencies.
 ipa_images_venv:
 
+# Upper constraints file for installation of python-ironicclient.
+ipa_images_upper_constraints_file:
+
 # Authentication type compatible with the 'os_image' Ansible module's
 # auth_type argument.
 ipa_images_openstack_auth_type:

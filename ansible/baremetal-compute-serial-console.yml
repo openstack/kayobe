@@ -15,6 +15,8 @@
         name:
           - python-openstackclient
           - python-ironicclient
+        state: latest
+        extra_args: "{% if pip_upper_constraints_file %}-c {{ pip_upper_constraints_file }}{% endif %}"
 
     - block:
        - name: Fail if allocation pool start not defined
