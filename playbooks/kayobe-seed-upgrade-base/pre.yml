@@ -1,24 +1,6 @@
 ---
 - hosts: primary
   tasks:
-    - name: Ensure previous kayobe directory exists
-      file:
-        path: "{{ previous_kayobe_src_dir }}"
-        state: directory
-
-    - name: Ensure previous kayobe repository is cloned
-      command: >-
-        git clone {{ kayobe_src_dir }} {{ previous_kayobe_src_dir }} -b stable/{{ previous_release | lower }}
-
-    - name: Ensure previous kayobe-config directory exists
-      file:
-        path: "{{ previous_kayobe_config_src_dir }}"
-        state: directory
-
-    - name: Ensure kayobe-config repository is cloned
-      command: >-
-        git clone {{ kayobe_config_src_dir }} {{ previous_kayobe_config_src_dir }} -b stable/{{ previous_release | lower }}
-
     # NOTE(mgoddard): Use the name zz-overrides.yml to ensure this takes
     # precedence over the standard config files.
     - name: Ensure kayobe-config override config file exists
