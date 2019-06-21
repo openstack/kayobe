@@ -60,17 +60,43 @@ class KayobeAnsibleMixin(object):
             verbosity_args["quiet"] = True
         return verbosity_args
 
-    def run_kayobe_playbooks(self, *args, **kwargs):
+    def run_kayobe_playbooks(self, parsed_args, *args, **kwargs):
         kwargs.update(self._get_verbosity_args())
-        return ansible.run_playbooks(*args, **kwargs)
+        return ansible.run_playbooks(parsed_args, *args, **kwargs)
 
-    def run_kayobe_playbook(self, *args, **kwargs):
+    def run_kayobe_playbook(self, parsed_args, *args, **kwargs):
         kwargs.update(self._get_verbosity_args())
-        return ansible.run_playbook(*args, **kwargs)
+        return ansible.run_playbook(parsed_args, *args, **kwargs)
 
-    def run_kayobe_config_dump(self, *args, **kwargs):
+    def run_kayobe_config_dump(self, parsed_args, *args, **kwargs):
         kwargs.update(self._get_verbosity_args())
-        return ansible.config_dump(*args, **kwargs)
+        return ansible.config_dump(parsed_args, *args, **kwargs)
+
+    def generate_kolla_ansible_config(self, parsed_args, install=False,
+                                      service_config=True,
+                                      bifrost_config=False):
+        """Generate configuration for kolla-ansible.
+
+        :param install: If True, also install kolla-ansible.
+        :param service_config: If True, generate service configuration.
+        :param bifrost_config: If True, generate bifrost configuration.
+        """
+        # We use ignore_limit here because all of these plays execute against
+        # localhost, and are typically necessary for kolla-ansible to function
+        # correctly. Previously a number of people were caught out by using
+        # --limit and having these plays skipped.
+        tags = None if install else "config"
+        playbooks = _build_playbook_list("kolla-ansible")
+        self.run_kayobe_playbooks(parsed_args, playbooks, tags=tags,
+                                  ignore_limit=True)
+        if service_config:
+            playbooks = _build_playbook_list("kolla-openstack")
+            self.run_kayobe_playbooks(parsed_args, playbooks,
+                                      ignore_limit=True)
+        if bifrost_config:
+            playbooks = _build_playbook_list("kolla-bifrost")
+            self.run_kayobe_playbooks(parsed_args, playbooks,
+                                      ignore_limit=True)
 
 
 class KollaAnsibleMixin(object):
@@ -121,9 +147,10 @@ class ControlHostBootstrap(KayobeAnsibleMixin, VaultMixin, Command):
         self.app.LOG.debug("Bootstrapping Kayobe Ansible control host")
         ansible.install_galaxy_roles(parsed_args)
         playbooks = _build_playbook_list("bootstrap")
-        self.run_kayobe_playbooks(parsed_args, playbooks)
+        self.run_kayobe_playbooks(parsed_args, playbooks, ignore_limit=True)
         playbooks = _build_playbook_list("kolla-ansible")
-        self.run_kayobe_playbooks(parsed_args, playbooks, tags="install")
+        self.run_kayobe_playbooks(parsed_args, playbooks, tags="install",
+                                  ignore_limit=True)
 
 
 class ControlHostUpgrade(KayobeAnsibleMixin, VaultMixin, Command):
@@ -142,9 +169,10 @@ class ControlHostUpgrade(KayobeAnsibleMixin, VaultMixin, Command):
         # Use force to upgrade roles.
         ansible.install_galaxy_roles(parsed_args, force=True)
         playbooks = _build_playbook_list("bootstrap")
-        self.run_kayobe_playbooks(parsed_args, playbooks)
+        self.run_kayobe_playbooks(parsed_args, playbooks, ignore_limit=True)
         playbooks = _build_playbook_list("kolla-ansible")
-        self.run_kayobe_playbooks(parsed_args, playbooks, tags="install")
+        self.run_kayobe_playbooks(parsed_args, playbooks, tags="install",
+                                  ignore_limit=True)
 
 
 class ConfigurationDump(KayobeAnsibleMixin, VaultMixin, Command):
@@ -324,8 +352,7 @@ class SeedVMProvision(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
                                  limit="seed")
         self.run_kayobe_playbook(parsed_args, "ansible/seed-vm-provision.yml")
         # Now populate the Kolla Ansible inventory.
-        self.run_kayobe_playbook(parsed_args, "ansible/kolla-ansible.yml",
-                                 tags="config")
+        self.generate_kolla_ansible_config(parsed_args, service_config=False)
 
 
 class SeedVMDeprovision(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
@@ -404,8 +431,8 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
             "users", "yum", "dev-tools", "disable-selinux", "network",
             "sysctl", "ip-routing", "snat", "disable-glean", "ntp", "lvm")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed")
-        playbooks = _build_playbook_list("kolla-ansible")
-        self.run_kayobe_playbooks(parsed_args, playbooks, tags="config")
+
+        self.generate_kolla_ansible_config(parsed_args, service_config=False)
 
         # Run kolla-ansible bootstrap-servers.
         # This command should be run as the kayobe ansible user because at this
@@ -494,11 +521,9 @@ class SeedServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Deploying seed services")
-        playbooks = _build_playbook_list("kolla-ansible")
-        self.run_kayobe_playbooks(parsed_args, playbooks, tags="config")
+        self.generate_kolla_ansible_config(parsed_args, service_config=False,
+                                           bifrost_config=True)
 
-        playbooks = _build_playbook_list("kolla-bifrost")
-        self.run_kayobe_playbooks(parsed_args, playbooks)
         self.run_kolla_ansible_seed(parsed_args, "deploy-bifrost")
         playbooks = _build_playbook_list(
             "overcloud-host-image-workaround-resolv",
@@ -527,11 +552,10 @@ class SeedServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Upgrading seed services")
-        playbooks = _build_playbook_list("kolla-ansible")
-        self.run_kayobe_playbooks(parsed_args, playbooks, tags="config")
+        self.generate_kolla_ansible_config(parsed_args, service_config=False,
+                                           bifrost_config=True)
 
         playbooks = _build_playbook_list(
-            "kolla-bifrost",
             "seed-service-upgrade-prep")
         self.run_kayobe_playbooks(parsed_args, playbooks)
         self.run_kolla_ansible_seed(parsed_args, "deploy-bifrost")
@@ -623,8 +647,7 @@ class OvercloudInventoryDiscover(KayobeAnsibleMixin, VaultMixin, Command):
         self.run_kayobe_playbook(parsed_args,
                                  "ansible/ip-allocation.yml")
         # Now populate the Kolla Ansible inventory.
-        self.run_kayobe_playbook(parsed_args, "ansible/kolla-ansible.yml",
-                                 tags="config")
+        self.generate_kolla_ansible_config(parsed_args, service_config=False)
 
 
 class OvercloudIntrospectionDataSave(KayobeAnsibleMixin, VaultMixin, Command):
@@ -775,8 +798,8 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
             "users", "yum", "dev-tools", "disable-selinux", "network",
             "sysctl", "disable-glean", "disable-cloud-init", "ntp", "lvm")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
-        playbooks = _build_playbook_list("kolla-ansible")
-        self.run_kayobe_playbooks(parsed_args, playbooks, tags="config")
+
+        self.generate_kolla_ansible_config(parsed_args, service_config=False)
 
         # Kolla-ansible bootstrap-servers.
         # The kolla-ansible bootstrap-servers command should be run as the
@@ -877,10 +900,9 @@ class OvercloudServiceConfigurationGenerate(KayobeAnsibleMixin,
         self.app.LOG.debug("Generating overcloud service configuration")
 
         # First prepare configuration.
-        playbooks = _build_playbook_list("kolla-ansible")
-        self.run_kayobe_playbooks(parsed_args, playbooks, tags="config")
+        self.generate_kolla_ansible_config(parsed_args)
 
-        playbooks = _build_playbook_list("kolla-openstack", "swift-setup")
+        playbooks = _build_playbook_list("swift-setup")
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
         # Run kolla-ansible prechecks before deployment.
@@ -956,10 +978,9 @@ class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         self.app.LOG.debug("Deploying overcloud services")
 
         # First prepare configuration.
-        playbooks = _build_playbook_list("kolla-ansible")
-        self.run_kayobe_playbooks(parsed_args, playbooks, tags="config")
+        self.generate_kolla_ansible_config(parsed_args)
 
-        playbooks = _build_playbook_list("kolla-openstack", "swift-setup")
+        playbooks = _build_playbook_list("swift-setup")
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
         # Run kolla-ansible prechecks before deployment.
@@ -983,7 +1004,7 @@ class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         # Create an environment file for accessing the public API as the admin
         # user.
         playbooks = _build_playbook_list("public-openrc")
-        self.run_kayobe_playbooks(parsed_args, playbooks)
+        self.run_kayobe_playbooks(parsed_args, playbooks, ignore_limit=True)
 
 
 class OvercloudServiceReconfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
@@ -1013,10 +1034,9 @@ class OvercloudServiceReconfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
         self.app.LOG.debug("Reconfiguring overcloud services")
 
         # First prepare configuration.
-        playbooks = _build_playbook_list("kolla-ansible")
-        self.run_kayobe_playbooks(parsed_args, playbooks, tags="config")
+        self.generate_kolla_ansible_config(parsed_args)
 
-        playbooks = _build_playbook_list("kolla-openstack", "swift-setup")
+        playbooks = _build_playbook_list("swift-setup")
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
         # Run kolla-ansible prechecks before reconfiguration.
@@ -1040,7 +1060,7 @@ class OvercloudServiceReconfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
         # Create an environment file for accessing the public API as the admin
         # user.
         playbooks = _build_playbook_list("public-openrc")
-        self.run_kayobe_playbooks(parsed_args, playbooks)
+        self.run_kayobe_playbooks(parsed_args, playbooks, ignore_limit=True)
 
 
 class OvercloudServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin,
@@ -1069,8 +1089,7 @@ class OvercloudServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin,
         self.app.LOG.debug("Upgrading overcloud services")
 
         # First prepare configuration.
-        playbooks = _build_playbook_list("kolla-ansible", "kolla-openstack")
-        self.run_kayobe_playbooks(parsed_args, playbooks)
+        self.generate_kolla_ansible_config(parsed_args, install=True)
 
         # Run kolla-ansible prechecks before upgrade.
         if not parsed_args.skip_prechecks:
@@ -1114,11 +1133,7 @@ class OvercloudServiceDestroy(KollaAnsibleMixin, KayobeAnsibleMixin,
         self.app.LOG.debug("Destroying overcloud services")
 
         # First prepare configuration.
-        playbooks = _build_playbook_list("kolla-ansible")
-        self.run_kayobe_playbooks(parsed_args, playbooks, tags="config")
-
-        playbooks = _build_playbook_list("kolla-openstack")
-        self.run_kayobe_playbooks(parsed_args, playbooks)
+        self.generate_kolla_ansible_config(parsed_args)
 
         # Run kolla-ansible destroy.
         extra_args = ["--yes-i-really-really-mean-it"]
@@ -1140,8 +1155,7 @@ class OvercloudContainerImagePull(KayobeAnsibleMixin, KollaAnsibleMixin,
         self.app.LOG.debug("Pulling overcloud container images")
 
         # First prepare configuration.
-        playbooks = _build_playbook_list("kolla-ansible")
-        self.run_kayobe_playbooks(parsed_args, playbooks, tags="config")
+        self.generate_kolla_ansible_config(parsed_args, service_config=False)
 
         # Pull updated kolla container images.
         self.run_kolla_ansible_overcloud(parsed_args, "pull")

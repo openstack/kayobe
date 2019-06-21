@@ -267,6 +267,35 @@ class TestCase(unittest.TestCase):
     @mock.patch.object(utils, "run_command")
     @mock.patch.object(ansible, "_get_vars_files")
     @mock.patch.object(ansible, "_validate_args")
+    def test_run_playbooks_ignore_limit(self, mock_validate, mock_vars,
+                                        mock_run):
+        mock_vars.return_value = ["/etc/kayobe/vars-file1.yml",
+                                  "/etc/kayobe/vars-file2.yaml"]
+        parser = argparse.ArgumentParser()
+        ansible.add_args(parser)
+        vault.add_args(parser)
+        args = [
+            "-l", "group1:host",
+        ]
+        parsed_args = parser.parse_args(args)
+        ansible.run_playbooks(parsed_args, ["playbook1.yml", "playbook2.yml"],
+                              limit="foo", ignore_limit=True)
+        expected_cmd = [
+            "ansible-playbook",
+            "--inventory", "/etc/kayobe/inventory",
+            "-e", "@/etc/kayobe/vars-file1.yml",
+            "-e", "@/etc/kayobe/vars-file2.yaml",
+            "playbook1.yml",
+            "playbook2.yml",
+        ]
+        expected_env = {"KAYOBE_CONFIG_PATH": "/etc/kayobe"}
+        mock_run.assert_called_once_with(expected_cmd, check_output=False,
+                                         quiet=False, env=expected_env)
+        mock_vars.assert_called_once_with("/etc/kayobe")
+
+    @mock.patch.object(utils, "run_command")
+    @mock.patch.object(ansible, "_get_vars_files")
+    @mock.patch.object(ansible, "_validate_args")
     def test_run_playbooks_failure(self, mock_validate, mock_vars, mock_run):
         parser = argparse.ArgumentParser()
         ansible.add_args(parser)
