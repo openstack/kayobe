@@ -99,7 +99,7 @@ kolla_openstack_custom_config:
   - src: "{{ kolla_extra_config_path }}/keystone"
     dest: "{{ kolla_node_custom_config_path }}/keystone"
     patterns: "*"
-    enabled: true
+    enabled: "{{ kolla_enable_keystone }}"
   # Keepalived.
   - src: "{{ kolla_extra_config_path }}/keepalived"
     dest: "{{ kolla_node_custom_config_path }}/keepalived"
