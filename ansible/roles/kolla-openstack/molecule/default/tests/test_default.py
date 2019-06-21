@@ -29,8 +29,7 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
     'path',
     ['fluentd/filter',
      'fluentd/input',
-     'fluentd/output',
-     'keystone'])
+     'fluentd/output'])
 def test_service_config_directory(host, path):
     path = os.path.join('/etc/kolla/config', path)
     utils.test_directory(host, path)
@@ -47,6 +46,7 @@ def test_service_config_directory(host, path):
      'horizon',
      'ironic',
      'kafka',
+     'keystone',
      'magnum',
      'manila',
      'mariadb',
