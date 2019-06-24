@@ -59,10 +59,15 @@ hosts in the ``monitoring`` group.
    ``ansible_user``       Username with which to access the host via SSH.
    ``bootstrap_user``     Username with which to access the host before
                           ``ansible_user`` is configured.
+   ``ceph_disks``         List of Ceph disks.
    ``lvm_groups``         List of LVM volume groups to configure.  See
                           `mrlesmithjr.manage-lvm role
                           <https://galaxy.ansible.com/mrlesmithjr/manage-lvm/>`_
                           for format.
+   ``mdadm_arrays``       List of software RAID arrays. See `mrlesmithjr.mdadm
+                          role
+                          <https://galaxy.ansible.com/mrlesmithjr/mdadm/>`_ for
+                          format.
    ``network_interfaces`` List of names of networks to which the host is
                           connected.
    ``sysctl_parameters``  Dict of sysctl parameters to set.
@@ -184,7 +189,9 @@ providing the necessary variables for a control plane host.
 
    ansible_user: "{{ kayobe_ansible_user }}"
    bootstrap_user: "{{ controller_bootstrap_user }}"
+   ceph_disks: "{{ controller_ceph_disks }}"
    lvm_groups: "{{ controller_lvm_groups }}"
+   mdadm_arrays: "{{ controller_mdadm_arrays }}"
    network_interfaces: "{{ controller_network_host_network_interfaces }}"
    sysctl_parameters: "{{ controller_sysctl_parameters }}"
    users: "{{ controller_users }}"
