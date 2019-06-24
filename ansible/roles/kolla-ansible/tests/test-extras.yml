@@ -105,6 +105,7 @@
             # Enable everything.
             kolla_enable_aodh: True
             kolla_enable_barbican: True
+            kolla_enable_blazar: True
             kolla_enable_ceilometer: True
             kolla_enable_central_logging: True
             kolla_enable_ceph: True
@@ -237,6 +238,7 @@
               # https://github.com/ansible/ansible/issues/19305.
               #enable_aodh: True
               #enable_barbican: True
+              #enable_blazar: True
               #enable_ceilometer: True
               #enable_central_logging: True
               #enable_ceph: True

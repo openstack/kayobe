@@ -100,6 +100,7 @@
             mime: False
           register: stat_result
           with_items:
+            - { name: blazar, file: blazar.conf }
             - { name: ceph, file: ceph.conf }
             - { name: cinder, file: cinder.conf }
             - { name: designate, file: designate.conf }
@@ -205,6 +206,7 @@
         url: "http://{% raw %}{{ api_interface_address }}{% endraw %}:{{ inspector_store_port }}"
         token: fake-token
       # Extra free-form user-provided configuration.
+      kolla_extra_blazar: "{{ kolla_extra_config.blazar | default }}"
       kolla_extra_ceph: "{{ kolla_extra_config.ceph | default }}"
       kolla_extra_cinder: "{{ kolla_extra_config.cinder | default }}"
       kolla_extra_designate: "{{ kolla_extra_config.designate | default }}"

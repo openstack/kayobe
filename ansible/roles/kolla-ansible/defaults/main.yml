@@ -229,6 +229,7 @@ kolla_openstack_logging_debug:
 # OpenStack services can be enabled or disabled with these options
 #kolla_enable_aodh:
 #kolla_enable_barbican:
+#kolla_enable_blazar:
 #kolla_enable_ceilometer:
 #kolla_enable_central_logging:
 #kolla_enable_ceph:

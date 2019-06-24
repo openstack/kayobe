@@ -12,6 +12,15 @@ kolla_node_custom_config_path: /etc/kolla/config
 kolla_enable_barbican:
 
 ###############################################################################
+# Blazar configuration.
+
+# Whether to enable Blazar.
+kolla_enable_blazar:
+
+# Free form extra configuration to append to blazar.conf.
+kolla_extra_blazar:
+
+###############################################################################
 # ceph configuration.
 
 # Whether to enable ceph.
