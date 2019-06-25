@@ -437,3 +437,29 @@ class TestCase(unittest.TestCase):
         ]
         mock_remove.assert_called_once_with(expected_roles,
                                             "ansible/roles")
+
+    @mock.patch.object(utils, 'is_readable_file', autospec=True)
+    def test_passwords_yml_exists_false(self, mock_is_readable):
+        parser = argparse.ArgumentParser()
+        ansible.add_args(parser)
+        parsed_args = parser.parse_args([])
+        mock_is_readable.return_value = {"result": False}
+
+        result = ansible.passwords_yml_exists(parsed_args)
+
+        self.assertFalse(result)
+        mock_is_readable.assert_called_once_with(
+            "/etc/kayobe/kolla/passwords.yml")
+
+    @mock.patch.object(utils, 'is_readable_file', autospec=True)
+    def test_passwords_yml_exists_true(self, mock_is_readable):
+        parser = argparse.ArgumentParser()
+        ansible.add_args(parser)
+        parsed_args = parser.parse_args(["--config-path", "/path/to/config"])
+        mock_is_readable.return_value = {"result": True}
+
+        result = ansible.passwords_yml_exists(parsed_args)
+
+        self.assertTrue(result)
+        mock_is_readable.assert_called_once_with(
+            "/path/to/config/kolla/passwords.yml")
