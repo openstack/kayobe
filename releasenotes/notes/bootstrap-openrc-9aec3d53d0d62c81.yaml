@@ -1,0 +1,9 @@
+---
+fixes:
+  - |
+    Fixes an issue where the ``admin-openrc.sh`` and ``public-openrc.sh`` files
+    would not be generated when preparing a new control host environment for an
+    existing cloud. These files are now generated during ``kayobe control host
+    bootstrap`` if the Kolla Ansible ``passwords.yml`` file exists in the
+    Kayobe configuration. See `story 2001667
+    <https://storyboard.openstack.org/#!/story/2001667>`__ for details.

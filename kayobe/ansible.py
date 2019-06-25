@@ -109,7 +109,7 @@ def _get_vars_files(config_path):
     vars_files = []
     for vars_file in os.listdir(config_path):
         abs_path = os.path.join(config_path, vars_file)
-        if utils.is_readable_file(abs_path):
+        if utils.is_readable_file(abs_path)["result"]:
             root, ext = os.path.splitext(vars_file)
             if ext in (".yml", ".yaml", ".json"):
                 vars_files.append(abs_path)
@@ -277,3 +277,10 @@ def prune_galaxy_roles(parsed_args):
     ]
     LOG.debug("Removing roles: %s", ",".join(roles_to_remove))
     utils.galaxy_remove(roles_to_remove, "ansible/roles")
+
+
+def passwords_yml_exists(parsed_args):
+    """Return whether passwords.yml exists in the kayobe configuration."""
+    passwords_path = os.path.join(parsed_args.config_path,
+                                  'kolla', 'passwords.yml')
+    return utils.is_readable_file(passwords_path)["result"]
