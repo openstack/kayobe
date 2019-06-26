@@ -679,8 +679,7 @@ class SeedServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         playbooks = _build_playbook_list(
             "seed-service-upgrade-prep")
         self.run_kayobe_playbooks(parsed_args, playbooks)
-
-        self.run_kolla_ansible_seed(parsed_args, "deploy-bifrost")
+        self.run_kolla_ansible_seed(parsed_args, "upgrade-bifrost")
         playbooks = _build_playbook_list(
             "overcloud-host-image-workaround-resolv",
             "overcloud-host-image-workaround-cloud-init",
