@@ -81,7 +81,7 @@
         -m command
         -a "openstack baremetal node undeploy {% raw %}{{ inventory_hostname }}{% endraw %}"'
       register: delete_result
-      until: delete_result | success or 'is locked by host' in delete_result.stdout
+      until: delete_result is successful or 'is locked by host' in delete_result.stdout
       retries: "{{ ironic_retries }}"
       delay: "{{ ironic_retry_interval }}"
       when: initial_provision_state != 'available'

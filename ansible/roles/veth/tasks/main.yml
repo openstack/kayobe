@@ -39,5 +39,5 @@
   with_together:
     - "{{ veth_result.results }}"
     - "{{ peer_result.results }}"
-  when: ctl_result|changed or item[0]|changed or item[1]|changed
+  when: ctl_result is changed or item[0] is changed or item[1] is changed
   become: True

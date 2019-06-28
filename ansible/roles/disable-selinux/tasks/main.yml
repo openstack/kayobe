@@ -29,7 +29,7 @@
           sudo shutdown -r now "Applying SELinux changes"
       register: reboot_result
       failed_when:
-        - reboot_result | failed
+        - reboot_result is failed
         - "'closed by remote host' not in reboot_result.stderr"
       when: not is_local | bool
 
@@ -51,4 +51,4 @@
       when: not is_local | bool
   when:
     - disable_selinux_do_reboot | bool
-    - selinux_result | changed
+    - selinux_result is changed

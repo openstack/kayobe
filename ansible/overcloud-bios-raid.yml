@@ -51,7 +51,7 @@
   tasks:
     - name: Set a fact about whether the configuration changed
       set_fact:
-        bios_or_raid_change: "{{ drac_result | changed }}"
+        bios_or_raid_change: "{{ drac_result is changed }}"
 
 - name: Ensure that overcloud BIOS and RAID volumes are configured
   hosts: overcloud_with_bmcs_of_type_idrac

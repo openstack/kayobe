@@ -23,7 +23,7 @@
   command: docker volume rm {{ volume }}
   with_items: "{{ volume_result.results }}"
   when:
-    - not item | skipped
+    - item is not skipped
     - item.rc == 0
   vars:
     volume: "{{ item.item.1.split(':')[0] }}"
