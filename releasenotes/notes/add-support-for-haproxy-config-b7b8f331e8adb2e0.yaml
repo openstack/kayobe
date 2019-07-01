@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds support for customising the refactored HAProxy configuration
+    introduced in Kolla Ansible in the Stein release, using
+    ``$KAYOBE_CONFIG_PATH/kolla/config/haproxy-config/``.

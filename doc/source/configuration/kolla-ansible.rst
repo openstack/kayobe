@@ -165,7 +165,8 @@ which files are supported.
    ``glance.conf``                 Glance configuration.
    ``glance/*``                    Extended Glance configuration.
    ``grafana/*``                   Extended Grafana configuration.
-   ``haproxy/*``                   HAProxy configuration.
+   ``haproxy/*``                   Main HAProxy configuration.
+   ``haproxy-config/*``            Modular HAProxy configuration.
    ``heat.conf``                   Heat configuration.
    ``heat/*``                      Extended heat configuration.
    ``horizon/*``                   Extended horizon configuration.
