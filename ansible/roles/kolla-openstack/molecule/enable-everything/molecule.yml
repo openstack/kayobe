@@ -34,6 +34,10 @@ provisioner:
         kolla_extra_glance: |
           [extra-glance.conf]
           foo=bar
+        kolla_enable_gnocchi: true
+        kolla_extra_gnocchi: |
+          [extra-gnocchi.conf]
+          foo=bar
         kolla_enable_grafana: true
         kolla_extra_grafana: |
           [extra-grafana.ini]

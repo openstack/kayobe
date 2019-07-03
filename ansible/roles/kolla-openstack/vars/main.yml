@@ -54,6 +54,11 @@ kolla_openstack_custom_config:
     dest: "{{ kolla_node_custom_config_path }}/glance"
     patterns: "*"
     enabled: "{{ kolla_enable_glance }}"
+  # Gnocchi.
+  - src: "{{ kolla_extra_config_path }}/gnocchi"
+    dest: "{{ kolla_node_custom_config_path }}/gnocchi"
+    patterns: "*"
+    enabled: "{{ kolla_enable_gnocchi }}"
   # Grafana.
   - src: "{{ kolla_extra_config_path }}/grafana"
     dest: "{{ kolla_node_custom_config_path }}/grafana"

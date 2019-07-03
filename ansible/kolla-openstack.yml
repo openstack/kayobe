@@ -107,6 +107,7 @@
             - { name: cinder, file: cinder.conf }
             - { name: designate, file: designate.conf }
             - { name: glance, file: glance.conf }
+            - { name: gnocchi, file: gnocchi.conf }
             - { name: grafana, file: grafana.ini }
             - { name: heat, file: heat.conf }
             - { name: inspector, file: ironic-inspector.conf }
@@ -213,6 +214,7 @@
       kolla_extra_cinder: "{{ kolla_extra_config.cinder | default }}"
       kolla_extra_designate: "{{ kolla_extra_config.designate | default }}"
       kolla_extra_glance: "{{ kolla_extra_config.glance | default }}"
+      kolla_extra_gnocchi: "{{ kolla_extra_config.gnocchi | default }}"
       kolla_extra_grafana: "{{ kolla_extra_config.grafana | default }}"
       kolla_extra_heat: "{{ kolla_extra_config.heat | default }}"
       kolla_extra_inspector: "{{ kolla_extra_config.inspector | default }}"

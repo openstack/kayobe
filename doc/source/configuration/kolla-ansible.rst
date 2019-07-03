@@ -164,6 +164,8 @@ which files are supported.
    ``fluentd/output``              Fluentd output configuration.
    ``glance.conf``                 Glance configuration.
    ``glance/*``                    Extended Glance configuration.
+   ``gnocchi.conf``                Gnocchi configuration.
+   ``gnocchi/*``                   Extended Gnocchi configuration.
    ``grafana/*``                   Extended Grafana configuration.
    ``haproxy/*``                   HAProxy configuration.
    ``heat.conf``                   Heat configuration.
