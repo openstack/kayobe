@@ -46,17 +46,3 @@
             ironic-dbsync online_data_migrations
         fi'
       changed_when: true
-
-    # TODO(mgoddard): Remove this once bug 1834332 is fixed in kolla-ansible.
-    # Ensure that all services are stopped gracefully, and in a sensible
-    # order.
-    - name: Stop services gracefully
-      command: docker exec bifrost_deploy systemctl stop {{ item }}.service
-      with_items:
-        - ironic-api
-        - ironic-conductor
-        - ironic-inspector
-        - mariadb
-        - rabbitmq-server
-        - nginx
-      changed_when: true
