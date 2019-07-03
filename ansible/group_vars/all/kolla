@@ -161,7 +161,7 @@ overcloud_container_image_regex_map:
   - regex: keepalived
     enabled: "{{ kolla_enable_haproxy | bool }}"
   - regex: keystone
-    enabled: True
+    enabled: "{{ kolla_enable_keystone | bool }}"
   - regex: kibana
     enabled: "{{ kolla_enable_kibana | bool }}"
   - regex: kolla-toolbox
@@ -356,6 +356,7 @@ kolla_enable_ironic: "yes"
 kolla_enable_ironic_ipxe: "no"
 kolla_enable_ironic_neutron_agent: "{{ 'yes' if kolla_enable_neutron | bool and kolla_enable_ironic | bool else 'no' }}"
 kolla_enable_kafka: "{{ 'yes' if kolla_enable_monasca | bool else 'no' }}"
+kolla_enable_keystone: "yes"
 kolla_enable_kibana: "{{ 'yes' if kolla_enable_central_logging | bool or kolla_enable_monasca | bool  else 'no' }}"
 kolla_enable_magnum: "no"
 kolla_enable_manila: "no"
