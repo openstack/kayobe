@@ -473,7 +473,7 @@ function tenks_deploy {
     install_venv "${TENKS_VENV_PATH}" "$tenks_path"
     source ${TENKS_VENV_PATH:-$HOME/tenks-test-venv}/bin/activate
 
-    ansible-galaxy install \
+    ${KAYOBE_SOURCE_PATH}/tools/ansible-galaxy-retried.sh install \
         --role-file="$tenks_path/requirements.yml" \
         --roles-path="$tenks_path/ansible/roles/"
 
