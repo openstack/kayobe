@@ -1,16 +1,13 @@
 ---
 - project:
     templates:
-      - build-openstack-sphinx-docs
-      - docs-on-readthedocs
       - openstack-cover-jobs
       - openstack-python35-jobs
       - openstack-python-jobs
-    vars:
-      rtd_webhook_id: '50407'
+      - publish-openstack-docs-pti
+      - release-notes-jobs-python3
     check:
       jobs:
-        - build-openstack-releasenotes
         - kayobe-tox-ansible-syntax
         # NOTE(priteau): issues with python-pip-whl installation on xenial
         - kayobe-tox-ansible:
@@ -28,7 +25,6 @@
     gate:
       queue: kayobe
       jobs:
-        - build-openstack-releasenotes
         - kayobe-tox-ansible-syntax
         # NOTE(priteau): issues with python-pip-whl installation on xenial
         # - kayobe-tox-ansible
