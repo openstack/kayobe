@@ -402,6 +402,12 @@ kolla_extra_nova:
 kolla_enable_octavia:
 
 ###############################################################################
+# Prometheus configuration.
+
+# Whether to enable Prometheus.
+kolla_enable_prometheus:
+
+###############################################################################
 # Sahara configuration.
 
 # Whether to enable sahara.

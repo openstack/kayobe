@@ -158,6 +158,11 @@ kolla_openstack_custom_config:
     dest: "{{ kolla_node_custom_config_path }}/octavia"
     patterns: "*"
     enabled: "{{ kolla_enable_octavia }}"
+  # Prometheus config
+  - src: "{{ kolla_extra_config_path }}/prometheus"
+    dest: "{{ kolla_node_custom_config_path }}/prometheus"
+    patterns: "*"
+    enabled: "{{ kolla_enable_prometheus }}"
   # Sahara.
   - src: "{{ kolla_extra_config_path }}/sahara"
     dest: "{{ kolla_node_custom_config_path }}/sahara"

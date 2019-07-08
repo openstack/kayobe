@@ -222,6 +222,7 @@
 #kolla_enable_octavia:
 #kolla_enable_osprofiler:
 #kolla_enable_panko:
+#kolla_enable_prometheus:
 #kolla_enable_qdrouterd:
 #kolla_enable_rally:
 #kolla_enable_sahara:
