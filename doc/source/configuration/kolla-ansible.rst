@@ -167,7 +167,8 @@ which files are supported.
    ``gnocchi.conf``                Gnocchi configuration.
    ``gnocchi/*``                   Extended Gnocchi configuration.
    ``grafana/*``                   Extended Grafana configuration.
-   ``haproxy/*``                   HAProxy configuration.
+   ``haproxy/*``                   Main HAProxy configuration.
+   ``haproxy-config/*``            Modular HAProxy configuration.
    ``heat.conf``                   Heat configuration.
    ``heat/*``                      Extended heat configuration.
    ``horizon/*``                   Extended horizon configuration.
