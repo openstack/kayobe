@@ -375,7 +375,11 @@ function overcloud_test_init {
     # This guards init-runonce from running more than once
     if mkdir /tmp/init-runonce > /dev/null 2>&1; then
         echo "Running kolla-ansible init-runonce"
+        # Don't create an external network, since it conflicts with the ironic
+        # provision-net.
+        export ENABLE_EXT_NET=0
         ${KOLLA_VENV_PATH:-$HOME/kolla-venv}/share/kolla-ansible/init-runonce
+        unset ENABLE_EXT_NET
     else
         echo "Not running kolla-ansible init-runonce - resources exist"
     fi
