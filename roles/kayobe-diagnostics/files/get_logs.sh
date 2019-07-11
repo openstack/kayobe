@@ -72,6 +72,23 @@ copy_logs() {
         docker logs --tail all ${container} > ${LOG_DIR}/docker_logs/${container}.txt
     done
 
+    # Bifrost: grab config files and logs from the container.
+    if [[ $(docker ps -q -f name=bifrost_deploy) ]]; then
+        for service in dnsmasq ironic-api ironic-conductor ironic-inspector mariadb nginx rabbitmq-server; do
+            mkdir -p ${LOG_DIR}/kolla/$service
+            docker exec bifrost_deploy \
+                systemctl status $service -l -n 10000 > ${LOG_DIR}/kolla/$service/${service}-systemd-status.txt
+            docker exec bifrost_deploy \
+                journalctl -u $service --no-pager > ${LOG_DIR}/kolla/$service/${service}-journal.txt
+        done
+        docker exec -it bifrost_deploy \
+            journalctl --no-pager > ${LOG_DIR}/kolla/bifrost-journal.log
+        for d in dnsmasq.conf ironic ironic-inspector nginx/nginx.conf; do
+            docker cp bifrost_deploy:/etc/$d ${LOG_DIR}/kolla_node_configs/bifrost/
+        done
+        docker cp bifrost_deploy:/var/log/mariadb/mariadb.log ${LOG_DIR}/kolla/mariadb/
+    fi
+
     # Rename files to .txt; this is so that when displayed via
     # logs.openstack.org clicking results in the browser shows the
     # files, rather than trying to send it to another app or make you
