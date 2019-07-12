@@ -140,11 +140,11 @@ packages on the seed hypervisor host.
 
 To update all eligible packages, use ``*``, escaping if necessary::
 
-    (kayobe) $ kayobe seed hypervisor host package update --packages *
+    (kayobe) $ kayobe seed hypervisor host package update --packages "*"
 
 To only install updates that have been marked security related::
 
-    (kayobe) $ kayobe seed hypervisor host package update --packages <packages> --security
+    (kayobe) $ kayobe seed hypervisor host package update --packages "*" --security
 
 Upgrading Host Services
 -----------------------
@@ -172,11 +172,11 @@ the seed host.
 
 To update all eligible packages, use ``*``, escaping if necessary::
 
-    (kayobe) $ kayobe seed host package update --packages *
+    (kayobe) $ kayobe seed host package update --packages "*"
 
 To only install updates that have been marked security related::
 
-    (kayobe) $ kayobe seed host package update --packages <packages> --security
+    (kayobe) $ kayobe seed host package update --packages "*" --security
 
 Note that these commands do not affect packages installed in containers, only
 those installed on the host.
@@ -278,11 +278,11 @@ system packages on the overcloud hosts.
 
 To update all eligible packages, use ``*``, escaping if necessary::
 
-    (kayobe) $ kayobe overcloud host package update --packages *
+    (kayobe) $ kayobe overcloud host package update --packages "*"
 
 To only install updates that have been marked security related::
 
-    (kayobe) $ kayobe overcloud host package update --packages <packages> --security
+    (kayobe) $ kayobe overcloud host package update --packages "*" --security
 
 Note that these commands do not affect packages installed in containers, only
 those installed on the host.
