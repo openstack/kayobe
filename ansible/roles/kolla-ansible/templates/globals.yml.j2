@@ -294,6 +294,10 @@ ironic_dnsmasq_dhcp_range: {{ kolla_inspector_dhcp_pool_start }},{{ kolla_inspec
 {% if kolla_inspector_default_gateway %}
 ironic_dnsmasq_default_gateway: {{ kolla_inspector_default_gateway }}
 {% endif %}
+{% if kolla_inspector_extra_kernel_options %}
+ironic_inspector_kernel_cmdline_extras:
+{{ kolla_inspector_extra_kernel_options | to_nice_yaml }}
+{% endif %}
 
 ######################################
 # Manila - Shared File Systems Options

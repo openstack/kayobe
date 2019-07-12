@@ -299,6 +299,7 @@
         kolla_inspector_dhcp_pool_start: "{{ inspection_net_name | net_inspection_allocation_pool_start }}"
         kolla_inspector_dhcp_pool_end: "{{ inspection_net_name | net_inspection_allocation_pool_end }}"
         kolla_inspector_default_gateway: "{{ inspection_net_name | net_inspection_gateway or inspection_net_name | net_gateway }}"
+        kolla_inspector_extra_kernel_options: "{{ inspector_extra_kernel_options }}"
         # While kayobe has its own support for installing an NTP daemon, the
         # kolla-ansible baremetal role does a one-time sync which is useful.
         kolla_enable_host_ntp: "{{ ntp_service_enabled }}"

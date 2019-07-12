@@ -202,7 +202,6 @@
       kolla_inspector_keep_ports: "{{ inspector_keep_ports }}"
       kolla_inspector_enable_discovery: "{{ inspector_enable_discovery }}"
       kolla_inspector_discovery_enroll_node_driver: "{{ inspector_discovery_enroll_node_driver }}"
-      kolla_inspector_extra_kernel_options: "{{ inspector_extra_kernel_options }}"
       # Ironic inspector swift store configuration. Currently only supports the
       # 'fake' inspection store.
       kolla_inspector_enable_swift: "{{ inspector_store_enabled }}"

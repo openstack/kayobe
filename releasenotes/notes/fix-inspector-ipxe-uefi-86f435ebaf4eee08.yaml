@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an issue with hardware inspection of bare metal compute nodes
+    configured to use UEFI. See `story 2006214
+    <https://storyboard.openstack.org/#!/story/2006214>`__ for details.
