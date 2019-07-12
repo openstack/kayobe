@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Add command to update packages on the seed hypervisor host, as already
+    available for seed and overcloud hosts:
+
+    ``kayobe seed hypervisor host package update --packages <packages>``

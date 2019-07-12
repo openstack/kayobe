@@ -45,6 +45,10 @@ To only install updates that have been marked security related::
 Note that these commands do not affect packages installed in containers, only
 those installed on the host.
 
+Packages can also be updated on the seed hypervisor host, if one is in use::
+
+    (kayobe) $ kayobe seed hypervisor package update --packages <package1>,<package2>
+
 Kernel Updates
 --------------
 

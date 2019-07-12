@@ -130,7 +130,26 @@ Upgrading the Seed Hypervisor
 =============================
 
 Currently, upgrading the seed hypervisor services is not supported.  It may
-however be necessary to upgrade some host services::
+however be necessary to upgrade host packages and some host services.
+
+Upgrading Host Packages
+-----------------------
+
+Prior to upgrading the seed hypervisor, it may be desirable to upgrade system
+packages on the seed hypervisor host.
+
+To update all eligible packages, use ``*``, escaping if necessary::
+
+    (kayobe) $ kayobe seed hypervisor host package update --packages *
+
+To only install updates that have been marked security related::
+
+    (kayobe) $ kayobe seed hypervisor host package update --packages <packages> --security
+
+Upgrading Host Services
+-----------------------
+
+It may be necessary to upgrade some host services::
 
     (kayobe) $ kayobe seed hypervisor host upgrade
 
