@@ -1,0 +1,6 @@
+---
+features:
+  - Adds support for overriding configuration globally for all OpenStack
+    services by generating a ``global.conf`` file for use by Kolla Ansible.
+    See `story 2005904 <https://storyboard.openstack.org/#!/story/2005904>`__
+    for details.

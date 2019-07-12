@@ -6,6 +6,12 @@ kolla_extra_config_path:
 kolla_node_custom_config_path: /etc/kolla/config
 
 ###############################################################################
+# Global configuration.
+
+# Free form extra configuration to append to global.conf.
+kolla_extra_global:
+
+###############################################################################
 # Barbican configuration.
 
 # Whether to enable Barbican.
