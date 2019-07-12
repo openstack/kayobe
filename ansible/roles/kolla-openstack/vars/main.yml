@@ -19,6 +19,11 @@ kolla_openstack_custom_config:
     dest: "{{ kolla_node_custom_config_path }}/blazar"
     patterns: "*"
     enabled: "{{ kolla_enable_blazar }}"
+  # Ceilometer.
+  - src: "{{ kolla_extra_config_path }}/ceilometer"
+    dest: "{{ kolla_node_custom_config_path }}/ceilometer"
+    patterns: "*"
+    enabled: "{{ kolla_enable_ceilometer }}"
   # Ceph.
   - src: "{{ kolla_extra_config_path }}/ceph"
     dest: "{{ kolla_node_custom_config_path }}/ceph"
