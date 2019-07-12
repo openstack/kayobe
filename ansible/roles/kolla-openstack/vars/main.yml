@@ -112,8 +112,6 @@ kolla_openstack_custom_config:
       # These are templated by kayobe, so don't remove them.
       - ironic-agent.initramfs
       - ironic-agent.kernel
-      - pxelinux.default
-      - inspector.ipxe
   # Kafka.
   - src: "{{ kolla_extra_config_path }}/kafka"
     dest: "{{ kolla_node_custom_config_path }}/kafka"

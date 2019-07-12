@@ -271,9 +271,6 @@ kolla_inspector_enable_discovery:
 # The Ironic driver with which to register newly discovered nodes.
 kolla_inspector_discovery_enroll_node_driver:
 
-# List of extra kernel parameters for the inspector default PXE configuration.
-kolla_inspector_extra_kernel_options: []
-
 # URL of Ironic Python Agent (IPA) kernel image for Ironic Inspector.
 # Mutually exclusive with kolla_inspector_ipa_kernel_path.
 kolla_inspector_ipa_kernel_upstream_url:
