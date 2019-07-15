@@ -1,0 +1,17 @@
+#jinja2: trim_blocks: True,lstrip_blocks: True
+
+{% for line in arista_switch_config %}
+{{ line }}
+{% endfor %}
+
+{% for interface, config in
+arista_switch_interface_config.items() %}
+ interface {{ interface }}
+{% if config.description is defined %}
+ description {{ config.description }}
+{% endif %}
+{% for line in config.config %}
+ {{ line }}
+{% endfor %}
+ exit
+{% endfor %}

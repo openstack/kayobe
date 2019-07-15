@@ -24,6 +24,7 @@
     physical_network_display: False
     # List of supported values for the 'switch_type' variable.
     supported_switch_types:
+      - arista
       - dellos6
       - dellos9
       - dell-powerconnect
@@ -93,6 +94,18 @@
     - name: Display the candidate switch interface configuration
       debug:
         var: switch_interface_config
+
+- name: Ensure Arista physical switches are configured
+  hosts: switches_of_type_arista:&switches_in_display_mode_False
+  gather_facts: no
+  roles:
+    - role: ssh-known-host
+
+    - role: arista-switch
+      arista_switch_type: "{{ switch_type }}"
+      arista_switch_provider: "{{ switch_arista_provider }}"
+      arista_switch_config: "{{ switch_config }}"
+      arista_switch_interface_config: "{{ switch_interface_config }}"
 
 - name: Ensure DellOS physical switches are configured
   hosts: switches_of_type_dellos6:switches_of_type_dellos9:&switches_in_display_mode_False
