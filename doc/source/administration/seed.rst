@@ -36,11 +36,11 @@ To update one or more packages::
 
 To update all eligible packages, use ``*``, escaping if necessary::
 
-    (kayobe) $ kayobe seed host package update --packages *
+    (kayobe) $ kayobe seed host package update --packages "*"
 
 To only install updates that have been marked security related::
 
-    (kayobe) $ kayobe seed host package update --packages <packages> --security
+    (kayobe) $ kayobe seed host package update --packages "*" --security
 
 Note that these commands do not affect packages installed in containers, only
 those installed on the host.
