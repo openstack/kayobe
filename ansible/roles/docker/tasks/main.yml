@@ -42,14 +42,14 @@
   register: cp_sockets
   run_once: True
   when:
-    - group_result|changed
+    - group_result is changed
 
 - name: Drop all persistent SSH connections to activate the new group membership
   local_action:
     module: shell ssh -O stop None -o ControlPath={{ item.path }}
   with_items: "{{ cp_sockets.files }}"
   run_once: True
-  when: not cp_sockets|skipped
+  when: cp_sockets is not skipped
 
 - name: Ensure Docker daemon is started
   service:

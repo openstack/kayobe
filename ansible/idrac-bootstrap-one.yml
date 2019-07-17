@@ -67,7 +67,7 @@
           delegate_to: "{{ delegate_host }}"
           register: arp_result
           failed_when:
-            - arp_result | failed
+            - arp_result is failed
             - "'No ARP entry for ' ~ idrac_default_ip not in arp_result.stdout"
 
         # Ansible's until keyword seems to not work nicely with failed_when, causing

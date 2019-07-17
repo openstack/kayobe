@@ -24,7 +24,7 @@
       delegate_to: "{{ controller_host }}"
       register: result
       failed_when:
-        - result | failed
+        - result is failed
         # Some BMCs complain if the node is already powered off.
         - "'Command not supported in present state' not in result.stderr"
       vars:

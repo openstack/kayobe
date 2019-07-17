@@ -42,7 +42,7 @@
       Ensure that each disk in 'ceph_disks' does not have any partitions.
   with_items: "{{ disk_journal_info.results }}"
   when:
-    - not item | skipped
+    - item is not skipped
     - item.partitions | length > 0
     - not item.partitions.0.name.startswith('KOLLA_CEPH')
   loop_control:
@@ -75,7 +75,7 @@
     state: present
   with_items: "{{ disk_journal_info.results }}"
   when:
-    - not item | skipped
+    - item is not skipped
     - item.partitions | length == 0
   loop_control:
     label: "{{item.item}}"

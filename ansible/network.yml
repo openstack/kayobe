@@ -44,7 +44,7 @@
       become: True
       register: nm_result
       failed_when:
-        - nm_result | failed
+        - nm_result is failed
         # Ugh, Ansible's service module doesn't handle uninstalled services.
         - "'Could not find the requested service' not in nm_result.msg"
 

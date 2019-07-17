@@ -84,7 +84,7 @@
         -m command
         -a "openstack baremetal node manage {% raw %}{{ inventory_hostname }}{% endraw %}"'
       register: manage_result
-      until: manage_result | success or 'is locked by host' in manage_result.stdout
+      until: manage_result is successful or 'is locked by host' in manage_result.stdout
       retries: "{{ ironic_retries }}"
       delay: "{{ ironic_retry_interval }}"
       when: initial_provision_state == 'enroll'
@@ -109,7 +109,7 @@
         -m command
         -a "openstack baremetal node provide {% raw %}{{ inventory_hostname }}{% endraw %}"'
       register: provide_result
-      until: provide_result | success or 'is locked by host' in provide_result.stdout
+      until: provide_result is successful or 'is locked by host' in provide_result.stdout
       retries: "{{ ironic_retries }}"
       delay: "{{ ironic_retry_interval }}"
       when: initial_provision_state in ['enroll', 'manageable']
