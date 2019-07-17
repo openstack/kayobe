@@ -749,7 +749,8 @@ class OvercloudIntrospectionDataSave(KayobeAnsibleMixin, VaultMixin, Command):
             extra_vars['output_dir'] = parsed_args.output_dir
         if parsed_args.output_format:
             extra_vars['output_format'] = parsed_args.output_format
-        playbooks = _build_playbook_list("overcloud-introspection-data-save")
+        playbooks = _build_playbook_list("kolla-bifrost-hostvars",
+                                         "overcloud-introspection-data-save")
         self.run_kayobe_playbooks(parsed_args, playbooks,
                                   extra_vars=extra_vars)
 
