@@ -1,8 +1,8 @@
 ---
 features:
   - |
-    Add support for seperate storage networks for both Ceph and Swift.
-    This adds four additional networks, which can be used to seperate the storage
+    Add support for separate storage networks for both Ceph and Swift.
+    This adds four additional networks, which can be used to separate the storage
     network traffic as follows:
 
     * Ceph storage network (ceph_storage_net_name) is used to carry Ceph storage
