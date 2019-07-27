@@ -159,6 +159,8 @@ which files are supported.
    ``ceph/*``                      Extended Ceph configuration.
    ``cinder.conf``                 Cinder configuration.
    ``cinder/*``                    Extended Cinder configuration.
+   ``cloudkitty.conf``             CloudKitty configuration.
+   ``cloudkitty/*``                Extended CloudKitty configuration.
    ``designate.conf``              Designate configuration.
    ``designate/*``                 Extended Designate configuration.
    ``fluentd/filter``              Fluentd filter configuration.

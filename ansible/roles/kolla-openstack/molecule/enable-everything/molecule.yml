@@ -30,6 +30,10 @@ provisioner:
         kolla_extra_cinder: |
           [extra-cinder.conf]
           foo=bar
+        kolla_enable_cloudkitty: true
+        kolla_extra_cloudkitty: |
+          [extra-cloudkitty.conf]
+          foo=bar
         kolla_enable_designate: true
         kolla_extra_designate: |
           [extra-designate.conf]

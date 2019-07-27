@@ -54,6 +54,15 @@ kolla_enable_cinder:
 kolla_extra_cinder:
 
 ###############################################################################
+# CloudKitty configuration.
+
+# Whether to enable CloudKitty.
+kolla_enable_cloudkitty:
+
+# Free form extra configuration to append to cloudkitty.conf.
+kolla_extra_cloudkitty:
+
+###############################################################################
 # designate configuration.
 
 # Whether to enable designate.

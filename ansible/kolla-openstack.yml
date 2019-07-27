@@ -106,6 +106,7 @@
             - { name: ceilometer, file: ceilometer.conf }
             - { name: ceph, file: ceph.conf }
             - { name: cinder, file: cinder.conf }
+            - { name: cloudkitty, file: cloudkitty.conf }
             - { name: designate, file: designate.conf }
             - { name: glance, file: glance.conf }
             - { name: global, file: global.conf }
@@ -215,6 +216,7 @@
       kolla_extra_ceilometer: "{{ kolla_extra_config.ceilometer | default }}"
       kolla_extra_ceph: "{{ kolla_extra_config.ceph | default }}"
       kolla_extra_cinder: "{{ kolla_extra_config.cinder | default }}"
+      kolla_extra_cloudkitty: "{{ kolla_extra_config.cloudkitty | default }}"
       kolla_extra_designate: "{{ kolla_extra_config.designate | default }}"
       kolla_extra_glance: "{{ kolla_extra_config.glance | default }}"
       kolla_extra_global: "{{ kolla_extra_config.global | default }}"
