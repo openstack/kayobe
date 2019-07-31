@@ -12,7 +12,7 @@ seed_hypervisor_bootstrap_user: "{{ lookup('env', 'USER') }}"
 # List of networks to which seed hypervisor nodes are attached.
 seed_hypervisor_network_interfaces: >
   {{ (seed_hypervisor_default_network_interfaces +
-      seed_hypervisor_extra_network_interfaces) | unique | list }}
+      seed_hypervisor_extra_network_interfaces) | reject('none') | unique | list }}
 
 # List of default networks to which seed hypervisor nodes are attached.
 seed_hypervisor_default_network_interfaces: "{{ seed_default_network_interfaces }}"

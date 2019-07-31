@@ -161,6 +161,7 @@ which files are supported.
    ``ironic-inspector.conf``       Ironic inspector configuration.
    ``ironic.conf``                 Ironic configuration.
    ``ironic/*``                    Extended ironic configuration.
+   ``keystone.conf``               Keystone configuration.
    ``keystone/*``                  Extended keystone configuration.
    ``magnum.conf``                 Magnum configuration.
    ``magnum/*``                    Extended magnum configuration.

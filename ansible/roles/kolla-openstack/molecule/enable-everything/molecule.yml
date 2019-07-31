@@ -54,6 +54,10 @@ provisioner:
         kolla_extra_kafka: |
           [extra-kafka.server.properties]
           foo=bar
+        kolla_enable_keystone: true
+        kolla_extra_keystone: |
+          [extra-keystone.conf]
+          foo=bar
         kolla_enable_magnum: true
         kolla_extra_magnum: |
           [extra-magnum.conf]

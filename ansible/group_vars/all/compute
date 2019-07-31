@@ -12,7 +12,7 @@ compute_bootstrap_user: "{{ lookup('env', 'USER') }}"
 # List of networks to which compute nodes are attached.
 compute_network_interfaces: >
   {{ (compute_default_network_interfaces +
-      compute_extra_network_interfaces) | unique | list }}
+      compute_extra_network_interfaces) | reject('none') | unique | list }}
 
 # List of default networks to which compute nodes are attached.
 compute_default_network_interfaces: >
@@ -20,7 +20,7 @@ compute_default_network_interfaces: >
        internal_net_name,
        storage_net_name,
        tunnel_net_name] +
-      (external_net_names if kolla_enable_neutron_provider_networks | bool else [])) | unique | list }}
+      (external_net_names if kolla_enable_neutron_provider_networks | bool else [])) | reject('none') | unique | list }}
 
 # List of extra networks to which compute nodes are attached.
 compute_extra_network_interfaces: []
