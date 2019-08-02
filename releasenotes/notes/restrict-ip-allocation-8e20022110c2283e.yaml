@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Stops allocating network and broadcast addresses to hosts when an allocation pool
+    is not defined.

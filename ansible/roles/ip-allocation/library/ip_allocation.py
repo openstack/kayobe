@@ -147,6 +147,9 @@ def update_allocation(module, allocations):
             allocation_pool = netaddr.IPSet(allocation_pool)
         else:
             allocation_pool = netaddr.IPSet([network])
+            if network.prefixlen != 32:
+                reserved_ips = [network.network, network.broadcast]
+                allocation_pool -= netaddr.IPSet(reserved_ips)
         free_ips = allocation_pool - allocated_ips
         for free_cidr in free_ips.iter_cidrs():
             ip = free_cidr[0]
