@@ -193,6 +193,8 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_neutron | bool }}"
   - regex: rabbitmq
     enabled: True
+  - regex: placement
+    enabled: "{{ kolla_enable_nova | bool }}"
   - regex: prometheus
     enabled: "{{ kolla_enable_prometheus | bool }}"
   - regex: sahara
