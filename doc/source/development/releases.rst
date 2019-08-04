@@ -123,12 +123,3 @@ Post-release activites
 
 An email will be sent to the release-announce mailing list about the new
 release.
-
-The documentation on readthedocs is built automatically via a webhook.
-
-.. TODO: Setup RTD integration for release notes. This was attempted
-         previously but had issues with getting the zuul job to execute
-         twice with different webhook IDs, and broke the release pipeline.
-
-The release notes need to be rebuilt manually since there is no readthedocs
-webhook integration for these yet.
