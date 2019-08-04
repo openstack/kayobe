@@ -14,8 +14,9 @@ Welcome to the Kayobe documentation, the official source of information for
 understanding and using Kayobe.
 
 This documentation is maintained at opendev.org
-`here <https://opendev.org/x/kayobe.git>`_. Feedback and contributions welcome,
-see :doc:`contributing <development/contributing>` for information on how.
+`here <https://opendev.org/openstack/kayobe.git>`_. Feedback and contributions
+welcome, see :doc:`contributing <development/contributing>` for information on
+how.
 
 .. include:: ../../README.rst
 

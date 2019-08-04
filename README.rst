@@ -27,8 +27,8 @@ All this and more, automated from top to bottom using Ansible.
 
 * Free software: Apache license
 * Documentation: https://docs.openstack.org/kayobe/latest/
-* Source: https://opendev.org/x/kayobe
-* Bugs: https://storyboard.openstack.org/#!/project/x/kayobe
+* Source: https://opendev.org/openstack/kayobe
+* Bugs: https://storyboard.openstack.org/#!/project/openstack/kayobe
 * Release Notes: https://docs.openstack.org/releasenotes/kayobe/
 * IRC: #openstack-kolla
 

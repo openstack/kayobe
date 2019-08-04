@@ -16,7 +16,7 @@ The kayobe development environment automation tooling is built using simple
 shell scripts.  Some minimal configuration can be applied by setting the
 environment variables in `dev/config.sh`.  Control plane configuration is
 typically provided via the `kayobe-config-dev
-<https://opendev.org/x/kayobe-config-dev>`_ repository,
+<https://opendev.org/openstack/kayobe-config-dev>`_ repository,
 although it is also possible to use your own kayobe configuration.  This allows
 us to build a development environment that is as close to production as
 possible.
@@ -42,7 +42,7 @@ Preparation
 
 Clone the kayobe repository::
 
-    git clone https://opendev.org/x/kayobe.git
+    git clone https://opendev.org/openstack/kayobe.git
 
 Change the current directory to the kayobe repository::
 
@@ -51,7 +51,7 @@ Change the current directory to the kayobe repository::
 Clone the ``kayobe-config-dev`` repository to ``config/src/kayobe-config``::
 
     mkdir -p config/src
-    git clone https://opendev.org/x/kayobe-config-dev.git config/src/kayobe-config
+    git clone https://opendev.org/openstack/kayobe-config-dev.git config/src/kayobe-config
 
 Inspect the kayobe configuration and make any changes necessary for your
 environment.
@@ -177,7 +177,7 @@ Preparation
 
 Clone the kayobe repository::
 
-    git clone https://opendev.org/x/kayobe.git
+    git clone https://opendev.org/openstack/kayobe.git
 
 Change to the ``kayobe`` directory::
 
@@ -186,7 +186,7 @@ Change to the ``kayobe`` directory::
 Clone the ``kayobe-config-dev`` repository to ``config/src/kayobe-config``::
 
     mkdir -p config/src
-    git clone https://opendev.org/x/kayobe-config-dev.git config/src/kayobe-config
+    git clone https://opendev.org/openstack/kayobe-config-dev.git config/src/kayobe-config
 
 Inspect the kayobe configuration and make any changes necessary for your
 environment.
@@ -266,7 +266,7 @@ The following commands should be executed on the seed hypervisor.
 
 Clone the kayobe repository::
 
-    git clone https://opendev.org/x/kayobe.git
+    git clone https://opendev.org/openstack/kayobe.git
 
 Change the current directory to the kayobe repository::
 
@@ -318,7 +318,7 @@ The following commands should be executed on the seed hypervisor.
 
 Clone the kayobe repository::
 
-    git clone https://opendev.org/x/kayobe.git
+    git clone https://opendev.org/openstack/kayobe.git
 
 Change to the ``kayobe`` directory::
 

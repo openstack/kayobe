@@ -39,7 +39,7 @@ accessing the VM.
 
 Clone the kayobe repository::
 
-    git clone https://opendev.org/x/kayobe.git
+    git clone https://opendev.org/openstack/kayobe.git
 
 Change the current directory to the kayobe repository::
 

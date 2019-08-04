@@ -104,7 +104,7 @@ latex_documents = [
 
 # openstackdocstheme options
 # TODO(mgoddard): Change to openstack/kayobe.
-repository_name = 'x/kayobe'
+repository_name = 'openstack/kayobe'
 bug_project = 'kayobe'
 bug_tag = ''
 openstack_projects = [

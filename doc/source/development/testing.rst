@@ -52,7 +52,7 @@ git::
 
     # from your home or source directory
     cd ~
-    git clone https://opendev.org/x/kayobe.git
+    git clone https://opendev.org/openstack/kayobe.git
     cd kayobe
 
 Running Unit and Style Tests
