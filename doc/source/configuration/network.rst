@@ -718,7 +718,6 @@ By default, controllers are attached to the following networks:
 * workload (compute) cleaning network
 * internal network
 * storage network
-* storage management network
 
 In addition, if the controllers are also in the ``network`` group, they are
 attached to the following networks:
