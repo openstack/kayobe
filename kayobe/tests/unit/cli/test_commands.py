@@ -933,7 +933,7 @@ class TestCase(unittest.TestCase):
         expected_calls = [
             mock.call(
                 mock.ANY,
-                "deploy-bifrost",
+                "upgrade-bifrost",
             ),
         ]
         self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
