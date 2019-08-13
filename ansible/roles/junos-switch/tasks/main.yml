@@ -7,6 +7,7 @@
     name: ncclient
     virtualenv: "{{ lookup('env', 'VIRTUAL_ENV') | default(omit, true) }}"
   become: "{{ lookup('env', 'VIRTUAL_ENV') == None }}"
+  run_once: true
 
 - name: Ensure Juniper switches are configured
   local_action:
