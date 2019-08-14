@@ -37,10 +37,10 @@
           {% set ignore_hosts = overcloud_group_hosts_map.get("ignore", []) %}
 
           {# Add a section for each group. #}
-          {% for group in overcloud_groups %}
+          {% for group in overcloud_groups | sort %}
           [{{ group }}]
           {% set group_hosts = overcloud_group_hosts_map.get(group, []) %}
-          {% for host in ironic_inventory.baremetal.hosts %}
+          {% for host in ironic_inventory.baremetal.hosts | sort %}
           {% if (host in group_hosts or
                  (group == overcloud_group_default and host not in all_mapped_hosts))
                 and host not in ignore_hosts %}
