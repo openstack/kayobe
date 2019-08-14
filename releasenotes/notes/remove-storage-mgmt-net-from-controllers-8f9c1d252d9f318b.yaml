@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    Controllers are no longer connected to the storage management network by
+    default, since generally only storage nodes need access to this network. If
+    needed, the existing configuration can be retained by adding the storage
+    management network to the ``controller_extra_network_interfaces`` list.
