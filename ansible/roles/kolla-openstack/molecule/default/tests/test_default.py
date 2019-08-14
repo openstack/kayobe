@@ -39,6 +39,7 @@ def test_service_config_directory(host, path):
     'path',
     ['ceph',
      'cinder',
+     'cloudkitty',
      'designate',
      'glance',
      'grafana',

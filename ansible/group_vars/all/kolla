@@ -122,6 +122,8 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_ceph | bool }}"
   - regex: cinder
     enabled: "{{ kolla_enable_cinder | bool }}"
+  - regex: cloudkitty
+    enabled: "{{ kolla_enable_cloudkitty | bool }}"
   - regex: collectd
     enabled: "{{ kolla_enable_collectd | bool }}"
   - regex: cron
@@ -345,6 +347,7 @@ kolla_enable_ceilometer: "no"
 # on the host. Setting this to true will disable NTP on the host.
 kolla_enable_chrony: "no"
 kolla_enable_cinder: "no"
+kolla_enable_cloudkitty: "no"
 kolla_enable_collectd: "no"
 kolla_enable_designate: "no"
 kolla_enable_elasticsearch: "{{ 'yes' if kolla_enable_central_logging | bool or kolla_enable_freezer | bool or kolla_enable_osprofiler | bool or kolla_enable_skydive | bool or kolla_enable_monasca | bool else 'no' }}"
