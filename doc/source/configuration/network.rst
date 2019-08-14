@@ -157,10 +157,12 @@ To configure a network called ``example`` with VLAN ID ``123``:
 IP Address Allocation
 =====================
 
-IP addresses are allocated automatically by Kayobe from the
-allocation pool
-defined by ``allocation_pool_start`` and ``allocation_pool_end``.  The
-allocated addresses are stored in
+IP addresses are allocated automatically by Kayobe from the allocation pool
+defined by ``allocation_pool_start`` and ``allocation_pool_end``. If these
+variables are undefined, the entire network is used, except for network and
+broadcast addresses. IP addresses are only allocated if the network ``cidr`` is
+set and DHCP is not used (see ``bootproto`` in
+:ref:`configuration-network-per-host`). The allocated addresses are stored in
 ``${KAYOBE_CONFIG_PATH}/network-allocation.yml`` using the global per-network
 attribute ``ips`` which maps Ansible inventory hostnames to allocated IPs.
 
@@ -263,6 +265,8 @@ To configure a network called ``example`` with a default route and a
        table: exampleroutetable
      - cidr: 10.1.0.0/24
        table: exampleroutetable
+
+.. _configuration-network-per-host:
 
 Per-host Network Configuration
 ==============================
