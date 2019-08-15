@@ -35,9 +35,12 @@ class TestApp(cliff.app.App):
 class TestCase(unittest.TestCase):
 
     @mock.patch.object(ansible, "install_galaxy_roles", autospec=True)
+    @mock.patch.object(ansible, "passwords_yml_exists", autospec=True)
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
-    def test_control_host_bootstrap(self, mock_run, mock_install):
+    def test_control_host_bootstrap(self, mock_run, mock_passwords,
+                                    mock_install):
+        mock_passwords.return_value = False
         command = commands.ControlHostBootstrap(TestApp(), [])
         parser = command.get_parser("test")
         parsed_args = parser.parse_args([])
@@ -58,6 +61,50 @@ class TestCase(unittest.TestCase):
             ),
         ]
         self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(ansible, "install_galaxy_roles", autospec=True)
+    @mock.patch.object(ansible, "passwords_yml_exists", autospec=True)
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    @mock.patch.object(commands.KollaAnsibleMixin,
+                       "run_kolla_ansible_overcloud")
+    def test_control_host_bootstrap_with_passwords(
+            self, mock_kolla_run, mock_run, mock_passwords, mock_install):
+        mock_passwords.return_value = True
+        command = commands.ControlHostBootstrap(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+        mock_install.assert_called_once_with(parsed_args)
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [utils.get_data_files_path("ansible", "bootstrap.yml")],
+                ignore_limit=True
+            ),
+            mock.call(
+                mock.ANY,
+                [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
+                tags=None,
+                ignore_limit=True
+            ),
+            mock.call(
+                mock.ANY,
+                [utils.get_data_files_path("ansible", "public-openrc.yml")],
+                ignore_limit=True
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                "post-deploy",
+                extra_vars={"node_config_directory": "/etc/kolla"},
+            )
+        ]
+        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
 
     @mock.patch.object(ansible, "install_galaxy_roles", autospec=True)
     @mock.patch.object(ansible, "prune_galaxy_roles", autospec=True)
