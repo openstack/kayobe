@@ -4,7 +4,10 @@
 - name: Ensure python dependencies are installed
   local_action:
     module: pip
-    name: ncclient
+    # NOTE(mgoddard): Restrict ncclient to 0.6.2 or less, due to a bug in host
+    # key checking: https://github.com/ncclient/ncclient/issues/302.
+    # TODO(mgoddard): Remove this restriction when ncclient has been fixed.
+    name: ncclient<=0.6.2
     virtualenv: "{{ lookup('env', 'VIRTUAL_ENV') | default(omit, true) }}"
   become: "{{ lookup('env', 'VIRTUAL_ENV') == None }}"
 
