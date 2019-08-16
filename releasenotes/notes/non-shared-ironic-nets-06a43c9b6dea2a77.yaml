@@ -1,0 +1,8 @@
+---
+fixes:
+  - |
+    Modifies provisioning and cleaning networks in multi-tenant ironic
+    environments to be non-shared. Flat networks remain shared. To apply the
+    change to an existing environment, run `kayobe overcloud post configure`.
+    See `story 2006409 <https://storyboard.openstack.org/#!/story/2006409>`__
+    for details.
