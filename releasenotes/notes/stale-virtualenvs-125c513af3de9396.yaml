@@ -1,0 +1,18 @@
+---
+features:
+  - |
+    Adds a new configuration variable, ``pip_upper_constraints_file``, which is
+    used to configure the file or URL containing the python upper version
+    contraints. Its default value is
+    ``https://releases.openstack.org/constraints/upper/{{ openstack_branch }}``.
+fixes:
+  - |
+    Fixes an issue with virtual environments on remote hosts, which may over
+    the course of time become stale and incompatible with Kayobe or other
+    software. This was fixed by installing the latest version of packages
+    allowed by OpenStack upper constraints. See `story 2005923
+    <https://storyboard.openstack.org/#!/story/2005923>`__ for details.
+upgrade:
+  - |
+    The default value of ``kolla_upper_constraints_file`` has been changed to
+    ``{{ pip_upper_constraints_file }}``.
