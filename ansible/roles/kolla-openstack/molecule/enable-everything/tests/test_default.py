@@ -94,8 +94,7 @@ def test_service_ini_file(host, path):
 @pytest.mark.parametrize(
     'path',
     ['ironic/ironic-agent.initramfs',
-     'ironic/ironic-agent.kernel',
-     'ironic/pxelinux.default'])
+     'ironic/ironic-agent.kernel'])
 def test_service_non_ini_file(host, path):
     # TODO(mgoddard): Check config file contents.
     path = os.path.join('/etc/kolla/config', path)
