@@ -13,8 +13,19 @@ There are various `useful files
 in the ``openstack-infra/project-config`` repository. In particular, see the
 ``release.sh`` and ``make_branch.sh`` scripts.
 
+.. _releases-preparing-for-a-release:
+
 Preparing for a release
 =======================
+
+Update dependencies to upcoming release
+---------------------------------------
+
+Prior to the release, we update the dependencies and upper constraints on the
+master branch to use the upcoming release. This is now quite easy to do,
+following the introduction of the ``openstack_release`` variable. This is done
+prior to creating a release candidate. For example, see
+https://review.opendev.org/#/c/652091.
 
 Synchronise kayobe-config
 -------------------------
@@ -60,8 +71,7 @@ of the ``stable/queens`` branch:
 
 .. code-block:: console
 
-   ref=$(git merge-base origin/stable/queens origin/master)
-   ./tools/release.sh kayobe 4.0.0.0rc1 $ref queens
+   ./tools/release.sh kayobe 4.0.0.0rc1 origin/master queens
 
 Creating a stable branch
 ========================
@@ -82,8 +92,6 @@ After creating the branch, on the new branch:
 
 * update the ``.gitreview`` file on the new branch, for example:
   https://review.openstack.org/609735
-* update the references to upper-constraints to use the stable branch,
-  For example https://review.openstack.org/#/c/568804.
 
 For the kayobe repo only, on the master branch:
 
@@ -123,3 +131,12 @@ Post-release activites
 
 An email will be sent to the release-announce mailing list about the new
 release.
+
+Continuing Development
+======================
+
+After the stable branch has been cut, the master branch can be unfrozen and
+development on features for the next release can begin. At this point it will
+still be using dependencies and upper constraints from the release branch, so
+revert the patch created in :ref:`releases-preparing-for-a-release`. For
+example, see https://review.opendev.org/676941.
