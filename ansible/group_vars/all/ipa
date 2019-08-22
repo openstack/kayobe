@@ -61,8 +61,7 @@ ipa_build_dib_git_elements: []
 
 # Suffix of upstream Ironic deployment image files. Default is based on
 # {{ openstack_branch }}.
-ipa_images_upstream_url_suffix: >-
-  {% if openstack_branch != 'master' %}-{{ openstack_branch | replace('/', '-') }}{% endif %}
+ipa_images_upstream_url_suffix: "-{{ openstack_branch | replace('/', '-') }}"
 
 # Name of Ironic deployment kernel image to register in Glance.
 ipa_images_kernel_name: "ipa.vmlinuz"
