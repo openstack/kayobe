@@ -5,6 +5,6 @@ dhcp || goto retry_dhcp
 
 :retry_boot
 imgfree
-kernel --timeout 30000 {% raw %}{{ ironic_ipxe_url }}/ironic-agent.kernel{% endraw %} ipa-inspection-callback-url={% raw %}http://{{ kolla_internal_vip_address }}:{{ ironic_inspector_port }}/v1/continue{% endraw %} systemd.journald.forward_to_console=yes {{ kolla_inspector_extra_kernel_options | join(' ') }} {% raw %}BOOTIF=${mac}{% endraw %} || goto retry_boot
+kernel --timeout 30000 {% raw %}{{ ironic_ipxe_url }}/ironic-agent.kernel{% endraw %} ipa-inspection-callback-url={% raw %}http://{{ kolla_internal_vip_address }}:{{ ironic_inspector_port }}/v1/continue{% endraw %} systemd.journald.forward_to_console=yes {{ kolla_inspector_extra_kernel_options | join(' ') }} {% raw %}initrd=ironic-agent.initramfs BOOTIF=${mac}{% endraw %} || goto retry_boot
 initrd --timeout 30000 {% raw %}{{ ironic_ipxe_url }}/ironic-agent.initramfs{% endraw %} || goto retry_boot
 boot
