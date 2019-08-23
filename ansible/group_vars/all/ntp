@@ -10,6 +10,13 @@ timezone: "{{ ansible_date_time.tz }}"
 ###############################################################################
 # Network Time Protocol (NTP).
 
+# Whether to enable the NTP daemon on the host. Default is true unless
+# 'kolla_enable_chrony' has been set to true on overcloud hosts.
+ntp_service_enabled: "{{ 'overcloud' not in group_names or not kolla_enable_chrony | bool }}"
+
+ntp_package_state: "{{ 'present' if ntp_service_enabled | bool else 'absent' }}"
+ntp_service_state: "{{ 'started' if ntp_service_enabled | bool else 'stopped' }}"
+
 # List of names of NTP servers.
 #ntp_config_server:
 

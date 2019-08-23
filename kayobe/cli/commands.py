@@ -675,6 +675,7 @@ class SeedServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         playbooks = _build_playbook_list(
             "seed-service-upgrade-prep")
         self.run_kayobe_playbooks(parsed_args, playbooks)
+
         self.run_kolla_ansible_seed(parsed_args, "deploy-bifrost")
         playbooks = _build_playbook_list(
             "overcloud-host-image-workaround-resolv",
@@ -1139,6 +1140,11 @@ class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         if not parsed_args.skip_prechecks:
             self.run_kolla_ansible_overcloud(parsed_args, "prechecks")
 
+        # Workaround: Stop the chrony container.
+        # TODO(mgoddard): Remove in the Train cycle.
+        playbooks = _build_playbook_list("stop-chrony")
+        self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
+
         # Perform the kolla-ansible deployment.
         self.run_kolla_ansible_overcloud(parsed_args, "deploy")
 
@@ -1195,6 +1201,11 @@ class OvercloudServiceReconfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
         if not parsed_args.skip_prechecks:
             self.run_kolla_ansible_overcloud(parsed_args, "prechecks")
 
+        # Workaround: Stop the chrony container.
+        # TODO(mgoddard): Remove in the Train cycle.
+        playbooks = _build_playbook_list("stop-chrony")
+        self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
+
         # Perform the kolla-ansible reconfiguration.
         self.run_kolla_ansible_overcloud(parsed_args, "reconfigure")
 
@@ -1246,6 +1257,11 @@ class OvercloudServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin,
         # Run kolla-ansible prechecks before upgrade.
         if not parsed_args.skip_prechecks:
             self.run_kolla_ansible_overcloud(parsed_args, "prechecks")
+
+        # Workaround: Stop the chrony container.
+        # TODO(mgoddard): Remove in the Train cycle.
+        playbooks = _build_playbook_list("stop-chrony")
+        self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
 
         # Perform the kolla-ansible upgrade.
         self.run_kolla_ansible_overcloud(parsed_args, "upgrade")

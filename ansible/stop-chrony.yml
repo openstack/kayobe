@@ -1,0 +1,17 @@
+---
+# NOTE(mgoddard): In the Rocky release, Kolla Ansible enabled the chrony
+# container by default. Running this alongside the NTP daemon on the host is
+# likely to cause issues, so we should explicitly disable it. Kolla Ansible
+# won't automatically stop the container, so we do it here if it is disabled.
+# See https://storyboard.openstack.org/#!/story/2005272.
+
+- name: Stop the chrony container
+  hosts: overcloud
+  tags:
+    - stop-chrony
+  tasks:
+    - name: Stop the chrony container
+      docker_container:
+        name: chrony
+        state: absent
+      when: not kolla_enable_chrony | bool
