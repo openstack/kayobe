@@ -151,8 +151,12 @@ class TestCase(unittest.TestCase):
         expected_calls = [
             mock.call(
                 mock.ANY,
+                ["ansible/ip-allocation.yml"],
+                limit="seed-hypervisor",
+            ),
+            mock.call(
+                mock.ANY,
                 [
-                    "ansible/ip-allocation.yml",
                     "ansible/ssh-known-host.yml",
                     "ansible/kayobe-ansible-user.yml",
                     "ansible/pip.yml",
@@ -217,8 +221,12 @@ class TestCase(unittest.TestCase):
         expected_calls = [
             mock.call(
                 mock.ANY,
+                ["ansible/ip-allocation.yml"],
+                limit="seed",
+            ),
+            mock.call(
+                mock.ANY,
                 [
-                    "ansible/ip-allocation.yml",
                     "ansible/ssh-known-host.yml",
                     "ansible/kayobe-ansible-user.yml",
                     "ansible/pip.yml",
@@ -772,8 +780,12 @@ class TestCase(unittest.TestCase):
         expected_calls = [
             mock.call(
                 mock.ANY,
+                ["ansible/ip-allocation.yml"],
+                limit="overcloud",
+            ),
+            mock.call(
+                mock.ANY,
                 [
-                    "ansible/ip-allocation.yml",
                     "ansible/ssh-known-host.yml",
                     "ansible/kayobe-ansible-user.yml",
                     "ansible/pip.yml",
