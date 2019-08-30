@@ -15,3 +15,35 @@
         dest: "/tmp"
         mode: 0644
         remote_src: true
+
+    - name: Ensure kayobe is executed in verbose mode
+      lineinfile:
+        path: "{{ kayobe_src_dir }}/dev/config.sh"
+        line: "export KAYOBE_EXTRA_ARGS=-vvv"
+        regexp: "^#export KAYOBE_EXTRA_ARGS=$"
+
+    - block:
+        - name: Ensure previous kayobe directory exists
+          file:
+            path: "{{ previous_kayobe_src_dir }}"
+            state: directory
+
+        - name: Ensure previous kayobe repository is cloned
+          command: >-
+            git clone {{ kayobe_src_dir }} {{ previous_kayobe_src_dir }} -b stable/{{ previous_release | lower }}
+
+        - name: Ensure previous kayobe-config directory exists
+          file:
+            path: "{{ previous_kayobe_config_src_dir }}"
+            state: directory
+
+        - name: Ensure kayobe-config repository is cloned
+          command: >-
+            git clone {{ kayobe_config_src_dir }} {{ previous_kayobe_config_src_dir }} -b stable/{{ previous_release | lower }}
+
+        - name: Ensure previous kayobe is executed in verbose mode
+          lineinfile:
+            path: "{{ previous_kayobe_src_dir }}/dev/config.sh"
+            line: "export KAYOBE_EXTRA_ARGS=-vvv"
+            regexp: "^#export KAYOBE_EXTRA_ARGS=$"
+      when: is_upgrade
