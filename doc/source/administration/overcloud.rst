@@ -156,7 +156,7 @@ generated in a directory other than the default configuration directory of
 
 The configuration will be generated remotely on the overcloud hosts in the
 specified directory, with one subdirectory per container. This command may be
-followed by ``kayobe ovecloud service configuration save`` to gather the
+followed by ``kayobe overcloud service configuration save`` to gather the
 generated configuration to the Ansible control host.
 
 Performing Database Backups
