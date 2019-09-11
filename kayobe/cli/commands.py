@@ -711,7 +711,7 @@ class SeedContainerImageBuild(KayobeAnsibleMixin, VaultMixin, Command):
             "container-image-build")
         extra_vars = {"push_images": parsed_args.push}
         if parsed_args.regex:
-            regexes = "'%s'" % " ".join(parsed_args.regex)
+            regexes = " ".join(parsed_args.regex)
             extra_vars["container_image_regexes"] = regexes
         else:
             extra_vars["container_image_sets"] = (
@@ -1357,7 +1357,7 @@ class OvercloudContainerImageBuild(KayobeAnsibleMixin, VaultMixin, Command):
             "container-image-build")
         extra_vars = {"push_images": parsed_args.push}
         if parsed_args.regex:
-            regexes = "'%s'" % " ".join(parsed_args.regex)
+            regexes = " ".join(parsed_args.regex)
             extra_vars["container_image_regexes"] = regexes
         else:
             extra_vars["container_image_sets"] = (

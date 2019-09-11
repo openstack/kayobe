@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Fixes an issue when specifying multiple regular expressions to the ``kayobe
+    seed container image build`` and ``kayobe overcloud container image build``
+    commands. See `story 2006475
+    <https://storyboard.openstack.org/#!/story/2006475>`__ for details.
