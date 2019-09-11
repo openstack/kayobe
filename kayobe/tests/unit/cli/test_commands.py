@@ -829,7 +829,7 @@ class TestCase(unittest.TestCase):
                         "ansible", "container-image-build.yml")
                 ],
                 extra_vars={
-                    "container_image_regexes": "'^regex1$ ^regex2$'",
+                    "container_image_regexes": "^regex1$ ^regex2$",
                     "push_images": True,
                 }
             ),
@@ -1781,7 +1781,7 @@ class TestCase(unittest.TestCase):
                         "ansible", "container-image-build.yml")
                 ],
                 extra_vars={
-                    "container_image_regexes": "'^regex1$ ^regex2$'",
+                    "container_image_regexes": "^regex1$ ^regex2$",
                     "push_images": True,
                 }
             ),
