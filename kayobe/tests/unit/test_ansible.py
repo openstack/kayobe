@@ -296,6 +296,35 @@ class TestCase(unittest.TestCase):
     @mock.patch.object(utils, "run_command")
     @mock.patch.object(ansible, "_get_vars_files")
     @mock.patch.object(ansible, "_validate_args")
+    def test_run_playbooks_list_tasks_arg(self, mock_validate, mock_vars,
+                                          mock_run):
+        mock_vars.return_value = []
+        parser = argparse.ArgumentParser()
+        ansible.add_args(parser)
+        vault.add_args(parser)
+        args = [
+            "--list-tasks",
+        ]
+        parsed_args = parser.parse_args(args)
+        kwargs = {
+            "list_tasks": False
+        }
+        ansible.run_playbooks(parsed_args, ["playbook1.yml", "playbook2.yml"],
+                              **kwargs)
+        expected_cmd = [
+            "ansible-playbook",
+            "--inventory", "/etc/kayobe/inventory",
+            "playbook1.yml",
+            "playbook2.yml",
+        ]
+        expected_env = {"KAYOBE_CONFIG_PATH": "/etc/kayobe"}
+        mock_run.assert_called_once_with(expected_cmd, check_output=False,
+                                         quiet=False, env=expected_env)
+        mock_vars.assert_called_once_with("/etc/kayobe")
+
+    @mock.patch.object(utils, "run_command")
+    @mock.patch.object(ansible, "_get_vars_files")
+    @mock.patch.object(ansible, "_validate_args")
     def test_run_playbooks_failure(self, mock_validate, mock_vars, mock_run):
         parser = argparse.ArgumentParser()
         ansible.add_args(parser)
@@ -335,7 +364,8 @@ class TestCase(unittest.TestCase):
                                              "dump_path": dump_dir,
                                          },
                                          check_output=True, tags=None,
-                                         verbose_level=None, check=False)
+                                         verbose_level=None, check=False,
+                                         list_tasks=False)
         mock_rmtree.assert_called_once_with(dump_dir)
         mock_listdir.assert_any_call(dump_dir)
         mock_read.assert_has_calls([
