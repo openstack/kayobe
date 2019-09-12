@@ -33,11 +33,7 @@
     pre-run: playbooks/kayobe-tox-molecule/pre.yml
     timeout: 3600
     required-projects:
-      # Use stable/rocky upper-constraints for molecule since pytest 3.10 fails
-      # with the following error:
-      # AttributeError: 'Config' object has no attribute 'cache'
-      - name: openstack/requirements
-        override-checkout: stable/rocky
+      - openstack/requirements
     vars:
       tox_envlist: molecule
     irrelevant-files:
