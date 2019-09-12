@@ -70,7 +70,7 @@
       - ^tox.ini$
     vars:
       # Name of the release to upgrade from for upgrade jobs.
-      previous_release: rocky
+      previous_release: stein
       logs_dir: "/tmp/logs"
       kayobe_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/x/kayobe'].src_dir }}"
       kayobe_config_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/x/kayobe-config-dev'].src_dir }}"
