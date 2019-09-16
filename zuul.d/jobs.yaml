@@ -55,8 +55,8 @@
     attempts: 1
     required-projects:
       # Include kayobe to ensure other projects can use this job.
-      - name: x/kayobe
-      - name: x/kayobe-config-dev
+      - name: openstack/kayobe
+      - name: openstack/kayobe-config-dev
       - name: openstack/kolla
       - name: openstack/kolla-ansible
       - name: openstack/requirements
@@ -72,8 +72,8 @@
       # Name of the release to upgrade from for upgrade jobs.
       previous_release: rocky
       logs_dir: "/tmp/logs"
-      kayobe_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/x/kayobe'].src_dir }}"
-      kayobe_config_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/x/kayobe-config-dev'].src_dir }}"
+      kayobe_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/kayobe'].src_dir }}"
+      kayobe_config_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/kayobe-config-dev'].src_dir }}"
       previous_kayobe_src_dir: "{{ ansible_env.PWD ~ '/previous/kayobe' }}"
       previous_kayobe_config_src_dir: "{{ ansible_env.PWD ~ '/previous/kayobe-config' }}"
       requirements_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/requirements'].src_dir }}"
