@@ -40,8 +40,9 @@ extensions = [
     'sphinx.ext.autodoc',
     #'sphinx.ext.intersphinx',
     # Uncomment this to enable the OpenStack documentation style, adding
-    # oslosphinx to test-requirements.txt.  
+    # oslosphinx to test-requirements.txt.
     #'oslosphinx',
+    'sphinxcontrib.rsvgconverter',
 ]
 
 # autodoc generation is a bit aggressive and a nuisance when doing heavy
@@ -97,10 +98,13 @@ html_last_updated_fmt = '%Y-%m-%d %H:%M'
 # [howto/manual]).
 latex_documents = [
     ('index',
-     '%s.tex' % project,
+     'doc-%s.tex' % project,
      u'%s Documentation' % project,
      u'OpenStack Foundation', 'manual'),
 ]
+
+# Disable usage of xindy https://bugzilla.redhat.com/show_bug.cgi?id=1643664
+latex_use_xindy = False
 
 # openstackdocstheme options
 # TODO(mgoddard): Change to openstack/kayobe.
