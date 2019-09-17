@@ -4,6 +4,6 @@
     - role: kayobe-diagnostics
       kayobe_diagnostics_phase: "post"
       kayobe_diagnostics_log_dir: "/tmp/logs"
-      kayobe_diagnostics_config_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/x/kayobe-config-dev'].src_dir }}"
+      kayobe_diagnostics_config_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/kayobe-config-dev'].src_dir }}"
       kayobe_diagnostics_previous_config_dir: "{{ ansible_env.PWD ~ '/previous/kayobe-config' }}"
       kayobe_diagnostics_executor_log_dir: "{{ zuul.executor.log_root }}/{{ inventory_hostname }}"
