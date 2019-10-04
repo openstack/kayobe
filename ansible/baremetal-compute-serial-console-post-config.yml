@@ -1,6 +1,11 @@
 ---
-# This is a wrapper around baremetal-compute-serial-console which only runs the playbook when
+# This is a wrapper around baremetal-compute-serial-console which only runs the
+# playbook when Ironic is enabled in the overcloud and
 # ironic_serial_console_autoenable is set to true.
 
 - import_playbook: baremetal-compute-serial-console.yml
-  when: ironic_serial_console_autoenable | bool
+  vars:
+    cmd: enable
+  when:
+    - kolla_enable_ironic | bool
+    - ironic_serial_console_autoenable | bool
