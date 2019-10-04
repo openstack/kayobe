@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Fixes an issue with ``kayobe overcloud post configure`` when Ironic is
+    disabled, but ``ironic_serial_console_autoenable`` is set to ``true``.
+    See `story 2006662 <https://storyboard.openstack.org/#!/story/2006662>`__
+    for details.
