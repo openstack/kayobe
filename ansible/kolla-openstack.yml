@@ -76,7 +76,9 @@
               dest: "{{ ipa_images_kernel_name }}"
             - src: "{{ ipa_images[1] }}"
               dest: "{{ ipa_images_ramdisk_name }}"
-      when: ipa_build_images | bool
+      when:
+        - kolla_enable_ironic | bool
+        - ipa_build_images | bool
       tags:
         - config
 
