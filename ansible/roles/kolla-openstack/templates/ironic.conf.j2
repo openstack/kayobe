@@ -29,7 +29,7 @@ provisioning_network = {{ kolla_ironic_provisioning_network }}
 
 [pxe]
 {% if kolla_ironic_pxe_append_params %}
-pxe_append_params = {{ kolla_ironic_pxe_append_params | join(',') }}
+pxe_append_params = {{ kolla_ironic_pxe_append_params | join(' ') }}
 {% endif %}
 
 {% raw %}
