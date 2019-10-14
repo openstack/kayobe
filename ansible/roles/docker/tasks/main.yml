@@ -68,6 +68,9 @@
   command: "docker info"
   register: docker_info
   changed_when: False
+  until: docker_info is success
+  retries: 3
+  delay: 5
 
 - name: Fail when loopback-mode containers or images exist
   fail:
