@@ -85,9 +85,9 @@ function config_init {
 function install_dependencies {
     echo "Installing package dependencies for kayobe"
     if [[ -e /etc/centos-release ]]; then
-        sudo yum -y install gcc git vim python-virtualenv
+        sudo yum -y install gcc git vim python-virtualenv libffi-devel
     else
-        sudo apt install -y python-dev python-virtualenv gcc git
+        sudo apt install -y python-dev python-virtualenv gcc git libffi-dev
     fi
 }
 

@@ -26,11 +26,11 @@ some of kayobe's python dependencies.
 
 On CentOS::
 
-    $ yum install -y python-devel python-virtualenv gcc
+    $ yum install -y python-devel python-virtualenv gcc libffi-devel
 
 On Ubuntu::
 
-    $ apt install -y python-dev python-virtualenv gcc
+    $ apt install -y python-dev python-virtualenv gcc libffi-dev
 
 If installing Kayobe from source, then Git is required for cloning and working
 with the source code repository.
