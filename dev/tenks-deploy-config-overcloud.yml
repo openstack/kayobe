@@ -14,6 +14,9 @@ node_types:
     physical_networks:
       - physnet1
     console_log_enabled: true
+    # We seem to hit issues with missing cpu features in CI as a result of using host-model, e.g:
+    # https://zuul.opendev.org/t/openstack/build/02c33ab51664419a88a5a54ad22852a9/log/primary/system_logs/libvirt/qemu/tk0.txt.gz#38
+    cpu_mode:
 
 specs:
   - type: type0
