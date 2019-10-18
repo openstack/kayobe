@@ -14,12 +14,14 @@
   hosts: controllers_for_provision_net_True[0]
   gather_facts: False
   vars:
+    venv: "{{ virtualenv_path }}/shade"
     provision_net:
       name: "{{ kolla_ironic_provisioning_network }}"
       provider_network_type: "{% if provision_wl_net_name | net_vlan %}vlan{% else %}flat{% endif %}"
       provider_physical_network: "{{ provision_wl_net_name | net_physical_network | default('physnet1', True) }}"
       provider_segmentation_id: "{{ provision_wl_net_name | net_vlan }}"
-      shared: True
+      # Flat networks need to be shared to allow instances to use them.
+      shared: "{{ (provision_wl_net_name | net_vlan) is none }}"
       subnets:
         - name: "{{ kolla_ironic_provisioning_network }}"
           cidr: "{{ provision_wl_net_name | net_cidr }}"
@@ -31,15 +33,15 @@
       provider_network_type: "{% if cleaning_net_name | net_vlan %}vlan{% else %}flat{% endif %}"
       provider_physical_network: "{{ cleaning_net_name | net_physical_network | default('physnet1', True) }}"
       provider_segmentation_id: "{{ cleaning_net_name | net_vlan }}"
-      shared: True
+      # Flat networks need to be shared to allow instances to use them.
+      shared: "{{ (cleaning_net_name | net_vlan) is none }}"
       subnets:
         - name: "{{ kolla_ironic_cleaning_network }}"
           cidr: "{{ cleaning_net_name | net_cidr }}"
           gateway_ip: "{{ cleaning_net_name | net_neutron_gateway or cleaning_net_name | net_gateway }}"
           allocation_pool_start: "{{ cleaning_net_name | net_neutron_allocation_pool_start }}"
           allocation_pool_end: "{{ cleaning_net_name | net_neutron_allocation_pool_end }}"
-    network_registrations:
-      - "{{ provision_net }}"
+    network_registrations: "{{ [provision_net] + ([] if cleaning_net_name == provision_wl_net_name else [cleaning_net]) }}"
   tags:
     - provision-net
     - cleaning-net
@@ -64,4 +66,60 @@
       os_networks_auth: "{{ openstack_auth }}"
       os_networks_cacert: "{{ openstack_cacert | default(omit, true) }}"
       # Network configuration.
-      os_networks: "{{ network_registrations + ([] if cleaning_net_name == provision_wl_net_name else [cleaning_net]) }}"
+      os_networks: "{{ network_registrations }}"
+  tasks:
+    # NOTE(mgoddard): Originally, provisioning and cleaning networks were
+    # always shared. However now, VLAN networks are not shared. The os_network
+    # module does not appear to update networks after they have been created,
+    # so during this transition we manually update them here if necessary.
+    # TODO(mgoddard): Remove this code after a suitable transition period.
+
+    - import_role:
+        role: activate-virtualenv
+      vars:
+        activate_virtualenv_path: "{{ venv }}"
+
+    - name: Ensure python-openstackclient is installed
+      pip:
+        name: python-openstackclient
+        state: latest
+        extra_args: "{% if pip_upper_constraints_file %}-c {{ pip_upper_constraints_file }}{% endif %}"
+        virtualenv: "{{ venv }}"
+      when: network_registrations | rejectattr('shared') | list | length > 0
+
+    - block:
+        - name: Gather facts about provisioning network
+          os_networks_facts:
+            auth: "{{ openstack_auth }}"
+            auth_type: "{{ openstack_auth_type }}"
+            cacert: "{{ openstack_cacert | default(omit, true) }}"
+            name: "{{ provision_net.name }}"
+          register: provisioning_network_facts
+
+        - name: Set provisioning network to unshared
+          command: "{{ venv }}/bin/openstack network set {{ provision_net.name }} --no-share"
+          changed_when: true
+          when: openstack_networks[0].shared
+          environment: "{{ openstack_auth_env }}"
+      when: not provision_net.shared | bool
+
+    - block:
+        - name: Gather facts about cleaning network
+          os_networks_facts:
+            auth: "{{ openstack_auth }}"
+            auth_type: "{{ openstack_auth_type }}"
+            cacert: "{{ openstack_cacert | default(omit, true) }}"
+            name: "{{ cleaning_net.name }}"
+          register: cleaning_network_facts
+
+        - name: Set cleaning network to unshared
+          command: "{{ venv }}/bin/openstack network set {{ cleaning_net.name }} --no-share"
+          changed_when: true
+          when: openstack_networks[0].shared
+          environment: "{{ openstack_auth_env }}"
+      when:
+        - cleaning_net_name != provision_wl_net_name
+        - not cleaning_net.shared | bool
+
+    - import_role:
+        role: deactivate-virtualenv
