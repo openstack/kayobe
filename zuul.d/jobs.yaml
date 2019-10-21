@@ -48,7 +48,7 @@
       Base job for all deployment jobs.
     pre-run: playbooks/kayobe-base/pre.yml
     post-run: playbooks/kayobe-base/post.yml
-    attempts: 1
+    attempts: 5
     required-projects:
       # Include kayobe to ensure other projects can use this job.
       - name: openstack/kayobe
@@ -103,6 +103,9 @@
     pre-run: playbooks/kayobe-overcloud-upgrade-base/pre.yml
     run: playbooks/kayobe-overcloud-upgrade-base/run.yml
     timeout: 9000
+    # Use fewer attempts for upgrades, since pre.yml includes deployment of the
+    # previous release which takes a considerable amount of time.
+    attempts: 3
 
 - job:
     name: kayobe-overcloud-upgrade-centos
@@ -136,6 +139,9 @@
     pre-run: playbooks/kayobe-seed-upgrade-base/pre.yml
     run: playbooks/kayobe-seed-upgrade-base/run.yml
     timeout: 5400
+    # Use fewer attempts for upgrades, since pre.yml includes deployment of the
+    # previous release which takes a considerable amount of time.
+    attempts: 3
 
 - job:
     name: kayobe-seed-upgrade-centos
