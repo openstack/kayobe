@@ -20,18 +20,30 @@ kolla_bifrost_dib_os_element: "centos7"
 # DIB image OS release.
 kolla_bifrost_dib_os_release: "GenericCloud"
 
-# List of DIB elements.
-kolla_bifrost_dib_elements:
+# List of default DIB elements.
+kolla_bifrost_dib_elements_default:
   - "disable-selinux"
   - "enable-serial-console"
   - "vm"
 
+# List of additional DIB elements.
+kolla_bifrost_dib_elements_extra: []
+
+# List of all DIB elements.
+kolla_bifrost_dib_elements: "{{ kolla_bifrost_dib_elements_default + kolla_bifrost_dib_elements_extra }}"
+
 # DIB init element.
 kolla_bifrost_dib_init_element: "cloud-init-datasources"
 
-# DIB environment variables.
-kolla_bifrost_dib_env_vars:
+# DIB default environment variables.
+kolla_bifrost_dib_env_vars_default:
   DIB_CLOUD_INIT_DATASOURCES: "ConfigDrive"
+
+# DIB additional environment variables.
+kolla_bifrost_dib_env_vars_extra: {}
+
+# DIB environment variables.
+kolla_bifrost_dib_env_vars: "{{ kolla_bifrost_dib_env_vars_default | combine(kolla_bifrost_dib_env_vars_extra) }}"
 
 # List of DIB packages to install.
 kolla_bifrost_dib_packages: []
