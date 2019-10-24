@@ -57,24 +57,17 @@
     state: started
   become: True
 
-- name: Query docker daemon information
-  command: "docker info"
-  register: docker_info
-  changed_when: False
-  until: docker_info is success
-  retries: 3
-  delay: 5
+- name: Ensure the path for CA file for private registry exists
+  file:
+    path: "/etc/docker/certs.d/{{ docker_registry }}"
+    state: directory
+  become: True
+  when: docker_registry is not none and docker_registry_ca is not none
 
-- name: Fail when loopback-mode containers or images exist
-  fail:
-    msg: >
-      Not configuring docker storage in {{ docker_storage_driver }} mode as
-      loopback-backed containers or images exist.
-  when:
-    - "'Data loop file' in docker_info.stdout or docker_storage_driver not in docker_info.stdout"
-    - "'Images: 0' not in docker_info.stdout or 'Containers: 0' not in docker_info.stdout"
-
-- include_tasks: storage.yml
-  when: "'Data loop file' in docker_info.stdout or docker_storage_driver not in docker_info.stdout"
-
-- include_tasks: config.yml
+- name: Ensure the CA file for private registry exists
+  copy:
+    src: "{{ docker_registry_ca }}"
+    dest: "/etc/docker/certs.d/{{ docker_registry }}/ca.crt"
+  become: True
+  when: docker_registry is not none and docker_registry_ca is not none
+  notify: reload docker service

@@ -1,0 +1,25 @@
+---
+# Name of the docker storage driver.
+docker_storage_driver: devicemapper
+
+# Name of the docker storage LVM volume group.
+docker_storage_volume_group:
+
+# Name of the docker storage data LVM volume.
+docker_storage_volume_thinpool:
+
+# Size of the docker storage data LVM volume (see lvol module size argument).
+docker_storage_volume_thinpool_size:
+
+# Name of the docker storage metadata LVM volume.
+docker_storage_volume_thinpool_meta:
+
+# Size of the docker storage metadata LVM volume (see lvol module size
+# argument).
+docker_storage_volume_thinpool_meta_size:
+
+# Threshold at which to extend thin-provisioned docker storage volumes.
+docker_storage_thinpool_autoextend_threshold: 80
+
+# Percentage by which to extend thin-provisioned docker storage volumes.
+docker_storage_thinpool_autoextend_percent: 20

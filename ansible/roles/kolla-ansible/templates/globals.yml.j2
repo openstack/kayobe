@@ -68,6 +68,8 @@ docker_namespace: "{{ kolla_docker_namespace }}"
 docker_registry_username: "{{ kolla_docker_registry_username }}"
 docker_registry_password: "{{ kolla_docker_registry_password }}"
 {% endif %}
+docker_storage_driver: "{{ docker_storage_driver }}"
+docker_custom_config: {{ kolla_docker_custom_config | to_nice_json | indent(2) }}
 
 ###################
 # Messaging options

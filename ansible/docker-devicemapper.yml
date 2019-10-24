@@ -1,0 +1,11 @@
+---
+- name: Ensure docker devicemapper storage is configured
+  hosts: docker
+  tags:
+    - docker
+    - docker-devicemapper
+  tasks:
+    - name: Ensure docker devicemapper storage is configured
+      include_role:
+        name: docker-devicemapper
+      when: docker_storage_driver == 'devicemapper'

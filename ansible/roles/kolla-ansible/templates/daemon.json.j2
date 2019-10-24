@@ -6,7 +6,6 @@
 {%- endfor %}
   ],
 {%- endif %}
-  "storage-driver": "{{ docker_storage_driver }}",
 {% if docker_daemon_mtu %}
   "mtu": {{ docker_daemon_mtu }},
 {% endif %}
