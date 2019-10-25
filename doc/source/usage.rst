@@ -56,6 +56,8 @@ an `Ansible host pattern
 <http://docs.ansible.com/ansible/latest/intro_patterns.html>`_, and will
 ultimately be passed to ``ansible-playbook`` as a ``--limit`` argument.
 
+.. _usage-tags:
+
 Tags
 ----
 

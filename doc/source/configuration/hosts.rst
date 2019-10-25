@@ -12,6 +12,10 @@ deployment of containers. Hosts that are configured by Kayobe include:
 Unless otherwise stated, all host configuration described here is applied to
 each of these types of host.
 
+.. seealso:: Ansible tags for limiting the scope of Kayobe commands are
+             included under the relevant sections of this page
+             (for more information see :ref:`usage-tags`).
+
 Configuration Location
 ======================
 
@@ -49,6 +53,8 @@ used to control where these are located.
 
 SSH Known Hosts
 ===============
+*tags:*
+  | ``ssh-known-host``
 
 While strictly this configuration is applied to the Ansible control host
 (``localhost``), it is applied during the ``host configure`` commands.
@@ -59,6 +65,8 @@ as defined in ``${KAYOBE_CONFIG_PATH}/network-allocation.yml`` (see
 
 Kayobe User Bootstrapping
 =========================
+*tags:*
+  | ``kayobe-ansible-user``
 
 Kayobe uses a user account defined by the ``kayobe_ansible_user`` variable (in
 ``${KAYOBE_CONFIG_PATH}/globals.yml``) for remote SSH access. By default, this
@@ -86,6 +94,8 @@ For example, to set the bootstrap user for controllers to ``centos``:
 
 PyPI Mirror
 ===========
+*tags:*
+  | ``pip``
 
 Kayobe supports configuration of a PyPI mirror, via variables in
 ``${KAYOBE_CONFIG_PATH}/pip.yml``. This functionality is enabled by setting the
@@ -109,6 +119,8 @@ https://test.pypi.org/simple/:
 
 Kayobe Remote Virtual Environment
 =================================
+*tags:*
+  | ``kayobe-target-venv``
 
 By default, Ansible executes modules remotely using the system python
 interpreter, even if the Ansible control process is executed from within a
@@ -130,6 +142,8 @@ for the ``seed``, ``seed-hypervisor``, and ``overcloud`` groups.
 
 Disk Wiping
 ===========
+*tags:*
+  | ``wipe-disks``
 
 Using hosts that may have stale data on their disks could affect the deployment
 of the cloud. This is not a configuration option, since it should only be
@@ -138,6 +152,8 @@ performed once to avoid losing useful data. It is triggered by passing the
 
 Users and Groups
 ================
+*tags:*
+  | ``users``
 
 Linux user accounts and groups can be configured using the ``users_default``
 variable in ``${KAYOBE_CONFIG_PATH}/users.yml``. The format of the list is
@@ -172,6 +188,8 @@ added to the Kayobe configuration.
 
 Package Repositories
 ====================
+*tags:*
+  | ``yum``
 
 Kayobe supports configuration of package repositories via Yum, via variables in
 ``${KAYOBE_CONFIG_PATH}/yum.yml``.
@@ -245,6 +263,8 @@ It is possible to disable the EPEL Yum repository by setting
 
 SELinux
 =======
+*tags:*
+  | ``disable-selinux``
 
 SELinux is not supported by Kolla Ansible currently, so it is disabled by
 Kayobe. If necessary, Kayobe will reboot systems in order to apply a change to
@@ -254,12 +274,16 @@ setting ``disable_selinux_do_reboot`` to ``false``.
 
 Network Configuration
 =====================
+*tags:*
+  | ``network``
 
 Configuration of host networking is covered in depth in
 :ref:`configuration-network`.
 
 Sysctls
 =======
+*tags:*
+  | ``sysctl``
 
 Arbitrary ``sysctl`` configuration can be applied to hosts. The variable format
 is a dict/map, mapping parameter names to their required values. The following
@@ -282,6 +306,8 @@ For example, to set the ``net.ipv4.ip_forward`` parameter to ``1`` on controller
 
 Disable cloud-init
 ==================
+*tags:*
+  | ``disable-cloud-init``
 
 cloud-init is a popular service for performing system bootstrapping. If you are
 not using cloud-init, this section can be skipped.
@@ -299,6 +325,8 @@ the initial server bootstrapping, set ``disable_cloud_init`` to ``true`` in
 
 Disable Glean
 =============
+*tags:*
+  | ``disable-glean``
 
 The ``glean`` service can be used to perform system bootstrapping, serving a
 similar role to ``cloud-init``. If you are not using ``glean``, this section
@@ -316,6 +344,8 @@ overwritten by Kayobe are removed.
 
 Timezone
 ========
+*tags:*
+  | ``ntp``
 
 The timezone can be configured via the ``timezone`` variable in
 ``${KAYOBE_CONFIG_PATH}/ntp.yml``. The value must be a valid Linux
@@ -328,6 +358,8 @@ timezone. For example:
 
 NTP
 ===
+*tags:*
+  | ``ntp``
 
 Network Time Protocol (NTP) may be configured via variables in
 ``${KAYOBE_CONFIG_PATH}/ntp.yml``. The list of NTP servers is
@@ -374,6 +406,8 @@ following in ``${KAYOBE_CONFIG_PATH}/kolla.yml``:
 
 Software RAID
 =============
+*tags:*
+  | ``mdadm``
 
 While it is possible to use RAID directly with LVM, some operators may prefer
 the userspace tools provided by ``mdadm`` or may have existing software RAID
@@ -411,6 +445,8 @@ available as ``/dev/md0``:
 
 LVM
 ===
+*tags:*
+  | ``lvm``
 
 Logical Volume Manager (LVM) physical volumes, volume groups, and logical
 volumes may be configured via the ``lvm_groups`` variable. For convenience,
@@ -560,7 +596,7 @@ custom one.
            create: true
            mount: false
 
-Kolla-ansible bootstrap-servers
+Kolla-Ansible bootstrap-servers
 ===============================
 
 Kolla Ansible provides some host configuration functionality via the
@@ -574,8 +610,11 @@ See the `Kolla Ansible documentation
 for more information on the functions performed by this command, and how to
 configure it.
 
-Kolla-ansible Remote Virtual Environment
+Kolla-Ansible Remote Virtual Environment
 ========================================
+*tags:*
+  | ``kolla-ansible``
+  | ``kolla-target-venv``
 
 See :ref:`configuration-kolla-ansible-venv` for information about remote Python
 virtual environments for Kolla Ansible.
@@ -584,6 +623,8 @@ virtual environments for Kolla Ansible.
 
 Docker Engine
 =============
+*tags:*
+  | ``docker``
 
 Docker engine configuration is applied by both Kayobe and Kolla Ansible (during
 bootstrap-servers).
@@ -612,6 +653,8 @@ issues observed.
 
 Ceph Block Devices
 ==================
+*tags:*
+  | ``kolla-ceph``
 
 If using Kolla Ansible to deploy Ceph, some preparation of block devices is
 required. The list of disks to configure for use by Ceph is specified via
