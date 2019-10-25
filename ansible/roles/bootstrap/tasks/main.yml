@@ -4,10 +4,9 @@
 
 - name: Ensure required packages are installed
   package:
-    name: "{{ item }}"
+    name: "{{ bootstrap_package_dependencies }}"
     state: installed
   become: True
-  with_items: "{{ bootstrap_package_dependencies }}"
 
 - name: Check whether an SSH key exists
   stat:

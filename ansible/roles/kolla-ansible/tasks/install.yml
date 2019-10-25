@@ -13,10 +13,9 @@
 
 - name: Ensure required packages are installed
   package:
-    name: "{{ item }}"
+    name: "{{ kolla_ansible_package_dependencies }}"
     state: installed
   become: True
-  with_items: "{{ kolla_ansible_package_dependencies }}"
 
 - name: Ensure source code checkout parent directory exists
   file:
