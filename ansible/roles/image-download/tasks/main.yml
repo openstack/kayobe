@@ -18,7 +18,8 @@
 
     - name: Ensure the image is downloaded
       vars:
-        checksum: "{{ image_download_checksum_algorithm }}:{{ expected_checksum.content.split(' ')[0] }}"
+        # NOTE(wszumski): This is evaluated even when expected_checksum is skipped
+        checksum: "{{ image_download_checksum_algorithm }}:{{ expected_checksum.content.split(' ')[0] if 'content' in expected_checksum else '' }}"
       get_url:
         url: "{{ image_download_url }}"
         dest: "{{ image_download_dest }}"
