@@ -1,15 +1,15 @@
 ---
 - name: Ensure EPEL repo is installed
-  yum:
+  package:
     name: epel-release
-    state: installed
+    state: present
   become: True
   when:
     - ansible_os_family == 'RedHat'
     - kolla_install_epel | bool
 
 - name: Ensure required packages are installed
-  yum:
+  package:
     name:
       - gcc
       - libffi-devel
@@ -17,7 +17,7 @@
       - python-devel
       - python-pip
       - python-virtualenv
-    state: installed
+    state: present
   become: True
 
 - name: Ensure source code checkout path exists

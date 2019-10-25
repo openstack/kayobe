@@ -14,7 +14,7 @@
     name:
       - parted
       - xfsprogs
-    state: installed
+    state: present
   become: True
   when: swift_block_devices | length > 0
 

@@ -1,6 +1,6 @@
 ---
 - name: Ensure required packages are installed
-  yum:
+  package:
     name: "{{ dev_tools_packages }}"
-    state: installed
+    state: present
   become: True

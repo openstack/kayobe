@@ -24,7 +24,7 @@
 - name: Yum | Install epel-release (CentOS)
   yum:
     name: epel-release
-    state: installed
+    state: present
   become: True
 
 - name: Template | Copy EPEL repo templates (CentOS)

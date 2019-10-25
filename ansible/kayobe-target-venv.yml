@@ -28,7 +28,7 @@
         - name: Ensure the python-virtualenv package is installed
           package:
             name: python-virtualenv
-            state: installed
+            state: present
           become: True
 
         - name: Ensure global virtualenv directory exists
@@ -78,7 +78,7 @@
         - name: Ensure the python-setuptools package is installed
           package:
             name: python-setuptools
-            state: installed
+            state: present
           become: True
 
         - name: Ensure pip is installed
