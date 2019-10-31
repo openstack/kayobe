@@ -11,6 +11,12 @@ failed=0
 ran=0
 for molecule in $molecules; do
     pushd $(dirname $molecule)
+    # Don't run molecule tests from Galaxy roles.
+    if [[ -f meta/.galaxy_install_info ]]; then
+        echo "Skipping $(basename $(pwd)) as it is a Galaxy role"
+        popd
+        continue
+    fi
     if ! molecule test --all $*; then
         failed=$((failed + 1))
     fi
