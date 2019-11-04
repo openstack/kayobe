@@ -2,3 +2,4 @@
 dependencies:
   - role: stackhpc.os-shade
     os_shade_venv: "{{ ironic_inspector_venv }}"
+    os_shade_upper_constraints_file: "{{ ironic_inspector_upper_constraints_file }}"

@@ -19,6 +19,8 @@
     - role: stackhpc.os-openstackclient
       os_openstackclient_venv: "{{ venv }}"
       os_openstackclient_install_epel: "{{ yum_install_epel }}"
+      os_openstackclient_state: latest
+      os_openstackclient_upper_constraints_file: "{{ pip_upper_constraints_file }}"
       when: kolla_enable_monasca | bool
 
   tasks:
