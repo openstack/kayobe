@@ -30,6 +30,9 @@ openstack_auth:
 # Overcloud CA certificate path.
 openstack_cacert: "{{ lookup('env', 'OS_CACERT') }}"
 
+# Overcloud interface (public, internal, admin).
+openstack_interface: internal
+
 # Overcloud authentication environment variables. These should be compatible
 # with the openstack client.
 # By default we pull these from the environment of the shell executing Ansible.

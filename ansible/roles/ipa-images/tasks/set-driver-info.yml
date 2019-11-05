@@ -5,6 +5,7 @@
     auth_type: "{{ ipa_images_openstack_auth_type }}"
     auth: "{{ ipa_images_openstack_auth }}"
     cacert: "{{ ipa_images_openstack_cacert | default(omit, true) }}"
+    interface: "{{ ipa_images_openstack_interface | default(omit, true) }}"
     image: "{{ item.name }}"
   with_items:
     - name: "{{ ipa_images_kernel_name }}"
