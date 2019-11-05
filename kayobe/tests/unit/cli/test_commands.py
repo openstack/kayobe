@@ -455,8 +455,6 @@ class TestCase(unittest.TestCase):
                 [
                     utils.get_data_files_path(
                         "ansible", "kayobe-target-venv.yml"),
-                    utils.get_data_files_path(
-                        "ansible", "kolla-target-venv.yml"),
                 ],
                 limit="seed-hypervisor",
             ),
