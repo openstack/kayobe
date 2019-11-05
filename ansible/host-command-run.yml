@@ -1,5 +1,6 @@
 ---
 - name: Run a command
+  gather_facts: False
   hosts: seed-hypervisor:seed:overcloud
   tasks:
     - name: Run a command
