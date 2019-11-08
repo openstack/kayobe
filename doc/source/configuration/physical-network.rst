@@ -1,3 +1,5 @@
+.. _configuration-physical-network:
+
 ==============================
 Physical Network Configuration
 ==============================
