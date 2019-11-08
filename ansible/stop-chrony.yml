@@ -7,6 +7,15 @@
 
 - name: Stop the chrony container
   hosts: overcloud
+  vars:
+    # kolla_overcloud_inventory_top_level_group_map looks like:
+    # kolla_overcloud_inventory_top_level_group_map:
+    #  control:
+    #    groups:
+    #      - controllers
+    overcloud_nodes_in_kolla_inventory: >-
+      {{ kolla_overcloud_inventory_top_level_group_map.values() |
+      map(attribute='groups') | flatten | unique | join(':') }}
   tags:
     - stop-chrony
   tasks:
@@ -14,4 +23,6 @@
       docker_container:
         name: chrony
         state: absent
-      when: not kolla_enable_chrony | bool
+      when:
+        - not kolla_enable_chrony | bool
+        - inventory_hostname in query('inventory_hostnames', overcloud_nodes_in_kolla_inventory)
