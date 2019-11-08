@@ -264,6 +264,13 @@ to add them to the Kayobe and Kolla-Ansible inventories::
 
     (kayobe) $ kayobe overcloud inventory discover
 
+.. seealso::
+
+   This `blog post <https://www.stackhpc.com/ironic-idrac-ztp.html>`__
+   provides a case study of the discovery process, including automatically
+   naming Ironic nodes via switch port descriptions, Ironic Inspector and
+   LLDP.
+
 Saving Hardware Introspection Data
 ----------------------------------
 
