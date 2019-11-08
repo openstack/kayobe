@@ -1,34 +1,17 @@
 ---
 # Update the Bifrost inventory with the IP allocation and other variables.
 
-- name: Ensure the Bifrost overcloud inventory is initialised
-  hosts: seed
-  gather_facts: no
-  tags:
-    - kolla-bifrost-hostvars
-  tasks:
-    - name: Ensure the Bifrost host variables directory exists
-      file:
-        path: "/etc/kolla/bifrost/inventory/host_vars"
-        state: directory
-      become: True
-
-    - name: Ensure the Bifrost inventory exists
-      file:
-        path: "/etc/kolla/bifrost/inventory/bifrost_inventory.py"
-        src: "/bifrost/playbooks/inventory/bifrost_inventory.py"
-        state: link
-        # This file should only exist within the bifrost_deploy container.
-        force: True
-      become: True
-
 - name: Ensure the Bifrost overcloud inventory is populated
   hosts: overcloud
   gather_facts: no
   tags:
     - kolla-bifrost-hostvars
+  become: true
   vars:
     seed_host: "{{ groups['seed'][0] }}"
+    # NOTE: Without this, the seed's ansible_host variable will not be
+    # respected when using delegate_to.
+    ansible_host: "{{ hostvars[seed_host].ansible_host | default(seed_host) }}"
     bifrost_hostvars:
       addressing_mode: static
       ipv4_interface_mac: "{% raw %}{{ extra.pxe_interface_mac | default }}{% endraw %}"
@@ -42,17 +25,28 @@
       network_mtu: "{{ admin_oc_net_name | net_mtu or '1500' }}"
       vlan_id: "{{ '' if admin_oc_net_name == provision_oc_net_name else (admin_oc_net_name | net_vlan) }}"
   tasks:
-    - name: Ensure the Bifrost host variable files exist
-      copy:
-        content: |
-          ---
-          # This file is managed via Ansible. Do not edit.
-          # Bifrost host variables for {{ inventory_hostname }}
-          {{ bifrost_hostvars | to_nice_yaml }}
-        dest: "/etc/kolla/bifrost/inventory/host_vars/{{ inventory_hostname }}"
+    - block:
+        - name: Ensure the Bifrost host variables directory exists
+          file:
+            path: "/etc/kolla/bifrost/inventory/host_vars"
+            state: directory
+          run_once: true
+
+        - name: Ensure the Bifrost inventory exists
+          file:
+            path: "/etc/kolla/bifrost/inventory/bifrost_inventory.py"
+            src: "/bifrost/playbooks/inventory/bifrost_inventory.py"
+            state: link
+            # This file should only exist within the bifrost_deploy container.
+            force: True
+          run_once: true
+
+        - name: Ensure the Bifrost host variable files exist
+          copy:
+            content: |
+              ---
+              # This file is managed via Ansible. Do not edit.
+              # Bifrost host variables for {{ inventory_hostname }}
+              {{ bifrost_hostvars | to_nice_yaml }}
+            dest: "/etc/kolla/bifrost/inventory/host_vars/{{ inventory_hostname }}"
       delegate_to: "{{ seed_host }}"
-      vars:
-        # NOTE: Without this, the seed's ansible_host variable will not be
-        # respected when using delegate_to.
-        ansible_host: "{{ hostvars[seed_host].ansible_host | default(seed_host) }}"
-      become: True
