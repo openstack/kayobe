@@ -221,6 +221,8 @@ overcloud_container_image_regexes: "{{ overcloud_container_image_regex_map | sel
 # List of regular expressions matching names of container images to build for
 # overcloud hosts. These images only support source builds.
 overcloud_container_image_regex_map_source:
+  - regex: freezer
+    enabled: "{{ kolla_enable_freezer | bool }}"
   - regex: monasca
     enabled: "{{ kolla_enable_monasca | bool }}"
 
