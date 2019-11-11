@@ -231,6 +231,8 @@ Leave the seed VM and return to the shell on the Ansible control host::
 Overcloud
 =========
 
+.. _deployment-discovery:
+
 Discovery
 ---------
 
@@ -257,7 +259,7 @@ the following on the seed::
 
     $ docker exec -it bifrost_deploy bash
     (bifrost_deploy) $ source env-vars
-    (bifrost_deploy) $ ironic node-list
+    (bifrost_deploy) $ openstack baremetal node list
 
 In order to interact with these nodes using Kayobe, run the following command
 to add them to the Kayobe and Kolla-Ansible inventories::
@@ -306,6 +308,19 @@ properties and root device hints.  To perform manual hardware inspection::
 
 Provisioning
 ------------
+
+.. note::
+
+   There is a `cloud-init issue
+   <https://storyboard.openstack.org/#!/story/2006832>`__ which prevents Ironic
+   nodes without names from being accessed via SSH after provisioning. To avoid
+   this issue, ensure that all Ironic nodes in the Bifrost inventory are named.
+   This may be achieved via :ref:`autodiscovery <deployment-discovery>`, or
+   manually, e.g. from the seed::
+
+       $ docker exec -it bifrost_deploy bash
+       (bifrost_deploy) $ source env-vars
+       (bifrost_deploy) $ openstack baremetal node set ee77b4ca-8860-4003-a18f-b00d01295bda --name controller0
 
 Provisioning of the overcloud is performed by the ironic service running in the
 bifrost container on the seed.  To provision the overcloud nodes::
