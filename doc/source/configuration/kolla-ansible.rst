@@ -68,9 +68,8 @@ Control Plane Services
 Kolla-ansible provides a flexible mechanism for configuring the services that
 it deploys. Kayobe adds some commonly required configuration options to the
 defaults provided by kolla-ansible, but also allows for the free-form
-configuration supported by kolla-ansible. The `kolla-ansible documentation
-<https://docs.openstack.org/kolla-ansible/latest/>`_ should be used as a
-reference.
+configuration supported by kolla-ansible. The :kolla-ansible-doc:`kolla-ansible
+documentation <>` should be used as a reference.
 
 Global Variables
 ----------------
@@ -126,9 +125,9 @@ variable ``kolla_ansible_custom_passwords`` in
 Service Configuration
 ---------------------
 
-Kolla-ansible's flexible configuration is described in the `kolla-ansible
-service configuration documentation
-<https://docs.openstack.org/kolla-ansible/latest/admin/advanced-configuration.html#openstack-service-configuration-in-kolla>`_.
+Kolla-ansible's flexible configuration is described in the
+:kolla-ansible-doc:`kolla-ansible service configuration documentation
+<admin/advanced-configuration.html#openstack-service-configuration-in-kolla>`.
 We won't duplicate that here, but essentially it involves creating files under
 a directory which for users of kayobe will be ``$KOLLA_CONFIG_PATH/config``. In
 kayobe, files in this directory are auto-generated and managed by kayobe.

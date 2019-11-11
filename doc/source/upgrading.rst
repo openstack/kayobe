@@ -236,11 +236,11 @@ in the Queens release, and `removed
 <https://docs.openstack.org/releasenotes/ironic/rocky.html#relnotes-11-0-0-stable-rocky-upgrade-notes>`__
 in the Rocky release. Nodes registered with ironic in Pike and earlier releases
 of Bifrost use the classic drivers by default, and will need to be migrated to
-use the new hardware types. The `ironic documentation
-<https://docs.openstack.org/ironic/latest/admin/upgrade-to-hardware-types.html>`__
-provides details for how to do this, but for the default case of the
-``agent_ipmitool`` driver the following procedure may be used, replacing
-``<node>`` with the name of the host to migrate:
+use the new hardware types. The :ironic-doc:`ironic documentation
+<admin/upgrade-to-hardware-types.html>` provides details for how to do this,
+but for the default case of the ``agent_ipmitool`` driver the following
+procedure may be used, replacing ``<node>`` with the name of the host to
+migrate:
 
 .. code-block:: console
 
