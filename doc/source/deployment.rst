@@ -18,6 +18,7 @@ performed here include:
 - Install Ansible and role dependencies from Ansible Galaxy.
 - Generate an SSH key if necessary and add it to the current user's authorised
   keys.
+- Install Kolla Ansible locally at the configured version.
 
 To bootstrap the Ansible control host::
 
