@@ -5,6 +5,15 @@
 - name: Ensure a virtualenv exists for kolla-ansible
   hosts: seed:overcloud
   gather_facts: False
+  vars:
+    # kolla_overcloud_inventory_top_level_group_map looks like:
+    # kolla_overcloud_inventory_top_level_group_map:
+    #  control:
+    #    groups:
+    #      - controllers
+    overcloud_nodes_in_kolla_inventory: >-
+      {{ kolla_overcloud_inventory_top_level_group_map.values() |
+      map(attribute='groups') | flatten | unique | join(':') }}
   tags:
     - kolla-ansible
     - kolla-target-venv
@@ -42,4 +51,6 @@
             owner: "{{ kolla_ansible_user }}"
             group: "{{ kolla_ansible_group }}"
           become: True
-      when: kolla_ansible_target_venv is not none
+      when:
+        - kolla_ansible_target_venv is not none
+        - inventory_hostname in query('inventory_hostnames', overcloud_nodes_in_kolla_inventory)
