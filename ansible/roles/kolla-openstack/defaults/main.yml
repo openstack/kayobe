@@ -39,6 +39,12 @@ kolla_enable_designate:
 kolla_extra_designate:
 
 ###############################################################################
+# Elasticsearch configuration.
+
+# Whether to enable elasticsearch.
+kolla_enable_elasticsearch:
+
+###############################################################################
 # Glance configuration.
 
 # Whether to enable Glance.

@@ -29,6 +29,11 @@ kolla_openstack_custom_config:
     dest: "{{ kolla_node_custom_config_path }}/designate"
     patterns: "*"
     enabled: "{{ kolla_enable_designate }}"
+  # Elasticsearch.
+  - src: "{{ kolla_extra_config_path }}/elasticsearch"
+    dest: "{{ kolla_node_custom_config_path }}/elasticsearch"
+    patterns: "*"
+    enabled: "{{ kolla_enable_elasticsearch }}"
   # Fluentd filters.
   - src: "{{ kolla_extra_config_path }}//fluentd/filter"
     dest: "{{ kolla_node_custom_config_path }}/fluentd/filter"
