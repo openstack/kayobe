@@ -205,6 +205,10 @@ Example 2: Overriding the Kolla-ansible Inventory
 This example shows how to override one or more sections of the kolla-ansible
 inventory.  All file paths are relative to ``${KAYOBE_CONFIG_PATH}``.
 
+It is typically best to start with an inventory template taken from the Kayobe
+source code, and then customize it. The templates can be found in
+``ansible/roles/kolla-ansible/templates``, e.g. components template is ``overcloud-components.j2``.
+
 First, create a file containing the customised inventory section. We'll use the
 **components** section in this example.
 
