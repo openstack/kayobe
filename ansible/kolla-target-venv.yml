@@ -11,9 +11,9 @@
     #  control:
     #    groups:
     #      - controllers
-    overcloud_nodes_in_kolla_inventory: >-
+    hosts_in_kolla_inventory: >-
       {{ kolla_overcloud_inventory_top_level_group_map.values() |
-      map(attribute='groups') | flatten | unique | join(':') }}
+         map(attribute='groups') | flatten | unique | union(['seed']) | join(':') }}
   tags:
     - kolla-ansible
     - kolla-target-venv
@@ -53,4 +53,4 @@
           become: True
       when:
         - kolla_ansible_target_venv is not none
-        - inventory_hostname in query('inventory_hostnames', overcloud_nodes_in_kolla_inventory)
+        - inventory_hostname in query('inventory_hostnames', hosts_in_kolla_inventory)
