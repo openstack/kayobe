@@ -48,9 +48,10 @@ Upgrading from source
 This section describes how to install Kayobe from source in a virtualenv.
 
 First, check out the required version of the Kayobe source code.  This may be
-done by pulling down the new version from Github.  Make sure that any local
-changes to kayobe are committed and merged with the new upstream code as
-necessary.  For example, to pull version 5.0.0 from the ``origin`` remote::
+done by pulling down the new version from ``opendev.org``.  Make sure
+that any local changes to kayobe are committed and merged with the new upstream
+code as necessary.  For example, to pull version 5.0.0 from the ``origin``
+remote::
 
     $ cd <base_path>/src/kayobe
     $ git pull origin 5.0.0

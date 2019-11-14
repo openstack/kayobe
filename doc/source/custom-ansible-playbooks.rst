@@ -44,7 +44,7 @@ Packaging Custom Playbooks With Configuration
 
 The kayobe project encourages its users to manage configuration for a cloud
 using version control, based on the `kayobe-config repository
-<https://github.com/stackhpc/kayobe-config>`_.  Storing custom Ansible
+<https://opendev.org/openstack/kayobe-config>`_.  Storing custom Ansible
 playbooks in this repository makes a lot of sense, and kayobe has special
 support for this.
 
