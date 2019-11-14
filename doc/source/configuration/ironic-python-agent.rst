@@ -66,6 +66,8 @@ image build``.
     List of git repositories containing Diskimage Builder (DIB) elements. See
     `stackhpc.os-images <https://galaxy.ansible.com/stackhpc/os-images>`__ role
     for usage. Default is none.
+``ipa_build_dib_packages``
+    List of DIB packages to install. Default is none.
 
 Example: Building IPA images locally
 ------------------------------------
@@ -155,6 +157,20 @@ itself. This can be done by sharing them in a git repository.
 In this example the ``master`` branch of
 https://git.example.com/custom-dib-elements would have a top level ``elements``
 directory, containing a ``my-element`` directory for the element.
+
+Example: Installing a package
+-----------------------------
+
+It can be necessary to install additional packages in the IPA image. Rather
+than needing to write a custom DIB element, we can use the
+``ipa_build_dib_packages`` variable. For example, to install the
+``biosdevname`` package:
+
+.. code-block:: yaml
+   :caption: ``ipa.yml``
+
+   ipa_build_dib_packages:
+     - "biosdevname"
 
 Ironic Python Agent (IPA) images configuration
 ==============================================
