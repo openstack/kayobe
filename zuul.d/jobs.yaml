@@ -19,6 +19,10 @@
     parent: openstack-tox-with-sudo
     vars:
       tox_envlist: ansible
+    required-projects:
+      - name: openstack/requirements
+        # TODO(mgoddard): Remove when Ansible playbooks support Python 3.
+        override-checkout: stable/train
     irrelevant-files:
       - ^.*\.rst$
       - ^doc/.*
@@ -54,13 +58,13 @@
       - name: openstack/kayobe
       - name: openstack/kayobe-config-dev
       - name: openstack/kolla
-        # TODO(wszumski): Remove when kayobe stable/train exists.
+        # TODO(mgoddard): Remove when Ansible playbooks support Python 3.
         override-checkout: stable/train
       - name: openstack/kolla-ansible
-        # TODO(wszumski): Remove when kayobe stable/train exists.
+        # TODO(mgoddard): Remove when Ansible playbooks support Python 3.
         override-checkout: stable/train
       - name: openstack/requirements
-        # TODO(wszumski): Remove when kayobe stable/train exists.
+        # TODO(mgoddard): Remove when Ansible playbooks support Python 3.
         override-checkout: stable/train
       - name: openstack/tenks
     irrelevant-files:
