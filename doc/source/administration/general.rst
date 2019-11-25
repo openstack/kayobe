@@ -2,6 +2,30 @@
 General Administration
 ======================
 
+Updating the Control Host
+=========================
+
+There are several pieces of software and configuration that must be installed
+and synchronised on the Ansible Control host:
+
+* Kayobe configuration
+* Kayobe Python package
+* Ansible Galaxy roles
+* Kolla Ansible Python package
+
+A change to the configuration may require updating the Kolla Ansible Python
+package. Updating the Kayobe Python package may require updating the Ansible
+Galaxy roles. It's not always easy to know which of these are required, so the
+simplest option is to apply all of the following steps when any of the above
+are changed.
+
+#. :ref:`Update Kayobe configuration <upgrading-kayobe-configuration>` to the
+   required commit
+#. :ref:`Upgrade the Kayobe Python package <upgrading-kayobe>` to the required
+   version
+#. :ref:`Upgrade the Ansible control host <upgrading-control-host>` to
+   synchronise the Ansible Galaxy roles and Kolla Ansible Python package.
+
 Running Kayobe Playbooks on Demand
 ==================================
 

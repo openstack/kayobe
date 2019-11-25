@@ -12,6 +12,74 @@ Preparation
 Before you start, be sure to back up any local changes, configuration, and
 data.
 
+Migrating Kayobe Configuration
+------------------------------
+
+Kayobe configuration options may be changed between releases of kayobe. Ensure
+that all site local configuration is migrated to the target version format. If
+using the `kayobe-config <https://opendev.org/openstack/kayobe-config>`_ git
+repository to manage local configuration, this process can be managed via git.
+For example, to fetch version 1.0.0 of the configuration from the ``origin``
+remote and merge it into the current branch::
+
+    $ git fetch origin 1.0.0
+    $ git merge 1.0.0
+
+The configuration should be manually inspected after the merge to ensure that
+it is correct.  Any new configuration options may be set at this point.  In
+particular, the following options may need to be changed if not using their
+default values:
+
+* ``kolla_openstack_release``
+* ``kolla_sources``
+* ``kolla_build_blocks``
+* ``kolla_build_customizations``
+
+Once the configuration has been migrated, it is possible to view the global
+variables for all hosts::
+
+    (kayobe) $ kayobe configuration dump
+
+The output of this command is a JSON object mapping hosts to their
+configuration.  The output of the command may be restricted using the
+``--host``, ``--hosts``, ``--var-name`` and ``--dump-facts`` options.
+
+If using the ``kayobe-env`` environment file in ``kayobe-config``, this should
+also be inspected for changes and modified to suit the local ansible control
+host environment if necessary. When ready, source the environment file::
+
+    $ source kayobe-env
+
+The `Kayobe release notes <https://docs.openstack.org/releasenotes/kayobe/>`__
+provide information on each new release. In particular, the *Upgrade Notes* and
+*Deprecation Notes* sections provide information that might affect the
+configuration migration.
+
+All changes made to the configuration should be committed and pushed to the
+hosting git repository.
+
+.. _upgrading-kayobe-configuration:
+
+Updating Kayobe Configuration
+=============================
+
+Ensure that the Kayobe configuration is checked out at the required commit.
+
+First, ensure that there are no uncommitted local changes to the repository::
+
+    $ cd <base_path>/src/kayobe-config/
+    $ git status
+
+Pull down changes from the hosting repository. For example, to fetch changes
+from the ``master`` branch of the ``origin`` remote::
+
+    $ git checkout master
+    $ git pull --ff-only origin master
+
+Adjust this procedure to suit your environment.
+
+.. _upgrading-kayobe:
+
 Upgrading Kayobe
 ================
 
@@ -75,43 +143,7 @@ see :ref:`installation-editable` for details)::
     (kayobe) $ cd <base_path>/src/kayobe
     (kayobe) $ pip install -U -e .
 
-Migrating Kayobe Configuration
-------------------------------
-
-Kayobe configuration options may be changed between releases of kayobe. Ensure
-that all site local configuration is migrated to the target version format. If
-using the `kayobe-config <https://opendev.org/openstack/kayobe-config>`_ git
-repository to manage local configuration, this process can be managed via git.
-For example, to fetch version 1.0.0 of the configuration from the ``origin``
-remote and merge it into the current branch::
-
-    $ git fetch origin 1.0.0
-    $ git merge 1.0.0
-
-The configuration should be manually inspected after the merge to ensure that
-it is correct.  Any new configuration options may be set at this point.  In
-particular, the following options may need to be changed if not using their
-default values:
-
-* ``kolla_openstack_release``
-* ``kolla_sources``
-* ``kolla_build_blocks``
-* ``kolla_build_customizations``
-
-Once the configuration has been migrated, it is possible to view the global
-variables for all hosts::
-
-    (kayobe) $ kayobe configuration dump
-
-The output of this command is a JSON object mapping hosts to their
-configuration.  The output of the command may be restricted using the
-``--host``, ``--hosts``, ``--var-name`` and ``--dump-facts`` options.
-
-If using the ``kayobe-env`` environment file in ``kayobe-config``, this should
-also be inspected for changes and modified to suit the local ansible control
-host environment if necessary. When ready, source the environment file::
-
-    $ source kayobe-env
+.. _upgrading-control-host:
 
 Upgrading the Ansible Control Host
 ==================================
@@ -122,6 +154,7 @@ performed here include:
 - Install updated Ansible role dependencies from Ansible Galaxy.
 - Generate an SSH key if necessary and add it to the current user's authorised
   keys.
+- Upgrade Kolla Ansible locally to the configured version.
 
 To upgrade the Ansible control host::
 
