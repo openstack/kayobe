@@ -295,6 +295,11 @@ BIOS and RAID Configuration
    BIOS and RAID configuration may require one or more power cycles of the
    hardware to complete the operation.  These will be performed automatically.
 
+.. note::
+
+   Currently, BIOS and RAID configuration of overcloud hosts is supported for
+   Dell servers only.
+
 Configuration of BIOS settings and RAID volumes is currently performed out of
 band as a separate task from hardware provisioning.  To configure the BIOS and
 RAID::
@@ -306,6 +311,14 @@ hardware inspection of the nodes to reconfigure the ironic nodes' scheduling
 properties and root device hints.  To perform manual hardware inspection::
 
     (kayobe) $ kayobe overcloud hardware inspect
+
+There are currently a few limitations to configuring BIOS and RAID:
+
+* The Ansible control host must be able to access the BMCs of the servers being
+  configured.
+* The Ansible control host must have the ``python-dracclient`` Python module
+  available to the Python interpreter used by Ansible. The path to the Python
+  interpreter is configured via ``ansible_python_interpreter``.
 
 Provisioning
 ------------
