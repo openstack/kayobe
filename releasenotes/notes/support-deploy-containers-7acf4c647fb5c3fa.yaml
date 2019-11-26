@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Adds a new ``kayobe overcloud service deploy containers`` command. This is
+    similar to ``kayobe overcloud service deploy``, but only deploys new
+    containers if necessary, and skips service registration, bootstrapping and
+    configuration.

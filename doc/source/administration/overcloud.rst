@@ -84,6 +84,31 @@ service by the name of that service.  For example: ``nova``, ``neutron`` or
 
     (kayobe) $ kayobe overcloud service reconfigure --tags config --kolla-tags nova,ironic
 
+Deploying Updated Container Images
+==================================
+
+A common task is to deploy updated container images, without configuration
+changes. This might be to roll out an updated container OS or to pick up some
+package updates. This should be faster than a full deployment or
+reconfiguration.
+
+To deploy updated container images::
+
+    (kayobe) $ kayobe overcloud service deploy containers
+
+Note that if there are configuration changes, these will not be applied using
+this command so if in doubt, use a normal ``kayobe overcloud service deploy``.
+
+In case not all services' containers have been modified, performance can be
+improved by specifying Ansible tags to limit the tasks run in kayobe and/or
+kolla-ansible's playbooks.  This may require knowledge of the inner workings of
+these tools but in general, kolla-ansible tags the play used to configure each
+service by the name of that service.  For example: ``nova``, ``neutron`` or
+``ironic``.  Use ``-t`` or ``--tags`` to specify kayobe tags and ``-kt`` or
+``--kolla-tags`` to specify kolla-ansible tags.  For example::
+
+    (kayobe) $ kayobe overcloud service deploy containers --kolla-tags nova,ironic
+
 Upgrading Containerised Services
 ================================
 
