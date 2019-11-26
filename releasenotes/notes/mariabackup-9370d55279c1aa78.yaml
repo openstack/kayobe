@@ -1,0 +1,9 @@
+---
+upgrade:
+  - |
+    The database backup support in Kolla Ansible has been modified to use
+    Mariabackup rather than Xtrabackup.
+deprecations:
+  - |
+    The ``kolla_enable_xtrabackup`` variable is deprecated in favour of
+    ``kolla_enable_mariabackup``.

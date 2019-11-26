@@ -149,7 +149,7 @@ which files are supported.
    =============================== =======================================================
    File                            Purpose
    =============================== =======================================================
-   ``backup.my.cnf``               Xtrabackup configuration.
+   ``backup.my.cnf``               Mariabackup configuration.
    ``barbican/*``                  Extended Barbican configuration.
    ``blazar.conf``                 Blazar configuration.
    ``blazar/*``                    Extended Blazar configuration.
