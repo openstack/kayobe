@@ -370,6 +370,9 @@ kolla_enable_keystone: "yes"
 kolla_enable_kibana: "{{ 'yes' if kolla_enable_central_logging | bool or kolla_enable_monasca | bool  else 'no' }}"
 kolla_enable_magnum: "no"
 kolla_enable_manila: "no"
+# TODO(mgoddard): Change this to a plain "no" when support for
+# kolla_enable_xtrabackup has been removed.
+kolla_enable_mariabackup: "{{ kolla_enable_xtrabackup | default('no') }}"
 kolla_enable_mariadb: "yes"
 kolla_enable_monasca: "no"
 kolla_enable_murano: "no"
@@ -385,7 +388,6 @@ kolla_enable_skydive: "no"
 kolla_enable_storm: "{{ 'yes' if kolla_enable_monasca | bool else 'no' }}"
 kolla_enable_swift: "no"
 kolla_enable_telegraf: "no"
-kolla_enable_xtrabackup: "no"
 kolla_enable_zookeeper: "{{ 'yes' if kolla_enable_kafka | bool or kolla_enable_storm | bool else 'no' }}"
 
 ###############################################################################

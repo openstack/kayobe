@@ -85,6 +85,10 @@ provisioner:
         kolla_extra_manila: |
           [extra-manila.conf]
           foo=bar
+        kolla_enable_mariabackup: true
+        kolla_extra_mariabackup: |
+          [extra-backup.my.cnf]
+          foo=bar
         kolla_enable_mariadb: true
         kolla_extra_mariadb: |
           [extra-galera.cnf]
@@ -116,10 +120,6 @@ provisioner:
           foo=bar
         kolla_enable_swift: true
         kolla_enable_storm: true
-        kolla_enable_xtrabackup: true
-        kolla_extra_xtrabackup: |
-          [extra-backup.my.cnf]
-          foo=bar
         kolla_enable_zookeeper: true
         kolla_extra_zookeeper: |
           [extra-zookeeper.cfg]

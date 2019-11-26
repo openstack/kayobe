@@ -338,6 +338,15 @@ kolla_enable_magnum:
 kolla_extra_magnum:
 
 ###############################################################################
+# Mariabackup configuration.
+
+# Whether to enable Mariabackup.
+kolla_enable_mariabackup:
+
+# Free form extra configuration to append to backup.my.cnf.
+kolla_extra_mariabackup:
+
+###############################################################################
 # MariaDB configuration.
 
 # Whether to enable MariaDB.
@@ -454,15 +463,6 @@ kolla_enable_storm:
 
 # Whether to enable swift.
 kolla_enable_swift:
-
-###############################################################################
-# Xtrabackup configuration.
-
-# Whether to enable Xtrabackup.
-kolla_enable_xtrabackup:
-
-# Free form extra configuration to append to backup.my.cnf.
-kolla_extra_xtrabackup:
 
 ###############################################################################
 # Zookeeper configuration.
