@@ -101,7 +101,6 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 "post-deploy",
-                extra_vars={"node_config_directory": "/etc/kolla"},
             )
         ]
         self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
@@ -1564,9 +1563,6 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 "post-deploy",
-                extra_vars={
-                    "node_config_directory": "/etc/kolla",
-                }
             ),
         ]
         self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
@@ -1638,9 +1634,6 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 "post-deploy",
-                extra_vars={
-                    "node_config_directory": "/etc/kolla",
-                }
             ),
         ]
         self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
