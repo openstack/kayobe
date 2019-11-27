@@ -1,0 +1,14 @@
+---
+features:
+  - |
+    Adds support for encryption of internal API traffic. This can be done via
+    the following variables:
+
+    * ``kolla_enable_tls_internal``
+    * ``kolla_internal_tls_cert``
+    * ``kolla_internal_fqdn_cacert``
+deprecations:
+  - |
+    The variable ``kolla_tls_cert`` has been deprecated in favour of
+    ``kolla_external_tls_cert``. Support for using ``kolla_tls_cert`` will be
+    removed in a future release.

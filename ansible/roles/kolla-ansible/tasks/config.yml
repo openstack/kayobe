@@ -100,14 +100,32 @@
     dest: "{{ kolla_config_path }}/passwords.yml"
     remote_src: True
 
-- name: Ensure the HAProxy TLS certificate bundle is copied into place
-  block:
-    - file:
+- block:
+    - name: Ensure external HAProxy TLS directory exists
+      file:
         path: "{{ kolla_external_fqdn_cert | dirname }}"
         state: directory
         recurse: yes
-    - copy:
-        content: "{{ kolla_tls_cert }}"
+
+    - name: Ensure the external HAProxy TLS certificate bundle is copied into place
+      copy:
+        content: "{{ kolla_external_tls_cert }}"
         dest: "{{ kolla_external_fqdn_cert }}"
   when:
-    - kolla_tls_cert is not none
+    - kolla_external_tls_cert is not none
+    - kolla_external_tls_cert | length > 0
+
+- block:
+    - name: Ensure internal HAProxy TLS directory exists
+      file:
+        path: "{{ kolla_internal_fqdn_cert | dirname }}"
+        state: directory
+        recurse: yes
+
+    - name: Ensure the internal HAProxy TLS certificate bundle is copied into place
+      copy:
+        content: "{{ kolla_internal_tls_cert }}"
+        dest: "{{ kolla_internal_fqdn_cert }}"
+  when:
+    - kolla_internal_tls_cert is not none
+    - kolla_internal_tls_cert | length > 0

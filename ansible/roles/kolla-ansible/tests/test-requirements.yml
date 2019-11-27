@@ -32,8 +32,10 @@
             kolla_external_vip_address: "10.0.0.2"
             kolla_external_fqdn: "fake.external.fqdn"
             kolla_enable_tls_external: False
-            kolla_enable_grafana: False
+            kolla_enable_tls_internal: False
             kolla_external_fqdn_cert: "fake-cert"
+            kolla_internal_fqdn_cert: "fake-cert"
+            kolla_enable_grafana: False
             kolla_openstack_logging_debug: False
 
         - name: List Python packages installed in virtualenv

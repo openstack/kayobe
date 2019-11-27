@@ -30,8 +30,10 @@
             kolla_external_vip_address: "10.0.0.2"
             kolla_external_fqdn: "fake.external.fqdn"
             kolla_enable_tls_external: False
-            kolla_enable_grafana: False
             kolla_external_fqdn_cert: "fake-cert"
+            kolla_enable_tls_internal: False
+            kolla_internal_fqdn_cert: "fake-cert"
+            kolla_enable_grafana: False
             kolla_openstack_logging_debug: False
 
         - name: Verify kolla-ansible installation
@@ -70,6 +72,8 @@
               neutron_plugin_agent: "openvswitch"
               kolla_enable_tls_external: False
               kolla_external_fqdn_cert: "fake-cert"
+              kolla_enable_tls_internal: False
+              kolla_internal_fqdn_cert: "fake-cert"
               openstack_logging_debug: False
               kolla_user: "kolla"
               kolla_group: "kolla"
