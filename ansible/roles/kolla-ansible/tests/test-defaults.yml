@@ -35,7 +35,7 @@
             kolla_openstack_logging_debug: False
 
         - name: Verify kolla-ansible installation
-          command: "{{ temp_path }}/venv/bin/kolla-ansible -h"
+          shell: ". {{ temp_path }}/venv/bin/activate && kolla-ansible -h"
           changed_when: False
 
         - name: Verify ansible installation
