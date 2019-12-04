@@ -12,6 +12,7 @@
   template:
     src: nginx.conf
     dest: "{{ inspection_store_config_path }}/nginx.conf"
+  become: True
   notify:
     - Restart inspection store container
     - Ensure inspection store data directory exists
