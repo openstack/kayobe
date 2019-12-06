@@ -440,8 +440,7 @@ class SeedHypervisorHostUpgrade(KayobeAnsibleMixin, VaultMixin, Command):
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Upgrading seed hypervisor host services")
-        playbooks = _build_playbook_list(
-            "kayobe-target-venv", "kolla-target-venv")
+        playbooks = _build_playbook_list("kayobe-target-venv")
         self.run_kayobe_playbooks(parsed_args, playbooks,
                                   limit="seed-hypervisor")
 
