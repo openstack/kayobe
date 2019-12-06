@@ -49,6 +49,9 @@ ipa_build_dib_env: >
 # stackhpc.os-images role for usage.
 ipa_build_dib_git_elements: []
 
+# List of DIB packages to install. Default is none.
+ipa_build_dib_packages: []
+
 ###############################################################################
 # Ironic Python Agent (IPA) images configuration.
 

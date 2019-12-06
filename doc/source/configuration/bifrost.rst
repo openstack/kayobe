@@ -167,6 +167,20 @@ Alternatively, the :diskimage-builder-doc:`dynamic-login element
 <elements/dynamic-login/README>` can be used to authorize SSH keys by appending
 them to the kernel arguments.
 
+Example: Installing a package
+-----------------------------
+
+It can be necessary to install additional packages in the root disk image.
+Rather than needing to write a custom DIB element, we can use the
+``kolla_bifrost_dib_packages`` variable. For example, to install the
+``biosdevname`` package:
+
+.. code-block:: yaml
+   :caption: ``ipa.yml``
+
+   kolla_bifrost_dib_packages:
+     - "biosdevname"
+
 Ironic configuration
 ====================
 

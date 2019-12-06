@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds support for installing packages in locally built Ironic Python Agent
+    (IPA) images via the ``ipa_build_dib_packages`` variable. See `story
+    2006855 <https://storyboard.openstack.org/#!/story/2006855>`__ for details.
