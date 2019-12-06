@@ -176,11 +176,7 @@ class ControlHostBootstrap(KayobeAnsibleMixin, KollaAnsibleMixin, VaultMixin,
             # environment, we should also generate the admin-openrc.sh and
             # public-openrc.sh scripts that provide admin credentials.
 
-            # FIXME: Fudge to work around incorrect configuration path.
-            extra_vars = {"node_config_directory":
-                          parsed_args.kolla_config_path}
-            self.run_kolla_ansible_overcloud(parsed_args, "post-deploy",
-                                             extra_vars=extra_vars)
+            self.run_kolla_ansible_overcloud(parsed_args, "post-deploy")
             # Create an environment file for accessing the public API as the
             # admin user.
             playbooks = _build_playbook_list("public-openrc")
@@ -1223,10 +1219,7 @@ class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
                                   extra_vars=extra_vars, limit="overcloud")
 
         # Post-deployment configuration.
-        # FIXME: Fudge to work around incorrect configuration path.
-        extra_vars = {"node_config_directory": parsed_args.kolla_config_path}
-        self.run_kolla_ansible_overcloud(parsed_args, "post-deploy",
-                                         extra_vars=extra_vars)
+        self.run_kolla_ansible_overcloud(parsed_args, "post-deploy")
         # Create an environment file for accessing the public API as the admin
         # user.
         playbooks = _build_playbook_list("public-openrc")
@@ -1281,10 +1274,7 @@ class OvercloudServiceReconfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
                                   extra_vars=extra_vars, limit="overcloud")
 
         # Post-deployment configuration.
-        # FIXME: Fudge to work around incorrect configuration path.
-        extra_vars = {"node_config_directory": parsed_args.kolla_config_path}
-        self.run_kolla_ansible_overcloud(parsed_args, "post-deploy",
-                                         extra_vars=extra_vars)
+        self.run_kolla_ansible_overcloud(parsed_args, "post-deploy")
         # Create an environment file for accessing the public API as the admin
         # user.
         playbooks = _build_playbook_list("public-openrc")
