@@ -15,7 +15,7 @@
             kolla_ansible_source_path: "{{ temp_path }}/src"
             kolla_ansible_ctl_install_type: "source"
             kolla_ansible_source_url: "http://github.com/openstack/kolla-ansible"
-            kolla_ansible_source_version: "master"
+            kolla_ansible_source_version: "{{ openstack_branch }}"
             kolla_ansible_venv: "{{ temp_path }}/venv"
             kolla_ansible_venv_extra_requirements:
               - "hvac"
