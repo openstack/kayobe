@@ -11,3 +11,5 @@ Configuration Guide
    hosts
    kolla
    kolla-ansible
+   bifrost
+   ironic-python-agent

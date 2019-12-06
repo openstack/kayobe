@@ -112,7 +112,10 @@ repository_name = 'openstack/kayobe'
 bug_project = 'kayobe'
 bug_tag = ''
 openstack_projects = [
+    'bifrost',
+    'diskimage-builder',
     'ironic',
+    'ironic-python-agent',
     'kolla',
     'kolla-ansible',
 ]

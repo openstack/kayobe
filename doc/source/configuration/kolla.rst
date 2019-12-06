@@ -45,7 +45,8 @@ installation of Kolla:
     https://opendev.org/openstack/kolla.
 ``kolla_source_version``
     Version (branch, tag, etc.) of Kolla source code repository if type is
-    ``source``. Default is the same as the Kayobe upstream branch name.
+    ``source``. Default is ``{{ openstack_branch }}``, which is the same as the
+    Kayobe upstream branch name.
 ``kolla_venv``
     Path to virtualenv in which to install Kolla on the container image build
     host. Default is ``{{ virtualenv_path ~ '/kolla' }}``.
