@@ -253,3 +253,7 @@ texinfo_documents = [
 
 # -- Options for Internationalization output ------------------------------
 locale_dirs = ['locale/']
+
+openstack_projects = [
+    'kayobe',
+]
