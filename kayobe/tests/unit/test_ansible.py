@@ -441,7 +441,7 @@ class TestCase(unittest.TestCase):
             'stackhpc.os-flavors',
             'stackhpc.os-projects',
             'stackhpc.parted-1-1',
-            'yatesr.timezone',
+            'stackhpc.timezone',
         ]
         mock_remove.assert_called_once_with(expected_roles,
                                             "ansible/roles")

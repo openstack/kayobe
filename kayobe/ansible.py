@@ -273,7 +273,7 @@ def prune_galaxy_roles(parsed_args):
         'stackhpc.os-flavors',
         'stackhpc.os-projects',
         'stackhpc.parted-1-1',
-        'yatesr.timezone',
+        'stackhpc.timezone',
     ]
     LOG.debug("Removing roles: %s", ",".join(roles_to_remove))
     utils.galaxy_remove(roles_to_remove, "ansible/roles")
