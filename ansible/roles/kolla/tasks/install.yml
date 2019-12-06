@@ -10,16 +10,15 @@
 
 - name: Ensure required packages are installed
   yum:
-    name: "{{ item }}"
+    name:
+      - gcc
+      - libffi-devel
+      - openssl-devel
+      - python-devel
+      - python-pip
+      - python-virtualenv
     state: installed
   become: True
-  with_items:
-    - gcc
-    - libffi-devel
-    - openssl-devel
-    - python-devel
-    - python-pip
-    - python-virtualenv
 
 - name: Ensure source code checkout path exists
   file:

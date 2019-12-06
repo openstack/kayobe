@@ -1,11 +1,10 @@
 ---
 - name: Ensure required packages are installed
   yum:
-    name: "{{ item }}"
+    name:
+      - libselinux-python
     state: installed
   become: True
-  with_items:
-    - libselinux-python
 
 - name: Ensure SELinux is disabled
   selinux:

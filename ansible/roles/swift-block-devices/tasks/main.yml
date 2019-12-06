@@ -11,13 +11,12 @@
 
 - name: Ensure required packages are installed
   package:
-    name: "{{ item }}"
+    name:
+      - parted
+      - xfsprogs
     state: installed
   become: True
   when: swift_block_devices | length > 0
-  with_items:
-    - parted
-    - xfsprogs
 
 - name: Check the presence of a partition on the Swift block devices
   become: True
