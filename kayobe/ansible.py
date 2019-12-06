@@ -118,12 +118,12 @@ def _get_vars_files(config_path):
 
 def build_args(parsed_args, playbooks,
                extra_vars=None, limit=None, tags=None, verbose_level=None,
-               check=None, ignore_limit=False):
+               check=None, ignore_limit=False, list_tasks=None):
     """Build arguments required for running Ansible playbooks."""
     cmd = ["ansible-playbook"]
     if verbose_level:
         cmd += ["-" + "v" * verbose_level]
-    if parsed_args.list_tasks:
+    if list_tasks or (parsed_args.list_tasks and list_tasks is None):
         cmd += ["--list-tasks"]
     cmd += vault.build_args(parsed_args, "--vault-password-file")
     inventory = _get_inventory_path(parsed_args)
@@ -160,13 +160,13 @@ def build_args(parsed_args, playbooks,
 def run_playbooks(parsed_args, playbooks,
                   extra_vars=None, limit=None, tags=None, quiet=False,
                   check_output=False, verbose_level=None, check=None,
-                  ignore_limit=False):
+                  ignore_limit=False, list_tasks=None):
     """Run a Kayobe Ansible playbook."""
     _validate_args(parsed_args, playbooks)
     cmd = build_args(parsed_args, playbooks,
                      extra_vars=extra_vars, limit=limit, tags=tags,
                      verbose_level=verbose_level, check=check,
-                     ignore_limit=ignore_limit)
+                     ignore_limit=ignore_limit, list_tasks=list_tasks)
     env = os.environ.copy()
     vault.update_environment(parsed_args, env)
     # If the configuration path has been specified via --config-path, ensure
@@ -201,12 +201,13 @@ def config_dump(parsed_args, host=None, hosts=None, var_name=None,
             extra_vars["dump_var_name"] = var_name
         if facts is not None:
             extra_vars["dump_facts"] = facts
-        # Don't use check mode for configuration dumps as we won't get any
-        # results back.
+        # Don't use check mode or list tasks for configuration dumps as we
+        # won't get any results back.
         playbook_path = utils.get_data_files_path("ansible", "dump-config.yml")
         run_playbook(parsed_args, playbook_path,
                      extra_vars=extra_vars, tags=tags, check_output=True,
-                     verbose_level=verbose_level, check=False)
+                     verbose_level=verbose_level, check=False,
+                     list_tasks=False)
         hostvars = {}
         for path in os.listdir(dump_dir):
             LOG.debug("Found dump file %s", path)
