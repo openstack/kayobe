@@ -1,0 +1,13 @@
+---
+- name: Ensure the docker storage volume is converted to a thinpool
+  command: >
+    lvconvert -y --zero n -c 512K
+    --thinpool {{ docker_storage_volume_group }}/{{ docker_storage_volume_thinpool }}
+    --poolmetadata {{ docker_storage_volume_group }}/{{ docker_storage_volume_thinpool_meta }}
+  become: True
+
+- name: Ensure the docker storage metadata profile is applied
+  command: >
+    lvchange --metadataprofile docker-thinpool
+    {{ docker_storage_volume_group }}/{{ docker_storage_volume_thinpool }}
+  become: True

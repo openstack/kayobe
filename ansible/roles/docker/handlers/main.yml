@@ -1,10 +1,4 @@
 ---
-- name: restart docker service
-  service:
-    name: docker
-    state: restarted
-  become: True
-
 - name: reload docker service
   service:
     name: docker

@@ -45,6 +45,8 @@
     src: "globals.yml.j2"
     dest: "{{ kolla_config_path }}/globals.yml"
     mode: 0640
+  vars:
+    kolla_docker_custom_config: "{{ lookup('template', 'daemon.json.j2') }}"
 
 - name: Ensure the Kolla seed inventory file exists
   copy:

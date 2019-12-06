@@ -1,20 +1,32 @@
 ---
-- name: Ensure the docker daemon is stopped
-  service:
-    name: docker
-    state: stopped
-  become: True
-  notify: restart docker service
+- name: Query docker daemon information
+  command: "docker info"
+  register: docker_info
+  changed_when: False
+  failed_when: False
 
-- name: Ensure loopback storage state is absent
-  file:
-    path: "{{ item }}"
-    state: absent
-  with_items:
-    - "/var/lib/docker/devicemapper"
-    - "/var/lib/docker/images"
-    - "/var/lib/docker/containers"
+- name: Fail when non-devicemapper containers or images exist
+  fail:
+    msg: >
+      Not configuring docker storage in {{ docker_storage_driver }} mode as
+      non-devicemapper containers or images exist.
+  when:
+    - docker_info.rc == 0
+    - "'Data loop file' in docker_info.stdout or 'devicemapper' not in docker_info.stdout"
+    - "'Images: 0' not in docker_info.stdout or 'Containers: 0' not in docker_info.stdout"
+
+- name: Ensure the docker storage metadata profile exists
+  template:
+    src: docker-thinpool.profile.j2
+    dest: /etc/lvm/profile/docker-thinpool.profile
   become: True
+
+- name: Query LVM thinpool volume
+  command: "lvs {{ docker_storage_volume_group }}/{{ docker_storage_volume_thinpool }}"
+  register: lvs_result
+  changed_when: false
+  failed_when: false
+  become: true
 
 - block:
     - name: Ensure the docker storage data and metadata volumes exist
@@ -38,15 +50,9 @@
         --poolmetadata {{ docker_storage_volume_group }}/{{ docker_storage_volume_thinpool_meta }}
       become: True
 
-    - name: Ensure the docker storage metadata profile exists
-      template:
-        src: docker-thinpool.profile.j2
-        dest: /etc/lvm/profile/docker-thinpool.profile
-      become: True
-
     - name: Ensure the docker storage metadata profile is applied
       command: >
         lvchange --metadataprofile docker-thinpool
         {{ docker_storage_volume_group }}/{{ docker_storage_volume_thinpool }}
       become: True
-  when: docker_storage_driver == 'devicemapper'
+  when: lvs_result.rc != 0

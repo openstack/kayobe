@@ -303,3 +303,4 @@
         # While kayobe has its own support for installing an NTP daemon, the
         # kolla-ansible baremetal role does a one-time sync which is useful.
         kolla_enable_host_ntp: "{{ ntp_service_enabled }}"
+        docker_daemon_mtu: "{{ public_net_name | net_mtu | default }}"

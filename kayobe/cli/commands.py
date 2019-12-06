@@ -546,7 +546,7 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         playbooks += _build_playbook_list(
             "users", "yum", "dev-tools", "disable-selinux", "network",
             "sysctl", "ip-routing", "snat", "disable-glean", "ntp", "mdadm",
-            "lvm")
+            "lvm", "docker-devicemapper")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed")
 
         self.generate_kolla_ansible_config(parsed_args, service_config=False)
@@ -946,7 +946,7 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         playbooks += _build_playbook_list(
             "users", "yum", "dev-tools", "disable-selinux", "network",
             "sysctl", "disable-glean", "disable-cloud-init", "ntp", "mdadm",
-            "lvm")
+            "lvm", "docker-devicemapper")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
 
         self.generate_kolla_ansible_config(parsed_args, service_config=False)

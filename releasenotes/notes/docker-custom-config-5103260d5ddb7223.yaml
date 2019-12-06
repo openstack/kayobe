@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    Uses the new Kolla Ansible variable ``docker_custom_config`` to populate
+    Docker's ``daemon.json`` configuration file.
