@@ -1,3 +1,5 @@
+.. _configuration-kayobe:
+
 ====================
 Kayobe Configuration
 ====================

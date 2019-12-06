@@ -1,3 +1,5 @@
+.. _configuration-kolla:
+
 ===================
 Kolla Configuration
 ===================

@@ -1,3 +1,5 @@
+.. _configuration-hosts:
+
 ==================
 Host Configuration
 ==================

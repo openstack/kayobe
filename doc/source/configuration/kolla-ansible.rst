@@ -1,3 +1,5 @@
+.. _configuration-kolla-ansible:
+
 ===========================
 Kolla-ansible Configuration
 ===========================
