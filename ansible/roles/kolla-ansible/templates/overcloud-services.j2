@@ -25,9 +25,6 @@ nova
 [nova-super-conductor:children]
 nova
 
-[nova-consoleauth:children]
-nova
-
 [nova-novncproxy:children]
 nova
 
@@ -59,9 +56,6 @@ control
 neutron
 
 [neutron-l3-agent:children]
-neutron
-
-[neutron-lbaas-agent:children]
 neutron
 
 [neutron-metadata-agent:children]
@@ -271,6 +265,13 @@ magnum
 
 [magnum-conductor:children]
 magnum
+
+# Qinling
+[qinling-api:children]
+qinling
+
+[qinling-engine:children]
+qinling
 
 # Sahara
 [sahara-api:children]
@@ -526,3 +527,15 @@ monitoring
 
 [prometheus-elasticsearch-exporter:children]
 elasticsearch
+
+[prometheus-blackbox-exporter:children]
+monitoring
+
+[masakari-api:children]
+control
+
+[masakari-engine:children]
+control
+
+[masakari-monitors:children]
+compute

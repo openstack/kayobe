@@ -74,40 +74,78 @@ kolla_feature_flags:
   - aodh
   - barbican
   - blazar
+  - cadf_notifications
   - ceilometer
+  - ceilometer_ipmi
+  - cells
   - central_logging
   - ceph
   - ceph_mds
-  - ceph_nfs
   - ceph_rgw
+  - ceph_nfs
+  - ceph_dashboard
   - chrony
   - cinder
-  - cinder_backend_hnas_iscsi
+  - cinder_backup
   - cinder_backend_hnas_nfs
   - cinder_backend_iscsi
   - cinder_backend_lvm
   - cinder_backend_nfs
   - cinder_backend_zfssa_iscsi
+  - cinder_backend_quobyte
   - cloudkitty
   - collectd
   - congress
+  - cyborg
   - designate
+  - destroy_images
   - elasticsearch
   - etcd
   - fluentd
   - freezer
+  - glance
   - gnocchi
   - grafana
   - haproxy
   - heat
   - horizon
+  - horizon_blazar
+  - horizon_cloudkitty
+  - horizon_congress
+  - horizon_designate
+  - horizon_fwaas
+  - horizon_freezer
+  - horizon_heat
+  - horizon_ironic
+  - horizon_karbor
+  - horizon_magnum
+  - horizon_manila
+  - horizon_masakari
+  - horizon_mistral
+  - horizon_murano
+  - horizon_neutron_vpnaas
+  - horizon_octavia
+  - horizon_qinling
+  - horizon_sahara
+  - horizon_searchlight
+  - horizon_senlin
+  - horizon_solum
+  - horizon_tacker
+  - horizon_trove
+  - horizon_vitrage
+  - horizon_watcher
+  - horizon_zun
+  - hyperv
   - influxdb
   - ironic
   - ironic_ipxe
   - ironic_neutron_agent
   - ironic_pxe_uefi
-  - kafka
+  - iscsid
   - karbor
+  - kafka
+  - keepalived
+  - keystone
   - kibana
   - kuryr
   - magnum
@@ -117,28 +155,47 @@ kolla_feature_flags:
   - manila_backend_cephfs_native
   - manila_backend_cephfs_nfs
   - mariadb
+  - mariabackup
+  - masakari
+  - memcached
   - mistral
-  - mongodb
   - monasca
-  - murano
+  - mongodb
   - multipathd
-  - neutron_agent_ha
-  - neutron_bgp_dragent
+  - murano
+  - neutron
+  - neutron_vpnaas
+  - neutron_sriov
   - neutron_dvr
   - neutron_fwaas
-  - neutron_lbaas
-  - neutron_provider_networks
   - neutron_qos
+  - neutron_agent_ha
+  - neutron_bgp_dragent
+  - neutron_provider_networks
   - neutron_segments
-  - neutron_sriov
-  - neutron_vpnaas
+  - neutron_sfc
+  - neutron_metering
+  - neutron_infoblox_ipam_agent
+  - neutron_port_forwarding
+  - nova
   - nova_serialconsole_proxy
+  - nova_ssh
   - octavia
+  - onos
+  - opendaylight
+  - openstack_core
+  - openvswitch
+  - outward_rabbitmq
+  - ovs_dpdk
   - osprofiler
   - panko
+  - placement
   - prometheus
   - qdrouterd
+  - qinling
+  - rabbitmq
   - rally
+  - redis
   - sahara
   - searchlight
   - senlin
@@ -146,13 +203,14 @@ kolla_feature_flags:
   - solum
   - storm
   - swift
+  - swift_s3api
   - tacker
   - telegraf
   - tempest
   - trove
+  - trove_singletenant
   - vitrage
   - vmtp
   - watcher
-  - xtrabackup
   - zookeeper
   - zun
