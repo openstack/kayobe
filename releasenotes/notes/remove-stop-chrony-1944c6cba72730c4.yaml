@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    Removes transitional support for stopping the chrony container when
+    ``kolla_enable_chrony`` is ``false``. See `story 2006949
+    <https://storyboard.openstack.org/#!/story/2006949>`__ for details.

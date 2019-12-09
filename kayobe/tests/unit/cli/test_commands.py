@@ -1528,13 +1528,6 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    utils.get_data_files_path("ansible", "stop-chrony.yml"),
-                ],
-                limit="overcloud",
-            ),
-            mock.call(
-                mock.ANY,
-                [
                     utils.get_data_files_path("ansible",
                                               "overcloud-extras.yml"),
                 ],
@@ -1653,13 +1646,6 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    utils.get_data_files_path("ansible", "stop-chrony.yml"),
-                ],
-                limit="overcloud",
-            ),
-            mock.call(
-                mock.ANY,
-                [
                     utils.get_data_files_path("ansible",
                                               "overcloud-extras.yml"),
                 ],
@@ -1720,13 +1706,6 @@ class TestCase(unittest.TestCase):
                                               "kolla-openstack.yml"),
                 ],
                 ignore_limit=True,
-            ),
-            mock.call(
-                mock.ANY,
-                [
-                    utils.get_data_files_path("ansible", "stop-chrony.yml"),
-                ],
-                limit="overcloud"
             ),
             mock.call(
                 mock.ANY,
