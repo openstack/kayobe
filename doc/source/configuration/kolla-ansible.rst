@@ -1,39 +1,58 @@
 .. _configuration-kolla-ansible:
 
 ===========================
-Kolla-ansible Configuration
+Kolla Ansible Configuration
 ===========================
 
-Kayobe relies heavily on kolla-ansible for deployment of the OpenStack control
-plane. Kolla-ansible is installed locally on the Ansible control host (the host
-from which kayobe commands are executed), and kolla-ansible commands are
+Kayobe relies heavily on Kolla Ansible for deployment of the OpenStack control
+plane. Kolla Ansible is installed locally on the Ansible control host (the host
+from which Kayobe commands are executed), and Kolla Ansible commands are
 executed from there.
 
-Local Environment
-=================
+Kolla Ansible configuration is stored in ``${KAYOBE_CONFIG_PATH}/kolla.yml``.
 
-Environment variables are used to configure the environment in which
-kolla-ansible is installed and executed.
+Kolla Ansible Installation
+==========================
 
-.. table:: Kolla-ansible environment variables
+Prior to deploying containers, Kolla Ansible and its dependencies will be
+installed on the Ansible control host. The following variables affect the
+installation of Kolla Ansible:
 
-   ====================== ================================================== ============================
-   Variable               Purpose                                            Default
-   ====================== ================================================== ============================
-   ``$KOLLA_CONFIG_PATH`` Path on the Ansible control host in which          ``/etc/kolla``
-                          the kolla-ansible configuration will be generated.
-                          These files should not be manually edited.
-   ``$KOLLA_SOURCE_PATH`` Path on the Ansible control host in which          ``$PWD/src/kolla-ansible``
-                          the kolla-ansible source code will be cloned.
-   ``$KOLLA_VENV_PATH``   Path on the Ansible control host in which          ``$PWD/venvs/kolla-ansible``
-                          the kolla-ansible virtualenv will be created.
-   ====================== ================================================== ============================
+``kolla_ansible_ctl_install_type``
+    Type of Kolla Ansible control installation. One of ``binary`` (PyPI) or
+    ``source`` (git). Default is ``source``.
+``kolla_ansible_source_url``
+    URL of Kolla Ansible source code repository if type is ``source``. Default
+    is https://opendev.org/openstack/kolla-ansible.
+``kolla_ansible_source_version``
+    Version (branch, tag, etc.) of Kolla Ansible source code repository if type
+    is ``source``. Default is the same as the Kayobe upstream branch.
+``kolla_ansible_venv_extra_requirements``
+    Extra requirements to install inside the Kolla Ansible virtualenv. Default
+    is an empty list.
+``kolla_upper_constraints_file``
+    Upper constraints file for installation of Kolla. Default is
+    ``{{ pip_upper_constraints_file }}``, which has a default of
+    ``https://releases.openstack.org/constraints/upper/{{ openstack_branch }}``.
 
-Extra Python packages can be installed inside the kolla-ansible virtualenv,
-such as when required by Ansible plugins, using the
-``kolla_ansible_venv_extra_requirements`` list variable in
-``$KAYOBE_CONFIG_PATH/kolla.yml``. For example, to use the `hashi_vault Ansible
-lookup plugin
+Example: custom git repository
+------------------------------
+
+To install Kolla Ansible from a custom git repository:
+
+.. code-block:: yaml
+   :caption: ``$KAYOBE_CONFIG_PATH/kolla.yml``
+
+   kolla_ansible_source_url: https://git.example.com/kolla-ansible
+   kolla_ansible_source_version: downstream
+
+Virtual Environment Extra Requirements
+--------------------------------------
+
+Extra Python packages can be installed inside the Kolla Ansible virtualenv,
+such as when required by Ansible plugins.
+
+For example, to use the `hashi_vault Ansible lookup plugin
 <https://docs.ansible.com/ansible/devel/plugins/lookup/hashi_vault.html>`_, its
 ``hvac`` dependency can be installed using:
 
@@ -41,54 +60,193 @@ lookup plugin
    :caption: ``$KAYOBE_CONFIG_PATH/kolla.yml``
 
    ---
-   # Extra requirements to install inside the kolla-ansible virtualenv.
+   # Extra requirements to install inside the Kolla Ansible virtualenv.
    kolla_ansible_venv_extra_requirements:
      - "hvac"
 
+Local environment
+=================
+
+The following variables affect the local environment on the Ansible control
+host. They reference environment variables, and should be configured using
+those rather than modifying the Ansible variable directly.  The file
+``kayobe-env`` in the `kayobe-config git repository
+<https://opendev.org/openstack/kayobe-config>`__ sets some sensible defaults
+for these variables, based on the recommended environment directory structure.
+
+``kolla_ansible_source_path``
+    Path to directory for Kolla Ansible source code checkout. Default is
+    ``$KOLLA_SOURCE_PATH``, or ``$PWD/src/kolla-ansible``.
+``kolla_ansible_venv``
+    Path to virtualenv in which to install Kolla Ansible on the Ansible control
+    host. Default is ``$KOLLA_VENV_PATH`` or ``$PWD/venvs/kolla-ansible``.
+``kolla_config_path``
+    Path to Kolla Ansible configuration directory. Default is
+    ``$KOLLA_CONFIG_PATH`` or ``/etc/kolla``.
+
+.. _configuration-kolla-ansible-global:
+
+Global Configuration
+====================
+
+The following variables are global, affecting all containers. They are used to
+generate the Kolla Ansible configuration file, ``globals.yml``, and also affect
+:ref:`Kolla image build configuration <configuration-kolla-global>`.
+
+Kolla Images
+------------
+
+The following variables affect which Kolla images are used, and how they are
+accessed.
+
+``kolla_base_distro``
+    Kolla base container image distribution. Default is ``centos``.
+``kolla_install_type``
+    Kolla container image type: ``binary`` or ``source``. Default is
+    ``binary``.
+``kolla_docker_registry``
+    URL of docker registry to use for Kolla images. Default is not set, in
+    which case Dockerhub will be used.
+``kolla_docker_namespace``
+    Docker namespace to use for Kolla images. Default is ``kolla``.
+``kolla_docker_registry_username``
+    Username to use to access a docker registry. Default is not set, in which
+    case the registry will be used without authentication.
+``kolla_docker_registry_password``
+    Password to use to access a docker registry. Default is not set, in which
+    case the registry will be used without authentication.
+``kolla_openstack_release``
+    Kolla OpenStack release version. This should be a Docker image tag. Default
+    is ``{{ openstack_release }}``, which takes the OpenStack release name
+    (e.g. ``rocky``) on stable branches and tagged releases, or ``master`` on
+    the Kayobe ``master`` branch.
+
+For example, to deploy Kolla ``centos`` ``binary`` images with a namespace of
+``example``, and a private Docker registry at ``registry.example.com:4000``,
+tagged with ``7.0.0.1``:
+
+.. code-block:: yaml
+   :caption: ``$KAYOBE_CONFIG_PATH/kolla.yml``
+
+   kolla_base_distro: centos
+   kolla_install_type: binary
+   kolla_docker_namespace: example
+   kolla_docker_registry: registry.example.com:4000
+   kolla_openstack_release: 7.0.0.1
+
+The deployed ``ironic-api`` image would be referenced as follows:
+
+.. code-block:: console
+
+   registry.example.com:4000/example/centos-binary-ironic-api:7.0.0.1
+
+Ansible
+-------
+
+The following variables affect how Ansible accesses the remote hosts.
+
+``kolla_ansible_user``
+    User account to use for Kolla SSH access. Default is ``kolla``.
+``kolla_ansible_group``
+    Primary group of Kolla SSH user. Default is ``kolla``.
+``kolla_ansible_become``
+    Whether to use privilege escalation for all operations performed via Kolla
+    Ansible. Default is ``true``.
+``kolla_ansible_target_venv``
+    Path to a virtual environment on remote hosts to use for Ansible module
+    execution. Default is ``{{ virtualenv_path }}/kolla-ansible``. May be set
+    to ``None`` to use the system Python interpreter.
+
 .. _configuration-kolla-ansible-venv:
 
-Remote Execution Environment
-============================
+Context: Remote Execution Environment
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-By default, ansible executes modules remotely using the system python
-interpreter, even if the ansible control process is executed from within a
+By default, Ansible executes modules remotely using the system python
+interpreter, even if the Ansible control process is executed from within a
 virtual environment (unless the ``local`` connection plugin is used).
 This is not ideal if there are python dependencies that must be installed
 with isolation from the system python packages. Ansible can be configured to
 use a virtualenv by setting the host variable ``ansible_python_interpreter``
 to a path to a python interpreter in an existing virtual environment.
 
-If the variable ``kolla_ansible_target_venv`` is set, kolla-ansible will be
-configured to create and use a virtual environment on the remote hosts.
-This variable is by default set to ``{{ virtualenv_path }}/kolla-ansible``.
-The previous behaviour of installing python dependencies directly to the host
-can be used by setting ``kolla_ansible_target_venv`` to ``None``.
+The variable ``kolla_ansible_target_venv`` configures the use of a virtual
+environment on the remote hosts. The default configuration should work in most
+cases.
 
-Control Plane Services
-======================
+OpenStack Logging
+-----------------
 
-Kolla-ansible provides a flexible mechanism for configuring the services that
-it deploys. Kayobe adds some commonly required configuration options to the
-defaults provided by kolla-ansible, but also allows for the free-form
-configuration supported by kolla-ansible. The :kolla-ansible-doc:`kolla-ansible
-documentation <>` should be used as a reference.
+The following variable affects OpenStack debug logging.
 
-Global Variables
-----------------
+``kolla_openstack_logging_debug``
+    Whether debug logging is enabled for OpenStack services. Default is
+    ``false``.
 
-Kolla-ansible uses a single file for global variables, ``globals.yml``. Kayobe
+Example: enabling debug logging
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In certain situations it may be necessary to enable debug logging for all
+OpenStack services. This is not usually advisable in production.
+
+.. code-block:: yaml
+   :caption: ``$KAYOBE_CONFIG_PATH/kolla.yml``
+
+   ---
+   kolla_openstack_logging_debug: true
+
+TLS Encryption of APIs
+----------------------
+
+The following variables affect TLS encryption of the public API.
+
+``kolla_enable_tls_external``
+    Whether TLS is enabled for the public API endpoints. Default is ``no``.
+``kolla_tls_cert``
+    A TLS certificate bundle to use for the public API endpoints, if
+    ``kolla_enable_tls_external`` is ``true``.  Note that this should be
+    formatted as a literal style block scalar.
+``kolla_external_fqdn_cacert``
+    Path to a CA certificate file to use for the ``OS_CACERT`` environment
+    variable in openrc files when TLS is enabled, instead of Kolla Ansible's
+    default.
+
+Example: enabling TLS for the public API
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+It is highly recommended to use TLS encryption to secure the public API.
+Here is an example:
+
+.. code-block:: yaml
+   :caption: ``$KAYOBE_CONFIG_PATH/kolla.yml``
+
+   ---
+   kolla_enable_tls_external: yes
+   kolla_tls_cert: |
+     -----BEGIN CERTIFICATE-----
+     ...
+     -----END CERTIFICATE-----
+   kolla_external_fqdn_cacert: /path/to/ca/certificate/bundle
+
+Custom Global Variables
+-----------------------
+
+Kolla Ansible uses a single file for global variables, ``globals.yml``. Kayobe
 provides configuration variables for all required variables and many of the
 most commonly used the variables in this file. Some of these are in
 ``$KAYOBE_CONFIG_PATH/kolla.yml``, and others are determined from other sources
 such as the networking configuration in ``$KAYOBE_CONFIG_PATH/networks.yml``.
 
-Configuring Custom Global Variables
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
 Additional global configuration may be provided by creating
 ``$KAYOBE_CONFIG_PATH/kolla/globals.yml``. Variables in this file will be
 templated using Jinja2, and merged with the Kayobe ``globals.yml``
 configuration.
+
+Example: use a specific tag for each image
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For more fine-grained control over images, Kolla Ansible allows a tag to be
+defined for each image. For example, for ``nova-api``:
 
 .. code-block:: yaml
    :caption: ``$KAYOBE_CONFIG_PATH/kolla/globals.yml``
@@ -97,15 +255,33 @@ configuration.
    # Use a custom tag for the nova-api container image.
    nova_api_tag: v1.2.3
 
+Example: debug logging per-service
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Enabling debug logging globally can lead to a lot of additional logs being
+generated. Often we are only interested in a particular service. For example,
+to enable debug logging for Nova services:
+
+.. code-block:: yaml
+   :caption: ``$KAYOBE_CONFIG_PATH/kolla/globals.yml``
+
+   ---
+   nova_logging_debug: true
+
 Passwords
 ---------
 
-Kolla-ansible auto-generates passwords to a file, ``passwords.yml``. Kayobe
+Kolla Ansible auto-generates passwords to a file, ``passwords.yml``. Kayobe
 handles the orchestration of this, as well as encryption of the file using an
-ansible vault password specified in the ``KAYOBE_VAULT_PASSWORD`` environment
+Ansible Vault password specified in the ``KAYOBE_VAULT_PASSWORD`` environment
 variable, if present. The file is generated to
 ``$KAYOBE_CONFIG_PATH/kolla/passwords.yml``, and should be stored along with
-other kayobe configuration files. This file should not be manually modified.
+other Kayobe configuration files. This file should not be manually modified.
+
+``kolla_ansible_custom_passwords``
+    Dictionary containing custom passwords to add or override in the Kolla
+    passwords file. Default is ``{{ kolla_ansible_default_custom_passwords
+    }}``, which contains SSH keys for use by Kolla Ansible and Bifrost.
 
 Configuring Custom Passwords
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -124,11 +300,47 @@ variable ``kolla_ansible_custom_passwords`` in
      {{ kolla_ansible_default_custom_passwords |
         combine({'my_custom_password': 'correcthorsebatterystaple'}) }}
 
+Control Plane Services
+======================
+
+Kolla Ansible provides a flexible mechanism for configuring the services that
+it deploys. Kayobe adds some commonly required configuration options to the
+defaults provided by Kolla Ansible, but also allows for the free-form
+configuration supported by Kolla Ansible. The :kolla-ansible-doc:`Kolla Ansible
+documentation <>` should be used as a reference.
+
+Enabling Services
+-----------------
+
+Services deployed by Kolla Ansible are enabled via flags.
+
+``kolla_enable_<service or feature>``
+    There are various flags that can be used to enable features. These map to
+    variables named ``enable_<service or feature>`` in Kolla Ansible. The
+    default set of enabled services and features is the same as in Kolla
+    ansible, except that Ironic is enabled by default in Kayobe.
+
+Example: enabling a service
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A common task is enabling a new OpenStack service. This may be done via the
+``kolla_enable_*`` flags, for example:
+
+.. code-block:: yaml
+   :caption: ``$KAYOBE_CONFIG_PATH/kolla.yml``
+
+   ---
+   kolla_enable_swift: true
+
+Note that in some cases additional configuration may be required to
+successfully deploy a service - check the :kolla-ansible-doc:`Kolla Ansible
+configuration reference <reference>`.
+
 Service Configuration
 ---------------------
 
 Kolla-ansible's flexible configuration is described in the
-:kolla-ansible-doc:`kolla-ansible service configuration documentation
+:kolla-ansible-doc:`Kolla Ansible service configuration documentation
 <admin/advanced-configuration.html#openstack-service-configuration-in-kolla>`.
 We won't duplicate that here, but essentially it involves creating files under
 a directory which for users of kayobe will be ``$KOLLA_CONFIG_PATH/config``. In
@@ -139,10 +351,10 @@ merged with kayobe's own configuration, and written out to
 ``$KOLLA_CONFIG_PATH/config``.
 
 The following files, if present, will be templated and provided to
-kolla-ansible.  All paths are relative to ``$KAYOBE_CONFIG_PATH/kolla/config``.
-Note that typically kolla-ansible does not use the same wildcard patterns, and
+Kolla Ansible.  All paths are relative to ``$KAYOBE_CONFIG_PATH/kolla/config``.
+Note that typically Kolla Ansible does not use the same wildcard patterns, and
 has a more restricted set of files that it will process.  In some cases, it may
-be necessary to inspect the kolla-ansible configuration tasks to determine
+be necessary to inspect the Kolla Ansible configuration tasks to determine
 which files are supported.
 
 .. table:: Kolla-ansible configuration files
@@ -167,11 +379,13 @@ which files are supported.
    ``fluentd/filter``              Fluentd filter configuration.
    ``fluentd/input``               Fluentd input configuration.
    ``fluentd/output``              Fluentd output configuration.
+   ``galera.cnf``                  MariaDB configuration.
    ``glance.conf``                 Glance configuration.
    ``glance/*``                    Extended Glance configuration.
    ``global.conf``                 Global configuration for all OpenStack services.
    ``gnocchi.conf``                Gnocchi configuration.
    ``gnocchi/*``                   Extended Gnocchi configuration.
+   ``grafana.ini``                 Grafana configuration.
    ``grafana/*``                   Extended Grafana configuration.
    ``haproxy/*``                   Main HAProxy configuration.
    ``haproxy-config/*``            Modular HAProxy configuration.
@@ -191,7 +405,6 @@ which files are supported.
    ``magnum/*``                    Extended magnum configuration.
    ``manila.conf``                 Manila configuration.
    ``manila/*``                    Extended manila configuration.
-   ``galera.cnf``                  MariaDB configuration.
    ``mariadb/*``                   Extended MariaDB configuration.
    ``monasca/*``                   Extended Monasca configuration.
    ``murano.conf``                 Murano configuration.
