@@ -5,8 +5,7 @@ Kolla Configuration
 ===================
 
 Anyone using Kayobe to build images should familiarise themselves with the
-`Kolla project's documentation
-<https://docs.openstack.org/kolla/latest/>`__.
+:kolla-doc:`Kolla project's documentation <>`.
 
 Container Image Build Host
 ==========================
@@ -163,9 +162,8 @@ Overriding Jinja2 blocks
 
 Kolla's images are defined via Jinja2 templates that generate Dockerfiles.
 Jinja2 blocks are frequently used to allow specific statements in one or more
-Dockerfiles to be replaced with custom statements. See the `Kolla documentation
-<https://docs.openstack.org/kolla/latest/admin/image-building.html#generic-customisation>`__
-for details.
+Dockerfiles to be replaced with custom statements. See the :kolla-doc:`Kolla
+documentation <admin/image-building.html#generic-customisation>` for details.
 
 Blocks are configured via the ``kolla_build_blocks`` variable, which is a dict
 mapping Jinja2 block names in to their contents.
@@ -195,11 +193,10 @@ following content:
 Overriding Jinja2 variables
 ---------------------------
 
-Jinja2 variables offer another way to customise images.  See the `Kolla
-documentation
-<https://docs.openstack.org/kolla/latest/admin/image-building.html#package-customisation>`__
-for details of using variable overrides to modify the list of packages to
-install in an image.
+Jinja2 variables offer another way to customise images.  See the
+:kolla-doc:`Kolla documentation
+<admin/image-building.html#package-customisation>` for details of using
+variable overrides to modify the list of packages to install in an image.
 
 Variable overrides are configured via the ``kolla_build_customizations``
 variable, which is a dict/map mapping names of variables to override to their
@@ -234,10 +231,10 @@ Source code locations
 For ``source`` image builds, configuration of source code locations for
 packages installed in containers by Kolla is possible via the ``kolla_sources``
 variable. The format is a dict/map mapping names of sources to their
-definitions. See the `Kolla documentation
-<https://docs.openstack.org/kolla/latest/admin/image-building.html#build-openstack-from-source>`__
-for details. The default is to specify the URL and version of Bifrost, as
-defined in ``${KAYOBE_CONFIG_PATH}/bifrost.yml``.
+definitions. See the :kolla-doc:`Kolla documentation
+<admin/image-building.html#build-openstack-from-source>` for details. The
+default is to specify the URL and version of Bifrost, as defined in
+``${KAYOBE_CONFIG_PATH}/bifrost.yml``.
 
 For example, to specify a custom source location for the ``ironic-base``
 package:
@@ -277,11 +274,9 @@ using a seed.
 Plugins & additions
 -------------------
 
-These features can also be used for installing `plugins
-<https://docs.openstack.org/kolla/latest/admin/image-building.html#plugin-functionality>`__
-and `additions
-<https://docs.openstack.org/kolla/latest/admin/image-building.html#additions-functionality>`__
-to ``source`` type images.
+These features can also be used for installing :kolla-doc:`plugins
+<admin/image-building.html#plugin-functionality>` and :kolla-doc:`additions
+<admin/image-building.html#additions-functionality>` to ``source`` type images.
 
 For example, to install a ``networking-ansible`` plugin in the
 ``neutron-server`` image:

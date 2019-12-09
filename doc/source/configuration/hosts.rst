@@ -607,8 +607,8 @@ bootstrapping nature of the command, Kayobe uses ``kayobe_ansible_user`` to
 execute it, and uses the Kayobe remote Python virtual environment (or the
 system Python interpreter if no virtual environment is in use).
 
-See the `Kolla Ansible documentation
-<https://docs.openstack.org/kolla-ansible/latest/reference/deployment-and-bootstrapping/bootstrap-servers.html>`__
+See the :kolla-ansible-doc:`Kolla Ansible documentation
+<reference/deployment-and-bootstrapping/bootstrap-servers.html>`
 for more information on the functions performed by this command, and how to
 configure it.
 

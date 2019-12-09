@@ -188,5 +188,5 @@ Or to perform an incremental backup, run the following command:
    kayobe overcloud database backup --incremental
 
 Further information on backing up and restoring the database is available in
-the `Kolla Ansible documentation
-<https://docs.openstack.org/kolla-ansible/latest/admin/mariadb-backup-and-restore.html>`__.
+the :kolla-ansible-doc:`Kolla Ansible documentation
+<admin/mariadb-backup-and-restore.html>`.
