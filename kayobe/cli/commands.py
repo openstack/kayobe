@@ -1225,6 +1225,49 @@ class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         self.run_kayobe_playbooks(parsed_args, playbooks, ignore_limit=True)
 
 
+class OvercloudServiceDeployContainers(KollaAnsibleMixin, KayobeAnsibleMixin,
+                                       VaultMixin, Command):
+    """Deploy the overcloud services without updating configuration.
+
+    * Configure kolla-ansible.
+    * Configure overcloud services in kolla-ansible.
+    * Perform kolla-ansible prechecks to verify the system state for
+      deployment.
+    * Perform a kolla-ansible deployment of the overcloud service containers.
+    * Configure and deploy kayobe extra services.
+
+    This can be used in conjunction with the --tags and --kolla-tags arguments
+    to deploy specific services.
+    """
+
+    def get_parser(self, prog_name):
+        parser = super(OvercloudServiceDeployContainers, self).get_parser(
+            prog_name)
+        group = parser.add_argument_group("Service Deployment")
+        group.add_argument("--skip-prechecks", action='store_true',
+                           help="skip the kolla-ansible prechecks command")
+        return parser
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Deploying overcloud services (containers only)")
+
+        # First prepare configuration.
+        self.generate_kolla_ansible_config(parsed_args)
+
+        # Run kolla-ansible prechecks before deployment.
+        if not parsed_args.skip_prechecks:
+            self.run_kolla_ansible_overcloud(parsed_args, "prechecks")
+
+        # Perform the kolla-ansible deployment.
+        self.run_kolla_ansible_overcloud(parsed_args, "deploy-containers")
+
+        # Deploy kayobe extra services.
+        playbooks = _build_playbook_list("overcloud-extras")
+        extra_vars = {"kayobe_action": "deploy"}
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  extra_vars=extra_vars, limit="overcloud")
+
+
 class OvercloudServiceReconfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
                                   VaultMixin, Command):
     """Reconfigure the overcloud services.
