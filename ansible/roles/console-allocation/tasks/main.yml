@@ -22,7 +22,7 @@
   local_action:
     module: package
     name: "{{ item }}"
-    state: installed
+    state: present
     use: "{{ console_allocation_package_manager }}"
   become: True
   with_items: "{{ console_allocation_package_dependencies }}"

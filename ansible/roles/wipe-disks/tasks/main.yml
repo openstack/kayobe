@@ -7,7 +7,7 @@
 # any LVM or file system state from them.
 
 - name: Ensure LVM2 is installed
-  yum:
+  package:
     name: lvm2
     state: present
   become: True

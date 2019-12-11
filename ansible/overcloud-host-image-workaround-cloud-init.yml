@@ -18,7 +18,7 @@
             --connection local
             --become
             -m yum
-            -a "name=libguestfs-tools state=installed"'
+            -a "name=libguestfs-tools state=present"'
         - name: Template cloud-init-repo
           copy:
             content: |

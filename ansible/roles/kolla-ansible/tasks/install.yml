@@ -3,9 +3,9 @@
   include_vars: "{{ ansible_os_family }}.yml"
 
 - name: Ensure EPEL repo is installed
-  yum:
+  package:
     name: epel-release
-    state: installed
+    state: present
   become: True
   when:
     - ansible_os_family == 'RedHat'
@@ -14,7 +14,7 @@
 - name: Ensure required packages are installed
   package:
     name: "{{ kolla_ansible_package_dependencies }}"
-    state: installed
+    state: present
   become: True
 
 - name: Ensure source code checkout parent directory exists

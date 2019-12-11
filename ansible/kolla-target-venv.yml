@@ -22,7 +22,7 @@
         - name: Ensure the python-virtualenv package is installed
           package:
             name: python-virtualenv
-            state: installed
+            state: present
           become: True
 
         - name: Ensure kolla-ansible virtualenv has the latest version of pip installed

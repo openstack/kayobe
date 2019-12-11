@@ -8,9 +8,9 @@
     controller_host: "{{ groups['controllers'][0] }}"
   tasks:
     - name: Ensure ipmitool is installed
-      yum:
+      package:
         name: ipmitool
-        state: installed
+        state: present
       become: True
       run_once: True
       delegate_to: "{{ controller_host }}"

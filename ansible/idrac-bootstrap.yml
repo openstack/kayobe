@@ -43,17 +43,17 @@
     # Install Dell server admin tools.
     - block:
         - name: Ensure wget is installed
-          yum:
+          package:
             name: wget
-            state: installed
+            state: present
 
         - name: Ensure Dell srvadmin repository is installed
           shell: "wget -q -O - http://linux.dell.com/repo/hardware/latest/bootstrap.cgi | bash"
 
         - name: Ensure Dell srvadmin-idrac7 package is installed
-          yum:
+          package:
             name: srvadmin-idrac7
-            state: installed
+            state: present
 
         # Configure access to the temporary network on a controller.
         - block:

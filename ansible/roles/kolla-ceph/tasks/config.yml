@@ -3,7 +3,7 @@
 - name: Ensure required packages are installed
   package:
     name: parted
-    state: installed
+    state: present
   become: True
   when: ceph_disks | length > 0
 
