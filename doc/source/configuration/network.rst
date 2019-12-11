@@ -390,7 +390,7 @@ addition to the bond, as a different named network.
 Configuring VLAN Interfaces
 ---------------------------
 
-A VLAN interface may be configured by setting the ``interface`` attribute  of a
+A VLAN interface may be configured by setting the ``interface`` attribute of a
 network to the name of the VLAN interface.  The interface name must be of the
 form ``<parent interface>.<VLAN ID>``.
 
@@ -419,6 +419,33 @@ Adding a VLAN interface to a bridge directly will allow tagged traffic for that
 VLAN to be forwarded by the bridge, whereas adding a VLAN interface to an
 Ethernet or bond interface that is a bridge member port will prevent tagged
 traffic for that VLAN being forwarded by the bridge.
+
+For example, if you are bridging ``eth1`` to ``breth1`` and want to access VLAN
+1234 as a tagged VLAN from the host, while still allowing Neutron to access
+traffic for that VLAN via Open vSwitch, your setup should look like this:
+
+.. code-block:: console
+
+   $ sudo brctl show
+   bridge name     bridge id               STP enabled     interfaces
+   breth1          8000.56e6b95b4178       no              p-breth1-phy
+                                                           eth1
+   $ sudo ip addr show | grep 1234 | head -1
+   10: breth1.1234@breth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+
+It should **not** look like this:
+
+.. code-block:: console
+
+   $ sudo brctl show
+   bridge name     bridge id               STP enabled     interfaces
+   breth1          8000.56e6b95b4178       no              p-breth1-phy
+                                                           eth1
+   $ sudo ip addr show | grep 1234 | head -1
+   10: eth1.1234@eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+
+This second configuration may be desirable to prevent specific traffic, e.g. of
+the internal API network, from reaching Neutron.
 
 Domain Name Service (DNS) Resolver Configuration
 ================================================
