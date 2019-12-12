@@ -31,13 +31,13 @@
     - { src: keystone.conf.j2, dest: keystone.conf, enabled: "{{ kolla_enable_keystone }}" }
     - { src: magnum.conf.j2, dest: magnum.conf, enabled: "{{ kolla_enable_magnum }}" }
     - { src: manila.conf.j2, dest: manila.conf, enabled: "{{ kolla_enable_manila }}" }
+    - { src: backup.my.cnf.j2, dest: backup.my.cnf, enabled: "{{ kolla_enable_mariabackup }}" }
     - { src: ml2_conf.ini.j2, dest: neutron/ml2_conf.ini, enabled: "{{ kolla_enable_neutron }}" }
     - { src: murano.conf.j2, dest: murano.conf, enabled: "{{ kolla_enable_murano }}" }
     - { src: neutron.conf.j2, dest: neutron.conf, enabled: "{{ kolla_enable_neutron }}" }
     - { src: nova.conf.j2, dest: nova.conf, enabled: "{{ kolla_enable_nova }}" }
     - { src: octavia.conf.j2, dest: octavia.conf, enabled: "{{ kolla_enable_octavia }}" }
     - { src: sahara.conf.j2, dest: sahara.conf, enabled: "{{ kolla_enable_sahara }}" }
-    - { src: backup.my.cnf.j2, dest: backup.my.cnf, enabled: "{{ kolla_enable_xtrabackup }}" }
     - { src: zookeeper.cfg.j2, dest: zookeeper.cfg, enabled: "{{ kolla_enable_zookeeper }}" }
   when: item.enabled | bool
 

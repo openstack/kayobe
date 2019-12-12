@@ -121,6 +121,7 @@
             - { name: keystone, file: keystone.conf }
             - { name: magnum, file: magnum.conf }
             - { name: manila, file: manila.conf }
+            - { name: mariabackup, file: backup.my.cnf }
             - { name: mariadb, file: galera.cnf }
             - { name: murano, file: murano.conf }
             - { name: neutron, file: neutron.conf }
@@ -128,7 +129,6 @@
             - { name: nova, file: nova.conf }
             - { name: octavia, file: octavia.conf }
             - { name: sahara, file: sahara.conf }
-            - { name: xtrabackup, file: backup.my.cnf }
             - { name: zookeeper, file: zookeeper.cfg }
 
         - name: Initialise a fact containing extra configuration
@@ -230,6 +230,7 @@
       kolla_extra_keystone: "{{ kolla_extra_config.keystone | default }}"
       kolla_extra_magnum: "{{ kolla_extra_config.magnum | default }}"
       kolla_extra_manila: "{{ kolla_extra_config.manila | default }}"
+      kolla_extra_mariabackup: "{{ kolla_extra_config.mariabackup | default }}"
       kolla_extra_mariadb: "{{ kolla_extra_config.mariadb | default }}"
       kolla_extra_murano: "{{ kolla_extra_config.murano | default }}"
       kolla_extra_neutron: "{{ kolla_extra_config.neutron | default }}"
@@ -237,6 +238,5 @@
       kolla_extra_nova: "{{ kolla_extra_config.nova | default }}"
       kolla_extra_octavia: "{{ kolla_extra_config.octavia | default }}"
       kolla_extra_sahara: "{{ kolla_extra_config.sahara | default }}"
-      kolla_extra_xtrabackup: "{{ kolla_extra_config.xtrabackup | default }}"
       kolla_extra_zookeeper: "{{ kolla_extra_config.zookeeper | default }}"
       kolla_extra_config_path: "{{ kayobe_config_path }}/kolla/config"
