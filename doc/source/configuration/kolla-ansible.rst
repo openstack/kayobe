@@ -202,11 +202,25 @@ The following variables affect TLS encryption of the public API.
 
 ``kolla_enable_tls_external``
     Whether TLS is enabled for the public API endpoints. Default is ``no``.
-``kolla_tls_cert``
+``kolla_external_tls_cert``
     A TLS certificate bundle to use for the public API endpoints, if
     ``kolla_enable_tls_external`` is ``true``.  Note that this should be
     formatted as a literal style block scalar.
 ``kolla_external_fqdn_cacert``
+    Path to a CA certificate file to use for the ``OS_CACERT`` environment
+    variable in openrc files when TLS is enabled, instead of Kolla Ansible's
+    default.
+
+The following variables affect TLS encryption of the internal API. Currently
+this requires all Kolla images to be built with the API's root CA trusted.
+
+``kolla_enable_tls_internal``
+    Whether TLS is enabled for the internal API endpoints. Default is ``no``.
+``kolla_internal_tls_cert``
+    A TLS certificate bundle to use for the internal API endpoints, if
+    ``kolla_enable_tls_internal`` is ``true``.  Note that this should be
+    formatted as a literal style block scalar.
+``kolla_internal_fqdn_cacert``
     Path to a CA certificate file to use for the ``OS_CACERT`` environment
     variable in openrc files when TLS is enabled, instead of Kolla Ansible's
     default.
@@ -222,11 +236,28 @@ Here is an example:
 
    ---
    kolla_enable_tls_external: yes
-   kolla_tls_cert: |
+   kolla_external_tls_cert: |
      -----BEGIN CERTIFICATE-----
      ...
      -----END CERTIFICATE-----
    kolla_external_fqdn_cacert: /path/to/ca/certificate/bundle
+
+Example: enabling TLS for the internal API
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+It is highly recommended to use TLS encryption to secure the internal API.
+Here is an example:
+
+.. code-block:: yaml
+   :caption: ``$KAYOBE_CONFIG_PATH/kolla.yml``
+
+   ---
+   kolla_enable_tls_internal: yes
+   kolla_internal_tls_cert: |
+     -----BEGIN CERTIFICATE-----
+     ...
+     -----END CERTIFICATE-----
+   kolla_internal_fqdn_cacert: /path/to/ca/certificate/bundle
 
 Custom Global Variables
 -----------------------

@@ -96,6 +96,8 @@
               - "fake-ml2-tenant-type-2"
             kolla_enable_tls_external: False
             kolla_external_fqdn_cert: "fake-cert"
+            kolla_enable_tls_internal: False
+            kolla_internal_fqdn_cert: "fake-cert"
             kolla_openstack_logging_debug: True
             grafana_local_admin_user_name: "grafana-admin"
             kolla_inspector_dhcp_pool_start: "1.2.3.4"
@@ -229,6 +231,8 @@
               neutron_plugin_agent: "openvswitch"
               kolla_enable_tls_external: False
               kolla_external_fqdn_cert: "fake-cert"
+              kolla_enable_tls_internal: False
+              kolla_internal_fqdn_cert: "fake-cert"
               openstack_logging_debug: True
               grafana_admin_username: "grafana-admin"
               ironic_dnsmasq_dhcp_range: "1.2.3.4,1.2.3.5"

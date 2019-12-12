@@ -318,7 +318,10 @@ kolla_ansible_target_venv: "{{ virtualenv_path ~ '/kolla-ansible' }}"
 kolla_ansible_vault_password: "{{ lookup('env', 'KAYOBE_VAULT_PASSWORD') | default }}"
 
 # Whether TLS is enabled for the external API endpoints.
-kolla_enable_tls_external: "no"
+kolla_enable_tls_external: "{{ kolla_enable_tls_internal if public_net_name == internal_net_name else 'no' }}"
+
+# Whether TLS is enabled for the internal API endpoints.
+kolla_enable_tls_internal: "no"
 
 # Whether debug logging is enabled.
 kolla_openstack_logging_debug: "False"
@@ -411,14 +414,30 @@ kolla_ansible_custom_passwords: "{{ kolla_ansible_default_custom_passwords }}"
 ###############################################################################
 # TLS certificate bundle management
 
-# Optionally copy a TLS certificate bundle into place.
+# External API certificate bundle.
 #
-# When enabled, this will copy the contents of kolla_tls_cert into place for
-# use by HAProxy
+# When kolla_enable_tls_external is true, this should contain an X.509
+# certificate bundle for the external API.
 #
 # Note that this should be formatted as a literal style block scalar.
-kolla_tls_cert:
+# TODO(mgoddard): Remove the deprecated support for kolla_tls_cert in the
+# Ussuri cycle.
+kolla_external_tls_cert: "{{ kolla_tls_cert | default }}"
 
-# Path to a CA certificate file to use for the OS_CACERT environment variable in
-# openrc files when TLS is enabled, instead of Kolla-Ansible's default.
+# Path to a CA certificate file to use for the OS_CACERT environment variable
+# in public-openrc.sh file when TLS is enabled, instead of Kolla-Ansible's
+# default.
 kolla_external_fqdn_cacert:
+
+# Internal API certificate bundle.
+#
+# When kolla_enable_tls_internal is true, this should contain an X.509
+# certificate bundle for the internal API.
+#
+# Note that this should be formatted as a literal style block scalar.
+kolla_internal_tls_cert:
+
+# Path to a CA certificate file to use for the OS_CACERT environment variable
+# in admin-openrc.sh file when TLS is enabled, instead of Kolla-Ansible's
+# default.
+kolla_internal_fqdn_cacert:

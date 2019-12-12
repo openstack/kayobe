@@ -200,12 +200,15 @@ kolla_neutron_ml2_tenant_network_types: []
 ####################
 # TLS options
 ####################
-# To provide encryption and authentication on the kolla_external_vip_interface,
-# TLS can be enabled.  When TLS is enabled, certificates must be provided to
-# allow clients to perform authentication.
+# To provide encryption and authentication on the external and/or internal
+# APIs, TLS can be enabled.  When TLS is enabled, certificates must be provided
+# to allow clients to perform authentication.
 kolla_enable_tls_external:
+kolla_enable_tls_internal:
 kolla_external_fqdn_cert:
+kolla_internal_fqdn_cert:
 kolla_external_fqdn_cacert:
+kolla_internal_fqdn_cacert:
 
 #############################
 # Ironic options
@@ -299,7 +302,8 @@ kolla_ansible_custom_passwords: {}
 
 # When set, this will copy the contents of this variable into place for
 # use by HAProxy.
-kolla_tls_cert:
+kolla_external_tls_cert:
+kolla_internal_tls_cert:
 
 ###############################################################################
 # SELinux
