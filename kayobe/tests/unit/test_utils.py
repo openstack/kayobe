@@ -12,6 +12,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import os
 import subprocess
 import unittest
 
@@ -132,3 +133,9 @@ key2: value2
         value = "string to escape"
         expected = "{{'c3RyaW5nIHRvIGVzY2FwZQ==' | b64decode }}"
         self.assertEqual(expected, utils.escape_jinja(value))
+
+    def test_detect_install_prefix(self):
+        path = "/tmp/test/local/lib/python2.7/dist-packages"
+        expected = os.path.normpath("/tmp/test/local/")
+        result = utils._detect_install_prefix(path)
+        self.assertEqual(expected, os.path.normpath(result))
