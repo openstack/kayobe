@@ -34,7 +34,7 @@
 - src: stackhpc.os-ironic-state
   version: v1.2.0
 - src: stackhpc.os-networks
-  version: v1.2.0
+  version: v1.3.1
 - src: stackhpc.os-openstackclient
   version: v1.3.0
 - src: stackhpc.os-shade
