@@ -20,19 +20,31 @@ glance
 nova
 
 [nova-conductor:children]
+{% if 'cell-control' in kolla_overcloud_inventory_top_level_group_map %}
+cell-control
+{% else %}
 nova
+{% endif %}
 
 [nova-super-conductor:children]
 nova
 
 [nova-novncproxy:children]
+{% if 'cell-control' in kolla_overcloud_inventory_top_level_group_map %}
+cell-control
+{% else %}
 nova
+{% endif %}
 
 [nova-scheduler:children]
 nova
 
 [nova-spicehtml5proxy:children]
+{% if 'cell-control' in kolla_overcloud_inventory_top_level_group_map %}
+cell-control
+{% else %}
 nova
+{% endif %}
 
 # NOTE: HA for nova-compute services with ironic is still an experimental
 # feature. Provide the option to use a single compute host, even when multiple
@@ -46,7 +58,11 @@ nova
 {% endif %}
 
 [nova-serialproxy:children]
+{% if 'cell-control' in kolla_overcloud_inventory_top_level_group_map %}
+cell-control
+{% else %}
 nova
+{% endif %}
 
 # Neutron
 [neutron-server:children]
