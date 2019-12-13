@@ -49,6 +49,25 @@
         state: directory
       register: tempfile_result
 
+    - name: Create directory for custom overcloud foo group vars
+      file:
+        path: "{{ tempfile_result.path ~ '/etc/kayobe/kolla/inventory/group_vars/foo_group' }}"
+        state: directory
+
+    - name: Create custom overcloud foo group vars
+      copy:
+        dest: "{{ tempfile_result.path ~ '/etc/kayobe/kolla/inventory/group_vars/foo_group/all' }}"
+        content: |
+          ---
+          foo_port: "1234"
+
+    - name: Create custom overcloud bar group vars
+      copy:
+        dest: "{{ tempfile_result.path ~ '/etc/kayobe/kolla/inventory/group_vars/bar_group' }}"
+        content: |
+          ---
+          bar_port: "4567"
+
     - block:
         - name: Test the kolla-ansible role with default values
           include_role:
@@ -61,6 +80,7 @@
             kolla_ansible_venv: "{{ temp_path }}/venv"
             kolla_ansible_vault_password: "fake-password"
             kolla_config_path: "{{ temp_path }}/etc/kolla"
+            kolla_overcloud_group_vars_path: "{{ temp_path }}/etc/kayobe/kolla/inventory/group_vars"
             kolla_node_custom_config_path: "{{ temp_path }}/etc/kolla/config"
             kolla_ansible_passwords_path: "{{ temp_path }}/passwords.yml"
             # Config.
@@ -496,6 +516,46 @@
                 neutron_external_interface: "eth4,eth5"
                 neutron_bridge_name: "br0,br1"
 
+        - name: Check whether inventory group vars files exist
+          stat:
+            path: "{{ temp_path ~ '/etc/kolla/inventory/overcloud/group_vars/' ~ item }}"
+          with_items:
+            - foo_group/all
+            - bar_group
+          register: group_vars_stat
+
+        - name: Validate inventory group vars files
+          assert:
+            that:
+              - item.stat.exists
+              - item.stat.size > 0
+            msg: >
+              Inventory file {{ item.item }} was not found.
+          with_items: "{{ group_vars_stat.results }}"
+
+        - name: Read inventory group vars files
+          slurp:
+            src: "{{ item.stat.path }}"
+          with_items: "{{ group_vars_stat.results }}"
+          register: group_vars_slurp
+
+        - name: Validate inventory group vars file contents
+          assert:
+            that:
+              - group_vars_content is defined
+              - group_vars_content == item.1
+          with_together:
+            - "{{ group_vars_slurp.results }}"
+            - "{{ expected_contents }}"
+          vars:
+            group_vars_content: "{{ item.0.content | b64decode }}"
+            expected_contents:
+              - |
+                ---
+                foo_port: "1234"
+              - |
+                ---
+                bar_port: "4567"
       always:
         - name: Ensure the temporary directory is removed
           file:

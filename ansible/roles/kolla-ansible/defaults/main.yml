@@ -54,6 +54,9 @@ kolla_ansible_become: true
 # Full custom seed inventory contents.
 kolla_seed_inventory_custom:
 
+# Directory containing custom Kolla-Ansible group vars.
+kolla_overcloud_group_vars_path:
+
 # List of names of host variables to pass through from kayobe hosts to
 # the kolla-ansible seed host, if set. See also
 # kolla_seed_inventory_pass_through_host_vars_map.
