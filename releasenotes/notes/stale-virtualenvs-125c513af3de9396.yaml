@@ -4,7 +4,7 @@ features:
     Adds a new configuration variable, ``pip_upper_constraints_file``, which is
     used to configure the file or URL containing the python upper version
     contraints. Its default value is
-    ``https://releases.openstack.org/constraints/upper/{{ openstack_branch }}``.
+    ``https://releases.openstack.org/constraints/upper/{{ openstack_release }}``.
 fixes:
   - |
     Fixes an issue with virtual environments on remote hosts, which may over

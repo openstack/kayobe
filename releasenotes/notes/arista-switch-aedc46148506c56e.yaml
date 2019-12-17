@@ -2,5 +2,5 @@
 features:
   - |
     Adds support for configuration of Arista switches running EOS 4.15 or
-    later. This is integrated with the `kayobe physical network configure`
+    later. This is integrated with the ``kayobe physical network configure``
     command.

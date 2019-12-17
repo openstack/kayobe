@@ -2,7 +2,7 @@
 fixes:
   - |
     Fixes the detection of kayobe's data files on Ubuntu when not installing into a
-    virtualenv, see `Story 2005510 <https://storyboard.openstack.org/#!/story/2005510>`_
+    virtualenv, see `story 2005510 <https://storyboard.openstack.org/#!/story/2005510>`_
     for details.
 features:
   - |

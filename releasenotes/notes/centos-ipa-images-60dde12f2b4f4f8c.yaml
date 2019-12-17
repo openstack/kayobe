@@ -4,5 +4,6 @@ upgrade:
     The default IPA images now use CentOS as a base image. This is
     because CoreOS based images are no longer supported or built by
     the upstream Ironic Python Agent project as of the Train release.
-    Please see the `Ironic Python Agent release notes for more details
-    <https://docs.openstack.org/releasenotes/ironic-python-agent/train.html>`_.
+    Please see the `Ironic Python Agent release notes
+    <https://docs.openstack.org/releasenotes/ironic-python-agent/train.html>`_
+    for more details.
