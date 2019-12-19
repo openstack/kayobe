@@ -1,0 +1,5 @@
+---
+prelude: >
+    This Kayobe release is the first as part of an official OpenStack project.
+    Kayobe is now a deliverable of the `Kolla project
+    <https://governance.openstack.org/tc/reference/projects/kolla.html>`_.
