@@ -19,6 +19,9 @@
             kolla_ansible_venv: "{{ temp_path }}/venv"
             kolla_config_path: "{{ temp_path }}/etc/kolla"
             kolla_node_custom_config_path: "{{ temp_path }}/etc/kolla/config"
+            # Purposely does not exist to simulate the case when no group vars
+            # are provided
+            kolla_overcloud_group_vars_path: "{{ temp_path }}/etc/kayobe/kolla/inventory/group_vars"
             kolla_ansible_passwords_path: "{{ temp_path }}/passwords.yml"
             # Required config.
             kolla_base_distro: "fake-distro"
@@ -131,6 +134,7 @@
             - seed/host_vars
             - overcloud
             - overcloud/host_vars
+            - overcloud/group_vars
           register: inventory_stat
 
         - name: Validate inventory files
@@ -141,6 +145,18 @@
             msg: >
               Inventory file {{ item.item }} was not found.
           with_items: "{{ inventory_stat.results }}"
+
+        - name: Look for custom overcloud group vars
+          find:
+            paths: "{{ temp_path ~ '/etc/kolla/inventory/group_vars' }}"
+          register: kolla_ansible_overcloud_group_vars
+
+        - name: Check that no overcloud group vars are set
+          assert:
+            that:
+              - kolla_ansible_overcloud_group_vars.matched == 0
+            msg: >
+              Overcloud group vars were found when they should not be set.
 
         - name: Validate passwords.yml contents
           assert:

@@ -299,6 +299,34 @@ to enable debug logging for Nova services:
    ---
    nova_logging_debug: true
 
+Custom Group Variables
+----------------------
+
+Group variables can be used to set configuration for all hosts in a group. They
+can be set in Kolla Ansible by placing files in
+``${KAYOBE_CONFIG_PATH}/kolla/inventory/group_vars/*``. Since this
+directory is copied directly into the Kolla Ansible inventory, Kolla
+Ansible group names should be used. It should be noted that
+``extra-vars`` and ``host_vars`` take precedence over ``group_vars``. For
+more information on variable precedence see the Ansible `documentation
+<http://docs.ansible.com/ansible/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable>`_.
+
+Example: configure a Nova cell
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In Kolla Ansible, :kolla-ansible-doc:`Nova cells are configured
+<reference/compute/nova-cells-guide>` via group variables. For example, to
+configure ``cell0001`` the following file could be created:
+
+.. code-block:: yaml
+   :caption: ``$KAYOBE_CONFIG_PATH/kolla/inventory/group_vars/cell0001/all``
+
+   ---
+   nova_cell_name: cell0001
+   nova_cell_novncproxy_group: cell0001-vnc
+   nova_cell_conductor_group: cell0001-control
+   nova_cell_compute_group: cell0001-compute
+
 Passwords
 ---------
 

@@ -38,6 +38,7 @@
     - "{{ kolla_config_path }}"
     - "{{ kolla_seed_inventory_path }}/host_vars"
     - "{{ kolla_overcloud_inventory_path }}/host_vars"
+    - "{{ kolla_overcloud_inventory_path }}/group_vars"
     - "{{ kolla_node_custom_config_path }}"
 
 - name: Ensure the Kolla global configuration file exists
@@ -71,6 +72,17 @@
     content: "{{ kolla_overcloud_inventory }}"
     dest: "{{ kolla_overcloud_inventory_path }}/hosts"
     mode: 0640
+
+- name: Look for custom Kolla overcloud group vars
+  stat:
+    path: "{{ kolla_overcloud_group_vars_path }}"
+  register: kolla_ansible_custom_overcloud_group_vars
+
+- name: Copy over custom Kolla overcloud group vars
+  copy:
+    src: "{{ kolla_overcloud_group_vars_path }}"
+    dest: "{{ kolla_overcloud_inventory_path }}/"
+  when: kolla_ansible_custom_overcloud_group_vars.stat.exists
 
 - name: Ensure the Kolla overcloud host vars files exist
   template:
