@@ -13,3 +13,4 @@ Configuration Guide
    kolla-ansible
    bifrost
    ironic-python-agent
+   nova-cells
