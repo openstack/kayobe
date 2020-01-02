@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an issue with provisioning the seed VM using the stackhpc.libvirt-vm
+    role at version 1.8.0. See `story 2007063
+    <https://storyboard.openstack.org/#!/story/2007063>`__ for details.
