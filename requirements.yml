@@ -30,7 +30,7 @@
 - src: stackhpc.mellanox-switch
   version: v1.0.0
 - src: stackhpc.os-images
-  version: v1.6.0
+  version: v1.7.0
 - src: stackhpc.os-ironic-state
   version: v1.2.0
 - src: stackhpc.os-networks

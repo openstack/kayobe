@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an issue with building IPA images when no additional packages are
+    specified. See `story 2007069
+    <https://storyboard.openstack.org/#!/story/2007069>`__ for details.
