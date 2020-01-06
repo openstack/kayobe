@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an issue seen during overcloud provisioning due to Bifrost renaming
+    the IPA kernel file. See `story 2007068
+    <https://storyboard.openstack.org/#!/story/2007068>`__ for details.
