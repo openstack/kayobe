@@ -58,14 +58,8 @@
       - name: openstack/kayobe
       - name: openstack/kayobe-config-dev
       - name: openstack/kolla
-        # TODO(mgoddard): Remove when Ansible playbooks support Python 3.
-        override-checkout: stable/train
       - name: openstack/kolla-ansible
-        # TODO(mgoddard): Remove when Ansible playbooks support Python 3.
-        override-checkout: stable/train
       - name: openstack/requirements
-        # TODO(mgoddard): Remove when Ansible playbooks support Python 3.
-        override-checkout: stable/train
       - name: openstack/tenks
     irrelevant-files:
       - ^.*\.rst$

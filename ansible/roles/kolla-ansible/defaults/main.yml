@@ -21,7 +21,7 @@ kolla_ansible_venv_python: "python{{ kolla_ansible_venv_python_major_version }}"
 
 # Major version of Python interpreter used in Kolla Ansible virtualenv.
 # FIXME(mgoddard): Use ansible_python when Kayobe supports Python 3.
-kolla_ansible_venv_python_major_version: 2
+kolla_ansible_venv_python_major_version: 3
 
 # Virtualenv directory where Kolla-ansible's ansible modules will execute
 # remotely on the target nodes. If None, no virtualenv will be used.
