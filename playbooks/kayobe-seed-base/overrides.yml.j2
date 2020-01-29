@@ -5,7 +5,7 @@ disable_selinux_do_reboot: false
 
 # Use the OpenStack infra's Dockerhub mirror.
 docker_registry_mirrors:
-  - "http://{{ zuul_site_mirror_fqdn }}:8081/registry-1.docker/"
+  - "http://{{ zuul_site_mirror_fqdn }}:8082/"
 
 kolla_source_url: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/kolla'].src_dir }}"
 kolla_source_version: "{{ zuul.projects['opendev.org/openstack/kolla'].checkout }}"

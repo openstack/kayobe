@@ -53,7 +53,7 @@
             kolla_ansible_source_path: "{{ temp_path }}/src"
             kolla_ansible_ctl_install_type: "source"
             kolla_ansible_source_url: "http://github.com/openstack/kolla-ansible"
-            kolla_ansible_source_version: "master"
+            kolla_ansible_source_version: "stable/rocky"
             kolla_ansible_venv: "{{ temp_path }}/venv"
             kolla_ansible_vault_password: "fake-password"
             kolla_config_path: "{{ temp_path }}/etc/kolla"

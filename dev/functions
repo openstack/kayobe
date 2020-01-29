@@ -660,10 +660,13 @@ function configure_iptables {
     sudo iptables -I INPUT -d $HOST_IP -p tcp --dport $IRONIC_SERVICE_PORT -j ACCEPT || true
     # open ironic API on baremetal network
     sudo iptables -I INPUT -d $IRONIC_HTTP_SERVER -p tcp --dport $IRONIC_SERVICE_PORT -j ACCEPT || true
-    # allow IPA to connect to ironic API
-    sudo iptables -I FORWARD -p tcp --dport $IRONIC_SERVICE_PORT -j ACCEPT || true
-    # allow IPA to connect to ironic inspector
-    sudo iptables -I FORWARD -p tcp --dport $IRONIC_INSPECTOR_PORT -j ACCEPT || true
+
+    # Docker CE has added a default DROP policy to the FORWARD chain.
+    # When nova-compute runs on the controller, kolla ansible sets the
+    # net.bridge.bridge-nf-call-iptables sysctl to 1, which causes iptables to
+    # process frames forwarded across bridges. Forward all frames on the main
+    # bridge, breth1.
+    sudo iptables -A FORWARD -i breth1 -j ACCEPT || true
 
     # agent ramdisk gets instance image from swift
     sudo iptables -I INPUT -d $INTERNAL_VIP -p tcp --dport ${SWIFT_DEFAULT_BIND_PORT:-8080} -j ACCEPT || true
