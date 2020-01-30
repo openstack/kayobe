@@ -71,7 +71,7 @@
     - name: Initialise facts containing the network host interfaces
       set_fact:
         # Initialise the following lists.
-        kolla_neutron_bridge_interfaces: []
+        kolla_neutron_interfaces: []
         kolla_neutron_bridge_names: []
         kolla_neutron_external_interfaces: []
 
@@ -79,24 +79,29 @@
     # bridge interface rather than the untagged interface. We therefore
     # strip the .<vlan> suffix of the interface name. We use a union here
     # as a single tagged interface may be shared between these networks.
-    - name: Set a fact containing the bridges to be patched to the Neutron OVS bridges
+    - name: Set a fact containing the interfaces to be plugged to the Neutron OVS bridges
       set_fact:
-        kolla_neutron_bridge_interfaces: >
-          {{ kolla_neutron_bridge_interfaces |
+        kolla_neutron_interfaces: >
+          {{ kolla_neutron_interfaces |
              union([item | net_interface | replace('.' ~ item | net_vlan | default('!nomatch!'), '')]) |
              list }}
       with_items: "{{ [provision_wl_net_name, cleaning_net_name] + external_net_names | unique | list }}"
       when: item in network_interfaces
 
     - name: Set facts containing the Neutron bridge and interface names
+      vars:
+        is_bridge: "{{ item in (network_interfaces | net_select_bridges | map('net_interface')) }}"
+        # For a bridge, use a veth pair connected to the bridge. Otherwise use
+        # the interface directly.
+        external_interface: "{{ (network_patch_prefix ~ item ~ network_patch_suffix_ovs) if is_bridge else item }}"
       set_fact:
         kolla_neutron_bridge_names: >
           {{ kolla_neutron_bridge_names +
              [item ~ network_bridge_suffix_ovs] }}
         kolla_neutron_external_interfaces: >
           {{ kolla_neutron_external_interfaces +
-             [network_patch_prefix ~ item ~ network_patch_suffix_ovs] }}
-      with_items: "{{ kolla_neutron_bridge_interfaces }}"
+             [external_interface] }}
+      with_items: "{{ kolla_neutron_interfaces }}"
 
     - name: Validate overcloud host Kolla Ansible network configuration
       fail:
