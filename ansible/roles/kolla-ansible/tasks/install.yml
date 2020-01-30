@@ -13,7 +13,8 @@
 
 - name: Ensure required packages are installed
   package:
-    name: "{{ kolla_ansible_package_dependencies }}"
+    # NOTE(mgoddard): select non-empty packages.
+    name: "{{ kolla_ansible_package_dependencies | select | list }}"
     state: present
   become: True
 
@@ -42,11 +43,29 @@
   become: True
   when: kolla_ansible_venv is not none
 
+# TODO(mgoddard): Remove this block when the previous release does not support
+# Python 2.
+- block:
+    - name: Check if virtualenv is python 2
+      stat:
+        path: "{{ kolla_ansible_venv }}/bin/python2"
+      register: stat_result
+
+    - name: Ensure python2 virtualenv is absent
+      file:
+        path: "{{ kolla_ansible_venv }}"
+        state: absent
+      when: stat_result.stat.exists
+  when:
+    - kolla_ansible_venv is not none
+    - kolla_ansible_venv_python_major_version | int == 3
+
 - name: Ensure the latest version of pip is installed
   pip:
     name: "{{ item.name }}"
     state: latest
     virtualenv: "{{ kolla_ansible_venv }}"
+    virtualenv_python: "{{ kolla_ansible_venv_python }}"
   with_items:
     - { name: pip }
 
@@ -65,7 +84,9 @@
 # This is a workaround for the lack of a python package for libselinux-python
 # on PyPI. Without using --system-site-packages to create the virtualenv, it
 # seems difficult to ensure the selinux python module is available. It is a
-# dependency for Ansible when selinux is enabled.
+# dependency for Ansible when selinux is enabled. On CentOS 8, we can install
+# the selinux package from PyPI, however when using Python 3 on CentOS 7 this
+# does not work.
 - name: Ensure selinux Python package is linked into the virtualenv
   file:
     src: "/usr/lib64/python2.7/site-packages/selinux"
@@ -75,3 +96,4 @@
     - ansible_os_family == 'RedHat'
     - ansible_selinux != False
     - ansible_selinux.status != 'disabled'
+    - kolla_ansible_venv_python_major_version | int == 2
