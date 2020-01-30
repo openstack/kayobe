@@ -26,22 +26,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from kayobe.version import version_info as kayobe_version
-import os
-import sys
-
-sys.path.insert(0, os.path.abspath('../..'))
 # -- General configuration ----------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = [
     'openstackdocstheme',
-    'sphinx.ext.autodoc',
+    #'sphinx.ext.autodoc',
     #'sphinx.ext.intersphinx',
-    # Uncomment this to enable the OpenStack documentation style, adding
-    # oslosphinx to test-requirements.txt.
-    #'oslosphinx',
     'sphinxcontrib.rsvgconverter',
 ]
 
@@ -58,16 +50,6 @@ master_doc = 'index'
 # General information about the project.
 project = u'kayobe'
 copyright = u'2013, OpenStack Foundation'
-
-# The version info for the project you're documenting, acts as replacement for
-# |version| and |release|, also used in various other places throughout the
-# built documents.
-#
-# The short X.Y version.
-# The full version, including alpha/beta/rc tags.
-release = kayobe_version.version_string_with_vcs()
-# The short X.Y version.
-version = kayobe_version.canonical_version_string()
 
 # If true, '()' will be appended to :func: etc. cross-reference text.
 add_function_parentheses = True
@@ -90,9 +72,6 @@ html_theme = 'openstackdocs'
 # Output file base name for HTML help builder.
 htmlhelp_basename = '%sdoc' % project
 
-# Must set this variable to include year, month, day, hours, and minutes.
-html_last_updated_fmt = '%Y-%m-%d %H:%M'
-
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass
 # [howto/manual]).
@@ -107,10 +86,9 @@ latex_documents = [
 latex_use_xindy = False
 
 # openstackdocstheme options
-# TODO(mgoddard): Change to openstack/kayobe.
 repository_name = 'openstack/kayobe'
-bug_project = 'kayobe'
-bug_tag = ''
+use_storyboard = True
+
 openstack_projects = [
     'bifrost',
     'diskimage-builder',
