@@ -4,6 +4,15 @@
 # Components define groups of services, e.g. nova or ironic.
 # Services define single containers, e.g. nova-compute or ironic-api.
 
+{% if ansible_os_family == 'RedHat' and ansible_distribution_major_version | int == 7 and kolla_ansible_venv_python_major_version | int == 3 %}
+# TODO(mgoddard): Remove when CentOS 7 is no longer supported.
+# Force the use of python2 for localhost. This is necessary for delegate_to:
+# localhost, which will otherwise use the playbook python interpreter
+# (python3).  On CentOS 7, that fails due to a lack of python3 bindings for
+# SELinux.  https://bugs.centos.org/view.php?id=16389
+localhost ansible_python_interpreter=/usr/bin/python2
+{% endif %}
+
 {% for group in kolla_overcloud_top_level_groups %}
 # Top level {{ group }} group.
 [{{ group }}]
