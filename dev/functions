@@ -48,6 +48,9 @@ function config_defaults {
     # tenks-deploy-config-overcloud.yml or tenks-deploy-config-compute.yml will
     # be used.
     export TENKS_CONFIG_PATH=${TENKS_CONFIG_PATH:-}
+
+    # Log directory in case of errors
+    export LOGDIR=${LOGDIR:-}
 }
 
 function config_set {
