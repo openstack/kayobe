@@ -40,35 +40,23 @@ inspector_extra_kernel_options: "{{ kolla_bifrost_inspector_extra_kernel_options
 # Whether to download Ironic Python Agent (IPA) images.
 download_ipa: "{{ kolla_bifrost_download_ipa }}"
 
-{% if kolla_bifrost_ipa_kernel_upstream_url %}
 # URL of Ironic Python Agent (IPA) kernel image.
 ipa_kernel_upstream_url: "{{ kolla_bifrost_ipa_kernel_upstream_url }}"
-{% endif %}
 
-{% if kolla_bifrost_ipa_kernel_checksum_url %}
 # URL of checksum of Ironic Python Agent (IPA) kernel image.
 ipa_kernel_upstream_checksum_url: "{{ kolla_bifrost_ipa_kernel_checksum_url }}"
-{% endif %}
 
-{% if kolla_bifrost_ipa_kernel_checksum_algorithm %}
 # Algorithm of checksum of Ironic Python Agent (IPA) kernel image.
 ipa_kernel_upstream_checksum_algo: "{{ kolla_bifrost_ipa_kernel_checksum_algorithm }}"
-{% endif %}
 
-{% if kolla_bifrost_ipa_ramdisk_upstream_url %}
 # URL of Ironic Python Agent (IPA) ramdisk image.
 ipa_ramdisk_upstream_url: "{{ kolla_bifrost_ipa_ramdisk_upstream_url }}"
-{% endif %}
 
-{% if kolla_bifrost_ipa_ramdisk_checksum_url %}
 # URL of checksum of Ironic Python Agent (IPA) ramdisk image.
 ipa_ramdisk_upstream_checksum_url: "{{ kolla_bifrost_ipa_ramdisk_checksum_url }}"
-{% endif %}
 
-{% if kolla_bifrost_ipa_ramdisk_checksum_algorithm %}
 # Algorithm of checksum of Ironic Python Agent (IPA) ramdisk image.
 ipa_ramdisk_upstream_checksum_algo: "{{ kolla_bifrost_ipa_ramdisk_checksum_algorithm }}"
-{% endif %}
 
 {% if kolla_bifrost_extra_globals %}
 ###############################################################################
