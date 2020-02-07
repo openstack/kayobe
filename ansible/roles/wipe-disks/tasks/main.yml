@@ -15,9 +15,9 @@
 - name: Check for unmounted block devices
   shell: >
     lsblk -i -o NAME,MOUNTPOINT   | awk \
-        '/^ *[|`]-/ && NF > 1    { mounts[master_dev] = mounts[master_dev] $2 " " }
-         /^(nvme|sd)/ && NF == 1 { master_dev = $1; mounts[master_dev] = "" }
-         END                     { for (dev in mounts) if (mounts[dev] == "") print dev }'
+        '/^ *[|`]-/ && NF > 1       { mounts[master_dev] = mounts[master_dev] $2 " " }
+         /^(nvme|sd|vd)/ && NF == 1 { master_dev = $1; mounts[master_dev] = "" }
+         END                        { for (dev in mounts) if (mounts[dev] == "") print dev }'
   register: unmounted_devices
   changed_when: False
 
