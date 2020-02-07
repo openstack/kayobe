@@ -68,6 +68,7 @@
       os_networks_auth_type: "{{ openstack_auth_type }}"
       os_networks_auth: "{{ openstack_auth }}"
       os_networks_cacert: "{{ openstack_cacert | default(omit, true) }}"
+      os_networks_interface: "{{ openstack_interface | default(omit, true) }}"
       # Network configuration.
       os_networks: "{{ network_registrations }}"
   tasks:
@@ -96,6 +97,7 @@
             auth: "{{ openstack_auth }}"
             auth_type: "{{ openstack_auth_type }}"
             cacert: "{{ openstack_cacert | default(omit, true) }}"
+            interface: "{{ openstack_interface | default(omit, true) }}"
             name: "{{ provision_net.name }}"
           register: provisioning_network_facts
 
@@ -112,6 +114,7 @@
             auth: "{{ openstack_auth }}"
             auth_type: "{{ openstack_auth_type }}"
             cacert: "{{ openstack_cacert | default(omit, true) }}"
+            interface: "{{ openstack_interface | default(omit, true) }}"
             name: "{{ cleaning_net.name }}"
           register: cleaning_network_facts
 

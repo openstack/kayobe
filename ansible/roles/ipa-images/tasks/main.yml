@@ -71,6 +71,7 @@
     auth_type: "{{ ipa_images_openstack_auth_type }}"
     auth: "{{ ipa_images_openstack_auth }}"
     cacert: "{{ ipa_images_openstack_cacert | default(omit, true) }}"
+    interface: "{{ ipa_images_openstack_interface | default(omit, true) }}"
     image: "{{ ipa_images_kernel_name }}"
 
 - name: Set a fact containing the Ironic Python Agent (IPA) kernel image
@@ -82,6 +83,7 @@
     auth_type: "{{ ipa_images_openstack_auth_type }}"
     auth: "{{ ipa_images_openstack_auth }}"
     cacert: "{{ ipa_images_openstack_cacert | default(omit, true) }}"
+    interface: "{{ ipa_images_openstack_interface | default(omit, true) }}"
     image: "{{ ipa_images_ramdisk_name }}"
 
 - name: Set a fact containing the Ironic Python Agent (IPA) ramdisk image
@@ -114,6 +116,7 @@
     auth_type: "{{ ipa_images_openstack_auth_type }}"
     auth: "{{ ipa_images_openstack_auth }}"
     cacert: "{{ ipa_images_openstack_cacert | default(omit, true) }}"
+    interface: "{{ ipa_images_openstack_interface | default(omit, true) }}"
     name: "{{ item.name }}"
     container_format: "{{ item.format }}"
     disk_format: "{{ item.format }}"

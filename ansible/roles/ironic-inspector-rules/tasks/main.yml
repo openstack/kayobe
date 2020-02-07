@@ -20,6 +20,7 @@
     auth_type: "{{ ironic_inspector_auth_type }}"
     auth: "{{ ironic_inspector_auth }}"
     cacert: "{{ ironic_inspector_cacert | default(omit, true) }}"
+    interface: "{{ ironic_inspector_interface | default(omit, true) }}"
     conditions: "{{ item.conditions }}"
     actions: "{{ item.actions }}"
     description: "{{ item.description | default(omit) }}"
