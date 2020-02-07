@@ -165,12 +165,12 @@ Performing Database Backups
 Database backups can be performed using the underlying support in Kolla
 Ansible.
 
-In order to enable backups, enable Xtrabackup in
+In order to enable backups, enable Mariabackup in
 ``${KAYOBE_CONFIG_PATH}/kolla.yml``:
 
 .. code-block:: console
 
-   kolla_enable_xtrabackup: true
+   kolla_enable_mariabackup: true
 
 To apply this change, use the :ref:`kayobe overcloud service reconfigure
 <overcloud-administration-reconfigure>` command.

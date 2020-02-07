@@ -207,6 +207,7 @@
 #kolla_enable_manila_backend_hnas:
 #kolla_enable_manila_backend_cephfs_native:
 #kolla_enable_manila_backend_cephfs_nfs:
+#kolla_enable_mariabackup:
 #kolla_enable_mistral:
 #kolla_enable_monasca:
 #kolla_enable_mongodb:
