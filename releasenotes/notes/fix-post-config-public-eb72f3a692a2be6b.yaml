@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Fixes an issue where ``kayobe overcloud post configure`` would use the
+    public OpenStack API interface, which might not be accessible from the
+    control hosts. See `story 2006814
+    <https://storyboard.openstack.org/#!/story/2006814>`__ for details.

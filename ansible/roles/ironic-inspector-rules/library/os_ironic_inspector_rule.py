@@ -85,6 +85,7 @@ def _build_client(module):
     api_version = (1, 14)
     client = ironic_inspector_client.v1.ClientV1(
         inspector_url=module.params['inspector_url'],
+        interface=module.params['interface'],
         session=session, region_name=module.params['region_name'],
         api_version=api_version)
     return client

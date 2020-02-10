@@ -20,6 +20,9 @@ ipa_images_openstack_auth_env: {}
 # CA certificate path.
 ipa_images_openstack_caert:
 
+# Interface (public, internal, admin).
+ipa_images_openstack_interface:
+
 # Path to directory in which to store downloaded images.
 ipa_images_cache_path:
 

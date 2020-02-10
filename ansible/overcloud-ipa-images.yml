@@ -107,4 +107,5 @@
       ipa_images_openstack_auth: "{{ openstack_auth }}"
       ipa_images_openstack_auth_env: "{{ openstack_auth_env }}"
       ipa_images_openstack_cacert: "{{ openstack_cacert }}"
+      ipa_images_openstack_interface: "{{ openstack_interface }}"
       ipa_images_cache_path: "{{ image_cache_path }}/{{ ipa_image_name }}"
