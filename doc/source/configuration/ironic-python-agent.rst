@@ -192,8 +192,8 @@ Agent documentation <>` for full details.
     ``ipa.vmlinuz``.
 ``ipa_kernel_upstream_url``
     URL of Ironic deployment kernel image to download. Default is
-    ``https://tarballs.openstack.org/ironic-python-agent/coreos/files/coreos_production_pxe{{
-    ipa_images_upstream_url_suffix }}.vmlinuz``.
+    ``https://tarballs.openstack.org/ironic-python-agent/dib/files/ipa-centos7{{
+    ipa_images_upstream_url_suffix }}.kernel``.
 ``ipa_kernel_checksum_url``
     URL of checksum of Ironic deployment kernel image. Default is ``{{
     ipa_kernel_upstream_url }}.{{ ipa_kernel_checksum_algorithm }}``.
@@ -205,8 +205,8 @@ Agent documentation <>` for full details.
     ``ipa.initramfs``.
 ``ipa_ramdisk_upstream_url``
     URL of Ironic deployment ramdisk image to download. Default is
-    ``https://tarballs.openstack.org/ironic-python-agent/coreos/files/coreos_production_pxe_image-oem{{
-    ipa_images_upstream_url_suffix }}.cpio.gz``.
+    ``https://tarballs.openstack.org/ironic-python-agent/dib/files/ipa-centos7{{
+    ipa_images_upstream_url_suffix }}.initramfs``.
 ``ipa_ramdisk_checksum_url``
     URL of checksum of Ironic deployment ramdisk image. Default is ``{{
     ipa_ramdisk_upstream_url }}.{{ ipa_ramdisk_checksum_algorithm }}``.
