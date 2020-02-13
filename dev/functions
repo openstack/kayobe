@@ -377,6 +377,11 @@ function overcloud_test_init {
         export ENABLE_EXT_NET=0
         ${KOLLA_VENV_PATH:-$HOME/kolla-venv}/share/kolla-ansible/init-runonce
         unset ENABLE_EXT_NET
+
+        # Allow provision-net to be used as an external network for floating IPs.
+        # Note: a provisioning network would not normally be external.
+        openstack network set provision-net --external
+        openstack router set demo-router --external-gateway provision-net
     else
         echo "Not running kolla-ansible init-runonce - resources exist"
     fi
@@ -406,7 +411,35 @@ function overcloud_test {
         echo "$name: Node creation failed"
         return 1
     fi
-    # TODO(mgoddard): Test SSH connectivity to the VM.
+
+    # Test SSH connectivity. For servers attached directly to the external
+    # network, use the fixed IP. Otherwise add a floating IP.
+    if [[ $network = provision-net ]]; then
+        ip=$(openstack server show "$name" -f value -c addresses | sed -e "s/${network}=//")
+    else
+        echo "$name: Attaching floating IP"
+        ip=$(openstack floating ip create provision-net -f value -c floating_ip_address)
+        openstack server add floating ip ${name} ${ip}
+    fi
+    echo "$name: Waiting for ping and SSH access via ${ip}"
+    attempts=6
+    for i in $(seq 1 $attempts); do
+        if ping -c1 -W1 $ip && ssh -v -o StrictHostKeyChecking=no -o BatchMode=yes cirros@$ip hostname; then
+            break
+        elif [[ $i -eq $attempts ]]; then
+            echo "Failed to access server $name via SSH after $attempts attempts"
+            return 1
+        else
+            echo "Cannot access server $name - retrying"
+        fi
+        sleep 10
+    done
+    echo "$name: Ping and SSH successful"
+    if [[ $network != provision-net ]]; then
+        echo "$name: Removing floating IP"
+        openstack server remove floating ip ${name} ${ip}
+        openstack floating ip delete ${ip}
+    fi
 
     echo "$name: Deleting the Node"
     openstack server delete --wait "$name"
