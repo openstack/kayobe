@@ -24,7 +24,7 @@ try:
 except Exception as e:
     IMPORT_ERRORS.append(e)
 try:
-    import shade
+    import openstack
 except Exception as e:
     IMPORT_ERRORS.append(e)
 
@@ -76,17 +76,15 @@ os_ironic_inspector_rule:
 """
 
 
-def _build_client(module):
+def _build_client(module, cloud):
     """Create and return an Ironic inspector client."""
-    cloud = shade.operator_cloud(**module.params)
-    session = cloud.cloud_config.get_session()
     # Ensure the requested API version is supported.
     # API 1.14 is the latest API version available in Rocky.
     api_version = (1, 14)
     client = ironic_inspector_client.v1.ClientV1(
         inspector_url=module.params['inspector_url'],
         interface=module.params['interface'],
-        session=session, region_name=module.params['region_name'],
+        session=cloud.session, region_name=module.params['region_name'],
         api_version=api_version)
     return client
 
@@ -161,8 +159,9 @@ def main():
             endpoint=module.params['inspector_url']
         )
 
+    sdk, cloud = openstack_cloud_from_module(module)
     try:
-        client = _build_client(module)
+        client = _build_client(module, cloud)
         if module.params["state"] == "present":
             changed = _ensure_rule_present(module, client)
         else:

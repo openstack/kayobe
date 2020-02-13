@@ -36,7 +36,7 @@ for rules.
 Dependencies
 ------------
 
-This role depends on the Kayobe `shade` role.
+This role depends on the Kayobe `openstacksdk` role.
 
 Example Playbook
 ----------------

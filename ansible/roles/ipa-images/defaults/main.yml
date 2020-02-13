@@ -1,5 +1,5 @@
 ---
-# Path to virtualenv in which to install shade and its dependencies.
+# Path to virtualenv in which to install openstacksdk and its dependencies.
 ipa_images_venv:
 
 # Upper constraints file for installation of python-ironicclient.
