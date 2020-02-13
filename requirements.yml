@@ -30,14 +30,14 @@
 - src: stackhpc.mellanox-switch
   version: v1.0.0
 - src: stackhpc.os-images
-  version: v1.7.0
+  version: v1.8.0
 - src: stackhpc.os-ironic-state
-  version: v1.2.0
+  version: v1.3.0
 - src: stackhpc.os-networks
-  version: v1.3.1
+  version: v1.4.0
 - src: stackhpc.os-openstackclient
-  version: v1.3.0
-- src: stackhpc.os-shade
-  version: v1.3.0
+  version: v1.4.0
+- src: stackhpc.os_openstacksdk
+  version: v1.0.0
 - src: yatesr.timezone
   version: 1.2.0

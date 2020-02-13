@@ -1,5 +1,5 @@
 ---
 dependencies:
-  - role: stackhpc.os-shade
-    os_shade_venv: "{{ ironic_inspector_venv }}"
-    os_shade_upper_constraints_file: "{{ ironic_inspector_upper_constraints_file }}"
+  - role: stackhpc.os_openstacksdk
+    os_openstacksdk_venv: "{{ ironic_inspector_venv }}"
+    os_openstacksdk_upper_constraints_file: "{{ ironic_inspector_upper_constraints_file }}"

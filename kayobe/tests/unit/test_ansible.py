@@ -468,10 +468,7 @@ class TestCase(unittest.TestCase):
         ansible.prune_galaxy_roles(parsed_args)
 
         expected_roles = [
-            'stackhpc.os-flavors',
-            'stackhpc.os-projects',
-            'stackhpc.parted-1-1',
-            'stackhpc.timezone',
+            'stackhpc.os-shade',
         ]
         mock_remove.assert_called_once_with(expected_roles,
                                             "ansible/roles")

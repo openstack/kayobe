@@ -14,7 +14,7 @@
   hosts: controllers_for_provision_net_True[0]
   gather_facts: False
   vars:
-    venv: "{{ virtualenv_path }}/shade"
+    venv: "{{ virtualenv_path }}/openstacksdk"
     provision_net:
       name: "{{ kolla_ironic_provisioning_network }}"
       provider_network_type: "{% if provision_wl_net_name | net_vlan %}vlan{% else %}flat{% endif %}"
@@ -61,9 +61,9 @@
 
   roles:
     - role: stackhpc.os-networks
-      os_shade_install_epel: "{{ yum_install_epel }}"
-      os_shade_state: latest
-      os_shade_upper_constraints_file: "{{ pip_upper_constraints_file }}"
+      os_openstacksdk_install_epel: "{{ yum_install_epel }}"
+      os_openstacksdk_state: latest
+      os_openstacksdk_upper_constraints_file: "{{ pip_upper_constraints_file }}"
       os_networks_venv: "{{ venv }}"
       os_networks_auth_type: "{{ openstack_auth_type }}"
       os_networks_auth: "{{ openstack_auth }}"

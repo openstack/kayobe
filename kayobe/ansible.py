@@ -271,10 +271,7 @@ def prune_galaxy_roles(parsed_args):
     """
     LOG.info("Removing unnecessary galaxy roles from kayobe")
     roles_to_remove = [
-        'stackhpc.os-flavors',
-        'stackhpc.os-projects',
-        'stackhpc.parted-1-1',
-        'stackhpc.timezone',
+        'stackhpc.os-shade',
     ]
     LOG.debug("Removing roles: %s", ",".join(roles_to_remove))
     utils.galaxy_remove(roles_to_remove, "ansible/roles")

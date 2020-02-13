@@ -14,7 +14,7 @@
   tags:
     - grafana
   vars:
-    venv: "{{ virtualenv_path }}/shade"
+    venv: "{{ virtualenv_path }}/openstacksdk"
   roles:
     - role: stackhpc.os-openstackclient
       os_openstackclient_venv: "{{ venv }}"
