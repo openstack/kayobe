@@ -18,13 +18,12 @@
       os_openstacksdk_state: latest
       os_openstacksdk_upper_constraints_file: "{{ pip_upper_constraints_file }}"
 
-    - role: activate-virtualenv
-      activate_virtualenv_path: "{{ venv }}"
-
 - name: Ensure baremetal compute nodes are manageable in ironic
   hosts: baremetal-compute
   gather_facts: False
   vars:
+    venv: "{{ virtualenv_path }}/openstacksdk"
+    ansible_python_interpreter: "{{ venv }}/python"
     # Whether to wait for the state transition to complete.
     baremetal_compute_wait: True
     # Time to wait for state transition to complete, if baremetal_compute_wait
@@ -41,9 +40,3 @@
       os_ironic_state_wait: "{{ baremetal_compute_wait }}"
       os_ironic_state_timeout: "{{ baremetal_compute_timeout }}"
       os_ironic_state_delegate_to: "{{ groups['controllers'][0] }}"
-
-- name: Ensure baremetal compute nodes are available in ironic
-  hosts: controllers[0]
-  gather_facts: False
-  roles:
-    - role: deactivate-virtualenv

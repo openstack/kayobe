@@ -18,14 +18,13 @@
       os_openstacksdk_state: latest
       os_openstacksdk_upper_constraints_file: "{{ pip_upper_constraints_file }}"
 
-    - role: activate-virtualenv
-      activate_virtualenv_path: "{{ venv }}"
-
 - name: Ensure baremetal compute nodes are inspected in ironic
   hosts: baremetal-compute
   gather_facts: False
   vars:
     controller_host: "{{ groups['controllers'][0] }}"
+    venv: "{{ virtualenv_path }}/openstacksdk"
+    ansible_python_interpreter: "{{ venv }}/python"
     # Whether to wait for the state transition to complete.
     baremetal_compute_wait: True
     # Time to wait for state transition to complete, if baremetal_compute_wait
@@ -46,9 +45,3 @@
         # NOTE: Without this, the controller's ansible_host variable will not
         # be respected when using delegate_to.
         ansible_host: "{{ hostvars[controller_host].ansible_host | default(controller_host) }}"
-
-- name: Deactivate the virtual environment on the controller
-  hosts: controllers[0]
-  gather_facts: False
-  roles:
-    - role: deactivate-virtualenv

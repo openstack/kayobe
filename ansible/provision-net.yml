@@ -78,11 +78,6 @@
     # so during this transition we manually update them here if necessary.
     # TODO(mgoddard): Remove this code after a suitable transition period.
 
-    - import_role:
-        role: activate-virtualenv
-      vars:
-        activate_virtualenv_path: "{{ venv }}"
-
     - name: Ensure python-openstackclient is installed
       pip:
         name: python-openstackclient
@@ -106,6 +101,8 @@
           changed_when: true
           when: openstack_networks[0].shared
           environment: "{{ openstack_auth_env }}"
+      vars:
+        ansible_python_interpreter: "{{ venv }}/bin/python"
       when: not provision_net.shared | bool
 
     - block:
@@ -123,9 +120,8 @@
           changed_when: true
           when: openstack_networks[0].shared
           environment: "{{ openstack_auth_env }}"
+      vars:
+        ansible_python_interpreter: "{{ venv }}/bin/python"
       when:
         - cleaning_net_name != provision_wl_net_name
         - not cleaning_net.shared | bool
-
-    - import_role:
-        role: deactivate-virtualenv

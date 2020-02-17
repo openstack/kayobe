@@ -9,13 +9,9 @@
   with_items:
     - name: python-ironic-inspector-client
 
-- name: Activate the virtualenv
-  include_role:
-    name: activate-virtualenv
-  vars:
-    activate_virtualenv_path: "{{ ironic_inspector_venv }}"
-
 - name: Ensure introspection rules exist
+  vars:
+    ansible_python_interpreter: "{{ ironic_inspector_venv }}/bin/python"
   os_ironic_inspector_rule:
     auth_type: "{{ ironic_inspector_auth_type }}"
     auth: "{{ ironic_inspector_auth }}"
@@ -28,7 +24,3 @@
     state: present
     inspector_url: "{{ ironic_inspector_url }}"
   with_items: "{{ ironic_inspector_rules }}"
-
-- name: Deactivate the virtualenv
-  include_role:
-    name: deactivate-virtualenv

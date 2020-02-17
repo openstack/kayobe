@@ -1,17 +1,4 @@
 ---
-- name: Set a fact about the virtualenv
-  set_fact:
-    virtualenv: "{{ ansible_python_interpreter | dirname | dirname }}"
-  when:
-    - ansible_python_interpreter is defined
-    - not ansible_python_interpreter.startswith('/bin')
-    - not ansible_python_interpreter.startswith('/usr/bin')
-
-- name: Deactivate the virtualenv
-  include_role:
-    name: deactivate-virtualenv
-  when: virtualenv is defined
-
 - name: Create local .pip directory for {{ user }}
   file:
     path: "~{{ user }}/.pip"
@@ -42,10 +29,3 @@
     dest: "~{{ user}}/.pydistutils.cfg"
   become: True
   become_user: "{{ user }}"
-
-- name: Activate the virtualenv
-  include_role:
-    name: activate-virtualenv
-  vars:
-    activate_virtualenv_path: "{{ virtualenv }}"
-  when: virtualenv is defined
