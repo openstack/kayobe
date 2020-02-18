@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fix an issue where the StackHPC iDRAC role would break when configuring
+    RAID when used with a recent release of the python-dracclient module.
