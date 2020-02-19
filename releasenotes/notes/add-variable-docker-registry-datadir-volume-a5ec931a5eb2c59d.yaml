@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Adds the variable, ``docker_registry_datadir_volume``. This allows you to
+    configure the name or path of the docker volume used for the docker registry.
