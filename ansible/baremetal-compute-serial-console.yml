@@ -40,6 +40,14 @@
              {{ query('inventory_hostnames', console_compute_node_limit |
              default('baremetal-compute') ) | unique }}
 
+       # NOTE(mgoddard): This task may be removed when CentOS 7 is no longer
+       # supported.
+       - name: Gather facts for localhost
+         setup:
+           gather_subset: min
+         delegate_to: localhost
+         delegate_facts: true
+
        - name: Reserve TCP ports for ironic serial consoles
          include_role:
            name: console-allocation

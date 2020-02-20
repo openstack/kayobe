@@ -1,4 +1,21 @@
 ---
+# NOTE(mgoddard): We use delegate_to rather than specify localhost in the
+# hosts list since this playbook is typically called with a limit that does
+# not include localhost. This play may be removed when CentOS 7 is no longer
+# supported.
+- name: Gather facts for localhost
+  hosts: seed-hypervisor:seed:overcloud
+  tags:
+    - ip-allocation
+  gather_facts: no
+  tasks:
+    - name: Gather facts for localhost
+      setup:
+        gather_subset: min
+      delegate_to: localhost
+      delegate_facts: true
+      run_once: true
+
 - name: Ensure IP addresses are allocated
   hosts: seed-hypervisor:seed:overcloud
   tags:

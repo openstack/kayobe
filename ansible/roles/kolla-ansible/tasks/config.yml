@@ -97,6 +97,14 @@
     loop_var: host
 
 - name: Ensure the Kolla passwords file exists
+  vars:
+    # NOTE(mgoddard): Use the Python interpreter used to run ansible-playbook,
+    # since this has Python dependencies available to it (PyYAML). On CentOS 7
+    # we use the system Python to ensure that we can import SELinux bindings.
+    ansible_python_interpreter: >-
+      {{ '/usr/libexec/platform-python'
+         if ansible_os_family == 'RedHat' and ansible_distribution_major_version | int == 7
+         else ansible_playbook_python }}
   kolla_passwords:
     src: "{{ kolla_ansible_passwords_path }}"
     dest: "{{ kolla_ansible_passwords_path }}"

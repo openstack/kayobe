@@ -1,34 +1,33 @@
 ---
-# Facts may not be available for the Ansible control host, so read the OS
-# release manually.
-- name: Check the OS release
-  local_action:
-    module: shell . /etc/os-release && echo $ID
-  changed_when: False
-  register: ip_allocation_os_release
+- block:
+    - name: Include OS family-specific variables
+      include_vars: "{{ hostvars.localhost.ansible_os_family }}.yml"
 
-- name: Include RedHat family-specific variables
-  include_vars: "RedHat.yml"
-  when: ip_allocation_os_release.stdout in ['centos', 'fedora', 'rhel']
-
-- name: Include Debian family-specific variables
-  include_vars: "Debian.yml"
-  when: ip_allocation_os_release.stdout in ['debian', 'ubuntu']
-
-# Note: Currently we install these using the system package manager rather than
-# pip to a virtualenv. This is because Yum is required elsewhere and cannot
-# easily be installed in a virtualenv.
-- name: Ensure package dependencies are installed
-  local_action:
-    module: package
-    name: "{{ item }}"
-    state: present
-    use: "{{ ip_allocation_package_manager }}"
-  become: True
-  with_items: "{{ ip_allocation_package_dependencies }}"
-  run_once: True
+    # Note: Currently we install these using the system package manager rather than
+    # pip to a virtualenv. This is because Yum is required elsewhere and cannot
+    # easily be installed in a virtualenv.
+    - name: Ensure package dependencies are installed
+      local_action:
+        module: package
+        name: "{{ item }}"
+        state: present
+        use: "{{ ip_allocation_package_manager }}"
+      become: True
+      with_items: "{{ ip_allocation_package_dependencies }}"
+      run_once: True
+  when:
+    - hostvars.localhost.ansible_os_family == 'RedHat'
+    - hostvars.localhost.ansible_distribution_major_version | int == 7
 
 - name: Ensure IP addresses are allocated
+  vars:
+    # NOTE(mgoddard): Use the Python interpreter used to run ansible-playbook,
+    # since this has Python dependencies available to it (PyYAML). On CentOS 7
+    # we use the system Python to ensure that we can import SELinux bindings.
+    ansible_python_interpreter: >-
+      {{ '/usr/libexec/platform-python'
+         if hostvars.localhost.ansible_os_family == 'RedHat' and hostvars.localhost.ansible_distribution_major_version | int == 7
+         else ansible_playbook_python }}
   local_action:
     module: ip_allocation
     allocation_file: "{{ ip_allocation_filename }}"
