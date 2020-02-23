@@ -1157,8 +1157,6 @@ class TestCase(unittest.TestCase):
                     utils.get_data_files_path("ansible", "kolla-host.yml"),
                     utils.get_data_files_path("ansible", "docker.yml"),
                     utils.get_data_files_path(
-                        "ansible", "ceph-block-devices.yml"),
-                    utils.get_data_files_path(
                         "ansible", "swift-block-devices.yml"),
                 ],
                 limit="overcloud",

@@ -1,6 +1,0 @@
----
-###############################################################################
-# Compute node Ceph configuration.
-
-# List of Ceph disks.
-ceph_disks: "{{ compute_ceph_disks }}"

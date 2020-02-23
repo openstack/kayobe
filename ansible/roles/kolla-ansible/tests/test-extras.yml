@@ -26,8 +26,6 @@
         kolla_provision_interface: "eth8"
         kolla_inspector_dnsmasq_interface: "eth9"
         kolla_tunnel_interface: "eth10"
-        kolla_ceph_storage_interface: "eth11"
-        kolla_ceph_cluster_interface: "eth12"
         kolla_swift_storage_interface: "eth13"
         kolla_swift_replication_interface: "eth14"
 
@@ -42,7 +40,6 @@
         kolla_neutron_external_interfaces: "eth4,eth5"
         kolla_neutron_bridge_names: "br0,br1"
         kolla_tunnel_interface: "eth6"
-        kolla_ceph_storage_interface: "eth7"
 
     - name: Create a temporary directory
       tempfile:
@@ -129,8 +126,6 @@
             kolla_enable_blazar: True
             kolla_enable_ceilometer: True
             kolla_enable_central_logging: True
-            kolla_enable_ceph: True
-            kolla_enable_ceph_rgw: True
             kolla_enable_chrony: True
             kolla_enable_cinder: True
             kolla_enable_cinder_backend_hnas_iscsi: True
@@ -266,8 +261,6 @@
               #enable_blazar: True
               #enable_ceilometer: True
               #enable_central_logging: True
-              #enable_ceph: True
-              #enable_ceph_rgw: True
               #enable_chrony: True
               #enable_cinder: True
               #enable_cinder_backend_iscsi: True
@@ -355,8 +348,6 @@
               - kolla_external_vip_interface
               - storage_interface
               - cluster_interface
-              - ceph_storage_interface
-              - ceph_cluster_interface
               - swift_storage_interface
               - swift_replication_interface
               - provision_interface
@@ -494,8 +485,6 @@
                 api_interface: "eth2"
                 storage_interface: "eth3"
                 cluster_interface: "eth4"
-                ceph_storage_interface: "eth11"
-                ceph_cluster_interface: "eth12"
                 swift_storage_interface: "eth13"
                 swift_replication_interface: "eth14"
                 provision_interface: "eth8"
@@ -511,7 +500,6 @@
                 network_interface: "eth0"
                 api_interface: "eth2"
                 storage_interface: "eth3"
-                ceph_storage_interface: "eth7"
                 tunnel_interface: "eth6"
                 neutron_external_interface: "eth4,eth5"
                 neutron_bridge_name: "br0,br1"

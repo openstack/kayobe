@@ -36,15 +36,6 @@ kolla_enable_ceilometer:
 kolla_extra_ceilometer:
 
 ###############################################################################
-# ceph configuration.
-
-# Whether to enable ceph.
-kolla_enable_ceph:
-
-# Free form extra configuration to append to ceph.conf.
-kolla_extra_ceph:
-
-###############################################################################
 # cinder configuration.
 
 # Whether to enable cinder.

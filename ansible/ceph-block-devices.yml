@@ -1,8 +1,0 @@
----
-- name: Ensure Ceph disk are tagged
-  hosts: overcloud
-  tags:
-    - kolla-ceph
-  roles:
-    - role: kolla-ceph
-      when: kolla_enable_ceph | bool

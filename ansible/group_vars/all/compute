@@ -19,7 +19,6 @@ compute_default_network_interfaces: >
   {{ ([admin_oc_net_name,
        internal_net_name,
        storage_net_name,
-       ceph_storage_net_name,
        tunnel_net_name] +
       (external_net_names if kolla_enable_neutron_provider_networks | bool else [])) | reject('none') | unique | list }}
 
@@ -109,16 +108,6 @@ compute_lvm_group_data_lv_docker_volumes_size: 75%VG
 
 # Filesystem for docker volumes LVM backing volume. ext4 allows for shrinking.
 compute_lvm_group_data_lv_docker_volumes_fs: ext4
-
-###############################################################################
-# Compute node Ceph configuration.
-
-# List of Ceph disks.
-# The format is a list of dict like :
-# - { osd: "/dev/sdb", journal: "/dev/sdc" }
-# - { osd: "/dev/sdd" }
-# Journal variable is not mandatory.
-compute_ceph_disks: []
 
 ###############################################################################
 # Compute node sysctl configuration.

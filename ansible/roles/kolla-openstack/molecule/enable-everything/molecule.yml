@@ -22,10 +22,6 @@ provisioner:
         kolla_extra_ceilometer: |
           [extra-ceilometer.conf]
           foo=bar
-        kolla_enable_ceph: true
-        kolla_extra_ceph: |
-          [extra-ceph.conf]
-          foo=bar
         kolla_enable_cinder: true
         kolla_extra_cinder: |
           [extra-cinder.conf]

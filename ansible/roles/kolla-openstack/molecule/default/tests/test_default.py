@@ -37,8 +37,7 @@ def test_service_config_directory(host, path):
 
 @pytest.mark.parametrize(
     'path',
-    ['ceph',
-     'cinder',
+    ['cinder',
      'cloudkitty',
      'designate',
      'glance',

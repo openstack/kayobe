@@ -15,7 +15,6 @@
   with_items:
     - { src: blazar.conf.j2, dest: blazar.conf, enabled: "{{ kolla_enable_blazar }}" }
     - { src: ceilometer.conf.j2, dest: ceilometer.conf, enabled: "{{ kolla_enable_ceilometer }}" }
-    - { src: ceph.conf.j2, dest: ceph.conf, enabled: "{{ kolla_enable_ceph }}" }
     - { src: cinder.conf.j2, dest: cinder.conf, enabled: "{{ kolla_enable_cinder }}" }
     - { src: cloudkitty.conf.j2, dest: cloudkitty.conf, enabled: "{{ kolla_enable_cloudkitty }}" }
     - { src: designate.conf.j2, dest: designate.conf, enabled: "{{ kolla_enable_designate }}" }

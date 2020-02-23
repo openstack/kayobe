@@ -118,8 +118,6 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_blazar | bool }}"
   - regex: ceilometer
     enabled: "{{ kolla_enable_ceilometer | bool }}"
-  - regex: ceph
-    enabled: "{{ kolla_enable_ceph | bool }}"
   - regex: cinder
     enabled: "{{ kolla_enable_cinder | bool }}"
   - regex: cloudkitty
@@ -346,7 +344,6 @@ kolla_enable_aodh: "no"
 kolla_enable_barbican: "no"
 kolla_enable_blazar: "no"
 kolla_enable_central_logging: "no"
-kolla_enable_ceph: "no"
 kolla_enable_ceilometer: "no"
 # The chrony container is disabled by default on CentOS 7 because we enable an
 # NTP daemon on the host. On CentOS 8 the chrony container is enabled by

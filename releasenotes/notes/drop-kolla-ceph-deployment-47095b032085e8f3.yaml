@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    Drops support for Kolla Ceph deployment.
+    Kayobe follows upstream decision of Kolla and Kolla Ansible.
+    Please use other means of Ceph deployment.
+    Please note Ceph backends will still work if using external Ceph
+    cluster.

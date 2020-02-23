@@ -33,16 +33,6 @@
         kolla_cluster_interface: "{{ storage_mgmt_net_name | net_interface | replace('-', '_')  }}"
       when: storage_mgmt_net_name in network_interfaces
 
-    - name: Set Ceph storage network interface
-      set_fact:
-        kolla_ceph_storage_interface: "{{ ceph_storage_net_name | net_interface | replace('-', '_')  }}"
-      when: ceph_storage_net_name in network_interfaces
-
-    - name: Set Ceph cluster network interface
-      set_fact:
-        kolla_ceph_cluster_interface: "{{ ceph_storage_mgmt_net_name | net_interface | replace('-', '_')  }}"
-      when: ceph_storage_mgmt_net_name in network_interfaces
-
     - name: Set Swift storage network interface
       set_fact:
         kolla_swift_storage_interface: "{{ swift_storage_net_name | net_interface | replace('-', '_')  }}"

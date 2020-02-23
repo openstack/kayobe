@@ -427,8 +427,6 @@ which files are supported.
    ``blazar/*``                    Extended Blazar configuration.
    ``ceilometer.conf``             Ceilometer configuration.
    ``ceilometer/*``                Extended Ceilometer configuration.
-   ``ceph.conf``                   Ceph configuration.
-   ``ceph/*``                      Extended Ceph configuration.
    ``cinder.conf``                 Cinder configuration.
    ``cinder/*``                    Extended Cinder configuration.
    ``cloudkitty.conf``             CloudKitty configuration.

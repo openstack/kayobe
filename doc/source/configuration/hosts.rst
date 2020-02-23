@@ -674,32 +674,3 @@ Ansible's containers do), but may be necessary when building images.
 Docker's live restore feature can be configured via
 ``docker_daemon_live_restore``, although it is disabled by default due to
 issues observed.
-
-Ceph Block Devices
-==================
-*tags:*
-  | ``kolla-ceph``
-
-If using Kolla Ansible to deploy Ceph, some preparation of block devices is
-required. The list of disks to configure for use by Ceph is specified via
-``ceph_disks``. This is mapped to the following variables:
-
-* ``compute_ceph_disks``
-* ``controller_ceph_disks``
-* ``storage_ceph_disks``
-
-The format of the variable is a list of dict/mapping objects. Each mapping
-should contain an ``osd`` item that defines the full path to a block device to
-use for data. Optionally, each mapping may contain a ``journal`` item that
-specifies the full path to a block device to use for journal data.
-
-The following example defines two OSDs for use by controllers, one of which has
-a journal:
-
-.. code-block:: yaml
-   :caption: ``controller.yml``
-
-   controller_ceph_disks:
-     - osd: /dev/sdb
-     - osd: /dev/sdc
-       journal: /dev/sdd

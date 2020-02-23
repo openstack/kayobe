@@ -1,6 +1,0 @@
----
-# NOTE: Use import_tasks here, since tags are not applied to tasks included via
-# include_tasks.
-- import_tasks: config.yml
-  tags:
-    - config

@@ -106,7 +106,6 @@
           with_items:
             - { name: blazar, file: blazar.conf }
             - { name: ceilometer, file: ceilometer.conf }
-            - { name: ceph, file: ceph.conf }
             - { name: cinder, file: cinder.conf }
             - { name: cloudkitty, file: cloudkitty.conf }
             - { name: designate, file: designate.conf }
@@ -215,7 +214,6 @@
       # Extra free-form user-provided configuration.
       kolla_extra_blazar: "{{ kolla_extra_config.blazar | default }}"
       kolla_extra_ceilometer: "{{ kolla_extra_config.ceilometer | default }}"
-      kolla_extra_ceph: "{{ kolla_extra_config.ceph | default }}"
       kolla_extra_cinder: "{{ kolla_extra_config.cinder | default }}"
       kolla_extra_cloudkitty: "{{ kolla_extra_config.cloudkitty | default }}"
       kolla_extra_designate: "{{ kolla_extra_config.designate | default }}"

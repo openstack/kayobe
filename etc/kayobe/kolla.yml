@@ -181,10 +181,6 @@
 #kolla_enable_cadf_notifications:
 #kolla_enable_ceilometer:
 #kolla_enable_central_logging:
-#kolla_enable_ceph:
-#kolla_enable_ceph_mds:
-#kolla_enable_ceph_nfs:
-#kolla_enable_ceph_rgw:
 # The chrony container is disabled by default on CentOS 7 because we enable an
 # NTP daemon on the host. On CentOS 8 the chrony container is enabled by
 # default because the NTP daemon is not supported. Setting this to true will

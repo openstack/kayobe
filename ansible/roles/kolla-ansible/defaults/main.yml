@@ -120,8 +120,6 @@ kolla_overcloud_inventory_pass_through_host_vars:
   - "kolla_api_interface"
   - "kolla_storage_interface"
   - "kolla_cluster_interface"
-  - "kolla_ceph_storage_interface"
-  - "kolla_ceph_cluster_interface"
   - "kolla_swift_storage_interface"
   - "kolla_swift_replication_interface"
   - "kolla_provision_interface"
@@ -141,8 +139,6 @@ kolla_overcloud_inventory_pass_through_host_vars_map:
   kolla_api_interface: "api_interface"
   kolla_storage_interface: "storage_interface"
   kolla_cluster_interface: "cluster_interface"
-  kolla_ceph_storage_interface: "ceph_storage_interface"
-  kolla_ceph_cluster_interface: "ceph_cluster_interface"
   kolla_swift_storage_interface: "swift_storage_interface"
   kolla_swift_replication_interface: "swift_replication_interface"
   kolla_provision_interface: "provision_interface"
@@ -249,8 +245,6 @@ kolla_openstack_logging_debug:
 #kolla_enable_blazar:
 #kolla_enable_ceilometer:
 #kolla_enable_central_logging:
-#kolla_enable_ceph:
-#kolla_enable_ceph_rgw:
 #kolla_enable_cinder:
 #kolla_enable_cinder_backend_iscsi:
 #kolla_enable_cinder_backend_lvm:
