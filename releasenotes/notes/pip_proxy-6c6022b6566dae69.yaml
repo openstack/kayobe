@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Introduces a new option - ``pip_proxy`` - to configure Pip package
+    installation via a user-defined http(s) proxy. This is set on a per-user
+    basis, and by default this is for the same users as pip_local_mirror
+    feature.

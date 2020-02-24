@@ -16,3 +16,5 @@ pip_index_url: ""
 # disabled
 pip_trusted_hosts: []
 
+# Optional: proxy configuration
+pip_proxy: ""
