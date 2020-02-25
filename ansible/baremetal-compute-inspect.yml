@@ -6,7 +6,7 @@
 # We install openstacksdk in a virtualenv on one of the controllers, and delegate to
 # it when executing the stackhpc.os-ironic-state role.
 
-- name: Ensure dependencies are installed and the virtual environment is activated
+- name: Ensure dependencies are installed
   hosts: controllers[0]
   gather_facts: true
   vars:
