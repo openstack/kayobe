@@ -182,7 +182,9 @@ After this command has completed the seed services will be active.
    <configuration-kolla-ansible>`. See :ref:`here <configuration-bifrost>` for
    information about configuring Bifrost.
    :ref:`configuration-bifrost-overcloud-root-image` provides information on
-   configuring the root disk image build process.
+   configuring the root disk image build process. See :ref:`here
+   <configuration-seed-custom-containers>` for information about deploying
+   additional, custom containers on seed node.
 
 Building Deployment Images
 --------------------------

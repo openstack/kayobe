@@ -1,0 +1,13 @@
+---
+deploy_containers_defaults:
+  comparisons:
+    image: strict
+    env: strict
+    volumes: strict
+  detach: True
+  network_mode: "host"
+  init: True
+  privileged: False
+  restart_policy: "unless-stopped"
+
+deploy_containers_docker_api_timeout: 120
