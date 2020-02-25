@@ -77,5 +77,19 @@
 #seed_users:
 
 ###############################################################################
+# Seed node containers configuration
+#
+# Dict of container images to start
+# Example:
+# seed_containers:
+#   squid:
+#     name: "squid"
+#     image: "stackhpc/squid:3.5.20-1"
+#     pre: "{{ kayobe_config_path }}/containers/squid/pre.yml"
+#     post: "{{ kayobe_config_path }}/containers/squid/post.yml"
+#
+#seed_containers:
+
+###############################################################################
 # Dummy variable to allow Ansible to accept this file.
 workaround_ansible_issue_8743: yes

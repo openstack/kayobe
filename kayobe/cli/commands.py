@@ -689,6 +689,7 @@ class SeedServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
                         Command):
     """Deploy the seed services.
 
+    * Deploys user defined containers
     * Configures kolla-ansible.
     * Configures the bifrost service.
     * Deploys the bifrost container using kolla-ansible.
@@ -702,6 +703,9 @@ class SeedServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Deploying seed services")
+        playbooks = _build_playbook_list(
+            "seed-deploy-containers")
+        self.run_kayobe_playbooks(parsed_args, playbooks)
         self.generate_kolla_ansible_config(parsed_args, service_config=False,
                                            bifrost_config=True)
 
@@ -717,6 +721,7 @@ class SeedServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
                          Command):
     """Upgrade the seed services.
 
+    * Deploys user defined containers
     * Configures kolla-ansible.
     * Configures the bifrost service.
     * Prepares the bifrost service for an upgrade.
@@ -731,6 +736,9 @@ class SeedServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Upgrading seed services")
+        playbooks = _build_playbook_list(
+            "seed-deploy-containers")
+        self.run_kayobe_playbooks(parsed_args, playbooks)
         self.generate_kolla_ansible_config(parsed_args, service_config=False,
                                            bifrost_config=True)
 
