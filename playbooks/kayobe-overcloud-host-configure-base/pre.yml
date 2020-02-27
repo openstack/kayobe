@@ -1,0 +1,42 @@
+---
+- hosts: primary
+  vars:
+    testinfra_venv: ~/testinfra-venv
+  tasks:
+    - name: Ensure python3 is installed
+      package:
+        name: python3
+      become: true
+
+    - name: Ensure testinfra is installed
+      pip:
+        name:
+          - distro
+          - testinfra
+          - pytest-html
+        virtualenv: "{{ testinfra_venv }}"
+        virtualenv_python: python3
+
+    # NOTE(mgoddard): Use the name zzz-overrides.yml to ensure this takes
+    # precedence over the standard config files and zz-overrides.yml from
+    # kayobe-overcloud-base.
+    - name: Ensure kayobe-config override config file exists
+      template:
+        src: overrides.yml.j2
+        dest: "{{ kayobe_config_src_dir }}/etc/kayobe/zzz-overrides.yml"
+
+    # NOTE(mgoddard): Create two loopback devices backed by files. These will
+    # be added to a software RAID volume, then added to an LVM volume group.
+    - name: Ensure a docker storage backing file exists
+      command: truncate -s 2G /tmp/docker-storage{{ item }}
+      loop: [0, 1]
+
+    - name: Ensure the docker storage loopback device is created
+      command: losetup /dev/loop{{ item }} /tmp/docker-storage{{ item }}
+      become: true
+      loop: [0, 1]
+
+    - name: Ensure dummy network interfaces exist
+      command: ip link add dummy{{ item }} type dummy
+      become: true
+      loop: "{{ range(2, 7) | list }}"

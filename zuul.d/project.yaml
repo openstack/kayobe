@@ -14,6 +14,8 @@
         - kayobe-tox-molecule
         - kayobe-overcloud-centos7
         - kayobe-overcloud-centos8
+        - kayobe-overcloud-host-configure-centos7
+        - kayobe-overcloud-host-configure-centos8
         - kayobe-overcloud-upgrade-centos7
         - kayobe-seed-centos7
         - kayobe-seed-centos8
@@ -27,6 +29,8 @@
         - kayobe-tox-molecule
         - kayobe-overcloud-centos7
         - kayobe-overcloud-centos8
+        - kayobe-overcloud-host-configure-centos7
+        - kayobe-overcloud-host-configure-centos8
         - kayobe-overcloud-upgrade-centos7
         - kayobe-seed-centos7
         - kayobe-seed-centos8

@@ -35,8 +35,18 @@ function config_defaults {
     export KAYOBE_SEED_CONTAINER_IMAGE_BUILD=${KAYOBE_SEED_CONTAINER_IMAGE_BUILD:-0}
 
     # Whether to build container images for the overcloud services. If 0, they
-    # will be pulled.
+    # will be pulled if $KAYOBE_OVERCLOUD_CONTAINER_IMAGE_PULL is 1.
     export KAYOBE_OVERCLOUD_CONTAINER_IMAGE_BUILD=${KAYOBE_OVERCLOUD_CONTAINER_IMAGE_BUILD:-0}
+
+    # Whether to pull container images for the overcloud services if
+    # $KAYOBE_OVERCLOUD_CONTAINER_IMAGE_BUILD is 0.
+    export KAYOBE_OVERCLOUD_CONTAINER_IMAGE_PULL=${KAYOBE_OVERCLOUD_CONTAINER_IMAGE_PULL:-1}
+
+    # Whether to deploy overcloud services.
+    export KAYOBE_OVERCLOUD_SERVICE_DEPLOY=${KAYOBE_OVERCLOUD_SERVICE_DEPLOY:-1}
+
+    # Whether to perform overcloud post configuration.
+    export KAYOBE_OVERCLOUD_POST_CONFIGURE=${KAYOBE_OVERCLOUD_POST_CONFIGURE:-1}
 
     # Additional arguments to pass to kayobe commands.
     export KAYOBE_EXTRA_ARGS=${KAYOBE_EXTRA_ARGS:-}
@@ -346,17 +356,21 @@ function overcloud_deploy {
     if [[ ${KAYOBE_OVERCLOUD_CONTAINER_IMAGE_BUILD} = 1 ]]; then
         echo "Building overcloud container images"
         run_kayobe overcloud container image build
-    else
+    elif [[ ${KAYOBE_OVERCLOUD_CONTAINER_IMAGE_PULL} = 1 ]]; then
         echo "Pulling overcloud container images"
         run_kayobe overcloud container image pull
     fi
 
-    echo "Deploying containerised overcloud services"
-    run_kayobe overcloud service deploy
+    if [[ ${KAYOBE_OVERCLOUD_SERVICE_DEPLOY} = 1 ]]; then
+        echo "Deploying containerised overcloud services"
+        run_kayobe overcloud service deploy
+    fi
 
-    echo "Performing post-deployment configuration"
-    source "${KOLLA_CONFIG_PATH:-/etc/kolla}/admin-openrc.sh"
-    run_kayobe overcloud post configure
+    if [[ ${KAYOBE_OVERCLOUD_POST_CONFIGURE} = 1 ]]; then
+        echo "Performing post-deployment configuration"
+        source "${KOLLA_CONFIG_PATH:-/etc/kolla}/admin-openrc.sh"
+        run_kayobe overcloud post configure
+    fi
 
     echo "Control plane deployment complete"
 }
