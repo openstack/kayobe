@@ -133,6 +133,22 @@
     nodeset: kayobe-centos8
 
 - job:
+    name: kayobe-overcloud-host-configure-base
+    parent: kayobe-overcloud-base
+    description: |
+      Base job for testing overcloud host configure.
+
+      Configures the primary VM as an overcloud controller.
+    pre-run: playbooks/kayobe-overcloud-host-configure-base/pre.yml
+    run: playbooks/kayobe-overcloud-host-configure-base/run.yml
+    timeout: 7200
+
+- job:
+    name: kayobe-overcloud-host-configure-centos8
+    parent: kayobe-overcloud-host-configure-base
+    nodeset: kayobe-centos8
+
+- job:
     name: kayobe-seed-upgrade-base
     parent: kayobe-base
     description: |
