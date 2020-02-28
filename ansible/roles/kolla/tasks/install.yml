@@ -14,9 +14,9 @@
       - gcc
       - libffi-devel
       - openssl-devel
-      - python-devel
-      - python-pip
-      - python-virtualenv
+      - python{{ ansible_python.version.major }}-devel
+      - python{{ ansible_python.version.major }}-pip
+      - python{{ ansible_python.version.major }}-virtualenv
     state: present
   become: True
 
@@ -50,6 +50,7 @@
     name: "{{ item.name }}"
     state: latest
     virtualenv: "{{ kolla_venv }}"
+    virtualenv_python: "python{{ ansible_python.version.major }}.{{ ansible_python.version.minor }}"
   with_items:
     - { name: pip }
 

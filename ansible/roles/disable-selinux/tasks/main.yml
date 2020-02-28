@@ -1,8 +1,7 @@
 ---
 - name: Ensure required packages are installed
   package:
-    name:
-      - libselinux-python
+    name: "{% if ansible_distribution_major_version | int == 7 %}libselinux-python{% else %}python3-libselinux{% endif %}"
     state: present
   become: True
 

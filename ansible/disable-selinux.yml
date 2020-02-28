@@ -6,3 +6,4 @@
   roles:
     - role: disable-selinux
       disable_selinux_reboot_timeout: "{{ 600 if ansible_virtualization_role == 'host' else 300 }}"
+      when: ansible_os_family == 'RedHat'

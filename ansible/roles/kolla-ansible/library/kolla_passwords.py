@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 # Copyright (c) 2017 StackHPC Ltd.
 #
@@ -127,7 +127,9 @@ def kolla_passwords(module):
         # Merge in overrides.
         if module.params['overrides']:
             with tempfile.NamedTemporaryFile(delete=False) as f:
-                yaml.dump(module.params['overrides'], f)
+                # NOTE(mgoddard): Temporary files are opened in binary mode, so
+                # specify an encoding.
+                yaml.dump(module.params['overrides'], f, encoding='utf-8')
                 overrides_path = f.name
             try:
                 kolla_mergepwd(module, overrides_path, temp_file_path, temp_file_path)
