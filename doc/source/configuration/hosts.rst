@@ -94,21 +94,27 @@ For example, to set the bootstrap user for controllers to ``centos``:
 
    controller_bootstrap_user: centos
 
-PyPI Mirror
-===========
+PyPI Mirror and proxy
+=====================
 *tags:*
   | ``pip``
 
-Kayobe supports configuration of a PyPI mirror, via variables in
-``${KAYOBE_CONFIG_PATH}/pip.yml``. This functionality is enabled by setting the
-``pip_local_mirror`` variable to ``true``.
+Kayobe supports configuration of a PyPI mirror and/or proxy, via variables in
+``${KAYOBE_CONFIG_PATH}/pip.yml``.
+Mirror functionality is enabled by setting the ``pip_local_mirror`` variable to
+``true`` and proxy functionality is enabled by setting ``pip_proxy`` variable
+to a proxy URL.
 
-Kayobe will generate configuration for
-``pip`` and ``easy_install`` to use the mirror, for the list of users defined
-by ``pip_applicable_users`` (default ``kayobe_ansible_user`` and ``root``), in
-addition to the user used for Kolla Ansible (``kolla_ansible_user``). The
-mirror URL is configured via ``pip_index_url``, and ``pip_trusted_hosts`` is a
-list of 'trusted' hosts, for which SSL verification will be disabled.
+Kayobe will generate configuration for:
+
+* ``pip`` to use the mirror and proxy
+* ``easy_install`` to use the mirror
+
+for the list of users defined by ``pip_applicable_users`` (default
+``kayobe_ansible_user`` and ``root``), in addition to the user used for Kolla
+Ansible (``kolla_ansible_user``). The mirror URL is configured via
+``pip_index_url``, and ``pip_trusted_hosts`` is a list of 'trusted' hosts, for
+which SSL verification will be disabled.
 
 For example, to configure use of the test PyPI mirror at
 https://test.pypi.org/simple/:
@@ -118,6 +124,14 @@ https://test.pypi.org/simple/:
 
    pip_local_mirror: true
    pip_index_url: https://test.pypi.org/simple/
+
+To configure use of the PyPI proxy:
+
+.. code-block:: yaml
+   :caption: ``pip.yml``
+
+   pip_proxy: http://your_proxy_server:3128
+
 
 Kayobe Remote Virtual Environment
 =================================

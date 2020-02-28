@@ -17,6 +17,9 @@
         {{ host }}
         {% endfor -%}
       {% endif -%}
+      {% if pip_proxy | length > 0 -%}
+      proxy = {{ pip_proxy }}
+      {% endif -%}
     dest: "~{{ user}}/.pip/pip.conf"
   become: True
   become_user: "{{ user }}"

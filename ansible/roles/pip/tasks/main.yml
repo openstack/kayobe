@@ -1,6 +1,6 @@
 ---
-- include_tasks: pip_local_mirror.yml
+- include_tasks: pip_conf.yml
   loop: "{{ pip_applicable_users }}"
   loop_control:
     loop_var: user
-  when: pip_local_mirror | bool
+  when: (pip_local_mirror | bool) or (pip_proxy | length > 0)
