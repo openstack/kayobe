@@ -1,0 +1,46 @@
+---
+- name: Copy CentOS repo templates
+  template:
+    src: "{{ item }}.j2"
+    dest: /etc/yum.repos.d/{{ item }}
+    owner: root
+    group: root
+    mode: 0664
+  become: True
+  loop:
+    - CentOS-AppStream.repo
+    - CentOS-Base.repo
+    - CentOS-Extras.repo
+
+- name: Update cache
+  dnf:
+    name: []
+    update_cache: yes
+  become: True
+
+# NOTE(mgoddard): Install epel-release to ensure it does not get installed
+# later and override our repo file.
+- name: Install epel-release
+  dnf:
+    name: epel-release
+    state: installed
+  become: True
+  when: dnf_install_epel | bool
+
+- name: Copy EPEL repo templates
+  template:
+    src: "{{ item }}.j2"
+    dest: /etc/yum.repos.d/{{ item }}
+    owner: root
+    group: root
+    mode: 0664
+  become: True
+  loop:
+    - epel.repo
+    - epel-modular.repo
+
+- name: Update cache
+  dnf:
+    name: []
+    update_cache: yes
+  become: True

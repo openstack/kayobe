@@ -1,0 +1,6 @@
+---
+# Whether DNF Automatic is enabled.
+dnf_automatic_enabled: false
+
+# DNF Automatic upgrade type.
+dnf_automatic_upgrade_type: "security"

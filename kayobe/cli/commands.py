@@ -377,8 +377,8 @@ class SeedHypervisorHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
         if parsed_args.wipe_disks:
             playbooks += _build_playbook_list("wipe-disks")
         playbooks += _build_playbook_list(
-            "users", "yum", "dev-tools", "network", "sysctl", "ntp", "mdadm",
-            "lvm", "seed-hypervisor-libvirt-host")
+            "users", "yum", "dnf", "dev-tools", "network", "sysctl", "ntp",
+            "mdadm", "lvm", "seed-hypervisor-libvirt-host")
         self.run_kayobe_playbooks(parsed_args, playbooks,
                                   limit="seed-hypervisor")
 
@@ -544,7 +544,7 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         if parsed_args.wipe_disks:
             playbooks += _build_playbook_list("wipe-disks")
         playbooks += _build_playbook_list(
-            "users", "yum", "dev-tools", "disable-selinux", "network",
+            "users", "yum", "dnf", "dev-tools", "disable-selinux", "network",
             "sysctl", "ip-routing", "snat", "disable-glean", "ntp", "mdadm",
             "lvm", "docker-devicemapper")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed")
@@ -944,7 +944,7 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         if parsed_args.wipe_disks:
             playbooks += _build_playbook_list("wipe-disks")
         playbooks += _build_playbook_list(
-            "users", "yum", "dev-tools", "disable-selinux", "network",
+            "users", "yum", "dnf", "dev-tools", "disable-selinux", "network",
             "sysctl", "disable-glean", "disable-cloud-init", "ntp", "mdadm",
             "lvm", "docker-devicemapper")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")

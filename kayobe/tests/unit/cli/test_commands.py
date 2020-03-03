@@ -322,6 +322,7 @@ class TestCase(unittest.TestCase):
                         "ansible", "kayobe-target-venv.yml"),
                     utils.get_data_files_path("ansible", "users.yml"),
                     utils.get_data_files_path("ansible", "yum.yml"),
+                    utils.get_data_files_path("ansible", "dnf.yml"),
                     utils.get_data_files_path("ansible", "dev-tools.yml"),
                     utils.get_data_files_path("ansible", "network.yml"),
                     utils.get_data_files_path("ansible", "sysctl.yml"),
@@ -499,6 +500,7 @@ class TestCase(unittest.TestCase):
                         "ansible", "kayobe-target-venv.yml"),
                     utils.get_data_files_path("ansible", "users.yml"),
                     utils.get_data_files_path("ansible", "yum.yml"),
+                    utils.get_data_files_path("ansible", "dnf.yml"),
                     utils.get_data_files_path("ansible", "dev-tools.yml"),
                     utils.get_data_files_path(
                         "ansible", "disable-selinux.yml"),
@@ -1126,6 +1128,7 @@ class TestCase(unittest.TestCase):
                         "ansible", "kayobe-target-venv.yml"),
                     utils.get_data_files_path("ansible", "users.yml"),
                     utils.get_data_files_path("ansible", "yum.yml"),
+                    utils.get_data_files_path("ansible", "dnf.yml"),
                     utils.get_data_files_path("ansible", "dev-tools.yml"),
                     utils.get_data_files_path(
                         "ansible", "disable-selinux.yml"),
