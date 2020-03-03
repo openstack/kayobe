@@ -1,0 +1,27 @@
+---
+- name: Install custom repositories
+  yum_repository:
+    name: "{{ item.key }}"
+    description: "{% if 'description' in item.value %}{{ item.value.description }}{% else %}{{ item.key }} repository{% endif %}"
+    baseurl: "{{ item.value.baseurl }}"
+    file: "{{ item.value.file | default(omit)}}"
+    gpgkey: "{{ item.value.gpgkey | default(omit)}}"
+    gpgcheck: "{{ item.value.gpgcheck | default(omit)}}"
+    cost: "{{ item.value.cost | default(omit)}}"
+    enabled: "{{ item.value.enabled | default(omit)}}"
+    gpgcakey: "{{ item.value.gpgcakey | default(omit)}}"
+    metadata_expire: "{{ item.value.metadata_expire | default(omit)}}"
+    mirrorlist: "{{ item.value.mirrorlist | default(omit)}}"
+    mirrorlist_expire: "{{ item.value.mirrorlist_expire | default(omit)}}"
+    priority: "{{ item.value.priority | default(omit)}}"
+    proxy: "{{ item.value.proxy | default(omit)}}"
+    proxy_password: "{{ item.value.proxy_password | default(omit)}}"
+    proxy_username: "{{ item.value.proxy_username | default(omit)}}"
+    repo_gpgcheck: "{{ item.value.repo_gpgcheck | default(omit)}}"
+    sslverify: "{{ item.value.sslverify | default(omit)}}"
+  with_dict: "{{ dnf_custom_repos }}"
+  register: register_dnf_command
+  retries: 3
+  delay: 10
+  until: register_dnf_command is success
+  become: true

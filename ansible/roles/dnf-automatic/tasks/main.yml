@@ -1,0 +1,27 @@
+---
+- block:
+    - name: Install dnf-automatic
+      dnf:
+        name: dnf-automatic
+        state: present
+
+    - name: Apply configuration for DNF automatic
+      ini_file:
+        path: /etc/dnf/automatic.conf
+        section: commands
+        option: "{{ item.option }}"
+        value: "{{ item.value }}"
+      loop:
+        - option: apply_updates
+          value: yes
+        - option: upgrade_type
+          value: "{{ dnf_automatic_upgrade_type }}"
+
+    - name: Enable dnf-automatic.timer
+      service:
+        name: dnf-automatic.timer
+        state: "{{ 'started' if dnf_automatic_enabled | bool else 'stopped' }}"
+        enabled: "{{ dnf_automatic_enabled | bool }}"
+
+  when: dnf_automatic_enabled | bool
+  become: true
