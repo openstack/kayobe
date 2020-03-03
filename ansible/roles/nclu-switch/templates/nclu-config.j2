@@ -1,0 +1,13 @@
+#jinja2: trim_blocks: True,lstrip_blocks: True
+{% for line in nclu_switch_config %}
+{{ line }}
+{% endfor %}
+
+{% for interface, config in nclu_switch_interface_config.items() %}
+{% if config.description is defined %}
+add {{ config.type | default("interface") }} {{ interface }} alias {{ config.description }}
+{% endif %}
+{% for line in config.config %}
+add {{ config.type | default("interface") }} {{ interface }} {{ line }}
+{% endfor %}
+{% endfor %}

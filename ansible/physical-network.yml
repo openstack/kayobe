@@ -30,6 +30,7 @@
       - dell-powerconnect
       - junos
       - mellanox
+      - nclu
       - openvswitch
   tasks:
     - name: Fail if both interface name and description limits are specified
@@ -155,3 +156,13 @@
       mellanox_switch_provider: "{{ switch_mellanox_provider }}"
       mellanox_switch_config: "{{ switch_config }}"
       mellanox_switch_interface_config: "{{ switch_interface_config }}"
+
+- name: Ensure Cumulus physical switches are configured with NCLU
+  hosts: switches_of_type_nclu:&switches_in_display_mode_False
+  gather_facts: no
+  roles:
+    - role: ssh-known-host
+
+    - role: nclu-switch
+      nclu_switch_config: "{{ switch_config }}"
+      nclu_switch_interface_config: "{{ switch_interface_config }}"

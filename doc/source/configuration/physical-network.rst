@@ -12,8 +12,10 @@ Devices are added to the Ansible inventory, and configured using Ansible's
 networking modules.  Configuration is applied via the ``kayobe physical network
 configure`` command.  See :ref:`physical-network` for details.
 
-The following switches are currently supported:
+The following switch operating systems are currently supported:
 
+* Cumulus Linux (via `Network Command Line Utility (NCLU)
+  <https://docs.cumulusnetworks.com/display/DOCS/Network+Command+Line+Utility+-+NCLU>`__)
 * Dell OS 6
 * Dell OS 9
 * Dell PowerConnect
@@ -172,6 +174,23 @@ example:
 
 Device-specific Configuration Variables
 =======================================
+
+Cumulus Linux (with NCLU)
+-------------------------
+
+Configuration for these devices is applied using the ``nclu`` Ansible module.
+
+``switch_type`` should be set to ``nclu``.
+
+SSH configuration
+^^^^^^^^^^^^^^^^^
+
+As with any non-switch host in the inventory, the ``nclu`` module relies on the
+default connection parameters used by Ansible:
+
+* ``ansible_host`` is the hostname or IP address.  Optional.
+
+* ``ansible_user`` is the SSH username.
 
 Dell OS6 and OS9
 ----------------

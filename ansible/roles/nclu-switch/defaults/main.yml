@@ -1,0 +1,9 @@
+---
+# List of configuration lines to apply to the switch.
+nclu_switch_config: []
+
+# Interface configuration. Dict mapping switch interface names to configuration
+# dicts. Each dict contains a 'description' item, an optional 'type' item
+# (default is 'interface'), and a 'config' item which should contain a list of
+# per-interface configuration.
+nclu_switch_interface_config: {}
