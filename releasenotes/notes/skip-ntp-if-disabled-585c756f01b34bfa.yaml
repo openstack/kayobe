@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Fixes an issue where host configuration would fail if
+    ``ntp_service_enabled`` is set to ``false`` or ``kolla_enable_chrony`` is
+    set to ``true``. See `story 2007384
+    <https://storyboard.openstack.org/#!/story/2007384>`__ for details.
