@@ -67,9 +67,6 @@
 # Name of the libvirt storage pool for the seed VM.
 #seed_hypervisor_libvirt_pool_name:
 
-# Capacity of the libvirt storage pool for the seed VM.
-#seed_hypervisor_libvirt_pool_capacity:
-
 # Directory path of the libvirt storage pool for the seed VM.
 #seed_hypervisor_libvirt_pool_path:
 

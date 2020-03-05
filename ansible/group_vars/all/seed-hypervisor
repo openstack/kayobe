@@ -80,7 +80,6 @@ seed_hypervisor_libvirt_pools:
 seed_hypervisor_libvirt_pool:
   name: "{{ seed_hypervisor_libvirt_pool_name }}"
   type: dir
-  capacity: "{{ seed_hypervisor_libvirt_pool_capacity }}"
   path: "{{ seed_hypervisor_libvirt_pool_path }}"
   mode: "{{ seed_hypervisor_libvirt_pool_mode }}"
   owner: "{{ seed_hypervisor_libvirt_pool_owner }}"
@@ -88,9 +87,6 @@ seed_hypervisor_libvirt_pool:
 
 # Name of the libvirt storage pool for the seed VM.
 seed_hypervisor_libvirt_pool_name: "default"
-
-# Capacity of the libvirt storage pool for the seed VM.
-seed_hypervisor_libvirt_pool_capacity: "{{ 75 * 2**30 }}"
 
 # Directory path of the libvirt storage pool for the seed VM.
 seed_hypervisor_libvirt_pool_path: "/var/lib/libvirt/images"
