@@ -377,6 +377,11 @@ NTP
 *tags:*
   | ``ntp``
 
+.. note::
+
+   CentOS 8 does not support configuring an NTP daemon. Use :ref:`chrony
+   <configuration-hosts-chrony>` instead.
+
 Network Time Protocol (NTP) may be configured via variables in
 ``${KAYOBE_CONFIG_PATH}/ntp.yml``. The list of NTP servers is
 configured via ``ntp_config_server``, and by default the ``pool.ntp.org``
@@ -405,14 +410,17 @@ The NTP service may be disabled as follows:
 
    ntp_service_enabled: false
 
+.. _configuration-hosts-chrony:
+
 Chrony
 ------
 
 Kolla Ansible can deploy a chrony container. This is disabled by default in
-Kayobe to avoid conflicting with the NTP daemon on the host.
+Kayobe on CentOS 7 to avoid conflicting with the NTP daemon on the host. On
+CentOS 8 Chrony is enabled by default.
 
-To use the containerised chrony daemon and disable the host NTP daemon, set the
-following in ``${KAYOBE_CONFIG_PATH}/kolla.yml``:
+To use the containerised chrony daemon and disable the host NTP daemon on
+CentOS 7, set the following in ``${KAYOBE_CONFIG_PATH}/kolla.yml``:
 
 .. code-block:: yaml
 
