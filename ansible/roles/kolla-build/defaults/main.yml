@@ -15,7 +15,7 @@ kolla_install_type:
 kolla_docker_namespace:
 
 # Valid option is Docker repository tag
-kolla_openstack_release:
+kolla_tag:
 
 # Dict mapping names of sources to their definitions for
 # kolla_install_type=source. See kolla.common.config for details.
