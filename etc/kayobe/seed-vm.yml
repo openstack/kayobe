@@ -23,7 +23,8 @@
 # Format of the seed VM root volume.
 #seed_vm_root_format:
 
-# Base image for the seed VM root volume.
+# Base image for the seed VM root volume. Default is
+# "https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud.qcow2"
 #seed_vm_root_image:
 
 # Capacity of the seed VM data volume.

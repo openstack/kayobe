@@ -1,4 +1,9 @@
 ---
+- name: Ensure iptables is installed
+  package:
+    name: iptables
+  become: true
+
 # iptables -t nat -A POSTROUTING -o {{ interface }} -j SNAT --to-source {{ source_ip }}
 - name: Ensure SNAT iptables rules exist
   iptables:
