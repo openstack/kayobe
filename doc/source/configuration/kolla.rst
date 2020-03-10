@@ -92,6 +92,9 @@ affect :ref:`Kolla Ansible configuration <configuration-kolla-ansible-global>`.
     Kolla OpenStack release version. This should be a Docker image tag. Default
     is the OpenStack release name (e.g. ``rocky``) on stable branches and
     tagged releases, or ``master`` on the Kayobe ``master`` branch.
+``kolla_tag``
+    Kolla container image tag. This is the tag that will be applied to built
+    container images. Default is ``kolla_openstack_release``.
 
 For example, to build the Kolla ``centos`` ``binary`` images with a namespace
 of ``example``, and a private Docker registry at ``registry.example.com:4000``,
