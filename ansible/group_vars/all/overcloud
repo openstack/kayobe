@@ -8,7 +8,7 @@ overcloud_group_default: controllers
 
 # List of names of Ansible groups for overcloud hosts.
 overcloud_groups: >
-  {{ (list(overcloud_group_hosts_map) +
+  {{ (overcloud_group_hosts_map | list +
       [overcloud_group_default]) | reject('equalto', 'ignore') | unique | sort | list }}
 
 # Dict mapping overcloud Ansible group names to lists of hosts in the group.

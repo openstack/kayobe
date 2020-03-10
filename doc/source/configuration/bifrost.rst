@@ -52,9 +52,9 @@ configuration drive built by Bifrost, rather than the Bifrost default of
 :diskimage-builder-doc:`simple-init <elements/simple-init/README>`.
 
 ``kolla_bifrost_dib_os_element``
-    DIB base OS element. Default is ``centos7``.
+    DIB base OS element. Default is ``centos``.
 ``kolla_bifrost_dib_os_release``
-    DIB image OS release. Default is ``GenericCloud``.
+    DIB image OS release. Default is ``8``.
 ``kolla_bifrost_dib_elements_default``
     *Added in the Train release. Use kolla_bifrost_dib_elements in earlier
     releases.*
@@ -78,7 +78,8 @@ configuration drive built by Bifrost, rather than the Bifrost default of
     releases.*
 
     DIB default environment variables. Default is
-    ``{"DIB_CLOUD_INIT_DATASOURCES": "ConfigDrive"}``.
+    ``{"DIB_CLOUD_INIT_DATASOURCES": "ConfigDrive",
+    "DIB_DISABLE_KERNEL_CLEANUP": 1}``.
 ``kolla_bifrost_dib_env_vars_extra``
     *Added in the Train release. Use kolla_bifrost_dib_env_vars in earlier
     releases.*
