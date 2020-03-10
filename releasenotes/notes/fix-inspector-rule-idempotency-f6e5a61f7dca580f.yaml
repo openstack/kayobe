@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an issue with idempotency of Ironic Inspector rule creation. See
+    `story 2007399 <https://storyboard.openstack.org/#!/story/2007399>`__ for
+    details.
