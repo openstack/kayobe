@@ -21,3 +21,10 @@ overcloud_host_image_workaround_resolv_enabled: false
 # Use the CI infra's PyPI mirror.
 pip_local_mirror: true
 pip_index_url: "http://{{ zuul_site_mirror_fqdn }}/pypi/simple"
+
+# NOTE(mgoddard): CentOS 8 removes interfaces from their bridge during ifdown,
+# and removes the bridge if there are no interfaces left. When Kayobe bounces
+# veth links plugged into the bridge, it causes the bridge which has the IP we
+# are using for SSH to be removed. Use a dummy interface.
+aio_bridge_ports:
+  - dummy1

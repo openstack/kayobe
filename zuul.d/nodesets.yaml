@@ -4,3 +4,9 @@
     nodes:
       - name: primary
         label: centos-7
+
+- nodeset:
+    name: kayobe-centos8
+    nodes:
+      - name: primary
+        label: centos-8

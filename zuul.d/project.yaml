@@ -10,10 +10,12 @@
         - kayobe-tox-ansible-syntax
         - kayobe-tox-ansible
         - kayobe-tox-molecule
-        - kayobe-overcloud-centos
-        - kayobe-overcloud-upgrade-centos
-        - kayobe-seed-centos
-        - kayobe-seed-upgrade-centos
+        - kayobe-overcloud-centos8
+        # TODO(mgoddard): Enable upgrade jobs when CentOS 8 support in Train.
+        # - kayobe-overcloud-upgrade-centos8
+        - kayobe-seed-centos8
+        # TODO(mgoddard): Enable upgrade jobs when CentOS 8 support in Train.
+        # - kayobe-seed-upgrade-centos8
 
     gate:
       queue: kayobe
@@ -21,7 +23,9 @@
         - kayobe-tox-ansible-syntax
         - kayobe-tox-ansible
         - kayobe-tox-molecule
-        - kayobe-overcloud-centos
-        - kayobe-overcloud-upgrade-centos
-        - kayobe-seed-centos
-        - kayobe-seed-upgrade-centos
+        - kayobe-overcloud-centos8
+        # TODO(mgoddard): Enable upgrade jobs when CentOS 8 support in Train.
+        # - kayobe-overcloud-upgrade-centos8
+        - kayobe-seed-centos8
+        # TODO(mgoddard): Enable upgrade jobs when CentOS 8 support in Train.
+        # - kayobe-seed-upgrade-centos

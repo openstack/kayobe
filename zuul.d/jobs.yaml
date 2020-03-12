@@ -92,9 +92,9 @@
     timeout: 7200
 
 - job:
-    name: kayobe-overcloud-centos
+    name: kayobe-overcloud-centos8
     parent: kayobe-overcloud-base
-    nodeset: kayobe-centos
+    nodeset: kayobe-centos8
 
 - job:
     name: kayobe-overcloud-upgrade-base
@@ -112,9 +112,9 @@
     attempts: 3
 
 - job:
-    name: kayobe-overcloud-upgrade-centos
+    name: kayobe-overcloud-upgrade-centos8
     parent: kayobe-overcloud-upgrade-base
-    nodeset: kayobe-centos
+    nodeset: kayobe-centos8
 
 - job:
     name: kayobe-seed-base
@@ -128,9 +128,9 @@
     timeout: 5400
 
 - job:
-    name: kayobe-seed-centos
+    name: kayobe-seed-centos8
     parent: kayobe-seed-base
-    nodeset: kayobe-centos
+    nodeset: kayobe-centos8
 
 - job:
     name: kayobe-seed-upgrade-base
@@ -148,6 +148,6 @@
     attempts: 3
 
 - job:
-    name: kayobe-seed-upgrade-centos
+    name: kayobe-seed-upgrade-centos8
     parent: kayobe-seed-upgrade-base
-    nodeset: kayobe-centos
+    nodeset: kayobe-centos8
