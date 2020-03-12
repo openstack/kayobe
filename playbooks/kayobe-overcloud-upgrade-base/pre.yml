@@ -19,3 +19,11 @@
         - "ip l add breth1 type bridge"
         - "ip l set breth1 up"
         - "ip a add 192.168.33.3/24 dev breth1"
+        # NOTE(mgoddard): CentOS 8 removes interfaces from their bridge during
+        # ifdown, and removes the bridge if there are no interfaces left. When
+        # Kayobe bounces veth links plugged into the bridge, it causes the
+        # bridge which has the IP we are using for SSH to be removed. Use a
+        # dummy interface.
+        - "ip l add dummy1 type dummy"
+        - "ip l set dummy1 up"
+        - "ip l set dummy1 master breth1"
