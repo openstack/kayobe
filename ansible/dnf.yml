@@ -1,16 +1,16 @@
 ---
-- name: Ensure Yum repos are configured
+- name: Ensure DNF repos are configured
   hosts: seed-hypervisor:seed:overcloud
   tags:
-    - yum
+    - dnf
   tasks:
     - block:
         - import_role:
-            name: yum
+            name: dnf
         - import_role:
-            name: yum-cron
+            name: dnf-automatic
           tags:
-            - yum-cron
+            - dnf-automatic
       when:
         - ansible_os_family == 'RedHat'
-        - ansible_distribution_major_version | int == 7
+        - ansible_distribution_major_version | int >= 8

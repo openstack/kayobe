@@ -1,0 +1,6 @@
+---
+# Whether to enable Yum automatic updates.
+yum_cron_enabled: false
+
+# Command to use for Yum automatic updates.
+yum_cron_update_cmd: 'security'

@@ -1,0 +1,23 @@
+[epel-modular]
+name=Extra Packages for Enterprise Linux Modular $releasever - $basearch
+baseurl=http://{{ dnf_epel_mirror_host }}/{{ dnf_epel_mirror_directory }}/$releasever/Modular/$basearch
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
+fastestmirror=0
+
+[epel-modular-debuginfo]
+name=Extra Packages for Enterprise Linux Modular $releasever - $basearch - Debug
+baseurl=http://{{ dnf_epel_mirror_host }}/{{ dnf_epel_mirror_directory }}/$releasever/Modular/$basearch/debug
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
+gpgcheck=1
+fastestmirror=0
+
+[epel-modular-source]
+name=Extra Packages for Enterprise Linux Modular $releasever - $basearch - Source
+baseurl=http://{{ dnf_epel_mirror_host }}/{{ dnf_epel_mirror_directory }}/$releasever/Modular/SRPMS
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
+gpgcheck=1
+fastestmirror=0
