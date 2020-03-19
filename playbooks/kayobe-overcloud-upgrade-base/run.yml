@@ -8,7 +8,7 @@
     - block:
         - name: Ensure kayobe is installed
           shell:
-            cmd: dev/install.sh > {{ logs_dir }}/ansible/install-pre-upgrade
+            cmd: dev/install.sh &> {{ logs_dir }}/ansible/install-pre-upgrade
             chdir: "{{ previous_kayobe_src_dir }}"
 
         - name: Configure the firewall
@@ -21,7 +21,7 @@
 
         - name: Ensure overcloud is deployed
           shell:
-            cmd: dev/overcloud-deploy.sh > {{ logs_dir }}/ansible/overcloud-deploy-pre-upgrade
+            cmd: dev/overcloud-deploy.sh &> {{ logs_dir }}/ansible/overcloud-deploy-pre-upgrade
             chdir: "{{ previous_kayobe_src_dir }}"
 
         - name: Ensure test Tenks cluster is deployed
@@ -29,7 +29,7 @@
             # Pass absolute source directory, since otherwise the `chdir` will
             # cause this to fail. Don't use previous_kayobe_source_dir as
             # tenks-deploy-compute.sh does not exist there.
-            cmd: dev/tenks-deploy-compute.sh '{{ tenks_src_dir }}' > {{ logs_dir }}/ansible/tenks-deploy
+            cmd: dev/tenks-deploy-compute.sh '{{ tenks_src_dir }}' &> {{ logs_dir }}/ansible/tenks-deploy
             chdir: "{{ kayobe_src_dir }}"
 
       environment:
@@ -64,30 +64,30 @@
     - block:
         - name: Perform testing of the VMs in the overcloud prior to upgrade
           shell:
-            cmd: dev/overcloud-test-vm.sh > {{ logs_dir }}/ansible/overcloud-test-vm-pre-upgrade
+            cmd: dev/overcloud-test-vm.sh &> {{ logs_dir }}/ansible/overcloud-test-vm-pre-upgrade
             chdir: "{{ previous_kayobe_src_dir }}"
 
         - name: Perform testing of the baremetal machines in the overcloud prior to upgrade
           shell:
-            cmd: dev/overcloud-test-baremetal.sh > {{ logs_dir }}/ansible/overcloud-test-bm-pre-upgrade
+            cmd: dev/overcloud-test-baremetal.sh &> {{ logs_dir }}/ansible/overcloud-test-bm-pre-upgrade
             chdir: "{{ previous_kayobe_src_dir }}"
 
         # Upgrade Kayobe, and use it to perform an upgrade of the control plane.
 
         - name: Ensure overcloud is upgraded
           shell:
-            cmd: "{{ kayobe_src_dir }}/dev/overcloud-upgrade.sh > {{ logs_dir }}/ansible/overcloud-upgrade"
+            cmd: "{{ kayobe_src_dir }}/dev/overcloud-upgrade.sh &> {{ logs_dir }}/ansible/overcloud-upgrade"
 
         # Perform a smoke test against the upgraded current release.
 
         - name: Perform testing of VMs in the upgraded overcloud
           shell:
-            cmd: dev/overcloud-test-vm.sh > {{ logs_dir }}/ansible/overcloud-test-vm-post-upgrade
+            cmd: dev/overcloud-test-vm.sh &> {{ logs_dir }}/ansible/overcloud-test-vm-post-upgrade
             chdir: "{{ kayobe_src_dir }}"
 
         - name: Perform testing of the baremetal machines in the upgraded overcloud
           shell:
-            cmd: dev/overcloud-test-baremetal.sh > {{ logs_dir }}/ansible/overcloud-test-bm-post-upgrade
+            cmd: dev/overcloud-test-baremetal.sh &> {{ logs_dir }}/ansible/overcloud-test-bm-post-upgrade
             chdir: "{{ kayobe_src_dir }}"
 
       environment:

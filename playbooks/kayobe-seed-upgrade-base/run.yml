@@ -8,12 +8,12 @@
     - block:
         - name: Ensure kayobe is installed
           shell:
-            cmd: dev/install.sh > {{ logs_dir }}/ansible/install-pre-upgrade
+            cmd: dev/install.sh &> {{ logs_dir }}/ansible/install-pre-upgrade
             chdir: "{{ previous_kayobe_src_dir }}"
 
         - name: Ensure seed is deployed
           shell:
-            cmd: dev/seed-deploy.sh > {{ logs_dir }}/ansible/seed-deploy-pre-upgrade
+            cmd: dev/seed-deploy.sh &> {{ logs_dir }}/ansible/seed-deploy-pre-upgrade
             chdir: "{{ previous_kayobe_src_dir }}"
       environment:
         KAYOBE_CONFIG_SOURCE_PATH: "{{ previous_kayobe_config_src_dir }}"
@@ -50,7 +50,7 @@
 
         - name: Ensure seed is upgraded
           shell:
-            cmd: "{{ kayobe_src_dir }}/dev/seed-upgrade.sh > {{ logs_dir }}/ansible/seed-upgrade"
+            cmd: "{{ kayobe_src_dir }}/dev/seed-upgrade.sh &> {{ logs_dir }}/ansible/seed-upgrade"
 
         # TODO(mgoddard): Perform a smoke test against the upgraded current release.
       environment:

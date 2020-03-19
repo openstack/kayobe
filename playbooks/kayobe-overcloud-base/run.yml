@@ -5,23 +5,23 @@
   tasks:
     - name: Ensure overcloud is deployed
       shell:
-        cmd: "{{ kayobe_src_dir }}/dev/overcloud-deploy.sh > {{ logs_dir }}/ansible/overcloud-deploy"
+        cmd: "{{ kayobe_src_dir }}/dev/overcloud-deploy.sh &> {{ logs_dir }}/ansible/overcloud-deploy"
 
     - name: Ensure test Tenks cluster is deployed
       shell:
         # Pass absolute source directory, since otherwise the `chdir` will
         # cause this to fail.
-        cmd: dev/tenks-deploy-compute.sh '{{ tenks_src_dir }}' > {{ logs_dir }}/ansible/tenks-deploy
+        cmd: dev/tenks-deploy-compute.sh '{{ tenks_src_dir }}' &> {{ logs_dir }}/ansible/tenks-deploy
         chdir: "{{ kayobe_src_dir }}"
 
     - name: Perform testing of the virtualized machines
       # We must do this before tenks-deploy as that will stop the nova_libvirt
       # container
       shell:
-        cmd: dev/overcloud-test-vm.sh > {{ logs_dir }}/ansible/overcloud-test-vm
+        cmd: dev/overcloud-test-vm.sh &> {{ logs_dir }}/ansible/overcloud-test-vm
         chdir: "{{ kayobe_src_dir }}"
 
     - name: Perform testing of the baremetal machines
       shell:
-        cmd: dev/overcloud-test-baremetal.sh > {{ logs_dir }}/ansible/overcloud-test-baremetal
+        cmd: dev/overcloud-test-baremetal.sh &> {{ logs_dir }}/ansible/overcloud-test-baremetal
         chdir: "{{ kayobe_src_dir }}"

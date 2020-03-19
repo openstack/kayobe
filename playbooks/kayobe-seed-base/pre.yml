@@ -40,5 +40,5 @@
 
     - name: Ensure kayobe is installed
       shell:
-        cmd: dev/install.sh > {{ logs_dir }}/ansible/install
+        cmd: dev/install.sh &> {{ logs_dir }}/ansible/install
         chdir: "{{ kayobe_src_dir }}"
