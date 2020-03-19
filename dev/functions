@@ -403,6 +403,11 @@ function overcloud_test_init {
         export ENABLE_EXT_NET=0
         ${KOLLA_VENV_PATH:-$HOME/kolla-venv}/share/kolla-ansible/init-runonce
         unset ENABLE_EXT_NET
+
+        # Allow provision-net to be used as an external network for floating IPs.
+        # Note: a provisioning network would not normally be external.
+        openstack network set provision-net --external
+        openstack router set demo-router --external-gateway provision-net
     else
         echo "Not running kolla-ansible init-runonce - resources exist"
     fi
