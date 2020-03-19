@@ -28,10 +28,14 @@ docker_registry_services:
       - "{{ docker_registry_port }}:5000"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "docker_registry:/var/lib/registry"
+      - "{{ docker_registry_datadir_volume }}:/var/lib/registry"
 
 # The port on which the docker registry server should listen.
 docker_registry_port: 5000
+
+# The name or path to use for the docker volume that backs the registry.
+# Defaults to ``docker_registry``.
+docker_registry_datadir_volume: docker_registry
 
 ####################
 # Docker

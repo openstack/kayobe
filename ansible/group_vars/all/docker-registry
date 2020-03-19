@@ -18,3 +18,6 @@ docker_registry_env: {}
 # NOTE: This is set to 4000 rather than the default of 5000 to avoid clashing
 #       with keystone.
 docker_registry_port: 4000
+
+# Name or path to use as the volume for the docker registry.
+docker_registry_datadir_volume: docker_registry

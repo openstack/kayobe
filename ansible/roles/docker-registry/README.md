@@ -25,6 +25,8 @@ to ``true``.
 ``docker_registry_restart_policy``: Docker restart policy for
 ``docker_registry`` container. Defaults to ``unless-stopped``.
 ``docker_registry_restart_retries``: Number of Docker restarts. Defaults to 10.
+``docker_registry_datadir_volume``: The name or path to use for the docker
+volume that backs the registry. Defaults to ``docker_registry``.
 
 Dependencies
 ------------
