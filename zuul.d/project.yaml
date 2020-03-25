@@ -16,8 +16,7 @@
         - kayobe-overcloud-centos8
         - kayobe-overcloud-upgrade-centos7
         - kayobe-seed-centos7
-        # TODO(mgoddard): Enable CentOS 8 seed job when Bifrost container available in Train.
-        # - kayobe-seed-centos8
+        - kayobe-seed-centos8
         - kayobe-seed-upgrade-centos7
 
     gate:
@@ -30,6 +29,5 @@
         - kayobe-overcloud-centos8
         - kayobe-overcloud-upgrade-centos7
         - kayobe-seed-centos7
-        # TODO(mgoddard): Enable CentOS 8 seed job when Bifrost container available in Train.
-        # - kayobe-seed-centos8
+        - kayobe-seed-centos8
         - kayobe-seed-upgrade-centos7
