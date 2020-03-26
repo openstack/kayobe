@@ -1,5 +1,5 @@
 ---
-# Deploy/pull/reconfigure/upgrade Docker registry.
+# Deploy/pull/reconfigure/stop/upgrade Docker registry.
 #
 # Follows kolla-ansible service deployment patterns.
 #
