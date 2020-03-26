@@ -1,5 +1,5 @@
 ---
-# Deploy/pull/reconfigure/upgrade inspection data store.
+# Deploy/pull/reconfigure/stop/upgrade inspection data store.
 #
 # Follows kolla-ansible service deployment patterns.
 #

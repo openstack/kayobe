@@ -1,5 +1,5 @@
 ---
-# Deploy/pull/reconfigure/upgrade overcloud services not managed by
+# Deploy/pull/reconfigure/stop/upgrade overcloud services not managed by
 # kolla-ansible.
 #
 # Follows kolla-ansible service deployment patterns.
