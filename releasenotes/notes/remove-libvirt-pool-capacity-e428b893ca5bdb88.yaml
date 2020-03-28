@@ -1,0 +1,8 @@
+---
+fixes:
+  - |
+    Removes the ``seed_hypervisor_libvirt_pool_capacity`` variable, which was
+    passed to Libvirt through the libvirt-host role when creating a storage
+    pool. This information is actually ignored by Libvirt, which gathers
+    capacity and other metadata from the storage backend. See `story 2007381
+    <https://storyboard.openstack.org/#!/story/2007381>`__ for details.
