@@ -1,0 +1,5 @@
+---
+- name: Ensure Cumulus switches are configured with NCLU
+  nclu:
+    template: "{{ lookup('template', 'nclu-config.j2') }}"
+    atomic: true

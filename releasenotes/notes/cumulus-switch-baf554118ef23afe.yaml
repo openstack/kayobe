@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Adds support for configuring Cumulus switches using the `Network Command
+    Line Utility (NCLU)
+    <https://docs.cumulusnetworks.com/display/DOCS/Network+Command+Line+Utility+-+NCLU>`__.
+    This is integrated with the ``kayobe physical network configure`` command.
