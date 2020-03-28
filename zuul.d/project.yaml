@@ -13,8 +13,7 @@
         - kayobe-overcloud-centos8
         - kayobe-overcloud-upgrade-centos8
         - kayobe-seed-centos8
-        # TODO(mgoddard): Enable upgrade jobs when CentOS 8 support in Train.
-        # - kayobe-seed-upgrade-centos8
+        - kayobe-seed-upgrade-centos8
 
     gate:
       queue: kayobe
@@ -25,5 +24,4 @@
         - kayobe-overcloud-centos8
         - kayobe-overcloud-upgrade-centos8
         - kayobe-seed-centos8
-        # TODO(mgoddard): Enable upgrade jobs when CentOS 8 support in Train.
-        # - kayobe-seed-upgrade-centos8
+        - kayobe-seed-upgrade-centos8
