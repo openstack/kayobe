@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an issue where it was not possible to load dashboards into the
+    Monasca Grafana fork when the default Monasca control plane OpenStack
+    project name is used from Kolla Ansible.
