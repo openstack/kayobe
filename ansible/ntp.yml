@@ -6,10 +6,5 @@
   roles:
     - role: stackhpc.timezone
       become: True
-    - role: resmo.ntp
+    - role: stackhpc.ntp
       become: True
-      # NOTE(mgoddard): The resmo.ntp role fails if ntp_service_enabled is set
-      # to false, since it tries to disable the ntpd service which does not
-      # exist. Skip the role if it is disabled.
-      # https://storyboard.openstack.org/#!/story/2007384.
-      when: ntp_service_enabled | bool
