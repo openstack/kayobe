@@ -8,8 +8,8 @@
   version: v1.1.0
 - src: mrlesmithjr.manage-lvm
   version: v0.1.1
-- src: resmo.ntp
-  version: 0.4.0
+- src: stackhpc.ntp
+  version: 2.0.0
 - src: singleplatform-eng.users
   version: v1.2.5
 - src: stackhpc.dell-powerconnect-switch

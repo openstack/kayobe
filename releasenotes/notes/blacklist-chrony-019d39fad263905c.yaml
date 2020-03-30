@@ -1,0 +1,9 @@
+---
+fixes:
+  - |
+    Fixes an issue where chronyd would be enabled as a systemd service in
+    addition to ntpd. This causes issues in deployments where the NTP servers
+    have been customized, as chronyd would win the race on startup, but its
+    configuration file would not have been configured by Kayobe. `See story
+    2005272 <https://storyboard.openstack.org/#!/story/2005272>`_ for more
+    details.

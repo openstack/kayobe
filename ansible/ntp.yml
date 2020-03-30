@@ -6,5 +6,5 @@
   roles:
     - role: stackhpc.timezone
       become: True
-    - role: resmo.ntp
+    - role: stackhpc.ntp
       become: True
