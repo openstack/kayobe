@@ -335,7 +335,7 @@ configured via ``ntp_config_server``, and by default the ``pool.ntp.org``
 servers are used. A list of restrictions may be added via
 ``ntp_config_restrict``, and a list of interfaces to listen on via
 ``ntp_config_listen``. Other options and their default values may be found in
-the `resmo.ntp <https://galaxy.ansible.com/resmo/ntp>`__ Ansible role.
+the `stackhpc.ntp <https://galaxy.ansible.com/stackhpc/ntp>`__ Ansible role.
 
 .. code-block:: yaml
    :caption: ``ntp.yml``
