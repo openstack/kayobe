@@ -36,6 +36,7 @@
 
 - name: Ensure the Kayobe Ansible user account exists
   hosts: kayobe_user_bootstrap_required_True
+  gather_facts: false
   tags:
     - kayobe-ansible-user
   vars:

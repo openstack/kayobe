@@ -47,6 +47,7 @@
            gather_subset: min
          delegate_to: localhost
          delegate_facts: true
+         when: not hostvars.localhost.module_setup | default(false)
 
        - name: Reserve TCP ports for ironic serial consoles
          include_role:

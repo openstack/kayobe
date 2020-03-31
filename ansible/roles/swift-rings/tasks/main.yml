@@ -9,6 +9,7 @@
     # Facts required for ansible_user_uid and ansible_user_gid.
     - name: Gather facts for swift ring build host
       setup:
+      when: not module_setup | default(false)
 
     - name: Ensure Swift ring build directory exists
       file:

@@ -15,6 +15,7 @@
       delegate_to: localhost
       delegate_facts: true
       run_once: true
+      when: not hostvars.localhost.module_setup | default(false)
 
 - name: Ensure IP addresses are allocated
   hosts: seed-hypervisor:seed:overcloud

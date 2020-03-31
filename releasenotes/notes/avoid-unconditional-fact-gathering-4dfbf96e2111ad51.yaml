@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    Avoids unnecessary fact gathering using the ``setup`` module. This should
+    improve the performance of environments using fact caching and the Ansible
+    ``smart`` fact gathering policy. See `story 2007492
+    <https://storyboard.openstack.org/#!/story/2007492>`__ for details.

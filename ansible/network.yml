@@ -67,7 +67,6 @@
         {{ bond_interfaces |
            map('net_bond_obj') |
            list }}
-      become: True
 
 # Configure virtual ethernet patch links to connect the workload provision
 # and external network bridges to the Neutron OVS bridge.

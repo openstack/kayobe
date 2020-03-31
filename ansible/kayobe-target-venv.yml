@@ -19,6 +19,8 @@
     - block:
         - name: Gather facts
           setup:
+          when: not module_setup | default(false)
+          register: gather_facts
 
         - name: Ensure the Python virtualenv package is installed
           package:
@@ -81,6 +83,16 @@
         # exist.
         ansible_python_interpreter: /usr/libexec/platform-python
       when: virtualenv is defined
+
+    # If we gathered facts earlier it would have been with a different Python
+    # interpreter. For gathering modes that may use a fact cache, gather facts
+    # again using the interpreter from the virtual environment.
+    - name: Gather facts
+      setup:
+      when:
+        - virtualenv is defined
+        - gather_facts is not skipped
+        - lookup('config', 'DEFAULT_GATHERING') != 'implicit'
 
     - block:
         - name: Ensure Python setuptools and pip packages are installed
