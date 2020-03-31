@@ -323,6 +323,61 @@ class TestCase(unittest.TestCase):
         mock_vars.assert_called_once_with("/etc/kayobe")
 
     @mock.patch.object(utils, "run_command")
+    @mock.patch.object(utils, "is_readable_file")
+    @mock.patch.object(ansible, "_get_vars_files")
+    @mock.patch.object(ansible, "_validate_args")
+    def test_run_playbooks_ansible_cfg(self, mock_validate, mock_vars,
+                                       mock_readable, mock_run):
+        mock_vars.return_value = []
+        mock_readable.return_value = {"result": True}
+        parser = argparse.ArgumentParser()
+        ansible.add_args(parser)
+        vault.add_args(parser)
+        parsed_args = parser.parse_args([])
+        ansible.run_playbooks(parsed_args, ["playbook1.yml"])
+        expected_cmd = [
+            "ansible-playbook",
+            "--inventory", "/etc/kayobe/inventory",
+            "playbook1.yml",
+        ]
+        expected_env = {
+            "ANSIBLE_CONFIG": "/etc/kayobe/ansible.cfg",
+            "KAYOBE_CONFIG_PATH": "/etc/kayobe"
+        }
+        mock_run.assert_called_once_with(expected_cmd, check_output=False,
+                                         quiet=False, env=expected_env)
+        mock_vars.assert_called_once_with("/etc/kayobe")
+        mock_readable.assert_called_once_with("/etc/kayobe/ansible.cfg")
+
+    @mock.patch.object(utils, "run_command")
+    @mock.patch.object(utils, "is_readable_file")
+    @mock.patch.object(ansible, "_get_vars_files")
+    @mock.patch.object(ansible, "_validate_args")
+    def test_run_playbooks_ansible_cfg_env(self, mock_validate, mock_vars,
+                                           mock_readable, mock_run):
+        mock_vars.return_value = []
+        mock_readable.return_value = {"result": True}
+        os.environ["ANSIBLE_CONFIG"] = "/path/to/ansible.cfg"
+        parser = argparse.ArgumentParser()
+        ansible.add_args(parser)
+        vault.add_args(parser)
+        parsed_args = parser.parse_args([])
+        ansible.run_playbooks(parsed_args, ["playbook1.yml"])
+        expected_cmd = [
+            "ansible-playbook",
+            "--inventory", "/etc/kayobe/inventory",
+            "playbook1.yml",
+        ]
+        expected_env = {
+            "ANSIBLE_CONFIG": "/path/to/ansible.cfg",
+            "KAYOBE_CONFIG_PATH": "/etc/kayobe"
+        }
+        mock_run.assert_called_once_with(expected_cmd, check_output=False,
+                                         quiet=False, env=expected_env)
+        mock_vars.assert_called_once_with("/etc/kayobe")
+        mock_readable.assert_called_once_with("/etc/kayobe/ansible.cfg")
+
+    @mock.patch.object(utils, "run_command")
     @mock.patch.object(ansible, "_get_vars_files")
     @mock.patch.object(ansible, "_validate_args")
     def test_run_playbooks_failure(self, mock_validate, mock_vars, mock_run):

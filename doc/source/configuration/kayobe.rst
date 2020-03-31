@@ -107,6 +107,16 @@ Site Localisation and Customisation
 Site localisation and customisation is applied using Ansible extra-vars files
 in ``${KAYOBE_CONFIG_PATH}/*.yml``.
 
+Configuration of Ansible
+------------------------
+
+Ansible configuration is described in detail in the `Ansible documentation
+<https://docs.ansible.com/ansible/latest/reference_appendices/config.html>`__.
+In addition to the standard locations, Kayobe supports using an Ansible
+configuration file located in the Kayobe configuration at
+``${KAYOBE_CONFIG_PATH}/ansible.cfg``. Note that if the ``ANSIBLE_CONFIG``
+environment variable is specified it takes precedence over this file.
+
 Encryption of Secrets
 ---------------------
 

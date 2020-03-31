@@ -157,6 +157,21 @@ def build_args(parsed_args, playbooks,
     return cmd
 
 
+def _get_environment(parsed_args):
+    """Return an environment dict for executing an Ansible playbook."""
+    env = os.environ.copy()
+    vault.update_environment(parsed_args, env)
+    # If the configuration path has been specified via --config-path, ensure
+    # the environment variable is set, so that it can be referenced by
+    # playbooks.
+    env.setdefault(CONFIG_PATH_ENV, parsed_args.config_path)
+    # If a custom Ansible configuration file exists, use it.
+    ansible_cfg_path = os.path.join(parsed_args.config_path, "ansible.cfg")
+    if utils.is_readable_file(ansible_cfg_path)["result"]:
+        env.setdefault("ANSIBLE_CONFIG", ansible_cfg_path)
+    return env
+
+
 def run_playbooks(parsed_args, playbooks,
                   extra_vars=None, limit=None, tags=None, quiet=False,
                   check_output=False, verbose_level=None, check=None,
@@ -167,12 +182,7 @@ def run_playbooks(parsed_args, playbooks,
                      extra_vars=extra_vars, limit=limit, tags=tags,
                      verbose_level=verbose_level, check=check,
                      ignore_limit=ignore_limit, list_tasks=list_tasks)
-    env = os.environ.copy()
-    vault.update_environment(parsed_args, env)
-    # If the configuration path has been specified via --config-path, ensure
-    # the environment variable is set, so that it can be referenced by
-    # playbooks.
-    env.setdefault(CONFIG_PATH_ENV, parsed_args.config_path)
+    env = _get_environment(parsed_args)
     try:
         utils.run_command(cmd, check_output=check_output, quiet=quiet, env=env)
     except subprocess.CalledProcessError as e:

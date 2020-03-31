@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Adds support for providing custom Ansible configuration files via Kayobe
+    configuration. For Kayobe the file should be located at
+    ``${KAYOBE_CONFIG_PATH}/ansible.cfg``. For Kolla Ansible, it may be located
+    either at ``${KAYOBE_CONFIG_PATH}/kolla/ansible.cfg`` or
+    ``${KAYOBE_CONFIG_PATH}/ansible.cfg``. A file specified via the
+    ``ANSIBLE_CONFIG`` environment variable overrides these.
