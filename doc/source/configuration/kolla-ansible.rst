@@ -151,7 +151,7 @@ The following variables affect how Ansible accesses the remote hosts.
     Primary group of Kolla SSH user. Default is ``kolla``.
 ``kolla_ansible_become``
     Whether to use privilege escalation for all operations performed via Kolla
-    Ansible. Default is ``true``.
+    Ansible. Default is ``false`` since the 8.0.0 Ussuri release.
 ``kolla_ansible_target_venv``
     Path to a virtual environment on remote hosts to use for Ansible module
     execution. Default is ``{{ virtualenv_path }}/kolla-ansible``. May be set

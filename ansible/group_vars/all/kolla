@@ -335,7 +335,7 @@ kolla_ansible_group: kolla
 
 # Whether to use privilege escalation for all operations performed via Kolla
 # Ansible.
-kolla_ansible_become: true
+kolla_ansible_become: false
 
 ###############################################################################
 # Kolla feature flag configuration.
