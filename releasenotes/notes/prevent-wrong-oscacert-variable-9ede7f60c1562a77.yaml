@@ -1,0 +1,8 @@
+---
+fixes:
+  - |
+     Fixes an issue where ``OS_CACERT`` variable in ``openrc`` files would be
+     set to the path of a non-existent file. New ``openrc`` files can be
+     generated with the ``kayobe control host bootstrap`` command. `See story
+     2007516 <https://storyboard.openstack.org/#!/story/2007516>`_ for more
+     details.
