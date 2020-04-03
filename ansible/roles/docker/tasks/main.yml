@@ -24,32 +24,11 @@
   become: True
 
 # After adding the user to the docker group, we need to log out and in again to
-# pick up the group membership. We do this by removing the SSH ControlPersist
-# connection.
+# pick up the group membership. We do this by resetting the SSH connection.
 
-# NOTE: Ideally we'd use a meta task with the reset_connection option but due
-# to https://github.com/ansible/ansible/issues/27520 this does not work
-# (checked in Ansible 2.3.2.0). Instead, we use the heavy handed method of
-# removing all ansible control sockets. Limitation: if this user is running
-# another ansible process, we will kill its connections.
-- name: Find persistent SSH connection control sockets
-  local_action:
-    module: find
-    file_type: any
-    path: "~/.ansible/cp/"
-    patterns: '[a-f0-9]{10}'
-    use_regex: True
-  register: cp_sockets
-  run_once: True
-  when:
-    - group_result is changed
-
-- name: Drop all persistent SSH connections to activate the new group membership
-  local_action:
-    module: shell ssh -O stop None -o ControlPath={{ item.path }}
-  with_items: "{{ cp_sockets.files }}"
-  run_once: True
-  when: cp_sockets is not skipped
+- name: Reset connection to activate new group membership
+  meta: reset_connection
+  when: group_result is changed
 
 - name: Ensure Docker daemon is started
   service:
