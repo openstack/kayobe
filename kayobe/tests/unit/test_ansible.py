@@ -19,8 +19,7 @@ import shutil
 import subprocess
 import tempfile
 import unittest
-
-import mock
+from unittest import mock
 
 from kayobe import ansible
 from kayobe import exception

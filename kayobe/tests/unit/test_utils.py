@@ -15,8 +15,8 @@
 import os
 import subprocess
 import unittest
+from unittest import mock
 
-import mock
 import yaml
 
 from kayobe import utils

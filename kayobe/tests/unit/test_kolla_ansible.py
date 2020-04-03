@@ -16,8 +16,7 @@ import argparse
 import os
 import subprocess
 import unittest
-
-import mock
+from unittest import mock
 
 from kayobe import kolla_ansible
 from kayobe import utils

@@ -11,9 +11,9 @@ directives when any of the directives modules are imported.
 """
 
 import sys
+from unittest import mock
 
 import doc8.main
-import mock
 import sphinx.directives
 import sphinx.directives.code
 import sphinx.directives.patches

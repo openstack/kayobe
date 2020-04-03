@@ -15,8 +15,7 @@
 import argparse
 import os
 import unittest
-
-import mock
+from unittest import mock
 
 from kayobe import utils
 from kayobe import vault

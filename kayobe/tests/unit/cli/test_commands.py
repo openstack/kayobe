@@ -13,10 +13,10 @@
 # under the License.
 
 import unittest
+from unittest import mock
 
 import cliff.app
 import cliff.commandmanager
-import mock
 
 from kayobe import ansible
 from kayobe.cli import commands
