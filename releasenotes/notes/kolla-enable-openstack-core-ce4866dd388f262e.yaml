@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Adds a new variable, ``kolla_enable_openstack_core``, which can be set a
+    default value for whether the default OpenStack services are enabled. This
+    includes Glance, Heat, Horizon, Ironic, Keystone, Neutron and Nova. It is
+    ``true`` by default.
