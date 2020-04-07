@@ -2,6 +2,9 @@
 # Path to a directory in which to create a virtualenv.
 ironic_inspector_venv:
 
+# Upper constraints file for installation of python-ironic-inspector-client.
+ironic_inspector_upper_constraints_file:
+
 # Authentication type.
 ironic_inspector_auth_type:
 

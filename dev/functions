@@ -40,6 +40,21 @@ function config_defaults {
 
     # Additional arguments to pass to kayobe commands.
     export KAYOBE_EXTRA_ARGS=${KAYOBE_EXTRA_ARGS:-}
+
+    # Use .gitreview as the key to determine the appropriate branch to clone
+    # for tests. Inspired by OSA code.
+    PARENT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    if [ -f "${PARENT}/../.gitreview" ]; then
+      BRANCH=$(awk -F'=' '/defaultbranch/ {print $2}' "${PARENT}/../.gitreview")
+      if [[ "${BRANCH}" == "" ]]; then
+        SERIES="master"
+      else
+        SERIES="$(echo ${BRANCH} | sed 's|stable/||')"
+      fi
+
+      # Upper constraints to use when installing Python packages.
+      export UPPER_CONSTRAINTS_FILE="${UPPER_CONSTRAINTS_FILE:-https://releases.openstack.org/constraints/upper/${SERIES}}"
+    fi
 }
 
 function config_set {
@@ -339,7 +354,11 @@ function overcloud_test {
 
     environment_setup
 
-    pip install python-openstackclient
+    if [[ ! -z "$UPPER_CONSTRAINTS_FILE" ]]; then
+        pip install python-openstackclient -c "$UPPER_CONSTRAINTS_FILE"
+    else
+        pip install python-openstackclient
+    fi
 
     source "${KOLLA_CONFIG_PATH:-/etc/kolla}/admin-openrc.sh"
     if ! openstack image show cirros >/dev/null 2>&1; then

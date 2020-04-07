@@ -2,5 +2,7 @@
 dependencies:
   - role: stackhpc.os-shade
     os_shade_venv: "{{ ipa_images_venv }}"
+    os_shade_upper_constraints_file: "{{ ipa_images_upper_constraints_file }}"
   - role: stackhpc.os-openstackclient
     os_openstackclient_venv: "{{ ipa_images_venv }}"
+    os_openstackclient_upper_constraints_file: "{{ ipa_images_upper_constraints_file }}"

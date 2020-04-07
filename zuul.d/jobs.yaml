@@ -59,44 +59,6 @@
     nodeset: kayobe-centos
 
 - job:
-    name: kayobe-overcloud-upgrade-base
-    description: |
-      Base job for testing overcloud upgrades.
-
-      Configures the primary VM as an overcloud controller using the previous
-      OpenStack release, and upgrades it to the current release.
-    pre-run: playbooks/kayobe-overcloud-upgrade-base/pre.yml
-    run: playbooks/kayobe-overcloud-upgrade-base/run.yml
-    post-run: playbooks/kayobe-overcloud-upgrade-base/post.yml
-    attempts: 1
-    timeout: 7200
-    required-projects:
-      # Include kayobe to ensure other projects can use this job.
-      - name: openstack/kayobe
-      - name: openstack/kayobe-config-dev
-      - name: openstack/kolla
-        override-checkout: stable/queens
-      - name: openstack/kolla-ansible
-        override-checkout: stable/queens
-      - name: openstack/requirements
-        override-checkout: stable/queens
-    vars:
-      # Name of the release to upgrade from.
-      previous_release: pike
-    irrelevant-files:
-      - ^.*\.rst$
-      - ^doc/.*
-      - ^releasenotes/.*
-      - ^setup.cfg$
-      - ^tools/.*$
-      - ^tox.ini$
-
-- job:
-    name: kayobe-overcloud-upgrade-centos
-    parent: kayobe-overcloud-upgrade-base
-    nodeset: kayobe-centos
-
-- job:
     name: kayobe-seed-base
     description: |
       Base job for testing seed deployment.
@@ -124,42 +86,4 @@
 - job:
     name: kayobe-seed-centos
     parent: kayobe-seed-base
-    nodeset: kayobe-centos
-
-- job:
-    name: kayobe-seed-upgrade-base
-    description: |
-      Base job for testing seed upgrades.
-
-      Configures the primary VM as a seed using the previous OpenStack release,
-      and upgrades it to the current release.
-    pre-run: playbooks/kayobe-seed-upgrade-base/pre.yml
-    run: playbooks/kayobe-seed-upgrade-base/run.yml
-    post-run: playbooks/kayobe-seed-upgrade-base/post.yml
-    attempts: 1
-    timeout: 5400
-    required-projects:
-      # Include kayobe to ensure other projects can use this job.
-      - name: openstack/kayobe
-      - name: openstack/kayobe-config-dev
-      - name: openstack/kolla
-        override-checkout: stable/queens
-      - name: openstack/kolla-ansible
-        override-checkout: stable/queens
-      - name: openstack/requirements
-        override-checkout: stable/queens
-    vars:
-      # Name of the release to upgrade from.
-      previous_release: pike
-    irrelevant-files:
-      - ^.*\.rst$
-      - ^doc/.*
-      - ^releasenotes/.*
-      - ^setup.cfg$
-      - ^tools/.*$
-      - ^tox.ini$
-
-- job:
-    name: kayobe-seed-upgrade-centos
-    parent: kayobe-seed-upgrade-base
     nodeset: kayobe-centos

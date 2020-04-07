@@ -145,6 +145,7 @@
 #kolla_openstack_logging_debug:
 
 # Upper constraints file for installation of Kolla.
+# Default value is {{ pip_upper_constraints_file }}.
 #kolla_upper_constraints_file:
 
 # User account to use for Kolla SSH access.

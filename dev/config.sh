@@ -23,3 +23,6 @@
 
 # Additional arguments to pass to kayobe commands.
 #export KAYOBE_EXTRA_ARGS=
+
+# Upper constraints to use when installing Python packages.
+#export UPPER_CONSTRAINTS_FILE=

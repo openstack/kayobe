@@ -313,7 +313,7 @@ kolla_enable_tls_external: "no"
 kolla_openstack_logging_debug: "False"
 
 # Upper constraints file for installation of Kolla.
-kolla_upper_constraints_file: "https://opendev.org/openstack/requirements/raw/branch/stable/queens/upper-constraints.txt"
+kolla_upper_constraints_file: "{{ pip_upper_constraints_file }}"
 
 # User account to use for Kolla SSH access.
 kolla_ansible_user: kolla

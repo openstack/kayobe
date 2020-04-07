@@ -5,6 +5,8 @@
   roles:
     - role: stackhpc.os-networks
       os_shade_install_epel: "{{ yum_install_epel }}"
+      os_shade_state: latest
+      os_shade_upper_constraints_file: "{{ pip_upper_constraints_file }}"
       os_networks_venv: "{{ virtualenv_path }}/shade"
       os_networks_openstack_auth_type: "{{ openstack_auth_type }}"
       os_networks_openstack_auth: "{{ openstack_auth }}"

@@ -3,8 +3,9 @@
   pip:
     name: "{{ item.name }}"
     version: "{{ item.version | default(omit) }}"
-    state: present
+    state: latest
     virtualenv: "{{ ironic_inspector_venv }}"
+    extra_args: "{% if ironic_inspector_upper_constraints_file %}-c {{ ironic_inspector_upper_constraints_file }}{% endif %}"
   with_items:
     - name: python-ironic-inspector-client
 
