@@ -65,6 +65,7 @@
       - name: openstack/requirements
         override-checkout: stable/rocky
       - name: openstack/tenks
+        override-checkout: stable/1.0
     irrelevant-files:
       - ^.*\.rst$
       - ^doc/.*
@@ -101,6 +102,7 @@
       - name: openstack/requirements
         override-checkout: stable/rocky
       - name: openstack/tenks
+        override-checkout: stable/1.0
     vars:
       # Name of the release to upgrade from.
       previous_release: queens
