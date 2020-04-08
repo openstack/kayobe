@@ -67,6 +67,7 @@
         # TODO(mgoddard): Remove when kayobe stable/stein exists.
         override-checkout: stable/stein
       - name: openstack/tenks
+        override-checkout: stable/1.0
     irrelevant-files:
       - ^.*\.rst$
       - ^doc/.*
