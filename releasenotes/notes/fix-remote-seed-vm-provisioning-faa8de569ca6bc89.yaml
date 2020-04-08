@@ -1,0 +1,7 @@
+---
+issues:
+  - |
+    Fixes an issue where provisioning a seed VM would fail when the Ansible
+    control host and the seed hypervisor are different hosts. `See story
+    2007530 <https://storyboard.openstack.org/#!/story/2007530>`_ for more
+    details.
