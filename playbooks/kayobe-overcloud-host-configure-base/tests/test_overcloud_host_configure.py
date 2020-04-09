@@ -92,6 +92,13 @@ def test_software_RAID(host):
     assert slaves == "loop0\nloop1"
 
 
+def test_luks(host):
+    # blkid returns an emptry string without root permissions
+    with host.sudo():
+        blkid = host.check_output('blkid /dev/md0')
+    assert 'TYPE="crypto_LUKS"' in blkid
+
+
 def test_sysctls(host):
     assert host.sysctl("fs.mount-max") == 99999
 

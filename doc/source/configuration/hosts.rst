@@ -561,6 +561,41 @@ available as ``/dev/md0``:
        level: '1'
        state: present
 
+.. _configuration-hosts-encryption:
+
+Encryption
+==========
+*tags:*
+  | ``luks``
+
+Encrypted block devices may be configured via the ``luks_devices`` variable. For
+convenience, this is mapped to the following variables:
+
+* ``seed_hypervisor_luks_devices``
+* ``seed_luks_devices``
+* ``compute_luks_devices``
+* ``controller_luks_devices``
+* ``monitoring_luks_devices``
+* ``storage_luks_devices``
+
+The format of these variables is as defined by the ``luks_devices`` variable of
+the `stackhpc.luks <https://galaxy.ansible.com/stackhpc/luks>`__
+Ansible role.
+
+For example, to encrypt the software raid device, ``/dev/md0``, on the seed, and make it
+available as ``/dev/mapper/md0crypt``
+
+.. code-block:: yaml
+   :caption: ``seed.yml``
+
+   seed_luks_devices:
+     - name: md0crypt
+       device: /dev/md0
+
+..  note::
+
+    It is not yet possible to encrypt the root device.
+
 .. _configuration-hosts-lvm:
 
 LVM

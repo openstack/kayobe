@@ -1,0 +1,14 @@
+---
+- name: Ensure encryption configuration is applied
+  hosts: seed-hypervisor:seed:overcloud
+  tags:
+    - luks
+  tasks:
+    - name: Setup LUKS disk encryption
+      vars:
+        luks_action: setup
+      include_role:
+        name: stackhpc.luks
+      when:
+        - luks_devices is defined
+        - luks_devices | length > 0

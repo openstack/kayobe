@@ -4,11 +4,15 @@
 
 # Initialisation task to be applied on first boot of a system to initalise
 # disks. We search for block devices that are not currently mounted, then wipe
-# any LVM or file system state from them.
+# any LVM or file system state from them. Any associated dm-crypt devices are
+# also closed and removed from crypttab.
 
 - name: Ensure that all unmounted block devices are wiped
   hosts: seed-hypervisor:seed:overcloud
   tags:
     - wipe-disks
   roles:
+    - role: stackhpc.luks
+      vars:
+        luks_action: teardown-unmounted
     - role: wipe-disks

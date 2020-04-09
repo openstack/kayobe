@@ -1,0 +1,6 @@
+---
+###############################################################################
+# Compute node encryption configuration.
+
+# List of block devices to encrypt. See stackhpc.luks role for format.
+luks_devices: "{{ compute_luks_devices }}"
