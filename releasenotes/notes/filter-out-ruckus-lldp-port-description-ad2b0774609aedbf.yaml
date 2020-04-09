@@ -1,0 +1,6 @@
+---
+issues:
+  - |
+    Fixes an issue where the default inspector rule setting node names from
+    LLDP switch port descriptions would fail to filter out interface names on
+    Ruckus switches.

@@ -194,24 +194,25 @@ inspector_rule_lldp_switch_port_desc_to_name:
       op: "is-empty"
       invert: True
     # Filter out switch port descriptions using the switch's interface names.
-    # On some switches (including Dell Network OS 9.10(0.1)), the port
-    # description TLV is sent but contains the interface name rather than the
-    # interface's description.
+    # On some switches (including Dell Network OS 9.10(0.1) and some Ruckus
+    # switches), the port description TLV is sent but contains the interface
+    # name rather than the interface's description. Dell switches use a space
+    # character between port type and port number, while Ruckus switches don't.
     - field: "data://all_interfaces.{{inspector_rule_var_lldp_switch_port_interface}}.lldp_processed.switch_port_description"
       op: "matches"
-      value: "^GigabitEthernet ([0-9/]*)$"
+      value: "^GigabitEthernet ?([0-9/]*)$"
       invert: True
     - field: "data://all_interfaces.{{inspector_rule_var_lldp_switch_port_interface}}.lldp_processed.switch_port_description"
       op: "matches"
-      value: "^TenGigabitEthernet ([0-9/]*)$"
+      value: "^TenGigabitEthernet ?([0-9/]*)$"
       invert: True
     - field: "data://all_interfaces.{{inspector_rule_var_lldp_switch_port_interface}}.lldp_processed.switch_port_description"
       op: "matches"
-      value: "^fortyGigE ([0-9/]*)$"
+      value: "^fortyGigE ?([0-9/]*)$"
       invert: True
     - field: "data://all_interfaces.{{inspector_rule_var_lldp_switch_port_interface}}.lldp_processed.switch_port_description"
       op: "matches"
-      value: "^Port-channel ([0-9/]*)$"
+      value: "^Port-channel ?([0-9/]*)$"
       invert: True
   actions:
     - action: "set-attribute"
