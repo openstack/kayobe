@@ -96,7 +96,7 @@
         # interfaces with an explicit MTU set will be taken account of. If no
         # interface has an explicit MTU set, then the corresponding veth will
         # not either.
-        mtu_list: "{{ [veth_bridge_mtu_map.get(interface), item | net_mtu] | reject('none') | list }}"
+        mtu_list: "{{ [veth_bridge_mtu_map.get(interface), item | net_mtu] | select | map('int') | list }}"
         mtu: "{{ mtu_list | max if mtu_list | length > 0 else None }}"
 
     - name: Update a fact containing veth interfaces
