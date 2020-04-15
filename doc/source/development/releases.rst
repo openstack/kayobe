@@ -2,21 +2,60 @@
 Releases
 ========
 
-The `project creator's guide
-<https://docs.openstack.org/infra/manual/drivers.html#release-management>`__
-provides information on release management. As Kayobe is not an official
-project, it cannot use the official release tooling in the
-``openstack/releases`` repository.
+This guide is intended to complement the `OpenStack releases site
+<https://releases.openstack.org/>`__, and the project team guide's section on
+`release management
+<https://docs.openstack.org/project-team-guide/release-management.html>`__.
 
-There are various `useful files
-<http://opendev.org/openstack-infra/project-config/src/branch/master/roles/copy-release-tools-scripts/files/release-tools/>`__
-in the ``openstack-infra/project-config`` repository. In particular, see the
-``release.sh`` and ``make_branch.sh`` scripts.
+Team members make themselves familiar with the release schedule for the current
+release, for example https://releases.openstack.org/train/schedule.html.
 
-.. _releases-preparing-for-a-release:
+Release Model
+=============
 
-Preparing for a release
-=======================
+As a deployment project, Kayobe's release model differs from many other
+OpenStack projects. Kayobe follows the `cycle-trailing
+<https://docs.openstack.org/project-team-guide/release-management.html#trailing-the-common-cycle>`__
+release model, to allow time after the OpenStack coordinated release to wait
+for distribution packages and support new features. This gives us three months
+after the final release to prepare our final releases. Users are typically keen
+to try out the new release, so we should aim to release as early as possible
+while ensuring we have confidence in the release.
+
+Release Schedule
+================
+
+While we don't wish to repeat the OpenStack release documentation, we will
+point out the high level schedule, and draw attention to areas where our
+process is different.
+
+Milestones
+----------
+
+At each of the various release milestones, pay attention to what other projects
+are doing.
+
+Feature Freeze
+--------------
+
+As with projects following the common release model, Kayobe uses a feature
+freeze period to allow the code to stabilise prior to release. There is no
+official feature freeze date for the cycle-trailing model, but we typically
+freeze around **three weeks** after the common feature freeze. During this
+time, no features should be merged to the master branch.
+
+Before RC1
+==========
+
+Prior to creating a release candidate and stable branch, the following tasks
+should be performed.
+
+Testing
+-------
+
+Test the code and fix at a minimum all critical issues.
+
+.. _update-dependencies-for-release:
 
 Update dependencies to upcoming release
 ---------------------------------------
@@ -25,7 +64,7 @@ Prior to the release, we update the dependencies and upper constraints on the
 master branch to use the upcoming release. This is now quite easy to do,
 following the introduction of the ``openstack_release`` variable. This is done
 prior to creating a release candidate. For example, see
-https://review.opendev.org/#/c/652091.
+https://review.opendev.org/#/c/694616/.
 
 Synchronise kayobe-config
 -------------------------
@@ -49,14 +88,20 @@ suit you and be careful not to lose any configuration.
 
 Commit the changes and submit for review.
 
-Add a prelude to release notes
-------------------------------
+Prepare release notes
+---------------------
 
 It's possible to add a prelude to the release notes for a particular release
 using a ``prelude`` section in a ``reno`` note.
 
-Creating a release candidate
-============================
+Ensure that release notes added during the release cycle are tidy and
+consistent. The following command is useful to list release notes added this
+cycle::
+
+    git diff --name-only origin/stable/<previous release> -- releasenotes/
+
+RC1
+===
 
 Prior to cutting a stable branch, the ``master`` branch should be tagged as a
 release candidate.  This allows the ``reno`` tool to determine where to stop
@@ -64,67 +109,48 @@ searching for release notes for the next release.  The tag should take the
 following form: ``<release tag>.0rc$n``, where ``$n`` is the release candidate
 number.
 
-The ``tools/release.sh`` script in the ``kayobe`` repository can be used to tag
-a release and push it to Gerrit. For example, to tag and release the ``kayobe``
-deliverable release candidate ``4.0.0.0rc1`` in the Queens series from the base
-of the ``stable/queens`` branch:
+This should be done for each deliverable using the `releases
+<https://opendev.org/openstack/releases>`_ tooling. A release candidate and
+stable branch defintitions should be added for each Kayobe deliverable
+(``kayobe``, ``kayobe-config``, ``kayobe-config-dev``).  These are defined in
+``deliverables/<release name>/kayobe.yaml``. Currently the same version is used
+for each deliverable.
 
-.. code-block:: console
+The changes should be proposed to the releases repository. For example:
+https://review.opendev.org/#/c/700174.
 
-   ./tools/release.sh kayobe 4.0.0.0rc1 origin/master queens
+After RC1
+=========
 
-Creating a stable branch
-========================
+The OpenStack proposal bot will propose changes to the new branch and the
+master branch. These need to be approved.
 
-Stable branches should be cut for each Kayobe deliverable (``kayobe``,
-``kayobe-config``,  ``kayobe-config-dev``).
+After the stable branch has been cut, the master branch can be unfrozen and
+development on features for the next release can begin. At this point it will
+still be using dependencies and upper constraints from the release branch, so
+revert the patch created in :ref:`update-dependencies-for-release`. For
+example, see https://review.opendev.org/701747.
 
-To create a branch ``<new branch>`` at commit ``<ref>``:
+Finally, set the previous release used in upgrade jobs to the new release. For
+example, see https://review.opendev.org/709145.
 
-.. code-block:: console
+RC2+
+====
 
-   cd /path/to/repo
-   git checkout -b <new branch> <ref>
-   git review -s
-   git push gerrit <new branch>
+Further release candidates may be created on the stable branch as necessary in
+a similar manner to RC1.
 
-After creating the branch, on the new branch:
+Final Releases
+==============
 
-* update the ``.gitreview`` file on the new branch, for example:
-  https://review.openstack.org/609735
-
-For the kayobe repo only, on the master branch:
-
-* update the release notes for the new release series:
-  https://review.openstack.org/609742
-
-Creating a release
-==================
-
-Prerequisites
--------------
-
-Creating a signed tagged release requires a GPG key to be used. There are
-various resources for how to set this up, including
-https://help.ubuntu.com/community/GnuPrivacyGuardHowto. Your default Gerrit
-email should be added to the key, and the key should be trusted ultimately, see
-https://wiki.openstack.org/wiki/Oslo/ReleaseProcess#Setting_Up_GPG for
-information.
-
-Tagging a release
------------------
+A release candidate may be promoted to a final release if it has no critical
+bugs against it.
 
 Tags should be created for each deliverable (``kayobe``, ``kayobe-config``,
 ``kayobe-config-dev``). Currently the same version is used for each.
 
-The ``tools/release.sh`` script in the ``kayobe`` repository can be used to tag
-a release and push it to Gerrit. For example, to tag and release the ``kayobe``
-deliverable version ``4.0.0`` in the Queens series from the tip of the
-``stable/queens`` branch:
-
-.. code-block:: console
-
-   ./tools/release.sh kayobe 4.0.0 origin/stable/queens queens
+The changes should be proposed to the releases repository. For example:
+https://review.opendev.org/701724.
 
 Post-release activites
 ----------------------
@@ -135,8 +161,11 @@ release.
 Continuing Development
 ======================
 
-After the stable branch has been cut, the master branch can be unfrozen and
-development on features for the next release can begin. At this point it will
-still be using dependencies and upper constraints from the release branch, so
-revert the patch created in :ref:`releases-preparing-for-a-release`. For
-example, see https://review.opendev.org/676941.
+Search for TODOs in the codebases describing tasks to be performed during the
+next release cycle.
+
+Stable Releases
+===============
+
+Stable branch releases should be made periodically for each supported stable
+branch, no less than once every 45 days.
