@@ -188,8 +188,8 @@ added to the Kayobe configuration.
       ssh_key:
         - "{{ lookup('file', kayobe_config_path ~ '/ssh-keys/id_rsa_bob.pub') }}"
 
-Package Repositories
-====================
+Package Repositories (CentOS 7)
+===============================
 *tags:*
   | ``yum``
 
@@ -242,7 +242,8 @@ Custom Yum Repositories
 
 It is also possible to configure a list of custom Yum repositories via the
 ``yum_custom_repos`` variable. The format is a dict/map, with repository names
-mapping to a dict/map of arguments to pass to the Ansible ``yum`` module.
+mapping to a dict/map of arguments to pass to the Ansible ``yum_repository``
+module.
 
 For example, the following configuration defines a single Yum repository called
 ``widgets``.
@@ -262,6 +263,101 @@ Disabling EPEL
 
 It is possible to disable the EPEL Yum repository by setting
 ``yum_install_epel`` to ``false``.
+
+Package Repositories (CentOS 8)
+===============================
+*tags:*
+  | ``dnf``
+
+Kayobe supports configuration of package repositories via DNF, via variables in
+``${KAYOBE_CONFIG_PATH}/dnf.yml``. For backwards compatibility, all variables
+in this section starting with ``dnf_`` default to the equivalently named Yum
+variable starting with ``yum_``.
+
+Configuration of dnf.conf
+-------------------------
+
+Global configuration of DNF is stored in ``/etc/dnf/dnf.conf``, and options can
+be set via the ``dnf_config`` variable. Options are added to the ``[main]``
+section of the file. For example, to configure DNF to use a proxy server:
+
+.. code-block:: yaml
+   :caption: ``dnf.yml``
+
+   dnf_config:
+     proxy: https://proxy.example.com
+
+CentOS and EPEL Mirrors
+-----------------------
+
+CentOS and EPEL mirrors can be enabled by setting ``dnf_use_local_mirror`` to
+``true``.  CentOS repository mirrors are configured via the following
+variables:
+
+* ``dnf_centos_mirror_host`` (default ``mirror.centos.org``) is the mirror
+  hostname.
+* ``dnf_centos_mirror_directory`` (default ``centos``) is a directory on the
+  mirror in which repositories may be accessed.
+
+EPEL repository mirrors are configured via the following variables:
+
+* ``dnf_epel_mirror_host`` (default ``download.fedoraproject.org``) is the
+  mirror hostname.
+* ``dnf_epel_mirror_directory`` (default ``pub/epel``) is a directory on the
+  mirror in which repositories may be accessed.
+
+For example, to configure CentOS and EPEL mirrors at mirror.example.com:
+
+.. code-block:: yaml
+   :caption: ``dnf.yml``
+
+   dnf_use_local_mirror: true
+   dnf_centos_mirror_host: mirror.example.com
+   dnf_epel_mirror_host: mirror.example.com
+
+Custom DNF Repositories
+-----------------------
+
+It is also possible to configure a list of custom DNF repositories via the
+``dnf_custom_repos`` variable. The format is a dict/map, with repository names
+mapping to a dict/map of arguments to pass to the Ansible ``yum_repository``
+module.
+
+For example, the following configuration defines a single DNF repository called
+``widgets``.
+
+.. code-block:: yaml
+   :caption: ``dnf.yml``
+
+   dnf_custom_repos:
+     widgets:
+       baseurl: http://example.com/repo
+       file: widgets
+       gpgkey: http://example.com/gpgkey
+       gpgcheck: yes
+
+Disabling EPEL
+--------------
+
+It is possible to disable the EPEL DNF repository by setting
+``dnf_install_epel`` to ``false``.
+
+DNF Automatic
+-------------
+
+DNF Automatic provides a mechanism for applying regular updates of packages.
+DNF Automatic is disabled by default, and may be enabled by setting
+``dnf_automatic_enabled`` to ``true``.
+
+.. code-block:: yaml
+   :caption: ``dnf.yml``
+
+   dnf_automatic_enabled:  true
+
+By default, only security updates are applied. Updates for all packages may be
+installed by setting ``dnf_automatic_upgrade_type`` to ``default``. This may
+cause the system to be less predictable as packages are updated without
+oversight or testing.
 
 SELinux
 =======

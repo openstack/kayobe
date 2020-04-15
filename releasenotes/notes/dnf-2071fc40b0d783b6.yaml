@@ -1,0 +1,20 @@
+---
+features:
+  - |
+    Adds support for configuration of DNF repositories on CentOS 8. Variables
+    have been added in a new configuration file, ``dnf.yml``. Backwards
+    compatibility with the Yum configuration variables is provided.
+  - |
+    Adds support for applying regular package updates on CentOS 8 via DNF
+    Automatic. Variables have been added in a new configuration file,
+    ``dnf.yml``. Backwards compatibility with the Yum-cron configuration
+    variables is provided.
+deprecations:
+  - |
+    The Yum configuration variables in ``yum.yml`` are deprecated and will be
+    removed in a future release. Adapt any configuration overrides to use the
+    new DNF variables in ``dnf.yml`` instead.
+  - |
+    The yum-cron configuration variables in ``yum-cron.yml`` are deprecated and
+    will be removed in a future release. Adapt any configuration overrides to
+    use the new DNF automatic variables in ``dnf.yml``.
