@@ -1,0 +1,20 @@
+---
+upgrade:
+  - |
+    The ``kolla-ansible bootstrap-servers`` command is used by Kayobe during
+    the ``kayobe seed host configure`` and ``kayobe overcloud host configure``
+    tasks. In previous releases it was executed as the Kayobe Ansible user
+    (``kayobe_ansible_user``) and using the remote Kayobe Python interpreter
+    (``ansible_python_interpreter``) since it was responsible for creation of
+    the Kolla Ansible user account (``kolla_ansible_user``) and Python virtual
+    environment (``kolla_ansible_target_venv``). This mix of environments
+    causes problems for Ansible fact caching. To avoid this issue, Kayobe is
+    now responsible for creation of the Kolla Ansible user and Python virtual
+    environment, and ``kolla-ansible bootstrap-servers`` is run using the
+    normal Kolla Ansible user and remote Python interpreter.
+
+    Previously it was possible to avoid creation of the user account during
+    ``kolla-ansible bootstrap-servers`` by setting ``create_kolla_user`` to
+    ``false`` in ``${KAYOBE_CONFIG_PATH}/kolla/globals.yml``. The same may now
+    be achieved by setting ``kolla_ansible_create_user`` to ``false`` in
+    ``${KAYOBE_CONFIG_PATH}/kolla.yml``.

@@ -720,15 +720,17 @@ Kolla-Ansible bootstrap-servers
 ===============================
 
 Kolla Ansible provides some host configuration functionality via the
-``bootstrap-servers`` command, which may be leveraged by Kayobe. Due to the
-bootstrapping nature of the command, Kayobe uses ``kayobe_ansible_user`` to
-execute it, and uses the Kayobe remote Python virtual environment (or the
-system Python interpreter if no virtual environment is in use).
+``bootstrap-servers`` command, which may be leveraged by Kayobe.
 
 See the :kolla-ansible-doc:`Kolla Ansible documentation
 <reference/deployment-and-bootstrapping/bootstrap-servers.html>`
 for more information on the functions performed by this command, and how to
 configure it.
+
+Note that from the Ussuri release, Kayobe creates a user account for Kolla
+Ansible rather than this being done by Kolla Ansible during
+``bootstrap-servers``. See :ref:`configuration-kolla-ansible-user-creation` for
+details.
 
 Kolla-Ansible Remote Virtual Environment
 ========================================

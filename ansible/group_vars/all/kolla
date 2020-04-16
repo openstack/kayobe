@@ -337,6 +337,10 @@ kolla_ansible_group: kolla
 # Ansible.
 kolla_ansible_become: false
 
+# Whether to create a user account, configure passwordless sudo and authorise
+# an SSH key for Kolla Ansible. Default is 'true'.
+kolla_ansible_create_user: true
+
 ###############################################################################
 # Kolla feature flag configuration.
 
@@ -402,8 +406,7 @@ kolla_ansible_default_custom_passwords:
   bifrost_ssh_key:
     private_key: "{{ lookup('file', ssh_private_key_path) }}"
     public_key: "{{ lookup('file', ssh_public_key_path) }}"
-  # SSH key authorized by kolla user on Kolla hosts during
-  # kolla-ansible bootstrap-servers.
+  # SSH key authorized by kolla user on Kolla hosts.
   kolla_ssh_key:
     private_key: "{{ lookup('file', ssh_private_key_path) }}"
     public_key: "{{ lookup('file', ssh_public_key_path) }}"

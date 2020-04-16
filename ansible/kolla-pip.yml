@@ -1,0 +1,26 @@
+---
+- name: Configure local PyPi mirror for Kolla Ansible
+  hosts: seed:overcloud
+  gather_facts: false
+  tags:
+    - kolla-ansible
+    - kolla-pip
+    - pip
+  vars:
+    # kolla_overcloud_inventory_top_level_group_map looks like:
+    # kolla_overcloud_inventory_top_level_group_map:
+    #  control:
+    #    groups:
+    #      - controllers
+    hosts_in_kolla_inventory: >-
+      {{ kolla_overcloud_inventory_top_level_group_map.values() |
+         map(attribute='groups') | flatten | unique | union(['seed']) | join(':') }}
+    ansible_python_interpreter: /usr/libexec/platform-python
+  tasks:
+    - import_role:
+        name: pip
+      vars:
+        pip_applicable_users:
+          - "{{ kolla_ansible_user }}"
+      when:
+        - inventory_hostname in query('inventory_hostnames', hosts_in_kolla_inventory)

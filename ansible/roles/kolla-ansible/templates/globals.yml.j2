@@ -48,12 +48,6 @@ kolla_external_vip_address: "{{ kolla_external_vip_address }}"
 # kolla_external_vip_address.
 kolla_external_fqdn: "{{ kolla_external_fqdn }}"
 
-# User account to use for Kolla SSH access.
-kolla_user: "{{ kolla_ansible_user }}"
-
-# Primary group of Kolla SSH user.
-kolla_group: "{{ kolla_ansible_group }}"
-
 ################
 # Docker options
 ################
@@ -549,6 +543,10 @@ bifrost_install_type: source
 grafana_admin_username: "{{ grafana_local_admin_user_name }}"
 {% endif %}
 
+#########################################
+# Bootstrap-servers - Host Configuration
+#########################################
+
 {% if kolla_selinux_state is not none %}
 selinux_state: {{ kolla_selinux_state }}
 {% endif %}
@@ -557,6 +555,20 @@ install_epel: {{ kolla_ansible_install_epel | bool }}
 
 {% if kolla_enable_host_ntp is not none %}
 enable_host_ntp: {{ kolla_enable_host_ntp | bool }}
+{% endif %}
+
+# Kayobe performs creation of the Kolla Ansible user account, so there is no
+# need for Kolla Ansible to repeat this.
+create_kolla_user: false
+
+# User account to use for Kolla SSH access.
+kolla_user: "{{ kolla_ansible_user }}"
+
+# Primary group of Kolla SSH user.
+kolla_group: "{{ kolla_ansible_group }}"
+
+{% if kolla_ansible_target_venv %}
+virtualenv: {{ kolla_ansible_target_venv }}
 {% endif %}
 
 {% if kolla_extra_globals %}
