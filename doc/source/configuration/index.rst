@@ -6,6 +6,7 @@ Configuration Guide
    :maxdepth: 2
 
    kayobe
+   ansible
    physical-network
    network
    hosts
