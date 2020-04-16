@@ -11,6 +11,10 @@
 # function appropriately. For example, neutron-metadata-agent must run on the
 # same host as the l3-agent and (depending on configuration) the dhcp-agent.
 
+# Elasticsearch Curator
+[elasticsearch-curator:children]
+elasticsearch
+
 # Glance
 [glance-api:children]
 glance
@@ -76,6 +80,9 @@ neutron
 
 [neutron-metadata-agent:children]
 neutron
+
+[neutron-ovn-metadata-agent:children]
+compute
 
 [neutron-bgp-dragent:children]
 neutron
@@ -398,7 +405,13 @@ watcher
 [senlin-api:children]
 senlin
 
+[senlin-conductor:children]
+senlin
+
 [senlin-engine:children]
+senlin
+
+[senlin-health-manager:children]
 senlin
 
 # Searchlight
@@ -536,3 +549,25 @@ control
 
 [masakari-monitors:children]
 compute
+
+[ovn-controller:children]
+ovn-controller-compute
+ovn-controller-network
+
+[ovn-controller-compute:children]
+compute
+
+[ovn-controller-network:children]
+network
+
+[ovn-database:children]
+control
+
+[ovn-northd:children]
+ovn-database
+
+[ovn-nb-db:children]
+ovn-database
+
+[ovn-sb-db:children]
+ovn-database
