@@ -202,84 +202,8 @@ added to the Kayobe configuration.
       ssh_key:
         - "{{ lookup('file', kayobe_config_path ~ '/ssh-keys/id_rsa_bob.pub') }}"
 
-Package Repositories (CentOS 7)
-===============================
-*tags:*
-  | ``yum``
-
-Kayobe supports configuration of package repositories via Yum, via variables in
-``${KAYOBE_CONFIG_PATH}/yum.yml``.
-
-Configuration of yum.conf
--------------------------
-
-Global configuration of Yum is stored in ``/etc/yum.conf``, and options can be
-set via the ``yum_config`` variable. Options are added to the ``[main]``
-section of the file. For example, to configure Yum to use a proxy server:
-
-.. code-block:: yaml
-   :caption: ``yum.yml``
-
-   yum_config:
-     proxy: https://proxy.example.com
-
-CentOS and EPEL Mirrors
------------------------
-
-CentOS and EPEL mirrors can be enabled by setting ``yum_use_local_mirror`` to
-``true``.  CentOS repository mirrors are configured via the following
-variables:
-
-* ``yum_centos_mirror_host`` (default ``mirror.centos.org``) is the mirror
-  hostname.
-* ``yum_centos_mirror_directory`` (default ``centos``) is a directory on the
-  mirror in which repositories may be accessed.
-
-EPEL repository mirrors are configured via the following variables:
-
-* ``yum_epel_mirror_host`` (default ``download.fedoraproject.org``) is the
-  mirror hostname.
-* ``yum_epel_mirror_directory`` (default ``pub/epel``) is a directory on the
-  mirror in which repositories may be accessed.
-
-For example, to configure CentOS and EPEL mirrors at mirror.example.com:
-
-.. code-block:: yaml
-   :caption: ``yum.yml``
-
-   yum_use_local_mirror: true
-   yum_centos_mirror_host: mirror.example.com
-   yum_epel_mirror_host: mirror.example.com
-
-Custom Yum Repositories
------------------------
-
-It is also possible to configure a list of custom Yum repositories via the
-``yum_custom_repos`` variable. The format is a dict/map, with repository names
-mapping to a dict/map of arguments to pass to the Ansible ``yum_repository``
-module.
-
-For example, the following configuration defines a single Yum repository called
-``widgets``.
-
-.. code-block:: yaml
-   :caption: ``yum.yml``
-
-   yum_custom_repos:
-     widgets:
-       baseurl: http://example.com/repo
-       file: widgets
-       gpgkey: http://example.com/gpgkey
-       gpgcheck: yes
-
-Disabling EPEL
---------------
-
-It is possible to disable the EPEL Yum repository by setting
-``yum_install_epel`` to ``false``.
-
-Package Repositories (CentOS 8)
-===============================
+Package Repositories
+====================
 *tags:*
   | ``dnf``
 
@@ -470,57 +394,20 @@ timezone. For example:
 
 NTP
 ===
-*tags:*
-  | ``ntp``
 
-.. note::
+Since the Ussuri release, Kayobe no longer supports configuration of an NTP
+daemon on the host, since the ``ntp`` package is no longer available in CentOS
+8.
 
-   CentOS 8 does not support configuring an NTP daemon. Use :ref:`chrony
-   <configuration-hosts-chrony>` instead.
+Kolla Ansible can deploy a chrony container, and from the Ussuri release chrony
+is enabled by default.
 
-Network Time Protocol (NTP) may be configured via variables in
-``${KAYOBE_CONFIG_PATH}/ntp.yml``. The list of NTP servers is
-configured via ``ntp_config_server``, and by default the ``pool.ntp.org``
-servers are used. A list of restrictions may be added via
-``ntp_config_restrict``, and a list of interfaces to listen on via
-``ntp_config_listen``. Other options and their default values may be found in
-the `stackhpc.ntp <https://galaxy.ansible.com/stackhpc/ntp>`__ Ansible role.
-
-.. code-block:: yaml
-   :caption: ``ntp.yml``
-
-   ntp_config_server:
-     - 1.ubuntu.pool.ntp.org
-     - 2.ubuntu.pool.ntp.org
-
-   ntp_config_restrict:
-     - '-4 default kod notrap nomodify nopeer noquery'
-
-   ntp_config_listen:
-     - eth0
-
-The NTP service may be disabled as follows:
-
-.. code-block:: yaml
-   :caption: ``ntp.yml``
-
-   ntp_service_enabled: false
-
-.. _configuration-hosts-chrony:
-
-Chrony
-------
-
-Kolla Ansible can deploy a chrony container. This is disabled by default in
-Kayobe on CentOS 7 to avoid conflicting with the NTP daemon on the host. On
-CentOS 8 Chrony is enabled by default.
-
-To use the containerised chrony daemon and disable the host NTP daemon on
-CentOS 7, set the following in ``${KAYOBE_CONFIG_PATH}/kolla.yml``:
+To disable the containerised chrony daemon, set the following in
+``${KAYOBE_CONFIG_PATH}/kolla.yml``:
 
 .. code-block:: yaml
 
-   kolla_enable_chrony: true
+   kolla_enable_chrony: false
 
 .. _configuration-hosts-mdadm:
 

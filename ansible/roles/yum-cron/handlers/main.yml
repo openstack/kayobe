@@ -1,7 +1,0 @@
----
-
-- name: Restart yum-cron
-  service:
-    name: yum-cron
-    state: restarted
-  become: True

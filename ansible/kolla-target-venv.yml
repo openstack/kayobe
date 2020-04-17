@@ -25,7 +25,7 @@
 
         - name: Ensure the Python virtualenv package is installed
           package:
-            name: python{{ ansible_python.version.major }}-virtualenv
+            name: python3-virtualenv
             state: present
           become: True
 
@@ -34,10 +34,10 @@
             name: pip
             state: latest
             virtualenv: "{{ kolla_ansible_target_venv }}"
-            # Site packages are required for using the yum and selinux python
-            # modules, which are not available via PyPI.
+            # Site packages are required for using the dnf python module, which
+            # is not available via PyPI.
             virtualenv_site_packages: True
-            virtualenv_python: "python{{ ansible_python.version.major }}.{{ ansible_python.version.minor }}"
+            virtualenv_python: "python3.{{ ansible_python.version.minor }}"
           become: True
 
         - name: Ensure kolla-ansible virtualenv has docker SDK for python installed
@@ -48,8 +48,6 @@
             extra_args: "{% if kolla_upper_constraints_file %}-c {{ kolla_upper_constraints_file }}{% endif %}"
           become: True
 
-        # NOTE(mgoddard): SELinux python bindings available on PyPI only work
-        # with Python 3 on CentOS 8.
         - name: Ensure kolla-ansible virtualenv has SELinux bindings installed
           pip:
             name: selinux
@@ -58,7 +56,6 @@
           become: True
           when:
             - ansible_os_family == 'RedHat'
-            - ansible_distribution_major_version | int >= 8
 
         - name: Ensure kolla-ansible virtualenv has correct ownership
           file:

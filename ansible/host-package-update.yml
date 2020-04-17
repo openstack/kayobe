@@ -8,7 +8,7 @@
     host_package_update_security: false
   tasks:
     - name: Update host packages
-      yum:
+      dnf:
         name: "{{ host_package_update_packages }}"
         security: "{{ host_package_update_security | bool }}"
         state: latest

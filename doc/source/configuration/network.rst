@@ -564,11 +564,6 @@ consideration:
   lookup the interface for the cloud-init network configuration that occurs
   during bifrost provisioning of the overcloud.
 
-* If the admin network is configured as a tagged VLAN, you must configure Kayobe
-  to upgrade cloud-init. This is a temporary workaround for a bug in the current
-  version of cloud-init shipped with CentOS 7.5. Please see :ref:`workaround-cloud-init`
-  for more details.
-
 Overcloud Provisioning Network
 ------------------------------
 

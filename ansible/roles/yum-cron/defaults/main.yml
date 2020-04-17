@@ -1,4 +1,0 @@
----
-
-yum_cron_enabled: false
-yum_cron_update_cmd: 'security'

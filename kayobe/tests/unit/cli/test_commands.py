@@ -321,12 +321,11 @@ class TestCase(unittest.TestCase):
                     utils.get_data_files_path(
                         "ansible", "kayobe-target-venv.yml"),
                     utils.get_data_files_path("ansible", "users.yml"),
-                    utils.get_data_files_path("ansible", "yum.yml"),
                     utils.get_data_files_path("ansible", "dnf.yml"),
                     utils.get_data_files_path("ansible", "dev-tools.yml"),
                     utils.get_data_files_path("ansible", "network.yml"),
                     utils.get_data_files_path("ansible", "sysctl.yml"),
-                    utils.get_data_files_path("ansible", "ntp.yml"),
+                    utils.get_data_files_path("ansible", "timezone.yml"),
                     utils.get_data_files_path("ansible", "mdadm.yml"),
                     utils.get_data_files_path("ansible", "luks.yml"),
                     utils.get_data_files_path("ansible", "lvm.yml"),
@@ -490,7 +489,6 @@ class TestCase(unittest.TestCase):
                     utils.get_data_files_path(
                         "ansible", "kayobe-target-venv.yml"),
                     utils.get_data_files_path("ansible", "users.yml"),
-                    utils.get_data_files_path("ansible", "yum.yml"),
                     utils.get_data_files_path("ansible", "dnf.yml"),
                     utils.get_data_files_path("ansible", "dev-tools.yml"),
                     utils.get_data_files_path(
@@ -500,7 +498,7 @@ class TestCase(unittest.TestCase):
                     utils.get_data_files_path("ansible", "ip-routing.yml"),
                     utils.get_data_files_path("ansible", "snat.yml"),
                     utils.get_data_files_path("ansible", "disable-glean.yml"),
-                    utils.get_data_files_path("ansible", "ntp.yml"),
+                    utils.get_data_files_path("ansible", "timezone.yml"),
                     utils.get_data_files_path("ansible", "mdadm.yml"),
                     utils.get_data_files_path("ansible", "luks.yml"),
                     utils.get_data_files_path("ansible", "lvm.yml"),
@@ -799,8 +797,6 @@ class TestCase(unittest.TestCase):
                     utils.get_data_files_path(
                         "ansible", "overcloud-host-image-workaround-resolv.yml"),  # noqa
                     utils.get_data_files_path(
-                        "ansible", "overcloud-host-image-workaround-cloud-init.yml"),  # noqa
-                    utils.get_data_files_path(
                         "ansible", "seed-introspection-rules.yml"),
                     utils.get_data_files_path(
                         "ansible", "dell-switch-bmp.yml"),
@@ -854,9 +850,6 @@ class TestCase(unittest.TestCase):
                     utils.get_data_files_path(
                         "ansible",
                         "overcloud-host-image-workaround-resolv.yml"),
-                    utils.get_data_files_path(
-                        "ansible",
-                        "overcloud-host-image-workaround-cloud-init.yml"),
                     utils.get_data_files_path(
                         "ansible",
                         "seed-introspection-rules.yml"),
@@ -1006,7 +999,6 @@ class TestCase(unittest.TestCase):
                     utils.get_data_files_path(
                         "ansible", "kayobe-target-venv.yml"),
                     utils.get_data_files_path("ansible", "users.yml"),
-                    utils.get_data_files_path("ansible", "yum.yml"),
                     utils.get_data_files_path("ansible", "dnf.yml"),
                     utils.get_data_files_path("ansible", "dev-tools.yml"),
                     utils.get_data_files_path(
@@ -1016,7 +1008,7 @@ class TestCase(unittest.TestCase):
                     utils.get_data_files_path("ansible", "disable-glean.yml"),
                     utils.get_data_files_path(
                         "ansible", "disable-cloud-init.yml"),
-                    utils.get_data_files_path("ansible", "ntp.yml"),
+                    utils.get_data_files_path("ansible", "timezone.yml"),
                     utils.get_data_files_path("ansible", "mdadm.yml"),
                     utils.get_data_files_path("ansible", "luks.yml"),
                     utils.get_data_files_path("ansible", "lvm.yml"),

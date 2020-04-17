@@ -70,18 +70,6 @@ def _get_base_path():
     return os.path.join(os.path.realpath(__file__), "..")
 
 
-def yum_install(packages):
-    """Install a list of packages via Yum."""
-    cmd = ["sudo", "yum", "-y", "install"]
-    cmd += packages
-    try:
-        run_command(cmd)
-    except subprocess.CalledProcessError as e:
-        print("Failed to install packages %s via Yum: returncode %d" %
-              (", ".join(packages), e.returncode))
-        sys.exit(e.returncode)
-
-
 def galaxy_install(role_file, roles_path, force=False):
     """Install Ansible roles via Ansible Galaxy."""
     cmd = ["ansible-galaxy", "install"]

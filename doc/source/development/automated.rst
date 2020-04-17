@@ -260,7 +260,7 @@ The machines and networking created by Tenks can be cleaned up via
 Seed Hypervisor
 ===============
 
-The seed hypervisor development environment is supported for CentOS 7.  The
+The seed hypervisor development environment is supported for CentOS 8.  The
 system must be either bare metal, or a VM on a system with nested
 virtualisation enabled.
 

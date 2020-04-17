@@ -16,19 +16,15 @@ running kayobe's tests.
 
 * Ubuntu/Debian::
 
-      sudo apt-get install build-essential python-dev libssl-dev python-pip git
+      sudo apt-get install build-essential python3-dev libssl-dev python3-pip git
 
-* Fedora 21/RHEL7/CentOS7::
+* Fedora or CentOS/RHEL 8::
 
-      sudo yum install python-devel openssl-devel python-pip git gcc
-
-* Fedora 22 or higher::
-
-      sudo dnf install python-devel openssl-devel python-pip git gcc
+      sudo dnf install python3-devel openssl-devel python3-pip git gcc
 
 * OpenSUSE/SLE 12::
 
-      sudo zypper install python-devel python-pip libopenssl-devel git
+      sudo zypper install python3-devel python3-pip libopenssl-devel git
 
 Python Prerequisites
 --------------------

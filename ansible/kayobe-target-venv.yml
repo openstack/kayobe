@@ -24,7 +24,7 @@
 
         - name: Ensure the Python virtualenv package is installed
           package:
-            name: python{{ ansible_python.version.major }}-virtualenv
+            name: python3-virtualenv
             state: present
           become: True
 
@@ -49,27 +49,16 @@
             mode: 0700
           become: True
 
-        - name: Ensure pip is installed
-          easy_install:
-            name: pip
-            virtualenv: "{{ virtualenv }}"
-            virtualenv_site_packages: True
-          when:
-            - ansible_os_family == 'RedHat'
-            - ansible_distribution_major_version | int == 7
-
         - name: Ensure kayobe virtualenv has the latest version of pip installed
           pip:
             name: pip
             state: latest
             virtualenv: "{{ virtualenv }}"
-            # Site packages are required for using the yum and selinux python
-            # modules, which are not available via PyPI.
+            # Site packages are required for using the dnf module, which is not
+            # available via PyPI.
             virtualenv_site_packages: True
-            virtualenv_python: "python{{ ansible_python.version.major }}.{{ ansible_python.version.minor }}"
+            virtualenv_python: "python3.{{ ansible_python.version.minor }}"
 
-        # NOTE(mgoddard): SELinux python bindings available on PyPI only work
-        # with Python 3 on CentOS 8.
         - name: Ensure kayobe virtualenv has SELinux bindings installed
           pip:
             name: selinux
@@ -77,7 +66,6 @@
             virtualenv: "{{ virtualenv }}"
           when:
             - ansible_os_family == 'RedHat'
-            - ansible_distribution_major_version | int >= 8
       vars:
         # Use the system python interpreter since the virtualenv might not
         # exist.
@@ -98,18 +86,10 @@
         - name: Ensure Python setuptools and pip packages are installed
           vars:
             packages:
-              - python{{ ansible_python.version.major }}-setuptools
-              - "{% if ansible_distribution_major_version | int >= 8 %}python3-pip{% endif %}"
+              - python3-setuptools
+              - python3-pip
           package:
             name: "{{ packages | select }}"
             state: present
           become: True
-
-        - name: Ensure pip is installed
-          easy_install:
-            name: pip
-          become: True
-          when:
-            - ansible_os_family == 'RedHat'
-            - ansible_distribution_major_version | int == 7
       when: virtualenv is not defined

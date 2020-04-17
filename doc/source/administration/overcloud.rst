@@ -12,9 +12,9 @@ Package Repositories
 
 If using custom package repositories, it may be necessary to update these prior
 to running a package update. To do this, update the configuration in
-``${KAYOBE_CONFIG_PATH}/yum.yml`` and run the following command::
+``${KAYOBE_CONFIG_PATH}/dnf.yml`` and run the following command::
 
-    (kayobe) $ kayobe overcloud host configure --tags yum --kolla-tags none
+    (kayobe) $ kayobe overcloud host configure --tags dnf --kolla-tags none
 
 Package Update
 --------------

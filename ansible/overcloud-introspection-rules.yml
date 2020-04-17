@@ -35,7 +35,7 @@
         name: stackhpc.os-openstackclient
       vars:
         os_openstackclient_venv: "{{ venv }}"
-        os_openstackclient_install_epel: "{{ yum_install_epel }}"
+        os_openstackclient_install_epel: "{{ dnf_install_epel }}"
         os_openstackclient_state: latest
         os_openstackclient_upper_constraints_file: "{{ pip_upper_constraints_file }}"
 
@@ -57,7 +57,7 @@
 
   roles:
     - role: ironic-inspector-rules
-      os_openstacksdk_install_epel: "{{ yum_install_epel }}"
+      os_openstacksdk_install_epel: "{{ dnf_install_epel }}"
       os_openstacksdk_state: latest
       ironic_inspector_venv: "{{ venv }}"
       ironic_inspector_upper_constraints_file: "{{ pip_upper_constraints_file }}"

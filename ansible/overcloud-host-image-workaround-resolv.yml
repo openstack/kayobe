@@ -19,7 +19,7 @@
             ansible localhost
             --connection local
             --become
-            -m yum
+            -m dnf
             -a "name=libguestfs-tools state=present"'
 
         - name: Ensure the overcloud host image has bogus name server entries removed

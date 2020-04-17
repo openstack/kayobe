@@ -45,7 +45,7 @@ configure how this image is built.  Consult the
 :diskimage-builder-doc:`Diskimage-builder documentation <>` for further
 information on building disk images.
 
-The default configuration builds a CentOS 7 whole disk (partitioned) image with
+The default configuration builds a CentOS 8 whole disk (partitioned) image with
 SELinux disabled and a serial console enabled. `Cloud-init
 <https://cloudinit.readthedocs.io/en/latest/>`__ is used to process the
 configuration drive built by Bifrost, rather than the Bifrost default of
@@ -128,15 +128,6 @@ In DIB, we achieve this by setting the ``FS_TYPE`` environment variable to
 
    kolla_bifrost_dib_env_vars_extra:
      FS_TYPE: "xfs"
-
-In order to build the image, we also require the ``xfsprogs`` package
-to be installed in the Bifrost container. As of the Ussuri release of Bifrost
-this will be done automatically, but until then, the following workaround
-can be made on the seed host:
-
-.. code-block:: console
-
-   docker exec bifrost_deploy yum -y install xfsprogs
 
 Example: Configuring a development user account
 -----------------------------------------------

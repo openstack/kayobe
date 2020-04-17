@@ -522,6 +522,8 @@ class TestCase(unittest.TestCase):
         ansible.prune_galaxy_roles(parsed_args)
 
         expected_roles = [
+            'resmo.ntp',
+            'stackhpc.ntp',
             'stackhpc.os-shade',
         ]
         mock_remove.assert_called_once_with(expected_roles,

@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    Removes the workaround for using a tagged VLAN as the admin network
+    interface on overcloud hosts. This was necessary for CentOS 7.5 which
+    shipped an old version of ``cloud-init``. The variables
+    ``overcloud_host_image_workaround_cloud_init_enabled`` and
+    ``overcloud_host_image_workaround_cloud_init_repo`` have been removed.

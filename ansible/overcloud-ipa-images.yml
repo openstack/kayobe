@@ -99,7 +99,7 @@
         - item.src != item.dest
   roles:
     - role: ipa-images
-      os_openstacksdk_install_epel: "{{ yum_install_epel }}"
+      os_openstacksdk_install_epel: "{{ dnf_install_epel }}"
       os_openstacksdk_state: latest
       ipa_images_venv: "{{ virtualenv_path }}/openstacksdk"
       ipa_images_upper_constraints_file: "{{ pip_upper_constraints_file }}"

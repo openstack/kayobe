@@ -5,7 +5,7 @@
     - introspection-rules
   roles:
     - role: ironic-inspector-rules
-      os_openstacksdk_install_epel: "{{ yum_install_epel }}"
+      os_openstacksdk_install_epel: "{{ dnf_install_epel }}"
       os_openstacksdk_state: latest
       ironic_inspector_venv: "{{ virtualenv_path }}/openstacksdk"
       ironic_inspector_upper_constraints_file: "{{ pip_upper_constraints_file }}"
