@@ -535,7 +535,8 @@ To configure network roles in a system with two networks, ``example1`` and
    internal_net_name: example2
    public_net_name: example2
    tunnel_net_name: example2
-   external_net_name: example2
+   external_net_names:
+     - example2
    storage_net_name: example2
    storage_mgmt_net_name: example2
    swift_storage_net_name: example2
