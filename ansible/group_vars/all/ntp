@@ -14,10 +14,7 @@ timezone: "{{ ansible_date_time.tz }}"
 # unless 'kolla_enable_chrony' has been set to true on overcloud hosts. On
 # CentOS 8 the host NTP daemon is not supported, and kolla_enable_chrony is set
 # to true by default.
-ntp_service_enabled: >-
-  {{ ansible_os_family == 'RedHat' and
-     ansible_distribution_major_version | int == 7 and
-     ('overcloud' not in group_names or not kolla_enable_chrony | bool) }}
+ntp_service_enabled: "{{ 'overcloud' not in group_names or not kolla_enable_chrony | bool }}"
 
 ntp_package_state: "{{ 'present' if ntp_service_enabled | bool else 'absent' }}"
 ntp_service_state: "{{ 'started' if ntp_service_enabled | bool else 'stopped' }}"

@@ -350,9 +350,10 @@ kolla_enable_ceph: "no"
 kolla_enable_ceilometer: "no"
 # The chrony container is disabled by default on CentOS 7 because we enable an
 # NTP daemon on the host. On CentOS 8 the chrony container is enabled by
-# default because the NTP daemon is not supported. Setting this to true will
-# disable NTP on the host.
-kolla_enable_chrony: "{{ ansible_os_family != 'RedHat' or ansible_distribution_major_version | int >= 8 }}"
+# default because the NTP daemon is not supported. Because that needs to be
+# variable between hosts we set the default for CentOS 8 hosts in globals.yml.
+# Setting this to true will disable NTP on the host.
+kolla_enable_chrony: "no"
 kolla_enable_cinder: "no"
 kolla_enable_cloudkitty: "no"
 kolla_enable_collectd: "no"
