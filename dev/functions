@@ -508,7 +508,7 @@ function tenks_deploy {
     deactivate
 
     # Install the Tenks venv.
-    install_venv "${TENKS_VENV_PATH}" "$tenks_path"
+    install_venv "${TENKS_VENV_PATH}" "$tenks_path" -c "$UPPER_CONSTRAINTS_FILE"
     source ${TENKS_VENV_PATH:-$HOME/tenks-test-venv}/bin/activate
 
     ${KAYOBE_SOURCE_PATH}/tools/ansible-galaxy-retried.sh install \
