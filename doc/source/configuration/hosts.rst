@@ -505,8 +505,21 @@ To use the containerised chrony daemon and disable the host NTP daemon on
 CentOS 7, set the following in ``${KAYOBE_CONFIG_PATH}/kolla.yml``:
 
 .. code-block:: yaml
+   :caption: ``kolla.yml``
 
    kolla_enable_chrony: true
+
+To disable the containerised chrony daemon on CentOS 8, for the Train release
+it is necessary to set the following in
+``${KAYOBE_CONFIG_PATH}/kolla/globals.yml``:
+
+.. code-block:: yaml
+   :caption: ``kolla/globals.yml``
+
+   enable_chrony: false
+
+From the Ussuri release onwards it will be possible to use the Kayobe
+``kolla_enable_chrony`` variable to disable chrony.
 
 .. _configuration-hosts-mdadm:
 

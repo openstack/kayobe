@@ -4,5 +4,8 @@ upgrade:
     Support for configuring an NTP daemon on the seed and overcloud hosts is no
     longer present for CentOS 8, as appropriate packages are not available.
     Instead, Kolla Ansible is configured to deploy the ``chrony`` container on
-    overcloud hosts by default. This may be disabled by setting
-    ``kolla_enable_chrony`` to ``false``.
+    CentOS 8 overcloud hosts by default.  Note that for CentOS 8 during the
+    Train release, the standard ``kolla_enable_chrony`` variable in
+    ``${KAYOBE_CONFIG_PATH}/kolla.yml`` has no effect. Instead, chrony may be
+    disabled by setting ``enable_chrony`` to ``false`` in
+    ``${KAYOBE_CONFIG_PATH}/kolla/globals.yml``.
