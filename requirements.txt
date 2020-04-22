@@ -1,11 +1,6 @@
-# The order of packages is significant, because pip processes them in the order
-# of appearance. Changing the order has an impact on the overall integration
-# process, which may cause wedges in the gate later.
-
 pbr>=2.0 # Apache-2.0
 ansible>=2.8.0,<2.10.0,!=2.8.9 # GPLv3
-cliff>=2.5.0,<2.15.0 # Apache
+cliff>=3.1.0 # Apache
 netaddr!=0.7.16,>=0.7.13 # BSD
 PyYAML>=3.10.0 # MIT
-setuptools!=24.0.0,!=34.0.0,!=34.0.1,!=34.0.2,!=34.0.3,!=34.1.0,!=34.1.1,!=34.2.0,!=34.3.0,!=34.3.1,>=16.0 # PSF/ZPL
-selinux;python_version>='3' # MIT
+selinux # MIT

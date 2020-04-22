@@ -89,7 +89,7 @@ molecule
     Run Ansible tests for some Ansible roles using the molecule test framework.
 pep8
     Run style checks for all shell, python and documentation files.
-py27,py34
+py3
     Run python unit tests for kayobe python module.
 
 Writing Tests
