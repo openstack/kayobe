@@ -41,7 +41,7 @@
     - name: Look up Monasca control plane project ID
       shell: >
         source {{ venv }}/bin/activate &&
-        openstack project show {{ grafana_control_plane_organisation.split("@")[0] }} --format json --column id
+        openstack project show {{ monasca_control_plane_project }} --format json --column id
       register: monasca_project_show
       changed_when: False
       environment: "{{ openstack_auth_env }}"
@@ -81,5 +81,5 @@
         version: "{{ grafana_monitoring_node_dashboard_repo_version }}"
         checkout_path: "{{ grafana_monitoring_node_dashboard_repo_checkout_path }}"
         relative_path: "{{ grafana_monitoring_node_dashboard_repo_path }}"
-      grafana_conf_grafana_url: "http://{{ kolla_internal_vip_address }}:3000"
+      grafana_conf_grafana_url: "http://{{ kolla_internal_vip_address }}:{{ monasca_grafana_server_port }}"
       grafana_conf_grafana_datasources: "{{ grafana_datasources }}"

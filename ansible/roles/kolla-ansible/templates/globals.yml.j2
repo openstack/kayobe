@@ -364,6 +364,12 @@ tempest_floating_network_name:
 # The Bifrost deployment image only supports a source installation.
 bifrost_install_type: source
 
+#################################
+# Monasca - Monitoring & Alerting
+#################################
+
+# Monasca doesn't support binary type container builds
+monasca_install_type: source
 
 ############################################
 # Grafana - Data visualisation & Monitoring

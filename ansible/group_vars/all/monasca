@@ -1,0 +1,12 @@
+---
+###############################################################################
+# Monasca configuration.
+
+# Monasca OpenStack Project name.
+monasca_control_plane_project: "monasca_control_plane"
+
+# Monasca OpenStack Domain name.
+monasca_control_plane_domain: "default"
+
+# Monasca Grafana Server port.
+monasca_grafana_server_port: "3001"
