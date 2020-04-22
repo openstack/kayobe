@@ -21,8 +21,6 @@
       tox_envlist: ansible
     required-projects:
       - name: openstack/requirements
-        # TODO(mgoddard): Remove when Ansible playbooks support Python 3.
-        override-checkout: stable/train
     irrelevant-files:
       - ^.*\.rst$
       - ^doc/.*
