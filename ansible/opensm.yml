@@ -1,5 +1,5 @@
 ---
-# Deploy/pull/reconfigure/upgrade OpenSM Infiniband subnet manager.
+# Deploy/pull/reconfigure/stop/upgrade OpenSM Infiniband subnet manager.
 #
 # Follows kolla-ansible service deployment patterns.
 #

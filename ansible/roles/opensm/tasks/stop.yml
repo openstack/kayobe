@@ -1,0 +1,9 @@
+---
+- name: Ensure OpenSM container is stopped
+  docker_container:
+    image: "{{ item.value.image }}"
+    name: "{{ item.value.container_name }}"
+    state: stopped
+  with_dict: "{{ opensm_services }}"
+  when:
+    - item.value.enabled | bool

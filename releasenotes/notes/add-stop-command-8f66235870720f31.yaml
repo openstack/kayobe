@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Adds a ``kayobe overcloud service stop`` command. This can be used to stop
+    containerised services running on overcloud hosts.

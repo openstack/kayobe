@@ -2,7 +2,7 @@
 # Roughly follows kolla-ansible's service deployment patterns.
 
 # Action to perform. One of 'deploy', 'destroy', 'pull', 'reconfigure',
-# 'upgrade'.
+# 'stop', 'upgrade'.
 opensm_action: deploy
 
 # Whether OpenSM is enabled.
