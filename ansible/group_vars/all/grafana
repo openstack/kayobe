@@ -23,7 +23,7 @@ grafana_monitoring_node_dashboard_repo_path:
 # The Grafana organisation for the control plane. Note that for Monasca
 # Grafana with domain support the format is:
 # organisation_name@openstack_domain
-grafana_control_plane_organisation: "monasca_control_plane@default"
+grafana_control_plane_organisation: "{{ monasca_control_plane_project }}@{{ monasca_control_plane_domain }}"
 
 # A dict of datasources to configure. See the stackhpc.grafana-conf role
 # for all supported datasources. Example:
