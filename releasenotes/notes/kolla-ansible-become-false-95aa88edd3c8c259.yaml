@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    Modifies the default value of ``kolla_ansible_become`` to ``false``. This
+    means that Kolla Ansible will no longer use privilege escalation for all
+    tasks, and will only use it where necessary.

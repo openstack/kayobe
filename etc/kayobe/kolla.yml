@@ -169,7 +169,7 @@
 #kolla_ansible_group:
 
 # Whether to use privilege escalation for all operations performed via Kolla
-# Ansible. Default is 'true'.
+# Ansible. Default is 'false'.
 #kolla_ansible_become:
 
 ###############################################################################
