@@ -1,11 +1,44 @@
 ---
-- name: Ensure docker devicemapper storage is configured
+- name: Verify and configure Docker storage driver
   hosts: docker
   tags:
     - docker
     - docker-devicemapper
   tasks:
-    - name: Ensure docker devicemapper storage is configured
+    - name: Check for existing Docker configuration using devicemapper
+      block:
+      - name: Query Docker daemon for storage driver
+        docker_host_info:
+        failed_when: false
+        register: docker
+
+      - block:
+        - name: Check for a Docker configuration file
+          become: True
+          stat:
+            path: /etc/docker/daemon.json
+          register: docker_config_file
+
+        - name: Check whether devicemapper is used in configuration file
+          lineinfile:
+            path: /etc/docker/daemon.json
+            regexp: 'storage-driver.*devicemapper'
+            state: absent
+          become: True
+          changed_when: False
+          # `check_mode: True` ensures that we don't modify daemon.json
+          check_mode: True
+          register: devicemapper_docker
+          when: docker_config_file.stat.exists
+        when: not docker.can_talk_to_docker
+
+      - name: Fail if devicemapper is in use while another storage driver was requested
+        fail:
+          msg: "Docker storage driver {{ docker_storage_driver }} was requested, but devicemapper is in use"
+        when: (docker.can_talk_to_docker and docker.host_info.Driver == 'devicemapper') or (devicemapper_docker.found | default(0) == 1)
+      when: docker_storage_driver != 'devicemapper'
+
+    - name: Ensure Docker devicemapper storage is configured
       include_role:
         name: docker-devicemapper
       when: docker_storage_driver == 'devicemapper'

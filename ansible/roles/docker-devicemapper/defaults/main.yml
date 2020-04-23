@@ -1,6 +1,6 @@
 ---
 # Name of the docker storage driver.
-docker_storage_driver: devicemapper
+docker_storage_driver: overlay2
 
 # Name of the docker storage LVM volume group.
 docker_storage_volume_group:

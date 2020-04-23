@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    The default Docker storage driver has been changed from ``devicemapper`` to
+    ``overlay2``, which is the storage driver preferred by Docker. Environments
+    using ``devicemapper`` should set ``docker_storage_driver`` to
+    ``devicemapper`` in ``${KAYOBE_CONFIG_PATH}/docker.yml``.

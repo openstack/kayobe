@@ -690,8 +690,8 @@ Docker engine configuration is applied by both Kayobe and Kolla Ansible (during
 bootstrap-servers).
 
 The ``docker_storage_driver`` variable sets the Docker storage driver, and by
-default the ``devicemapper`` driver is used. If using this driver, see
-:ref:`configuration-hosts-lvm` for information about configuring LVM for
+default the ``overlay2`` driver is used. If using the ``devicemapper`` driver,
+see :ref:`configuration-hosts-lvm` for information about configuring LVM for
 Docker.
 
 Various options are defined in ``${KAYOBE_CONFIG_PATH}/docker.yml``
