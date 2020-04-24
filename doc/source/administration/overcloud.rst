@@ -129,6 +129,27 @@ and/or kolla-ansible::
 
     (kayobe) $ kayobe overcloud service upgrade --tags config --kolla-tags keystone
 
+Stopping the Overcloud Services
+===============================
+
+.. note::
+
+   This step will stop all containers on the overcloud hosts.
+
+To stop the overcloud services::
+
+    (kayobe) $ kayobe overcloud service stop --yes-i-really-really-mean-it
+
+It should be noted that this state is persistent - containers will remain
+stopped after a reboot of the host on which they are running.
+
+It is possible to limit the operation to particular hosts via
+``--kolla-limit``, or to particular services via ``--kolla-tags``.  It is also
+possible to avoid stopping the common containers via ``--kolla-skip-tags
+common``. For example:
+
+    (kayobe) $ kayobe overcloud service stop --kolla-tags glance,nova --kolla-skip-tags common
+
 Destroying the Overcloud Services
 =================================
 
