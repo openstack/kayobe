@@ -57,7 +57,7 @@ def kolla_mergepwd(module, old_path, new_path, final_path):
 def create_vault_password_file(module):
     """Create a vault password file."""
     with tempfile.NamedTemporaryFile(delete=False) as f:
-        f.write(module.params['vault_password'])
+        f.write(module.params['vault_password'].encode())
         return f.name
 
 
