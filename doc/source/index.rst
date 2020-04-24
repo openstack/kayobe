@@ -32,6 +32,7 @@ Contents
    :maxdepth: 2
 
    architecture
+   support-matrix
    installation
    usage
    configuration/index
