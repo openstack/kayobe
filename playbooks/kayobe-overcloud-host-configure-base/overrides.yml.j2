@@ -1,0 +1,128 @@
+---
+# The following configuration aims to test some of the 'host configure'
+# command.
+
+# Additional users.
+controller_users:
+  - username: kayobe-test-user
+    name: Kayobe test user
+    password: kayobe-test-user-password
+    groups:
+      - stack
+
+# Additional network interfaces, testing a variety of interface configurations.
+controller_extra_network_interfaces:
+  - test_net_eth
+  - test_net_eth_vlan
+  - test_net_bridge
+  - test_net_bridge_vlan
+  - test_net_bond
+  - test_net_bond_vlan
+
+# dummy2: Ethernet interface.
+test_net_eth_cidr: 192.168.34.0/24
+test_net_eth_routes:
+  - cidr: 192.168.40.0/24
+    gateway: 192.168.34.254
+test_net_eth_interface: dummy2
+
+# dummy2.42: VLAN subinterface of dummy2.
+test_net_eth_vlan_cidr: 192.168.35.0/24
+test_net_eth_vlan_interface: "{% raw %}{{ test_net_eth_interface }}.{{ test_net_eth_vlan_vlan }}{% endraw %}"
+test_net_eth_vlan_vlan: 42
+
+# br0: bridge with ports dummy3, dummy4.
+test_net_bridge_cidr: 192.168.36.0/24
+test_net_bridge_interface: br0
+test_net_bridge_bridge_ports: [dummy3, dummy4]
+
+# br0.43: VLAN subinterface of br0.
+test_net_bridge_vlan_cidr: 192.168.37.0/24
+test_net_bridge_vlan_interface: "{% raw %}{{ test_net_bridge_interface }}.{{ test_net_bridge_vlan_vlan }}{% endraw %}"
+test_net_bridge_vlan_vlan: 43
+
+# bond0: bond with slaves dummy5, dummy6.
+test_net_bond_cidr: 192.168.38.0/24
+test_net_bond_interface: bond0
+test_net_bond_bond_slaves: [dummy5, dummy6]
+
+# bond0.44: VLAN subinterface of bond0.
+test_net_bond_vlan_cidr: 192.168.39.0/24
+test_net_bond_vlan_interface: "{% raw %}{{ test_net_bond_interface }}.{{ test_net_bond_vlan_vlan }}{% endraw %}"
+test_net_bond_vlan_vlan: 44
+
+# Create an LVM volume group for Docker volumes and devicemapper.
+controller_lvm_groups:
+  - "{% raw %}{{ controller_lvm_group_data }}{% endraw %}"
+
+# Provide a disk for use by LVM. Uses the software RAID device created below.
+controller_lvm_group_data_disks:
+  - /dev/md0
+
+# Define a software RAID device consisting of two loopback devices.
+controller_mdadm_arrays:
+  - name: md0
+    devices:
+      - /dev/loop0
+      - /dev/loop1
+    level: '1'
+    state: present
+
+# Set a sysctl.
+controller_sysctl_parameters:
+  fs.mount-max: 99999
+
+# Disable cloud-init.
+disable_cloud_init: true
+
+# Use devicemapper storage driver.
+docker_storage_driver: devicemapper
+
+# Set Honolulu time.
+timezone: Pacific/Honolulu
+
+{% if ansible_os_family == 'RedHat' %}
+{% if ansible_distribution_major_version | int == 7 %}
+# Use a local Yum mirror.
+yum_use_local_mirror: true
+# Mirror FQDN for Yum repos.
+yum_centos_mirror_host: "{{ zuul_site_mirror_fqdn }}"
+# Mirror directory for Yum CentOS repos.
+yum_centos_mirror_directory: 'centos'
+# Mirror FQDN for Yum EPEL repos.
+yum_epel_mirror_host: "{{ zuul_site_mirror_fqdn }}"
+# Mirror directory for Yum EPEL repos.
+yum_epel_mirror_directory: 'epel'
+# Configure a custom Yum repository.
+yum_custom_repos:
+  td-agent:
+    baseurl: http://packages.treasuredata.com/3/redhat/$releasever/$basearch
+    gpgkey: https://packages.treasuredata.com/GPG-KEY-td-agent
+    gpgcheck: yes
+# Don't install EPEL repositories.
+yum_install_epel: false
+# Enable yum-cron.
+yum_cron_enabled: true
+{% else %}
+# Use a local DNF mirror.
+dnf_use_local_mirror: true
+# Mirror FQDN for DNF repos.
+dnf_centos_mirror_host: "{{ zuul_site_mirror_fqdn }}"
+# Mirror directory for DNF CentOS repos.
+dnf_centos_mirror_directory: 'centos'
+# Mirror FQDN for DNF EPEL repos.
+dnf_epel_mirror_host: "{{ zuul_site_mirror_fqdn }}"
+# Mirror directory for DNF EPEL repos.
+dnf_epel_mirror_directory: 'epel'
+# Configure a custom DNF repository.
+dnf_custom_repos:
+  td-agent:
+    baseurl: http://packages.treasuredata.com/3/redhat/$releasever/$basearch
+    gpgkey: https://packages.treasuredata.com/GPG-KEY-td-agent
+    gpgcheck: yes
+# Don't install EPEL repositories.
+dnf_install_epel: false
+# Enable DNF Automatic.
+dnf_automatic_enabled: true
+{% endif %}
+{% endif %}
