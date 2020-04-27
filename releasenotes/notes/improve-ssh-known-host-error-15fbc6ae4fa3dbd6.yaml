@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Improves error message seen when discovering SSH known hosts for a host
+    without an IP address defined in
+    ``${KAYOBE_CONFIG_PATH}/network-allocation.yml``.

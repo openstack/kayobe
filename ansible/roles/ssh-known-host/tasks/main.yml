@@ -1,4 +1,18 @@
 ---
+# If no IP address has been configured for the host on the admin network, this
+# is typically the first task to fail. Provide a friendly message with
+# information on how to resolve the issue.
+- name: Validate SSH address
+  fail:
+    msg: >-
+      Host {{ inventory_hostname }} has no address configured on the admin
+      network. IP addresses may be manually configured in
+      'network-allocations.yml', or are automatically allocated during the
+      following commands: 'kayobe seed hypervisor host configure', 'kayobe
+      seed host configure', 'kayobe overcloud host configure', 'kayobe seed
+      vm provision' and 'kayobe overcloud inventory discover'.
+  when: not ansible_host | default(inventory_hostname)
+
 - name: Scan for SSH keys
   local_action:
     module: command ssh-keyscan {{ item }}
