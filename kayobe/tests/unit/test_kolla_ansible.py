@@ -18,6 +18,7 @@ import subprocess
 import unittest
 from unittest import mock
 
+from kayobe import ansible
 from kayobe import kolla_ansible
 from kayobe import utils
 from kayobe import vault
@@ -31,6 +32,7 @@ class TestCase(unittest.TestCase):
     @mock.patch.object(kolla_ansible, "_validate_args")
     def test_run(self, mock_validate, mock_run):
         parser = argparse.ArgumentParser()
+        ansible.add_args(parser)
         kolla_ansible.add_args(parser)
         vault.add_args(parser)
         parsed_args = parser.parse_args([])
@@ -48,6 +50,7 @@ class TestCase(unittest.TestCase):
     @mock.patch.object(kolla_ansible, "_validate_args")
     def test_run_all_the_args(self, mock_validate, mock_run):
         parser = argparse.ArgumentParser()
+        ansible.add_args(parser)
         kolla_ansible.add_args(parser)
         vault.add_args(parser)
         args = [
@@ -78,6 +81,7 @@ class TestCase(unittest.TestCase):
     @mock.patch.object(vault, "_ask_vault_pass")
     def test_run_all_the_long_args(self, mock_ask, mock_validate, mock_run):
         parser = argparse.ArgumentParser()
+        ansible.add_args(parser)
         kolla_ansible.add_args(parser)
         vault.add_args(parser)
         mock_ask.return_value = "test-pass"
@@ -120,6 +124,7 @@ class TestCase(unittest.TestCase):
     def test_run_vault_password_file(self, mock_update, mock_validate,
                                      mock_run):
         parser = argparse.ArgumentParser()
+        ansible.add_args(parser)
         kolla_ansible.add_args(parser)
         vault.add_args(parser)
         args = [
@@ -146,6 +151,7 @@ class TestCase(unittest.TestCase):
         mock_vars.return_value = []
         parser = argparse.ArgumentParser()
         mock_run.return_value = "/path/to/kayobe-vault-password-helper"
+        ansible.add_args(parser)
         kolla_ansible.add_args(parser)
         vault.add_args(parser)
         mock_run.assert_called_once_with(
@@ -169,6 +175,7 @@ class TestCase(unittest.TestCase):
     @mock.patch.object(kolla_ansible, "_validate_args")
     def test_run_func_args(self, mock_validate, mock_run):
         parser = argparse.ArgumentParser()
+        ansible.add_args(parser)
         kolla_ansible.add_args(parser)
         vault.add_args(parser)
         args = [
@@ -198,9 +205,84 @@ class TestCase(unittest.TestCase):
                                          env={})
 
     @mock.patch.object(utils, "run_command")
+    @mock.patch.object(utils, "is_readable_file")
+    @mock.patch.object(kolla_ansible, "_validate_args")
+    def test_run_custom_ansible_cfg(self, mock_validate, mock_readable,
+                                    mock_run):
+        mock_readable.return_value = {"result": True}
+        parser = argparse.ArgumentParser()
+        ansible.add_args(parser)
+        kolla_ansible.add_args(parser)
+        vault.add_args(parser)
+        parsed_args = parser.parse_args([])
+        kolla_ansible.run(parsed_args, "command", "overcloud")
+        expected_cmd = [
+            ".", "/path/to/cwd/venvs/kolla-ansible/bin/activate", "&&",
+            "kolla-ansible", "command",
+            "--inventory", "/etc/kolla/inventory/overcloud",
+        ]
+        expected_cmd = " ".join(expected_cmd)
+        expected_env = {"ANSIBLE_CONFIG": "/etc/kayobe/kolla/ansible.cfg"}
+        mock_run.assert_called_once_with(expected_cmd, shell=True, quiet=False,
+                                         env=expected_env)
+        mock_readable.assert_called_once_with("/etc/kayobe/kolla/ansible.cfg")
+
+    @mock.patch.object(utils, "run_command")
+    @mock.patch.object(utils, "is_readable_file")
+    @mock.patch.object(kolla_ansible, "_validate_args")
+    def test_run_custom_ansible_cfg_2(self, mock_validate, mock_readable,
+                                      mock_run):
+        mock_readable.side_effect = [{"result": False}, {"result": True}]
+        parser = argparse.ArgumentParser()
+        ansible.add_args(parser)
+        kolla_ansible.add_args(parser)
+        vault.add_args(parser)
+        parsed_args = parser.parse_args([])
+        kolla_ansible.run(parsed_args, "command", "overcloud")
+        expected_cmd = [
+            ".", "/path/to/cwd/venvs/kolla-ansible/bin/activate", "&&",
+            "kolla-ansible", "command",
+            "--inventory", "/etc/kolla/inventory/overcloud",
+        ]
+        expected_cmd = " ".join(expected_cmd)
+        expected_env = {"ANSIBLE_CONFIG": "/etc/kayobe/ansible.cfg"}
+        mock_run.assert_called_once_with(expected_cmd, shell=True, quiet=False,
+                                         env=expected_env)
+        expected_calls = [
+            mock.call("/etc/kayobe/kolla/ansible.cfg"),
+            mock.call("/etc/kayobe/ansible.cfg"),
+        ]
+        self.assertEqual(mock_readable.call_args_list, expected_calls)
+
+    @mock.patch.object(utils, "run_command")
+    @mock.patch.object(utils, "is_readable_file")
+    @mock.patch.object(kolla_ansible, "_validate_args")
+    def test_run_custom_ansible_cfg_env(self, mock_validate, mock_readable,
+                                        mock_run):
+        mock_readable.return_value = {"result": True}
+        os.environ["ANSIBLE_CONFIG"] = "/path/to/ansible.cfg"
+        parser = argparse.ArgumentParser()
+        ansible.add_args(parser)
+        kolla_ansible.add_args(parser)
+        vault.add_args(parser)
+        parsed_args = parser.parse_args([])
+        kolla_ansible.run(parsed_args, "command", "overcloud")
+        expected_cmd = [
+            ".", "/path/to/cwd/venvs/kolla-ansible/bin/activate", "&&",
+            "kolla-ansible", "command",
+            "--inventory", "/etc/kolla/inventory/overcloud",
+        ]
+        expected_cmd = " ".join(expected_cmd)
+        expected_env = {"ANSIBLE_CONFIG": "/path/to/ansible.cfg"}
+        mock_run.assert_called_once_with(expected_cmd, shell=True, quiet=False,
+                                         env=expected_env)
+        mock_readable.assert_called_once_with("/etc/kayobe/kolla/ansible.cfg")
+
+    @mock.patch.object(utils, "run_command")
     @mock.patch.object(kolla_ansible, "_validate_args")
     def test_run_failure(self, mock_validate, mock_run):
         parser = argparse.ArgumentParser()
+        ansible.add_args(parser)
         kolla_ansible.add_args(parser)
         vault.add_args(parser)
         parsed_args = parser.parse_args([])

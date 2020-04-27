@@ -143,6 +143,23 @@ def build_args(parsed_args, command, inventory_filename, extra_vars=None,
     return cmd
 
 
+def _get_environment(parsed_args):
+    """Return an environment dict for executing Kolla Ansible."""
+    env = os.environ.copy()
+    vault.update_environment(parsed_args, env)
+    # If a custom Ansible configuration file exists, use it. Allow
+    # etc/kayobe/kolla/ansible.cfg or etc/kayobe/ansible.cfg.
+    ansible_cfg_path = os.path.join(parsed_args.config_path, "kolla",
+                                    "ansible.cfg")
+    if utils.is_readable_file(ansible_cfg_path)["result"]:
+        env.setdefault("ANSIBLE_CONFIG", ansible_cfg_path)
+    else:
+        ansible_cfg_path = os.path.join(parsed_args.config_path, "ansible.cfg")
+        if utils.is_readable_file(ansible_cfg_path)["result"]:
+            env.setdefault("ANSIBLE_CONFIG", ansible_cfg_path)
+    return env
+
+
 def run(parsed_args, command, inventory_filename, extra_vars=None,
         tags=None, quiet=False, verbose_level=None, extra_args=None,
         limit=None):
@@ -154,8 +171,7 @@ def run(parsed_args, command, inventory_filename, extra_vars=None,
                      verbose_level=verbose_level,
                      extra_args=extra_args,
                      limit=limit)
-    env = os.environ.copy()
-    vault.update_environment(parsed_args, env)
+    env = _get_environment(parsed_args)
     try:
         utils.run_command(" ".join(cmd), quiet=quiet, shell=True, env=env)
     except subprocess.CalledProcessError as e:
