@@ -21,7 +21,7 @@
     - block:
         - name: Gather facts
           setup:
-          when: ansible_python is not defined
+          when: not module_setup | default(false)
 
         - name: Ensure the Python virtualenv package is installed
           package:
