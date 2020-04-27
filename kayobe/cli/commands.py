@@ -517,23 +517,6 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     def take_action(self, parsed_args):
         self.app.LOG.debug("Configuring seed host OS")
 
-        # Query some kayobe ansible variables.
-        # Explicitly request the dump-config tag to ensure this play runs even
-        # if the user specified tags.
-        hostvars = self.run_kayobe_config_dump(parsed_args, hosts="seed",
-                                               tags="dump-config")
-        if not hostvars:
-            self.app.LOG.error("No hosts in the seed group")
-            sys.exit(1)
-        hostvars = list(hostvars.values())[0]
-        ansible_user = hostvars.get("kayobe_ansible_user")
-        if not ansible_user:
-            self.app.LOG.error("Could not determine kayobe_ansible_user "
-                               "variable for seed host")
-            sys.exit(1)
-        python_interpreter = hostvars.get("ansible_python_interpreter")
-        kolla_target_venv = hostvars.get("kolla_ansible_target_venv")
-
         # Allocate IP addresses.
         playbooks = _build_playbook_list("ip-allocation")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed")
@@ -547,38 +530,19 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         playbooks += _build_playbook_list(
             "users", "yum", "dnf", "dev-tools", "disable-selinux", "network",
             "sysctl", "ip-routing", "snat", "disable-glean", "ntp", "mdadm",
-            "lvm", "docker-devicemapper")
+            "lvm", "docker-devicemapper", "kolla-ansible-user", "kolla-pip",
+            "kolla-target-venv")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed")
 
         self.generate_kolla_ansible_config(parsed_args, service_config=False)
 
         # Run kolla-ansible bootstrap-servers.
-        # This command should be run as the kayobe ansible user because at this
-        # point the kolla user may not exist.
-        extra_vars = {"ansible_user": ansible_user}
-        if python_interpreter:
-            # Use the kayobe virtualenv, as this is the executing user.
-            extra_vars["ansible_python_interpreter"] = python_interpreter
-        elif kolla_target_venv:
-            # Override the kolla-ansible virtualenv, use the system python
-            # instead.
-            extra_vars["ansible_python_interpreter"] = "/usr/bin/python"
-        if kolla_target_venv:
-            # Specify a virtualenv in which to install python packages.
-            extra_vars["virtualenv"] = kolla_target_venv
-        self.run_kolla_ansible_seed(parsed_args, "bootstrap-servers",
-                                    extra_vars=extra_vars)
-
-        # Re-run the Pip role after we've bootstrapped the Kolla user
-        extra_vars = {}
-        kolla_ansible_user = hostvars.get("kolla_ansible_user")
-        extra_vars["pip_applicable_users"] = [kolla_ansible_user]
+        self.run_kolla_ansible_seed(parsed_args, "bootstrap-servers")
 
         # Run final kayobe playbooks.
         playbooks = _build_playbook_list(
-            "pip", "kolla-target-venv", "kolla-host", "docker")
-        self.run_kayobe_playbooks(parsed_args, playbooks,
-                                  extra_vars=extra_vars, limit="seed")
+            "kolla-host", "docker")
+        self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed")
 
         # Optionally, deploy a Docker Registry.
         playbooks = _build_playbook_list("docker-registry")
@@ -917,23 +881,6 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     def take_action(self, parsed_args):
         self.app.LOG.debug("Configuring overcloud host OS")
 
-        # Query some kayobe ansible variables.
-        # Explicitly request the dump-config tag to ensure this play runs even
-        # if the user specified tags.
-        hostvars = self.run_kayobe_config_dump(parsed_args, hosts="overcloud",
-                                               tags="dump-config")
-        if not hostvars:
-            self.app.LOG.error("No hosts in the overcloud group")
-            sys.exit(1)
-        hostvars = list(hostvars.values())[0]
-        ansible_user = hostvars.get("kayobe_ansible_user")
-        if not ansible_user:
-            self.app.LOG.error("Could not determine kayobe_ansible_user "
-                               "variable for overcloud hosts")
-            sys.exit(1)
-        python_interpreter = hostvars.get("ansible_python_interpreter")
-        kolla_target_venv = hostvars.get("kolla_ansible_target_venv")
-
         # Allocate IP addresses.
         playbooks = _build_playbook_list("ip-allocation")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
@@ -947,40 +894,19 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         playbooks += _build_playbook_list(
             "users", "yum", "dnf", "dev-tools", "disable-selinux", "network",
             "sysctl", "disable-glean", "disable-cloud-init", "ntp", "mdadm",
-            "lvm", "docker-devicemapper")
+            "lvm", "docker-devicemapper", "kolla-ansible-user", "kolla-pip",
+            "kolla-target-venv")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
 
         self.generate_kolla_ansible_config(parsed_args, service_config=False)
 
         # Kolla-ansible bootstrap-servers.
-        # The kolla-ansible bootstrap-servers command should be run as the
-        # kayobe ansible user because at this point the kolla user may not
-        # exist.
-        extra_vars = {"ansible_user": ansible_user}
-        if python_interpreter:
-            # Use the kayobe virtualenv, as this is the executing user.
-            extra_vars["ansible_python_interpreter"] = python_interpreter
-        elif kolla_target_venv:
-            # Override the kolla-ansible virtualenv, use the system python
-            # instead.
-            extra_vars["ansible_python_interpreter"] = "/usr/bin/python"
-        if kolla_target_venv:
-            # Specify a virtualenv in which to install python packages.
-            extra_vars["virtualenv"] = kolla_target_venv
-        self.run_kolla_ansible_overcloud(parsed_args, "bootstrap-servers",
-                                         extra_vars=extra_vars)
-
-        # Re-run the Pip role after we've bootstrapped the Kolla user
-        extra_vars = {}
-        kolla_ansible_user = hostvars.get("kolla_ansible_user")
-        extra_vars["pip_applicable_users"] = [kolla_ansible_user]
+        self.run_kolla_ansible_overcloud(parsed_args, "bootstrap-servers")
 
         # Further kayobe playbooks.
         playbooks = _build_playbook_list(
-            "pip", "kolla-target-venv", "kolla-host",
-            "docker", "swift-block-devices")
-        self.run_kayobe_playbooks(parsed_args, playbooks,
-                                  extra_vars=extra_vars, limit="overcloud")
+            "kolla-host", "docker", "swift-block-devices")
+        self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
 
 
 class OvercloudHostPackageUpdate(KayobeAnsibleMixin, VaultMixin, Command):

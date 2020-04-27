@@ -462,26 +462,16 @@ class TestCase(unittest.TestCase):
         self.assertEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
-                       "run_kayobe_config_dump")
-    @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
     @mock.patch.object(commands.KollaAnsibleMixin,
                        "run_kolla_ansible_seed")
-    def test_seed_host_configure(self, mock_kolla_run, mock_run, mock_dump):
+    def test_seed_host_configure(self, mock_kolla_run, mock_run):
         command = commands.SeedHostConfigure(TestApp(), [])
         parser = command.get_parser("test")
         parsed_args = parser.parse_args([])
-        mock_dump.return_value = {
-            "seed": {"kayobe_ansible_user": "stack"}
-        }
 
         result = command.run(parsed_args)
         self.assertEqual(0, result)
-
-        expected_calls = [
-            mock.call(mock.ANY, hosts="seed", tags="dump-config")
-        ]
-        self.assertEqual(expected_calls, mock_dump.call_args_list)
 
         expected_calls = [
             mock.call(
@@ -514,6 +504,11 @@ class TestCase(unittest.TestCase):
                     utils.get_data_files_path("ansible", "lvm.yml"),
                     utils.get_data_files_path("ansible",
                                               "docker-devicemapper.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "kolla-ansible-user.yml"),
+                    utils.get_data_files_path("ansible", "kolla-pip.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "kolla-target-venv.yml"),
                 ],
                 limit="seed",
             ),
@@ -526,14 +521,10 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    utils.get_data_files_path("ansible", "pip.yml"),
-                    utils.get_data_files_path(
-                        "ansible", "kolla-target-venv.yml"),
                     utils.get_data_files_path("ansible", "kolla-host.yml"),
                     utils.get_data_files_path("ansible", "docker.yml"),
                 ],
                 limit="seed",
-                extra_vars={'pip_applicable_users': [None]},
             ),
             mock.call(
                 mock.ANY,
@@ -551,109 +542,6 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 "bootstrap-servers",
-                extra_vars={"ansible_user": "stack"},
-            ),
-        ]
-        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
-
-    @mock.patch.object(commands.KayobeAnsibleMixin,
-                       "run_kayobe_config_dump")
-    @mock.patch.object(commands.KayobeAnsibleMixin,
-                       "run_kayobe_playbooks")
-    @mock.patch.object(commands.KollaAnsibleMixin,
-                       "run_kolla_ansible_seed")
-    def test_seed_host_configure_kayobe_venv(self, mock_kolla_run, mock_run,
-                                             mock_dump):
-        command = commands.SeedHostConfigure(TestApp(), [])
-        parser = command.get_parser("test")
-        parsed_args = parser.parse_args([])
-        mock_dump.return_value = {
-            "seed": {
-                "ansible_python_interpreter": "/kayobe/venv/bin/python",
-                "kayobe_ansible_user": "stack",
-            }
-        }
-
-        result = command.run(parsed_args)
-        self.assertEqual(0, result)
-
-        expected_calls = [
-            mock.call(
-                mock.ANY,
-                "bootstrap-servers",
-                extra_vars={
-                    "ansible_python_interpreter": "/kayobe/venv/bin/python",
-                    "ansible_user": "stack",
-                },
-            ),
-        ]
-        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
-
-    @mock.patch.object(commands.KayobeAnsibleMixin,
-                       "run_kayobe_config_dump")
-    @mock.patch.object(commands.KayobeAnsibleMixin,
-                       "run_kayobe_playbooks")
-    @mock.patch.object(commands.KollaAnsibleMixin,
-                       "run_kolla_ansible_seed")
-    def test_seed_host_configure_kolla_venv(self, mock_kolla_run, mock_run,
-                                            mock_dump):
-        command = commands.SeedHostConfigure(TestApp(), [])
-        parser = command.get_parser("test")
-        parsed_args = parser.parse_args([])
-        mock_dump.return_value = {
-            "seed": {
-                "kayobe_ansible_user": "stack",
-                "kolla_ansible_target_venv": "/kolla/venv/bin/python",
-            }
-        }
-
-        result = command.run(parsed_args)
-        self.assertEqual(0, result)
-
-        expected_calls = [
-            mock.call(
-                mock.ANY,
-                "bootstrap-servers",
-                extra_vars={
-                    "ansible_python_interpreter": "/usr/bin/python",
-                    "ansible_user": "stack",
-                    "virtualenv": "/kolla/venv/bin/python",
-                },
-            ),
-        ]
-        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
-
-    @mock.patch.object(commands.KayobeAnsibleMixin,
-                       "run_kayobe_config_dump")
-    @mock.patch.object(commands.KayobeAnsibleMixin,
-                       "run_kayobe_playbooks")
-    @mock.patch.object(commands.KollaAnsibleMixin,
-                       "run_kolla_ansible_seed")
-    def test_seed_host_configure_both_venvs(self, mock_kolla_run, mock_run,
-                                            mock_dump):
-        command = commands.SeedHostConfigure(TestApp(), [])
-        parser = command.get_parser("test")
-        parsed_args = parser.parse_args([])
-        mock_dump.return_value = {
-            "seed": {
-                "ansible_python_interpreter": "/kayobe/venv/bin/python",
-                "kayobe_ansible_user": "stack",
-                "kolla_ansible_target_venv": "/kolla/venv/bin/python",
-            }
-        }
-
-        result = command.run(parsed_args)
-        self.assertEqual(0, result)
-
-        expected_calls = [
-            mock.call(
-                mock.ANY,
-                "bootstrap-servers",
-                extra_vars={
-                    "ansible_python_interpreter": "/kayobe/venv/bin/python",
-                    "ansible_user": "stack",
-                    "virtualenv": "/kolla/venv/bin/python",
-                },
             ),
         ]
         self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
@@ -1089,27 +977,16 @@ class TestCase(unittest.TestCase):
         self.assertEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
-                       "run_kayobe_config_dump")
-    @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
     @mock.patch.object(commands.KollaAnsibleMixin,
                        "run_kolla_ansible_overcloud")
-    def test_overcloud_host_configure(self, mock_kolla_run, mock_run,
-                                      mock_dump):
+    def test_overcloud_host_configure(self, mock_kolla_run, mock_run):
         command = commands.OvercloudHostConfigure(TestApp(), [])
         parser = command.get_parser("test")
         parsed_args = parser.parse_args([])
-        mock_dump.return_value = {
-            "controller0": {"kayobe_ansible_user": "stack"}
-        }
 
         result = command.run(parsed_args)
         self.assertEqual(0, result)
-
-        expected_calls = [
-            mock.call(mock.ANY, hosts="overcloud", tags="dump-config")
-        ]
-        self.assertEqual(expected_calls, mock_dump.call_args_list)
 
         expected_calls = [
             mock.call(
@@ -1142,6 +1019,11 @@ class TestCase(unittest.TestCase):
                     utils.get_data_files_path("ansible", "lvm.yml"),
                     utils.get_data_files_path("ansible",
                                               "docker-devicemapper.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "kolla-ansible-user.yml"),
+                    utils.get_data_files_path("ansible", "kolla-pip.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "kolla-target-venv.yml"),
                 ],
                 limit="overcloud",
             ),
@@ -1154,16 +1036,12 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    utils.get_data_files_path("ansible", "pip.yml"),
-                    utils.get_data_files_path(
-                        "ansible", "kolla-target-venv.yml"),
                     utils.get_data_files_path("ansible", "kolla-host.yml"),
                     utils.get_data_files_path("ansible", "docker.yml"),
                     utils.get_data_files_path(
                         "ansible", "swift-block-devices.yml"),
                 ],
                 limit="overcloud",
-                extra_vars={"pip_applicable_users": [None]},
             ),
         ]
         self.assertEqual(expected_calls, mock_run.call_args_list)
@@ -1172,109 +1050,6 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 "bootstrap-servers",
-                extra_vars={"ansible_user": "stack"},
-            ),
-        ]
-        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
-
-    @mock.patch.object(commands.KayobeAnsibleMixin,
-                       "run_kayobe_config_dump")
-    @mock.patch.object(commands.KayobeAnsibleMixin,
-                       "run_kayobe_playbooks")
-    @mock.patch.object(commands.KollaAnsibleMixin,
-                       "run_kolla_ansible_overcloud")
-    def test_overcloud_host_configure_kayobe_venv(self, mock_kolla_run,
-                                                  mock_run, mock_dump):
-        command = commands.OvercloudHostConfigure(TestApp(), [])
-        parser = command.get_parser("test")
-        parsed_args = parser.parse_args([])
-        mock_dump.return_value = {
-            "controller0": {
-                "ansible_python_interpreter": "/kayobe/venv/bin/python",
-                "kayobe_ansible_user": "stack",
-            }
-        }
-
-        result = command.run(parsed_args)
-        self.assertEqual(0, result)
-
-        expected_calls = [
-            mock.call(
-                mock.ANY,
-                "bootstrap-servers",
-                extra_vars={
-                    "ansible_python_interpreter": "/kayobe/venv/bin/python",
-                    "ansible_user": "stack",
-                }
-            ),
-        ]
-        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
-
-    @mock.patch.object(commands.KayobeAnsibleMixin,
-                       "run_kayobe_config_dump")
-    @mock.patch.object(commands.KayobeAnsibleMixin,
-                       "run_kayobe_playbooks")
-    @mock.patch.object(commands.KollaAnsibleMixin,
-                       "run_kolla_ansible_overcloud")
-    def test_overcloud_host_configure_kolla_venv(self, mock_kolla_run,
-                                                 mock_run, mock_dump):
-        command = commands.OvercloudHostConfigure(TestApp(), [])
-        parser = command.get_parser("test")
-        parsed_args = parser.parse_args([])
-        mock_dump.return_value = {
-            "controller0": {
-                "kayobe_ansible_user": "stack",
-                "kolla_ansible_target_venv": "/kolla/venv/bin/python",
-            }
-        }
-
-        result = command.run(parsed_args)
-        self.assertEqual(0, result)
-
-        expected_calls = [
-            mock.call(
-                mock.ANY,
-                "bootstrap-servers",
-                extra_vars={
-                    "ansible_python_interpreter": "/usr/bin/python",
-                    "ansible_user": "stack",
-                    "virtualenv": "/kolla/venv/bin/python",
-                }
-            ),
-        ]
-        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
-
-    @mock.patch.object(commands.KayobeAnsibleMixin,
-                       "run_kayobe_config_dump")
-    @mock.patch.object(commands.KayobeAnsibleMixin,
-                       "run_kayobe_playbooks")
-    @mock.patch.object(commands.KollaAnsibleMixin,
-                       "run_kolla_ansible_overcloud")
-    def test_overcloud_host_configure_both_venvs(self, mock_kolla_run,
-                                                 mock_run, mock_dump):
-        command = commands.OvercloudHostConfigure(TestApp(), [])
-        parser = command.get_parser("test")
-        parsed_args = parser.parse_args([])
-        mock_dump.return_value = {
-            "controller0": {
-                "ansible_python_interpreter": "/kayobe/venv/bin/python",
-                "kayobe_ansible_user": "stack",
-                "kolla_ansible_target_venv": "/kolla/venv/bin/python",
-            }
-        }
-
-        result = command.run(parsed_args)
-        self.assertEqual(0, result)
-
-        expected_calls = [
-            mock.call(
-                mock.ANY,
-                "bootstrap-servers",
-                extra_vars={
-                    "ansible_python_interpreter": "/kayobe/venv/bin/python",
-                    "ansible_user": "stack",
-                    "virtualenv": "/kolla/venv/bin/python",
-                }
             ),
         ]
         self.assertEqual(expected_calls, mock_kolla_run.call_args_list)

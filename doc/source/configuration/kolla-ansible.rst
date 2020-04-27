@@ -187,6 +187,23 @@ The variable ``kolla_ansible_target_venv`` configures the use of a virtual
 environment on the remote hosts. The default configuration should work in most
 cases.
 
+.. _configuration-kolla-ansible-user-creation:
+
+User account creation
+---------------------
+
+Since the Ussuri release, Kayobe creates a user account for Kolla Ansible
+rather than this being done during Kolla Ansible's ``bootstrap-servers``
+command. This workflow is more compatible with `Ansible fact caching
+<https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#caching-facts>`__,
+but does mean that Kolla Ansible's ``create_kolla_user`` variable cannot be
+used to disable creation of the user account. Instead, set
+``kolla_ansible_create_user`` to ``false``.
+
+``kolla_ansible_create_user``
+    Whether to create a user account, configure passwordless sudo and authorise
+    an SSH key for Kolla Ansible. Default is ``true``.
+
 OpenStack Logging
 -----------------
 

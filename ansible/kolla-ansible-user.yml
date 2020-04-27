@@ -1,0 +1,47 @@
+---
+- name: Ensure the Kolla Ansible user account exists
+  hosts: seed:overcloud
+  gather_facts: false
+  tags:
+    - kolla-ansible
+    - kolla-ansible-user
+  vars:
+    # kolla_overcloud_inventory_top_level_group_map looks like:
+    # kolla_overcloud_inventory_top_level_group_map:
+    #  control:
+    #    groups:
+    #      - controllers
+    hosts_in_kolla_inventory: >-
+      {{ kolla_overcloud_inventory_top_level_group_map.values() |
+         map(attribute='groups') | flatten | unique | union(['seed']) | join(':') }}
+  tasks:
+    - block:
+        - name: Ensure the Kolla Ansible user account exists
+          include_role:
+            name: singleplatform-eng.users
+            apply:
+              become: True
+          vars:
+            groups_to_create:
+              - name: docker
+              - name: "{{ kolla_ansible_group }}"
+              - name: sudo
+            users:
+              - username: "{{ kolla_ansible_user }}"
+                group: "{{ kolla_ansible_group }}"
+                groups:
+                  - docker
+                  - sudo
+                append: True
+                ssh_key:
+                  - "{{ kolla_ansible_custom_passwords.kolla_ssh_key.public_key }}"
+
+        - name: Ensure the Kolla Ansible user has passwordless sudo
+          copy:
+            content: "{{ kolla_ansible_user }} ALL=(ALL) NOPASSWD: ALL"
+            dest: "/etc/sudoers.d/kolla-ansible-users"
+            mode: 0640
+          become: True
+      when:
+        - inventory_hostname in query('inventory_hostnames', hosts_in_kolla_inventory)
+        - kolla_ansible_create_user | bool

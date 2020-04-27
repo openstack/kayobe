@@ -172,6 +172,10 @@
 # Ansible. Default is 'false'.
 #kolla_ansible_become:
 
+# Whether to create a user account, configure passwordless sudo and authorise
+# an SSH key for Kolla Ansible. Default is 'true'.
+#kolla_ansible_create_user:
+
 ###############################################################################
 # Kolla feature flag configuration.
 
