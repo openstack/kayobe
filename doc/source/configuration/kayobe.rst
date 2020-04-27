@@ -107,6 +107,8 @@ Site Localisation and Customisation
 Site localisation and customisation is applied using Ansible extra-vars files
 in ``${KAYOBE_CONFIG_PATH}/*.yml``.
 
+.. _configuration-kayobe-ansible:
+
 Configuration of Ansible
 ------------------------
 

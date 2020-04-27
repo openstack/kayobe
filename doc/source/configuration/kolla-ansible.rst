@@ -11,6 +11,8 @@ executed from there.
 
 Kolla Ansible configuration is stored in ``${KAYOBE_CONFIG_PATH}/kolla.yml``.
 
+.. _configuration-kolla-ansible-ansible:
+
 Configuration of Ansible
 ========================
 
