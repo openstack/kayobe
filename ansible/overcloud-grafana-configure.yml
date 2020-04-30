@@ -1,12 +1,12 @@
 ---
-- name: Check whether Grafana is enabled
+- name: Check whether Monasca is enabled
   hosts: overcloud
   tags:
     - grafana
   tasks:
     - name: Create monitoring group with grafana enabled
       group_by:
-        key: "monitoring_with_grafana_enabled_{{ kolla_enable_grafana | bool }}"
+        key: "monitoring_with_grafana_enabled_{{ kolla_enable_monasca | bool }}"
 
 - name: Set the Monasca control plane project ID
   hosts: monitoring_with_grafana_enabled_True[0]
@@ -15,6 +15,20 @@
     - grafana
   vars:
     venv: "{{ virtualenv_path }}/shade"
+  pre_tasks:
+    - name: Validate OpenStack password authentication parameters
+      fail:
+        msg: >
+          Required OpenStack authentication parameter {{ item }} is
+          {% if item in openstack_auth %}empty{% else %}not present{% endif %}
+          in openstack_auth. Have you sourced the environment file?
+      when:
+        - openstack_auth_type == 'password'
+        - item not in openstack_auth or not openstack_auth[item]
+      with_items: "{{ openstack_auth_password_required_params }}"
+      tags:
+        - config-validation
+
   roles:
     - role: stackhpc.os-openstackclient
       os_openstackclient_venv: "{{ venv }}"
@@ -27,7 +41,7 @@
     - name: Look up Monasca control plane project ID
       shell: >
         source {{ venv }}/bin/activate &&
-        openstack project show monasca --format json --column id
+        openstack project show {{ grafana_control_plane_organisation.split("@")[0] }} --format json --column id
       register: monasca_project_show
       changed_when: False
       environment: "{{ openstack_auth_env }}"
@@ -61,7 +75,7 @@
     - role: stackhpc.grafana-conf
       grafana_conf_organisation: "{{ grafana_control_plane_organisation }}"
       grafana_conf_grafana_admin_user: "{{ grafana_local_admin_user_name }}"
-      grafana_conf_grafana_admin_pass: "{{ grafana_admin_password }}"
+      grafana_conf_grafana_admin_pass: "{{ monasca_grafana_admin_password }}"
       grafana_conf_grafana_dashboard_repo:
         repo: "{{ grafana_monitoring_node_dashboard_repo }}"
         version: "{{ grafana_monitoring_node_dashboard_repo_version }}"
