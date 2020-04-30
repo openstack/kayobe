@@ -2,8 +2,10 @@
 features:
   - |
     Provides project and domain default variables for Monasca.
-    Defaults can be overridden from the Monasca config file etc/kayobe/monasca.yml.
+    Defaults can be overridden from the Monasca configuration file
+    ``${KAYOBE_CONFIG_PATH}/monasca.yml``.
 fixes:
   - |
     Fixes the Monasca install type causing issues pulling container images. See
-    `story 2007597 <https://storyboard.openstack.org/#!/story/2007597>`__ for details.
+    `story 2007597 <https://storyboard.openstack.org/#!/story/2007597>`__ for
+    details.
