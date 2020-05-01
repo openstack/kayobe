@@ -12,15 +12,21 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import glob
 import json
+import os
 import sys
 
 from cliff.command import Command
+from cliff.hooks import CommandHook
 
 from kayobe import ansible
 from kayobe import kolla_ansible
 from kayobe import utils
 from kayobe import vault
+
+# This is set to an arbitrary large number to simplify the sorting logic
+DEFAULT_SEQUENCE_NUMBER = sys.maxsize
 
 
 def _build_playbook_list(*playbooks):
@@ -142,6 +148,73 @@ class KollaAnsibleMixin(object):
     def run_kolla_ansible_seed(self, *args, **kwargs):
         kwargs.update(self._get_verbosity_args())
         return kolla_ansible.run_seed(*args, **kwargs)
+
+
+def _split_hook_sequence_number(hook):
+    parts = hook.split("-", 1)
+    if len(parts) < 2:
+        return (DEFAULT_SEQUENCE_NUMBER, hook)
+    try:
+        return (int(parts[0]), parts[1])
+    except ValueError:
+        return (DEFAULT_SEQUENCE_NUMBER, hook)
+
+
+class HookDispatcher(CommandHook):
+    """Runs custom playbooks before and after a command"""
+
+# Order of calls: get_epilog, get_parser, before, after
+
+    def __init__(self, *args, **kwargs):
+        self.command = kwargs["command"]
+        self.logger = self.command.app.LOG
+        cmd = self.command.cmd_name
+        # Replace white space with dashes for consistency with ansible
+        # playbooks. Example cmd: kayobe control host bootstrap
+        self.name = "-".join(cmd.split())
+
+    def get_epilog(self):
+        pass
+
+    def get_parser(self, prog_name):
+        pass
+
+    def _find_hooks(self, config_path, target):
+        name = self.name
+        path = os.path.join(config_path, "hooks", name, "%s.d" % target)
+        self.logger.debug("Discovering hooks in: %s" % path)
+        if not os.path.exists:
+            return []
+        hooks = glob.glob(os.path.join(path, "*.yml"))
+        self.logger.debug("Discovered the following hooks: %s" % hooks)
+        return hooks
+
+    def hooks(self, config_path, target):
+        hooks = self._find_hooks(config_path, target)
+        # Hooks can be prefixed with a sequence number to adjust running order,
+        # e.g 10-my-custom-playbook.yml. Sort by sequence number.
+        hooks = sorted(hooks, key=_split_hook_sequence_number)
+        # Resolve symlinks so that we can reference roles.
+        hooks = [os.path.realpath(hook) for hook in hooks]
+        return hooks
+
+    def run_hooks(self, parsed_args, target):
+        config_path = parsed_args.config_path
+        hooks = self.hooks(config_path, target)
+        if hooks:
+            self.logger.debug("Running hooks: %s" % hooks)
+            self.command.run_kayobe_playbooks(parsed_args, hooks)
+
+    def before(self, parsed_args):
+        self.run_hooks(parsed_args, "pre")
+        return parsed_args
+
+    def after(self, parsed_args, return_code):
+        if return_code == 0:
+            self.run_hooks(parsed_args, "post")
+        else:
+            self.logger.debug("Not running hooks due to non-zero return code")
+        return return_code
 
 
 class ControlHostBootstrap(KayobeAnsibleMixin, KollaAnsibleMixin, VaultMixin,

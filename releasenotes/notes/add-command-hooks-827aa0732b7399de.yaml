@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds an experimental mechanism to automatically run custom playbooks
+    before and after kayobe commands. Please see the ``Custom Ansible Playbooks``
+    section in the documentation for more details.

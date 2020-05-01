@@ -120,3 +120,84 @@ We should first install the Galaxy role dependencies, to download the
 Then, to run the ``foo.yml`` playbook::
 
     (kayobe) $ kayobe playbook run $KAYOBE_CONFIG_PATH/ansible/foo.yml
+
+Hooks
+=====
+
+.. warning::
+    Hooks are an experimental feature and the design could change in the future.
+    You may have to update your config if there are any changes to the design.
+    This warning will be removed when the design has been stabilised.
+
+Hooks allow you to automatically execute custom playbooks at certain points during
+the execution of a kayobe command. The point at which a hook is run is referred to
+as a ``target``. Please see the :ref:`list of available targets<Hook Targets>`.
+
+Hooks are created by symlinking an existing playbook into the the relevant directory under
+``$KAYOBE_CONFIG_PATH/hooks``. Kayobe will search the hooks directory for sub-directories
+matching ``<command>.<target>.d``, where ``command`` is the name of a kayobe command
+with any spaces replaced with dashes, and ``target`` is one of the supported targets for
+the command.
+
+For example, when using the command::
+
+    (kayobe) $ kayobe control host bootstrap
+
+kayobe will search the paths:
+
+- ``$KAYOBE_CONFIG_PATH/hooks/control-host-bootstrap/pre.d``
+- ``$KAYOBE_CONFIG_PATH/hooks/control-host-bootstrap/post.d``
+
+Any playbooks listed under the ``pre.d`` directory will be run before kayobe executes
+its own playbooks and any playbooks under ``post.d`` will be run after. You can affect
+the order of the playbooks by prefixing the symlink with a sequence number. The sequence
+number must be separated from the hook name with a dash. Playbooks with smaller sequence
+numbers are run before playbooks with larger ones. Any ties are broken by alphabetical
+ordering.
+
+For example to run the playbook ``foo.yml`` after ``kayobe overcloud host configure``,
+you could do the following::
+
+    (kayobe) $ mkdir -p $KAYOBE_CONFIG_PATH/hooks/overcloud-host-configure/post.d
+    (kayobe) $ ln -s  $KAYOBE_CONFIG_PATH/ansible/foo.yml \
+    $KAYOBE_CONFIG_PATH/hooks/overcloud-host-configure/post.d/10-foo.yml
+
+The sequence number for the ``foo.yml`` playbook is ``10``.
+
+Failure handling
+----------------
+
+If the exit status of any playbook, including built-in playbooks and custom hooks,
+is non-zero, kayobe will not run any subsequent hooks or built-in kayobe playbooks.
+Ansible provides several methods for preventing a task from producing a failure. Please
+see the `Ansible documentation <https://docs.ansible.com/ansible/latest/user_guide/playbooks_error_handling.html>`_
+for more details. Below is an example showing how you can use the ``ignore_errors`` option
+to prevent a task from causing the playbook to report a failure::
+
+  ---
+  - name: Failure example
+    hosts: localhost
+    tasks:
+      - name: Deliberately fail
+        fail:
+        ignore_errors: true
+
+A failure in the ``Deliberately fail`` task would not prevent subsequent tasks, hooks,
+and playbooks from running.
+
+.. _Hook Targets:
+
+Targets
+-------
+The following targets are available for all commands:
+
+.. list-table:: all commands
+   :widths: 10 500
+   :header-rows: 1
+
+   * - Target
+     - Description
+   * - pre
+     - Runs before a kayobe command has start executing
+   * - post
+     - Runs after a kayobe command has finished executing
