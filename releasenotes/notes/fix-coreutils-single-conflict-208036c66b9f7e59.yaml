@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes a package conflict while provisioning a seed VM on a CentOS 8 seed
+    hypervisor with ``coreutils-single`` already installed. See `story 2007612
+    <https://storyboard.openstack.org/#!/story/2007612>`__ for details.
