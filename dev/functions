@@ -386,10 +386,11 @@ function overcloud_test_init {
     echo "Performing overcloud test init"
     environment_setup
 
+    # Constraint with ${KAYOBE_SOURCE_PATH}/requirements.txt to ensure kayobe CLI doesn't get broken
     if [[ ! -z "$UPPER_CONSTRAINTS_FILE" ]]; then
-        pip install python-openstackclient -c "$UPPER_CONSTRAINTS_FILE"
+        pip install python-openstackclient -c "${KAYOBE_SOURCE_PATH}/requirements.txt" -c "$UPPER_CONSTRAINTS_FILE"
     else
-        pip install python-openstackclient
+        pip install python-openstackclient -c "${KAYOBE_SOURCE_PATH}/requirements.txt"
     fi
     source "${KOLLA_CONFIG_PATH:-/etc/kolla}/admin-openrc.sh"
 
