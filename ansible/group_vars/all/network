@@ -35,7 +35,7 @@ external_net_names: >
      ['external_net'] }}
 
 # Name of the network used to expose the public OpenStack API endpoints.
-public_net_name: >
+public_net_name: >-
   {{ external_net_names[0]
      if external_net_names | length > 0 else
      None }}
