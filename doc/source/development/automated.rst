@@ -143,6 +143,11 @@ Verify that VirtualBMC is running::
 
     ~/tenks-venv/bin/vbmc list
 
+Configure the firewall to allow the baremetal nodes to access OpenStack
+services::
+
+    ./dev/configure-firewall.sh
+
 We are now ready to run the ``dev/overcloud-test-baremetal.sh`` script. This
 will run the ``init-runonce`` setup script provided by Kolla Ansible that
 registers images, networks, flavors etc. It will then deploy a bare metal
