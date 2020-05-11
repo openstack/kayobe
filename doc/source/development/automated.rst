@@ -137,7 +137,7 @@ Run the ``dev/tenks-deploy-compute.sh`` script to deploy Tenks::
 
 Check that Tenks has created VMs called ``tk0`` and ``tk1``::
 
-    sudo virsh list --all
+    sudo virsh -c qemu+unix:///system?socket=/var/run/libvirt-tenks/libvirt-sock list --all
 
 Verify that VirtualBMC is running::
 
