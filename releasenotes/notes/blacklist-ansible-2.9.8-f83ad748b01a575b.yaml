@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Blacklists Ansible 2.9.8 to avoid an `issue
+    <https://github.com/ansible/ansible/issues/69450>`__ with the Ansible
+    ``fileglob`` plugin. See `story 2007659
+    <https://storyboard.openstack.org/#!/story/2007659>`__.
