@@ -1,4 +1,4 @@
 ---
 - hosts: all
   roles:
-    - role: install-docker
+    - role: ensure-docker
