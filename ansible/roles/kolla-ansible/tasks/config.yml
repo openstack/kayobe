@@ -149,3 +149,45 @@
   when:
     - kolla_internal_tls_cert is not none
     - kolla_internal_tls_cert | length > 0
+
+# Copy across all certificates in $KAYOBE_CONFIG_PATH/kolla/certificates.
+
+- name: Find certificates
+  find:
+    path: "{{ kolla_ansible_certificates_path }}"
+    recurse: true
+  register: find_src_result
+
+- name: Find previously copied certificates
+  find:
+    path: "{{ kolla_config_path }}/certificates"
+    recurse: true
+  register: find_dest_result
+
+- name: Ensure certificates exist
+  copy:
+    src: "{{ kolla_ansible_certificates_path }}/"
+    dest: "{{ kolla_config_path }}/certificates"
+    mode: 0600
+    # If certificates are encrypted, don't decrypt them at the destination.
+    decrypt: false
+  when: find_src_result.files | length > 0
+
+- name: Ensure unnecessary certificates are absent
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  with_items: "{{ find_dest_result.files }}"
+  when:
+    - item.path | relpath(kolla_config_path ~ '/certificates/') not in src_files
+    - item.path != kolla_external_fqdn_cert
+    - item.path != kolla_internal_fqdn_cert
+  vars:
+    # Find the list of files in the source.
+    src_files: >-
+      {{ find_src_result.files |
+         map(attribute='path') |
+         map('relpath', kolla_ansible_certificates_path) |
+         list }}
+  loop_control:
+    label: "{{ item.path }}"

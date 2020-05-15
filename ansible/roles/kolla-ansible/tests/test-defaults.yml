@@ -1,5 +1,6 @@
 ---
-- hosts: localhost
+- name: Test kolla-ansible role defaults
+  hosts: localhost
   connection: local
   tasks:
     - name: Create a temporary directory
@@ -32,10 +33,9 @@
             kolla_internal_fqdn: "fake.internal.fqdn"
             kolla_external_vip_address: "10.0.0.2"
             kolla_external_fqdn: "fake.external.fqdn"
+            kolla_ansible_certificates_path: "{{ temp_path }}/etc/kayobe/kolla/certificates"
             kolla_enable_tls_external: False
-            kolla_external_fqdn_cert: "fake-cert"
             kolla_enable_tls_internal: False
-            kolla_internal_fqdn_cert: "fake-cert"
             kolla_enable_grafana: False
             kolla_openstack_logging_debug: False
 
@@ -74,9 +74,7 @@
               docker_namespace: "fake-namespace"
               neutron_plugin_agent: "openvswitch"
               kolla_enable_tls_external: False
-              kolla_external_fqdn_cert: "fake-cert"
               kolla_enable_tls_internal: False
-              kolla_internal_fqdn_cert: "fake-cert"
               openstack_logging_debug: False
               kolla_user: "kolla"
               kolla_group: "kolla"

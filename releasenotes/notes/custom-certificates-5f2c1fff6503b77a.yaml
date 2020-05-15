@@ -1,0 +1,16 @@
+---
+features:
+  - |
+    Adds support for passing custom TLS certificates to Kolla Ansible via
+    ``${KAYOBE_CONFIG_PATH}/kolla/certificates/``. See `story 2007679
+    <https://storyboard.openstack.org/#!/story/2007679>`__ for details.
+upgrade:
+  - |
+    Reverts to use the Kolla Ansible default value for
+    ``kolla_external_fqdn_cert`` and ``kolla_internal_fqdn_cert`` when
+    ``kolla_external_tls_cert`` and ``kolla_internal_tls_cert`` are
+    respectively not set. This allows for the standard Kolla Ansible
+    configuration approach of dropping these certificates into the
+    ``$KAYOBE_CONFIG_PATH/kolla/certificates`` directory, rather than defining
+    them as variables. This can be useful if using the ``kolla-ansible
+    certificates`` command to generate certificates for testing.
