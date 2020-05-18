@@ -14,6 +14,8 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import copy
+
 from ansible.module_utils.basic import *
 from ansible.module_utils.openstack import *
 
@@ -102,7 +104,16 @@ def _ensure_rule_present(module, client):
             # Check whether the rule differs from the request.
             keys = ('conditions', 'actions', 'description')
             for key in keys:
-                if rule[key] != module.params[key]:
+                expected = module.params[key]
+                if key == 'conditions':
+                    # Rules returned from the API include default values in the
+                    # conditions that may not be in the requested rule. Apply
+                    # defaults to allow the comparison to succeed.
+                    expected = copy.deepcopy(expected)
+                    for condition in expected:
+                        condition.setdefault('invert', False)
+                        condition.setdefault('multiple', 'any')
+                if rule[key] != expected:
                     break
             else:
                 # Nothing to do - rule exists and is as requested.
