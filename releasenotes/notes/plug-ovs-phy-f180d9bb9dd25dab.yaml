@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Adds support for plugging the Open vSwitch provider bridge directly into a
+    an Ethernet interface. Previously it was necessary to define a Linux
+    bridge, into which Kayobe would plug a virtual Ethernet pair. The use of a
+    direct connection may provide improved performance, or allow additional
+    hardware offloading. See `story 2007364
+    <https://storyboard.openstack.org/#!/story/2007364>`_ for details.
