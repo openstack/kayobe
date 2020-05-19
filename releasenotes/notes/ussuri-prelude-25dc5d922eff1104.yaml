@@ -1,0 +1,11 @@
+---
+prelude: |
+  The Kayobe ``8.0.0`` release is the first release in the Ussuri
+  cycle.  Notable changes include:
+
+  * all playbooks and scripts now use Python 3 and support for Python 2 has
+    been dropped
+  * CentOS 8 is now supported as a host operating system and container image,
+    and support for CentOS 7 has been dropped
+  * supports running custom playbooks before and after a Kayobe command
+  * Ceph deployment support has been dropped
