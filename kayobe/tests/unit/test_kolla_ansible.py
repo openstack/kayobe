@@ -110,7 +110,7 @@ class TestCase(unittest.TestCase):
         expected_env = {"KAYOBE_VAULT_PASSWORD": "test-pass"}
         expected_calls = [
             mock.call(["which", "kayobe-vault-password-helper"],
-                      check_output=True),
+                      check_output=True, universal_newlines=True),
             mock.call(expected_cmd, shell=True, quiet=False, env=expected_env)
         ]
         self.assertEqual(expected_calls, mock_run.mock_calls)
@@ -150,7 +150,8 @@ class TestCase(unittest.TestCase):
         kolla_ansible.add_args(parser)
         vault.add_args(parser)
         mock_run.assert_called_once_with(
-            ["which", "kayobe-vault-password-helper"], check_output=True)
+            ["which", "kayobe-vault-password-helper"], check_output=True,
+            universal_newlines=True)
         mock_run.reset_mock()
         parsed_args = parser.parse_args([])
         kolla_ansible.run(parsed_args, "command", "overcloud")

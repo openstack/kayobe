@@ -24,6 +24,15 @@ from kayobe import vault
 
 class TestCase(unittest.TestCase):
 
+    @mock.patch.object(vault.utils, "run_command", autospec=True)
+    def test__get_vault_password_helper(self, mock_run):
+        mock_run.return_value = "fake-password\n"
+        result = vault._get_vault_password_helper()
+        mock_run.assert_called_once_with(
+            ["which", "kayobe-vault-password-helper"], check_output=True,
+            universal_newlines=True)
+        self.assertEqual('fake-password', result)
+
     def test_validate_args_ok(self):
         parser = argparse.ArgumentParser()
         vault.add_args(parser)

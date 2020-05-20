@@ -30,7 +30,10 @@ def _get_vault_password_helper():
     """Return the path to the kayobe-vault-password-helper executable."""
     cmd = ["which", "kayobe-vault-password-helper"]
     try:
-        output = utils.run_command(cmd, check_output=True)
+        # NOTE(mgoddard): universal_newlines ensures stdout is opened in text
+        # mode, and we get a string rather than bytes.
+        output = utils.run_command(cmd, check_output=True,
+                                   universal_newlines=True)
     except subprocess.CalledProcessError:
         return None
     return output.strip()

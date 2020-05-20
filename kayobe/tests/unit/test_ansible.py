@@ -145,7 +145,7 @@ class TestCase(unittest.TestCase):
                         "KAYOBE_VAULT_PASSWORD": "test-pass"}
         expected_calls = [
             mock.call(["which", "kayobe-vault-password-helper"],
-                      check_output=True),
+                      check_output=True, universal_newlines=True),
             mock.call(expected_cmd, check_output=False, quiet=False,
                       env=expected_env)
         ]
@@ -192,7 +192,8 @@ class TestCase(unittest.TestCase):
         ansible.add_args(parser)
         vault.add_args(parser)
         mock_run.assert_called_once_with(
-            ["which", "kayobe-vault-password-helper"], check_output=True)
+            ["which", "kayobe-vault-password-helper"], check_output=True,
+            universal_newlines=True)
         mock_run.reset_mock()
         parsed_args = parser.parse_args([])
         ansible.run_playbooks(parsed_args, ["playbook1.yml"])
