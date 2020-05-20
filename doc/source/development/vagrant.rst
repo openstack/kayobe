@@ -5,23 +5,23 @@ Vagrant
 =======
 
 Kayobe provides a Vagrantfile that can be used to bring up a virtual machine
-for use as a development environment. The VM is based on the `stackhpc/centos-7
-<https://app.vagrantup.com/stackhpc/boxes/centos-7>`_ CentOS 7 image, and
+for use as a development environment. The VM is based on the `centos/8
+<https://app.vagrantup.com/centos/boxes/8>`_ CentOS 8 image, and
 supports the following providers:
 
 * VirtualBox
 * VMWare Fusion
 
-The VM is configured with 4GB RAM. It has a single private network in addition
+The VM is configured with 4GB RAM and a 20GB HDD. It has a single private network in addition
 to the standard Vagrant NAT network.
 
 Preparation
 ===========
 
 First, ensure that Vagrant is installed and correctly configured to use
-the required provider. Also install the following vagrant plugin::
+the required provider. Also install the following vagrant plugins::
 
-    vagrant plugin install vagrant-reload
+    vagrant plugin install vagrant-reload vagrant-disksize
 
 If using the VirtualBox provider, install the following vagrant plugin::
 

@@ -6,8 +6,11 @@ Vagrant.configure('2') do |config|
 
   config.vm.network 'private_network', ip: '192.168.33.3', auto_config: false
 
-  config.vm.box = 'stackhpc/centos-7'
-  config.vm.box_version = '0.2.0'
+  config.vm.box = 'centos/8'
+
+  # The default CentOS box comes with a root disk that is too small to fit a
+  # deployment on so we need to make it bigger.
+  config.disksize.size = '20GB'
 
   config.vm.provider 'virtualbox' do |vb|
     vb.memory = '4096'
@@ -21,6 +24,18 @@ Vagrant.configure('2') do |config|
   end
 
   config.vm.provision 'shell', inline: <<-SHELL
+
+    # Extend the root disk
+    sudo parted "/dev/sda" ---pretend-input-tty <<EOF
+resizepart
+1
+100%
+Yes
+-0
+quit
+EOF
+    sudo xfs_growfs -d /
+
     echo "cat > /etc/selinux/config << EOF
 SELINUX=disabled
 SELINUXTYPE=targeted
@@ -40,7 +55,6 @@ BOOTPROTO=none
 IPADDR=192.168.33.3
 NETMASK=255.255.255.0
 ONBOOT=yes
-NM_CONTROLLED=no
 EOF
     sudo ifup eth1
 
