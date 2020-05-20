@@ -381,14 +381,14 @@ overwritten by Kayobe are removed.
 Timezone
 ========
 *tags:*
-  | ``ntp``
+  | ``timezone``
 
 The timezone can be configured via the ``timezone`` variable in
-``${KAYOBE_CONFIG_PATH}/ntp.yml``. The value must be a valid Linux
+``${KAYOBE_CONFIG_PATH}/time.yml``. The value must be a valid Linux
 timezone. For example:
 
 .. code-block:: yaml
-   :caption: ``ntp.yml``
+   :caption: ``timezone.yml``
 
    timezone: Europe/London
 
@@ -399,8 +399,9 @@ Since the Ussuri release, Kayobe no longer supports configuration of an NTP
 daemon on the host, since the ``ntp`` package is no longer available in CentOS
 8.
 
-Kolla Ansible can deploy a chrony container, and from the Ussuri release chrony
-is enabled by default.
+Kolla Ansible can deploy a chrony container on overcloud hosts, and from the
+Ussuri release chrony is enabled by default. There is no support for running a
+chrony container on the seed or seed hypervisor hosts.
 
 To disable the containerised chrony daemon, set the following in
 ``${KAYOBE_CONFIG_PATH}/kolla.yml``:
