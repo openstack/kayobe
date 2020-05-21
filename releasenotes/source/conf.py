@@ -133,10 +133,6 @@ html_static_path = ['_static']
 # directly to the root of the documentation.
 # html_extra_path = []
 
-# If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
-# using the given strftime format.
-html_last_updated_fmt = '%Y-%m-%d %H:%M'
-
 # If true, SmartyPants will be used to convert quotes and dashes to
 # typographically correct entities.
 # html_use_smartypants = True
@@ -253,6 +249,11 @@ texinfo_documents = [
 # -- Options for Internationalization output ------------------------------
 locale_dirs = ['locale/']
 
-openstack_projects = [
+# openstackdocstheme options
+openstackdocs_repo_name = 'openstack/kayobe'
+openstackdocs_use_storyboard = True
+openstackdocs_auto_name = False
+
+openstackdocs_projects = [
     'kayobe',
 ]
