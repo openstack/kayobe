@@ -328,6 +328,7 @@ class TestCase(unittest.TestCase):
                     utils.get_data_files_path("ansible", "sysctl.yml"),
                     utils.get_data_files_path("ansible", "ntp.yml"),
                     utils.get_data_files_path("ansible", "mdadm.yml"),
+                    utils.get_data_files_path("ansible", "luks.yml"),
                     utils.get_data_files_path("ansible", "lvm.yml"),
                     utils.get_data_files_path(
                         "ansible", "seed-hypervisor-libvirt-host.yml"),
@@ -501,6 +502,7 @@ class TestCase(unittest.TestCase):
                     utils.get_data_files_path("ansible", "disable-glean.yml"),
                     utils.get_data_files_path("ansible", "ntp.yml"),
                     utils.get_data_files_path("ansible", "mdadm.yml"),
+                    utils.get_data_files_path("ansible", "luks.yml"),
                     utils.get_data_files_path("ansible", "lvm.yml"),
                     utils.get_data_files_path("ansible",
                                               "docker-devicemapper.yml"),
@@ -1016,6 +1018,7 @@ class TestCase(unittest.TestCase):
                         "ansible", "disable-cloud-init.yml"),
                     utils.get_data_files_path("ansible", "ntp.yml"),
                     utils.get_data_files_path("ansible", "mdadm.yml"),
+                    utils.get_data_files_path("ansible", "luks.yml"),
                     utils.get_data_files_path("ansible", "lvm.yml"),
                     utils.get_data_files_path("ansible",
                                               "docker-devicemapper.yml"),

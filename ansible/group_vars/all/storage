@@ -74,6 +74,12 @@ storage_raid_config_extra: []
 storage_mdadm_arrays: []
 
 ###############################################################################
+# Storage node encryption configuration.
+
+# List of block devices to encrypt. See stackhpc.luks role for format.
+storage_luks_devices: []
+
+###############################################################################
 # Storage node LVM configuration.
 
 # List of storage volume groups. See mrlesmithjr.manage-lvm role for

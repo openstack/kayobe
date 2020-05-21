@@ -342,6 +342,7 @@ class SeedHypervisorHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
     * Set sysctl parameters.
     * Configure NTP.
     * Optionally, configure software RAID arrays.
+    * Optionally, configure encryption.
     * Configure LVM volumes.
     * Configure the host as a libvirt hypervisor.
     """
@@ -379,7 +380,7 @@ class SeedHypervisorHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
             playbooks += _build_playbook_list("wipe-disks")
         playbooks += _build_playbook_list(
             "users", "yum", "dnf", "dev-tools", "network", "sysctl", "ntp",
-            "mdadm", "lvm", "seed-hypervisor-libvirt-host")
+            "mdadm", "luks", "lvm", "seed-hypervisor-libvirt-host")
         self.run_kayobe_playbooks(parsed_args, playbooks,
                                   limit="seed-hypervisor")
 
@@ -498,6 +499,7 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     * Disable bootstrap interface configuration.
     * Configure NTP.
     * Optionally, configure software RAID arrays.
+    * Optionally, configure encryption.
     * Configure LVM volumes.
     * Optionally, create a virtualenv for kolla-ansible.
     * Configure a user account for kolla-ansible.
@@ -530,8 +532,8 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         playbooks += _build_playbook_list(
             "users", "yum", "dnf", "dev-tools", "disable-selinux", "network",
             "sysctl", "ip-routing", "snat", "disable-glean", "ntp", "mdadm",
-            "lvm", "docker-devicemapper", "kolla-ansible-user", "kolla-pip",
-            "kolla-target-venv")
+            "luks", "lvm", "docker-devicemapper", "kolla-ansible-user",
+            "kolla-pip", "kolla-target-venv")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed")
 
         self.generate_kolla_ansible_config(parsed_args, service_config=False)
@@ -863,6 +865,7 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     * Disable bootstrap interface configuration.
     * Configure NTP.
     * Optionally, configure software RAID arrays.
+    * Optionally, configure encryption.
     * Configure LVM volumes.
     * Optionally, create a virtualenv for kolla-ansible.
     * Configure a user account for kolla-ansible.
@@ -894,8 +897,8 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         playbooks += _build_playbook_list(
             "users", "yum", "dnf", "dev-tools", "disable-selinux", "network",
             "sysctl", "disable-glean", "disable-cloud-init", "ntp", "mdadm",
-            "lvm", "docker-devicemapper", "kolla-ansible-user", "kolla-pip",
-            "kolla-target-venv")
+            "luks", "lvm", "docker-devicemapper", "kolla-ansible-user",
+            "kolla-pip", "kolla-target-venv")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
 
         self.generate_kolla_ansible_config(parsed_args, service_config=False)

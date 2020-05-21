@@ -51,14 +51,6 @@ test_net_bond_vlan_cidr: 192.168.39.0/24
 test_net_bond_vlan_interface: "{% raw %}{{ test_net_bond_interface }}.{{ test_net_bond_vlan_vlan }}{% endraw %}"
 test_net_bond_vlan_vlan: 44
 
-# Create an LVM volume group for Docker volumes and devicemapper.
-controller_lvm_groups:
-  - "{% raw %}{{ controller_lvm_group_data }}{% endraw %}"
-
-# Provide a disk for use by LVM. Uses the software RAID device created below.
-controller_lvm_group_data_disks:
-  - /dev/md0
-
 # Define a software RAID device consisting of two loopback devices.
 controller_mdadm_arrays:
   - name: md0
@@ -67,6 +59,19 @@ controller_mdadm_arrays:
       - /dev/loop1
     level: '1'
     state: present
+
+# Layer LUKS encryption on top of the software RAID
+controller_luks_devices:
+  - name: loopback-crypt
+    device: /dev/md0
+
+# Create an LVM volume group for Docker volumes and devicemapper.
+controller_lvm_groups:
+  - "{% raw %}{{ controller_lvm_group_data }}{% endraw %}"
+
+# Provide a disk for use by LVM. Uses the LUKS encrypted device created above.
+controller_lvm_group_data_disks:
+  - /dev/mapper/loopback-crypt
 
 # Set a sysctl.
 controller_sysctl_parameters:

@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Adds support for configuring encrypted block devices using ``dm-crypt``.
+    Encryption is applied before LVM configuration and after software raid,
+    which allows creating LVM volumes on top of encrypted block devices.
+    See `story 2007555 <https://storyboard.openstack.org/#!/story/2007555>`__
+    for details.

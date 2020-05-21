@@ -62,6 +62,12 @@ compute_raid_config_extra: []
 compute_mdadm_arrays: []
 
 ###############################################################################
+# Compute node encryption configuration.
+
+# List of block devices to encrypt. See stackhpc.luks role for format.
+compute_luks_devices: []
+
+###############################################################################
 # Compute node LVM configuration.
 
 # List of compute volume groups. See mrlesmithjr.manage-lvm role for
