@@ -1,4 +1,5 @@
 =================
 How to Contribute
 =================
-.. include:: ../../../CONTRIBUTING.rst
+
+The contributor guide has moved to :doc:`../contributor/contributing`.
