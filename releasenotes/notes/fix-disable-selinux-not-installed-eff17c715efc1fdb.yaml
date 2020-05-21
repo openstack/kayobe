@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an issue where disabling SELinux would fail on systems without
+    SELinux installed. See `story 2007704
+    <https://storyboard.openstack.org/#!/story/2007704>`__.
