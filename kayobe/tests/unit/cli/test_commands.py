@@ -1972,3 +1972,31 @@ class TestCase(unittest.TestCase):
             ),
         ]
         self.assertEqual(expected_calls, mock_run.call_args_list)
+
+
+class TestHookDispatcher(unittest.TestCase):
+
+    @mock.patch('kayobe.cli.commands.os.path')
+    def test_hook_ordering(self, mock_path):
+        mock_command = mock.MagicMock()
+        dispatcher = commands.HookDispatcher(command=mock_command)
+        dispatcher._find_hooks = mock.MagicMock()
+        dispatcher._find_hooks.return_value = [
+            "10-hook.yml",
+            "5-hook.yml",
+            "z-test-alphabetical.yml",
+            "10-before-hook.yml",
+            "5-multiple-dashes-in-name.yml",
+            "no-prefix.yml"
+        ]
+        expected_result = [
+            "5-hook.yml",
+            "5-multiple-dashes-in-name.yml",
+            "10-before-hook.yml",
+            "10-hook.yml",
+            "no-prefix.yml",
+            "z-test-alphabetical.yml",
+        ]
+        mock_path.realpath.side_effect = lambda x: x
+        actual = dispatcher.hooks("config/path", "pre")
+        self.assertListEqual(actual, expected_result)
