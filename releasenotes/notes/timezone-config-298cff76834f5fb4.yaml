@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    Timezone configuration has been moved from the ``ntp.yml`` configuration
+    file to ``time.yml``. The Ansible tag applied to the play has been
+    renamed from ``ntp`` to ``timezone``.
