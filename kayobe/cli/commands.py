@@ -410,10 +410,10 @@ class SeedHypervisorHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
     * Optionally, wipe unmounted disk partitions (--wipe-disks).
     * Configure user accounts, group associations, and authorised SSH keys.
     * Configure a PyPI mirror.
-    * Configure Yum repos.
+    * Configure package repos.
     * Configure the host's network interfaces.
     * Set sysctl parameters.
-    * Configure NTP.
+    * Configure timezone.
     * Optionally, configure software RAID arrays.
     * Optionally, configure encryption.
     * Configure LVM volumes.
@@ -452,7 +452,7 @@ class SeedHypervisorHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
         if parsed_args.wipe_disks:
             playbooks += _build_playbook_list("wipe-disks")
         playbooks += _build_playbook_list(
-            "users", "yum", "dnf", "dev-tools", "network", "sysctl", "ntp",
+            "users", "dnf", "dev-tools", "network", "sysctl", "timezone",
             "mdadm", "luks", "lvm", "seed-hypervisor-libvirt-host")
         self.run_kayobe_playbooks(parsed_args, playbooks,
                                   limit="seed-hypervisor")
@@ -564,13 +564,13 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     * Optionally, wipe unmounted disk partitions (--wipe-disks).
     * Configure user accounts, group associations, and authorised SSH keys.
     * Configure a PyPI mirror.
-    * Configure Yum repos.
+    * Configure package repos.
     * Disable SELinux.
     * Configure the host's network interfaces.
     * Set sysctl parameters.
     * Configure IP routing and source NAT.
     * Disable bootstrap interface configuration.
-    * Configure NTP.
+    * Configure timezone.
     * Optionally, configure software RAID arrays.
     * Optionally, configure encryption.
     * Configure LVM volumes.
@@ -603,10 +603,10 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         if parsed_args.wipe_disks:
             playbooks += _build_playbook_list("wipe-disks")
         playbooks += _build_playbook_list(
-            "users", "yum", "dnf", "dev-tools", "disable-selinux", "network",
-            "sysctl", "ip-routing", "snat", "disable-glean", "ntp", "mdadm",
-            "luks", "lvm", "docker-devicemapper", "kolla-ansible-user",
-            "kolla-pip", "kolla-target-venv")
+            "users", "dnf", "dev-tools", "disable-selinux", "network",
+            "sysctl", "ip-routing", "snat", "disable-glean", "timezone",
+            "mdadm", "luks", "lvm", "docker-devicemapper",
+            "kolla-ansible-user", "kolla-pip", "kolla-target-venv")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed")
 
         self.generate_kolla_ansible_config(parsed_args, service_config=False)
@@ -694,7 +694,6 @@ class SeedServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     * Deploys the bifrost container using kolla-ansible.
     * Builds disk images for the overcloud hosts using Diskimage Builder (DIB).
     * Performs a workaround in the overcloud host image to fix resolv.conf.
-    * Performs a workaround in the overcloud host image to update cloud-init
     * Configures ironic inspector introspection rules in the bifrost inspector
       service.
     * When enabled, configures a Bare Metal Provisioning (BMP) environment for
@@ -709,7 +708,6 @@ class SeedServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         self.run_kolla_ansible_seed(parsed_args, "deploy-bifrost")
         playbooks = _build_playbook_list(
             "overcloud-host-image-workaround-resolv",
-            "overcloud-host-image-workaround-cloud-init",
             "seed-introspection-rules",
             "dell-switch-bmp")
         self.run_kayobe_playbooks(parsed_args, playbooks)
@@ -725,7 +723,6 @@ class SeedServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     * Deploys the bifrost container using kolla-ansible.
     * Builds disk images for the overcloud hosts using Diskimage Builder (DIB).
     * Performs a workaround in the overcloud host image to fix resolv.conf.
-    * Performs a workaround in the overcloud host image to update cloud-init
     * Configures ironic inspector introspection rules in the bifrost inspector
       service.
     * When enabled, configures a Bare Metal Provisioning (BMP) environment for
@@ -743,7 +740,6 @@ class SeedServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         self.run_kolla_ansible_seed(parsed_args, "upgrade-bifrost")
         playbooks = _build_playbook_list(
             "overcloud-host-image-workaround-resolv",
-            "overcloud-host-image-workaround-cloud-init",
             "seed-introspection-rules",
             "dell-switch-bmp")
         self.run_kayobe_playbooks(parsed_args, playbooks)
@@ -931,12 +927,12 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     * Optionally, wipe unmounted disk partitions (--wipe-disks).
     * Configure user accounts, group associations, and authorised SSH keys.
     * Configure a PyPI mirror.
-    * Configure Yum repos.
+    * Configure package repos.
     * Disable SELinux.
     * Configure the host's network interfaces.
     * Set sysctl parameters.
     * Disable bootstrap interface configuration.
-    * Configure NTP.
+    * Configure timezone.
     * Optionally, configure software RAID arrays.
     * Optionally, configure encryption.
     * Configure LVM volumes.
@@ -968,10 +964,10 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         if parsed_args.wipe_disks:
             playbooks += _build_playbook_list("wipe-disks")
         playbooks += _build_playbook_list(
-            "users", "yum", "dnf", "dev-tools", "disable-selinux", "network",
-            "sysctl", "disable-glean", "disable-cloud-init", "ntp", "mdadm",
-            "luks", "lvm", "docker-devicemapper", "kolla-ansible-user",
-            "kolla-pip", "kolla-target-venv")
+            "users", "dnf", "dev-tools", "disable-selinux", "network",
+            "sysctl", "disable-glean", "disable-cloud-init", "timezone",
+            "mdadm", "luks", "lvm", "docker-devicemapper",
+            "kolla-ansible-user", "kolla-pip", "kolla-target-venv")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
 
         self.generate_kolla_ansible_config(parsed_args, service_config=False)

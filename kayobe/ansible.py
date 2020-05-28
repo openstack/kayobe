@@ -281,6 +281,8 @@ def prune_galaxy_roles(parsed_args):
     """
     LOG.info("Removing unnecessary galaxy roles from kayobe")
     roles_to_remove = [
+        'resmo.ntp',
+        'stackhpc.ntp',
         'stackhpc.os-shade',
     ]
     LOG.debug("Removing roles: %s", ",".join(roles_to_remove))

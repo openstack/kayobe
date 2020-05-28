@@ -10,11 +10,6 @@ import distro
 import pytest
 
 
-def _is_yum():
-    info = distro.linux_distribution()
-    return info[0] == 'CentOS Linux' and info[1].startswith('7')
-
-
 def _is_dnf():
     info = distro.linux_distribution()
     return info[0] == 'CentOS Linux' and info[1].startswith('8')
@@ -130,14 +125,6 @@ def test_timezone(host):
     assert "Pacific/Honolulu" in status
 
 
-@pytest.mark.parametrize('repo', ["base", "extras", "updates", "epel"])
-@pytest.mark.skipif(not _is_yum(), reason="Yum only supported on CentOS 7")
-def test_yum_local_package_mirrors(host, repo):
-    assert os.getenv('SITE_MIRROR_FQDN')
-    info = host.check_output("yum repoinfo %s", repo)
-    assert os.getenv('SITE_MIRROR_FQDN') in info
-
-
 @pytest.mark.parametrize('repo', ["AppStream", "BaseOS", "Extras", "epel",
                                   "epel-modular"])
 @pytest.mark.skipif(not _is_dnf(), reason="DNF only supported on CentOS 8")
@@ -152,25 +139,11 @@ def test_dnf_local_package_mirrors(host, repo):
     assert os.getenv('SITE_MIRROR_FQDN') in info
 
 
-@pytest.mark.skipif(not _is_yum(), reason="YUM only supported on CentOS 7")
-def test_yum_custom_package_repository_is_available(host):
-    with host.sudo():
-        host.check_output("yum -y install td-agent")
-    assert host.package("td-agent").is_installed
-
-
 @pytest.mark.skipif(not _is_dnf(), reason="DNF only supported on CentOS 8")
 def test_dnf_custom_package_repository_is_available(host):
     with host.sudo():
         host.check_output("dnf -y install td-agent")
     assert host.package("td-agent").is_installed
-
-
-@pytest.mark.skipif(not _is_yum(), reason="YUM only supported on CentOS 7")
-def test_yum_cron(host):
-    assert host.package("yum-cron").is_installed
-    assert host.service("yum-cron").is_enabled
-    assert host.service("yum-cron").is_running
 
 
 @pytest.mark.skipif(not _is_dnf(), reason="DNF only supported on CentOS 8")

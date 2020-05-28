@@ -15,7 +15,7 @@ Prerequisites
 Currently Kayobe supports the following Operating Systems on the Ansible
 control host:
 
-- CentOS 7.6
+- CentOS 8
 - Ubuntu 16.04
 
 To avoid conflicts with python packages installed by the system package manager
@@ -26,18 +26,18 @@ some of kayobe's python dependencies.
 
 On CentOS::
 
-    $ yum install -y python-devel python-virtualenv gcc libffi-devel
+    $ dnf install -y python3-devel python3-virtualenv gcc libffi-devel
 
 On Ubuntu::
 
-    $ apt install -y python-dev python-virtualenv gcc libffi-dev
+    $ apt install -y python3-dev python3-virtualenv gcc libffi-dev
 
 If installing Kayobe from source, then Git is required for cloning and working
 with the source code repository.
 
 On CentOS::
 
-    $ yum install -y git
+    $ dnf install -y git
 
 On Ubuntu::
 

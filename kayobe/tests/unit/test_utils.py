@@ -25,18 +25,6 @@ from kayobe import utils
 class TestCase(unittest.TestCase):
 
     @mock.patch.object(utils, "run_command")
-    def test_yum_install(self, mock_run):
-        utils.yum_install(["package1", "package2"])
-        mock_run.assert_called_once_with(["sudo", "yum", "-y", "install",
-                                          "package1", "package2"])
-
-    @mock.patch.object(utils, "run_command")
-    def test_yum_install_failure(self, mock_run):
-        mock_run.side_effect = subprocess.CalledProcessError(1, "command")
-        self.assertRaises(SystemExit,
-                          utils.yum_install, ["package1", "package2"])
-
-    @mock.patch.object(utils, "run_command")
     def test_galaxy_install(self, mock_run):
         utils.galaxy_install("/path/to/role/file", "/path/to/roles")
         mock_run.assert_called_once_with(["ansible-galaxy", "install",
@@ -135,7 +123,7 @@ key2: value2
         self.assertEqual(expected, utils.escape_jinja(value))
 
     def test_detect_install_prefix(self):
-        path = "/tmp/test/local/lib/python2.7/dist-packages"
+        path = "/tmp/test/local/lib/python3.6/dist-packages"
         expected = os.path.normpath("/tmp/test/local/")
         result = utils._detect_install_prefix(path)
         self.assertEqual(expected, os.path.normpath(result))

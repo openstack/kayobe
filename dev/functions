@@ -126,23 +126,13 @@ function is_yum {
     fi
 }
 
-function python_version {
-    # Echo python major version.
-    if is_dnf; then
-        echo 3
-    elif is_yum; then
-        echo 2
-    else
-        echo 3
-    fi
-}
-
 function install_dependencies {
     echo "Installing package dependencies for kayobe"
     if is_dnf; then
         sudo dnf -y install gcc git vim python3-pyyaml python3-virtualenv libffi-devel
     elif is_yum; then
-        sudo yum -y install gcc git vim python2-virtualenv libffi-devel
+        echo "CentOS 7 is no longer supported"
+        exit 1
     else
         sudo apt install -y python-dev python3-virtualenv gcc git libffi-dev
     fi
@@ -160,7 +150,7 @@ function install_venv {
     fi
     if [[ ! -f "${venv_path}/bin/activate" ]]; then
         echo "Creating virtual environment in ${venv_path}"
-        virtualenv -p python$(python_version) "${venv_path}"
+        virtualenv -p python3 "${venv_path}"
         # NOTE: Virtualenv's activate and deactivate scripts reference an
         # unbound variable.
         set +u
@@ -186,7 +176,7 @@ function install_kayobe_dev_venv {
 
 function upgrade_kayobe_venv {
     echo "Upgrading kayobe virtual environment in ${KAYOBE_VENV_PATH}"
-    virtualenv -p python$(python_version) "${KAYOBE_VENV_PATH}"
+    virtualenv -p python3 "${KAYOBE_VENV_PATH}"
     # NOTE: Virtualenv's activate and deactivate scripts reference an
     # unbound variable.
     set +u

@@ -87,28 +87,6 @@ docker_storage_driver: devicemapper
 timezone: Pacific/Honolulu
 
 {% if ansible_os_family == 'RedHat' %}
-{% if ansible_distribution_major_version | int == 7 %}
-# Use a local Yum mirror.
-yum_use_local_mirror: true
-# Mirror FQDN for Yum repos.
-yum_centos_mirror_host: "{{ zuul_site_mirror_fqdn }}"
-# Mirror directory for Yum CentOS repos.
-yum_centos_mirror_directory: 'centos'
-# Mirror FQDN for Yum EPEL repos.
-yum_epel_mirror_host: "{{ zuul_site_mirror_fqdn }}"
-# Mirror directory for Yum EPEL repos.
-yum_epel_mirror_directory: 'epel'
-# Configure a custom Yum repository.
-yum_custom_repos:
-  td-agent:
-    baseurl: http://packages.treasuredata.com/3/redhat/$releasever/$basearch
-    gpgkey: https://packages.treasuredata.com/GPG-KEY-td-agent
-    gpgcheck: yes
-# Don't install EPEL repositories.
-yum_install_epel: false
-# Enable yum-cron.
-yum_cron_enabled: true
-{% else %}
 # Use a local DNF mirror.
 dnf_use_local_mirror: true
 # Mirror FQDN for DNF repos.
@@ -129,5 +107,4 @@ dnf_custom_repos:
 dnf_install_epel: false
 # Enable DNF Automatic.
 dnf_automatic_enabled: true
-{% endif %}
 {% endif %}

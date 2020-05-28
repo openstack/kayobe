@@ -9,7 +9,7 @@ node_types:
     volumes:
       # There is a minimum disk space capacity requirement of 4GiB when using Ironic Python Agent:
       # https://github.com/openstack/ironic-python-agent/blob/master/ironic_python_agent/utils.py#L290
-      # The CentOS7 cloud image seems to fill a 4GiB disk, so allow 6.
+      # The CentOS8 cloud image seems to fill a 4GiB disk, so allow 6.
       - capacity: 6GiB
     physical_networks:
       - physnet1
