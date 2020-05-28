@@ -12,8 +12,6 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-import six
-
 
 def switch_interface_config_select_name(switch_interface_config, names):
     """Select and return all switch interfaces matching requested names.
@@ -21,7 +19,7 @@ def switch_interface_config_select_name(switch_interface_config, names):
     :param switch_interface_config: Switch interface configuration dict
     :param names: String or list of strings - interface names to match
     """
-    if isinstance(names, six.string_types):
+    if isinstance(names, str):
         names = [names]
 
     return {
@@ -37,7 +35,7 @@ def switch_interface_config_select_description(switch_interface_config, descript
     :param switch_interface_config: Switch interface configuration dict
     :param descriptions: String or list of strings - descriptions to match
     """
-    if isinstance(descriptions, six.string_types):
+    if isinstance(descriptions, str):
         descriptions = [descriptions]
 
     return {

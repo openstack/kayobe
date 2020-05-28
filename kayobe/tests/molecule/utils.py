@@ -12,9 +12,8 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-import six
-from six.moves import configparser
-from six import StringIO
+import configparser
+from io import StringIO
 
 
 def test_file(host, path, owner='root', group='root'):
@@ -42,11 +41,7 @@ def test_ini_file(host, path, owner='root', group='root', expected=None):
 
     sio = StringIO(host.file(path).content_string)
     parser = configparser.RawConfigParser()
-
-    if six.PY3:
-        parser.read_file(sio)
-    else:
-        parser.readfp(sio)
+    parser.read_file(sio)
 
     if expected is None:
         return

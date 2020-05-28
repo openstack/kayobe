@@ -17,7 +17,6 @@ import glob
 import itertools
 import logging
 import os
-import six
 import subprocess
 import sys
 
@@ -151,7 +150,7 @@ def run_command(cmd, quiet=False, check_output=False, **kwargs):
     :param check_output: Whether to return the output of the command
     :returns: The output of the command if check_output is true
     """
-    if isinstance(cmd, six.string_types):
+    if isinstance(cmd, str):
         cmd_string = cmd
     else:
         cmd_string = " ".join(cmd)
@@ -178,7 +177,7 @@ def quote_and_escape(value):
     :param value: the string to quote and escape.
     :returns: the quoted and escaped string.
     """
-    if not isinstance(value, six.string_types):
+    if not isinstance(value, str):
         return value
     return "'" + value.replace("'", "'\\''") + "'"
 
