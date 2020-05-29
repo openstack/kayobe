@@ -211,6 +211,8 @@ def net_interface_obj(context, name, inventory_hostname=None):
     rules = net_rules(context, name, inventory_hostname)
     bootproto = net_bootproto(context, name, inventory_hostname)
     defroute = net_defroute(context, name, inventory_hostname)
+    vip_address = net_vip_address(context, name, inventory_hostname)
+    allowed_addresses = [vip_address] if vip_address else None
     interface = {
         'device': device,
         'address': ip,
@@ -222,6 +224,7 @@ def net_interface_obj(context, name, inventory_hostname=None):
         'rules': rules,
         'bootproto': bootproto or 'static',
         'defroute': defroute,
+        'allowed_addresses': allowed_addresses,
         'onboot': 'yes',
     }
     interface = {k: v for k, v in interface.items() if v is not None}
@@ -255,6 +258,8 @@ def net_bridge_obj(context, name, inventory_hostname=None):
     rules = net_rules(context, name, inventory_hostname)
     bootproto = net_bootproto(context, name, inventory_hostname)
     defroute = net_defroute(context, name, inventory_hostname)
+    vip_address = net_vip_address(context, name, inventory_hostname)
+    allowed_addresses = [vip_address] if vip_address else None
     interface = {
         'device': device,
         'address': ip,
@@ -267,6 +272,7 @@ def net_bridge_obj(context, name, inventory_hostname=None):
         'rules': rules,
         'bootproto': bootproto or 'static',
         'defroute': defroute,
+        'allowed_addresses': allowed_addresses,
         'onboot': 'yes',
     }
     interface = {k: v for k, v in interface.items() if v is not None}
@@ -306,6 +312,8 @@ def net_bond_obj(context, name, inventory_hostname=None):
     rules = net_rules(context, name, inventory_hostname)
     bootproto = net_bootproto(context, name, inventory_hostname)
     defroute = net_defroute(context, name, inventory_hostname)
+    vip_address = net_vip_address(context, name, inventory_hostname)
+    allowed_addresses = [vip_address] if vip_address else None
     interface = {
         'device': device,
         'address': ip,
@@ -324,6 +332,7 @@ def net_bond_obj(context, name, inventory_hostname=None):
         'rules': rules,
         'bootproto': bootproto or 'static',
         'defroute': defroute,
+        'allowed_addresses': allowed_addresses,
         'onboot': 'yes',
     }
     interface = {k: v for k, v in interface.items() if v is not None}
