@@ -33,8 +33,6 @@ hosts:
       - device: /dev/sdc
         weight: 100
 """
-
-from __future__ import print_function
 import subprocess
 import sys
 
