@@ -2,6 +2,9 @@
 ###############################################################################
 # Docker configuration.
 
+# Name of the docker storage driver. Default is 'devicemapper'.
+docker_storage_driver: devicemapper
+
 # Name of the docker storage LVM volume group.
 docker_storage_volume_group: data
 

@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fixes failure to configure Docker devicemapper storage when the default
+    value of ``docker_storage_driver`` is used.
