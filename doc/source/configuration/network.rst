@@ -261,7 +261,7 @@ To configure a network called ``example`` with a default route and a
 
    example_routes:
      - cidr: 0.0.0.0/0
-       gateway 10.1.0.1
+       gateway: 10.1.0.1
        table: exampleroutetable
      - cidr: 10.1.0.0/24
        table: exampleroutetable
