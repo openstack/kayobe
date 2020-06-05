@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Kayobe now updates ``openrc`` files when using the ``kayobe overcloud service
+    upgrade`` command.
