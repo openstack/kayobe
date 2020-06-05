@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Fixes an issue where the default value of ``public_net_name`` included a
+    trailing newline. See `story 2007654
+    <https://storyboard.openstack.org/#!/story/2007654>`__.
+
