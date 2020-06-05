@@ -1,0 +1,15 @@
+---
+upgrade:
+  - |
+    The default LVM configuration is now empty for all hosts, unless they are
+    configured to use the ``devicemapper`` Docker storage driver (which is the
+    default, but is expected to change in a future release).
+
+    Note that while the default LVM configuration existed primarily for the
+    ``devicemapper`` driver, it also included a ``docker-volumes`` logical
+    volume mounted at ``/var/lib/docker/volumes`` for Docker volumes. If the
+    ``docker-volumes`` volume is required on a host which is not configured to
+    use the Docker ``devicemapper`` storage driver, the following variables may
+    be used to enable it: ``compute_lvm_group_data_enabled``,
+    ``controller_lvm_group_data_enabled``, ``seed_lvm_group_data_enabled``,
+    ``storage_lvm_group_data_enabled``.
