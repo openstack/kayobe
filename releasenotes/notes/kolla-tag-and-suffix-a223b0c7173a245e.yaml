@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Adds a variable for controlling the tag applied to built container images -
+    ``kolla_tag``. This separates the configuration of the tag for image
+    building from that used for deployment (``kolla_openstack_release``).  The
+    default for ``kolla_tag`` is ``kolla_openstack_release``.

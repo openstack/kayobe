@@ -74,6 +74,10 @@ kolla_docker_registry_password:
 # Default is {{ openstack_release }}.
 kolla_openstack_release: "{{ openstack_release }}"
 
+# Docker tag applied to built container images. Default is
+# {{ kolla_openstack_release }}.
+kolla_tag: "{{ kolla_openstack_release }}"
+
 # Dict mapping names of sources to their definitions for
 # kolla_install_type=source. See kolla.common.config for details.
 # Example:
