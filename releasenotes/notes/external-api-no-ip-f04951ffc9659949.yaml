@@ -1,0 +1,8 @@
+---
+fixes:
+  - |
+    Fixes an issue when configuring the external API network interface on
+    controllers without an IP address which would cause ``kayobe overcloud host
+    configure`` to fail on a host with an active virtual IP address.  See
+    `story 2007736 <https://storyboard.openstack.org/#!/story/2007736>`__ for
+    details.
