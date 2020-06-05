@@ -1553,6 +1553,14 @@ class TestCase(unittest.TestCase):
                     "kayobe_action": "upgrade",
                 }
             ),
+            mock.call(
+                mock.ANY,
+                [
+                    utils.get_data_files_path("ansible",
+                                              "public-openrc.yml"),
+                ],
+                ignore_limit=True,
+            ),
         ]
         self.assertEqual(expected_calls, mock_run.call_args_list)
 
@@ -1564,6 +1572,10 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 "upgrade"
+            ),
+            mock.call(
+                mock.ANY,
+                "post-deploy"
             ),
         ]
         self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
