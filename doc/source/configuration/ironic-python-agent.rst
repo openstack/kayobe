@@ -263,6 +263,16 @@ inspection.
 Example: Adding the ``extra-hardware`` collector
 ------------------------------------------------
 
+.. note::
+
+    The ``hardware`` Python package has dropped support for Python 2. If you
+    are using an IPA image that uses Python 2 by default, for example CentOS 7,
+    you will need to use a version of the ``hardware`` package that is no
+    greater than ``0.23.x``. You can specify the version using the
+    ``DIB_IPA_HARDWARE_VERSION`` environment variable. This can be added
+    to the ``ipa_build_dib_env_extra`` dictionary in ``${KAYOBE_CONFIG_PATH}/ipa.yml``.
+    For example: ``DIB_IPA_HARDWARE_VERSION: "0.23.0"``.
+
 The ``extra-hardware`` collector may be used to collect additional information
 about hardware during inspection. It is also a requirement for running
 benchmarks. This collector depends on the Python `hardware package
