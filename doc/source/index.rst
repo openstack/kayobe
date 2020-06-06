@@ -50,6 +50,14 @@ Advanced Documentation
    control-plane-service-placement
    custom-ansible-playbooks
 
+Contributor Guide
+-----------------
+
+.. toctree::
+   :maxdepth: 2
+
+   contributor/index
+
 Developer Documentation
 -----------------------
 
