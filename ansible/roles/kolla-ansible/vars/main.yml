@@ -85,13 +85,13 @@ kolla_feature_flags:
   - ceph_nfs
   - ceph_dashboard
   - cinder
-  - cinder_backup
   - cinder_backend_hnas_nfs
   - cinder_backend_iscsi
   - cinder_backend_lvm
   - cinder_backend_nfs
-  - cinder_backend_zfssa_iscsi
   - cinder_backend_quobyte
+  - cinder_backend_zfssa_iscsi
+  - cinder_backup
   - cloudkitty
   - collectd
   - congress
@@ -112,8 +112,8 @@ kolla_feature_flags:
   - horizon_cloudkitty
   - horizon_congress
   - horizon_designate
-  - horizon_fwaas
   - horizon_freezer
+  - horizon_fwaas
   - horizon_heat
   - horizon_ironic
   - horizon_karbor
@@ -141,20 +141,20 @@ kolla_feature_flags:
   - ironic_neutron_agent
   - ironic_pxe_uefi
   - iscsid
-  - karbor
   - kafka
+  - karbor
   - keepalived
   - keystone
   - kibana
   - kuryr
   - magnum
   - manila
-  - manila_backend_generic
-  - manila_backend_hnas
   - manila_backend_cephfs_native
   - manila_backend_cephfs_nfs
-  - mariadb
+  - manila_backend_generic
+  - manila_backend_hnas
   - mariabackup
+  - mariadb
   - masakari
   - memcached
   - mistral
@@ -163,19 +163,19 @@ kolla_feature_flags:
   - multipathd
   - murano
   - neutron
-  - neutron_vpnaas
-  - neutron_sriov
-  - neutron_dvr
-  - neutron_fwaas
-  - neutron_qos
   - neutron_agent_ha
   - neutron_bgp_dragent
+  - neutron_dvr
+  - neutron_fwaas
+  - neutron_infoblox_ipam_agent
+  - neutron_metering
+  - neutron_port_forwarding
   - neutron_provider_networks
+  - neutron_qos
   - neutron_segments
   - neutron_sfc
-  - neutron_metering
-  - neutron_infoblox_ipam_agent
-  - neutron_port_forwarding
+  - neutron_sriov
+  - neutron_vpnaas
   - nova
   - nova_serialconsole_proxy
   - nova_ssh
@@ -184,9 +184,9 @@ kolla_feature_flags:
   - opendaylight
   - openstack_core
   - openvswitch
+  - osprofiler
   - outward_rabbitmq
   - ovs_dpdk
-  - osprofiler
   - panko
   - placement
   - prometheus
