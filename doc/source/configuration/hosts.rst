@@ -388,7 +388,7 @@ The timezone can be configured via the ``timezone`` variable in
 timezone. For example:
 
 .. code-block:: yaml
-   :caption: ``timezone.yml``
+   :caption: ``time.yml``
 
    timezone: Europe/London
 
