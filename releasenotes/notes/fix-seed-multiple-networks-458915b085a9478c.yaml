@@ -1,0 +1,19 @@
+---
+fixes:
+  - |
+    Fixes an issue with seed VMs with multiple network interfaces where
+    interfaces could come up in a different order if the VM is recreated. The
+    interfaces are now created in alphabetical order of their Kayobe network
+    name by default. See `story 2007259
+    <https://storyboard.openstack.org/#!/story/2007259>`__ for details.
+features:
+  - |
+    Adds a ``seed_vm_interfaces`` variable which defines the network interfaces
+    to which the seed VM is attached.
+upgrade:
+  - |
+    The default order of network interfaces in the seed VM is now sorted
+    alphabetically based on their Kayobe network name. This may require the
+    seed's network interface names to be changed in configuration if the seed
+    VM is recreated.  See `story 2007259
+    <https://storyboard.openstack.org/#!/story/2007259>`__ for details.
