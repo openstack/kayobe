@@ -91,14 +91,19 @@ configuration drive built by Bifrost, rather than the Bifrost default of
 ``kolla_bifrost_dib_packages``
     List of DIB packages to install. Default is to install no extra packages.
 
-The disk image is built during the ``kayobe seed service deploy`` command. It
-is worth noting that currently, the image will not be rebuilt if it already
-exists. To force rebuilding the image, it is necessary to remove the file. On
-the seed:
+The disk image is built during the deployment of seed services. It is worth
+noting that currently, the image will not be rebuilt if it already exists. To
+force rebuilding the image, it is necessary to remove the file. On the seed:
 
 .. code-block:: console
 
    docker exec bifrost_deploy rm /httpboot/deployment_image.qcow2
+
+Then on the control host:
+
+.. code-block:: console
+
+   (kayobe) $ kayobe seed service deploy
 
 Example: Adding an element
 --------------------------
