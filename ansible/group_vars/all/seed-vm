@@ -48,3 +48,6 @@ seed_vm_data_capacity: 100G
 
 # Format of the seed VM data volume.
 seed_vm_data_format: qcow2
+
+# List of network interfaces to attach to the seed VM.
+seed_vm_interfaces: "{{ network_interfaces | sort | map('net_libvirt_vm_network') | list }}"
