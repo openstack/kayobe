@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes concurrency issues while adding SSH keys to the known hosts file by
+    performing the action serially. See `story 2007628
+    <https://storyboard.openstack.org/#!/story/2007628>`__ for details.
