@@ -17,6 +17,7 @@ import doc8.main
 import sphinx.directives
 import sphinx.directives.code
 import sphinx.directives.patches
+from docutils.parsers.rst import directives as docutils_directives
 
 
 def main():
@@ -28,6 +29,9 @@ def main():
     sphinx.directives.setup(app)
     sphinx.directives.code.setup(app)
     sphinx.directives.patches.setup(app)
+    # NOTE(wszumski): Disable broken literal include directive, please see:
+    # https://github.com/twolfson/restructuredtext-lint/issues/29
+    del docutils_directives._directives["literalinclude"]
     return doc8.main.main()
 
 
