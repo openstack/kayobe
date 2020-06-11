@@ -360,6 +360,10 @@ function overcloud_upgrade {
         echo "Not building overcloud deployment images"
     fi
 
+    echo "Updating baremetal deployment images"
+    (source "${KOLLA_CONFIG_PATH:-/etc/kolla}/admin-openrc.sh" &&
+     run_kayobe baremetal compute update deployment image)
+
     if [[ ${KAYOBE_OVERCLOUD_CONTAINER_IMAGE_BUILD} = 1 ]]; then
         echo "Building overcloud container images"
         run_kayobe overcloud container image build
