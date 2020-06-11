@@ -31,7 +31,7 @@ nova_flavors:
 physnet_mappings:
   physnet1: breth1
 
-deploy_kernel: ipa.vmlinuz
+deploy_kernel: ipa.kernel
 deploy_ramdisk: ipa.initramfs
 
 # Use a custom socket path to avoid a conflict with the nova_libvirt kolla

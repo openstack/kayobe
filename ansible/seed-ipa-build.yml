@@ -9,7 +9,7 @@
   vars:
     ipa_image_name: "ipa"
     ipa_images:
-      - "{{ ipa_image_name }}.vmlinuz"
+      - "{{ ipa_image_name }}.kernel"
       - "{{ ipa_image_name }}.initramfs"
     ipa_image_force_rebuild: false
   tasks:

@@ -1,0 +1,24 @@
+---
+upgrade:
+  - |
+    Changes Ironic Python Agent (IPA) image builds to use `IPA builder
+    <https://docs.openstack.org/ironic-python-agent-builder/latest/>`__.
+    The following variables have been added to configure the IPA builder source
+    location: ``ipa_builder_source_url``, ``ipa_builder_source_version``. See
+    `story 2007070 <https://storyboard.openstack.org/#!/story/2007070>`__ for
+    details.
+  - |
+    Adds new variables to allow extension of the list of Disk Image Builder
+    (DIB) git repositories available when building Ironic Python Agent (IPA)
+    images: ``ipa_build_dib_git_elements_default`` and
+    ``ipa_build_dib_git_elements_extra``. The existing
+    ``ipa_build_dib_git_elements`` variable is a concatenation of these.
+    By default there is now one git repository configured for IPA builder, and
+    use of ``ipa_build_dib_git_elements`` should typically be replaced with
+    ``ipa_build_dib_git_elements_extra`` to avoid losing this default.
+  - |
+    The file extension used for the Ironic Python Agent (IPA) kernel image has
+    changed from ``vmlinuz`` to ``kernel``, in line with upstream changes in
+    Ironic. This affects both Bifrost running on the seed and Ironic running in
+    the overcloud for bare metal compute. If building images locally, this
+    should be done prior to upgrading services.

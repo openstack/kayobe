@@ -223,7 +223,7 @@ The following options configure the Ironic Inspector service in the
     ``${KAYOBE_CONFIG_PATH}/inspector.yml``.
 ``kolla_bifrost_inspector_deploy_kernel``
     Ironic inspector deployment kernel location. Default is ``http://{{
-    provision_oc_net_name | net_ip }}:8080/ipa.vmlinuz``.
+    provision_oc_net_name | net_ip }}:8080/ipa.kernel``.
 ``kolla_bifrost_inspector_deploy_ramdisk``
     Ironic inspector deployment ramdisk location. Default is ``http://{{
     provision_oc_net_name | net_ip }}:8080/ipa.initramfs``.

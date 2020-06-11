@@ -13,8 +13,8 @@
               # images.
               - ipa.initramfs
               - ipa.initramfs.sha256
-              - ipa.vmlinuz
-              - ipa.vmlinuz.sha256
+              - ipa.kernel
+              - ipa.kernel.sha256
           register: find_result
           become: true
 
