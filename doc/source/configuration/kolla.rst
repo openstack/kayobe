@@ -274,7 +274,7 @@ This will result in Kayobe adding the following configuration to
    location = https://git.example.com/ironic
    reference = downstream
 
-Note that is is currently necessary to include the Bifrost source location if
+Note that it is currently necessary to include the Bifrost source location if
 using a seed.
 
 Plugins & additions
