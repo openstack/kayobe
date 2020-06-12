@@ -43,22 +43,6 @@
   become: True
   when: kolla_ansible_venv is not none
 
-# TODO(mgoddard): Remove this block when the previous release does not support
-# Python 2.
-- block:
-    - name: Check if virtualenv is python 2
-      stat:
-        path: "{{ kolla_ansible_venv }}/bin/python2"
-      register: stat_result
-
-    - name: Ensure python2 virtualenv is absent
-      file:
-        path: "{{ kolla_ansible_venv }}"
-        state: absent
-      when: stat_result.stat.exists
-  when:
-    - kolla_ansible_venv is not none
-
 - name: Ensure the latest version of pip is installed
   pip:
     name: "{{ item.name }}"
