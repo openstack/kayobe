@@ -74,7 +74,7 @@
       - ^tox.ini$
     vars:
       # Name of the release to upgrade from for upgrade jobs.
-      previous_release: train
+      previous_release: ussuri
       logs_dir: "/tmp/logs"
       kayobe_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/kayobe'].src_dir }}"
       kayobe_config_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/kayobe-config-dev'].src_dir }}"
