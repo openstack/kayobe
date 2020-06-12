@@ -56,14 +56,8 @@
       - name: openstack/kayobe
       - name: openstack/kayobe-config-dev
       - name: openstack/kolla
-        # TODO(mgoddard): Remove when kayobe stable/ussuri exists.
-        override-checkout: stable/ussuri
       - name: openstack/kolla-ansible
-        # TODO(mgoddard): Remove when kayobe stable/ussuri exists.
-        override-checkout: stable/ussuri
       - name: openstack/requirements
-        # TODO(mgoddard): Remove when kayobe stable/ussuri exists.
-        override-checkout: stable/ussuri
       - name: openstack/tenks
     irrelevant-files:
       - ^.*\.rst$
