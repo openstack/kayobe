@@ -93,14 +93,14 @@
         is_bridge: "{{ item in (network_interfaces | net_select_bridges | map('net_interface')) }}"
         # For a bridge, use a veth pair connected to the bridge. Otherwise use
         # the interface directly.
-        external_interface: "{{ (network_patch_prefix ~ item ~ network_patch_suffix_ovs) if is_bridge else item }}"
+        external_interface_name: "{{ (network_patch_prefix ~ item ~ network_patch_suffix_ovs) if is_bridge else item }}"
       set_fact:
         kolla_neutron_bridge_names: >
           {{ kolla_neutron_bridge_names +
              [item ~ network_bridge_suffix_ovs] }}
         kolla_neutron_external_interfaces: >
           {{ kolla_neutron_external_interfaces +
-             [external_interface] }}
+             [external_interface_name] }}
       with_items: "{{ kolla_neutron_interfaces }}"
 
     - name: Validate overcloud host Kolla Ansible network configuration
