@@ -100,9 +100,9 @@ function config_init {
 function install_dependencies {
     echo "Installing package dependencies for kayobe"
     if [[ -e /etc/centos-release ]]; then
-        sudo yum -y install gcc git vim python-virtualenv
+        sudo yum -y install gcc git vim python-six python-virtualenv
     else
-        sudo apt install -y python-dev python-virtualenv gcc git
+        sudo apt install -y python-dev python-six python-virtualenv gcc git
     fi
 }
 
@@ -144,7 +144,9 @@ function install_kayobe_dev_venv {
 
 function upgrade_kayobe_venv {
     echo "Upgrading kayobe virtual environment in ${KAYOBE_VENV_PATH}"
-    virtualenv "${KAYOBE_VENV_PATH}"
+    if [[ ! -e "${KAYOBE_VENV_PATH}" ]]; then
+        virtualenv "${KAYOBE_VENV_PATH}"
+    fi
     # NOTE: Virtualenv's activate and deactivate scripts reference an
     # unbound variable.
     set +u
