@@ -12,21 +12,30 @@
       jobs:
         - build-openstack-releasenotes
         - kayobe-tox-ansible-syntax
-        - kayobe-tox-ansible
+        # NOTE(priteau): issues with python-pip-whl installation on xenial
+        - kayobe-tox-ansible:
+            voting: false
         - kayobe-tox-molecule
         - kayobe-overcloud-centos
-        - kayobe-overcloud-upgrade-centos
+        # NOTE(priteau): depends on a working stable/queens CI
+        - kayobe-overcloud-upgrade-centos:
+            voting: false
         - kayobe-seed-centos
-        - kayobe-seed-upgrade-centos
+        # NOTE(priteau): depends on a working stable/queens CI
+        - kayobe-seed-upgrade-centos:
+            voting: false
 
     gate:
       queue: kayobe
       jobs:
         - build-openstack-releasenotes
         - kayobe-tox-ansible-syntax
-        - kayobe-tox-ansible
+        # NOTE(priteau): issues with python-pip-whl installation on xenial
+        # - kayobe-tox-ansible
         - kayobe-tox-molecule
         - kayobe-overcloud-centos
-        - kayobe-overcloud-upgrade-centos
+        # NOTE(priteau): depends on a working stable/queens CI
+        # - kayobe-overcloud-upgrade-centos
         - kayobe-seed-centos
-        - kayobe-seed-upgrade-centos
+        # NOTE(priteau): depends on a working stable/queens CI
+        # - kayobe-seed-upgrade-centos
