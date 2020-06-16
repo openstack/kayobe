@@ -137,11 +137,11 @@ function python_version {
 function install_dependencies {
     echo "Installing package dependencies for kayobe"
     if is_dnf; then
-        sudo dnf -y install gcc git vim python3-pyyaml python3-virtualenv libffi-devel
+        sudo dnf -y install gcc git vim python3-pyyaml python3-six python3-virtualenv libffi-devel
     elif is_yum; then
-        sudo yum -y install gcc git vim python2-virtualenv libffi-devel
+        sudo yum -y install gcc git vim python2-six python2-virtualenv libffi-devel
     else
-        sudo apt install -y python-dev python3-virtualenv gcc git libffi-dev
+        sudo apt install -y python-dev python3-six python3-virtualenv gcc git libffi-dev
     fi
 }
 
@@ -183,7 +183,10 @@ function install_kayobe_dev_venv {
 
 function upgrade_kayobe_venv {
     echo "Upgrading kayobe virtual environment in ${KAYOBE_VENV_PATH}"
-    virtualenv -p python$(python_version) "${KAYOBE_VENV_PATH}"
+    if [[ ! -e "${KAYOBE_VENV_PATH}" ]] || [[ ! -e "${KAYOBE_VENV_PATH}/bin/python$(python_version)" ]]; then
+        rm -rf "${KAYOBE_VENV_PATH}"
+        virtualenv -p python$(python_version) "${KAYOBE_VENV_PATH}"
+    fi
     # NOTE: Virtualenv's activate and deactivate scripts reference an
     # unbound variable.
     set +u
