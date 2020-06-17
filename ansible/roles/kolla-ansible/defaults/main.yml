@@ -208,6 +208,7 @@ kolla_neutron_ml2_tenant_network_types: []
 # To provide encryption and authentication on the external and/or internal
 # APIs, TLS can be enabled.  When TLS is enabled, certificates must be provided
 # to allow clients to perform authentication.
+kolla_ansible_certificates_path:
 kolla_enable_tls_external:
 kolla_enable_tls_internal:
 kolla_external_fqdn_cert:
