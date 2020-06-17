@@ -99,3 +99,9 @@ seed_sysctl_parameters: {}
 # List of users to create. This should be in a format accepted by the
 # singleplatform-eng.users role.
 seed_users: "{{ users_default }}"
+
+###############################################################################
+# Seed node additional containers configuration
+
+# List of additional containers to deploy
+seed_containers: {}

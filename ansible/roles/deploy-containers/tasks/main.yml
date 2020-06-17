@@ -1,0 +1,7 @@
+---
+- name: Deploy containers (loop)
+  include_tasks: deploy.yml
+  vars:
+    container_name: "{{ item.key }}"
+    container_config: "{{ item.value }}"
+  with_dict: "{{ seed_containers }}"

@@ -1,0 +1,36 @@
+---
+- name: "[{{ container_name }}] Ensure we have latest image"
+  docker_image:
+    name: "{{ container_config.image }}"
+    tag: "{{ container_config.tag | default(omit) }}"
+    source: pull
+
+- name: "[{{ container_name }}] Include tasks file for pre task(s)"
+  include_tasks: "{{ container_config.pre }}"
+  when: container_config.pre is defined
+
+- name: "[{{ container_name }}] Start container"
+  docker_container:
+    capabilities: "{{ container_config.capabilities | default(omit) }}"
+    command: "{{ container_config.command | default(omit) }}"
+    comparisons: "{{ container_config.comparisons | default(deploy_containers_defaults.comparisons) }}"
+    detach: "{{ container_config.detach | default(deploy_containers_defaults.detach) }}"
+    env: "{{ container_config.env | default(omit) }}"
+    name: "{{ container_name }}"
+    network_mode: "{{ container_config.network_mode | default(deploy_containers_defaults.network_mode) }}"
+    image: "{{ container_config.image }}:{{ container_config.tag | default('latest') }}"
+    init: "{{ container_config.init | default(deploy_containers_defaults.init) }}"
+    ipc_mode: "{{ container_config.ipc_mode | default(omit) }}"
+    pid_mode: "{{ container_config.pid_mode | default(omit) }}"
+    ports: "{{ container_config.ports | default(omit) }}"
+    privileged: "{{ container_config.privileged | default(omit) }}"
+    restart_policy: "{{ container_config.restart_policy | default(deploy_containers_defaults.restart_policy) }}"
+    sysctls: "{{ container_config.sysctls | default(omit) }}"
+    timeout: "{{ deploy_containers_docker_api_timeout }}"
+    ulimits: "{{ container_config.ulimits | default(omit) }}"
+    user: "{{ container_config.user | default(omit) }}"
+    volumes: "{{ container_config.volumes | default(omit) }}"
+
+- name: "[{{ container_name }}] Include tasks file for post task(s)"
+  include_tasks: "{{ container_config.post }}"
+  when: container_config.post is defined

@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    New feature to deploy user-defined containers on seed node with pre and
+    post scripts has been added to Kayobe.
