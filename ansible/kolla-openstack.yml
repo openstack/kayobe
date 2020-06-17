@@ -208,9 +208,8 @@
       # 'fake' inspection store.
       kolla_inspector_enable_swift: "{{ inspector_store_enabled }}"
       kolla_inspector_swift_auth:
-        auth_type: token_endpoint
-        url: "http://{% raw %}{{ api_interface_address }}{% endraw %}:{{ inspector_store_port }}"
-        token: fake-token
+        auth_type: none
+        endpoint_override: "http://{% raw %}{{ api_interface_address }}{% endraw %}:{{ inspector_store_port }}"
       # Extra free-form user-provided configuration.
       kolla_extra_blazar: "{{ kolla_extra_config.blazar | default }}"
       kolla_extra_ceilometer: "{{ kolla_extra_config.ceilometer | default }}"
