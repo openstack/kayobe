@@ -86,7 +86,7 @@ kolla_bifrost_inspector_ipmi_password: "{{ ipmi_password }}"
 kolla_bifrost_inspector_lldp_switch_port_interface: "{{ inspector_lldp_switch_port_interface_default }}"
 
 # Ironic inspector deployment kernel location.
-kolla_bifrost_inspector_deploy_kernel: "http://{{ provision_oc_net_name | net_ip }}:8080/ipa.vmlinuz"
+kolla_bifrost_inspector_deploy_kernel: "http://{{ provision_oc_net_name | net_ip }}:8080/ipa.kernel"
 
 # Ironic inspector deployment ramdisk location.
 kolla_bifrost_inspector_deploy_ramdisk: "http://{{ provision_oc_net_name | net_ip }}:8080/ipa.initramfs"

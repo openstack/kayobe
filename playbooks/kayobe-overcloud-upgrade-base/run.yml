@@ -27,10 +27,9 @@
         - name: Ensure test Tenks cluster is deployed
           shell:
             # Pass absolute source directory, since otherwise the `chdir` will
-            # cause this to fail. Don't use previous_kayobe_source_dir as
-            # tenks-deploy-compute.sh does not exist there.
+            # cause this to fail.
             cmd: dev/tenks-deploy-compute.sh '{{ tenks_src_dir }}' &> {{ logs_dir }}/ansible/tenks-deploy
-            chdir: "{{ kayobe_src_dir }}"
+            chdir: "{{ previous_kayobe_src_dir }}"
 
       environment:
         KAYOBE_CONFIG_SOURCE_PATH: "{{ previous_kayobe_config_src_dir }}"

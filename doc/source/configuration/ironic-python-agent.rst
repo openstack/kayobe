@@ -39,10 +39,15 @@ image build``.
     https://opendev.org/openstack/ironic-python-agent
 ``ipa_build_source_version``
     Version of IPA source repository. Default is ``{{ openstack_branch }}``.
+``ipa_builder_source_url``
+    URL of IPA builder source repository. Default is
+    https://opendev.org/openstack/ironic-python-agent-builder
+``ipa_builder_source_version``
+    Version of IPA builder source repository. Default is ``master``.
 ``ipa_build_dib_elements_default``
     List of default Diskimage Builder (DIB) elements to use when building IPA
-    images. Default is ``["centos7", "enable-serial-console",
-    "ironic-agent"]``.
+    images. Default is ``["centos", "enable-serial-console",
+    "ironic-python-agent-ramdisk"]``.
 ``ipa_build_dib_elements_extra``
     List of additional Diskimage Builder (DIB) elements to use when building IPA
     images. Default is empty.
@@ -62,10 +67,21 @@ image build``.
     Dictionary of environment variables to provide to Diskimage Builder (DIB)
     during IPA image build. Default is a combination of
     ``ipa_build_dib_env_default`` and ``ipa_build_dib_env_extra``.
+``ipa_build_dib_git_elements_default``
+    List of default git repositories containing Diskimage Builder (DIB)
+    elements. See `stackhpc.os-images
+    <https://galaxy.ansible.com/stackhpc/os-images>`__ role for usage. Default
+    is one item for IPA builder.
+``ipa_build_dib_git_elements_extra``
+    List of additional git repositories containing Diskimage Builder (DIB)
+    elements. See `stackhpc.os-images
+    <https://galaxy.ansible.com/stackhpc/os-images>`__ role for usage. Default
+    is none.
 ``ipa_build_dib_git_elements``
     List of git repositories containing Diskimage Builder (DIB) elements. See
     `stackhpc.os-images <https://galaxy.ansible.com/stackhpc/os-images>`__ role
-    for usage. Default is none.
+    for usage. Default is combination of ``ipa_build_dib_git_elements_default``
+    and ``ipa_build_dib_git_elements_extra``.
 ``ipa_build_dib_packages``
     List of DIB packages to install. Default is none.
 
@@ -189,10 +205,10 @@ Agent documentation <>` for full details.
     ``{{ openstack_branch }}``.
 ``ipa_images_kernel_name``
     Name of Ironic deployment kernel image to register in Glance. Default is
-    ``ipa.vmlinuz``.
+    ``ipa.kernel``.
 ``ipa_kernel_upstream_url``
     URL of Ironic deployment kernel image to download. Default is
-    ``https://tarballs.openstack.org/ironic-python-agent/dib/files/ipa-centos7{{
+    ``https://tarballs.openstack.org/ironic-python-agent/dib/files/ipa-centos8{{
     ipa_images_upstream_url_suffix }}.kernel``.
 ``ipa_kernel_checksum_url``
     URL of checksum of Ironic deployment kernel image. Default is ``{{
@@ -205,7 +221,7 @@ Agent documentation <>` for full details.
     ``ipa.initramfs``.
 ``ipa_ramdisk_upstream_url``
     URL of Ironic deployment ramdisk image to download. Default is
-    ``https://tarballs.openstack.org/ironic-python-agent/dib/files/ipa-centos7{{
+    ``https://tarballs.openstack.org/ironic-python-agent/dib/files/ipa-centos8{{
     ipa_images_upstream_url_suffix }}.initramfs``.
 ``ipa_ramdisk_checksum_url``
     URL of checksum of Ironic deployment ramdisk image. Default is ``{{
