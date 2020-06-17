@@ -122,6 +122,8 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_blazar | bool }}"
   - regex: ceilometer
     enabled: "{{ kolla_enable_ceilometer | bool }}"
+  - regex: chrony
+    enabled: "{{ kolla_enable_chrony | bool }}"
   - regex: cinder
     enabled: "{{ kolla_enable_cinder | bool }}"
   - regex: cloudkitty
@@ -130,6 +132,8 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_collectd | bool }}"
   - regex: cron
     enabled: True
+  - regex: cyborg
+    enabled: "{{ kolla_enable_cyborg | bool }}"
   - regex: designate
     enabled: "{{ kolla_enable_designate | bool }}"
   - regex: dnsmasq
@@ -139,13 +143,13 @@ overcloud_container_image_regex_map:
   - regex: etcd
     enabled: "{{ kolla_enable_etcd | bool }}"
   - regex: fluentd
-    enabled: True
+    enabled: "{{ kolla_enable_fluentd | bool }}"
   - regex: glance
     enabled: "{{ kolla_enable_glance | bool }}"
-  - regex: grafana
-    enabled: "{{ kolla_enable_grafana | bool }}"
   - regex: gnocchi
     enabled: "{{ kolla_enable_gnocchi | bool }}"
+  - regex: grafana
+    enabled: "{{ kolla_enable_grafana | bool }}"
   - regex: ^haproxy$
     enabled: "{{ kolla_enable_haproxy | bool }}"
   - regex: heat
@@ -159,11 +163,13 @@ overcloud_container_image_regex_map:
   - regex: ironic-neutron-agent
     enabled: "{{ kolla_enable_ironic_neutron_agent | bool }}"
   - regex: iscsid
-    enabled: "{{ kolla_enable_cinder | bool or kolla_enable_ironic | bool }}"
+    enabled: "{{ kolla_enable_iscsid | bool }}"
   - regex: kafka
     enabled: "{{ kolla_enable_kafka | bool }}"
+  - regex: karbor
+    enabled: "{{ kolla_enable_karbor | bool }}"
   - regex: keepalived
-    enabled: "{{ kolla_enable_haproxy | bool }}"
+    enabled: "{{ kolla_enable_keepalived | bool }}"
   - regex: keystone
     enabled: "{{ kolla_enable_keystone | bool }}"
   - regex: kibana
@@ -172,14 +178,24 @@ overcloud_container_image_regex_map:
     enabled: True
   - regex: logstash
     enabled: "{{ kolla_enable_monasca | bool }}"
+  - regex: kuryr
+    enabled: "{{ kolla_enable_kuryr | bool }}"
   - regex: magnum
     enabled: "{{ kolla_enable_magnum | bool }}"
   - regex: manila
     enabled: "{{ kolla_enable_manila | bool }}"
   - regex: mariadb
     enabled: "{{ kolla_enable_mariadb | bool }}"
+  - regex: masakari
+    enabled: "{{ kolla_enable_masakari | bool }}"
   - regex: memcached
-    enabled: True
+    enabled: "{{ kolla_enable_memcached | bool }}"
+  - regex: mistral
+    enabled: "{{ kolla_enable_mistral | bool }}"
+  - regex: mongodb
+    enabled: "{{ kolla_enable_mongodb | bool }}"
+  - regex: multipathd
+    enabled: "{{ kolla_enable_multipathd | bool }}"
   - regex: murano
     enabled: "{{ kolla_enable_murano | bool }}"
   - regex: neutron-server
@@ -187,34 +203,66 @@ overcloud_container_image_regex_map:
   # Neutron SFC agent not currently supported on CentOS binary builds.
   - regex: "neutron-\\(dhcp\\|l3\\|metadata\\|openvswitch\\)-agent"
     enabled: "{{ kolla_enable_neutron | bool }}"
-  - regex: neutron-lbaas-agent
-    enabled: "{{ kolla_enable_neutron_lbaas | bool }}"
   - regex: nova
     enabled: "{{ kolla_enable_nova | bool }}"
   - regex: octavia
     enabled: "{{ kolla_enable_octavia | bool }}"
   - regex: openvswitch
-    enabled: "{{ kolla_enable_neutron | bool }}"
-  - regex: rabbitmq
-    enabled: True
+    enabled: "{{ kolla_enable_openvswitch | bool }}"
+  - regex: ovn
+    enabled: "{{ kolla_enable_ovn | bool }}"
+  - regex: ovsdpdk
+    enabled: "{{ kolla_enable_ovs_dpdk | bool }}"
+  - regex: panko
+    enabled: "{{ kolla_enable_panko | bool }}"
   - regex: placement
     enabled: "{{ kolla_enable_nova | bool }}"
   - regex: prometheus
     enabled: "{{ kolla_enable_prometheus | bool }}"
+  - regex: qdrouterd
+    enabled: "{{ kolla_enable_qdrouterd | bool }}"
+  - regex: qinling
+    enabled: "{{ kolla_enable_qinling | bool }}"
+  - regex: rabbitmq
+    enabled: "{{ kolla_enable_rabbitmq | bool }}"
+  - regex: rally
+    enabled: "{{ kolla_enable_rally | bool }}"
+  - regex: redis
+    enabled: "{{ kolla_enable_redis | bool }}"
   - regex: sahara
     enabled: "{{ kolla_enable_sahara | bool }}"
+  - regex: searchlight
+    enabled: "{{ kolla_enable_searchlight | bool }}"
+  - regex: senlin
+    enabled: "{{ kolla_enable_senlin | bool }}"
   - regex: skydive
     enabled: "{{ kolla_enable_skydive | bool }}"
+  - regex: solum
+    enabled: "{{ kolla_enable_solum | bool }}"
   - regex: storm
     enabled: "{{ kolla_enable_storm | bool }}"
   - regex: swift
     enabled: "{{ kolla_enable_swift | bool }}"
+  - regex: tacker
+    enabled: "{{ kolla_enable_tacker | bool }}"
   - regex: telegraf
     enabled: "{{ kolla_enable_telegraf | bool }}"
+  - regex: tempest
+    enabled: "{{ kolla_enable_tempest | bool }}"
   - regex: tgtd
     enabled: "{{ kolla_enable_cinder | bool or kolla_enable_ironic | bool }}"
+  - regex: trove
+    enabled: "{{ kolla_enable_trove | bool }}"
+  - regex: vitrage
+    enabled: "{{ kolla_enable_vitrage | bool }}"
+  - regex: vmtp
+    enabled: "{{ kolla_enable_vmtp | bool }}"
+  - regex: watcher
+    enabled: "{{ kolla_enable_watcher | bool }}"
   - regex: zookeeper
     enabled: "{{ kolla_enable_zookeeper | bool }}"
+  - regex: zun
+    enabled: "{{ kolla_enable_zun | bool }}"
 
 # List of regular expressions matching names of container images to build for
 # overcloud hosts.
