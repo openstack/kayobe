@@ -1378,6 +1378,7 @@ class OvercloudServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin,
       deployment.
     * Perform a kolla-ansible upgrade of the overcloud services.
     * Configure and upgrade kayobe extra services.
+    * Regenerate openrc files for the admin user.
 
     This can be used in conjunction with the --tags and --kolla-tags arguments
     to upgrade specific services.
@@ -1408,6 +1409,13 @@ class OvercloudServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin,
         extra_vars = {"kayobe_action": "upgrade"}
         self.run_kayobe_playbooks(parsed_args, playbooks,
                                   extra_vars=extra_vars, limit="overcloud")
+
+        # Post-deployment configuration.
+        self.run_kolla_ansible_overcloud(parsed_args, "post-deploy")
+        # Create an environment file for accessing the public API as the admin
+        # user.
+        playbooks = _build_playbook_list("public-openrc")
+        self.run_kayobe_playbooks(parsed_args, playbooks, ignore_limit=True)
 
 
 class OvercloudServiceDestroy(KollaAnsibleMixin, KayobeAnsibleMixin,
