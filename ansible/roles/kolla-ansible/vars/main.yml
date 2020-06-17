@@ -109,7 +109,6 @@ kolla_feature_flags:
   - horizon_congress
   - horizon_designate
   - horizon_freezer
-  - horizon_fwaas
   - horizon_heat
   - horizon_ironic
   - horizon_karbor
@@ -162,7 +161,6 @@ kolla_feature_flags:
   - neutron_agent_ha
   - neutron_bgp_dragent
   - neutron_dvr
-  - neutron_fwaas
   - neutron_infoblox_ipam_agent
   - neutron_metering
   - neutron_port_forwarding
