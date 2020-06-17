@@ -889,7 +889,7 @@ We could describe such a network as follows:
    external_neutron_allocation_pool_start: 10.0.3.128
    external_neutron_allocation_pool_end: 10.0.3.254
    external_routes:
-     - cidr 10.0.4.0/24
+     - cidr: 10.0.4.0/24
        gateway: 10.0.3.1
 
 We can map these networks to network interfaces on the seed and controller hosts:
