@@ -33,6 +33,22 @@
 # Format of the seed VM data volume.
 #seed_vm_data_format:
 
+# List of network interfaces to attach to the seed VM. Format is as accepted by
+# the stackhpc.libvirt-vm role's libvirt_vms.interfaces variable. Default is
+# one interface for each network in 'network_interfaces'.
+#
+# Example with one interface connected to a libvirt network called
+# 'libvirt-net', and another interface directly plugged into a host device
+# called 'eth1':
+#
+# seed_vm_interfaces:
+#   - network: libvirt-net
+#   - type: direct
+#     source:
+#       dev: eth1
+#
+#seed_vm_interfaces:
+
 ###############################################################################
 # Dummy variable to allow Ansible to accept this file.
 workaround_ansible_issue_8743: yes

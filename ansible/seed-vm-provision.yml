@@ -30,29 +30,6 @@
         group: "{{ ansible_user_gid }}"
       become: True
 
-    - name: Create a temporary user data file locally
-      tempfile:
-        state: file
-      register: seed_user_data_file
-      delegate_to: localhost
-
-    # The user data script is used to bring up the network interfaces that will
-    # be configured by metadata in the configdrive. For some reason resolv.conf
-    # gets configured with 660 permissions, so fix that here also.
-    - name: Ensure the user data file exists
-      copy:
-        content: |
-          #!/bin/bash
-          {% for interface in hostvars[seed_host].network_interfaces | map('net_interface', seed_host) %}
-          # Bounce {{ interface }}.
-          ifdown {{ interface }}
-          ifup {{ interface }}
-          {% endfor %}
-          # Fix permissions of resolv.conf.
-          chmod 644 /etc/resolv.conf
-        dest: "{{ seed_user_data_file.path }}"
-      delegate_to: localhost
-
   roles:
     - role: jriguera.configdrive
       # For now assume the VM OS family is the same as the hypervisor's.
@@ -72,7 +49,6 @@
         {{ hostvars[seed_host].network_interfaces |
            map('net_configdrive_network_device', seed_host) |
            list }}
-      configdrive_config_user_data_path: "{{ seed_user_data_file.path }}"
 
   tasks:
     - name: Set a fact containing the configdrive image path
@@ -91,14 +67,6 @@
         state: absent
       with_items:
         - "{{ image_cache_path }}/{{ seed_host | to_uuid }}.gz"
-
-    - name: Ensure unnecessary local files are removed
-      file:
-        path: "{{ item }}"
-        state: absent
-      with_items:
-        - "{{ seed_user_data_file.path }}"
-      delegate_to: localhost
 
 - name: Ensure that the seed VM is provisioned
   hosts: seed-hypervisor
@@ -129,8 +97,7 @@
           memory_mb: "{{ hostvars[seed_host].seed_vm_memory_mb }}"
           vcpus: "{{ hostvars[seed_host].seed_vm_vcpus }}"
           volumes: "{{ hostvars[seed_host].seed_vm_volumes + [seed_vm_configdrive_volume] }}"
-          interfaces: >
-            {{ hostvars[seed_host].network_interfaces | map('net_libvirt_vm_network') | list }}
+          interfaces: "{{ hostvars[seed_host].seed_vm_interfaces }}"
           console_log_enabled: true
       become: True
 
