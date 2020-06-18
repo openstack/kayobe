@@ -38,10 +38,6 @@ kolla_bifrost_dib_init_element: "cloud-init-datasources"
 # DIB default environment variables.
 kolla_bifrost_dib_env_vars_default:
   DIB_CLOUD_INIT_DATASOURCES: "ConfigDrive"
-  # FIXME(mgoddard): DIB fails when cleaning up old kernels if the host running
-  # DIB is not running the latest available kernel. Skip this cleanup as a
-  # workaround. https://bugs.launchpad.net/diskimage-builder/+bug/1866847
-  DIB_DISABLE_KERNEL_CLEANUP: 1
 
 # DIB additional environment variables.
 kolla_bifrost_dib_env_vars_extra: {}
