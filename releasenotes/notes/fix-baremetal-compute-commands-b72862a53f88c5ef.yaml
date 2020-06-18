@@ -1,0 +1,11 @@
+---
+fixes:
+  - |
+    Fixes issues running the following commands:
+
+    - ``kayobe baremetal compute inspect``
+    - ``kayobe baremetal compute manage``
+    - ``kayobe baremetal compute provide``
+
+    See `story 2007797 <https://storyboard.openstack.org/#!/story/2007797>`__
+    for details.
