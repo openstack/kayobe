@@ -40,6 +40,10 @@ function config_defaults {
     # Whether to deploy seed services.
     export KAYOBE_SEED_SERVICE_DEPLOY=${KAYOBE_SEED_SERVICE_DEPLOY:-1}
 
+    # Whether to use the 'kolla-ansible certificates' command to generate X.509
+    # certificates.
+    export KAYOBE_OVERCLOUD_GENERATE_CERTIFICATES=${KAYOBE_OVERCLOUD_GENERATE_CERTIFICATES:-0}
+
     # Whether to build container images for the overcloud services. If 0, they
     # will be pulled if $KAYOBE_OVERCLOUD_CONTAINER_IMAGE_PULL is 1.
     export KAYOBE_OVERCLOUD_CONTAINER_IMAGE_BUILD=${KAYOBE_OVERCLOUD_CONTAINER_IMAGE_BUILD:-0}
@@ -345,6 +349,11 @@ function overcloud_deploy {
     # required since https://review.openstack.org/#/c/584427 was merged.
     echo "Workaround: upgrading the controller host"
     run_kayobe overcloud host upgrade
+
+    if [[ ${KAYOBE_OVERCLOUD_GENERATE_CERTIFICATES} = 1 ]]; then
+        echo "Generate TLS certificates"
+        run_kayobe kolla ansible run certificates --kolla-extra kolla_certificates_dir=${KAYOBE_CONFIG_PATH}/kolla/certificates
+    fi
 
     # Note: This must currently be before host configure, because host
     # configure runs kolla-ansible.yml, which validates the presence of the
