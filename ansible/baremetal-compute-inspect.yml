@@ -24,7 +24,7 @@
   vars:
     controller_host: "{{ groups['controllers'][0] }}"
     venv: "{{ virtualenv_path }}/openstacksdk"
-    ansible_python_interpreter: "{{ venv }}/python"
+    ansible_python_interpreter: "{{ venv }}/bin/python"
     # Whether to wait for the state transition to complete.
     baremetal_compute_wait: True
     # Time to wait for state transition to complete, if baremetal_compute_wait
