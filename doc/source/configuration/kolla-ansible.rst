@@ -289,6 +289,57 @@ Here is an example:
      -----END CERTIFICATE-----
    kolla_internal_fqdn_cacert: /path/to/ca/certificate/bundle
 
+Other certificates
+------------------
+
+In general, Kolla Ansible expects certificates to be in a directory configured
+via ``kolla_certificates_dir``, which defaults to a directory named
+``certificates`` in the same directory as ``globals.yml``. Kayobe follows this
+pattern, and will pass files and directories added to
+``${KAYOBE_CONFIG_PATH}/kolla/certificates/`` through to Kolla Ansible. This
+can be useful when enabling backend API TLS encryption, or providing custom CA
+certificates to be added to the trust store in containers. It is also possible
+to use this path to provide certificate bundles for the external or internal
+APIs, as an alternative to ``kolla_external_tls_cert`` and
+``kolla_internal_tls_cert``.
+
+Note that Ansible will automatically decrypt these files if they are encrypted
+via Ansible Vault and it has access to a Vault password.
+
+Example: adding a trusted custom CA certificate to containers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In an environment with a private CA, it may be necessary to add the root CA
+certificate to the trust store of containers.
+
+.. code-block:: console
+   :caption: ``$KAYOBE_CONFIG_PATH``
+
+   kolla/
+     certificates/
+       ca/
+         private-ca.crt
+
+These files should be PEM-formatted, and have a ``.crt`` extension.
+
+Example: adding certificates for backend TLS
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Kolla Ansible backend TLS can be used to provide end-to-end encryption of API
+traffic.
+
+.. code-block:: console
+   :caption: ``$KAYOBE_CONFIG_PATH``
+
+   kolla/
+     certificates/
+       backend-cert.pem
+       backend-key.pem
+
+See the :kolla-ansible-doc:`Kolla Ansible documentation
+<admin/advanced-configuration.html#tls-configuration>` for how to provide
+service and/or host-specific certificates and keys.
+
 Custom Global Variables
 -----------------------
 

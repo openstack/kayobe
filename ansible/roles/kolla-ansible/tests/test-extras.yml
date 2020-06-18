@@ -1,5 +1,6 @@
 ---
-- hosts: localhost
+- name: Test kolla-ansible role extras
+  hosts: localhost
   connection: local
   tasks:
     - name: Add a seed host to the inventory
@@ -65,6 +66,23 @@
           ---
           bar_port: "4567"
 
+    - name: Create directory for custom CA certificates
+      file:
+        path: "{{ tempfile_result.path }}/etc/kayobe/kolla/certificates/ca"
+        state: directory
+
+    - name: Create custom CA certificate
+      copy:
+        dest: "{{ tempfile_result.path }}/etc/kayobe/kolla/certificates/ca/foo.crt"
+        content: |
+          bogus CA certificate
+
+    - name: Create custom backend certificate
+      copy:
+        dest: "{{ tempfile_result.path }}/etc/kayobe/kolla/certificates/backend-cert.pem"
+        content: |
+          bogus backend certificate
+
     - block:
         - name: Test the kolla-ansible role with default values
           include_role:
@@ -111,10 +129,15 @@
             kolla_neutron_ml2_tenant_network_types:
               - "fake-ml2-tenant-type-1"
               - "fake-ml2-tenant-type-2"
-            kolla_enable_tls_external: False
-            kolla_external_fqdn_cert: "fake-cert"
-            kolla_enable_tls_internal: False
-            kolla_internal_fqdn_cert: "fake-cert"
+            kolla_ansible_certificates_path: "{{ temp_path }}/etc/kayobe/kolla/certificates"
+            kolla_enable_tls_external: True
+            kolla_external_fqdn_cert: "{{ temp_path }}/etc/kolla/certificates/external.pem"
+            kolla_external_tls_cert: |
+              bogus external certificate
+            kolla_enable_tls_internal: True
+            kolla_internal_fqdn_cert: "{{ temp_path }}/etc/kolla/certificates/internal.pem"
+            kolla_internal_tls_cert: |
+              bogus internal certificate
             kolla_openstack_logging_debug: True
             grafana_local_admin_user_name: "grafana-admin"
             kolla_inspector_dhcp_pool_start: "1.2.3.4"
@@ -244,10 +267,10 @@
               docker_registry_username: "fake-username"
               docker_registry_password: "fake-password"
               neutron_plugin_agent: "openvswitch"
-              kolla_enable_tls_external: False
-              kolla_external_fqdn_cert: "fake-cert"
-              kolla_enable_tls_internal: False
-              kolla_internal_fqdn_cert: "fake-cert"
+              kolla_enable_tls_external: True
+              kolla_external_fqdn_cert: "{{ temp_path }}/etc/kolla/certificates/external.pem"
+              kolla_enable_tls_internal: True
+              kolla_internal_fqdn_cert: "{{ temp_path }}/etc/kolla/certificates/internal.pem"
               openstack_logging_debug: True
               grafana_admin_username: "grafana-admin"
               ironic_dnsmasq_dhcp_range: "1.2.3.4,1.2.3.5"
@@ -544,6 +567,84 @@
               - |
                 ---
                 bar_port: "4567"
+
+        - name: Check whether API certificate files exist
+          stat:
+            path: "{{ temp_path ~ '/etc/kolla/certificates/' ~ item }}"
+          with_items:
+            - external.pem
+            - internal.pem
+          register: certificates_stat
+
+        - name: Validate API certificates files
+          assert:
+            that:
+              - item.stat.exists
+              - item.stat.size > 0
+            msg: >
+              API certificate file {{ item.item }} was not found.
+          with_items: "{{ certificates_stat.results }}"
+
+        - name: Read API certificate files
+          slurp:
+            src: "{{ item.stat.path }}"
+          with_items: "{{ certificates_stat.results }}"
+          register: certificates_slurp
+
+        - name: Validate API certificate file contents
+          assert:
+            that:
+              - certificates_content is defined
+              - certificates_content == item.1
+          with_together:
+            - "{{ certificates_slurp.results }}"
+            - "{{ expected_contents }}"
+          vars:
+            certificates_content: "{{ item.0.content | b64decode }}"
+            expected_contents:
+              - |
+                bogus external certificate
+              - |
+                bogus internal certificate
+
+        - name: Check whether custom certificate files exist
+          stat:
+            path: "{{ temp_path ~ '/etc/kolla/certificates/' ~ item }}"
+          with_items:
+            - ca/foo.crt
+            - backend-cert.pem
+          register: certificates_stat
+
+        - name: Validate custom certificates files
+          assert:
+            that:
+              - item.stat.exists
+              - item.stat.size > 0
+            msg: >
+              Custom certificate file {{ item.item }} was not found.
+          with_items: "{{ certificates_stat.results }}"
+
+        - name: Read custom certificate files
+          slurp:
+            src: "{{ item.stat.path }}"
+          with_items: "{{ certificates_stat.results }}"
+          register: certificates_slurp
+
+        - name: Validate custom certificate file contents
+          assert:
+            that:
+              - certificates_content is defined
+              - certificates_content == item.1
+          with_together:
+            - "{{ certificates_slurp.results }}"
+            - "{{ expected_contents }}"
+          vars:
+            certificates_content: "{{ item.0.content | b64decode }}"
+            expected_contents:
+              - |
+                bogus CA certificate
+              - |
+                bogus backend certificate
       always:
         - name: Ensure the temporary directory is removed
           file:

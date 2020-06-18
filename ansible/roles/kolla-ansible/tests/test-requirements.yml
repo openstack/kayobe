@@ -1,5 +1,6 @@
 ---
-- hosts: localhost
+- name: Test kolla-ansible role requirements
+  hosts: localhost
   connection: local
   tasks:
     - name: Create a temporary directory
@@ -31,10 +32,9 @@
             kolla_internal_fqdn: "fake.internal.fqdn"
             kolla_external_vip_address: "10.0.0.2"
             kolla_external_fqdn: "fake.external.fqdn"
+            kolla_ansible_certificates_path: "{{ temp_path }}/etc/kayobe/kolla/certificates"
             kolla_enable_tls_external: False
             kolla_enable_tls_internal: False
-            kolla_external_fqdn_cert: "fake-cert"
-            kolla_internal_fqdn_cert: "fake-cert"
             kolla_enable_grafana: False
             kolla_openstack_logging_debug: False
 
