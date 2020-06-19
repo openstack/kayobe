@@ -267,7 +267,6 @@ kolla_openstack_logging_debug:
 #kolla_enable_murano:
 #kolla_enable_multipathd:
 #kolla_enable_neutron_dvr:
-#kolla_enable_neutron_lbaas:
 #kolla_enable_neutron_qos:
 #kolla_enable_neutron_agent_ha:
 #kolla_enable_neutron_vpnaas:
