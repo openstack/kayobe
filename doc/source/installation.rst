@@ -18,6 +18,9 @@ control host:
 - CentOS 7.6
 - Ubuntu 16.04
 
+See the :doc:`support matrix <support-matrix>` for details of supported
+Operating Systems for other hosts.
+
 To avoid conflicts with python packages installed by the system package manager
 it is recommended to install Kayobe in a virtualenv. Ensure that the
 ``virtualenv`` python module is available on the Ansible control host. It is

@@ -32,12 +32,14 @@ Contents
    :maxdepth: 2
 
    architecture
+   support-matrix
    installation
    usage
    configuration/index
    deployment
    upgrading
    administration/index
+   centos8
    resources
 
 Advanced Documentation
