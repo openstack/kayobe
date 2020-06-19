@@ -188,7 +188,6 @@
             kolla_enable_neutron_bgp_dragent: True
             kolla_enable_neutron_dvr: True
             kolla_enable_neutron_fwaas: True
-            kolla_enable_neutron_lbaas: True
             kolla_enable_neutron_provider_networks: True
             kolla_enable_neutron_qos: True
             kolla_enable_neutron_vpnaas: True
@@ -323,7 +322,6 @@
               #enable_neutron_bgp_dragent: True
               #enable_neutron_dvr: True
               #enable_neutron_fwaas: True
-              #enable_neutron_lbaas: True
               #enable_neutron_provider_networks: True
               #enable_neutron_qos: True
               #enable_neutron_vpnaas: True
