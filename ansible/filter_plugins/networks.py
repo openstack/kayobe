@@ -178,6 +178,7 @@ def _route_obj(route):
     optional = {
         'gateway',
         'table',
+        'options',
     }
     for option in optional:
         if option in route:

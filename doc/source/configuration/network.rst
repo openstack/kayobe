@@ -47,10 +47,11 @@ supported:
     Fully Qualified Domain Name (FQDN) used by API services on this network.
 ``routes``
     List of static IP routes. Each item should be a dict containing the
-    item ``cidr``, and optionally ``gateway`` and ``table``. ``cidr`` is the CIDR
-    representation of the route's destination. ``gateway`` is the IP address of
-    the next hop. ``table`` is the name or ID of a routing table to which the
-    route will be added.
+    item ``cidr``, and optionally ``gateway``, ``table`` and ``options``.
+    ``cidr`` is the CIDR representation of the route's destination. ``gateway``
+    is the IP address of the next hop. ``table`` is the name or ID of a routing
+    table to which the route will be added. ``options`` is a list of option
+    strings to add to the route.
 ``rules``
     List of IP routing rules. Each item should be an ``iproute2`` IP routing
     rule.
@@ -138,6 +139,18 @@ To configure a network called ``example`` with a single IP route to the
        gateway: 10.0.0.1
 
 These routes will be configured on all hosts to which the network is mapped.
+
+If necessary, custom options may be added to the route:
+
+.. code-block:: yaml
+   :caption: ``networks.yml``
+
+   example_routes:
+     - cidr: 10.1.0.0/24
+       gateway: 10.0.0.1
+       options:
+         - onlink
+         - metric 400
 
 Configuring a VLAN
 ------------------
