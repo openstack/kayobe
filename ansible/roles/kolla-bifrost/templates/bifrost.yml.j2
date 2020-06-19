@@ -2,6 +2,12 @@
 # List of enabled Ironic hardware types.
 enabled_hardware_types: "{{ kolla_bifrost_enabled_hardware_types | join(',') }}"
 
+{% if kolla_bifrost_extra_kernel_options %}
+# List of extra kernel parameters for Bifrost's Ironic PXE configuration.
+# Default is empty.
+extra_kernel_options: "{{ kolla_bifrost_extra_kernel_options }}"
+{% endif %}
+
 # IP address range for DHCP.
 dhcp_pool_start: "{{ kolla_bifrost_dhcp_pool_start }}"
 dhcp_pool_end: "{{ kolla_bifrost_dhcp_pool_end }}"

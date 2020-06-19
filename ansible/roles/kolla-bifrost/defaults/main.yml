@@ -23,6 +23,10 @@ kolla_bifrost_dib_packages: []
 # List of hardware types to enable for Bifrost's Ironic.
 kolla_bifrost_enabled_hardware_types: []
 
+# List of extra kernel parameters for Bifrost's Ironic PXE configuration.
+# Default is empty.
+kolla_bifrost_extra_kernel_options: []
+
 # IP address range for DHCP.
 kolla_bifrost_dhcp_pool_start:
 kolla_bifrost_dhcp_pool_end:

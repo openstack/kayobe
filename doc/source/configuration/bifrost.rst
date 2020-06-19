@@ -187,6 +187,10 @@ container.
 ``kolla_bifrost_enabled_hardware_types``
     List of :ironic-doc:`hardware types <admin/drivers>` to enable for
     Bifrost's Ironic. Default is ``["ipmi"]``.
+``kolla_bifrost_extra_kernel_options``
+    List of :ironic-doc:`extra kernel parameters
+    <install/advanced.html#appending-kernel-parameters-to-boot-instances>` for
+    Bifrost's Ironic PXE configuration.  Default is none.
 
 Ironic Inspector configuration
 ==============================

@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Adds a new configuration variable, ``kolla_bifrost_extra_kernel_options``,
+    which allows to provide a list of extra kernel parameters for Bifrost's
+    Ironic PXE configuration. It defaults to an empty list. See `story 2001987
+    <https://storyboard.openstack.org/#!/story/2001987>`__ for details.

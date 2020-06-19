@@ -54,6 +54,10 @@
 # List of hardware types to enable for Bifrost's Ironic.
 #kolla_bifrost_enabled_hardware_types:
 
+# List of extra kernel parameters for Bifrost's Ironic PXE configuration.
+# Default is empty.
+#kolla_bifrost_extra_kernel_options:
+
 ###############################################################################
 # Ironic Inspector configuration.
 
