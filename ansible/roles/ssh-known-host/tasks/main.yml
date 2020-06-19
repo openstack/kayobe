@@ -7,11 +7,15 @@
   register: keyscan_result
   changed_when: False
 
+# NOTE(priteau): Run this task serially as known_hosts is not safe to execute
+# concurrently, and some keys can end up being dropped. For more details see
+# https://github.com/ansible/proposals/issues/113
 - name: Ensure SSH keys are in known hosts
   local_action:
     module: known_hosts
     host: "{{ item[0].item }}"
     key: "{{ item[1] }}"
-  with_subelements:
-    - "{{ keyscan_result.results }}"
-    - stdout_lines
+  # TODO(priteau): Replace the following with "throttle: 1" once we require
+  # Ansible >= 2.9
+  loop: "{{ query('subelements', ansible_play_batch | map('extract', hostvars, ['keyscan_result', 'results']) | map('first') | list, 'stdout_lines') }}"
+  run_once: True
