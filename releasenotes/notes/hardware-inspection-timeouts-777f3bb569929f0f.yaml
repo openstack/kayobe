@@ -1,0 +1,15 @@
+---
+features:
+  - |
+    Adds two new configuration variables, ``kolla_bifrost_inspection_timeout``
+    and ``inspector_inspection_timeout``, which allow to customise timeouts of
+    hardware inspection (in seconds) respectively for overcloud nodes and
+    baremetal compute nodes. ``inspector_inspection_timeout`` defaults to
+    ``1200`` and ``kolla_bifrost_inspection_timeout`` defaults to the value of
+    ``inspector_inspection_timeout``. See `story 2007844
+    <https://storyboard.openstack.org/#!/story/2007844>`__ for details.
+upgrade:
+  - |
+    The default timeout for the overcloud hardware inspection operation is
+    increased from 10 minutes to 20 minutes, to avoid issues when using the
+    ``extra-hardware`` collector on hardware booting slowly.
