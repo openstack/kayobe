@@ -236,7 +236,6 @@
 #kolla_enable_neutron_bgp_dragent:
 #kolla_enable_neutron_dvr:
 #kolla_enable_neutron_fwaas:
-#kolla_enable_neutron_lbaas:
 #kolla_enable_neutron_provider_networks:
 #kolla_enable_neutron_qos:
 #kolla_enable_neutron_segments:
