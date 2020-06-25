@@ -144,6 +144,8 @@ Each level may be separately overridden by setting the following variables:
 Examples
 ========
 
+.. _control-plane-service-placement-network-hosts:
+
 Example 1: Adding Network Hosts
 -------------------------------
 
@@ -153,7 +155,18 @@ The control plane consists of three controllers, ``controller-[0-2]``, and two
 network hosts, ``network-[0-1]``. All file paths are relative to
 ``${KAYOBE_CONFIG_PATH}``.
 
-First, we must map the hosts to kayobe groups.
+First, we must make the network group separate from controllers:
+
+.. code-block:: ini
+   :caption: ``inventory/groups``
+
+    [controllers]
+    # Empty group to provide declaration of controllers group.
+
+    [network]
+    # Empty group to provide declaration of network group.
+
+Then, we must map the hosts to kayobe groups.
 
 .. code-block:: yaml
    :caption: ``overcloud.yml``

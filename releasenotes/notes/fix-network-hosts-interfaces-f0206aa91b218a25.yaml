@@ -1,0 +1,20 @@
+---
+features:
+  - |
+    Adds ``controller_network_host_default_network_interfaces`` and
+    ``controller_network_host_extra_network_interfaces`` variables which define
+    the networks to which separate network hosts are attached.
+upgrade:
+  - |
+    The default value of ``controller_network_host_network_interfaces`` is now
+    the combination of unique networks listed in new variables named
+    ``controller_network_host_default_network_interfaces`` and
+    ``controller_network_host_extra_network_interfaces``. As a result
+    ``controller_network_host_network_interfaces`` now contains the following
+    additional networks: overcloud admin network, internal network and storage
+    network. See :kayobe-doc:`network configuration of network hosts
+    <configuration/network.html#network-hosts>` for more details.
+fixes:
+  - |
+    The default value for ``controller_network_host_network_interfaces``
+    was updated to connect network hosts to all their required networks.
