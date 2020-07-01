@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    Adds support for deploying a Docker registry with TLS.

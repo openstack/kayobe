@@ -13,3 +13,4 @@
   roles:
     - role: docker-registry
       docker_registry_action: "{{ kayobe_action }}"
+      docker_registry_config_path: "{{ config_path }}/docker-registry"

@@ -1,0 +1,34 @@
+---
+- name: Ensure configuration path exists
+  file:
+    path: "{{ docker_registry_config_path }}"
+    state: directory
+    owner: "{{ ansible_user_uid }}"
+    group: "{{ ansible_user_gid }}"
+    mode: 0750
+  become: True
+  when: docker_registry_enable_tls | bool
+
+- name: Ensure TLS certificate exists
+  copy:
+    src: "{{ docker_registry_cert_path }}"
+    dest: "{{ docker_registry_config_path }}/cert.pem"
+    owner: "{{ ansible_user_uid }}"
+    group: "{{ ansible_user_gid }}"
+    mode: 0600
+  become: True
+  when: docker_registry_enable_tls | bool
+  notify:
+    - Restart docker-registry container
+
+- name: Ensure TLS key exists
+  copy:
+    src: "{{ docker_registry_key_path }}"
+    dest: "{{ docker_registry_config_path }}/key.pem"
+    owner: "{{ ansible_user_uid }}"
+    group: "{{ ansible_user_gid }}"
+    mode: 0600
+  become: True
+  when: docker_registry_enable_tls | bool
+  notify:
+    - Restart docker-registry container
