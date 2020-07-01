@@ -106,7 +106,6 @@
             kolla_docker_namespace: "fake-namespace"
             kolla_docker_registry: "fake-registry"
             kolla_docker_registry_username: "fake-username"
-            kolla_docker_registry_password: "fake-password"
             kolla_openstack_release: "fake-release"
             kolla_internal_vip_address: "10.0.0.1"
             kolla_internal_fqdn: "fake.internal.fqdn"
@@ -261,7 +260,6 @@
               docker_namespace: "fake-namespace"
               docker_registry: "fake-registry"
               docker_registry_username: "fake-username"
-              docker_registry_password: "fake-password"
               neutron_plugin_agent: "openvswitch"
               kolla_enable_tls_external: True
               kolla_external_fqdn_cert: "{{ temp_path }}/etc/kolla/certificates/external.pem"

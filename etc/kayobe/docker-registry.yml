@@ -30,6 +30,13 @@
 # Path to a TLS key to use when TLS is enabled. Default is none.
 #docker_registry_key_path:
 
+# Whether to enable basic authentication for the registry. Default is false.
+#docker_registry_enable_basic_auth:
+
+# Path to a htpasswd formatted password store for the registry. Default is
+# none.
+#docker_registry_basic_auth_htpasswd_path:
+
 ###############################################################################
 # Dummy variable to allow Ansible to accept this file.
 workaround_ansible_issue_8743: yes

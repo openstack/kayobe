@@ -30,3 +30,9 @@ docker_registry_cert_path:
 
 # Path to a TLS key to use when TLS is enabled.
 docker_registry_key_path:
+
+# Whether to enable basic authentication for the registry.
+docker_registry_enable_basic_auth: false
+
+# Path to a htpasswd formatted password store for the registry.
+docker_registry_basic_auth_htpasswd_path:

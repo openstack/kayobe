@@ -496,6 +496,7 @@ kolla_ansible_default_custom_passwords:
   kolla_ssh_key:
     private_key: "{{ lookup('file', ssh_private_key_path) }}"
     public_key: "{{ lookup('file', ssh_public_key_path) }}"
+  docker_registry_password: "{{ kolla_docker_registry_password }}"
 
 # Dictionary containing custom passwords to add or override in the Kolla
 # passwords file.
