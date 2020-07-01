@@ -476,7 +476,7 @@ kolla_enable_trove: "no"
 kolla_enable_vitrage: "no"
 kolla_enable_vmtp: "no"
 kolla_enable_watcher: "no"
-kolla_enable_zookeeper: "{{ kolla_enable_kafka | bool }}"
+kolla_enable_zookeeper: "{{ kolla_enable_kafka | bool or kolla_enable_storm | bool }}"
 kolla_enable_zun: "no"
 
 ###############################################################################
