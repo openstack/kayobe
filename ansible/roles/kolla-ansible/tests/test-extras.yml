@@ -157,7 +157,6 @@
             kolla_enable_cinder_backend_lvm: True
             kolla_enable_cinder_backend_nfs: True
             kolla_enable_cloudkitty: True
-            kolla_enable_congress: True
             kolla_enable_designate: True
             kolla_enable_elasticsearch: True
             kolla_enable_etcd: True
@@ -290,7 +289,6 @@
               #enable_cinder_backend_lvm: True
               #enable_cinder_backend_nfs: True
               #enable_cloudkitty: True
-              #enable_congress: True
               #enable_designate: True
               #enable_elasticsearch: True
               #enable_etcd: True

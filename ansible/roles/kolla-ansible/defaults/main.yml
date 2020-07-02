@@ -248,7 +248,6 @@ kolla_openstack_logging_debug:
 #kolla_enable_cinder_backend_iscsi:
 #kolla_enable_cinder_backend_lvm:
 #kolla_enable_cloudkitty:
-#kolla_enable_congress:
 #kolla_enable_etcd:
 #kolla_enable_gnocchi:
 #kolla_enable_grafana:

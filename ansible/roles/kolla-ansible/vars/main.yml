@@ -90,7 +90,6 @@ kolla_feature_flags:
   - cinder_backup
   - cloudkitty
   - collectd
-  - congress
   - cyborg
   - designate
   - destroy_images
@@ -106,7 +105,6 @@ kolla_feature_flags:
   - horizon
   - horizon_blazar
   - horizon_cloudkitty
-  - horizon_congress
   - horizon_designate
   - horizon_freezer
   - horizon_heat
