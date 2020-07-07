@@ -180,7 +180,6 @@
             kolla_enable_mariadb: True
             kolla_enable_mistral: True
             kolla_enable_monasca: True
-            kolla_enable_mongodb: True
             kolla_enable_murano: True
             kolla_enable_multipathd: True
             kolla_enable_neutron_agent_ha: True
@@ -312,7 +311,6 @@
               #enable_mariadb: True
               #enable_mistral: True
               #enable_monasca: True
-              #enable_mongodb: True
               #enable_murano: True
               #enable_multipathd: True
               #enable_neutron_agent_ha: True

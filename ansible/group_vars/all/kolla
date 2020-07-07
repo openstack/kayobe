@@ -192,8 +192,6 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_memcached | bool }}"
   - regex: mistral
     enabled: "{{ kolla_enable_mistral | bool }}"
-  - regex: mongodb
-    enabled: "{{ kolla_enable_mongodb | bool }}"
   - regex: multipathd
     enabled: "{{ kolla_enable_multipathd | bool }}"
   - regex: murano
@@ -449,7 +447,6 @@ kolla_enable_manila: "no"
 kolla_enable_masakari: "no"
 kolla_enable_mistral: "no"
 kolla_enable_monasca: "no"
-kolla_enable_mongodb: "no"
 kolla_enable_multipathd: "no"
 kolla_enable_murano: "no"
 kolla_enable_neutron_provider_networks: "no"

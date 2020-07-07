@@ -152,7 +152,6 @@ kolla_feature_flags:
   - memcached
   - mistral
   - monasca
-  - mongodb
   - multipathd
   - murano
   - neutron
