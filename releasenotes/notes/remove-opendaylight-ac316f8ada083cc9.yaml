@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The ``opendaylight`` service, which was deprecated in the Ussuri cycle, has
+    been removed.

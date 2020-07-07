@@ -172,7 +172,6 @@ kolla_feature_flags:
   - nova_ssh
   - octavia
   - onos
-  - opendaylight
   - openstack_core
   - openvswitch
   - osprofiler
