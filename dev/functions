@@ -30,9 +30,15 @@ function config_defaults {
     # Whether to provision a VM for the seed host.
     export KAYOBE_SEED_VM_PROVISION=${KAYOBE_SEED_VM_PROVISION:-1}
 
+    # Whether to configure the seed host.
+    export KAYOBE_SEED_HOST_CONFIGURE=${KAYOBE_SEED_HOST_CONFIGURE:-1}
+
     # Whether to build container images for the seed services. If 0, they will
     # be pulled.
     export KAYOBE_SEED_CONTAINER_IMAGE_BUILD=${KAYOBE_SEED_CONTAINER_IMAGE_BUILD:-0}
+
+    # Whether to deploy seed services.
+    export KAYOBE_SEED_SERVICE_DEPLOY=${KAYOBE_SEED_SERVICE_DEPLOY:-1}
 
     # Whether to build container images for the overcloud services. If 0, they
     # will be pulled if $KAYOBE_OVERCLOUD_CONTAINER_IMAGE_PULL is 1.
@@ -262,8 +268,10 @@ function seed_deploy {
         run_kayobe seed vm provision
     fi
 
-    echo "Configuring the seed host"
-    run_kayobe seed host configure
+    if [[ ${KAYOBE_SEED_HOST_CONFIGURE} = 1 ]]; then
+        echo "Configuring the seed host"
+        run_kayobe seed host configure
+    fi
 
     # Note: This must currently be done before host configure, because host
     # configure runs kolla-ansible.yml, which validates the presence of the
@@ -283,8 +291,10 @@ function seed_deploy {
         #run_kayobe seed container image pull
     fi
 
-    echo "Deploying containerised seed services"
-    run_kayobe seed service deploy
+    if [[ ${KAYOBE_SEED_SERVICE_DEPLOY} = 1 ]]; then
+        echo "Deploying containerised seed services"
+        run_kayobe seed service deploy
+    fi
 }
 
 function seed_upgrade {
