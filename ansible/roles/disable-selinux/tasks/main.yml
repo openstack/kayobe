@@ -7,11 +7,17 @@
   with_items:
     - libselinux-python
 
+- name: Check if SELinux configuration file exists
+  stat:
+    path: /etc/selinux/config
+  register: stat_result
+
 - name: Ensure SELinux is disabled
   selinux:
     state: disabled
   register: selinux_result
   become: True
+  when: stat_result.stat.exists
 
 - block:
     - name: Set a fact to determine whether we are running locally
