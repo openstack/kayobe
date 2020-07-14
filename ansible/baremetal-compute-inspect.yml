@@ -29,7 +29,7 @@
     baremetal_compute_wait: True
     # Time to wait for state transition to complete, if baremetal_compute_wait
     # is True.
-    baremetal_compute_timeout: 1200
+    baremetal_compute_timeout: "{{ inspector_inspection_timeout }}"
   tasks:
     - name: Ensure baremetal compute nodes are inspected in ironic
       os_ironic_inspect:

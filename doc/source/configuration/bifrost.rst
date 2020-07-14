@@ -227,6 +227,10 @@ The following options configure the Ironic Inspector service in the
 ``kolla_bifrost_inspector_deploy_ramdisk``
     Ironic inspector deployment ramdisk location. Default is ``http://{{
     provision_oc_net_name | net_ip }}:8080/ipa.initramfs``.
+``kolla_bifrost_inspection_timeout``
+    Timeout of hardware inspection on overcloud nodes, in seconds. Default is
+    ``{{ inspector_inspection_timeout }}``, defined in
+    ``${KAYOBE_CONFIG_PATH}/inspector.yml``.
 
 Ironic Python Agent (IPA) configuration
 =======================================

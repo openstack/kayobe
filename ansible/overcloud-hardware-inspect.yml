@@ -8,7 +8,7 @@
   vars:
     # Set to False to avoid waiting for the nodes to become active.
     wait_inspected: True
-    wait_inspected_timeout: 600
+    wait_inspected_timeout: "{{ kolla_bifrost_inspection_timeout }}"
     wait_inspected_interval: 10
     # List of states from which we can get to inspecting.
     inspectable_states:

@@ -87,6 +87,10 @@ kolla_bifrost_inspector_deploy_kernel: "http://{{ provision_oc_net_name | net_ip
 # Ironic inspector deployment ramdisk location.
 kolla_bifrost_inspector_deploy_ramdisk: "http://{{ provision_oc_net_name | net_ip }}:8080/ipa.initramfs"
 
+# Timeout of hardware inspection on overcloud nodes, in seconds. Default is
+# {{ inspector_inspection_timeout }}.
+kolla_bifrost_inspection_timeout: "{{ inspector_inspection_timeout }}"
+
 ###############################################################################
 # Ironic Python Agent (IPA) configuration.
 
