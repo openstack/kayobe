@@ -211,9 +211,6 @@ monasca
 [monasca-grafana:children]
 monasca
 
-[monasca-log-api:children]
-monasca
-
 [monasca-log-transformer:children]
 monasca
 
@@ -460,6 +457,9 @@ zun
 [zun-compute:children]
 compute
 
+[zun-cni-daemon:children]
+compute
+
 # Skydive
 [skydive-analyzer:children]
 skydive
@@ -486,6 +486,9 @@ vitrage
 vitrage
 
 [vitrage-ml:children]
+vitrage
+
+[vitrage-persistor:children]
 vitrage
 
 # Blazar
