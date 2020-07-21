@@ -218,7 +218,7 @@ overcloud_container_image_regex_map:
   - regex: panko
     enabled: "{{ kolla_enable_panko | bool }}"
   - regex: placement
-    enabled: "{{ kolla_enable_nova | bool }}"
+    enabled: "{{ kolla_enable_placement | bool }}"
   - regex: prometheus
     enabled: "{{ kolla_enable_prometheus | bool }}"
   - regex: qdrouterd
