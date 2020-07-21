@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    Updates the default image for the seed VM to CentOS 8.2.
+fixes:
+  - |
+    Fixes an issue with seed service deployment where modifying the overcloud
+    image fails on a CentOS 8.1 host with a CentOS 8.2 ``bifrost_deploy``
+    container, by updating the default image for the seed VM to CentOS 8.2.
+    See `story 2007942 <https://storyboard.openstack.org/#!/story/2007942>`__
+    for details.

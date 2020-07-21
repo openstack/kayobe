@@ -88,7 +88,7 @@ image:
 .. code-block:: yaml
    :caption: ``${KAYOBE_CONFIG_PATH}/seed-vm.yml``
 
-   seed_vm_root_image: https://cloud.centos.org/centos/8/x86_64/images/CentOS-8-GenericCloud-8.1.1911-20200113.3.x86_64.qcow2
+   seed_vm_root_image: https://cloud.centos.org/centos/8/x86_64/images/CentOS-8-GenericCloud-8.2.2004-20200611.2.x86_64.qcow2
 
 Ironic Python Agent (IPA)
 =========================
