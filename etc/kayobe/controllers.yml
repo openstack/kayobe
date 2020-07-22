@@ -7,7 +7,7 @@
 #controller_bootstrap_user:
 
 ###############################################################################
-# Network interface attachments.
+# Controller network interface configuration.
 
 # List of networks to which controller nodes are attached.
 #controller_network_interfaces:
@@ -20,6 +20,12 @@
 
 # List of network interfaces to which network nodes are attached.
 #controller_network_host_network_interfaces:
+
+# List of default network interfaces to which network nodes are attached.
+#controller_network_host_default_network_interfaces:
+
+# List of extra networks to which network nodes are attached.
+#controller_network_host_extra_network_interfaces:
 
 ###############################################################################
 # Controller node BIOS configuration.

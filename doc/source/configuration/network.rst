@@ -750,6 +750,27 @@ list of names of additional networks to attach.  Alternatively, the list may be
 completely overridden by setting ``controller_network_interfaces``.  These
 variables are found in ``${KAYOBE_CONFIG_PATH}/controllers.yml``.
 
+Network Hosts
+-------------
+
+By default, controllers provide Neutron network services and load balancing.
+If separate network hosts are used (see
+:ref:`control-plane-service-placement-network-hosts`), they are attached to the
+following networks:
+
+* overcloud admin network
+* internal network
+* storage network
+* public network
+* external network
+* tunnel network
+
+This list may be extended by setting
+``controller_network_host_extra_network_interfaces`` to a list of names of
+additional networks to attach.  Alternatively, the list may be completely
+overridden by setting ``controller_network_host_network_interfaces``.  These
+variables are found in ``${KAYOBE_CONFIG_PATH}/controllers.yml``.
+
 Monitoring Hosts
 ----------------
 

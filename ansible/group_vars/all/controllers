@@ -32,9 +32,20 @@ controller_extra_network_interfaces: []
 
 # List of network interfaces to which network nodes are attached.
 controller_network_host_network_interfaces: >
-  {{ ([public_net_name,
+  {{ (controller_network_host_default_network_interfaces +
+      controller_network_host_extra_network_interfaces) | reject('none') | unique | list }}
+
+# List of default network interfaces to which network nodes are attached.
+controller_network_host_default_network_interfaces: >
+  {{ ([admin_oc_net_name,
+       internal_net_name,
+       storage_net_name,
+       public_net_name,
        tunnel_net_name] +
       external_net_names) | reject('none') | unique | list }}
+
+# List of extra networks to which network nodes are attached.
+controller_network_host_extra_network_interfaces: []
 
 ###############################################################################
 # Controller node BIOS configuration.
