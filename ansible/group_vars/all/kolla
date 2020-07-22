@@ -201,6 +201,8 @@ overcloud_container_image_regex_map:
   # Neutron SFC agent not currently supported on CentOS binary builds.
   - regex: "neutron-\\(dhcp\\|l3\\|metadata\\|openvswitch\\)-agent"
     enabled: "{{ kolla_enable_neutron | bool }}"
+  - regex: neutron-mlnx-agent
+    enabled: "{{ kolla_enable_neutron_mlnx | bool }}"
   - regex: nova
     enabled: "{{ kolla_enable_nova | bool }}"
   - regex: octavia
@@ -449,6 +451,7 @@ kolla_enable_mistral: "no"
 kolla_enable_monasca: "no"
 kolla_enable_multipathd: "no"
 kolla_enable_murano: "no"
+kolla_enable_neutron_mlnx: "no"
 kolla_enable_neutron_provider_networks: "no"
 kolla_enable_octavia: "no"
 kolla_enable_openvswitch: "{{ kolla_enable_neutron | bool }}"
