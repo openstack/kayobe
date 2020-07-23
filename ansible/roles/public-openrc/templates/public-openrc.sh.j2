@@ -5,6 +5,12 @@
 export OS_AUTH_URL={{ public_openrc_auth_url }}
 {% elif "export OS_INTERFACE" in line %}
 export OS_INTERFACE=public
+{% elif "export OS_ENDPOINT_TYPE" in line %}
+export OS_ENDPOINT_TYPE=publicURL
+{% elif "export OS_MANILA_ENDPOINT_TYPE" in line %}
+export OS_MANILA_ENDPOINT_TYPE=publicURL
+{% elif "export OS_MISTRAL_ENDPOINT_TYPE" in line %}
+export OS_MISTRAL_ENDPOINT_TYPE=publicURL
 {% elif "export OS_CACERT" in line and kolla_external_fqdn_cacert is not none %}
 export OS_CACERT={{ kolla_external_fqdn_cacert }}
 {% else %}
