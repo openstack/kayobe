@@ -55,6 +55,10 @@ kolla_bifrost_dib_packages: []
 kolla_bifrost_enabled_hardware_types:
   - ipmi
 
+# List of extra kernel parameters for Bifrost's Ironic PXE configuration.
+# Default is empty.
+kolla_bifrost_extra_kernel_options: []
+
 ###############################################################################
 # Ironic Inspector configuration.
 
