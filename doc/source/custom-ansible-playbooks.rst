@@ -158,9 +158,9 @@ ordering.
 For example to run the playbook ``foo.yml`` after ``kayobe overcloud host configure``,
 you could do the following::
 
-    (kayobe) $ mkdir -p $KAYOBE_CONFIG_PATH/hooks/overcloud-host-configure/post.d
-    (kayobe) $ ln -s  $KAYOBE_CONFIG_PATH/ansible/foo.yml \
-    $KAYOBE_CONFIG_PATH/hooks/overcloud-host-configure/post.d/10-foo.yml
+    (kayobe) $ mkdir -p ${KAYOBE_CONFIG_PATH}/hooks/overcloud-host-configure/post.d
+    (kayobe) $ cd ${KAYOBE_CONFIG_PATH}/hooks/overcloud-host-configure/post.d
+    (kayobe) $ ln -s ../../../ansible/foo.yml 10-foo.yml
 
 The sequence number for the ``foo.yml`` playbook is ``10``.
 
