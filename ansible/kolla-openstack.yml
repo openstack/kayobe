@@ -122,6 +122,7 @@
             - { name: manila, file: manila.conf }
             - { name: mariabackup, file: backup.my.cnf }
             - { name: mariadb, file: galera.cnf }
+            - { name: masakari, file: masakari.conf }
             - { name: murano, file: murano.conf }
             - { name: neutron, file: neutron.conf }
             - { name: neutron_ml2, file: neutron/ml2_conf.ini }
@@ -229,6 +230,7 @@
       kolla_extra_manila: "{{ kolla_extra_config.manila | default }}"
       kolla_extra_mariabackup: "{{ kolla_extra_config.mariabackup | default }}"
       kolla_extra_mariadb: "{{ kolla_extra_config.mariadb | default }}"
+      kolla_extra_masakari: "{{ kolla_extra_config.masakari | default }}"
       kolla_extra_murano: "{{ kolla_extra_config.murano | default }}"
       kolla_extra_neutron: "{{ kolla_extra_config.neutron | default }}"
       kolla_extra_neutron_ml2: "{{ kolla_extra_config.neutron_ml2 | default }}"
