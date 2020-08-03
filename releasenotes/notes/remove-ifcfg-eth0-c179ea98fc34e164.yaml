@@ -1,0 +1,9 @@
+---
+fixes:
+  - |
+    Removes the ``ifcfg-eth0`` network interface configuration file when not
+    required, using a new version of the ``MichaelRigaert.interfaces`` Ansible
+    role. This file ships with CentOS 8 cloud images and can prevent the
+    ``network`` service from starting successfully when no ``eth0`` interface
+    is present or being configured. See `story 2007913
+    <https://storyboard.openstack.org/#!/story/2007913>`__ for details.
