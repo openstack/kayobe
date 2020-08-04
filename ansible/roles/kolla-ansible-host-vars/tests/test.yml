@@ -1,0 +1,151 @@
+---
+- name: Test kolla-ansible-host-vars role extras
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Add a controller host to the inventory
+      add_host:
+        name: test-controller
+        groups: controllers
+        ansible_host: "1.2.3.5"
+        kolla_network_interface: "eth0"
+        kolla_external_vip_interface: "eth1"
+        kolla_api_interface: "eth2"
+        kolla_storage_interface: "eth3"
+        kolla_cluster_interface: "eth4"
+        kolla_dns_interface: "eth5"
+        kolla_neutron_external_interfaces: "eth6,eth7"
+        kolla_neutron_bridge_names: "br0,br1"
+        kolla_provision_interface: "eth8"
+        kolla_inspector_dnsmasq_interface: "eth9"
+        kolla_tunnel_interface: "eth10"
+        kolla_swift_storage_interface: "eth13"
+        kolla_swift_replication_interface: "eth14"
+
+    - name: Add a compute host to the inventory
+      add_host:
+        name: test-compute
+        groups: compute
+        ansible_host: "1.2.3.6"
+        kolla_network_interface: "eth0"
+        kolla_api_interface: "eth2"
+        kolla_storage_interface: "eth3"
+        kolla_neutron_external_interfaces: "eth4,eth5"
+        kolla_neutron_bridge_names: "br0,br1"
+        kolla_tunnel_interface: "eth6"
+
+- name: Test kolla-ansible-host-vars role extras
+  hosts: controllers:compute
+  connection: local
+  gather_facts: no
+  tasks:
+    - name: Create a temporary directory
+      tempfile:
+        state: directory
+      register: tempfile_result
+      delegate_to: localhost
+      run_once: true
+
+    - block:
+        - name: Test the kolla-ansible-host-vars role with default values
+          include_role:
+            name: ../../kolla-ansible-host-vars
+          vars:
+            kolla_ansible_pass_through_host_vars:
+              - "ansible_host"
+              - "ansible_port"
+              - "ansible_ssh_private_key_file"
+              - "kolla_network_interface"
+              - "kolla_api_interface"
+              - "kolla_storage_interface"
+              - "kolla_cluster_interface"
+              - "kolla_swift_storage_interface"
+              - "kolla_swift_replication_interface"
+              - "kolla_provision_interface"
+              - "kolla_inspector_dnsmasq_interface"
+              - "kolla_dns_interface"
+              - "kolla_tunnel_interface"
+              - "kolla_external_vip_interface"
+              - "kolla_neutron_external_interfaces"
+              - "kolla_neutron_bridge_names"
+            kolla_ansible_pass_through_host_vars_map:
+              kolla_network_interface: "network_interface"
+              kolla_api_interface: "api_interface"
+              kolla_storage_interface: "storage_interface"
+              kolla_cluster_interface: "cluster_interface"
+              kolla_swift_storage_interface: "swift_storage_interface"
+              kolla_swift_replication_interface: "swift_replication_interface"
+              kolla_provision_interface: "provision_interface"
+              kolla_inspector_dnsmasq_interface: "ironic_dnsmasq_interface"
+              kolla_dns_interface: "dns_interface"
+              kolla_tunnel_interface: "tunnel_interface"
+              kolla_neutron_external_interfaces: "neutron_external_interface"
+              kolla_neutron_bridge_names: "neutron_bridge_name"
+            kolla_ansible_inventory_path: "{{ temp_path }}"
+
+        - name: Check whether inventory host vars files exist
+          stat:
+            path: "{{ temp_path ~ '/host_vars/' ~ inventory_hostname }}"
+          register: host_vars_stat
+
+        - name: Validate inventory host vars files
+          assert:
+            that:
+              - host_vars_stat.stat.exists
+              - host_vars_stat.stat.size > 0
+            msg: >
+              Inventory file {{ temp_path ~ '/host_vars/' ~ inventory_hostname }} was not found.
+
+        - name: Read inventory host vars files
+          slurp:
+            src: "{{ host_vars_stat.stat.path }}"
+          register: host_vars_slurp
+
+        - name: Validate inventory host vars file contents
+          assert:
+            that:
+              - host_vars_content is defined
+              - host_vars_content == expected_contents[inventory_hostname]
+          vars:
+            host_vars_content: "{{ host_vars_slurp.content | b64decode }}"
+            expected_contents:
+              test-controller: |
+                ---
+                ansible_host: "1.2.3.5"
+                network_interface: "eth0"
+                api_interface: "eth2"
+                storage_interface: "eth3"
+                cluster_interface: "eth4"
+                swift_storage_interface: "eth13"
+                swift_replication_interface: "eth14"
+                provision_interface: "eth8"
+                ironic_dnsmasq_interface: "eth9"
+                dns_interface: "eth5"
+                tunnel_interface: "eth10"
+                kolla_external_vip_interface: "eth1"
+                neutron_external_interface: "eth6,eth7"
+                neutron_bridge_name: "br0,br1"
+              test-compute: |
+                ---
+                ansible_host: "1.2.3.6"
+                network_interface: "eth0"
+                api_interface: "eth2"
+                storage_interface: "eth3"
+                tunnel_interface: "eth6"
+                neutron_external_interface: "eth4,eth5"
+                neutron_bridge_name: "br0,br1"
+
+      always:
+        - name: Ensure the temporary directory is removed
+          file:
+            path: "{{ temp_path }}"
+            state: absent
+
+        - name: Refresh the inventory
+          meta: refresh_inventory
+      rescue:
+        - name: Flag that a failure occurred
+          set_fact:
+            test_failures: "{{ test_failures | default(0) | int + 1 }}"
+      vars:
+        temp_path: "{{ tempfile_result.path }}"

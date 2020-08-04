@@ -36,8 +36,7 @@
   become: True
   with_items:
     - "{{ kolla_config_path }}"
-    - "{{ kolla_seed_inventory_path }}/host_vars"
-    - "{{ kolla_overcloud_inventory_path }}/host_vars"
+    - "{{ kolla_seed_inventory_path }}"
     - "{{ kolla_overcloud_inventory_path }}/group_vars"
     - "{{ kolla_node_custom_config_path }}"
 
@@ -55,18 +54,6 @@
     dest: "{{ kolla_seed_inventory_path }}/hosts"
     mode: 0640
 
-- name: Ensure the Kolla seed host vars files exist
-  template:
-    src: host-vars.j2
-    dest: "{{ kolla_seed_inventory_path }}/host_vars/{{ host }}"
-    mode: 0640
-  with_inventory_hostnames: "seed"
-  vars:
-    host_vars: "{{ kolla_seed_inventory_pass_through_host_vars }}"
-    host_vars_map: "{{ kolla_seed_inventory_pass_through_host_vars_map }}"
-  loop_control:
-    loop_var: host
-
 - name: Ensure the Kolla overcloud inventory file exists
   copy:
     content: "{{ kolla_overcloud_inventory }}"
@@ -83,18 +70,6 @@
     src: "{{ kolla_overcloud_group_vars_path }}"
     dest: "{{ kolla_overcloud_inventory_path }}/"
   when: kolla_ansible_custom_overcloud_group_vars.stat.exists
-
-- name: Ensure the Kolla overcloud host vars files exist
-  template:
-    src: host-vars.j2
-    dest: "{{ kolla_overcloud_inventory_path }}/host_vars/{{ host }}"
-    mode: 0640
-  with_inventory_hostnames: "{{ kolla_overcloud_top_level_groups }}"
-  vars:
-    host_vars: "{{ kolla_overcloud_inventory_pass_through_host_vars }}"
-    host_vars_map: "{{ kolla_overcloud_inventory_pass_through_host_vars_map }}"
-  loop_control:
-    loop_var: host
 
 - name: Ensure the Kolla passwords file exists
   vars:

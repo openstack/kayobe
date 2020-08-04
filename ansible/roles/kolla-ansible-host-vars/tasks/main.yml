@@ -1,0 +1,15 @@
+---
+- name: Ensure the Kolla Ansible host vars directory exists
+  file:
+    path: "{{ kolla_ansible_inventory_path }}/host_vars"
+    state: directory
+    mode: 0750
+  run_once: true
+  delegate_to: localhost
+
+- name: Ensure the Kolla Ansible host vars file exists
+  template:
+    src: host-vars.j2
+    dest: "{{ kolla_ansible_inventory_path }}/host_vars/{{ inventory_hostname }}"
+    mode: 0640
+  delegate_to: localhost
