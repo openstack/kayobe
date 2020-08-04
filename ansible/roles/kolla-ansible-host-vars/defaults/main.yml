@@ -1,0 +1,12 @@
+---
+# List of names of host variables to pass through from kayobe hosts to
+# kolla-ansible hosts.
+kolla_ansible_pass_through_host_vars:
+
+# Dict mapping names of variables in kolla_ansible_pass_through_host_vars to
+# the variable to use in kolla-ansible. If a variable name is not in this
+# mapping the kayobe name is used.
+kolla_ansible_pass_through_host_vars_map:
+
+# Path to the Kolla Ansible inventory.
+kolla_ansible_inventory_path:

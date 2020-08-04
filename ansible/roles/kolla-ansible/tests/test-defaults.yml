@@ -131,9 +131,7 @@
             path: "{{ temp_path ~ '/etc/kolla/inventory/' ~ item }}"
           with_items:
             - seed
-            - seed/host_vars
             - overcloud
-            - overcloud/host_vars
             - overcloud/group_vars
           register: inventory_stat
 
