@@ -1,0 +1,12 @@
+---
+- name: Restart docker-registry container
+  docker_container:
+    name: "{{ item.value.container_name }}"
+    state: started
+    restart: True
+    # NOTE: The image argument shouldn't be required, but without it this
+    # handler fails on Ansible 2.3. Related bug:
+    # https://github.com/ansible/ansible/issues/21188.
+    image: "{{ item.value.image }}"
+  with_dict: "{{ docker_registry_services }}"
+  when: item.value.enabled

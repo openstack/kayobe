@@ -14,5 +14,6 @@ Configuration Guide
    kolla-ansible
    bifrost
    ironic-python-agent
+   docker-registry
    seed-custom-containers
    nova-cells

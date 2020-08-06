@@ -17,18 +17,23 @@ docker_registry_enabled: true
 # pull through cache.
 docker_registry_env: {}
 
+# Dict of environment variables to provide to the docker registry container
+# when TLS is enabled.
+docker_registry_env_tls:
+  REGISTRY_HTTP_TLS_CERTIFICATE: "{{ docker_registry_config_path }}/cert.pem"
+  REGISTRY_HTTP_TLS_KEY: "{{ docker_registry_config_path }}/key.pem"
+
 # Service deployment definition.
 docker_registry_services:
   docker_registry:
     container_name: docker_registry
     env: "{{ docker_registry_env }}"
+    env: "{{ (docker_registry_env_tls if docker_registry_enable_tls | bool else {}) | combine(docker_registry_env) }}"
     enabled: "{{ docker_registry_enabled }}"
     image: "{{ docker_registry_image_full }}"
     ports:
       - "{{ docker_registry_port }}:5000"
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "{{ docker_registry_datadir_volume }}:/var/lib/registry"
+    volumes: "{{ docker_registry_volumes | select | list }}"
 
 # The port on which the docker registry server should listen.
 docker_registry_port: 5000
@@ -36,6 +41,18 @@ docker_registry_port: 5000
 # The name or path to use for the docker volume that backs the registry.
 # Defaults to ``docker_registry``.
 docker_registry_datadir_volume: docker_registry
+
+# Path in which to store docker registry configuration.
+docker_registry_config_path: "/etc/docker/registry"
+
+# Whether to enable TLS for the registry.
+docker_registry_enable_tls: false
+
+# Path to a TLS certificate to use when TLS is enabled.
+docker_registry_cert_path:
+
+# Path to a TLS key to use when TLS is enabled.
+docker_registry_key_path:
 
 ####################
 # Docker
@@ -46,6 +63,12 @@ docker_registry_namespace: ""
 docker_registry_image: "{{ docker_registry_namespace ~ '/' if docker_registry_namespace else '' }}registry"
 docker_registry_tag: "latest"
 docker_registry_image_full: "{{ docker_registry_image }}:{{ docker_registry_tag }}"
+
+# List of volumes to be mounted to the docker registry container.
+docker_registry_volumes:
+  - "/etc/localtime:/etc/localtime:ro"
+  - "{{ docker_registry_datadir_volume }}:/var/lib/registry"
+  - "{% if docker_registry_enable_tls | bool %}{{ docker_registry_config_path }}:{{ docker_registry_config_path }}:ro{% endif %}"
 
 docker_registry_restart_policy: "unless-stopped"
 #docker_registry_restart_retries:

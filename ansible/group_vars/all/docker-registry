@@ -21,3 +21,12 @@ docker_registry_port: 4000
 
 # Name or path to use as the volume for the docker registry.
 docker_registry_datadir_volume: docker_registry
+
+# Whether to enable TLS for the registry.
+docker_registry_enable_tls: false
+
+# Path to a TLS certificate to use when TLS is enabled.
+docker_registry_cert_path:
+
+# Path to a TLS key to use when TLS is enabled.
+docker_registry_key_path:

@@ -1,3 +1,4 @@
 ---
+- import_tasks: config.yml
 - include_tasks: pull.yml
 - include_tasks: deploy.yml
