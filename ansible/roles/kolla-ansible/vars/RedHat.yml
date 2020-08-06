@@ -8,3 +8,4 @@ kolla_ansible_package_dependencies:
   - python-devel
   - python-pip
   - python-virtualenv
+  - libselinux-python

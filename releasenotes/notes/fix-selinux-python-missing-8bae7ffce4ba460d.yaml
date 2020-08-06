@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an issue seen when ``libselinux-python`` is not installed on the
+    Ansible control host. See `story 2007703
+    <https://storyboard.openstack.org/#!/story/2007703>`__ for details.
