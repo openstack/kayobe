@@ -353,6 +353,15 @@ kolla_extra_mariadb:
 kolla_enable_manila:
 
 ###############################################################################
+# Masakari configuration.
+
+# Whether to enable Masakari.
+kolla_enable_masakari:
+
+# Free form extra configuration to append to masakari.conf.
+kolla_extra_masakari:
+
+###############################################################################
 # Monasca configuration.
 
 # Whether to enable Monasca.

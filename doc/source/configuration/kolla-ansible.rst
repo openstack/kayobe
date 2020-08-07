@@ -544,6 +544,8 @@ which files are supported.
    ``manila.conf``                 Manila configuration.
    ``manila/*``                    Extended manila configuration.
    ``mariadb/*``                   Extended MariaDB configuration.
+   ``masakari.conf``               Masakari configuration.
+   ``masakari/*``                  Extended masakari configuration.
    ``monasca/*``                   Extended Monasca configuration.
    ``murano.conf``                 Murano configuration.
    ``murano/*``                    Extended murano configuration.

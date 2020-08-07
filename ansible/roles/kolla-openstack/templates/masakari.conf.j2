@@ -1,0 +1,10 @@
+# {{ ansible_managed }}
+
+{% if kolla_extra_masakari %}
+#######################
+# Extra configuration
+#######################
+
+{{ kolla_extra_masakari }}
+{% endif %}
+

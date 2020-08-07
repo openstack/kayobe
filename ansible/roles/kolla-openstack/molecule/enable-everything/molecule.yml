@@ -89,6 +89,10 @@ provisioner:
         kolla_extra_mariadb: |
           [extra-galera.cnf]
           foo=bar
+        kolla_enable_masakari: true
+        kolla_extra_masakari: |
+          [extra-masakari.conf]
+          foo=bar
         kolla_enable_monasca: true
         kolla_enable_murano: true
         kolla_extra_murano: |
