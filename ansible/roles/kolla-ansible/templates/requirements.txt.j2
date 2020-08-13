@@ -7,7 +7,7 @@ kolla-ansible=={{ kolla_openstack_release }}
 {% endif %}
 # Limit the version of ansible used by kolla-ansible to avoid new releases from
 # breaking tested code. Changes to this limit should be tested.
-ansible>=2.6,<2.9,!=2.8.9
+ansible>=2.6,<2.9,!=2.8.9,!=2.8.14
 {% if ansible_os_family == 'RedHat' and ansible_distribution_major_version | int >= 8 %}
 selinux
 {% endif %}
