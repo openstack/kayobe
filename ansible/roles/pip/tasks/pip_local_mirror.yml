@@ -23,7 +23,9 @@
   copy:
     content: |
       [global]
+      {% if pip_index_url | length > 0 -%}
       index-url = {{ pip_index_url }}
+      {% endif -%}
       {% if pip_trusted_hosts | length > 0 -%}
       trusted-host =
         {% for host in pip_trusted_hosts | unique -%}
@@ -40,6 +42,7 @@
       [easy_install]
       index-url = {{ pip_index_url }}
     dest: "~{{ user}}/.pydistutils.cfg"
+  when: pip_index_url | length > 0
   become: True
   become_user: "{{ user }}"
 
