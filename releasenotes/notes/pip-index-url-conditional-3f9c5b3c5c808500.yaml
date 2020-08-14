@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fixes generation of pip configuration when using a pip proxy without
+    a local mirror.
