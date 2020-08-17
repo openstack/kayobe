@@ -9,6 +9,11 @@
 #         the destination, and will not be removed from the destination, even
 #         if disabled or unexpected.
 kolla_openstack_custom_config:
+  # Aodh.
+  - src: "{{ kolla_extra_config_path }}/aodh"
+    dest: "{{ kolla_node_custom_config_path }}/aodh"
+    patterns: "*"
+    enabled: "{{ kolla_enable_aodh }}"
   # Barbican.
   - src: "{{ kolla_extra_config_path }}/barbican"
     dest: "{{ kolla_node_custom_config_path }}/barbican"

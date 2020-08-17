@@ -12,6 +12,15 @@ kolla_node_custom_config_path: /etc/kolla/config
 kolla_extra_global:
 
 ###############################################################################
+# Aodh configuration.
+
+# Whether to enable Aodh.
+kolla_enable_aodh:
+
+# Free form extra configuration to append to aodh.conf.
+kolla_extra_aodh:
+
+###############################################################################
 # Barbican configuration.
 
 # Whether to enable Barbican.
