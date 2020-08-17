@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds support for configuring ``ethtool`` options on physical network
+    interfaces. See `story 2008020
+    <https://storyboard.openstack.org/#!/story/2008020>`__ for details.
