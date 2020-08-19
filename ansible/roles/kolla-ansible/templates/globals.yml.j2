@@ -356,7 +356,7 @@ enable_{{ feature_flag }}: {{ hostvars[inventory_hostname]['kolla_enable_' ~ fea
 ########################
 #nova_backend_ceph: "{% raw %}{{ enable_ceph }}{% endraw %}"
 
-# Valid options are [ qemu, kvm, vmware, xenapi ]
+# Valid options are [ qemu, kvm, vmware ]
 #nova_compute_virt_type: "kvm"
 
 # The number of fake driver per compute node
@@ -473,15 +473,6 @@ ironic_inspector_kernel_cmdline_extras:
 #vmware_datastore_name:
 #vmware_vcenter_name:
 #vmware_vcenter_cluster_name:
-
-#######################################
-# XenAPI - Support XenAPI for XenServer
-#######################################
-# XenAPI driver use HIMN(Host Internal Management Network)
-# to communicate with XenServer host.
-#xenserver_himn_ip:
-#xenserver_username:
-#xenserver_connect_protocol:
 
 ############
 # Prometheus
