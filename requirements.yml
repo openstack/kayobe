@@ -5,7 +5,7 @@
   # There are no versioned releases of this role.
   version: 8438592c84585c86e62ae07e526d3da53629b377
 - src: MichaelRigart.interfaces
-  version: v1.6.0
+  version: v1.8.1
 - src: mrlesmithjr.manage-lvm
   version: v0.1.4
 - src: mrlesmithjr.mdadm

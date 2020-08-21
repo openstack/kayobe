@@ -321,6 +321,11 @@ The following attributes are supported:
     For bond interfaces, the xmit_hash_policy to use for the bond.
 ``bond_lacp_rate``
     For bond interfaces, the lacp_rate to use for the bond.
+``ethtool_opts``
+    Physical network interface options to apply with ``ethtool``. When used on
+    bond and bridge interfaces, settings apply to underlying interfaces. This
+    should be a string of arguments passed to the ``ethtool`` utility, for
+    example ``"-G ${DEVICE} rx 8192 tx 8192"``.
 
 IP Addresses
 ------------
