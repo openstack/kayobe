@@ -1,12 +1,13 @@
 ---
-- name: Create local .pip directory for {{ user }}
+- name: Create local .pip directory
   file:
-    path: "~{{ user }}/.pip"
+    path: "~{{ item }}/.pip"
     state: directory
   become: True
-  become_user: "{{ user }}"
+  become_user: "{{ item }}"
+  loop: "{{ pip_applicable_users }}"
 
-- name: Create pip.conf for {{ user }}
+- name: Create pip.conf
   copy:
     content: |
       [global]
@@ -19,16 +20,18 @@
         {{ host }}
         {% endfor -%}
       {% endif -%}
-    dest: "~{{ user}}/.pip/pip.conf"
+    dest: "~{{ item }}/.pip/pip.conf"
   become: True
-  become_user: "{{ user }}"
+  become_user: "{{ item }}"
+  loop: "{{ pip_applicable_users }}"
 
-- name: Create .pydistutils.cfg for {{ user }}
+- name: Create .pydistutils.cfg
   copy:
     content: |
       [easy_install]
       index-url = {{ pip_index_url }}
-    dest: "~{{ user}}/.pydistutils.cfg"
+    dest: "~{{ item }}/.pydistutils.cfg"
   when: pip_index_url | length > 0
   become: True
-  become_user: "{{ user }}"
+  become_user: "{{ item }}"
+  loop: "{{ pip_applicable_users }}"
