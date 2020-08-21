@@ -90,6 +90,7 @@
     path: "{{ item.0.item.dest }}/{{ item.1.path | relpath(item.0.item.src) | dirname }}"
     recurse: true
     state: directory
+    mode: 0750
   with_subelements:
     - "{{ find_src_result.results }}"
     - files
