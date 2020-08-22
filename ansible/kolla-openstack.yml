@@ -104,6 +104,7 @@
             mime: False
           register: stat_result
           with_items:
+            - { name: aodh, file: aodh.conf }
             - { name: blazar, file: blazar.conf }
             - { name: ceilometer, file: ceilometer.conf }
             - { name: cinder, file: cinder.conf }
@@ -212,6 +213,7 @@
         auth_type: none
         endpoint_override: "http://{% raw %}{{ api_interface_address }}{% endraw %}:{{ inspector_store_port }}"
       # Extra free-form user-provided configuration.
+      kolla_extra_aodh: "{{ kolla_extra_config.aodh | default }}"
       kolla_extra_blazar: "{{ kolla_extra_config.blazar | default }}"
       kolla_extra_ceilometer: "{{ kolla_extra_config.ceilometer | default }}"
       kolla_extra_cinder: "{{ kolla_extra_config.cinder | default }}"
