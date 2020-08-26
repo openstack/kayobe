@@ -317,11 +317,11 @@ class TestCase(unittest.TestCase):
                     utils.get_data_files_path("ansible", "ssh-known-host.yml"),
                     utils.get_data_files_path(
                         "ansible", "kayobe-ansible-user.yml"),
+                    utils.get_data_files_path("ansible", "dnf.yml"),
                     utils.get_data_files_path("ansible", "pip.yml"),
                     utils.get_data_files_path(
                         "ansible", "kayobe-target-venv.yml"),
                     utils.get_data_files_path("ansible", "users.yml"),
-                    utils.get_data_files_path("ansible", "dnf.yml"),
                     utils.get_data_files_path("ansible", "dev-tools.yml"),
                     utils.get_data_files_path("ansible", "network.yml"),
                     utils.get_data_files_path("ansible", "sysctl.yml"),
@@ -485,11 +485,11 @@ class TestCase(unittest.TestCase):
                     utils.get_data_files_path("ansible", "ssh-known-host.yml"),
                     utils.get_data_files_path(
                         "ansible", "kayobe-ansible-user.yml"),
+                    utils.get_data_files_path("ansible", "dnf.yml"),
                     utils.get_data_files_path("ansible", "pip.yml"),
                     utils.get_data_files_path(
                         "ansible", "kayobe-target-venv.yml"),
                     utils.get_data_files_path("ansible", "users.yml"),
-                    utils.get_data_files_path("ansible", "dnf.yml"),
                     utils.get_data_files_path("ansible", "dev-tools.yml"),
                     utils.get_data_files_path(
                         "ansible", "disable-selinux.yml"),
@@ -1003,11 +1003,11 @@ class TestCase(unittest.TestCase):
                     utils.get_data_files_path("ansible", "ssh-known-host.yml"),
                     utils.get_data_files_path(
                         "ansible", "kayobe-ansible-user.yml"),
+                    utils.get_data_files_path("ansible", "dnf.yml"),
                     utils.get_data_files_path("ansible", "pip.yml"),
                     utils.get_data_files_path(
                         "ansible", "kayobe-target-venv.yml"),
                     utils.get_data_files_path("ansible", "users.yml"),
-                    utils.get_data_files_path("ansible", "dnf.yml"),
                     utils.get_data_files_path("ansible", "dev-tools.yml"),
                     utils.get_data_files_path(
                         "ansible", "disable-selinux.yml"),
