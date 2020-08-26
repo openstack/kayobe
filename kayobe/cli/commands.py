@@ -332,11 +332,11 @@ class SeedHypervisorHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
     * Allocate IP addresses for all configured networks.
     * Add the host to SSH known hosts.
     * Configure a user account for use by kayobe for SSH access.
+    * Configure package repos.
+    * Configure a PyPI mirror.
     * Optionally, create a virtualenv for remote target hosts.
     * Optionally, wipe unmounted disk partitions (--wipe-disks).
     * Configure user accounts, group associations, and authorised SSH keys.
-    * Configure a PyPI mirror.
-    * Configure Yum repos.
     * Configure the host's network interfaces.
     * Set sysctl parameters.
     * Configure NTP.
@@ -373,11 +373,11 @@ class SeedHypervisorHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
 
         playbooks = _build_playbook_list(
             "ssh-known-host", "kayobe-ansible-user",
-            "pip", "kayobe-target-venv")
+            "yum", "dnf", "pip", "kayobe-target-venv")
         if parsed_args.wipe_disks:
             playbooks += _build_playbook_list("wipe-disks")
         playbooks += _build_playbook_list(
-            "users", "yum", "dnf", "dev-tools", "network", "sysctl", "ntp",
+            "users", "dev-tools", "network", "sysctl", "ntp",
             "mdadm", "lvm", "seed-hypervisor-libvirt-host")
         self.run_kayobe_playbooks(parsed_args, playbooks,
                                   limit="seed-hypervisor")
@@ -485,11 +485,11 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     * Allocate IP addresses for all configured networks.
     * Add the host to SSH known hosts.
     * Configure a user account for use by kayobe for SSH access.
+    * Configure package repos.
+    * Configure a PyPI mirror.
     * Optionally, create a virtualenv for remote target hosts.
     * Optionally, wipe unmounted disk partitions (--wipe-disks).
     * Configure user accounts, group associations, and authorised SSH keys.
-    * Configure a PyPI mirror.
-    * Configure Yum repos.
     * Disable SELinux.
     * Configure the host's network interfaces.
     * Set sysctl parameters.
@@ -540,11 +540,11 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         # Run kayobe playbooks.
         playbooks = _build_playbook_list(
             "ssh-known-host", "kayobe-ansible-user",
-            "pip", "kayobe-target-venv")
+            "yum", "dnf", "pip", "kayobe-target-venv")
         if parsed_args.wipe_disks:
             playbooks += _build_playbook_list("wipe-disks")
         playbooks += _build_playbook_list(
-            "users", "yum", "dnf", "dev-tools", "disable-selinux", "network",
+            "users", "dev-tools", "disable-selinux", "network",
             "sysctl", "ip-routing", "snat", "disable-glean", "ntp", "mdadm",
             "lvm", "docker-devicemapper")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed")
@@ -887,11 +887,11 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     * Allocate IP addresses for all configured networks.
     * Add the host to SSH known hosts.
     * Configure a user account for use by kayobe for SSH access.
+    * Configure package repos.
+    * Configure a PyPI mirror.
     * Optionally, create a virtualenv for remote target hosts.
     * Optionally, wipe unmounted disk partitions (--wipe-disks).
     * Configure user accounts, group associations, and authorised SSH keys.
-    * Configure a PyPI mirror.
-    * Configure Yum repos.
     * Disable SELinux.
     * Configure the host's network interfaces.
     * Set sysctl parameters.
@@ -940,11 +940,11 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         # Kayobe playbooks.
         playbooks = _build_playbook_list(
             "ssh-known-host", "kayobe-ansible-user",
-            "pip", "kayobe-target-venv")
+            "yum", "dnf", "pip", "kayobe-target-venv")
         if parsed_args.wipe_disks:
             playbooks += _build_playbook_list("wipe-disks")
         playbooks += _build_playbook_list(
-            "users", "yum", "dnf", "dev-tools", "disable-selinux", "network",
+            "users", "dev-tools", "disable-selinux", "network",
             "sysctl", "disable-glean", "disable-cloud-init", "ntp", "mdadm",
             "lvm", "docker-devicemapper")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")

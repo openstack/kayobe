@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fix an issue when dnf proxy is set and python3-pip package fails during
+    host configure.
