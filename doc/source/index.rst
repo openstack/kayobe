@@ -20,17 +20,13 @@ how.
 
 .. include:: ../../README.rst
 
-Documentation
-=============
-
-.. include:: getting-started.rst
-
 Contents
 ========
 
 .. toctree::
    :maxdepth: 2
 
+   getting-started
    architecture
    support-matrix
    installation
