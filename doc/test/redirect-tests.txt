@@ -1,0 +1,25 @@
+# This file contains tests for redirects to handle existing URLs for
+# specs that have been moved. See
+# https://docs.openstack.org/whereto/latest/ for details.
+
+# No redirect.
+/ 200
+/kayobe 200
+/kayobe/latest 200
+/kayobe/latest/configuration/ 200
+/kayobe/latest/configuration/index.html 200
+/kayobe/latest/configuration/reference/index.html 200
+
+# Moved /kayobe/latest/configuration/*.html to /kayobe/latest/configuration/reference/
+/kayobe/latest/configuration/ansible.html 301 /kayobe/latest/configuration/reference/ansible.html
+/kayobe/latest/configuration/bifrost.html 301 /kayobe/latest/configuration/reference/bifrost.html
+/kayobe/latest/configuration/docker-registry.html 301 /kayobe/latest/configuration/reference/docker-registry.html
+/kayobe/latest/configuration/hosts.html 301 /kayobe/latest/configuration/reference/hosts.html
+/kayobe/latest/configuration/ironic-python-agent.html 301 /kayobe/latest/configuration/reference/ironic-python-agent.html
+/kayobe/latest/configuration/kayobe.html 301 /kayobe/latest/configuration/reference/kayobe.html
+/kayobe/latest/configuration/kolla-ansible.html 301 /kayobe/latest/configuration/reference/kolla-ansible.html
+/kayobe/latest/configuration/kolla.html 301 /kayobe/latest/configuration/reference/kolla.html
+/kayobe/latest/configuration/network.html 301 /kayobe/latest/configuration/reference/network.html
+/kayobe/latest/configuration/nova-cells.html 301 /kayobe/latest/configuration/reference/nova-cells.html
+/kayobe/latest/configuration/physical-network.html 301 /kayobe/latest/configuration/reference/physical-network.html
+/kayobe/latest/configuration/seed-custom-containers.html 301 /kayobe/latest/configuration/reference/seed-custom-containers.html
