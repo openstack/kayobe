@@ -1,0 +1,8 @@
+---
+fixes:
+  - |
+    Changes the value of ``OS_ENDPOINT_TYPE``, ``OS_MANILA_ENDPOINT_TYPE``, and
+    ``OS_MISTRAL_ENDPOINT_TYPE`` in ``public-openrc.sh`` to use ``publicURL``,
+    which should fix issues with legacy CLI tools on hosts without access to
+    the internal API. See `story 2007950
+    <https://storyboard.openstack.org/#!/story/2007950>`__ for details.
