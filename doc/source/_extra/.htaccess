@@ -1,0 +1,14 @@
+# The following redirects were added when configuration/* was moved to
+# configuration/reference/*.
+redirectmatch 301 ^/([^/]+/[^/]+)/configuration/ansible.html$	/$1/configuration/reference/ansible.html
+redirectmatch 301 ^/([^/]+/[^/]+)/configuration/bifrost.html$	/$1/configuration/reference/bifrost.html
+redirectmatch 301 ^/([^/]+/[^/]+)/configuration/docker-registry.html$	/$1/configuration/reference/docker-registry.html
+redirectmatch 301 ^/([^/]+/[^/]+)/configuration/hosts.html$	/$1/configuration/reference/hosts.html
+redirectmatch 301 ^/([^/]+/[^/]+)/configuration/ironic-python-agent.html$	/$1/configuration/reference/ironic-python-agent.html
+redirectmatch 301 ^/([^/]+/[^/]+)/configuration/kayobe.html$	/$1/configuration/reference/kayobe.html
+redirectmatch 301 ^/([^/]+/[^/]+)/configuration/kolla-ansible.html$	/$1/configuration/reference/kolla-ansible.html
+redirectmatch 301 ^/([^/]+/[^/]+)/configuration/kolla.html$	/$1/configuration/reference/kolla.html
+redirectmatch 301 ^/([^/]+/[^/]+)/configuration/network.html$	/$1/configuration/reference/network.html
+redirectmatch 301 ^/([^/]+/[^/]+)/configuration/nova-cells.html$	/$1/configuration/reference/nova-cells.html
+redirectmatch 301 ^/([^/]+/[^/]+)/configuration/physical-network.html$	/$1/configuration/reference/physical-network.html
+redirectmatch 301 ^/([^/]+/[^/]+)/configuration/seed-custom-containers.html$	/$1/configuration/reference/seed-custom-containers.html
