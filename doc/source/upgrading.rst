@@ -31,6 +31,7 @@ particular, the following options may need to be changed if not using their
 default values:
 
 * ``kolla_openstack_release``
+* ``kolla_tag``
 * ``kolla_sources``
 * ``kolla_build_blocks``
 * ``kolla_build_customizations``
