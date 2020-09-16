@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # Usage: run this script and copy the output to etc/kayobe/kolla.yml
 
