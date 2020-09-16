@@ -198,11 +198,13 @@ def net_interface_obj(context, name, inventory_hostname=None):
             "Network interface for network '%s' on host '%s' not found" %
             (name, inventory_hostname))
     ip = net_ip(context, name, inventory_hostname)
-    if ip is None:
-        ip = '0.0.0.0'
     cidr = net_cidr(context, name, inventory_hostname)
     netmask = net_mask(context, name, inventory_hostname)
     gateway = net_gateway(context, name, inventory_hostname)
+    if ip is None:
+        ip = ''
+        gateway = None
+        netmask = None
     vlan = net_vlan(context, name, inventory_hostname)
     mtu = net_mtu(context, name, inventory_hostname)
     routes = net_routes(context, name, inventory_hostname)
@@ -244,11 +246,13 @@ def net_bridge_obj(context, name, inventory_hostname=None):
             "Network interface for network '%s' on host '%s' not found" %
             (name, inventory_hostname))
     ip = net_ip(context, name, inventory_hostname)
-    if ip is None:
-        ip = '0.0.0.0'
     cidr = net_cidr(context, name, inventory_hostname)
     netmask = net_mask(context, name, inventory_hostname)
     gateway = net_gateway(context, name, inventory_hostname)
+    if ip is None:
+        ip = ''
+        gateway = None
+        netmask = None
     vlan = net_vlan(context, name, inventory_hostname)
     mtu = net_mtu(context, name, inventory_hostname)
     ports = net_bridge_ports(context, name, inventory_hostname)
@@ -292,11 +296,13 @@ def net_bond_obj(context, name, inventory_hostname=None):
             "Network interface for network '%s' on host '%s' not found" %
             (name, inventory_hostname))
     ip = net_ip(context, name, inventory_hostname)
-    if ip is None:
-        ip = '0.0.0.0'
     cidr = net_cidr(context, name, inventory_hostname)
     netmask = net_mask(context, name, inventory_hostname)
     gateway = net_gateway(context, name, inventory_hostname)
+    if ip is None:
+        ip = ''
+        gateway = None
+        netmask = None
     vlan = net_vlan(context, name, inventory_hostname)
     mtu = net_mtu(context, name, inventory_hostname)
     mode = net_bond_mode(context, name, inventory_hostname)

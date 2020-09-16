@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes issues when network interfaces are configured without IP addresses.
+    See `story 2007900 <https://storyboard.openstack.org/#!/story/2007900>`__
+    for details.
