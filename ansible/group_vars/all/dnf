@@ -1,27 +1,24 @@
 ---
-# NOTE(mgoddard): Use Yum configuration for defaults for backwards
-# compatibility.
-
 # Yum configuration. Dict mapping Yum config option names to their values.
 # dnf_config:
 #   proxy: http://proxy.example.com
-dnf_config: "{{ yum_config }}"
+dnf_config: {}
 
 # Whether or not to use a local Yum mirror. Default value is 'false'.
-dnf_use_local_mirror: "{{ yum_use_local_mirror }}"
+dnf_use_local_mirror: false
 
 # Mirror FQDN for Yum repos. Default value is 'mirror.centos.org'.
-dnf_centos_mirror_host: "{{ yum_centos_mirror_host }}"
+dnf_centos_mirror_host: 'mirror.centos.org'
 
 # Mirror directory for Yum CentOS repos. Default value is 'centos'.
-dnf_centos_mirror_directory: "{{ yum_centos_mirror_directory }}"
+dnf_centos_mirror_directory: 'centos'
 
 # Mirror FQDN for Yum EPEL repos. Default value is
 # 'download.fedoraproject.org'.
-dnf_epel_mirror_host: "{{ yum_epel_mirror_host }}"
+dnf_epel_mirror_host: 'download.fedoraproject.org'
 
 # Mirror directory for Yum EPEL repos. Default value is 'pub/epel'.
-dnf_epel_mirror_directory: "{{ yum_epel_mirror_directory }}"
+dnf_epel_mirror_directory: 'pub/epel'
 
 # A dict of custom repositories.
 # You can see params on
@@ -33,20 +30,18 @@ dnf_epel_mirror_directory: "{{ yum_epel_mirror_directory }}"
 #     file: myrepo
 #     gpgkey: http://gpgkey
 #     gpgcheck: yes
-dnf_custom_repos: "{{ yum_custom_repos }}"
+dnf_custom_repos: {}
 
 # Whether to install the epel-release package. This affects RedHat-based
 # systems only. Default value is 'true'.
-dnf_install_epel: "{{ yum_install_epel }}"
+dnf_install_epel: true
 
 ###############################################################################
 # DNF Automatic configuration.
 
 # Whether DNF Automatic is enabled. This can be used to regularly apply
 # security updates. Default value is 'false'.
-dnf_automatic_enabled: "{{ yum_cron_enabled }}"
+dnf_automatic_enabled: false
 
-# DNF Automatic upgrade type. Default value is 'security'. Note that the
-# equivalent yum-cron variable is named slightly differently -
-# yum_automatic_update_cmd.
-dnf_automatic_upgrade_type: "{{ yum_cron_update_cmd }}"
+# DNF Automatic upgrade type. Default value is 'security'.
+dnf_automatic_upgrade_type: 'security'
