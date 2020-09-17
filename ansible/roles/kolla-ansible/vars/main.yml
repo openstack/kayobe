@@ -160,6 +160,7 @@ kolla_feature_flags:
   - neutron_dvr
   - neutron_infoblox_ipam_agent
   - neutron_metering
+  - neutron_mlnx
   - neutron_port_forwarding
   - neutron_provider_networks
   - neutron_qos
