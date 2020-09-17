@@ -208,9 +208,7 @@ Package Repositories
   | ``dnf``
 
 Kayobe supports configuration of package repositories via DNF, via variables in
-``${KAYOBE_CONFIG_PATH}/dnf.yml``. For backwards compatibility, all variables
-in this section starting with ``dnf_`` default to the equivalently named Yum
-variable starting with ``yum_``.
+``${KAYOBE_CONFIG_PATH}/dnf.yml``.
 
 Configuration of dnf.conf
 -------------------------

@@ -1,0 +1,10 @@
+---
+upgrade:
+  - |
+    The Yum configuration variables in ``yum.yml`` which were deprecated in the
+    Ussuri release have been removed.  Adapt any configuration overrides to use
+    the DNF variables in ``dnf.yml`` instead.
+  - |
+    The yum-cron configuration variables in ``yum-cron.yml`` which were
+    deprecated in the Ussuri release have been removed. Adapt any configuration
+    overrides to use the DNF Automatic variables in ``dnf.yml``.
