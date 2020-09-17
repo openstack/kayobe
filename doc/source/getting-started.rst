@@ -5,7 +5,7 @@ We advise new users start by reading the :doc:`Architecture <architecture>`
 documentation first in order to understand Kayobe's various components.
 
 For users wishing to learn interactively we recommend starting at either
-the :doc:`all-in-one overcloud <development/automated>` deployment or
+the :doc:`all-in-one overcloud <contributor/automated>` deployment or
 the :ref:`'A Universe From Nothing' <a-universe-from-nothing>`
 deployment guide.
 
@@ -26,5 +26,5 @@ and then :doc:`Deployment <deployment>` to deploy to it.
 * :doc:`Administration <administration/index>` - Post-deploy administration
   tasks
 * :doc:`Resources <resources>` - External links to Kayobe resources
-* :doc:`Development <development/index>` - Deploying Kayobe development
-  environments
+* :doc:`Contributor <contributor/index>` - Contributing to Kayobe and deploying
+  Kayobe development environments

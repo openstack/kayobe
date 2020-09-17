@@ -15,7 +15,7 @@ understanding and using Kayobe.
 
 This documentation is maintained at opendev.org
 `here <https://opendev.org/openstack/kayobe.git>`_. Feedback and contributions
-welcome, see :doc:`contributing <development/contributing>` for information on
+welcome, see :doc:`contributing <contributor/contributing>` for information on
 how.
 
 .. include:: ../../README.rst
@@ -53,11 +53,3 @@ Contributor Guide
    :maxdepth: 2
 
    contributor/index
-
-Developer Documentation
------------------------
-
-.. toctree::
-   :maxdepth: 2
-
-   development/index

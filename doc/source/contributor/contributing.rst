@@ -105,4 +105,4 @@ Project Team Lead Duties
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 All common PTL duties are enumerated in the `PTL guide <https://docs.openstack.org/project-team-guide/ptl.html>`_.
-Release tasks are described in the :doc:`Kayobe releases guide <../development/releases>`.
+Release tasks are described in the :doc:`Kayobe releases guide <releases>`.
