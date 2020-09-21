@@ -17,6 +17,9 @@ kolla_extra_global:
 # Whether to enable Barbican.
 kolla_enable_barbican:
 
+# Free form extra configuration to append to barbican.conf.
+kolla_extra_barbican:
+
 ###############################################################################
 # Blazar configuration.
 

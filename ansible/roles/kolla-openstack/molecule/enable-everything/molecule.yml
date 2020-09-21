@@ -14,6 +14,10 @@ provisioner:
     group_vars:
       all:
         kolla_extra_config_path:
+        kolla_enable_barbican: true
+        kolla_extra_barbican: |
+          [extra-barbican.conf]
+          foo=bar
         kolla_enable_blazar: true
         kolla_extra_blazar: |
           [extra-blazar.conf]

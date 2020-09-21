@@ -27,7 +27,8 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 
 @pytest.mark.parametrize(
     'path',
-    ['ceph',
+    ['barbican',
+     'ceph',
      'cinder',
      'cloudkitty',
      'designate',
@@ -61,7 +62,8 @@ def test_service_config_directory(host, path):
 
 @pytest.mark.parametrize(
     'path',
-    ['ceph.conf',
+    ['barbican.conf',
+     'ceph.conf',
      'cinder.conf',
      'cloudkitty.conf',
      'designate.conf',
