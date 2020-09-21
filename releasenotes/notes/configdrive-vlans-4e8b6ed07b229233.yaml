@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an issue with the seed's configdrive when the admin network is a
+    VLAN. See `story 2008089
+    <https://storyboard.openstack.org/#!/story/2008089>`__ for details.
