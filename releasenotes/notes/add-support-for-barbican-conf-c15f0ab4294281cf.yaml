@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Adds support for a custom Barbican configuration file (``barbican.conf``),
+    as only extended configuration stored under a ``barbican`` folder was
+    supported.
