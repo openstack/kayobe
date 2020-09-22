@@ -225,6 +225,32 @@ OpenStack services. This is not usually advisable in production.
    ---
    kolla_openstack_logging_debug: true
 
+API Addresses
+-------------
+
+.. note::
+
+   These variables should be used over the deprecated ``vip_address`` and
+   ``fqdn`` `network attributes <configuration-network-global>`
+
+The following variables affect the addresses used for the external and internal
+API.
+
+``kolla_internal_vip_address``
+    Virtual IP address of OpenStack internal API. Default is the
+    ``vip_address`` attribute of the internal network.
+``kolla_internal_fqdn``
+    Fully Qualified Domain Name (FQDN) of OpenStack internal API. Default is
+    the ``fqdn`` attribute of the internal network if set, otherwise
+    ``kolla_internal_vip_address``.
+``kolla_external_vip_address``
+    Virtual IP address of OpenStack external API. Default is the
+    ``vip_address`` attribute of the external network.
+``kolla_external_fqdn``
+    Fully Qualified Domain Name (FQDN) of OpenStack external API. Default is
+    the ``fqdn`` attribute of the external network if set, otherwise
+    ``kolla_external_vip_address``.
+
 TLS Encryption of APIs
 ----------------------
 
