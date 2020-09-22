@@ -7,7 +7,7 @@ bashate>=0.2 # Apache-2.0
 coverage>=4.0 # Apache-2.0
 doc8 # Apache-2.0
 docker<3 # Apache-2.0
-hacking>=3.0,<3.1.0 # Apache-2.0
+hacking>=3.0.1,<3.1.0 # Apache-2.0
 molecule<3 # MIT
 oslotest>=1.10.0 # Apache-2.0
 # paramiko 2.5.0 makes the kayobe-tox-molecule job fail.
