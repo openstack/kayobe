@@ -1,4 +1,4 @@
-.. _development-vagrant:
+.. _contributor-vagrant:
 
 =======
 Vagrant

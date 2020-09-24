@@ -12,3 +12,7 @@ redirectmatch 301 ^/([^/]+/[^/]+)/configuration/network.html$	/$1/configuration/
 redirectmatch 301 ^/([^/]+/[^/]+)/configuration/nova-cells.html$	/$1/configuration/reference/nova-cells.html
 redirectmatch 301 ^/([^/]+/[^/]+)/configuration/physical-network.html$	/$1/configuration/reference/physical-network.html
 redirectmatch 301 ^/([^/]+/[^/]+)/configuration/seed-custom-containers.html$	/$1/configuration/reference/seed-custom-containers.html
+
+# The following redirects were added when development/* was moved to
+# contributor/*.
+redirectmatch 301 ^/([^/]+/[^/]+)/development/([^/]+).html$ /$1/contributor/$2.html

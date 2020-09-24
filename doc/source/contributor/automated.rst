@@ -1,4 +1,4 @@
-.. _development-automated:
+.. _contributor-automated:
 
 ===============
 Automated Setup
@@ -7,7 +7,7 @@ Automated Setup
 This section provides information on the development tools provided by kayobe
 to automate the deployment of various development environments.
 
-For a manual procedure, see :ref:`development-manual`.
+For a manual procedure, see :ref:`contributor-manual`.
 
 Overview
 ========
@@ -56,7 +56,7 @@ Clone the ``kayobe-config-dev`` repository to ``config/src/kayobe-config``::
 Inspect the kayobe configuration and make any changes necessary for your
 environment.
 
-If using Vagrant, follow the steps in :ref:`development-vagrant` to prepare
+If using Vagrant, follow the steps in :ref:`contributor-vagrant` to prepare
 your environment for use with Vagrant and bring up a Vagrant VM.
 
 If not using Vagrant, the default development configuration expects the
@@ -168,13 +168,13 @@ It is possible to test an upgrade from a previous release by running the
 
     ./dev/overcloud-upgrade.sh
 
-.. _development-automated-seed:
+.. _contributor-automated-seed:
 
 Seed
 ====
 
 These instructions cover deploying the seed services directly rather than in a
-VM. See :ref:`development-automated-seed-vm` for instructions covering
+VM. See :ref:`contributor-automated-seed-vm` for instructions covering
 deployment of the seed services in a VM.
 
 Preparation
@@ -255,7 +255,7 @@ The machines and networking created by Tenks can be cleaned up via
 
     ./dev/tenks-teardown-overcloud.sh ./tenks
 
-.. _development-automated-seed-hypervisor:
+.. _contributor-automated-seed-hypervisor:
 
 Seed Hypervisor
 ===============
@@ -308,13 +308,13 @@ hypervisor::
 
 Upon successful completion of this script, the seed hypervisor will be active.
 
-.. _development-automated-seed-vm:
+.. _contributor-automated-seed-vm:
 
 Seed VM
 =======
 
 The seed VM should be deployed on a system configured as a libvirt/KVM
-hypervisor, using :ref:`development-automated-seed-hypervisor` or otherwise.
+hypervisor, using :ref:`contributor-automated-seed-hypervisor` or otherwise.
 
 Preparation
 -----------

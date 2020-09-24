@@ -1,4 +1,4 @@
-.. _development-manual:
+.. _contributor-manual:
 
 ============
 Manual Setup
@@ -8,12 +8,12 @@ This section provides a set of manual steps to set up a development environment
 for an OpenStack controller in a virtual machine using `Vagrant
 <https://www.vagrantup.com/>`_ and Kayobe.
 
-For a more automated and flexible procedure, see :ref:`development-automated`.
+For a more automated and flexible procedure, see :ref:`contributor-automated`.
 
 Preparation
 ===========
 
-Follow the steps in :ref:`development-vagrant` to prepare your environment for
+Follow the steps in :ref:`contributor-vagrant` to prepare your environment for
 use with Vagrant and bring up a Vagrant VM.
 
 Manual Installation

@@ -13,4 +13,10 @@ We welcome everyone to join our project!
    :maxdepth: 1
 
    contributing
+   development
+   vagrant
+   manual
+   automated
+   testing
    release-notes
+   releases

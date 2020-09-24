@@ -23,3 +23,7 @@
 /kayobe/latest/configuration/nova-cells.html 301 /kayobe/latest/configuration/reference/nova-cells.html
 /kayobe/latest/configuration/physical-network.html 301 /kayobe/latest/configuration/reference/physical-network.html
 /kayobe/latest/configuration/seed-custom-containers.html 301 /kayobe/latest/configuration/reference/seed-custom-containers.html
+
+# Moved /kayobe/latest/development/*.html to /kayobe/latest/contributor/
+/kayobe/latest/development/automated.html 301 /kayobe/latest/contributor/automated.html
+/kayobe/latest/development/index.html 301 /kayobe/latest/contributor/index.html
