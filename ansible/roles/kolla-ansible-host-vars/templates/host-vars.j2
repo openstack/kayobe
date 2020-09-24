@@ -1,0 +1,7 @@
+---
+{% for hv_name in kolla_ansible_pass_through_host_vars %}
+{% set host_hv=hostvars[inventory_hostname] %}
+{% if hv_name in host_hv %}
+{{ kolla_ansible_pass_through_host_vars_map.get(hv_name, hv_name) }}: {{ host_hv[hv_name] | to_json }}
+{% endif %}
+{% endfor %}

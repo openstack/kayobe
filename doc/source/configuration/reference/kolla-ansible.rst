@@ -380,6 +380,86 @@ to enable debug logging for Nova services:
    ---
    nova_logging_debug: true
 
+Host variables
+--------------
+
+Kayobe generates a host_vars file for each host in the Kolla Ansible
+inventory. These contain network interfaces and other host-specific
+things.
+
+``kolla_seed_inventory_pass_through_host_vars``
+    List of names of host variables to pass through from kayobe hosts to the
+    Kolla Ansible seed host, if set. See also
+    ``kolla_seed_inventory_pass_through_host_vars_map``. The default is:
+
+    .. code-block:: yaml
+
+       kolla_seed_inventory_pass_through_host_vars:
+         - "ansible_host"
+         - "ansible_port"
+         - "ansible_ssh_private_key_file"
+         - "kolla_api_interface"
+         - "kolla_bifrost_network_interface"
+
+``kolla_seed_inventory_pass_through_host_vars_map``
+    Dict mapping names of variables in
+    ``kolla_seed_inventory_pass_through_host_vars`` to the variable to use in
+    Kolla Ansible. If a variable name is not in this mapping the kayobe name is
+    used. The default is:
+
+    .. code-block:: yaml
+
+       kolla_seed_inventory_pass_through_host_vars_map:
+         kolla_api_interface: "api_interface"
+         kolla_bifrost_network_interface: "bifrost_network_interface"
+
+``kolla_overcloud_inventory_pass_through_host_vars``
+    List of names of host variables to pass through from Kayobe hosts to
+    Kolla Ansible hosts, if set. See also
+    ``kolla_overcloud_inventory_pass_through_host_vars_map``. The default is:
+
+    .. code-block:: yaml
+
+       kolla_overcloud_inventory_pass_through_host_vars:
+         - "ansible_host"
+         - "ansible_port"
+         - "ansible_ssh_private_key_file"
+         - "kolla_network_interface"
+         - "kolla_api_interface"
+         - "kolla_storage_interface"
+         - "kolla_cluster_interface"
+         - "kolla_swift_storage_interface"
+         - "kolla_swift_replication_interface"
+         - "kolla_provision_interface"
+         - "kolla_inspector_dnsmasq_interface"
+         - "kolla_dns_interface"
+         - "kolla_tunnel_interface"
+         - "kolla_external_vip_interface"
+         - "kolla_neutron_external_interfaces"
+         - "kolla_neutron_bridge_names"
+
+``kolla_overcloud_inventory_pass_through_host_vars_map``
+    Dict mapping names of variables in
+    ``kolla_overcloud_inventory_pass_through_host_vars`` to the variable to use
+    in Kolla Ansible. If a variable name is not in this mapping the Kayobe name
+    is used. The default is:
+
+    .. code-block:: yaml
+
+       kolla_overcloud_inventory_pass_through_host_vars_map:
+         kolla_network_interface: "network_interface"
+         kolla_api_interface: "api_interface"
+         kolla_storage_interface: "storage_interface"
+         kolla_cluster_interface: "cluster_interface"
+         kolla_swift_storage_interface: "swift_storage_interface"
+         kolla_swift_replication_interface: "swift_replication_interface"
+         kolla_provision_interface: "provision_interface"
+         kolla_inspector_dnsmasq_interface: "ironic_dnsmasq_interface"
+         kolla_dns_interface: "dns_interface"
+         kolla_tunnel_interface: "tunnel_interface"
+         kolla_neutron_external_interfaces: "neutron_external_interface"
+         kolla_neutron_bridge_names: "neutron_bridge_name"
+
 Custom Group Variables
 ----------------------
 
