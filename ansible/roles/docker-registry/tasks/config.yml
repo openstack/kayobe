@@ -7,7 +7,9 @@
     group: "{{ ansible_user_gid }}"
     mode: 0750
   become: True
-  when: docker_registry_enable_tls | bool
+  when: >-
+    docker_registry_enable_tls | bool or
+    docker_registry_enable_basic_auth | bool
 
 - name: Ensure TLS certificate exists
   copy:
@@ -30,5 +32,17 @@
     mode: 0600
   become: True
   when: docker_registry_enable_tls | bool
+  notify:
+    - Restart docker-registry container
+
+- name: Ensure basic auth htpasswd file exists
+  copy:
+    src: "{{ docker_registry_basic_auth_htpasswd_path }}"
+    dest: "{{ docker_registry_config_path }}/htpasswd"
+    owner: "{{ ansible_user_uid }}"
+    group: "{{ ansible_user_gid }}"
+    mode: 0600
+  become: True
+  when: docker_registry_enable_basic_auth | bool
   notify:
     - Restart docker-registry container

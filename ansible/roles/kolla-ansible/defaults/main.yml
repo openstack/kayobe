@@ -164,9 +164,6 @@ kolla_docker_registry:
 # Username to use to access a docker registry.
 kolla_docker_registry_username:
 
-# Password to use to access a docker registry.
-kolla_docker_registry_password:
-
 # Valid option is Docker repository tag
 kolla_openstack_release:
 

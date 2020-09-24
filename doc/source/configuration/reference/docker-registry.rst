@@ -59,6 +59,43 @@ may be encrypted via Ansible Vault.
    docker_registry_cert_path: "{{ kayobe_config_path }}/docker-registry/cert.pem
    docker_registry_key_path: "{{ kayobe_config_path }}/docker-registry/key.pem
 
+Basic authentication
+--------------------
+
+It is recommended to enable HTTP basic authentication for the registry. This
+needs to be done in conjunction with enabling TLS for the registry: `using
+basic authentication over unencrypted HTTP is not supported
+<https://docs.docker.com/registry/deploying/#native-basic-auth>`__.
+
+``docker_registry_enable_basic_auth``
+    Whether to enable basic authentication for the registry. Default is
+    ``false``.
+
+``docker_registry_basic_auth_htpasswd_path``
+    Path to a `htpasswd
+    <https://httpd.apache.org/docs/2.4/programs/htpasswd.html>`__ formatted
+    password store for the registry.  Default is none.
+
+The password store uses a ``htpasswd`` format. The following example shows how
+to generate a password and add it to the ``kolla`` user in the password store.
+The password store may be stored with the Kayobe configuration, under
+``${KAYOBE_CONFIG_PATH}/docker-registry/``. The file may be encrypted via
+Ansible Vault.
+
+.. code-block:: console
+
+   uuidgen | tr -d '\n' > registry-password
+   cat registry-password | docker run --rm -i --entrypoint htpasswd httpd:latest -niB kolla > $KAYOBE_CONFIG_PATH/docker-registry/htpasswd
+
+Next we configure Kayobe to enable basic authentication for the registry, and
+specify the path to the password store.
+
+.. code-block:: yaml
+   :caption: ``docker-registry.yml``
+
+   docker_registry_enable_basic_auth: true
+   docker_registry_basic_auth_htpasswd_path: "{{ kayobe_config_path }}/docker-registry/htpasswd"
+
 Using the registry
 ==================
 
@@ -80,3 +117,15 @@ communicate with it:
    :caption: ``kolla/globals.yml``
 
    docker_registry_insecure: false
+
+Basic authentication
+--------------------
+
+If basic authentication is enabled, Kolla Ansible needs to be configured with
+the username and password.
+
+.. code-block:: yaml
+   :caption: ``kolla.yml``
+
+   kolla_docker_registry_username: <registry username>
+   kolla_docker_registry_password: <registry password>

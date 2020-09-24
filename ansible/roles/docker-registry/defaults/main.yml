@@ -23,12 +23,22 @@ docker_registry_env_tls:
   REGISTRY_HTTP_TLS_CERTIFICATE: "{{ docker_registry_config_path }}/cert.pem"
   REGISTRY_HTTP_TLS_KEY: "{{ docker_registry_config_path }}/key.pem"
 
+# Dict of environment variables to provide to the docker registry container
+# when basic authentication is enabled.
+docker_registry_env_basic_auth:
+  REGISTRY_AUTH: htpasswd
+  REGISTRY_AUTH_HTPASSWD_REALM: "Registry realm"
+  REGISTRY_AUTH_HTPASSWD_PATH: "{{ docker_registry_config_path }}/htpasswd"
+
 # Service deployment definition.
 docker_registry_services:
   docker_registry:
     container_name: docker_registry
-    env: "{{ docker_registry_env }}"
-    env: "{{ (docker_registry_env_tls if docker_registry_enable_tls | bool else {}) | combine(docker_registry_env) }}"
+    env: >-
+     {{ {} |
+        combine(docker_registry_env_tls if docker_registry_enable_tls | bool else {}) |
+        combine(docker_registry_env_basic_auth if docker_registry_enable_basic_auth | bool else {}) |
+        combine(docker_registry_env) }}
     enabled: "{{ docker_registry_enabled }}"
     image: "{{ docker_registry_image_full }}"
     ports:
@@ -54,6 +64,12 @@ docker_registry_cert_path:
 # Path to a TLS key to use when TLS is enabled.
 docker_registry_key_path:
 
+# Whether to enable basic authentication for the registry.
+docker_registry_enable_basic_auth: false
+
+# Path to a htpasswd formatted password store for the registry.
+docker_registry_basic_auth_htpasswd_path:
+
 ####################
 # Docker
 ####################
@@ -68,7 +84,7 @@ docker_registry_image_full: "{{ docker_registry_image }}:{{ docker_registry_tag 
 docker_registry_volumes:
   - "/etc/localtime:/etc/localtime:ro"
   - "{{ docker_registry_datadir_volume }}:/var/lib/registry"
-  - "{% if docker_registry_enable_tls | bool %}{{ docker_registry_config_path }}:{{ docker_registry_config_path }}:ro{% endif %}"
+  - "{% if docker_registry_enable_tls | bool or docker_registry_enable_basic_auth | bool %}{{ docker_registry_config_path }}:{{ docker_registry_config_path }}:ro{% endif %}"
 
 docker_registry_restart_policy: "unless-stopped"
 #docker_registry_restart_retries:
