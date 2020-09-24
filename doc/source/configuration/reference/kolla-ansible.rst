@@ -585,6 +585,7 @@ which files are supported.
    ``aodh.conf``                   Aodh configuration.
    ``aodh/*``                      Extended Aodh configuration.
    ``backup.my.cnf``               Mariabackup configuration.
+   ``barbican.conf``               Barbican configuration.
    ``barbican/*``                  Extended Barbican configuration.
    ``blazar.conf``                 Blazar configuration.
    ``blazar/*``                    Extended Blazar configuration.

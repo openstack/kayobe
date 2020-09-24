@@ -14,6 +14,7 @@
     mode: 0640
   with_items:
     - { src: aodh.conf.j2, dest: aodh.conf, enabled: "{{ kolla_enable_aodh }}" }
+    - { src: barbican.conf.j2, dest: barbican.conf, enabled: "{{ kolla_enable_barbican }}" }
     - { src: blazar.conf.j2, dest: blazar.conf, enabled: "{{ kolla_enable_blazar }}" }
     - { src: ceilometer.conf.j2, dest: ceilometer.conf, enabled: "{{ kolla_enable_ceilometer }}" }
     - { src: cinder.conf.j2, dest: cinder.conf, enabled: "{{ kolla_enable_cinder }}" }
