@@ -15,11 +15,11 @@ provision_oc_net_name: 'provision_oc_net'
 
 # Name of the network used by the overcloud hosts to manage the bare metal
 # compute hosts via their out-of-band management controllers.
-oob_wl_net_name: 'oob_wl_net'
+oob_wl_net_name: "{{ 'oob_wl_net' if kolla_enable_ironic | bool else None }}"
 
 # Name of the network used by the overcloud hosts to provision the bare metal
 # workload hosts.
-provision_wl_net_name: 'provision_wl_net'
+provision_wl_net_name: "{{ 'provision_wl_net' if kolla_enable_ironic | bool else None }}"
 
 # Name of the network used to expose the internal OpenStack API endpoints.
 internal_net_name: 'internal_net'
@@ -57,7 +57,7 @@ swift_storage_replication_net_name: "{{ storage_mgmt_net_name }}"
 
 # Name of the network used to perform hardware introspection on the bare metal
 # workload hosts.
-inspection_net_name: 'inspection_net'
+inspection_net_name: "{{ 'inspection_net' if kolla_enable_ironic | bool else None }}"
 
 # Name of the network used to perform cleaning on the bare metal workload
 # hosts
