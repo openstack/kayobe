@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    Ironic is now disabled by default in the overcloud. This brings Kayobe's
+    default set of services into line with Kolla Ansible. For environments
+    using Ironic in the overcloud, set ``kolla_enable_ironic`` to ``true`` in
+    ``kolla.yml``.
