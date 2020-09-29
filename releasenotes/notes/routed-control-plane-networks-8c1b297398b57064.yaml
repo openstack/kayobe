@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Adds initial support for routed control plane networks. This feature allows
+    scaling clouds beyond the limit of a single broadcast domain or subnet. See
+    `story 2008180 <https://storyboard.openstack.org/#!/story/2008180>`__ for
+    details.

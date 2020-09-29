@@ -225,6 +225,8 @@ OpenStack services. This is not usually advisable in production.
    ---
    kolla_openstack_logging_debug: true
 
+.. _configuration-kolla-ansible-api-addresses:
+
 API Addresses
 -------------
 

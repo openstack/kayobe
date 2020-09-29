@@ -12,6 +12,7 @@ options.
    ansible
    physical-network
    network
+   routed-control-plane-networks
    hosts
    kolla
    kolla-ansible
