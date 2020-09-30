@@ -120,8 +120,6 @@ dnf_custom_repos:
     baseurl: http://packages.treasuredata.com/3/redhat/$releasever/$basearch
     gpgkey: https://packages.treasuredata.com/GPG-KEY-td-agent
     gpgcheck: yes
-# Don't install EPEL repositories.
-dnf_install_epel: false
 # Enable DNF Automatic.
 dnf_automatic_enabled: true
 {% endif %}

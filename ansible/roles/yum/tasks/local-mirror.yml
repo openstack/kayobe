@@ -26,6 +26,7 @@
     name: epel-release
     state: present
   become: True
+  when: yum_install_epel | bool
 
 - name: Template | Copy EPEL repo templates (CentOS)
   template:
@@ -35,9 +36,11 @@
     group: root
     mode: 0664
   become: True
+  when: yum_install_epel | bool
 
 - name: Yum | Update cache (CentOS)
   yum:
     name: '*'
     update_cache: yes
   become: True
+  when: yum_install_epel | bool
