@@ -26,10 +26,3 @@ pip_index_url: "http://{{ zuul_site_mirror_fqdn }}/pypi/simple"
 # are using for SSH to be removed. Use a dummy interface.
 aio_bridge_ports:
   - dummy1
-
-# FIXME(mgoddard): Ironic has an issue where nodes will be switched to use the
-# direct deploy interface during upgrade, if it is enabled. This should be
-# fixed via https://review.opendev.org/755295, after which this configuration
-# may be removed.
-kolla_ironic_enabled_deploy_interfaces:
-  - iscsi
