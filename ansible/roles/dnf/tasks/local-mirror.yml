@@ -38,9 +38,11 @@
   loop:
     - epel.repo
     - epel-modular.repo
+  when: dnf_install_epel | bool
 
 - name: Update cache
   dnf:
     name: []
     update_cache: yes
   become: True
+  when: dnf_install_epel | bool
