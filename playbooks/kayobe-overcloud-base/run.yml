@@ -2,6 +2,7 @@
 - hosts: primary
   environment:
     KAYOBE_CONFIG_SOURCE_PATH: "{{ kayobe_config_src_dir }}"
+    KAYOBE_OVERCLOUD_GENERATE_CERTIFICATES: "{{ tls_enabled | ternary(1, 0) }}"
   tasks:
     - name: Ensure overcloud is deployed
       shell:

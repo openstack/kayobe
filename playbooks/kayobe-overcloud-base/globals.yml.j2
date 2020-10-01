@@ -1,0 +1,17 @@
+---
+# Most development environments will use nested virtualisation, and we can't
+# guarantee that nested KVM support is available. Use QEMU as a lowest common
+# denominator.
+nova_compute_virt_type: qemu
+
+# Reduce the control plane's memory footprint by limiting the number of worker
+# processes to one per-service.
+openstack_service_workers: "1"
+
+{% if tls_enabled %}
+# TLS
+kolla_copy_ca_into_containers: "yes"
+kolla_enable_tls_backend: "yes"
+openstack_cacert: "/etc/pki/tls/certs/ca-bundle.crt"
+kolla_admin_openrc_cacert: "{% raw %}{{ '{{' }} kolla_certificates_dir }}{% endraw %}/ca/root.crt"
+{% endif %}

@@ -77,6 +77,7 @@
       requirements_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/requirements'].src_dir }}"
       tenks_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/tenks'].src_dir }}"
       is_upgrade: "{{ 'upgrade' in zuul.job }}"
+      tls_enabled: false
 
 - job:
     name: kayobe-overcloud-base
@@ -92,6 +93,17 @@
 - job:
     name: kayobe-overcloud-centos8
     parent: kayobe-overcloud-base
+    nodeset: kayobe-centos8
+
+- job:
+    name: kayobe-overcloud-tls-base
+    parent: kayobe-overcloud-base
+    vars:
+      tls_enabled: true
+
+- job:
+    name: kayobe-overcloud-tls-centos8
+    parent: kayobe-overcloud-tls-base
     nodeset: kayobe-centos8
 
 - job:

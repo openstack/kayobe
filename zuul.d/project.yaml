@@ -11,6 +11,7 @@
         - kayobe-tox-ansible
         - kayobe-tox-molecule
         - kayobe-overcloud-centos8
+        - kayobe-overcloud-tls-centos8
         - kayobe-overcloud-host-configure-centos8
         - kayobe-overcloud-upgrade-centos8
         - kayobe-seed-centos8
@@ -24,6 +25,7 @@
         - kayobe-tox-ansible
         - kayobe-tox-molecule
         - kayobe-overcloud-centos8
+        - kayobe-overcloud-tls-centos8
         - kayobe-overcloud-host-configure-centos8
         - kayobe-overcloud-upgrade-centos8
         - kayobe-seed-centos8
