@@ -63,24 +63,6 @@ kolla_seed_inventory_custom:
 # Directory containing custom Kolla-Ansible group vars.
 kolla_overcloud_group_vars_path:
 
-# List of names of host variables to pass through from kayobe hosts to
-# the kolla-ansible seed host, if set. See also
-# kolla_seed_inventory_pass_through_host_vars_map.
-kolla_seed_inventory_pass_through_host_vars:
-  - "ansible_host"
-  - "ansible_port"
-  - "ansible_ssh_private_key_file"
-  - "kolla_api_interface"
-  - "kolla_bifrost_network_interface"
-
-# Dict mapping names of variables in
-# kolla_seed_inventory_pass_through_host_vars to the variable to use in
-# kolla-ansible. If a variable name is not in this mapping the kayobe name is
-# used.
-kolla_seed_inventory_pass_through_host_vars_map:
-  kolla_api_interface: "api_interface"
-  kolla_bifrost_network_interface: "bifrost_network_interface"
-
 # Custom overcloud inventory containing a mapping from top level groups to
 # hosts.
 kolla_overcloud_inventory_custom_top_level:
@@ -106,49 +88,6 @@ kolla_overcloud_inventory_top_level_group_map: {}
 # List of names of top level kolla-ansible groups. Any of these groups which
 # have no hosts mapped to them will be provided with an empty group definition.
 kolla_overcloud_inventory_kolla_top_level_groups: []
-
-# List of names of host variables to pass through from kayobe hosts to
-# kolla-ansible hosts, if set. See also
-# kolla_overcloud_inventory_pass_through_host_vars_map.
-kolla_overcloud_inventory_pass_through_host_vars:
-  - "ansible_host"
-  - "ansible_port"
-  - "ansible_ssh_private_key_file"
-  - "kolla_network_interface"
-  - "kolla_api_interface"
-  - "kolla_storage_interface"
-  - "kolla_cluster_interface"
-  - "kolla_ceph_storage_interface"
-  - "kolla_ceph_cluster_interface"
-  - "kolla_swift_storage_interface"
-  - "kolla_swift_replication_interface"
-  - "kolla_provision_interface"
-  - "kolla_inspector_dnsmasq_interface"
-  - "kolla_dns_interface"
-  - "kolla_tunnel_interface"
-  - "kolla_external_vip_interface"
-  - "kolla_neutron_external_interfaces"
-  - "kolla_neutron_bridge_names"
-
-# Dict mapping names of variables in
-# kolla_seed_inventory_pass_through_host_vars to the variable to use in
-# kolla-ansible. If a variable name is not in this mapping the kayobe name is
-# used.
-kolla_overcloud_inventory_pass_through_host_vars_map:
-  kolla_network_interface: "network_interface"
-  kolla_api_interface: "api_interface"
-  kolla_storage_interface: "storage_interface"
-  kolla_cluster_interface: "cluster_interface"
-  kolla_ceph_storage_interface: "ceph_storage_interface"
-  kolla_ceph_cluster_interface: "ceph_cluster_interface"
-  kolla_swift_storage_interface: "swift_storage_interface"
-  kolla_swift_replication_interface: "swift_replication_interface"
-  kolla_provision_interface: "provision_interface"
-  kolla_inspector_dnsmasq_interface: "ironic_dnsmasq_interface"
-  kolla_dns_interface: "dns_interface"
-  kolla_tunnel_interface: "tunnel_interface"
-  kolla_neutron_external_interfaces: "neutron_external_interface"
-  kolla_neutron_bridge_names: "neutron_bridge_name"
 
 ###############################################################################
 # Kolla-ansible global configuration options.
