@@ -25,6 +25,9 @@ pip_index_url: "http://{{ zuul_site_mirror_fqdn }}/pypi/simple"
 aio_bridge_ports:
   - dummy1
 
+# Enable ironic for testing baremetal compute.
+kolla_enable_ironic: true
+
 {% if tls_enabled %}
 kolla_enable_tls_external: "yes"
 kolla_enable_tls_internal: "yes"
