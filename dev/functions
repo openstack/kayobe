@@ -204,6 +204,11 @@ function is_deploy_image_built_locally {
     [[ $ipa_build_images =~ ^true$ ]]
 }
 
+function is_ironic_enabled {
+    ironic_enabled=$(kayobe configuration dump --host controllers[0] --var-name kolla_enable_ironic)
+    [[ $ironic_enabled =~ ^true$ ]]
+}
+
 function environment_setup {
     # NOTE: Virtualenv's activate script references an unbound variable.
     set +u
@@ -447,16 +452,28 @@ function overcloud_test_init {
     # This guards init-runonce from running more than once
     if mkdir /tmp/init-runonce > /dev/null 2>&1; then
         echo "Running kolla-ansible init-runonce"
-        # Don't create an external network, since it conflicts with the ironic
-        # provision-net.
-        export ENABLE_EXT_NET=0
+        if is_ironic_enabled; then
+            # Don't create an external network, since it conflicts with the
+            # ironic provision-net.
+            export ENABLE_EXT_NET=${ENABLE_EXT_NET:-0}
+        else
+            # Use the all-in-one network as the external network. There is
+            # currently no option to avoid setting a gateway, so use the
+            # controller's IP.
+            export EXT_NET_CIDR="${EXT_NET_CIDR:-192.168.33.0/24}"
+            export EXT_NET_RANGE="${EXT_NET_RANGE:-start=192.168.33.31,end=192.168.33.127}"
+            export EXT_NET_GATEWAY="${EXT_NET_GATEWAY:-192.168.33.3}"
+        fi
         ${KOLLA_VENV_PATH:-$HOME/kolla-venv}/share/kolla-ansible/init-runonce
-        unset ENABLE_EXT_NET
 
-        # Allow provision-net to be used as an external network for floating IPs.
-        # Note: a provisioning network would not normally be external.
-        openstack network set provision-net --external
-        openstack router set demo-router --external-gateway provision-net
+        if is_ironic_enabled; then
+            unset ENABLE_EXT_NET
+            # Allow provision-net to be used as an external network for
+            # floating IPs.
+            # Note: a provisioning network would not normally be external.
+            openstack network set provision-net --external
+            openstack router set demo-router --external-gateway provision-net
+        fi
     else
         echo "Not running kolla-ansible init-runonce - resources exist"
     fi
@@ -493,7 +510,12 @@ function overcloud_test {
         ip=$(openstack server show "$name" -f value -c addresses | sed -e "s/${network}=//")
     else
         echo "$name: Attaching floating IP"
-        ip=$(openstack floating ip create provision-net -f value -c floating_ip_address)
+        if is_ironic_enabled; then
+            floating_net=provision-net
+        else
+            floating_net=public1
+        fi
+        ip=$(openstack floating ip create $floating_net -f value -c floating_ip_address)
         openstack server add floating ip ${name} ${ip}
     fi
     echo "$name: Waiting for ping and SSH access via ${ip}"
