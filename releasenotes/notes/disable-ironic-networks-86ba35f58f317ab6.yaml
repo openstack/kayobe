@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    The overcloud networks for Ironic (workload out-of-band, workload
+    provisioning, workload cleaning and workload inspection)
+    are now disabled by default if Ironic is not enabled.
