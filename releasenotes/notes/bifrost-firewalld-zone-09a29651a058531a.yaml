@@ -1,0 +1,16 @@
+---
+upgrade:
+  - |
+    Kayobe configures Bifrost to use the ``trusted`` zone of ``firewalld``,
+    ensuring that all services running on the seed host are accessible.
+    Deployments with stricter firewall policies can select another zone by
+    setting the ``kolla_bifrost_firewalld_internal_zone`` variable in
+    ``${KAYOBE_CONFIG_PATH}/bifrost.yml``. To avoid loss of connectivity to the
+    seed host, ensure that ``firewalld`` is already configured on the seed host
+    before deploying seed services.
+fixes:
+  - |
+    Fixes loss of connectivity to the seed host after deploying seed services,
+    when using a shared provisioning and admin network. This was caused by
+    Bifrost configuring ``firewalld`` to only allow Ironic traffic. Kayobe now
+    configures Bifrost to use the ``trusted`` zone, which allows all traffic.
