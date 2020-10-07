@@ -14,7 +14,7 @@ controller_network_interfaces: >
   {{ (controller_default_network_interfaces +
       controller_extra_network_interfaces +
       (controller_network_host_network_interfaces
-       if inventory_hostname in groups['network'] else [])) | reject('none') | unique | list }}
+       if inventory_hostname in groups['network'] else [])) | select | unique | list }}
 
 # List of default networks to which controller nodes are attached.
 controller_default_network_interfaces: >
@@ -26,7 +26,7 @@ controller_default_network_interfaces: >
       storage_net_name,
       ceph_storage_net_name,
       swift_storage_net_name,
-      cleaning_net_name] | reject('none') | unique | list }}
+      cleaning_net_name] | select | unique | list }}
 
 # List of extra networks to which controller nodes are attached.
 controller_extra_network_interfaces: []
@@ -35,7 +35,7 @@ controller_extra_network_interfaces: []
 controller_network_host_network_interfaces: >
   {{ ([public_net_name,
        tunnel_net_name] +
-      external_net_names) | reject('none') | unique | list }}
+      external_net_names) | select | unique | list }}
 
 ###############################################################################
 # Controller node BIOS configuration.

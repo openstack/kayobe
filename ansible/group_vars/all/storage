@@ -20,14 +20,14 @@ storage_network_interfaces: >
       ([swift_storage_net_name]
        if storage_needs_swift_network else []) +
       ([swift_storage_replication_net_name]
-       if storage_needs_swift_replication_network else [])) | reject('none') | unique | list }}
+       if storage_needs_swift_replication_network else [])) | select | unique | list }}
 
 # List of default networks to which storage nodes are attached.
 storage_default_network_interfaces: >
   {{ [admin_oc_net_name,
       internal_net_name,
       storage_mgmt_net_name,
-      storage_net_name] | reject('none') | unique | list }}
+      storage_net_name] | select | unique | list }}
 
 # List of extra networks to which storage nodes are attached.
 storage_extra_network_interfaces: []
