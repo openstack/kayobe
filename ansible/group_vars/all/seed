@@ -103,5 +103,13 @@ seed_users: "{{ users_default }}"
 ###############################################################################
 # Seed node additional containers configuration
 
-# List of additional containers to deploy
+# Dict of container images to start
+# Example:
+# seed_containers:
+#   squid:
+#     name: "squid"
+#     image: "stackhpc/squid:3.5.20-1"
+#     pre: "{{ kayobe_config_path }}/containers/squid/pre.yml"
+#     post: "{{ kayobe_config_path }}/containers/squid/post.yml"
+#
 seed_containers: {}
