@@ -6,8 +6,8 @@ This section covers use of Kayobe on CentOS 8 in the Train release. From the
 ``7.1.0`` release, Kayobe supports both CentOS 7 and 8. However, CentOS 7 is
 used by default, and some configuration changes are required to use CentOS 8.
 
-Currently only greenfield deployments are covered here. Information about
-migrating from CentOS 7 to CentOS 8 will be provided soon.
+Currently this documentation focuses on greenfield deployments. More
+information about migrating from CentOS 7 to CentOS 8 will be provided soon.
 
 Container images
 ================
@@ -21,6 +21,8 @@ CentOS version Tag
 7              train
 8              train-centos8
 ============== =============
+
+.. _centos8_building_container_images:
 
 Building container images
 -------------------------
@@ -82,13 +84,58 @@ Seed VM
 =======
 
 By default, a CentOS 7 image is used to create the seed VM. This can be changed
-via ``seed_vm_root_image``. For example, to use the upstream CentOS 8.1 cloud
+via ``seed_vm_root_image``. For example, to use the upstream CentOS 8.2 cloud
 image:
 
 .. code-block:: yaml
    :caption: ``${KAYOBE_CONFIG_PATH}/seed-vm.yml``
 
    seed_vm_root_image: https://cloud.centos.org/centos/8/x86_64/images/CentOS-8-GenericCloud-8.2.2004-20200611.2.x86_64.qcow2
+
+Migrating a Seed VM to CentOS 8
+-------------------------------
+
+By default, a seed VM is provisioned with separate root and data libvirt
+volumes. If Docker volumes are stored on the data libvirt volume, a CentOS 7
+seed VM can be easily migrated to CentOS 8 using the following instructions.
+
+.. note::
+
+   Backing up the seed VM is strongly recommended before attempting the
+   migration. All data stored in the root libvirt volume will be lost.
+
+On the seed hypervisor, shut down the seed VM and delete its root libvirt
+volume, assuming that the seed VM is named ``seed`` and the libvirt storage
+pool for the seed VM is named ``default``.
+
+.. code-block:: console
+
+   $ sudo virsh shutdown seed
+   $ sudo virsh vol-delete seed-root --pool default
+
+Update ``seed_vm_root_image`` in ``${KAYOBE_CONFIG_PATH}/seed-vm.yml`` to point
+to a CentOS 8 image, as described earlier.
+
+Reprovision the seed VM and configure its host OS:
+
+.. code-block:: console
+
+   (kayobe) $ kayobe seed vm provision
+   (kayobe) $ kayobe seed host configure
+
+Update the Kayobe configuration to build container images based on CentOS 8, as
+described in :ref:`centos8_building_container_images`, and rebuild the bifrost
+image:
+
+.. code-block:: console
+
+   (kayobe) $ kayobe seed container image build bifrost-deploy
+
+Finally, redeploy Bifrost:
+
+.. code-block:: console
+
+   (kayobe) $ kayobe seed service deploy
 
 Ironic Python Agent (IPA)
 =========================
