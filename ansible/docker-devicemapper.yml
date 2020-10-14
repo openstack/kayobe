@@ -30,12 +30,12 @@
           check_mode: True
           register: devicemapper_docker
           when: docker_config_file.stat.exists
-        when: not docker.can_talk_to_docker
+        when: not (docker.can_talk_to_docker | default(true))
 
       - name: Fail if devicemapper is in use while another storage driver was requested
         fail:
           msg: "Docker storage driver {{ docker_storage_driver }} was requested, but devicemapper is in use"
-        when: (docker.can_talk_to_docker and docker.host_info.Driver == 'devicemapper') or (devicemapper_docker.found | default(0) == 1)
+        when: (docker.can_talk_to_docker | default(true) and docker.host_info.Driver == 'devicemapper') or (devicemapper_docker.found | default(0) == 1)
       when: docker_storage_driver != 'devicemapper'
 
     - name: Ensure Docker devicemapper storage is configured
