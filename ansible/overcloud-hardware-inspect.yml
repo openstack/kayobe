@@ -126,7 +126,7 @@
       register: show_result
       # Wait until the node is no longer in one of the inspecting states.
       until: not show_result.stdout_lines[1:] | intersect(inspecting_states)
-      retries: "{{ wait_inspected_timeout // wait_inspected_interval }}"
+      retries: "{{ wait_inspected_timeout | int // wait_inspected_interval | int }}"
       delay: "{{ wait_inspected_interval }}"
       when: wait_inspected | bool
       changed_when: False
