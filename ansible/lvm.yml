@@ -4,7 +4,7 @@
   tags:
     - lvm
     - upgrade-check
-  pre_tasks:
+  tasks:
     - name: Fail if the LVM physical disks have not been configured
       fail:
         msg: >
@@ -13,6 +13,7 @@
           has a valid 'disks' list.
       with_items: "{{ lvm_groups | default([]) }}"
       when: not item.disks | default([]) or 'changeme' in item.disks | default([])
+
     - name: Fail if the LVM physical disks are configured as a comma-separated string
       fail:
         msg: >
@@ -21,10 +22,14 @@
           each volume group in 'lvm_groups' has a valid 'disks' list.
       with_items: "{{ lvm_groups | default([]) }}"
       when: item.disks | string() == item.disks
-  roles:
-    - role: mrlesmithjr.manage-lvm
-      manage_lvm: True
-      become: True
+
+    - name: Ensure LVM configuration is applied
+      vars:
+        manage_lvm: True
+      include_role:
+        name: mrlesmithjr.manage-lvm
+        apply:
+          become: True
       when:
         - lvm_groups is defined
         - lvm_groups | length > 0
