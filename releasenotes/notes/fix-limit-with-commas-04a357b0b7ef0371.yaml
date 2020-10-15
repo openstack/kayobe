@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an issue when using the ``--limit`` argument with a host pattern
+    including commas. See `story 2008255
+    <https://storyboard.openstack.org/#!/story/2008255>`__ for details.
