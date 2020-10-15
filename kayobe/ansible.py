@@ -146,8 +146,8 @@ def build_args(parsed_args, playbooks,
     if check or (parsed_args.check and check is None):
         cmd += ["--check"]
     if not ignore_limit and (parsed_args.limit or limit):
-        limits = [l for l in [parsed_args.limit, limit] if l]
-        cmd += ["--limit", ":&".join(limits)]
+        limit_arg = utils.intersect_limits(parsed_args.limit, limit)
+        cmd += ["--limit", limit_arg]
     if parsed_args.skip_tags:
         cmd += ["--skip-tags", parsed_args.skip_tags]
     if parsed_args.tags or tags:
