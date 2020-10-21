@@ -9,6 +9,9 @@ used by default, and some configuration changes are required to use CentOS 8.
 Currently this documentation focuses on greenfield deployments. More
 information about migrating from CentOS 7 to CentOS 8 will be provided soon.
 
+See the :kolla-ansible-doc:`Kolla Ansible documentation <user/centos8>` for
+information on using CentOS 8.
+
 Container images
 ================
 
