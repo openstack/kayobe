@@ -6,6 +6,7 @@
     env: "{{ item.value.env }}"
     image: "{{ item.value.image }}"
     name: "{{ item.value.container_name }}"
+    network_mode: "{{ item.value.network_mode }}"
     ports: "{{ item.value.ports | default(omit) }}"
     privileged: "{{ item.value.privileged | default(omit) }}"
     read_only: "{{ item.value.read_only | default(omit) }}"

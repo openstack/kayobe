@@ -17,6 +17,11 @@ docker_registry_enabled: true
 # pull through cache.
 docker_registry_env: {}
 
+# Dict of environment variables setting a listen port for docker registry
+# container.
+docker_registry_env_listen:
+  REGISTRY_HTTP_ADDR: "0.0.0.0:{{ docker_registry_port }}"
+
 # Dict of environment variables to provide to the docker registry container
 # when TLS is enabled.
 docker_registry_env_tls:
@@ -38,11 +43,11 @@ docker_registry_services:
      {{ {} |
         combine(docker_registry_env_tls if docker_registry_enable_tls | bool else {}) |
         combine(docker_registry_env_basic_auth if docker_registry_enable_basic_auth | bool else {}) |
+        combine(docker_registry_env_listen) |
         combine(docker_registry_env) }}
     enabled: "{{ docker_registry_enabled }}"
     image: "{{ docker_registry_image_full }}"
-    ports:
-      - "{{ docker_registry_port }}:5000"
+    network_mode: host
     volumes: "{{ docker_registry_volumes | select | list }}"
 
 # The port on which the docker registry server should listen.

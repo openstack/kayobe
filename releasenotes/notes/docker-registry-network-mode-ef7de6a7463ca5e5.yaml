@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    The ``docker_registry`` network mode has been changed from ``bridge`` to
+    ``host`` for compatibility when Docker is prevented from manipulating iptables
+    (default behaviour in Wallaby).
