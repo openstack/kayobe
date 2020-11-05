@@ -35,7 +35,9 @@
     pre-run: playbooks/kayobe-tox-molecule/pre.yml
     timeout: 3600
     required-projects:
-      - openstack/requirements
+      - name: openstack/requirements
+        # TODO: remove after branching
+        override-checkout: stable/victoria
     vars:
       tox_envlist: molecule
     irrelevant-files:
@@ -56,8 +58,14 @@
       - name: openstack/kayobe
       - name: openstack/kayobe-config-dev
       - name: openstack/kolla
+        # TODO: remove after branching
+        override-checkout: stable/victoria
       - name: openstack/kolla-ansible
+        # TODO: remove after branching
+        override-checkout: stable/victoria
       - name: openstack/requirements
+        # TODO: remove after branching
+        override-checkout: stable/victoria
       - name: openstack/tenks
     irrelevant-files:
       - ^.*\.rst$
