@@ -7,12 +7,14 @@ Supported Operating Systems
 
 Kayobe supports the following host Operating Systems (OS):
 
+* CentOS 8
+
 .. note::
 
    CentOS 7 is no longer supported as a host OS. The Train release supports
-   both CentOS 7 and 8, and provides a route for migration.
-
-* CentOS 8
+   both CentOS 7 and 8, and provides a route for migration. See the `Kayobe
+   Train documentation <https://docs.openstack.org/kayobe/train/centos8.html>`_
+   for information on migrating to CentOS 8.
 
 Supported container images
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
