@@ -326,6 +326,8 @@ The following attributes are supported:
     bond and bridge interfaces, settings apply to underlying interfaces. This
     should be a string of arguments passed to the ``ethtool`` utility, for
     example ``"-G ${DEVICE} rx 8192 tx 8192"``.
+``zone``
+    The name of ``firewalld`` zone to be attached to network interface.
 
 IP Addresses
 ------------
