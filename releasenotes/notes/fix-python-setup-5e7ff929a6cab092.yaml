@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fixes an issue with Python setup when venv is not used. See `story 2008378
+    <https://storyboard.openstack.org/#!/story/2008378>`__ for details.
