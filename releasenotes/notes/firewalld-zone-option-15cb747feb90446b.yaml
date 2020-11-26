@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds support for configuring firewalld ``zone`` option on network interfaces. 
+    See `story 2008369
+    <https://storyboard.openstack.org/#!/story/2008369>`__ for details.
