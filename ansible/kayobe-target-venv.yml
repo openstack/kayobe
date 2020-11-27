@@ -89,7 +89,7 @@
               - python3-setuptools
               - python3-pip
           package:
-            name: "{{ packages | select }}"
+            name: "{{ packages | select | list }}"
             state: present
           become: True
       when: virtualenv is not defined
