@@ -119,7 +119,6 @@ kolla_feature_flags:
   - horizon_octavia
   - horizon_qinling
   - horizon_sahara
-  - horizon_searchlight
   - horizon_senlin
   - horizon_solum
   - horizon_tacker
@@ -187,7 +186,6 @@ kolla_feature_flags:
   - rally
   - redis
   - sahara
-  - searchlight
   - senlin
   - skydive
   - solum

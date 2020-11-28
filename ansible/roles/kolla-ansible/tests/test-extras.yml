@@ -169,7 +169,6 @@
             kolla_enable_panko: True
             kolla_enable_prometheus: True
             kolla_enable_rally: True
-            kolla_enable_searchlight: True
             kolla_enable_sahara: True
             kolla_enable_senlin: True
             kolla_enable_skydive: True
@@ -300,7 +299,6 @@
               #enable_prometheus: True
               #enable_rally: True
               #enable_sahara: True
-              #enable_searchlight: True
               #enable_skydive: True
               #enable_solum: True
               #enable_senlin: True
