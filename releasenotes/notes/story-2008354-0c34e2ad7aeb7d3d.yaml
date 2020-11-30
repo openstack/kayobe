@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes issue with deleting swift ring temporary files.
+    See `story 2008354 <https://storyboard.openstack.org/#!/story/2008354>`__ 
+    for details.
