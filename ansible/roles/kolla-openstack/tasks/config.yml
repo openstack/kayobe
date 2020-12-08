@@ -98,7 +98,7 @@
     - item.0.item.enabled | bool
     - item.1.path | basename not in item.0.item.ignore | default([])
 
-- name: Ensure extra configuration files exist
+- name: Ensure templated extra configuration files exist
   template:
     src: "{{ item.1.path }}"
     dest: "{{ item.0.item.dest }}/{{ item.1.path | relpath(item.0.item.src) }}"
@@ -110,6 +110,21 @@
   when:
     - item.0.item.enabled | bool
     - item.1.path | basename not in item.0.item.ignore | default([])
+    - item.1.path | basename not in item.0.item.untemplated | default([])
+
+- name: Ensure untemplated extra configuration files exist
+  copy:
+    src: "{{ item.1.path }}"
+    dest: "{{ item.0.item.dest }}/{{ item.1.path | relpath(item.0.item.src) }}"
+    mode: 0640
+  with_subelements:
+    - "{{ find_src_result.results }}"
+    - files
+    - skip_missing: true
+  when:
+    - item.0.item.enabled | bool
+    - item.1.path | basename not in item.0.item.ignore | default([])
+    - item.1.path | basename in item.0.item.untemplated | default([])
 
 - name: Ensure unnecessary extra configuration files are absent
   file:
