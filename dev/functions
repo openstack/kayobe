@@ -430,7 +430,8 @@ function overcloud_test_init {
 
     # Constraint with ${KAYOBE_SOURCE_PATH}/requirements.txt to ensure kayobe CLI doesn't get broken
     if [[ ! -z "$UPPER_CONSTRAINTS_FILE" ]]; then
-        pip install python-openstackclient -c "${KAYOBE_SOURCE_PATH}/requirements.txt" -c "$UPPER_CONSTRAINTS_FILE"
+        pip install python-openstackclient -c "$UPPER_CONSTRAINTS_FILE"
+        pip install cliff -c "${KAYOBE_SOURCE_PATH}/requirements.txt"
     else
         pip install python-openstackclient -c "${KAYOBE_SOURCE_PATH}/requirements.txt"
     fi

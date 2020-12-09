@@ -7,5 +7,6 @@ kolla_ansible_package_dependencies:
   - patch
   - "python{% if kolla_ansible_venv_python_major_version | int == 3 %}3{% endif %}-dev"
   - "python{% if kolla_ansible_venv_python_major_version | int == 3 %}3{% endif %}-pip"
-  - "python{% if kolla_ansible_venv_python_major_version | int == 3 %}3-venv{% else %}-virtualenv{% endif %}"
+  - "python{% if kolla_ansible_venv_python_major_version | int == 3 %}3{% endif %}-virtualenv"
   - "{% if kolla_ansible_venv_python_major_version | int == 2 %}python-yaml{% endif %}"
+  - "{% if kolla_ansible_venv_python_major_version | int == 3 %}virtualenv{% endif %}"

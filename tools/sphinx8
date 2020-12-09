@@ -13,6 +13,7 @@ directives when any of the directives modules are imported.
 import sys
 
 import doc8.main
+import mock
 import sphinx.directives
 import sphinx.directives.code
 import sphinx.directives.patches
@@ -21,9 +22,12 @@ import sphinx.directives.patches
 def main():
     # NOTE: Registering sphinx.directives.other causes a failure in parsing
     # later.
-    sphinx.directives.setup(None)
-    sphinx.directives.code.setup(None)
-    sphinx.directives.patches.setup(None)
+    # Sphinx expects an 'app' argument to these functions. Use a mock since we
+    # don't need to use the application object.
+    app = mock.Mock()
+    sphinx.directives.setup(app)
+    sphinx.directives.code.setup(app)
+    sphinx.directives.patches.setup(app)
     return doc8.main.main()
 
 

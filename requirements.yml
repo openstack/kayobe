@@ -5,7 +5,7 @@
   # There are no versioned releases of this role.
   version: 56daf0017783bd4fa5722da4ee91b66ddd4e6b6a
 - src: MichaelRigart.interfaces
-  version: v1.6.0
+  version: v1.9.2
 - src: mrlesmithjr.manage-lvm
   version: v0.1.4
 - src: mrlesmithjr.mdadm
@@ -24,7 +24,7 @@
 - src: stackhpc.grafana-conf
   version: 1.1.0
 - src: stackhpc.libvirt-host
-  version: v1.7.0
+  version: v1.7.1
 - src: stackhpc.libvirt-vm
   version: v1.13.0
 - src: stackhpc.mellanox-switch

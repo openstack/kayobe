@@ -24,14 +24,6 @@
             cmd: dev/overcloud-deploy.sh > {{ logs_dir }}/ansible/overcloud-deploy-pre-upgrade
             chdir: "{{ previous_kayobe_src_dir }}"
 
-        - name: Ensure test Tenks cluster is deployed
-          shell:
-            # Pass absolute source directory, since otherwise the `chdir` will
-            # cause this to fail. Don't use previous_kayobe_source_dir as
-            # tenks-deploy-compute.sh does not exist there.
-            cmd: dev/tenks-deploy-compute.sh '{{ tenks_src_dir }}' > {{ logs_dir }}/ansible/tenks-deploy
-            chdir: "{{ kayobe_src_dir }}"
-
       environment:
         KAYOBE_CONFIG_SOURCE_PATH: "{{ previous_kayobe_config_src_dir }}"
 
@@ -62,6 +54,14 @@
     # Perform a smoke test against the previous release.
 
     - block:
+        - name: Ensure test Tenks cluster is deployed
+          shell:
+            # Pass absolute source directory, since otherwise the `chdir` will
+            # cause this to fail. Don't use previous_kayobe_source_dir as
+            # tenks-deploy-compute.sh does not exist there.
+            cmd: dev/tenks-deploy-compute.sh '{{ tenks_src_dir }}' > {{ logs_dir }}/ansible/tenks-deploy
+            chdir: "{{ kayobe_src_dir }}"
+
         - name: Perform testing of the VMs in the overcloud prior to upgrade
           shell:
             cmd: dev/overcloud-test-vm.sh > {{ logs_dir }}/ansible/overcloud-test-vm-pre-upgrade

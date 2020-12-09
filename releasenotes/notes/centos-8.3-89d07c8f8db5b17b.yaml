@@ -1,0 +1,4 @@
+---
+fixes:
+  - |
+    Fixes a number of issues with using Kayobe on CentOS 8.3.
