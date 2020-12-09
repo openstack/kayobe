@@ -34,10 +34,18 @@ physnet_mappings:
 deploy_kernel: ipa.kernel
 deploy_ramdisk: ipa.initramfs
 
-# Use a custom socket path to avoid a conflict with the nova_libvirt kolla
-# container which bind mounts /var/run/libvirt.
-libvirt_custom_socket_path: /var/run/libvirt-tenks
+# Use the libvirt daemon deployed by Kolla Ansible in the nova_libvirt
+# container. Tenks will install libvirt client packages.
+libvirt_host_install_daemon: false
 
-# Nested virtualisation is not working well in CI currently. Force the use of
-# QEMU.
-libvirt_vm_engine: "qemu"
+# QEMU may not be installed on the host, so set the path and avoid
+# autodetection.
+libvirt_vm_emulator: "/usr/libexec/qemu-kvm"
+
+# Specify a log path in the kolla_logs Docker volume. It is accessible on the
+# host at the same path.
+libvirt_vm_default_console_log_dir: "/var/log/kolla/tenks"
+
+# Console logs are owned by the ID of the Nova user in the nova_libvirt
+# container.
+libvirt_vm_log_owner: 42436
