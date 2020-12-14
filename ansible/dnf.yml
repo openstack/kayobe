@@ -2,7 +2,7 @@
 - name: Ensure DNF repos are configured
   hosts: seed-hypervisor:seed:overcloud
   vars:
-    ansible_python_interpreter: /usr/libexec/platform-python
+    ansible_python_interpreter: /usr/bin/python3
   tags:
     - dnf
   tasks:
