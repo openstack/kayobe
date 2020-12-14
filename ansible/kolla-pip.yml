@@ -15,7 +15,7 @@
     hosts_in_kolla_inventory: >-
       {{ kolla_overcloud_inventory_top_level_group_map.values() |
          map(attribute='groups') | flatten | unique | union(['seed']) | join(':') }}
-    ansible_python_interpreter: /usr/libexec/platform-python
+    ansible_python_interpreter: /usr/bin/python3
   tasks:
     - import_role:
         name: pip
