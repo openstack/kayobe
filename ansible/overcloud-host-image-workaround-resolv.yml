@@ -20,7 +20,7 @@
             --connection local
             --become
             -m yum
-            -a "name=libguestfs-tools state=present"'
+            -a "name=libgcrypt,libgcrypt-devel,libguestfs-tools state=present"'
 
         - name: Ensure the overcloud host image has bogus name server entries removed
           command: >
