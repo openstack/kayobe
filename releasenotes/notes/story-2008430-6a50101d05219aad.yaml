@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an issue with the ``kayobe seed service deploy`` command on CentOS
+    8.3 release. See `story 2008430
+    <https://storyboard.openstack.org/#!/story/2008430>`__ for details.
