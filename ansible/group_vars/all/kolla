@@ -231,8 +231,6 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_redis | bool }}"
   - regex: sahara
     enabled: "{{ kolla_enable_sahara | bool }}"
-  - regex: searchlight
-    enabled: "{{ kolla_enable_searchlight | bool }}"
   - regex: senlin
     enabled: "{{ kolla_enable_senlin | bool }}"
   - regex: skydive
@@ -523,7 +521,6 @@ kolla_enable_qinling: "no"
 kolla_enable_rally: "no"
 kolla_enable_redis: "no"
 kolla_enable_sahara: "no"
-kolla_enable_searchlight: "no"
 kolla_enable_senlin: "no"
 kolla_enable_skydive: "no"
 kolla_enable_solum: "no"
