@@ -140,6 +140,7 @@
           file:
             path: "{{ temp_path }}"
             state: absent
+          run_once: true
 
         - name: Refresh the inventory
           meta: refresh_inventory
