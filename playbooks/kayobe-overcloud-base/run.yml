@@ -7,6 +7,12 @@
     - name: Ensure overcloud is deployed
       shell:
         cmd: "{{ kayobe_src_dir }}/dev/overcloud-deploy.sh &> {{ logs_dir }}/ansible/overcloud-deploy"
+        executable: /bin/bash
+
+    - name: Ensure qemu-img is available for Tenks
+      command: docker exec -u root nova_libvirt bash -c 'apt update && apt -y install qemu-utils'
+      become: true
+      when: ansible_os_family == 'Debian'
 
     - name: Ensure test Tenks cluster is deployed
       shell:
@@ -14,6 +20,7 @@
         # cause this to fail.
         cmd: dev/tenks-deploy-compute.sh '{{ tenks_src_dir }}' &> {{ logs_dir }}/ansible/tenks-deploy
         chdir: "{{ kayobe_src_dir }}"
+        executable: /bin/bash
 
     - name: Perform testing of the virtualized machines
       # We must do this before tenks-deploy as that will stop the nova_libvirt
@@ -21,8 +28,16 @@
       shell:
         cmd: dev/overcloud-test-vm.sh &> {{ logs_dir }}/ansible/overcloud-test-vm
         chdir: "{{ kayobe_src_dir }}"
+        executable: /bin/bash
 
     - name: Perform testing of the baremetal machines
       shell:
         cmd: dev/overcloud-test-baremetal.sh &> {{ logs_dir }}/ansible/overcloud-test-baremetal
         chdir: "{{ kayobe_src_dir }}"
+        executable: /bin/bash
+      # FIXME(mgoddard): Bare metal testing is unreliable on Ubuntu - some jobs
+      # see IPMI failures such as the following:
+      # ipmitool chassis bootdev pxe
+      # Error setting Chassis Boot Parameter 5\nError setting Chassis Boot
+      # Parameter 0\n
+      when: ansible_os_family != 'Debian'

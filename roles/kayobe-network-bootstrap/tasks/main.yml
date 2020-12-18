@@ -1,0 +1,9 @@
+---
+- name: Ensure all-in-one network bridge and dummy interfaces exist
+  become: true
+  command: "{{ item }}"
+  with_items:
+    - "ip l add {{ bridge_interface }} type bridge"
+    - "ip l add {{ bridge_port_interface }} type dummy"
+
+- include_tasks: "{{ ansible_os_family }}.yml"
