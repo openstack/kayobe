@@ -145,7 +145,6 @@
             kolla_enable_ironic: True
             kolla_enable_ironic_neutron_agent: True
             kolla_enable_kafka: True
-            kolla_enable_karbor: True
             kolla_enable_kibana: True
             kolla_enable_kuryr: True
             kolla_enable_magnum: True
@@ -274,7 +273,6 @@
               #enable_ironic: True
               #enable_ironic_neutron_agent: True
               #enable_kafka: True
-              #enable_karbor: True
               #enable_kibana: True
               #enable_kuryr: True
               #enable_magnum: True

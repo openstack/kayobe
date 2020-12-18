@@ -109,7 +109,6 @@ kolla_feature_flags:
   - horizon_freezer
   - horizon_heat
   - horizon_ironic
-  - horizon_karbor
   - horizon_magnum
   - horizon_manila
   - horizon_masakari
@@ -133,7 +132,6 @@ kolla_feature_flags:
   - ironic_pxe_uefi
   - iscsid
   - kafka
-  - karbor
   - keepalived
   - keystone
   - kibana
