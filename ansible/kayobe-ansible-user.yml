@@ -34,6 +34,24 @@
           attempting bootstrap
       when: ssh_result.rc != 0
 
+- name: Ensure python is installed
+  hosts: kayobe_user_bootstrap_required_True
+  gather_facts: no
+  vars:
+    ansible_user: "{{ bootstrap_user }}"
+  tags:
+    - ensure-python
+  tasks:
+    - name: Check if python is installed
+      raw: test -e /usr/bin/python3
+      changed_when: false
+      failed_when: false
+      register: check_python
+
+    - name: Ensure python is installed
+      raw: test -e /usr/bin/apt && (sudo apt -y update && sudo apt install -y python3-minimal) || (sudo dnf -y install python3)
+      when: check_python.rc != 0
+
 - name: Ensure the Kayobe Ansible user account exists
   hosts: kayobe_user_bootstrap_required_True
   gather_facts: false
