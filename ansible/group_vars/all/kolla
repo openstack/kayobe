@@ -221,8 +221,6 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_prometheus | bool }}"
   - regex: qdrouterd
     enabled: "{{ kolla_enable_qdrouterd | bool }}"
-  - regex: qinling
-    enabled: "{{ kolla_enable_qinling | bool }}"
   - regex: rabbitmq
     enabled: "{{ kolla_enable_rabbitmq | bool }}"
   - regex: rally
@@ -517,7 +515,6 @@ kolla_enable_panko: "no"
 kolla_enable_placement: "{{ kolla_enable_nova | bool or kolla_enable_zun | bool }}"
 kolla_enable_prometheus: "no"
 kolla_enable_qdrouterd: "no"
-kolla_enable_qinling: "no"
 kolla_enable_rally: "no"
 kolla_enable_redis: "no"
 kolla_enable_sahara: "no"

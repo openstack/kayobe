@@ -117,7 +117,6 @@ kolla_feature_flags:
   - horizon_murano
   - horizon_neutron_vpnaas
   - horizon_octavia
-  - horizon_qinling
   - horizon_sahara
   - horizon_senlin
   - horizon_solum
@@ -181,7 +180,6 @@ kolla_feature_flags:
   - placement
   - prometheus
   - qdrouterd
-  - qinling
   - rabbitmq
   - rally
   - redis
