@@ -27,7 +27,7 @@
       - deploying
       - wait call-back
     # List of hosts to limit Bifrost deploy-dynamic.yaml playbook to.
-    bifrost_limit: []
+    bifrost_limit: ['localhost']
     # Retries to use when using Ironic API and hitting node locked errors.
     ironic_retries: 6
     ironic_retry_interval: 5
