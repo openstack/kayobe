@@ -45,7 +45,7 @@
     - name: Ensure Kolla container images are built
       shell: >
         set -o pipefail &&
-        source {{ kolla_venv }}/bin/activate &&
+        . {{ kolla_venv }}/bin/activate &&
         kolla-build \
         --config-dir {{ kolla_build_config_path }} \
         {% if item.type is defined %}--type {{ item.type }}{% endif %} \

@@ -41,7 +41,7 @@
 
     - name: Retrieve the IPA kernel Glance image UUID
       shell: >
-        source {{ venv }}/bin/activate &&
+        . {{ venv }}/bin/activate &&
         openstack image show '{{ ipa_images_kernel_name }}' -f value -c id
       changed_when: False
       register: ipa_kernel_id
@@ -49,7 +49,7 @@
 
     - name: Retrieve the IPA ramdisk Glance image UUID
       shell: >
-        source {{ venv }}/bin/activate &&
+        . {{ venv }}/bin/activate &&
         openstack image show '{{ ipa_images_ramdisk_name }}' -f value -c id
       changed_when: False
       register: ipa_ramdisk_id

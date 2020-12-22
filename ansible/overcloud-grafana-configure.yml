@@ -40,7 +40,7 @@
   tasks:
     - name: Look up Monasca control plane project ID
       shell: >
-        source {{ venv }}/bin/activate &&
+        . {{ venv }}/bin/activate &&
         openstack project show {{ monasca_control_plane_project }} --format json --column id
       register: monasca_project_show
       changed_when: False
