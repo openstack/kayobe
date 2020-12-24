@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fix the implementation of the ``kayobe seed hypervisor host package
+    update`` command, which was incomplete. See `story 2008458
+    <https://storyboard.openstack.org/#!/story/2008458>`__ for details.
