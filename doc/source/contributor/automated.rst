@@ -56,6 +56,11 @@ Clone the ``kayobe-config-dev`` repository to ``config/src/kayobe-config``::
 Inspect the Kayobe configuration and make any changes necessary for your
 environment.
 
+If using Ubuntu, configure Kolla Ansible to use the Ubuntu source images::
+
+    sed -i -e 's/#kolla_base_distro:/kolla_base_distro: ubuntu/' config/src/kayobe-config/etc/kayobe/kolla.yml
+    sed -i -e 's/#kolla_install_type:/kolla_install_type: source/' config/src/kayobe-config/etc/kayobe/kolla.yml
+
 If using Vagrant, follow the steps in :ref:`contributor-vagrant` to prepare
 your environment for use with Vagrant and bring up a Vagrant VM.
 
@@ -65,7 +70,8 @@ control plane traffic.  The bridge should be named ``breth1`` with a single
 port ``eth1``, and an IP address of ``192.168.33.3/24``.  This can be modified
 by editing
 ``config/src/kayobe-config/etc/kayobe/inventory/group_vars/controllers/network-interfaces``.
-Alternatively, this can be added using the following commands::
+
+On CentOS, this can be added using the following commands::
 
     sudo ip l add breth1 type bridge
     sudo ip l set breth1 up
@@ -73,6 +79,30 @@ Alternatively, this can be added using the following commands::
     sudo ip l add eth1 type dummy
     sudo ip l set eth1 up
     sudo ip l set eth1 master breth1
+
+On Ubuntu, the interface configuration must be persistent::
+
+    sudo apt update
+    sudo apt -y install ifupdown
+
+    sudo ip l add breth1 type bridge
+    sudo ip l add eth1 type dummy
+
+    cat << EOF | sudo tee /etc/network/interfaces.d/ifcfg-eth1
+    auto eth1
+    iface eth1 inet manual
+    EOF
+
+    cat << EOF | sudo tee /etc/network/interfaces.d/ifcfg-breth1
+    auto breth1
+    iface breth1 inet static
+    address 192.168.33.3
+    netmask 255.255.255.0
+    bridge_ports eth1
+    EOF
+
+    sudo ifup eth1
+    sudo ifup breth1
 
 Usage
 -----
@@ -147,6 +177,11 @@ Configure the firewall to allow the baremetal nodes to access OpenStack
 services::
 
     ./dev/configure-firewall.sh
+
+On Ubuntu, the ``nova_libvirt`` image does not contain the ``qemu-utils``
+package necessary for image operations used by Tenks. Install it as follows::
+
+    sudo docker exec -u root nova_libvirt bash -c 'apt update && apt -y install qemu-utils'
 
 We are now ready to run the ``dev/overcloud-test-baremetal.sh`` script. This
 will run the ``init-runonce`` setup script provided by Kolla Ansible that
