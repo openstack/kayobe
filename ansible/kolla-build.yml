@@ -7,4 +7,4 @@
     - role: kolla
       kolla_install_epel: "{{ dnf_install_epel }}"
     - role: kolla-build
-      kolla_build_extra_config_path: "{{ kayobe_config_path }}/kolla/kolla-build.conf"
+      kolla_build_extra_config_path: "{{ kayobe_env_config_path }}/kolla/kolla-build.conf"

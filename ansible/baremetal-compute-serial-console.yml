@@ -47,7 +47,7 @@
            console_allocation_pool_start: "{{ ironic_serial_console_tcp_pool_start }}"
            console_allocation_pool_end: "{{ ironic_serial_console_tcp_pool_end }}"
            console_allocation_ironic_nodes: "{{ baremetal_nodes }}"
-           console_allocation_filename: "{{ kayobe_config_path }}/console-allocation.yml"
+           console_allocation_filename: "{{ kayobe_env_config_path }}/console-allocation.yml"
       when: cmd == "enable"
 
 - name: Enable serial console

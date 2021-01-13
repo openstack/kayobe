@@ -53,4 +53,4 @@
           {% endfor %}
 
           {% endfor %}
-        dest: "{{ kayobe_config_path }}/inventory/overcloud"
+        dest: "{{ kayobe_env_config_path }}/inventory/overcloud"

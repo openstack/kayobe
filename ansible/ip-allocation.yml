@@ -29,5 +29,5 @@
         - item | net_bootproto != 'dhcp'
   roles:
     - role: ip-allocation
-      ip_allocation_filename: "{{ kayobe_config_path }}/network-allocation.yml"
+      ip_allocation_filename: "{{ kayobe_env_config_path }}/network-allocation.yml"
       ip_allocation_hostname: "{{ inventory_hostname }}"

@@ -18,8 +18,8 @@ For example, to deploy a squid container image:
    seed_containers:
      squid:
        image: "stackhpc/squid:3.5.20-1"
-       pre: "{{ kayobe_config_path }}/containers/squid/pre.yml"
-       post: "{{ kayobe_config_path }}/containers/squid/post.yml"
+       pre: "{{ kayobe_env_config_path }}/containers/squid/pre.yml"
+       post: "{{ kayobe_env_config_path }}/containers/squid/post.yml"
 
 Please notice the *optional* pre and post Ansible task files - those need to
 be created in ``kayobe-config`` path and will be run before and after

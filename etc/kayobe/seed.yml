@@ -92,8 +92,8 @@
 #   squid:
 #     name: "squid"
 #     image: "stackhpc/squid:3.5.20-1"
-#     pre: "{{ kayobe_config_path }}/containers/squid/pre.yml"
-#     post: "{{ kayobe_config_path }}/containers/squid/post.yml"
+#     pre: "{{ kayobe_env_config_path }}/containers/squid/pre.yml"
+#     post: "{{ kayobe_env_config_path }}/containers/squid/post.yml"
 #
 #seed_containers:
 

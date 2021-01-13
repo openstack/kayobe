@@ -101,7 +101,7 @@
     - block:
         - name: Check whether Kolla extra configuration files exist
           stat:
-            path: "{{ kayobe_config_path }}/kolla/config/{{ item.file }}"
+            path: "{{ kayobe_env_config_path }}/kolla/config/{{ item.file }}"
             get_checksum: False
             get_md5: False
             mime: False
@@ -245,4 +245,4 @@
       kolla_extra_octavia: "{{ kolla_extra_config.octavia | default }}"
       kolla_extra_sahara: "{{ kolla_extra_config.sahara | default }}"
       kolla_extra_zookeeper: "{{ kolla_extra_config.zookeeper | default }}"
-      kolla_extra_config_path: "{{ kayobe_config_path }}/kolla/config"
+      kolla_extra_config_path: "{{ kayobe_env_config_path }}/kolla/config"

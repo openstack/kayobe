@@ -31,5 +31,5 @@
     - include_role:
         name: swift-rings
       vars:
-        swift_config_path: "{{ kayobe_config_path }}/kolla/config/swift"
+        swift_config_path: "{{ kayobe_env_config_path }}/kolla/config/swift"
       when: kolla_enable_swift | bool

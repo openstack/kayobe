@@ -7,6 +7,15 @@
 # Path to Kayobe configuration directory on Ansible control host.
 kayobe_config_path: "{{ lookup('env', 'KAYOBE_CONFIG_PATH') | default('/etc/kayobe', true) }}"
 
+# Name of Kayobe environment to use. Default is $KAYOBE_ENVIRONMENT, or an
+# empty string if $KAYOBE_ENVIRONMENT is not set. Can also be set via the
+# --environment argument when invoking kayobe.
+kayobe_environment: "{{ lookup('env', 'KAYOBE_ENVIRONMENT') }}"
+
+# Path to Kayobe configuration directory on Ansible control host with an
+# environment path appended if kayobe_environment is set.
+kayobe_env_config_path: "{{ kayobe_config_path ~ ('/environments/' ~ kayobe_environment if kayobe_environment else '') }}"
+
 ###############################################################################
 # Remote path configuration (seed, seed-hypervisor and overcloud hosts).
 

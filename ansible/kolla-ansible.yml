@@ -32,7 +32,7 @@
     - block:
         - name: Check whether a Kolla extra globals configuration file exists
           stat:
-            path: "{{ kayobe_config_path ~ '/kolla/globals.yml' }}"
+            path: "{{ kayobe_env_config_path ~ '/kolla/globals.yml' }}"
             get_checksum: False
             get_md5: False
             mime: False
@@ -40,7 +40,7 @@
 
         - name: Read the Kolla extra globals configuration file
           set_fact:
-            kolla_extra_globals: "{{ lookup('template', kayobe_config_path ~ '/kolla/globals.yml') | from_yaml }}"
+            kolla_extra_globals: "{{ lookup('template', kayobe_env_config_path ~ '/kolla/globals.yml') | from_yaml }}"
           when: globals_stat.stat.exists
       tags:
         - config
@@ -79,9 +79,9 @@
         kolla_ansible_install_epel: "{{ dnf_install_epel }}"
         kolla_external_fqdn_cert: "{{ kolla_config_path }}/certificates/haproxy.pem"
         kolla_internal_fqdn_cert: "{{ kolla_config_path }}/certificates/haproxy-internal.pem"
-        kolla_ansible_passwords_path: "{{ kayobe_config_path }}/kolla/passwords.yml"
-        kolla_overcloud_group_vars_path: "{{ kayobe_config_path }}/kolla/inventory/group_vars"
-        kolla_ansible_certificates_path: "{{ kayobe_config_path }}/kolla/certificates"
+        kolla_ansible_passwords_path: "{{ kayobe_env_config_path }}/kolla/passwords.yml"
+        kolla_overcloud_group_vars_path: "{{ kayobe_env_config_path }}/kolla/inventory/group_vars"
+        kolla_ansible_certificates_path: "{{ kayobe_env_config_path }}/kolla/certificates"
         # NOTE: This differs from the default SELinux mode in kolla ansible,
         # which is permissive. The justification for using this mode is twofold:
         # 1. it avoids filling up the audit log

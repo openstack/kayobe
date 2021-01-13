@@ -4,7 +4,7 @@
   tags:
     - kolla-bifrost
   vars:
-    kolla_bifrost_extra_globals_path: "{{ kayobe_config_path ~ '/kolla/config/bifrost/bifrost.yml' }}"
+    kolla_bifrost_extra_globals_path: "{{ kayobe_env_config_path ~ '/kolla/config/bifrost/bifrost.yml' }}"
 
   pre_tasks:
     - name: Check whether a Kolla Bifrost extra globals configuration file exists

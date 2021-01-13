@@ -61,7 +61,7 @@
     - grafana
   pre_tasks:
     - name: Include Kolla passwords for Grafana local admin account credentials
-      include_vars: "{{ kayobe_config_path }}/kolla/passwords.yml"
+      include_vars: "{{ kayobe_env_config_path }}/kolla/passwords.yml"
   roles:
     - role: stackhpc.grafana-conf
       grafana_conf_organisation: "{{ grafana_control_plane_organisation }}"
