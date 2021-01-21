@@ -1,6 +1,9 @@
 Kayobe
 ======
 
+.. image:: https://governance.openstack.org/tc/badges/kayobe.svg
+    :target: https://governance.openstack.org/tc/reference/projects/kolla.html
+
 Kayobe enables deployment of containerised OpenStack to bare metal.
 
 Containers offer a compelling solution for isolating OpenStack services, but
@@ -25,13 +28,6 @@ To this solid base, kayobe adds:
 
 All this and more, automated from top to bottom using Ansible.
 
-* Free software: Apache license
-* Documentation: https://docs.openstack.org/kayobe/latest/
-* Source: https://opendev.org/openstack/kayobe
-* Bugs: https://storyboard.openstack.org/#!/project/openstack/kayobe
-* Release Notes: https://docs.openstack.org/releasenotes/kayobe/
-* IRC: #openstack-kolla
-
 Features
 --------
 
@@ -54,3 +50,28 @@ Features
   <https://docs.openstack.org/sahara/latest/>`_
 * Control plane and workload monitoring and log aggregation using `OpenStack
   monasca <https://wiki.openstack.org/wiki/Monasca>`_
+
+Documentation
+-------------
+
+https://docs.openstack.org/kayobe/latest/
+
+Release Notes
+-------------
+
+https://docs.openstack.org/releasenotes/kayobe/
+
+Bugs
+----
+
+https://storyboard.openstack.org/#!/project/openstack/kayobe
+
+Community
+---------
+
+Freenode's `IRC channel <http://webchat.freenode.net/?channels=openstack-kolla>`_: #openstack-kolla
+
+License
+-------
+
+Kayobe is distributed under the `Apache 2.0 License <https://www.apache.org/licenses/LICENSE-2.0>`__.

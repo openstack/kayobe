@@ -18,7 +18,11 @@ This documentation is maintained at opendev.org
 welcome, see :doc:`contributing <contributor/contributing>` for information on
 how.
 
+Kayobe
+======
+
 .. include:: ../../README.rst
+   :start-line: 6
 
 Contents
 ========
