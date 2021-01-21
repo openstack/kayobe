@@ -67,7 +67,7 @@ class TestCase(unittest.TestCase):
             "--configdir", "/path/to/config",
             "--passwords", "/path/to/config/passwords.yml",
             "-e", "ev_name1=ev_value1",
-            "--limit", "host1:host2",
+            "--limit", "'host1:host2'",
             "--tags", "tag1,tag2",
         ]
         expected_cmd = " ".join(expected_cmd)
@@ -102,7 +102,7 @@ class TestCase(unittest.TestCase):
             "--configdir", "/path/to/config",
             "--passwords", "/path/to/config/passwords.yml",
             "-e", "ev_name1=ev_value1",
-            "--limit", "host1:host2",
+            "--limit", "'host1:host2'",
             "--skip-tags", "tag3,tag4",
             "--tags", "tag1,tag2",
         ]

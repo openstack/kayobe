@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fixes calls to ``kolla-ansible`` when arguments to ``--kolla-limit``
+    contain special characters such as ``~`` or ``&``.

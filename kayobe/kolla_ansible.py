@@ -132,7 +132,7 @@ def build_args(parsed_args, command, inventory_filename, extra_vars=None,
             cmd += ["-e", "%s=%s" % (extra_var_name, extra_var_value)]
     if parsed_args.kolla_limit or limit:
         limit_arg = utils.intersect_limits(parsed_args.kolla_limit, limit)
-        cmd += ["--limit", limit_arg]
+        cmd += ["--limit", utils.quote_and_escape(limit_arg)]
     if parsed_args.kolla_skip_tags:
         cmd += ["--skip-tags", parsed_args.kolla_skip_tags]
     if parsed_args.kolla_tags or tags:
