@@ -10,6 +10,8 @@ that define the network's attributes.  For example, to configure the ``cidr``
 attribute of a network named ``arpanet``, we would use a variable named
 ``arpanet_cidr``.
 
+.. _configuration-network-global:
+
 Global Network Configuration
 ============================
 
@@ -42,8 +44,18 @@ supported:
 ``mtu``
     Maximum Transmission Unit (MTU).
 ``vip_address``
+    .. note::
+
+       Use of the ``vip_address`` attribute is deprecated. Instead use
+       ``kolla_internal_vip_address`` and ``kolla_external_vip_address``.
+
     Virtual IP address (VIP) used by API services on this network.
 ``fqdn``
+    .. note::
+
+       Use of the ``fqdn`` attribute is deprecated. Instead use
+       ``kolla_internal_fqdn`` and ``kolla_external_fqdn``.
+
     Fully Qualified Domain Name (FQDN) used by API services on this network.
 ``routes``
     List of static IP routes. Each item should be a dict containing the
