@@ -48,7 +48,7 @@
         -e @/etc/bifrost/dib.yml
         --limit {{ inventory_hostname }}
         -m command
-        -a "openstack baremetal node show {% raw %}{{ inventory_hostname }}{% endraw %} -f value -c provision_state"'
+        -a "baremetal node show {% raw %}{{ inventory_hostname }}{% endraw %} -f value -c provision_state"'
       register: show_result
       changed_when: False
       delegate_to: "{{ seed_host }}"
@@ -82,7 +82,7 @@
         -e @/etc/bifrost/dib.yml
         --limit {{ inventory_hostname }}
         -m command
-        -a "openstack baremetal node manage {% raw %}{{ inventory_hostname }}{% endraw %}"'
+        -a "baremetal node manage {% raw %}{{ inventory_hostname }}{% endraw %}"'
       register: manage_result
       until: manage_result is successful or 'is locked by host' in manage_result.stdout
       retries: "{{ ironic_retries }}"
@@ -107,7 +107,7 @@
         -e @/etc/bifrost/dib.yml
         --limit {{ inventory_hostname }}
         -m command
-        -a "openstack baremetal node provide {% raw %}{{ inventory_hostname }}{% endraw %}"'
+        -a "baremetal node provide {% raw %}{{ inventory_hostname }}{% endraw %}"'
       register: provide_result
       until: provide_result is successful or 'is locked by host' in provide_result.stdout
       retries: "{{ ironic_retries }}"
@@ -163,7 +163,7 @@
         -e @/etc/bifrost/dib.yml
         --limit {{ inventory_hostname }}
         -m command
-        -a "openstack baremetal node show {% raw %}{{ inventory_hostname }}{% endraw %} -f value -c provision_state"'
+        -a "baremetal node show {% raw %}{{ inventory_hostname }}{% endraw %} -f value -c provision_state"'
       register: show_result
       # Wait until the node is no longer in one of the deploying states.
       until: not show_result.stdout_lines[1:] | intersect(deploying_states)

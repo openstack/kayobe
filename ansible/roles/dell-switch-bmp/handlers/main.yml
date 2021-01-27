@@ -2,7 +2,7 @@
 - name: Copy dnsmasq configuration
   command: >
     docker exec bifrost_deploy
-    bash -c 'source /bifrost/env-vars &&
+    bash -c 'export OS_CLOUD=bifrost &&
     ansible -vvvv target -i /bifrost/playbooks/inventory/target
     -m copy
     -a "src=/etc/bifrost/dell-switch-bmp.conf dest=/etc/dnsmasq.d/dell-switch-bmp.conf"
@@ -11,7 +11,7 @@
 - name: Restart bifrost dnsmasq
   command: >
     docker exec bifrost_deploy
-    bash -c 'source /bifrost/env-vars &&
+    bash -c 'export OS_CLOUD=bifrost &&
     ansible -vvvv target -i /bifrost/playbooks/inventory/target
     -m service
     -a "name=dnsmasq state=restarted"
@@ -20,7 +20,7 @@
 - name: Copy Dell switch BMP images
   command: >
     docker exec bifrost_deploy
-    bash -c 'source /bifrost/env-vars &&
+    bash -c 'export OS_CLOUD=bifrost &&
     ansible -vvvv target -i /bifrost/playbooks/inventory/target
     -m copy
     -a "src=/etc/bifrost/{{ item.dest }} dest={{ dell_switch_bmp_httpboot_path }}/{{ item.dest }}"
