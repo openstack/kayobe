@@ -16,7 +16,7 @@
       command: losetup -f
       register: loopback
       become: true
- 
+
     - name: Create a loopback device
       command: losetup {{ loopback.stdout }} {{ tempfile.path }}
       become: true
