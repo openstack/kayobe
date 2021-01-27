@@ -45,7 +45,7 @@
         - name: Copy Ironic Python Agent images into /httpboot
           command: >
             docker exec bifrost_deploy
-            bash -c '. /bifrost/env-vars &&
+            bash -c 'export OS_CLOUD=bifrost &&
             ansible -vvvv target -i /bifrost/playbooks/inventory/target
             -m copy
             -a "src=/etc/bifrost/{{ item }} dest=/httpboot/{{ item }}"

@@ -266,8 +266,8 @@ registered with the ironic service running in the seed host's
 the following on the seed::
 
     $ docker exec -it bifrost_deploy bash
-    (bifrost_deploy) $ source env-vars
-    (bifrost_deploy) $ openstack baremetal node list
+    (bifrost_deploy) $ export OS_CLOUD=bifrost
+    (bifrost_deploy) $ baremetal node list
 
 In order to interact with these nodes using Kayobe, run the following command
 to add them to the Kayobe and Kolla-Ansible inventories::
@@ -340,8 +340,8 @@ Provisioning
    manually, e.g. from the seed::
 
        $ docker exec -it bifrost_deploy bash
-       (bifrost_deploy) $ source env-vars
-       (bifrost_deploy) $ openstack baremetal node set ee77b4ca-8860-4003-a18f-b00d01295bda --name controller0
+       (bifrost_deploy) $ export OS_CLOUD=bifrost
+       (bifrost_deploy) $ baremetal node set ee77b4ca-8860-4003-a18f-b00d01295bda --name controller0
 
 Provisioning of the overcloud is performed by the ironic service running in the
 bifrost container on the seed.  To provision the overcloud nodes::

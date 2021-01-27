@@ -21,7 +21,7 @@
         -e @/etc/bifrost/dib.yml
         --limit {{ inventory_hostname }}
         -m shell
-        -a "env OS_CLOUD=bifrost-inspector openstack baremetal introspection data save {% raw %}{{ inventory_hostname }}{% endraw %}"'
+        -a "env OS_CLOUD=bifrost baremetal introspection data save {% raw %}{{ inventory_hostname }}{% endraw %}"'
       register: save_result
       changed_when: False
       # Ignore errors, log a message later.
