@@ -1667,7 +1667,7 @@ class BaremetalComputeSerialConsoleDisable(BaremetalComputeSerialConsoleBase):
 
 class BaremetalComputeUpdateDeploymentImage(KayobeAnsibleMixin, VaultMixin,
                                             Command):
-    """Update the Ironic nodes to use the new  kernel and ramdisk images."""
+    """Update the Ironic nodes to use the new kernel and ramdisk images."""
 
     def get_parser(self, prog_name):
         parser = super(BaremetalComputeUpdateDeploymentImage, self).get_parser(
@@ -1681,7 +1681,7 @@ class BaremetalComputeUpdateDeploymentImage(KayobeAnsibleMixin, VaultMixin,
 
     def take_action(self, parsed_args):
         self.app.LOG.debug(
-            "Upgrading the ironic nodes to use the latest  deployment images")
+            "Upgrading the ironic nodes to use the latest deployment images")
         playbooks = _build_playbook_list("overcloud-ipa-images")
         extra_vars = {}
         extra_vars["ipa_images_update_ironic_nodes"] = True
