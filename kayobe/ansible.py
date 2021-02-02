@@ -91,8 +91,19 @@ def _get_inventories_paths(parsed_args, env_path):
     if parsed_args.inventory:
         return parsed_args.inventory
     else:
-        return [os.path.join(env_path if env_path else parsed_args.config_path,
-                             "inventory")]
+        inventories = []
+        shared_inventory = os.path.join(parsed_args.config_path, "inventory")
+        if env_path:
+            if os.path.exists(shared_inventory):
+                inventories.append(shared_inventory)
+            env_inventory = os.path.join(env_path, "inventory")
+            if os.path.exists(env_inventory):
+                inventories.append(env_inventory)
+        else:
+            # Preserve existing behaviour: don't check if an inventory
+            # directory exists when no environment is specified
+            inventories.append(shared_inventory)
+        return inventories
 
 
 def _validate_args(parsed_args, playbooks):
