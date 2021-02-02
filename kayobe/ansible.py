@@ -56,6 +56,7 @@ def add_args(parser):
                         help="set additional variables as key=value or "
                              "YAML/JSON")
     parser.add_argument("-i", "--inventory", metavar="INVENTORY",
+                        action="append",
                         help="specify inventory host path "
                              "(default=$%s/inventory or %s/inventory) or "
                              "comma-separated host list" %
@@ -85,13 +86,13 @@ def _get_kayobe_environment_path(parsed_args):
     return env_path
 
 
-def _get_inventory_path(parsed_args, env_path):
-    """Return the path to the Kayobe inventory."""
+def _get_inventories_paths(parsed_args, env_path):
+    """Return the paths to the Kayobe inventories."""
     if parsed_args.inventory:
         return parsed_args.inventory
     else:
-        return os.path.join(env_path if env_path else parsed_args.config_path,
-                            "inventory")
+        return [os.path.join(env_path if env_path else parsed_args.config_path,
+                             "inventory")]
 
 
 def _validate_args(parsed_args, playbooks):
@@ -111,12 +112,13 @@ def _validate_args(parsed_args, playbooks):
                       env_path, result["message"])
             sys.exit(1)
 
-    inventory = _get_inventory_path(parsed_args, env_path)
-    result = utils.is_readable_dir(inventory)
-    if not result["result"]:
-        LOG.error("Kayobe inventory %s is invalid: %s",
-                  inventory, result["message"])
-        sys.exit(1)
+    inventories = _get_inventories_paths(parsed_args, env_path)
+    for inventory in inventories:
+        result = utils.is_readable_dir(inventory)
+        if not result["result"]:
+            LOG.error("Kayobe inventory %s is invalid: %s",
+                      inventory, result["message"])
+            sys.exit(1)
 
     for playbook in playbooks:
         result = utils.is_readable_file(playbook)
@@ -158,8 +160,9 @@ def build_args(parsed_args, playbooks,
         cmd += ["--list-tasks"]
     cmd += vault.build_args(parsed_args, "--vault-password-file")
     env_path = _get_kayobe_environment_path(parsed_args)
-    inventory = _get_inventory_path(parsed_args, env_path)
-    cmd += ["--inventory", inventory]
+    inventories = _get_inventories_paths(parsed_args, env_path)
+    for inventory in inventories:
+        cmd += ["--inventory", inventory]
     vars_paths = [parsed_args.config_path]
     if env_path:
         vars_paths.append(env_path)
