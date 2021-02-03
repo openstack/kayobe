@@ -106,4 +106,5 @@ openstackdocs_projects = [
     'ironic-python-agent',
     'kolla',
     'kolla-ansible',
+    'neutron',
 ]
