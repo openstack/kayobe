@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    Removes the workaround for bogus name server entries in some CentOS 7
+    images, together with the ``overcloud_host_image_workaround_resolv_enabled``
+    variable.
