@@ -6,6 +6,8 @@
   tags:
     - provision
   vars:
+    wait_manageable_timeout: 60
+    wait_available_timeout: 60
     # Set to False to avoid waiting for the nodes to become active.
     wait_active: True
     wait_active_timeout: 600
@@ -82,7 +84,7 @@
         -e @/etc/bifrost/dib.yml
         --limit {{ inventory_hostname }}
         -m command
-        -a "baremetal node manage {% raw %}{{ inventory_hostname }}{% endraw %}"'
+        -a "baremetal node manage --wait {{ wait_manageable_timeout }} {% raw %}{{ inventory_hostname }}{% endraw %}"'
       register: manage_result
       until: manage_result is successful or 'is locked by host' in manage_result.stdout
       retries: "{{ ironic_retries }}"
@@ -107,7 +109,7 @@
         -e @/etc/bifrost/dib.yml
         --limit {{ inventory_hostname }}
         -m command
-        -a "baremetal node provide {% raw %}{{ inventory_hostname }}{% endraw %}"'
+        -a "baremetal node provide --wait {{ wait_available_timeout }} {% raw %}{{ inventory_hostname }}{% endraw %}"'
       register: provide_result
       until: provide_result is successful or 'is locked by host' in provide_result.stdout
       retries: "{{ ironic_retries }}"
