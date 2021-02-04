@@ -4,6 +4,5 @@ kolla_ansible_package_dependencies:
   - gcc
   - libffi-devel
   - openssl-devel
-  - patch
   - python3-devel
   - python3-pip
