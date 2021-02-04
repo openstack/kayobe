@@ -18,6 +18,8 @@
       - python3-pip
       - python3-virtualenv
     state: present
+    cache_valid_time: "{{ apt_cache_valid_time if ansible_os_family == 'Debian' else omit }}"
+    update_cache: "{{ True if ansible_os_family == 'Debian' else omit }}"
   become: True
 
 - name: Ensure source code checkout path exists

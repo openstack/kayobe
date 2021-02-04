@@ -34,8 +34,9 @@
           include_role:
             name:  ../../swift-block-devices
           vars:
-              swift_block_devices:
-                 - device: "{{ loopback.stdout }}"
+            swift_block_devices:
+              - device: "{{ loopback.stdout }}"
+            apt_cache_valid_time: 3600
 
         - name: Get name of fake partition
           parted:

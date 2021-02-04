@@ -188,6 +188,7 @@
               custom-password-1: "custom-password-1"
               custom-password-2: "custom-password-2"
             kolla_nova_compute_ironic_host: "controller1"
+            apt_cache_valid_time: 3600
 
         - name: Verify kolla-ansible installation
           shell: ". {{ temp_path }}/venv/bin/activate && kolla-ansible -h"

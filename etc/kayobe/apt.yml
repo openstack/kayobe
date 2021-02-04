@@ -1,0 +1,10 @@
+---
+###############################################################################
+# Apt package manager configuration.
+
+# Apt cache TTL in seconds. Default is 3600.
+#apt_cache_valid_time:
+
+###############################################################################
+# Dummy variable to allow Ansible to accept this file.
+workaround_ansible_issue_8743: yes

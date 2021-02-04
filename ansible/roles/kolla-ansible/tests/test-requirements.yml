@@ -37,6 +37,7 @@
             kolla_enable_tls_internal: False
             kolla_enable_grafana: False
             kolla_openstack_logging_debug: False
+            apt_cache_valid_time: 3600
 
         - name: List Python packages installed in virtualenv
           command: "{{ temp_path }}/venv/bin/pip list"
