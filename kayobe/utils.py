@@ -23,6 +23,8 @@ import sys
 
 import yaml
 
+from kayobe import exception
+
 
 LOG = logging.getLogger(__name__)
 
@@ -208,3 +210,28 @@ def escape_jinja(string):
 
     b64_value = base64.b64encode(string.encode())
     return ''.join(('{{', "'", b64_value.decode(), "' | b64decode ", '}}'))
+
+
+def intersect_limits(args_limit, cli_limit):
+    """Create an Ansible host pattern of the intersection of two patterns.
+
+    :param args_limit: user-specified limit, or None.
+    :param cli_limit: limit originating from this CLI, or None.
+    :returns: a string representing an intersection of the two patterns.
+    """
+    # NOTE(mgoddard): Ansible uses either commas (,) or colons (:) to separate
+    # parts of a host pattern. An intersection is specified using a separator
+    # followed by an ampersand (&). If a mix of comma and colon separators is
+    # used, Ansible picks one and treats the other as part of the host pattern.
+    # This leads to hard to diagnose errors. Try to determine which separator
+    # the user has specified, and be consistent. Error if both are used.
+    if args_limit and ',' in args_limit:
+        if ':' in args_limit:
+            raise exception.Error("Invalid format for host limit argument. "
+                                  "Cannot mix commas and colons to separate "
+                                  "hosts")
+        separator = ',&'
+    else:
+        separator = ':&'
+    limits = [l for l in [args_limit, cli_limit] if l]
+    return separator.join(limits)

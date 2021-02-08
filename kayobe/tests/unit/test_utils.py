@@ -19,6 +19,7 @@ import unittest
 import mock
 import yaml
 
+from kayobe import exception
 from kayobe import utils
 
 
@@ -139,3 +140,39 @@ key2: value2
         expected = os.path.normpath("/tmp/test/local/")
         result = utils._detect_install_prefix(path)
         self.assertEqual(expected, os.path.normpath(result))
+
+    def test_intersect_limits_no_arg_no_cli(self):
+        result = utils.intersect_limits(None, None)
+        self.assertEqual("", result)
+
+    def test_intersect_limits_arg_no_cli(self):
+        result = utils.intersect_limits("foo", None)
+        self.assertEqual("foo", result)
+
+    def test_intersect_limits_arg_no_cli_comma(self):
+        result = utils.intersect_limits("foo,bar", None)
+        self.assertEqual("foo,bar", result)
+
+    def test_intersect_limits_arg_no_cli_colon(self):
+        result = utils.intersect_limits("foo:bar", None)
+        self.assertEqual("foo:bar", result)
+
+    def test_intersect_limits_arg_no_cli_colon_and_comma(self):
+        self.assertRaises(exception.Error,
+                          utils.intersect_limits, "foo:bar,baz", None)
+
+    def test_intersect_limits_no_arg_cli(self):
+        result = utils.intersect_limits(None, "foo")
+        self.assertEqual("foo", result)
+
+    def test_intersect_limits_arg_and_cli(self):
+        result = utils.intersect_limits("foo", "bar")
+        self.assertEqual("foo:&bar", result)
+
+    def test_intersect_limits_arg_and_cli_comma(self):
+        result = utils.intersect_limits("foo,bar", "baz")
+        self.assertEqual("foo,bar,&baz", result)
+
+    def test_intersect_limits_arg_and_cli_colon(self):
+        result = utils.intersect_limits("foo:bar", "baz")
+        self.assertEqual("foo:bar:&baz", result)
