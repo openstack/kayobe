@@ -61,6 +61,7 @@
       file:
         path: "{{ swift_ring_build_path }}"
         state: absent
+      become: true
 
   delegate_to: "{{ swift_ring_build_host }}"
   vars:
