@@ -4,7 +4,7 @@
 Automated Setup
 ===============
 
-This section provides information on the development tools provided by kayobe
+This section provides information on the development tools provided by Kayobe
 to automate the deployment of various development environments.
 
 For a manual procedure, see :ref:`contributor-manual`.
@@ -12,12 +12,12 @@ For a manual procedure, see :ref:`contributor-manual`.
 Overview
 ========
 
-The kayobe development environment automation tooling is built using simple
+The Kayobe development environment automation tooling is built using simple
 shell scripts.  Some minimal configuration can be applied by setting the
 environment variables in `dev/config.sh`.  Control plane configuration is
 typically provided via the `kayobe-config-dev
 <https://opendev.org/openstack/kayobe-config-dev>`_ repository,
-although it is also possible to use your own kayobe configuration.  This allows
+although it is also possible to use your own Kayobe configuration.  This allows
 us to build a development environment that is as close to production as
 possible.
 
@@ -40,11 +40,11 @@ Overcloud
 Preparation
 -----------
 
-Clone the kayobe repository::
+Clone the Kayobe repository::
 
     git clone https://opendev.org/openstack/kayobe.git
 
-Change the current directory to the kayobe repository::
+Change the current directory to the Kayobe repository::
 
     cd kayobe
 
@@ -53,7 +53,7 @@ Clone the ``kayobe-config-dev`` repository to ``config/src/kayobe-config``::
     mkdir -p config/src
     git clone https://opendev.org/openstack/kayobe-config-dev.git config/src/kayobe-config
 
-Inspect the kayobe configuration and make any changes necessary for your
+Inspect the Kayobe configuration and make any changes necessary for your
 environment.
 
 If using Vagrant, follow the steps in :ref:`contributor-vagrant` to prepare
@@ -82,15 +82,15 @@ If using Vagrant, SSH into the Vagrant VM and change to the shared directory::
     vagrant ssh
     cd /vagrant
 
-If not using Vagrant, run the ``dev/install-dev.sh`` script to install kayobe and
-its dependencies in a virtual environment::
+If not using Vagrant, run the ``dev/install-dev.sh`` script to install Kayobe and
+its dependencies in a Python virtual environment::
 
     ./dev/install-dev.sh
 
 .. note::
 
    This will create an :ref:`editable install <installation-editable>`.
-   It is also possible to install kayobe in a non-editable way, such that
+   It is also possible to install Kayobe in a non-editable way, such that
    changes will not been seen until you reinstall the package. To do this you
    can run ``./dev/install.sh``.
 
@@ -180,7 +180,7 @@ deployment of the seed services in a VM.
 Preparation
 -----------
 
-Clone the kayobe repository::
+Clone the Kayobe repository::
 
     git clone https://opendev.org/openstack/kayobe.git
 
@@ -193,7 +193,7 @@ Clone the ``kayobe-config-dev`` repository to ``config/src/kayobe-config``::
     mkdir -p config/src
     git clone https://opendev.org/openstack/kayobe-config-dev.git config/src/kayobe-config
 
-Inspect the kayobe configuration and make any changes necessary for your
+Inspect the Kayobe configuration and make any changes necessary for your
 environment.
 
 The default development configuration expects the presence of a bridge
@@ -213,13 +213,14 @@ Alternatively, this can be added using the following commands::
 Usage
 -----
 
-Run the ``dev/install.sh`` script to install kayobe and its dependencies in a
-virtual environment::
+Run the ``dev/install.sh`` script to install Kayobe and its dependencies in a
+Python virtual environment::
 
     ./dev/install.sh
 
 Run the ``dev/seed-deploy.sh`` script to deploy the seed services::
 
+    export KAYOBE_SEED_VM_PROVISION=0
     ./dev/seed-deploy.sh
 
 Upon successful completion of this script, the seed will be active.
@@ -269,11 +270,11 @@ Preparation
 
 The following commands should be executed on the seed hypervisor.
 
-Clone the kayobe repository::
+Clone the Kayobe repository::
 
     git clone https://opendev.org/openstack/kayobe.git
 
-Change the current directory to the kayobe repository::
+Change the current directory to the Kayobe repository::
 
     cd kayobe
 
@@ -283,21 +284,21 @@ Clone the ``add-seed-and-hv`` branch of the ``kayobe-config-dev`` repository to
     mkdir -p config/src
     git clone https://github.com/markgoddard/dev-kayobe-config -b add-seed-and-hv config/src/kayobe-config
 
-Inspect the kayobe configuration and make any changes necessary for your
+Inspect the Kayobe configuration and make any changes necessary for your
 environment.
 
 Usage
 -----
 
-Run the ``dev/install-dev.sh`` script to install kayobe and its dependencies in a
-virtual environment::
+Run the ``dev/install-dev.sh`` script to install Kayobe and its dependencies in a
+Python virtual environment::
 
     ./dev/install-dev.sh
 
 .. note::
 
    This will create an :ref:`editable install <installation-editable>`.
-   It is also possible to install kayobe in a non-editable way, such that
+   It is also possible to install Kayobe in a non-editable way, such that
    changes will not been seen until you reinstall the package. To do this you
    can run ``./dev/install.sh``.
 
@@ -321,7 +322,7 @@ Preparation
 
 The following commands should be executed on the seed hypervisor.
 
-Clone the kayobe repository::
+Clone the Kayobe repository::
 
     git clone https://opendev.org/openstack/kayobe.git
 
@@ -335,21 +336,21 @@ Clone the ``add-seed-and-hv`` branch of the ``kayobe-config-dev`` repository to
     mkdir -p config/src
     git clone https://github.com/markgoddard/dev-kayobe-config -b add-seed-and-hv config/src/kayobe-config
 
-Inspect the kayobe configuration and make any changes necessary for your
+Inspect the Kayobe configuration and make any changes necessary for your
 environment.
 
 Usage
 -----
 
-Run the ``dev/install-dev.sh`` script to install kayobe and its dependencies in a
-virtual environment::
+Run the ``dev/install-dev.sh`` script to install Kayobe and its dependencies in a
+Python virtual environment::
 
     ./dev/install-dev.sh
 
 .. note::
 
    This will create an :ref:`editable install <installation-editable>`.
-   It is also possible to install kayobe in a non-editable way, such that
+   It is also possible to install Kayobe in a non-editable way, such that
    changes will not been seen until you reinstall the package. To do this you
    can run ``./dev/install.sh``.
 
