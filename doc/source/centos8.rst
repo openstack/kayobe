@@ -169,6 +169,18 @@ built. This can be changed via the following configuration:
      - "ipa.kernel"
      - "ipa.initramfs"
 
+To install the hardware package necessary to use the ``extra-hardware``
+collector, the ``ironic-python-agent-builder`` repository provides an
+`extra-hardware element
+<https://docs.openstack.org/ironic-python-agent-builder/latest/admin/dib.html#ironic-python-agent-ipa-extra-hardware>`__.
+It may be used as follows if building an IPA image locally:
+
+.. code-block:: yaml
+   :caption: ``ipa.yml``
+
+   ipa_build_dib_elements_extra:
+     - "extra-hardware"
+
 Alternatively, if you are downloading IPA images, you should apply the
 following configuration to use CentOS 8:
 
