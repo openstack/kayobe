@@ -77,7 +77,7 @@
         -e @/etc/bifrost/dib.yml
         --limit {{ inventory_hostname }}
         -m command
-        -a "openstack baremetal node maintenance set {% raw %}{{ inventory_hostname }}{% endraw %} --reason BIOS-RAID"'
+        -a "baremetal node maintenance set {% raw %}{{ inventory_hostname }}{% endraw %} --reason BIOS-RAID"'
       delegate_to: "{{ seed_host }}"
       vars:
         # NOTE: Without this, the seed's ansible_host variable will not be
@@ -108,7 +108,7 @@
         -e @/etc/bifrost/dib.yml
         --limit {{ inventory_hostname }}
         -m command
-        -a "openstack baremetal node maintenance unset {% raw %}{{ inventory_hostname }}{% endraw %}"'
+        -a "baremetal node maintenance unset {% raw %}{{ inventory_hostname }}{% endraw %}"'
       delegate_to: "{{ seed_host }}"
       vars:
         # NOTE: Without this, the seed's ansible_host variable will not be

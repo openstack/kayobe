@@ -45,7 +45,7 @@
         -e @/etc/bifrost/dib.yml
         --limit {{ inventory_hostname }}
         -m command
-        -a "openstack baremetal node show {% raw %}{{ inventory_hostname }}{% endraw %} -f value -c provision_state"'
+        -a "baremetal node show {% raw %}{{ inventory_hostname }}{% endraw %} -f value -c provision_state"'
       register: show_result
       changed_when: False
       delegate_to: "{{ seed_host }}"
@@ -79,7 +79,7 @@
         -e @/etc/bifrost/dib.yml
         --limit {{ inventory_hostname }}
         -m command
-        -a "openstack baremetal node undeploy {% raw %}{{ inventory_hostname }}{% endraw %}"'
+        -a "baremetal node undeploy {% raw %}{{ inventory_hostname }}{% endraw %}"'
       register: delete_result
       until: delete_result is successful or 'is locked by host' in delete_result.stdout
       retries: "{{ ironic_retries }}"
@@ -105,7 +105,7 @@
         -e @/etc/bifrost/dib.yml
         --limit {{ inventory_hostname }}
         -m command
-        -a "openstack baremetal node show {% raw %}{{ inventory_hostname }}{% endraw %} -f value -c provision_state"'
+        -a "baremetal node show {% raw %}{{ inventory_hostname }}{% endraw %} -f value -c provision_state"'
       register: show_result
       # Wait until the node is no longer in one of the deleting states.
       until: not show_result.stdout_lines[1:] | intersect(deleting_states)
