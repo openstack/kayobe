@@ -193,3 +193,8 @@
     name: kayobe-seed-vm-centos8
     parent: kayobe-seed-vm-base
     nodeset: kayobe-centos8
+
+- job:
+    name: kayobe-seed-vm-ubuntu-focal
+    parent: kayobe-seed-vm-base
+    nodeset: kayobe-ubuntu-focal

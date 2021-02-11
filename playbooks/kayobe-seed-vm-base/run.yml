@@ -9,7 +9,9 @@
     - name: Ensure seed hypervisor is deployed
       shell:
         cmd: "{{ kayobe_src_dir }}/dev/seed-hypervisor-deploy.sh > {{ logs_dir }}/ansible/seed-hypervisor-deploy"
+        executable: /bin/bash
 
     - name: Ensure seed is deployed
       shell:
         cmd: "{{ kayobe_src_dir }}/dev/seed-deploy.sh &> {{ logs_dir }}/ansible/seed-deploy"
+        executable: /bin/bash
