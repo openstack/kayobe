@@ -280,11 +280,10 @@ migrate:
 .. code-block:: console
 
    $ docker exec -it bifrost_deploy bash
-   (bifrost_deploy) $ export OS_URL=http://localhost:6385
-   (bifrost_deploy) $ export OS_TOKEN=fake
-   (bifrost_deploy) $ openstack baremetal node maintenance set <node>
-   (bifrost_deploy) $ openstack baremetal node set <node> --driver ipmi
-   (bifrost_deploy) $ openstack baremetal node maintenance unset <node>
+   (bifrost_deploy) $ export OS_CLOUD=bifrost
+   (bifrost_deploy) $ baremetal node maintenance set <node>
+   (bifrost_deploy) $ baremetal node set <node> --driver ipmi
+   (bifrost_deploy) $ baremetal node maintenance unset <node>
 
 Upgrading Containerised Services
 --------------------------------

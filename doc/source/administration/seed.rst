@@ -79,17 +79,12 @@ Docker volume.
 Accessing the Seed Services
 ===========================
 
-The Ironic API can be accessed via the ``openstack`` command line interface::
+The Ironic and Ironic inspector APIs can be accessed via the ``baremetal``
+command line interface::
 
-    (bifrost_deploy) $ source env-vars
-    (bifrost_deploy) $ openstack baremetal node list
-
-Ironic inspector API requires some environment variables to be set::
-
-    (bifrost_deploy) $ unset OS_CLOUD
-    (bifrost_deploy) $ export OS_URL=http://localhost:5050
-    (bifrost_deploy) $ export OS_TOKEN=fake-token
-    (bifrost_deploy) $ openstack baremetal introspection list
+    (bifrost_deploy) $ export OS_CLOUD=bifrost
+    (bifrost_deploy) $ baremetal node list
+    (bifrost_deploy) $ baremetal introspection list
 
 Backup & Restore
 ================

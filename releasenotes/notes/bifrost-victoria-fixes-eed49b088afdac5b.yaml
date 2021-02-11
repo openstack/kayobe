@@ -1,0 +1,19 @@
+---
+upgrade:
+  - |
+    When interacting with Bifrost, sourcing the ``env-vars`` file is not
+    supported anymore. Set the ``OS_CLOUD`` environment variable to ``bifrost``
+    instead or run ``. ~/openrc bifrost``.
+  - |
+    When interacting with Bifrost, it is recommended to use the ironic native
+    ``baremetal`` command instead of ``openstack baremetal``, as the
+    availability of OpenStackClient inside the Bifrost container is not
+    guaranteed.
+deprecations:
+  - |
+    When interacting with Bifrost, the use of ``OS_CLOUD=bifrost-inspector`` is
+    deprecated and should be replaced by ``OS_CLOUD=bifrost``.
+fixes:
+  - |
+    Fixes failure in the ``kayobe seed deployment image build`` command due to
+    changes in Bifrost.
