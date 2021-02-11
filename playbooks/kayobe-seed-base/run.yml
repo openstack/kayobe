@@ -8,3 +8,4 @@
     - name: Ensure seed is deployed
       shell:
         cmd: "{{ kayobe_src_dir }}/dev/seed-deploy.sh &> {{ logs_dir }}/ansible/seed-deploy"
+        executable: /bin/bash

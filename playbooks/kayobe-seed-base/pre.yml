@@ -34,3 +34,4 @@
       shell:
         cmd: dev/install.sh &> {{ logs_dir }}/ansible/install
         chdir: "{{ kayobe_src_dir }}"
+        executable: /bin/bash
