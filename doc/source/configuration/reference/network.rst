@@ -58,6 +58,8 @@ supported:
 
     Fully Qualified Domain Name (FQDN) used by API services on this network.
 ``routes``
+    .. note:: ``options`` is not currently supported on Ubuntu.
+
     List of static IP routes. Each item should be a dict containing the
     item ``cidr``, and optionally ``gateway``, ``table`` and ``options``.
     ``cidr`` is the CIDR representation of the route's destination. ``gateway``
@@ -334,11 +336,15 @@ The following attributes are supported:
 ``bond_lacp_rate``
     For bond interfaces, the lacp_rate to use for the bond.
 ``ethtool_opts``
+    .. note:: ``ethtool_opts`` is not currently supported on Ubuntu.
+
     Physical network interface options to apply with ``ethtool``. When used on
     bond and bridge interfaces, settings apply to underlying interfaces. This
     should be a string of arguments passed to the ``ethtool`` utility, for
     example ``"-G ${DEVICE} rx 8192 tx 8192"``.
 ``zone``
+    .. note:: ``zone`` is not currently supported on Ubuntu.
+
     The name of ``firewalld`` zone to be attached to network interface.
 
 IP Addresses

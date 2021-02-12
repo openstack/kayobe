@@ -15,13 +15,6 @@ def _is_dnf():
     return info[0] == 'CentOS Linux' and info[1].startswith('8')
 
 
-def _supports_bonds():
-    # Bond configuration does not currently work on Ubuntu when using dummy
-    # devices as slaves.
-    info = distro.linux_distribution()
-    return info[0] != 'Ubuntu'
-
-
 def test_network_ethernet(host):
     interface = host.interface('dummy2')
     assert interface.exists
@@ -59,21 +52,21 @@ def test_network_bridge_vlan(host):
     assert host.file('/sys/class/net/br0.43/lower_br0').exists
 
 
-@pytest.mark.skipif(not _supports_bonds(), reason="Bonding no worky on Ubuntu")
 def test_network_bond(host):
     interface = host.interface('bond0')
     assert interface.exists
     assert '192.168.38.1' in interface.addresses
     sys_slaves = host.check_output('cat /sys/class/net/bond0/bonding/slaves')
-    slaves = ['dummy5', 'dummy6']
-    assert sys_slaves == " ".join(slaves)
+    # Ordering is not guaranteed, so compare sets.
+    sys_slaves = set(sys_slaves.split())
+    slaves = set(['dummy5', 'dummy6'])
+    assert sys_slaves == slaves
     for slave in slaves:
        interface = host.interface(slave)
        assert interface.exists
        assert not interface.addresses
 
 
-@pytest.mark.skipif(not _supports_bonds(), reason="Bonding no worky on Ubuntu")
 def test_network_bond_vlan(host):
     interface = host.interface('bond0.44')
     assert interface.exists
