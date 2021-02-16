@@ -89,6 +89,12 @@ copy_logs() {
         docker cp bifrost_deploy:/var/log/mariadb/mariadb.log ${LOG_DIR}/kolla/mariadb/
     fi
 
+    # IPA build logs
+    if [[ -f /opt/kayobe/images/ipa/ipa.stderr ]] || [[ -f /opt/kayobe/images/ipa/ipa.stdout ]]; then
+        mkdir -p ${LOG_DIR}/kayobe
+        cp /opt/kayobe/images/ipa/ipa.stderr /opt/kayobe/images/ipa/ipa.stdout ${LOG_DIR}/kayobe/
+    fi
+
     # Rename files to .txt; this is so that when displayed via
     # logs.openstack.org clicking results in the browser shows the
     # files, rather than trying to send it to another app or make you

@@ -28,3 +28,30 @@ pip_index_url: "http://{{ zuul_site_mirror_fqdn }}/pypi/simple"
 # are using for SSH to be removed. Use a dummy interface.
 aio_bridge_ports:
   - dummy1
+
+# Build seed deployment images (IPA) on CentOS 8
+{% if ansible_os_family == 'RedHat' %}
+{% if ansible_distribution_major_version | int == 8 %}
+ipa_build_images: true
+
+ipa_build_dib_elements_default:
+  - centos
+  - enable-serial-console
+  - ironic-python-agent-ramdisk
+
+ipa_build_dib_env_extra:
+  DIB_RELEASE: 8
+
+ipa_build_dib_git_elements:
+  - repo: "https://opendev.org/openstack/ironic-python-agent-builder"
+    local: "{% raw %}{{ source_checkout_path }}/ironic-python-agent-builder{% endraw %}"
+    version: "master"
+    elements_path: "dib"
+
+ipa_build_upper_constraints_file: "https://releases.openstack.org/constraints/upper/victoria"
+
+ipa_images:
+  - "ipa.kernel"
+  - "ipa.initramfs"
+{% endif %}
+{% endif %}
