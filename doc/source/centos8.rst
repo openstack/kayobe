@@ -157,13 +157,17 @@ built. This can be changed via the following configuration:
    ipa_build_dib_env_extra:
      DIB_RELEASE: 8
 
-   ipa_build_dib_git_elements_default:
+   ipa_build_dib_git_elements:
      - repo: "https://opendev.org/openstack/ironic-python-agent-builder"
        local: "{{ source_checkout_path }}/ironic-python-agent-builder"
        version: "master"
        elements_path: "dib"
 
-   os_images_upper_constraints_file: https://releases.openstack.org/constraints/upper/ussuri
+   ipa_build_upper_constraints_file: "https://releases.openstack.org/constraints/upper/victoria"
+
+   ipa_images:
+     - "ipa.kernel"
+     - "ipa.initramfs"
 
 Alternatively, if you are downloading IPA images, you should apply the
 following configuration to use CentOS 8:
@@ -175,7 +179,9 @@ following configuration to use CentOS 8:
    ipa_ramdisk_upstream_url: "https://tarballs.openstack.org/ironic-python-agent/dib/files/ipa-centos8{{ ipa_images_upstream_url_suffix }}.initramfs"
 
 After the images are built or downloaded, you will need to rename the kernel
-from ``ipa.kernel`` to ``ipa.vmzlinuz``.
+from ``ipa.kernel`` to ``ipa.vmlinuz``. On the seed host, run::
+
+    docker exec bifrost_deploy mv /httpboot/ipa.kernel /httpboot/ipa.vmlinuz
 
 See :doc:`configuration/ironic-python-agent` for further information.
 

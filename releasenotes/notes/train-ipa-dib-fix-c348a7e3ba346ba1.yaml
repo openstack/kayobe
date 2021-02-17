@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    Updates the ``stackhpc.os-images`` role to version 1.10.2. This allows
+    compatibility with versions of diskimage-builder that can be installed when
+    customising ``ipa_build_upper_constraints_file``. You must run ``kayobe
+    control host upgrade`` to update this role in order to successfully build
+    CentOS 8 IPA images.
