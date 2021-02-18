@@ -5,3 +5,12 @@
   tasks:
     - name: Run a command
       shell: "{{ host_command_to_run }}"
+      register: command_output
+    - name: Print stdout
+      debug:
+        msg: "{{ command_output.stdout }}"
+      when: show_output | bool
+    - name: Print stderr
+      debug:
+        msg: "{{ command_output.stderr }}"
+      when: show_output | bool

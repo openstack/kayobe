@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The ``kayobe * host command run`` commands now support ``--show-output``
+    which displays both standard output and standard error.
