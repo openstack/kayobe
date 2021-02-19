@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes building CentOS 7 deployment (IPA) images by setting the
+    ``DIB_INSTALLTYPE_pip_and_virtualenv`` environment variable to ``package``
+    by default.

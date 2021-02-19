@@ -29,11 +29,13 @@ pip_index_url: "http://{{ zuul_site_mirror_fqdn }}/pypi/simple"
 aio_bridge_ports:
   - dummy1
 
-# Build seed deployment images (IPA) on CentOS 8
-{% if ansible_os_family == 'RedHat' %}
-{% if ansible_distribution_major_version | int == 8 %}
+# Build seed deployment images (IPA)
 ipa_build_images: true
 
+# Building CentOS 8 IPA images requires custom configuration. See
+# doc/source/centos8.rst for details.
+{% if ansible_os_family == 'RedHat' %}
+{% if ansible_distribution_major_version | int == 8 %}
 ipa_build_dib_elements_default:
   - centos
   - enable-serial-console

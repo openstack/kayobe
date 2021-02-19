@@ -32,6 +32,7 @@ ipa_build_dib_elements: >
 # Dictionary of default environment variables to provide to Diskimage Builder
 # (DIB) during IPA image build.
 ipa_build_dib_env_default:
+  DIB_INSTALLTYPE_pip_and_virtualenv: package
   DIB_REPOLOCATION_ironic_agent: "{{ ipa_build_source_url }}"
   DIB_REPOREF_ironic_agent: "{{ ipa_build_source_version }}"
 
