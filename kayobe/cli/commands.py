@@ -414,7 +414,7 @@ class SeedHypervisorHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
     * Configure user accounts, group associations, and authorised SSH keys.
     * Configure the host's network interfaces.
     * Set sysctl parameters.
-    * Configure timezone.
+    * Configure timezone and ntp.
     * Optionally, configure software RAID arrays.
     * Optionally, configure encryption.
     * Configure LVM volumes.
@@ -453,7 +453,7 @@ class SeedHypervisorHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
         if parsed_args.wipe_disks:
             playbooks += _build_playbook_list("wipe-disks")
         playbooks += _build_playbook_list(
-            "users", "dev-tools", "network", "sysctl", "timezone",
+            "users", "dev-tools", "network", "sysctl", "time",
             "mdadm", "luks", "lvm", "seed-hypervisor-libvirt-host")
         self.run_kayobe_playbooks(parsed_args, playbooks,
                                   limit="seed-hypervisor")
@@ -574,7 +574,7 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     * Set sysctl parameters.
     * Configure IP routing and source NAT.
     * Disable bootstrap interface configuration.
-    * Configure timezone.
+    * Configure timezone and ntp.
     * Optionally, configure software RAID arrays.
     * Optionally, configure encryption.
     * Configure LVM volumes.
@@ -608,7 +608,7 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
             playbooks += _build_playbook_list("wipe-disks")
         playbooks += _build_playbook_list(
             "users", "dev-tools", "disable-selinux", "network",
-            "sysctl", "ip-routing", "snat", "disable-glean", "timezone",
+            "sysctl", "ip-routing", "snat", "disable-glean", "time",
             "mdadm", "luks", "lvm", "docker-devicemapper",
             "kolla-ansible-user", "kolla-pip", "kolla-target-venv")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed")
@@ -948,7 +948,7 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     * Configure the host's network interfaces.
     * Set sysctl parameters.
     * Disable bootstrap interface configuration.
-    * Configure timezone.
+    * Configure timezone and ntp.
     * Optionally, configure software RAID arrays.
     * Optionally, configure encryption.
     * Configure LVM volumes.
@@ -981,7 +981,7 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
             playbooks += _build_playbook_list("wipe-disks")
         playbooks += _build_playbook_list(
             "users", "dev-tools", "disable-selinux", "network",
-            "sysctl", "disable-glean", "disable-cloud-init", "timezone",
+            "sysctl", "disable-glean", "disable-cloud-init", "time",
             "mdadm", "luks", "lvm", "docker-devicemapper",
             "kolla-ansible-user", "kolla-pip", "kolla-target-venv")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")

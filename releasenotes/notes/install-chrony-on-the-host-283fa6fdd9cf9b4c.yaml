@@ -1,0 +1,11 @@
+---
+upgrade:
+  - |
+    Updates the NTP implementation from the chrony container deployed by
+    kolla-ansible to configuring chrony as a host service.  Chrony is now
+    installed on all hosts in the ``ntp`` group, which defaults to include
+    the seed, overcloud, and seed-hypervisor groups. On existing deployments,
+    you should run `kayobe overcloud host configure` to migrate from the
+    kolla-ansible deployed container. This can optionally be scoped to just
+    use the ``ntp`` tag. You can continue to use the kolla container by
+    setting `kolla_enable_chrony` to ``true``.
