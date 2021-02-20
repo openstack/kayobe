@@ -1,0 +1,12 @@
+---
+- name: Validate configuration
+  include_tasks: validate.yml
+  when: '"validate" in ntp_actions'
+
+- name: Pre-deploy preparation
+  include_tasks: prepare.yml
+  when: '"prepare" in ntp_actions'
+
+- name: Deploy service
+  include_tasks: deploy.yml
+  when: '"deploy" in ntp_actions'

@@ -1,8 +1,22 @@
 ---
-- name: Ensure timezone is configured
-  hosts: seed-hypervisor:seed:overcloud
-  tags:
-    - timezone
-  roles:
-    - role: yatesr.timezone
-      become: True
+# Timezone configuration has moved to time.yml.
+# This will be removed in the Xena release.
+
+# NOTE(wszumski): Making this a non-empty playbook has the benefit of
+# silencing the tox syntax check which doesn't like empty playbooks.
+
+- hosts: localhost
+  tasks:
+    - name: Warn about deprecation of this playbook
+      fail:
+        msg: |
+          This playbook has been deprecated, please use time.yml instead.
+          Kayobe should not run this playbook, so if you are seeing this
+          message then either something has gone wrong, or you are trying
+          to run it manually. This playbook will be removed in the Xena
+          release.
+      # NOTE(wszumski): We want this to print a nice big red warning and
+      # not to fail the run.
+      ignore_errors: yes
+
+- import_playbook: time.yml

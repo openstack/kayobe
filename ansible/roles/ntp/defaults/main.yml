@@ -1,0 +1,6 @@
+---
+ntp_actions: ["validate", "prepare", "deploy"]
+
+ntp_service_disable_list:
+  - ntp.service
+  - systemd-timesyncd.service

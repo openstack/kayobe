@@ -1,0 +1,27 @@
+---
+
+- name: Populate service facts.
+  service_facts:
+
+- name: Mask alternative NTP clients to prevent conflicts
+  vars:
+    service_exists: "{{ item in services }}"
+  systemd:
+    name: "{{ item }}"
+    enabled: "{{ 'false' if service_exists else omit }}"
+    masked: true
+    state: "{{ 'stopped' if service_exists else omit }}"
+  become: true
+  with_items: "{{ ntp_service_disable_list }}"
+
+- name: Remove kolla-ansible installed chrony container
+  docker_container:
+    name: chrony
+    state: absent
+  become: true
+  # NOTE(wszumski):  There is an ordering issue where on a fresh host, docker
+  # will not have been configured, but if that is the case, the chrony container
+  # can't possibly exist, but trying to execute this unconditionally will fail
+  # with: No module named 'docker' as we have not yet added the docker package
+  # to the kayobe target venv.
+  when: "'docker.service' in services"
