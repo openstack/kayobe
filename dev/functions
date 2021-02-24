@@ -516,12 +516,14 @@ function overcloud_test {
         openstack server add floating ip ${name} ${ip}
     fi
     echo "$name: Waiting for ping and SSH access via ${ip}"
-    attempts=6
+    attempts=12
     for i in $(seq 1 $attempts); do
         if ping -c1 -W1 $ip && ssh -v -o StrictHostKeyChecking=no -o BatchMode=yes cirros@$ip hostname; then
             break
         elif [[ $i -eq $attempts ]]; then
             echo "Failed to access server $name via SSH after $attempts attempts"
+            echo "Console log:"
+            openstack console log show ${name}
             return 1
         else
             echo "Cannot access server $name - retrying"
