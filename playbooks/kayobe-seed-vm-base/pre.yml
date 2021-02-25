@@ -3,6 +3,12 @@
   environment:
     KAYOBE_CONFIG_SOURCE_PATH: "{{ kayobe_config_src_dir }}"
   tasks:
+    # FIXME(mgoddard): work out what's going wrong here.
+    - name: Fail if running on Vexxhost infra
+      fail:
+        msg: Seed VM tests fail on vexxhost - roll the dice again
+      when: "'vexxhost' in ansible_hostname"
+
     # NOTE(mgoddard): Use the name zz-overrides.yml to ensure this takes
     # precedence over the standard config files.
     - name: Ensure kayobe-config override config file exists

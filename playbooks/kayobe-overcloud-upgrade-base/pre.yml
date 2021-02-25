@@ -1,6 +1,12 @@
 ---
 - hosts: primary
   tasks:
+    # FIXME(mgoddard): work out what's going wrong here.
+    - name: Fail if running on Vexxhost infra
+      fail:
+        msg: Baremetal tests fail on vexxhost - roll the dice again
+      when: "'vexxhost' in ansible_hostname"
+
     # NOTE(mgoddard): Use the name zz-overrides.yml to ensure this takes
     # precedence over the standard config files.
     - name: Ensure kayobe-config override config file exists

@@ -117,9 +117,6 @@
     pre-run: playbooks/kayobe-overcloud-upgrade-base/pre.yml
     run: playbooks/kayobe-overcloud-upgrade-base/run.yml
     timeout: 9000
-    # Use fewer attempts for upgrades, since pre.yml includes deployment of the
-    # previous release which takes a considerable amount of time.
-    attempts: 3
 
 - job:
     name: kayobe-overcloud-upgrade-centos8
@@ -169,9 +166,6 @@
     pre-run: playbooks/kayobe-seed-upgrade-base/pre.yml
     run: playbooks/kayobe-seed-upgrade-base/run.yml
     timeout: 5400
-    # Use fewer attempts for upgrades, since pre.yml includes deployment of the
-    # previous release which takes a considerable amount of time.
-    attempts: 3
 
 - job:
     name: kayobe-seed-upgrade-centos8
