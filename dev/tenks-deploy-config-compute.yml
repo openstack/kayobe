@@ -38,6 +38,10 @@ deploy_ramdisk: ipa.initramfs
 # container. Tenks will install libvirt client packages.
 libvirt_host_install_daemon: false
 
+# Nested virtualisation is not working well in CI currently. Force the use of
+# QEMU.
+libvirt_vm_engine: "qemu"
+
 # QEMU may not be installed on the host, so set the path and avoid
 # autodetection.
 libvirt_vm_emulator: "/usr/libexec/qemu-kvm"
