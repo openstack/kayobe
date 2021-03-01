@@ -1,0 +1,43 @@
+---
+- name: Ensure veth sysconfig network control scripts exist
+  copy:
+    src: "{{ item }}"
+    dest: "{{ network_scripts_dir }}/{{ item }}"
+    owner: root
+    group: root
+    mode: 0755
+  with_items:
+    - "ifup-veth"
+    - "ifdown-veth"
+  become: True
+  register: ctl_result
+
+- name: Ensure veth sysconfig network interface files exist
+  template:
+    src: ifcfg-veth.j2
+    dest: "{{ network_scripts_dir }}/ifcfg-{{ item.device }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items: "{{ veth_interfaces }}"
+  become: True
+  register: veth_result
+
+- name: Ensure veth peer sysconfig network interface files exist
+  template:
+    src: ifcfg-peer.j2
+    dest: "{{ network_scripts_dir }}/ifcfg-{{ item.peer_device }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items: "{{ veth_interfaces }}"
+  become: True
+  register: peer_result
+
+- name: Bounce veth interfaces
+  shell: ifdown {{ item[0].item.device }} ; ifup {{ item[0].item.device }}
+  with_together:
+    - "{{ veth_result.results }}"
+    - "{{ peer_result.results }}"
+  when: ctl_result is changed or item[0] is changed or item[1] is changed
+  become: True

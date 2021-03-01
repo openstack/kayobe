@@ -1,0 +1,42 @@
+---
+# FIXME: Not persistent!
+- name: Ensure veth pair exists (Debian)
+  command:
+    cmd: "ip link add dev {{ item.device }} type veth peer name {{ item.peer_device }}"
+    creates: "/sys/class/net/{{ item.device }}"
+  become: true
+  with_items: "{{ veth_interfaces }}"
+
+- name: Set veth MTU (Debian)
+  command: "ip link set {{ item.device }} mtu {{ item.mtu }}"
+  become: true
+  with_items: "{{ veth_interfaces }}"
+  when: item.mtu is defined and item.mtu
+
+- name: Set veth peer MTU (Debian)
+  command: "ip link set {{ item.peer_device }} mtu {{ item.peer_mtu }}"
+  become: true
+  with_items: "{{ veth_interfaces }}"
+  when: item.peer_mtu is defined and item.peer_mtu
+
+- name: Plug veth into bridge (Debian)
+  command: "ip link set {{ item.device }} master {{ item.bridge }}"
+  become: true
+  with_items: "{{ veth_interfaces }}"
+  when: item.bridge is defined
+
+- name: Plug veth peer into bridge (Debian)
+  command: "ip link set {{ item.peer_device }} master {{ item.peer_bridge }}"
+  become: true
+  with_items: "{{ veth_interfaces }}"
+  when: item.peer_bridge is defined
+
+- name: Ensure veth is up (Debian)
+  command: "ip link set {{ item.device }} up"
+  with_items: "{{ veth_interfaces }}"
+  become: true
+
+- name: Ensure veth peer is up (Debian)
+  command: "ip link set {{ item.peer_device }} up"
+  with_items: "{{ veth_interfaces }}"
+  become: true
