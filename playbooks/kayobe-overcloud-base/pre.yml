@@ -16,17 +16,6 @@
         dest: "{{ kayobe_config_src_dir }}/etc/kayobe/kolla/globals.yml"
       when: tls_enabled
 
-    - name: Ensure kolla custom config dir exists
-      file:
-        path: "{{ kayobe_config_src_dir }}/etc/kayobe/kolla/config"
-        state: directory
-
-    # TODO(mgoddard): Remove this when it has been added to kayobe-config-dev.
-    - name: Ensure ironic.conf override config file exists
-      copy:
-        src: ironic.conf
-        dest: "{{ kayobe_config_src_dir }}/etc/kayobe/kolla/config/ironic.conf"
-
     # NOTE(mgoddard): The kayobe dev config by default expects a bridge -
     # breth1 - to exist with an IP address of 192.168.33.3.
     - name: Ensure all-in-one network bridge interface exists
