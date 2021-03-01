@@ -6,11 +6,6 @@
 
 # Execute the following commands on the ring build host.
 - block:
-    # Facts required for ansible_user_uid and ansible_user_gid.
-    - name: Gather facts for swift ring build host
-      setup:
-      when: not module_setup | default(false)
-
     - name: Ensure Swift ring build directory exists
       file:
         path: "{{ swift_ring_build_path }}"
@@ -20,6 +15,7 @@
       copy:
         src: swift-ring-builder.py
         dest: "{{ swift_ring_build_path }}"
+      register: copy_result
 
     - name: Ensure Swift ring builder configuration exists
       template:
@@ -33,14 +29,14 @@
       docker_container:
         cleanup: true
         command: >-
-          python {{ swift_container_build_path }}/swift-ring-builder.py
+          python3 {{ swift_container_build_path }}/swift-ring-builder.py
           {{ swift_container_build_path }}/{{ item }}-ring.yml
           {{ swift_container_build_path }}
           {{ item }}
         detach: false
         image: "{{ swift_ring_build_image }}"
         name: "swift_{{ item }}_ring_builder"
-        user: "{{ ansible_user_uid }}:{{ ansible_user_gid }}"
+        user: "{{ copy_result.uid }}:{{ copy_result.gid }}"
         volumes:
           - "{{ swift_ring_build_path }}/:{{ swift_container_build_path }}/"
       with_items: "{{ swift_service_names }}"

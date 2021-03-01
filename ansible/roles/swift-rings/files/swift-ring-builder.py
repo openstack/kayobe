@@ -120,7 +120,7 @@ def main():
     build_path = sys.argv[2]
     service_name = sys.argv[3]
     with open(config_path) as f:
-        config = yaml.load(f)
+        config = yaml.safe_load(f)
     build_rings(config, build_path, service_name)
 
 

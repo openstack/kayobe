@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fixes an issue with copying Swift ring files. See `story 2007297
+    <https://storyboard.openstack.org/#!/story/2007297>`__ for details.
