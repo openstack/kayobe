@@ -1,4 +1,11 @@
 ---
+# NOTE(mgoddard): The acl package is required for the setfacl command, used by
+# become_user.
+- name: Ensure acl package is installed
+  package:
+    name: acl
+  become: true
+
 - name: Create local .pip directory
   file:
     path: "~{{ item }}/.pip"
