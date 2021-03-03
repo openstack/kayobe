@@ -65,6 +65,9 @@ copy_logs() {
     # final memory usage and process list
     ps -eo user,pid,ppid,lwp,%cpu,%mem,size,rss,cmd > ${LOG_DIR}/system_logs/ps.txt
 
+    # available entropy
+    cat /proc/sys/kernel/random/entropy_avail > ${LOG_DIR}/system_logs/entropy_avail.txt
+
     # docker related information
     (docker info && docker images && docker ps -a) > ${LOG_DIR}/system_logs/docker-info.txt
 
