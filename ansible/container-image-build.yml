@@ -43,14 +43,16 @@
         - kolla_docker_registry_password is not none
 
     - name: Ensure Kolla container images are built
-      shell: >
-        set -o pipefail &&
-        . {{ kolla_venv }}/bin/activate &&
-        kolla-build \
-        --config-dir {{ kolla_build_config_path }} \
-        {% if item.type is defined %}--type {{ item.type }}{% endif %} \
-        {% if kolla_docker_registry is not none %}--registry {{ kolla_docker_registry }}{% endif %} \
-        {% if push_images | bool %}--push{% endif %} \
-        {{ item.regexes }} 2>&1 | tee --append {{ kolla_build_log_path }}
+      shell:
+        cmd: >
+          set -o pipefail &&
+          . {{ kolla_venv }}/bin/activate &&
+          kolla-build
+          --config-dir {{ kolla_build_config_path }}
+          {% if item.type is defined %}--type {{ item.type }}{% endif %}
+          {% if kolla_docker_registry is not none %}--registry {{ kolla_docker_registry }}{% endif %}
+          {% if push_images | bool %}--push{% endif %}
+          {{ item.regexes }} 2>&1 | tee --append {{ kolla_build_log_path }}
+        executable: /bin/bash
       with_items: "{{ container_image_sets }}"
       when: item.regexes != ''
