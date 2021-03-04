@@ -3,6 +3,12 @@
 # Ansible is run directly on the controller.
 disable_selinux_do_reboot: false
 
+{% if ansible_os_family == 'Debian' %}
+# On Ubuntu, use 5 seconds delay to allow for interfaces to come up after ifup
+# exits.
+interfaces_pause_time: 5
+{% endif %}
+
 # Use the OpenStack infra's Dockerhub mirror.
 docker_registry_mirrors:
   - "http://{{ zuul_site_mirror_fqdn }}:8082/"

@@ -36,6 +36,7 @@
       selinux:
         state: disabled
       become: True
+      when: ansible_os_family == 'RedHat'
 
     # NOTE(mgoddard): Use the name zz-overrides.yml to ensure this takes
     # precedence over the standard config files.
@@ -53,3 +54,4 @@
       shell:
         cmd: dev/install.sh &> {{ logs_dir }}/ansible/install
         chdir: "{{ kayobe_src_dir }}"
+        executable: /bin/bash
