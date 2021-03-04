@@ -1,16 +1,17 @@
 ---
 - name: Check whether Monasca is enabled
   hosts: overcloud
+  gather_facts: False
   tags:
     - grafana
   tasks:
     - name: Create monitoring group with grafana enabled
       group_by:
         key: "monitoring_with_grafana_enabled_{{ kolla_enable_monasca | bool }}"
+      changed_when: false
 
 - name: Set the Monasca control plane project ID
   hosts: monitoring_with_grafana_enabled_True[0]
-  gather_facts: False
   tags:
     - grafana
   vars:

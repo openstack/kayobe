@@ -30,6 +30,7 @@
     - name: Group overcloud hosts by their BMC type
       group_by:
         key: "overcloud_with_bmcs_of_type_{{ bmc_type | default('unknown') }}"
+      changed_when: false
 
 - name: Check whether any changes to nodes' BIOS and RAID configuration are required
   hosts: overcloud_with_bmcs_of_type_idrac

@@ -1,6 +1,7 @@
 ---
 - name: Check whether Ironic is enabled
   hosts: controllers
+  gather_facts: False
   tags:
     - provision-net
     - cleaning-net
@@ -8,11 +9,11 @@
     - name: Create controllers group with ironic enabled
       group_by:
         key: "controllers_for_provision_net_{{ kolla_enable_ironic | bool }}"
+      changed_when: false
 
 - name: Ensure provisioning and cleaning networks and subnets are registered in neutron
   # Only required to run on a single host.
   hosts: controllers_for_provision_net_True[0]
-  gather_facts: False
   vars:
     venv: "{{ virtualenv_path }}/openstacksdk"
     provision_net:
