@@ -161,6 +161,11 @@
     nodeset: kayobe-centos8
 
 - job:
+    name: kayobe-overcloud-host-configure-ubuntu-focal
+    parent: kayobe-overcloud-host-configure-base
+    nodeset: kayobe-ubuntu-focal
+
+- job:
     name: kayobe-seed-upgrade-base
     parent: kayobe-base
     description: |

@@ -14,6 +14,7 @@
         - kayobe-overcloud-ubuntu-focal
         - kayobe-overcloud-tls-centos8
         - kayobe-overcloud-host-configure-centos8
+        - kayobe-overcloud-host-configure-ubuntu-focal
         - kayobe-overcloud-upgrade-centos8
         - kayobe-seed-centos8
         - kayobe-seed-upgrade-centos8
@@ -29,6 +30,7 @@
         - kayobe-overcloud-ubuntu-focal
         - kayobe-overcloud-tls-centos8
         - kayobe-overcloud-host-configure-centos8
+        - kayobe-overcloud-host-configure-ubuntu-focal
         - kayobe-overcloud-upgrade-centos8
         - kayobe-seed-centos8
         - kayobe-seed-upgrade-centos8
