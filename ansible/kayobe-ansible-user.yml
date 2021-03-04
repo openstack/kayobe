@@ -26,6 +26,7 @@
     - name: Group hosts requiring kayobe user bootstrapping
       group_by:
         key: kayobe_user_bootstrap_required_{{ ssh_result.rc != 0 }}
+      changed_when: false
 
     - name: Display a message when bootstrapping is required
       debug:
