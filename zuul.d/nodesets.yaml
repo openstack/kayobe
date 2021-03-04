@@ -4,3 +4,9 @@
     nodes:
       - name: primary
         label: centos-8
+
+- nodeset:
+    name: kayobe-ubuntu-focal
+    nodes:
+      - name: primary
+        label: ubuntu-focal

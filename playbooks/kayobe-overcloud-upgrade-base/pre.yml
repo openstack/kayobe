@@ -1,6 +1,16 @@
 ---
 - hosts: primary
   tasks:
+    # NOTE(mgoddard): The kayobe dev config by default expects a bridge -
+    # breth1 - to exist with an IP address of 192.168.33.3.
+    - import_role:
+        name: kayobe-network-bootstrap
+      vars:
+        bridge_interface: breth1
+        bridge_ip: 192.168.33.3
+        bridge_prefix: 24
+        bridge_port_interface: dummy1
+
     # NOTE(mgoddard): Use the name zz-overrides.yml to ensure this takes
     # precedence over the standard config files.
     - name: Ensure kayobe-config override config file exists
@@ -9,21 +19,3 @@
         dest: "{{ previous_kayobe_config_src_dir }}/etc/kayobe/zz-overrides.yml"
       vars:
         is_previous_release: true
-
-    # NOTE(mgoddard): The kayobe dev config by default expects a bridge -
-    # breth1 - to exist with an IP address of 192.168.33.3.
-    - name: Ensure all-in-one network bridge interface exists
-      command: "{{ item }}"
-      become: true
-      with_items:
-        - "ip l add breth1 type bridge"
-        - "ip l set breth1 up"
-        - "ip a add 192.168.33.3/24 dev breth1"
-        # NOTE(mgoddard): CentOS 8 removes interfaces from their bridge during
-        # ifdown, and removes the bridge if there are no interfaces left. When
-        # Kayobe bounces veth links plugged into the bridge, it causes the
-        # bridge which has the IP we are using for SSH to be removed. Use a
-        # dummy interface.
-        - "ip l add dummy1 type dummy"
-        - "ip l set dummy1 up"
-        - "ip l set dummy1 master breth1"

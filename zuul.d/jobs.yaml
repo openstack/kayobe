@@ -96,6 +96,11 @@
     nodeset: kayobe-centos8
 
 - job:
+    name: kayobe-overcloud-ubuntu-focal
+    parent: kayobe-overcloud-base
+    nodeset: kayobe-ubuntu-focal
+
+- job:
     name: kayobe-overcloud-tls-base
     parent: kayobe-overcloud-base
     vars:
