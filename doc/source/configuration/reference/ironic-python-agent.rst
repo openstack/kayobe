@@ -84,6 +84,10 @@ image build``.
     and ``ipa_build_dib_git_elements_extra``.
 ``ipa_build_dib_packages``
     List of DIB packages to install. Default is none.
+``ipa_build_upper_constraints_file``
+    Upper constraints file for installing packages in the virtual environment
+    used for building IPA images. Default is ``{{ pip_upper_constraints_file
+    }}``.
 
 Example: Building IPA images locally
 ------------------------------------
