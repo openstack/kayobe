@@ -1,0 +1,15 @@
+---
+upgrade:
+  - |
+    Updates the ``stackhpc.os-images`` role to version 1.10.2, for
+    compatibility with the version of diskimage-builder installed by Victoria
+    upper constraints. You must run ``kayobe control host upgrade`` to update
+    this role in order to successfully build IPA images.
+fixes:
+  - |
+    Fixes building deployment images (IPA) with recent versions of
+    ironic-python-agent-builder, by using Victoria upper constraints to install
+    a newer version of diskimage-builder into the virtual environment used for
+    building IPA images. This can be changed using the
+    ``ipa_build_upper_constraints_file`` variable in
+    ``${KAYOBE_CONFIG_PATH}/ipa.yml``.
