@@ -9,8 +9,9 @@
           include_role:
             name:  ../../swift-block-devices
           vars:
-              swift_block_devices:
-                 - /dev/fake
+            swift_block_devices:
+              - /dev/fake
+            apt_cache_valid_time: 3600
 
       rescue:
         - name: Flag that the error was raised

@@ -6,6 +6,8 @@
   package:
     name: "{{ bootstrap_package_dependencies }}"
     state: present
+    cache_valid_time: "{{ apt_cache_valid_time if ansible_os_family == 'Debian' else omit }}"
+    update_cache: "{{ True if ansible_os_family == 'Debian' else omit }}"
   become: True
 
 - name: Check whether an SSH key exists

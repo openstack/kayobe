@@ -16,6 +16,8 @@
     # NOTE(mgoddard): select non-empty packages.
     name: "{{ kolla_ansible_package_dependencies | select | list }}"
     state: present
+    cache_valid_time: "{{ apt_cache_valid_time if ansible_os_family == 'Debian' else omit }}"
+    update_cache: "{{ True if ansible_os_family == 'Debian' else omit }}"
   become: True
 
 - name: Ensure source code checkout parent directory exists

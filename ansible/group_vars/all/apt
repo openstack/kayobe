@@ -1,0 +1,6 @@
+---
+###############################################################################
+# Apt package manager configuration.
+
+# Apt cache TTL in seconds. Default is 3600.
+apt_cache_valid_time: 3600
