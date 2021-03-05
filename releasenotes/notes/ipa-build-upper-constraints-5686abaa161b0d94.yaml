@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Adds the ``ipa_build_upper_constraints_file`` variable to select the upper
+    constraints file used to install diskimage-builder in the virtual
+    environment used for building IPA images. This allows you to install a
+    newer release than the one allowed by the default constraints.
