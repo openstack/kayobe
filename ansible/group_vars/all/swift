@@ -1,3 +1,4 @@
+
 ---
 ###############################################################################
 # OpenStack Swift configuration.
@@ -7,7 +8,10 @@
 swift_ring_build_image_name: swift-object
 
 # Full name of the kolla container image used to build rings.
-swift_ring_build_image: "{{ kolla_docker_registry ~ '/' if kolla_docker_registry else '' }}{{ kolla_docker_namespace }}/{{ kolla_base_distro }}-{{ kolla_install_type }}-{{ swift_ring_build_image_name }}:{{ kolla_openstack_release }}"
+swift_ring_build_image: "{{ kolla_docker_registry ~ '/' if kolla_docker_registry else '' }}{{ kolla_docker_namespace }}/{{ kolla_base_distro }}-{{ kolla_install_type }}-{{ swift_ring_build_image_name }}:{{ swift_ring_build_image_tag }}"
+
+# Tag of the kolla container image used to build rings.
+swift_ring_build_image_tag: "{{ kolla_openstack_release ~ ('' if kolla_base_distro != 'centos' or ansible_distribution_major_version == '7' else  '-centos8') }}"
 
 # Ansible host pattern matching hosts on which Swift object storage services
 # are deployed. The default is to use hosts in the 'storage' group.
