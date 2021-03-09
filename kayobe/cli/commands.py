@@ -21,6 +21,7 @@ from cliff.command import Command
 from cliff.hooks import CommandHook
 
 from kayobe import ansible
+from kayobe import environment
 from kayobe import kolla_ansible
 from kayobe import utils
 from kayobe import vault
@@ -1687,3 +1688,34 @@ class BaremetalComputeUpdateDeploymentImage(KayobeAnsibleMixin, VaultMixin,
             )
         self.run_kayobe_playbooks(parsed_args, playbooks,
                                   extra_vars=extra_vars)
+
+
+class EnvironmentCreate(KayobeAnsibleMixin, VaultMixin, Command):
+    """Create a new Kayobe environment."""
+
+    def get_parser(self, prog_name):
+        parser = super(EnvironmentCreate, self).get_parser(prog_name)
+        group = parser.add_argument_group("Kayobe Environments")
+        environment.add_args(group)
+        return parser
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Creating new Kayobe environment")
+        if not parsed_args.environment:
+            self.app.LOG.error("An environment must be specified")
+            sys.exit(1)
+
+        source_config_path = parsed_args.source_config_path
+        if source_config_path:
+            result = utils.is_readable_dir(source_config_path)
+            if not result["result"]:
+                self.app.LOG.error("Kayobe configuration %s is invalid: %s",
+                                   source_config_path, result["message"])
+                sys.exit(1)
+
+        try:
+            environment.create_kayobe_environment(parsed_args)
+        except Exception as e:
+            self.app.LOG.error("Failed to create environment %s: %s",
+                               parsed_args.environment, repr(e))
+            sys.exit(1)

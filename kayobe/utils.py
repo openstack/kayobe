@@ -17,6 +17,7 @@ import glob
 import itertools
 import logging
 import os
+import shutil
 import subprocess
 import sys
 
@@ -222,3 +223,16 @@ def intersect_limits(args_limit, cli_limit):
         separator = ':&'
     limits = [l for l in [args_limit, cli_limit] if l]
     return separator.join(limits)
+
+
+def copy_dir(src, dest):
+    if not os.path.isdir(dest):
+        shutil.copytree(src, dest)
+    else:
+        for file in os.listdir(src):
+            src_path = os.path.join(src, file)
+            dest_path = os.path.join(dest, file)
+            if os.path.isdir(src_path):
+                copy_dir(src_path, dest_path)
+            else:
+                shutil.copy2(src_path, dest_path)
