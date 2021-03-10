@@ -24,3 +24,10 @@ pip_index_url: "http://{{ zuul_site_mirror_fqdn }}/pypi/simple"
 # are using for SSH to be removed. Use a dummy interface.
 aio_bridge_ports:
   - dummy1
+
+# NOTE(priteau): Use the overlay2 storage driver in overcloud jobs.
+# Sometimes with the overlayfs (v1) driver we can hit the following error on
+# deploy jobs: Unknown error message: failed to register layer: link <path1>
+# <path2>: too many links. This happens when many images share a base image, we
+# can hit the file system's hard link limit.
+docker_storage_driver: overlay2
