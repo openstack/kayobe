@@ -25,6 +25,7 @@
     ports: "{{ container_config.ports | default(omit) }}"
     privileged: "{{ container_config.privileged | default(omit) }}"
     restart_policy: "{{ container_config.restart_policy | default(deploy_containers_defaults.restart_policy) }}"
+    shm_size: "{{ container_config.shm_size | default(omit) }}"
     sysctls: "{{ container_config.sysctls | default(omit) }}"
     timeout: "{{ deploy_containers_docker_api_timeout }}"
     ulimits: "{{ container_config.ulimits | default(omit) }}"

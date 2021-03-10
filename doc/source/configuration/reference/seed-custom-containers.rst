@@ -44,6 +44,7 @@ Possible options for container deployment:
        ports:
        privileged:
        restart_policy:
+       shm_size:
        sysctls:
        tag:
        ulimits:
