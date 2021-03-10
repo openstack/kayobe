@@ -273,16 +273,6 @@ function seed_deploy {
         run_kayobe seed host configure
     fi
 
-    # Note: This must currently be done before host configure, because host
-    # configure runs kolla-ansible.yml, which validates the presence of the
-    # built deploy images.
-    if is_deploy_image_built_locally; then
-        echo "Building seed deployment images"
-        run_kayobe seed deployment image build
-    else
-        echo "Not building seed deployment images"
-    fi
-
     if [[ ${KAYOBE_SEED_CONTAINER_IMAGE_BUILD} = 1 ]]; then
         echo "Building seed container images"
         run_kayobe seed container image build
@@ -294,6 +284,13 @@ function seed_deploy {
     if [[ ${KAYOBE_SEED_SERVICE_DEPLOY} = 1 ]]; then
         echo "Deploying containerised seed services"
         run_kayobe seed service deploy
+    fi
+
+    if is_deploy_image_built_locally; then
+        echo "Building seed deployment images"
+        run_kayobe seed deployment image build
+    else
+        echo "Not building seed deployment images"
     fi
 }
 
