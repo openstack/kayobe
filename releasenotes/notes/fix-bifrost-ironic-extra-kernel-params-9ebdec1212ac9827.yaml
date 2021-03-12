@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes formatting of extra kernel options configured with
+    ``kolla_bifrost_extra_kernel_options`` when passed to Bifrost. See `story
+    2008714 <https://storyboard.openstack.org/#!/story/2008714>`__ for details.
