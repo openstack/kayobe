@@ -128,30 +128,19 @@
     - kolla-ansible
   gather_facts: False
   tasks:
-    - name: Set bifrost network interface
-      set_fact:
-        kolla_bifrost_network_interface: "{{ provision_oc_net_name | net_interface | replace('-', '_') }}"
-      when: provision_oc_net_name in network_interfaces
-
-    - name: Validate seed Kolla Ansible network configuration
-      fail:
-        msg: >
-          The Kolla Ansible variable {{ item.var_name }}
-          ({{ item.description }}) is invalid. Value:
-          "{{ hostvars[inventory_hostname][item.var_name] | default('<undefined>') }}".
-      when:
-        - item.required | bool
-        - hostvars[inventory_hostname][item.var_name] is not defined or not hostvars[inventory_hostname][item.var_name]
-      with_items:
-        - var_name: "kolla_bifrost_network_interface"
-          description: "Bifrost network interface name"
-          required: True
-
-    # Strictly api_interface is not required but kolla-ansible currently
-    # references it in prechecks.
-    - name: Set API network interface
-      set_fact:
-        kolla_api_interface: "{{ kolla_bifrost_network_interface }}"
+    - name: Set Kolla Ansible host variables
+      kolla_ansible_host_vars:
+        interfaces:
+          - var_name: "kolla_bifrost_network_interface"
+            description: "Bifrost provisioning network"
+            network: "{{ provision_oc_net_name }}"
+            required: True
+          # Strictly api_interface is not required but kolla-ansible currently
+          # references it in prechecks.
+          - var_name: "kolla_api_interface"
+            description: "Bifrost provisioning network"
+            network: "{{ provision_oc_net_name }}"
+            required: True
 
     - import_role:
         name: kolla-ansible-host-vars
@@ -167,157 +156,91 @@
     - config-validation
     - kolla-ansible
   gather_facts: False
-  vars:
-    require_provider_networks: >-
-      {{ kolla_enable_neutron | bool and
-         (inventory_hostname in groups['network'] or
-          (kolla_enable_neutron_provider_networks | bool and inventory_hostname in groups['compute'])) }}
   tasks:
-    - name: Set API network interface
+    - name: Set a fact about provider networks
+      vars:
+        require_provider_networks: >-
+          {{ kolla_enable_neutron | bool and
+             (inventory_hostname in groups['network'] or
+              (kolla_enable_neutron_provider_networks | bool and inventory_hostname in groups['compute'])) }}
       set_fact:
-        kolla_network_interface: "{{ internal_net_name | net_interface | replace('-', '_')  }}"
-        kolla_api_interface: "{{ internal_net_name | net_interface | replace('-', '_')  }}"
-      when: internal_net_name in network_interfaces
+        # This expression generates a list containing an item for each network
+        # in external_net_names, in the format required by the
+        # external_networks argument of the kolla_ansible_host_vars action
+        # plugin.
+        # NOTE(mgoddard): Unlike later branches, the Train version uses a
+        # separate set_fact task due to missing functionality in the dict2items
+        # filter in Ansible 2.7.
+        provider_networks: >-
+          {{ provider_networks | default([]) +
+             [{'network': item, 'required': require_provider_networks}] }}
+      with_items: "{{ external_net_names }}"
 
-    - name: Set storage network interface
-      set_fact:
-        kolla_storage_interface: "{{ storage_net_name | net_interface | replace('-', '_')  }}"
-      when: storage_net_name in network_interfaces
-
-    - name: Set cluster network interface
-      set_fact:
-        kolla_cluster_interface: "{{ storage_mgmt_net_name | net_interface | replace('-', '_')  }}"
-      when: storage_mgmt_net_name in network_interfaces
-
-    - name: Set Ceph storage network interface
-      set_fact:
-        kolla_ceph_storage_interface: "{{ ceph_storage_net_name | net_interface | replace('-', '_')  }}"
-      when: ceph_storage_net_name in network_interfaces
-
-    - name: Set Ceph cluster network interface
-      set_fact:
-        kolla_ceph_cluster_interface: "{{ ceph_storage_mgmt_net_name | net_interface | replace('-', '_')  }}"
-      when: ceph_storage_mgmt_net_name in network_interfaces
-
-    - name: Set Swift storage network interface
-      set_fact:
-        kolla_swift_storage_interface: "{{ swift_storage_net_name | net_interface | replace('-', '_')  }}"
-      when: swift_storage_net_name in network_interfaces
-
-    - name: Set Swift cluster network interface
-      set_fact:
-        kolla_swift_replication_interface: "{{ swift_storage_replication_net_name | net_interface | replace('-', '_')  }}"
-      when: swift_storage_replication_net_name in network_interfaces
-
-    - name: Set provision network interface
-      set_fact:
-        kolla_provision_interface: "{{ provision_wl_net_name | net_interface | replace('-', '_')  }}"
-      when: provision_wl_net_name in network_interfaces
-
-    - name: Set inspector dnsmasq network interface
-      set_fact:
-        kolla_inspector_dnsmasq_interface: "{{ inspection_net_name | net_interface | replace('-', '_')  }}"
-      when: inspection_net_name in network_interfaces
-
-    - name: Set DNS network interface
-      set_fact:
-        kolla_dns_interface: "{{ public_net_name | net_interface | replace('-', '_')  }}"
-      when: public_net_name in network_interfaces
-
-    - name: Set tunnel network interface
-      set_fact:
-        kolla_tunnel_interface: "{{ tunnel_net_name | net_interface | replace('-', '_') }}"
-      when: tunnel_net_name in network_interfaces
-
-    - name: Set external VIP interface
-      set_fact:
-        kolla_external_vip_interface: "{{ public_net_name | net_interface | replace('-', '_') }}"
-      when: public_net_name in network_interfaces
-
-    - name: Initialise facts containing the network host interfaces
-      set_fact:
-        # Initialise the following lists.
-        kolla_neutron_bridge_interfaces: []
-        kolla_neutron_bridge_names: []
-        kolla_neutron_external_interfaces: []
-
-    # When these networks are VLANs, we need to use the underlying tagged
-    # bridge interface rather than the untagged interface. We therefore
-    # strip the .<vlan> suffix of the interface name. We use a union here
-    # as a single tagged interface may be shared between these networks.
-    - name: Set a fact containing the bridges to be patched to the Neutron OVS bridges
-      set_fact:
-        kolla_neutron_bridge_interfaces: >
-          {{ kolla_neutron_bridge_interfaces |
-             union([item | net_interface | replace('.' ~ item | net_vlan | default('!nomatch!'), '')]) |
-             list }}
-      with_items: "{{ [provision_wl_net_name, cleaning_net_name] + external_net_names | unique | list }}"
-      when: item in network_interfaces
-
-    - name: Set facts containing the Neutron bridge and interface names
-      set_fact:
-        kolla_neutron_bridge_names: >
-          {{ kolla_neutron_bridge_names +
-             [item ~ network_bridge_suffix_ovs] }}
-        kolla_neutron_external_interfaces: >
-          {{ kolla_neutron_external_interfaces +
-             [network_patch_prefix ~ item ~ network_patch_suffix_ovs] }}
-      with_items: "{{ kolla_neutron_bridge_interfaces }}"
-
-    - name: Validate overcloud host Kolla Ansible network configuration
-      fail:
-        msg: >
-          The Kolla Ansible variable {{ item.var_name }}
-          ({{ item.description }}) is invalid. Value:
-          "{{ hostvars[inventory_hostname][item.var_name] | default('<undefined>') }}".
-      when:
-        - item.required | bool
-        - hostvars[inventory_hostname][item.var_name] is not defined or not hostvars[inventory_hostname][item.var_name]
-      with_items:
-        - var_name: "kolla_api_interface"
-          description: "API network interface name"
-          required: True
-        - var_name: "kolla_external_vip_interface"
-          description: "External network interface name"
-          required: "{{ inventory_hostname in groups['network'] }}"
-        - var_name: "kolla_provision_interface"
-          description: "Bare metal provisioning network interface name"
-          required: "{{ kolla_enable_ironic | bool and inventory_hostname in groups['controllers'] }}"
-        - var_name: "kolla_inspector_dnsmasq_interface"
-          description: "Bare metal introspection network interface name"
-          required: "{{ kolla_enable_ironic | bool and inventory_hostname in groups['controllers'] }}"
-        - var_name: "kolla_neutron_bridge_names"
-          description: "List of Neutron bridge names"
-          required: "{{ require_provider_networks }}"
-        - var_name: "kolla_neutron_external_interfaces"
-          description: "List of Neutron interface names"
-          required: "{{ require_provider_networks }}"
-
-    - name: Validate Kolla Ansible Neutron bridge and interface configuration
-      fail:
-        msg: >
-          The Kolla Ansible variable {{ item.0.var_name }}
-          ({{ item.0.description }}) is invalid. Value:
-          "{{ item.1 | default('<undefined>') }}".
-      when:
-        - item.0.required | bool
-        - item.1 is not defined or not item.1
-      with_subelements:
-        - - var_name: "kolla_neutron_bridge_names"
-            value: "{{ kolla_neutron_bridge_names }}"
-            description: "List of Neutron bridge names"
-            required: "{{ require_provider_networks }}"
-          - var_name: "kolla_neutron_external_interfaces"
-            value: "{{ kolla_neutron_external_interfaces }}"
-            description: "List of Neutron interface names"
-            required: "{{ require_provider_networks }}"
-        - value
-
-    # Kolla ansible expects these variables to be comma-separated lists.
-    - name: Update facts containing the Neutron bridge and interface names
-      set_fact:
-        kolla_neutron_bridge_names: "{{ kolla_neutron_bridge_names | join(',') }}"
-        kolla_neutron_external_interfaces: "{{ kolla_neutron_external_interfaces | join(',') }}"
+    - name: Set Kolla Ansible host variables
+      vars:
+        require_ironic_networks: >-
+          {{ kolla_enable_ironic | bool and
+             inventory_hostname in groups['controllers'] }}
+        ironic_networks:
+          - network: "{{ provision_wl_net_name }}"
+            required: "{{ require_ironic_networks }}"
+          - network: "{{ cleaning_net_name }}"
+            required: "{{ require_ironic_networks }}"
+      kolla_ansible_host_vars:
+        interfaces:
+          - var_name: "kolla_network_interface"
+            description: "Default network"
+            network: "{{ internal_net_name }}"
+            required: True
+          - var_name: "kolla_api_interface"
+            description: "API network"
+            network: "{{ internal_net_name }}"
+            required: True
+          - var_name: "kolla_storage_interface"
+            description: "Storage network"
+            network: "{{ storage_net_name }}"
+            required: False
+          - var_name: "kolla_cluster_interface"
+            description: "Cluster network"
+            network: "{{ storage_mgmt_net_name }}"
+            required: False
+          - var_name: "kolla_ceph_storage_interface"
+            description: "Ceph storage network"
+            network: "{{ ceph_storage_net_name }}"
+            required: False
+          - var_name: "kolla_ceph_cluster_interface"
+            description: "Ceph cluster network"
+            network: "{{ ceph_storage_mgmt_net_name }}"
+            required: False
+          - var_name: "kolla_swift_storage_interface"
+            description: "Swift storage network"
+            network: "{{ swift_storage_net_name }}"
+            required: False
+          - var_name: "kolla_swift_replication_interface"
+            description: "Swift storage replication network"
+            network: "{{ swift_storage_replication_net_name }}"
+            required: False
+          - var_name: "kolla_provision_interface"
+            description: "Bare metal provisioning network"
+            network: "{{ provision_wl_net_name }}"
+            required: "{{ kolla_enable_ironic | bool and inventory_hostname in groups['controllers'] }}"
+          - var_name: "kolla_inspector_dnsmasq_interface"
+            description: "Bare metal introspection network"
+            network: "{{ inspection_net_name }}"
+            required: "{{ kolla_enable_ironic | bool and inventory_hostname in groups['controllers'] }}"
+          - var_name: "kolla_dns_interface"
+            description: "DNS network"
+            network: "{{ public_net_name }}"
+            required: False
+          - var_name: "kolla_tunnel_interface"
+            description: "Tunnel network"
+            network: "{{ tunnel_net_name }}"
+            required: False
+          - var_name: "kolla_external_vip_interface"
+            description: "External network"
+            network: "{{ public_net_name }}"
+            required: "{{ inventory_hostname in groups['network'] }}"
+        external_networks: "{{ ironic_networks + provider_networks }}"
 
     - import_role:
         name: kolla-ansible-host-vars
@@ -325,6 +248,3 @@
         kolla_ansible_pass_through_host_vars: "{{ kolla_overcloud_inventory_pass_through_host_vars }}"
         kolla_ansible_pass_through_host_vars_map: "{{ kolla_overcloud_inventory_pass_through_host_vars_map }}"
         kolla_ansible_inventory_path: "{{ kolla_config_path }}/inventory/overcloud"
-        # Kolla ansible expects these variables to be comma-separated lists.
-        kolla_neutron_bridge_names: "{{ kolla_neutron_bridge_names | join(',') }}"
-        kolla_neutron_external_interfaces: "{{ kolla_neutron_external_interfaces | join(',') }}"
