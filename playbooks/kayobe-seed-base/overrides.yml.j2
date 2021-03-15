@@ -29,7 +29,7 @@ pip_index_url: "http://{{ zuul_site_mirror_fqdn }}/pypi/simple"
 aio_bridge_ports:
   - dummy1
 
-# Build seed deployment images (IPA)
+# Build seed deployment images (IPA) with extra-hardware element
 ipa_build_images: true
 
 # Building CentOS 8 IPA images requires custom configuration. See
@@ -40,6 +40,9 @@ ipa_build_dib_elements_default:
   - centos
   - enable-serial-console
   - ironic-python-agent-ramdisk
+
+ipa_build_dib_elements_extra:
+  - "extra-hardware"
 
 ipa_build_dib_env_extra:
   DIB_RELEASE: 8
@@ -55,5 +58,17 @@ ipa_build_upper_constraints_file: "https://releases.openstack.org/constraints/up
 ipa_images:
   - "ipa.kernel"
   - "ipa.initramfs"
+{% else %}
+ipa_build_dib_elements_extra:
+  - "ipa-extra-hardware"
+
+ipa_build_dib_env_extra:
+  DIB_IPA_HARDWARE_VERSION: "0.23.0"
+
+ipa_build_dib_git_elements:
+  - repo: "https://github.com/stackhpc/stackhpc-image-elements"
+    local: "{% raw %}{{ source_checkout_path }}/stackhpc-image-elements{% endraw %}"
+    version: "master"
+    elements_path: "elements"
 {% endif %}
 {% endif %}
