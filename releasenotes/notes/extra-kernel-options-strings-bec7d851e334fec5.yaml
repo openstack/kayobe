@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    Supports extra kernel options specified as strings instead of lists.

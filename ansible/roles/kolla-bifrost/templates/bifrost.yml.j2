@@ -5,7 +5,7 @@ enabled_hardware_types: "{{ kolla_bifrost_enabled_hardware_types | join(',') }}"
 {% if kolla_bifrost_extra_kernel_options %}
 # List of extra kernel parameters for Bifrost's Ironic PXE configuration.
 # Default is empty.
-extra_kernel_options: "{{ kolla_bifrost_extra_kernel_options | join(' ') }}"
+extra_kernel_options: "{{ kolla_bifrost_extra_kernel_options if kolla_bifrost_extra_kernel_options is string else kolla_bifrost_extra_kernel_options | join(' ') }}"
 {% endif %}
 
 # IP address range for DHCP.
@@ -40,7 +40,7 @@ inspector_port_addition: "{{ kolla_bifrost_inspector_port_addition }}"
 
 {% if kolla_bifrost_inspector_extra_kernel_options %}
 # Extra kernel parameters for the inspector default PXE configuration.
-inspector_extra_kernel_options: "{{ kolla_bifrost_inspector_extra_kernel_options | join(' ') }}"
+inspector_extra_kernel_options: "{{ kolla_bifrost_inspector_extra_kernel_options if kolla_bifrost_inspector_extra_kernel_options is string else kolla_bifrost_inspector_extra_kernel_options | join(' ') }}"
 {% endif %}
 
 # Whether to download Ironic Python Agent (IPA) images.
