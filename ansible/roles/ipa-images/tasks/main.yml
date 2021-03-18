@@ -62,28 +62,22 @@
 
 - block:
     - name: Gather facts about Ironic Python Agent (IPA) kernel image
-      os_image_facts:
+      os_image_info:
         auth_type: "{{ ipa_images_openstack_auth_type }}"
         auth: "{{ ipa_images_openstack_auth }}"
         cacert: "{{ ipa_images_openstack_cacert | default(omit, true) }}"
         interface: "{{ ipa_images_openstack_interface | default(omit, true) }}"
         image: "{{ ipa_images_kernel_name }}"
-
-    - name: Set a fact containing the Ironic Python Agent (IPA) kernel image
-      set_fact:
-        ipa_images_kernel_openstack_image: "{{ openstack_image if openstack_image else {} }}"
+      register: ipa_images_kernel
 
     - name: Gather facts about Ironic Python Agent (IPA) ramdisk image
-      os_image_facts:
+      os_image_info:
         auth_type: "{{ ipa_images_openstack_auth_type }}"
         auth: "{{ ipa_images_openstack_auth }}"
         cacert: "{{ ipa_images_openstack_cacert | default(omit, true) }}"
         interface: "{{ ipa_images_openstack_interface | default(omit, true) }}"
         image: "{{ ipa_images_ramdisk_name }}"
-
-    - name: Set a fact containing the Ironic Python Agent (IPA) ramdisk image
-      set_fact:
-        ipa_images_ramdisk_openstack_image: "{{ openstack_image if openstack_image else {} }}"
+      register: ipa_images_ramdisk
 
     # The os_image module will get confused if there are multiple images with the
     # same name, so rename the old images. They will still be accessible via UUID.
@@ -94,13 +88,13 @@
         extension: "{{ item.created_at | replace(':', '-') }}~"
       with_items:
         - name: "{{ ipa_images_kernel_name }}"
-          created_at: "{{ ipa_images_kernel_openstack_image.created_at | default }}"
+          created_at: "{{ ipa_images_kernel.openstack_image.created_at | default }}"
           checksum: "{{ ipa_images_checksum.results[0].stat.checksum }}"
-          glance_checksum: "{{ ipa_images_kernel_openstack_image.checksum | default }}"
+          glance_checksum: "{{ ipa_images_kernel.openstack_image.checksum | default }}"
         - name: "{{ ipa_images_ramdisk_name }}"
-          created_at: "{{ ipa_images_ramdisk_openstack_image.created_at | default }}"
+          created_at: "{{ ipa_images_ramdisk.openstack_image.created_at | default }}"
           checksum: "{{ ipa_images_checksum.results[1].stat.checksum }}"
-          glance_checksum: "{{ ipa_images_ramdisk_openstack_image.checksum | default }}"
+          glance_checksum: "{{ ipa_images_ramdisk.openstack_image.checksum | default }}"
       when:
         - item.glance_checksum
         - item.checksum != item.glance_checksum

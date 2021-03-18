@@ -1,10 +1,12 @@
 ---
 dependency:
   name: galaxy
+  options:
+    requirements-file: molecule/collections.yml
 driver:
   name: docker
-lint:
-  name: yamllint
+lint: |
+  yamllint .
 platforms:
   - name: centos-8
     image: centos:8
