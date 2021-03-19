@@ -6,6 +6,14 @@
 kolla_ironic_enabled_hardware_types:
   - ipmi
 
+# Specify the list of bios interfaces to load during service initialization.
+kolla_ironic_enabled_bios_interfaces:
+  - no-bios
+
+# Default bios interface to be used for nodes that do not have bios_interface
+# field set.
+kolla_ironic_default_bios_interface: no-bios
+
 # Specify the list of boot interfaces to load during service initialization.
 kolla_ironic_enabled_boot_interfaces:
   - pxe
