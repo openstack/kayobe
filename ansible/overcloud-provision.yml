@@ -111,7 +111,16 @@
         -m command
         -a "baremetal node provide --wait {{ wait_available_timeout }} {% raw %}{{ inventory_hostname }}{% endraw %}"'
       register: provide_result
-      until: provide_result is successful or 'is locked by host' in provide_result.stdout
+      until: >-
+        provide_result is successful or
+        'is locked by host' in provide_result.stdout or
+        'while it is in state "available"' in provide_result.stdout
+      failed_when:
+        - provide_result is not successful
+        # If fast-track deployment is enabled, it's possible that ironic will
+        # move the node to available, even though the initial state was
+        # manageable.
+        - "'while it is in state \"available\"' not in provide_result.stdout"
       retries: "{{ ironic_retries }}"
       delay: "{{ ironic_retry_interval }}"
       when: initial_provision_state in ['enroll', 'manageable']
