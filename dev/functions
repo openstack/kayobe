@@ -505,7 +505,12 @@ function overcloud_test {
     # Test SSH connectivity. For servers attached directly to the external
     # network, use the fixed IP. Otherwise add a floating IP.
     if [[ $network = provision-net ]]; then
-        ip=$(openstack server show "$name" -f value -c addresses | sed -e "s/${network}=//")
+        port_id=$(openstack port list --server $name --network $network -f value -c ID)
+        echo "port $port_id"
+        fixed_ips=$(openstack port show $port_id -f json -c fixed_ips)
+        echo "fixed_ips $fixed_ips"
+        ip=$(echo $fixed_ips | python3 -c "import json,sys; print(json.load(sys.stdin)['fixed_ips'][0]['ip_address'])")
+        echo "ip $ip"
     else
         echo "$name: Attaching floating IP"
         if is_ironic_enabled; then
