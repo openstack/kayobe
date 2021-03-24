@@ -4,7 +4,7 @@
 enabled_hardware_types: {{ kolla_ironic_enabled_hardware_types | join(',') }}
 
 {# Add configuration of enabled and default dynamic driver interfaces. #}
-{% set interfaces=['boot', 'console', 'deploy', 'inspect', 'management',
+{% set interfaces=['boot', 'bios', 'console', 'deploy', 'inspect', 'management',
                    'network', 'power', 'raid', 'rescue', 'storage', 'vendor'] %}
 {% for interface in interfaces %}
 {% if hostvars[inventory_hostname]['kolla_ironic_enabled_' ~ interface ~ '_interfaces'] | default %}
