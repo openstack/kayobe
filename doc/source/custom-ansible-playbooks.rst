@@ -66,6 +66,12 @@ plugins:
 
 These symlinks can even be committed to the kayobe-config Git repository.
 
+.. note::
+
+   These symlinks rely on having a kayobe source checkout at the same level as
+   the kayobe-config repository checkout, as described in
+   :ref:`installation-source`.
+
 Ansible Galaxy
 --------------
 

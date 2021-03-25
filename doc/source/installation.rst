@@ -109,6 +109,8 @@ Finally, deactivate the virtualenv::
 
     (kayobe) $ deactivate
 
+.. _installation-source:
+
 Installation from source
 ========================
 
