@@ -4,6 +4,8 @@
   vars:
     # Set this to True to push images to the registry when built.
     push_images: False
+    # Set this to True to skip using cache.
+    nocache: False
     # Set this variable to a space-separated list of regexes to override the
     # default set of images.
     container_image_regexes: ""
@@ -52,6 +54,7 @@
           {% if item.type is defined %}--type {{ item.type }}{% endif %}
           {% if kolla_docker_registry is not none %}--registry {{ kolla_docker_registry }}{% endif %}
           {% if push_images | bool %}--push{% endif %}
+          {% if nocache | bool %}--nocache{% endif %}
           {{ item.regexes }} 2>&1 | tee --append {{ kolla_build_log_path }}
         executable: /bin/bash
       with_items: "{{ container_image_sets }}"

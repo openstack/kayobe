@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Added new option (``--nocache``) to ``kayobe seed container image build``
+    and ``kayobe overcloud container image build`` to skip using build cache.
