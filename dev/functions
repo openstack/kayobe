@@ -225,13 +225,16 @@ function run_kayobe {
 }
 
 function control_host_bootstrap {
+    attempts=10
+    interval=5
     echo "Bootstrapping the Ansible control host"
-    for i in $(seq 1 3); do
+    for i in $(seq 1 $attempts); do
         if run_kayobe control host bootstrap; then
             chb_success=1
             break
         fi
-        echo "Control host bootstrap failed - likely Ansible Galaxy flakiness. Retrying"
+        echo "Control host bootstrap failed - likely Ansible Galaxy flakiness. Sleeping $interval seconds before retrying"
+        sleep $interval
     done
     if [[ -z ${chb_success+x} ]]; then
         die $LINENO "Failed to bootstrap control host"
@@ -241,13 +244,16 @@ function control_host_bootstrap {
 }
 
 function control_host_upgrade {
+    attempts=10
+    interval=5
     echo "Upgrading the Ansible control host"
-    for i in $(seq 1 3); do
+    for i in $(seq 1 $attempts); do
         if run_kayobe control host upgrade; then
             chu_success=1
             break
         fi
-        echo "Control host upgrade failed - likely Ansible Galaxy flakiness. Retrying"
+        echo "Control host upgrade failed - likely Ansible Galaxy flakiness. Sleeping $interval seconds before retrying"
+        sleep $interval
     done
     if [[ -z ${chu_success+x} ]]; then
         die $LINENO "Failed to upgrade control host"
