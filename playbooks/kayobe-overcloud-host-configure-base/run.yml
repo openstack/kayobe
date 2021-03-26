@@ -13,7 +13,8 @@
   tasks:
     - name: Ensure overcloud is deployed
       shell:
-        cmd: "{{ kayobe_src_dir }}/dev/overcloud-deploy.sh > {{ logs_dir }}/ansible/overcloud-deploy"
+        cmd: "{{ kayobe_src_dir }}/dev/overcloud-deploy.sh &> {{ logs_dir }}/ansible/overcloud-deploy"
+        executable: /bin/bash
 
     - name: Run testinfra tests
       command: "{{ testinfra_venv }}/bin/py.test {{ test_path }} --html={{ logs_dir }}/test-results.html --self-contained-html"
