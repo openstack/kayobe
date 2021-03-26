@@ -16,8 +16,7 @@
           # be run after install.
           shell:
             cmd: dev/configure-firewall.sh
-            # Does not exist in Rocky release, use script from later version.
-            chdir: "{{ kayobe_src_dir }}"
+            chdir: "{{ previous_kayobe_src_dir }}"
 
         - name: Ensure overcloud is deployed
           shell:
