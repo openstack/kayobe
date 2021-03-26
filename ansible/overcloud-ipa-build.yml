@@ -23,6 +23,14 @@
     ipa_image_force_rebuild: false
   tasks:
     - block:
+        # TODO(priteau): Move this to stackhpc.os-images
+        - name: Ensure libgcrypt is updated
+          package:
+            name: "libgcrypt"
+            state: latest
+          become: True
+          when: ansible_os_family == 'RedHat'
+
         - name: Ensure Ironic Python Agent images are built
           include_role:
             name: stackhpc.os-images
