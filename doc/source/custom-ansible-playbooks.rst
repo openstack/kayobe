@@ -169,6 +169,8 @@ Then, to run the ``foo.yml`` playbook::
 
     (kayobe) $ kayobe playbook run $KAYOBE_CONFIG_PATH/ansible/foo.yml
 
+.. _custom-playbooks-hooks:
+
 Hooks
 =====
 

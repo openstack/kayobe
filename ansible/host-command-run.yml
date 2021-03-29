@@ -1,7 +1,7 @@
 ---
 - name: Run a command
   gather_facts: False
-  hosts: seed-hypervisor:seed:overcloud
+  hosts: seed-hypervisor:seed:overcloud:infra-vms
   tasks:
     - name: Run a command
       shell: "{{ host_command_to_run }}"

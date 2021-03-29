@@ -1,6 +1,6 @@
 ---
 - name: Ensure users exist
-  hosts: seed:seed-hypervisor:overcloud
+  hosts: seed:seed-hypervisor:overcloud:infra-vms
   tags:
     - users
   roles:

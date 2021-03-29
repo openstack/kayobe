@@ -4,7 +4,7 @@
 # In some cases cloud-init reconfigure automatically network interface
 # and cause some issues in network configuration
 - name: Disable Cloud-init service
-  hosts: overcloud
+  hosts: overcloud:infra-vms
   tags:
     - disable-cloud-init
   roles:

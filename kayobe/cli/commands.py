@@ -823,6 +823,171 @@ class SeedDeploymentImageBuild(KayobeAnsibleMixin, VaultMixin, Command):
                                   extra_vars=extra_vars)
 
 
+class InfraVMProvision(KayobeAnsibleMixin, VaultMixin, Command):
+    """Provisions infra virtual machines
+
+    * Allocate IP addresses for all configured networks.
+    * Provision a virtual machine using libvirt.
+    """
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Provisioning infra VMs")
+        self.run_kayobe_playbook(parsed_args,
+                                 _get_playbook_path("ip-allocation"),
+                                 limit="infra-vms")
+
+        limit_arg = utils.intersect_limits(parsed_args.limit, "infra-vms")
+        # We want the limit to affect one play only. To do this we use a
+        # variable to override the hosts list instead of using limit.
+        extra_vars = {
+            "infra_vm_limit": limit_arg
+        }
+
+        self.run_kayobe_playbook(parsed_args,
+                                 _get_playbook_path("infra-vm-provision"),
+                                 ignore_limit=True, extra_vars=extra_vars)
+
+
+class InfraVMDeprovision(KayobeAnsibleMixin, VaultMixin, Command):
+    """Deprovisions infra virtual machines.
+
+    This will destroy all infra VMs and all associated volumes.
+    """
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Deprovisioning infra VMs")
+        # We want the limit to affect one play only. To do this we use a
+        # variable to override the hosts list instead of using limit.
+        limit_arg = utils.intersect_limits(parsed_args.limit, "infra-vms")
+        extra_vars = {
+            "infra_vm_limit": limit_arg
+        }
+
+        self.run_kayobe_playbook(parsed_args,
+                                 _get_playbook_path("infra-vm-deprovision"),
+                                 ignore_limit=True, extra_vars=extra_vars)
+
+
+class InfraVMHostConfigure(KayobeAnsibleMixin, VaultMixin,
+                           Command):
+    """Configure the infra VMs host OS and services.
+
+    * Allocate IP addresses for all configured networks.
+    * Add the host to SSH known hosts.
+    * Configure a user account for use by kayobe for SSH access.
+    * Configure package repos.
+    * Configure a PyPI mirror.
+    * Optionally, create a virtualenv for remote target hosts.
+    * Optionally, wipe unmounted disk partitions (--wipe-disks).
+    * Configure user accounts, group associations, and authorised SSH keys.
+    * Disable SELinux.
+    * Configure the host's network interfaces.
+    * Set sysctl parameters.
+    * Disable bootstrap interface configuration.
+    * Configure timezone.
+    * Optionally, configure software RAID arrays.
+    * Optionally, configure encryption.
+    * Configure LVM volumes.
+    """
+
+    def get_parser(self, prog_name):
+        parser = super(InfraVMHostConfigure, self).get_parser(prog_name)
+        group = parser.add_argument_group("Host Configuration")
+        group.add_argument("--wipe-disks", action='store_true',
+                           help="wipe partition and LVM data from all disks "
+                                "that are not mounted. Warning: this can "
+                                "result in the loss of data")
+        return parser
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Configuring Infra VMs host OS")
+
+        # Allocate IP addresses.
+        playbooks = _build_playbook_list("ip-allocation")
+        self.run_kayobe_playbooks(parsed_args, playbooks, limit="infra-vms")
+
+        # Kayobe playbooks.
+        playbooks = _build_playbook_list(
+            "ssh-known-host", "kayobe-ansible-user",
+            "dnf", "pip", "kayobe-target-venv")
+        if parsed_args.wipe_disks:
+            playbooks += _build_playbook_list("wipe-disks")
+        playbooks += _build_playbook_list(
+            "users", "dev-tools", "disable-selinux", "network",
+            "sysctl", "disable-glean", "disable-cloud-init", "time",
+            "mdadm", "luks", "lvm", "docker-devicemapper", "docker")
+        self.run_kayobe_playbooks(parsed_args, playbooks, limit="infra-vms")
+
+
+class InfraVMHostPackageUpdate(KayobeAnsibleMixin, VaultMixin, Command):
+    """Update packages on the infra VMs."""
+
+    def get_parser(self, prog_name):
+        parser = super(InfraVMHostPackageUpdate, self).get_parser(prog_name)
+        group = parser.add_argument_group("Host Package Updates")
+        group.add_argument("--packages", required=True,
+                           help="List of packages to update. Use '*' to "
+                                "update all packages.")
+        group.add_argument("--security", action='store_true',
+                           help="Only install updates that have been marked "
+                                "security related.")
+        return parser
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Updating infra vm host packages")
+        extra_vars = {
+            "host_package_update_packages": parsed_args.packages,
+            "host_package_update_security": parsed_args.security,
+        }
+        playbooks = _build_playbook_list("host-package-update")
+        self.run_kayobe_playbooks(parsed_args, playbooks, limit="infra-vms",
+                                  extra_vars=extra_vars)
+
+
+class InfraVMHostCommandRun(KayobeAnsibleMixin, VaultMixin, Command):
+    """Run command on the infra VMs."""
+
+    def get_parser(self, prog_name):
+        parser = super(InfraVMHostCommandRun, self).get_parser(prog_name)
+        group = parser.add_argument_group("Host Command Run")
+        group.add_argument("--command", required=True,
+                           help="Command to run (required).")
+        group.add_argument("--show-output", action='store_true',
+                           help="Show command output")
+        return parser
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Run command on infra VM hosts")
+        extra_vars = {
+            "host_command_to_run": utils.escape_jinja(parsed_args.command),
+            "show_output": parsed_args.show_output}
+        playbooks = _build_playbook_list("host-command-run")
+        self.run_kayobe_playbooks(parsed_args, playbooks, limit="infra-vms",
+                                  extra_vars=extra_vars)
+
+
+class InfraVMHostUpgrade(KayobeAnsibleMixin, VaultMixin, Command):
+    """Upgrade the infra VM host services.
+
+    Performs the changes necessary to make the host services suitable for the
+    configured OpenStack release.
+    """
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Upgrading the infra-vm host services")
+        playbooks = _build_playbook_list("kayobe-target-venv")
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  limit="infra-vms")
+
+
+class InfraVMServiceDeploy(KayobeAnsibleMixin, VaultMixin,
+                           Command):
+    """Run hooks for infra structure services."""
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Running no-op Infra VM service deploy")
+
+
 class OvercloudInventoryDiscover(KayobeAnsibleMixin, VaultMixin, Command):
     """Discover the overcloud inventory from the seed's Ironic service.
 

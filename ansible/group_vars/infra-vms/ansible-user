@@ -1,0 +1,7 @@
+---
+# User with which to access the infra VMs via SSH.
+ansible_user: "{{ kayobe_ansible_user }}"
+
+# User with which to access the infra VMs before the kayobe_ansible_user
+# account has been created.
+bootstrap_user: "{{ infra_vm_bootstrap_user }}"

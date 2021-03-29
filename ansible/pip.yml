@@ -1,6 +1,6 @@
 ---
 - name: Configure local PyPi mirror
-  hosts: seed-hypervisor:seed:overcloud
+  hosts: seed-hypervisor:seed:overcloud:infra-vms
   tags:
     - pip
   vars:

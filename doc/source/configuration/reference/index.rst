@@ -21,4 +21,5 @@ options.
    ironic-python-agent
    docker-registry
    seed-custom-containers
+   infra-vms
    nova-cells

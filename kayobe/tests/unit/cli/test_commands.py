@@ -920,6 +920,189 @@ class TestCase(unittest.TestCase):
         self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbook")
+    def test_infra_vm_provision(self, mock_run):
+        command = commands.InfraVMProvision(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                utils.get_data_files_path(
+                    "ansible", "ip-allocation.yml"),
+                limit="infra-vms"
+            ),
+            mock.call(
+                mock.ANY,
+                utils.get_data_files_path(
+                    "ansible", "infra-vm-provision.yml"),
+                ignore_limit=True,
+                extra_vars={'infra_vm_limit': 'infra-vms'}
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbook")
+    def test_infra_vm_deprovision(self, mock_run):
+        command = commands.InfraVMDeprovision(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                utils.get_data_files_path(
+                    "ansible", "infra-vm-deprovision.yml"),
+                ignore_limit=True,
+                extra_vars={'infra_vm_limit': 'infra-vms'}
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_infra_vm_host_configure(self, mock_run):
+        command = commands.InfraVMHostConfigure(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [utils.get_data_files_path("ansible", "ip-allocation.yml")],
+                limit="infra-vms",
+            ),
+            mock.call(
+                mock.ANY,
+                [
+                    utils.get_data_files_path("ansible", "ssh-known-host.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "kayobe-ansible-user.yml"),
+                    utils.get_data_files_path("ansible", "dnf.yml"),
+                    utils.get_data_files_path("ansible", "pip.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "kayobe-target-venv.yml"),
+                    utils.get_data_files_path("ansible", "users.yml"),
+                    utils.get_data_files_path("ansible", "dev-tools.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "disable-selinux.yml"),
+                    utils.get_data_files_path("ansible", "network.yml"),
+                    utils.get_data_files_path("ansible", "sysctl.yml"),
+                    utils.get_data_files_path("ansible", "disable-glean.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "disable-cloud-init.yml"),
+                    utils.get_data_files_path("ansible", "time.yml"),
+                    utils.get_data_files_path("ansible", "mdadm.yml"),
+                    utils.get_data_files_path("ansible", "luks.yml"),
+                    utils.get_data_files_path("ansible", "lvm.yml"),
+                    utils.get_data_files_path("ansible",
+                                              "docker-devicemapper.yml"),
+                    utils.get_data_files_path("ansible", "docker.yml"),
+                ],
+                limit="infra-vms",
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_infra_vm_host_upgrade(self, mock_run):
+        command = commands.InfraVMHostUpgrade(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    utils.get_data_files_path(
+                        "ansible", "kayobe-target-venv.yml"),
+                ],
+                limit="infra-vms",
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_infra_vm_host_command_run(self, mock_run):
+        command = commands.InfraVMHostCommandRun(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args(["--command", "ls -a",
+                                         "--show-output"])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    utils.get_data_files_path("ansible",
+                                              "host-command-run.yml"),
+                ],
+                limit="infra-vms",
+                extra_vars={
+                    "host_command_to_run": utils.escape_jinja("ls -a"),
+                    "show_output": True}
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_infra_vm_host_package_update_all(self, mock_run):
+        command = commands.InfraVMHostPackageUpdate(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args(["--packages", "*"])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    utils.get_data_files_path(
+                        "ansible", "host-package-update.yml"),
+                ],
+                limit="infra-vms",
+                extra_vars={
+                    "host_package_update_packages": "*",
+                    "host_package_update_security": False,
+                },
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbook")
+    def test_infra_vm_service_deploy(self, mock_run):
+        command = commands.InfraVMServiceDeploy(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = []
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbook")

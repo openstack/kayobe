@@ -3,7 +3,7 @@
 # when running kayobe.
 
 - name: Ensure a virtualenv exists for kayobe
-  hosts: seed:seed-hypervisor:overcloud
+  hosts: seed:seed-hypervisor:overcloud:infra-vms
   gather_facts: False
   tags:
     - kayobe-target-venv

@@ -1,6 +1,6 @@
 ---
 - name: Ensure sysctl parameters are configured
-  hosts: seed:seed-hypervisor:overcloud
+  hosts: seed:seed-hypervisor:overcloud:infra-vms
   tags:
     - sysctl
   roles:

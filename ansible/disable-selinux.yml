@@ -1,6 +1,6 @@
 ---
 - name: Disable SELinux and reboot if required
-  hosts: seed:overcloud
+  hosts: seed:overcloud:infra-vms
   tags:
     - disable-selinux
   roles:

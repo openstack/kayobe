@@ -1,0 +1,44 @@
+---
+
+- name: Set facts about infra VMs
+  gather_facts: false
+  hosts: "{{ infra_vm_limit | default('infra-vms') }}"
+  tags:
+    - always
+  tasks:
+    - name: Group virtual machines by hypervisor
+      group_by:
+        key: infra_vms_{{ infra_vm_hypervisor }}
+      # FIXME(mgoddard): Is delegate_to necessary?
+      delegate_to: "{{ infra_vm_hypervisor }}"
+      changed_when: false
+
+- name: Ensure defined infra VMs are deployed
+  hosts: hypervisors
+  tags:
+    - infra-vm-provision
+  tasks:
+    - import_role:
+        name: infra-vms
+      vars:
+        infra_vm_vms: "{{ groups['infra_vms_' ~ inventory_hostname ] | default([]) }}"
+
+- name: Wait for infra VMs to be accessible
+  hosts: "{{ infra_vm_limit | default('infra-vms') }}"
+  gather_facts: false
+  tags:
+    - infra-vm-provision
+  tasks:
+    - name: Wait for a connection to VM with bootstrap user
+      wait_for_connection:
+        # NOTE: Ensure we exceed the 5 minute DHCP timeout of the eth0
+        # interface if necessary.
+        timeout: 600
+      vars:
+        # NOTE(wszumski): ansible_host_key_checking variable doesn't seem to
+        # work, But it would be nice not to fail if the host_key changes.
+        # We check the hostkey during host configure.
+        # https://github.com/ansible/ansible/blob/1c34492413dec09711c430745034db0c108227a9/lib/ansible/plugins/connection/ssh.py#L49
+        # https://github.com/ansible/ansible/issues/49254
+        ansible_ssh_extra_args: '{{ infra_vm_wait_connection_ssh_extra_args }}'
+        ansible_user: "{{ bootstrap_user }}"

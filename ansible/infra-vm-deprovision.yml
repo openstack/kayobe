@@ -1,0 +1,38 @@
+---
+
+- name: Set facts about infra VMs
+  gather_facts: false
+  hosts: "{{ infra_vm_limit | default('infra-vms') }}"
+  tags:
+    - always
+  tasks:
+    - name: Group virtual machines by hypervisor
+      group_by:
+        key: infra_vms_{{ infra_vm_hypervisor }}
+      # FIXME(mgoddard): Is delegate_to necessary?
+      delegate_to: "{{ infra_vm_hypervisor }}"
+      changed_when: false
+
+- name: Ensure defined infra VMs are destroyed
+  hosts: hypervisors
+  tags:
+    - infra-vm-deprovision
+  tasks:
+    - import_role:
+        name: infra-vms
+      vars:
+        infra_vm_action: destroy
+        infra_vm_vms: "{{ groups['infra_vms_' ~ inventory_hostname ] | default([]) }}"
+
+- name: Set facts about infra VMs
+  gather_facts: false
+  hosts: "{{ infra_vm_limit | default('infra-vms') }}"
+  tags:
+    - infra-vm-deprovision
+  tasks:
+    - name: Remove host key from known hosts
+      known_hosts:
+        name: "{{ ansible_host }}"
+        state: "absent"
+      delegate_to: localhost
+      throttle: 1

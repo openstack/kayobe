@@ -1,0 +1,18 @@
+---
+- import_tasks: prerequisites.yml
+
+- name: list all VMs on hypervisor
+  virt:
+    command: list_vms
+  register: all_vms
+  become: true
+
+- name: "{{ infra_vm_action | capitalize }} infra VMs (loop)"
+  include_tasks: "{{ infra_vm_action }}.yml"
+  vars:
+    vm_name: "{{ vm_hostvars.infra_vm_name }}"
+    vm_hostvars: "{{ hostvars[vm_item] }}"
+  loop: "{{ infra_vm_vms }}"
+  when: (infra_vm_action == "deploy" and vm_name not in all_vms.list_vms) or infra_vm_action == "destroy"
+  loop_control:
+    loop_var: vm_item

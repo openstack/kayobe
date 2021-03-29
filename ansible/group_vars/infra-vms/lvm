@@ -1,0 +1,6 @@
+---
+###############################################################################
+# Infra VM node LVM configuration.
+
+# List of LVM volume groups.
+lvm_groups: "{{ infra_vm_lvm_groups }}"

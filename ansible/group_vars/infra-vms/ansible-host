@@ -1,0 +1,3 @@
+---
+# Host/IP with which to access the infra VMs via SSH.
+ansible_host: "{{ admin_oc_net_name | net_ip }}"

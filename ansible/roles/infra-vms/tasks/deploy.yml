@@ -1,0 +1,73 @@
+---
+
+- name: "[{{ vm_name }}] Ensure that the VM configdrive exists"
+  include_role:
+    name: jriguera.configdrive
+  vars:
+    configdrive_os_family: "{{ vm_hostvars.infra_vm_os_family }}"
+    configdrive_uuid: "{{ vm_name | to_uuid }}"
+    # Must set configdrive_instance_dir when using a loop
+    # https://github.com/jriguera/ansible-role-configdrive/blob/8438592c84585c86e62ae07e526d3da53629b377/tasks/main.yml#L17
+    configdrive_instance_dir: "{{ configdrive_uuid }}"
+    configdrive_fqdn: "{{ vm_name }}"
+    configdrive_name: "{{ vm_name }}"
+    configdrive_ssh_public_key: "{{ lookup('file', ssh_public_key_path) }}"
+    configdrive_config_dir: "{{ image_cache_path }}"
+    configdrive_volume_path: "{{ image_cache_path }}"
+    configdrive_config_dir_delete: False
+    configdrive_resolv:
+      domain: "{{ vm_hostvars.resolv_domain | default }}"
+      search: "{{ vm_hostvars.resolv_search | default }}"
+      dns: "{{ vm_hostvars.resolv_nameservers | default([]) }}"
+    configdrive_network_device_list: >
+      {{ vm_hostvars.network_interfaces |
+          map('net_configdrive_network_device', vm_hostvars.inventory_hostname) |
+          list }}
+
+- name: "[{{ vm_name }}] Set a fact containing the configdrive image path"
+  set_fact:
+    vm_configdrive_path: "{{ image_cache_path }}/{{ vm_name }}.iso"
+
+- name: "[{{ vm_name }}] Ensure configdrive is decoded and decompressed"
+  shell: >
+      base64 -d {{ image_cache_path }}/{{ vm_name | to_uuid }}.gz
+      | gunzip
+      > {{ vm_configdrive_path }}
+
+- name: "[{{ vm_name }}] Ensure unnecessary files are removed"
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ image_cache_path }}/{{ vm_name | to_uuid }}.gz"
+
+- name: "[{{ vm_name }}] Check the size of the configdrive image"
+  stat:
+    path: "{{ vm_configdrive_path }}"
+    get_checksum: False
+    get_md5: False
+    mime: False
+  register: stat_result
+
+- name: "[{{ vm_name }}] Ensure that the VM is provisioned"
+  include_role:
+    name: stackhpc.libvirt-vm
+  vars:
+    vm_configdrive_device: cdrom
+    vm_configdrive_volume:
+      name: "{{ vm_name }}-configdrive"
+      pool: "{{ vm_hostvars.infra_vm_pool }}"
+      # Round size up to next multiple of 4096.
+      capacity: "{{ (stat_result.stat.size + 4095) // 4096 * 4096 }}"
+      device: "{{ vm_configdrive_device }}"
+      format: "raw"
+      image: "{{ vm_configdrive_path }}"
+      remote_src: true
+    libvirt_vm_image_cache_path: "{{ image_cache_path }}"
+    libvirt_vms:
+      - name: "{{ vm_name }}"
+        memory_mb: "{{ vm_hostvars.infra_vm_memory_mb }}"
+        vcpus: "{{ vm_hostvars.infra_vm_vcpus }}"
+        volumes: "{{ vm_hostvars.infra_vm_volumes + [vm_configdrive_volume] }}"
+        interfaces: "{{ vm_hostvars.infra_vm_interfaces }}"
+        console_log_enabled: true

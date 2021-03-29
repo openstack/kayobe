@@ -3,7 +3,7 @@
 # servers but gets in the way after this as it tries to enable all network
 # interfaces. In some cases this can lead to timeouts.
 - name: Ensure Glean is disabled and its artifacts are removed
-  hosts: seed:overcloud
+  hosts: seed:overcloud:infra-vms
   tags:
     - disable-glean
   roles:

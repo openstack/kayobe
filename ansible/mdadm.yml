@@ -1,6 +1,6 @@
 ---
 - name: Ensure software RAID configuration is applied
-  hosts: seed-hypervisor:seed:overcloud
+  hosts: seed-hypervisor:seed:overcloud:infra-vms
   tags:
     - mdadm
   roles:

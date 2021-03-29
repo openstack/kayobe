@@ -1,6 +1,6 @@
 ---
 - name: Ensure IP addresses are allocated
-  hosts: seed-hypervisor:seed:overcloud
+  hosts: seed-hypervisor:seed:overcloud:infra-vms
   tags:
     - ip-allocation
   gather_facts: no

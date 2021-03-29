@@ -390,6 +390,8 @@ An interface will be assigned an IP address if the associated network has a
 the ``allocation_pool_start`` and ``allocation_pool_end`` attributes, if one
 has not been statically assigned in ``network-allocation.yml``.
 
+.. _configuration-network-interface:
+
 Configuring Ethernet Interfaces
 -------------------------------
 

@@ -10,5 +10,6 @@ administrative tasks.
 
    general
    seed
+   infra-vms
    overcloud
    bare-metal

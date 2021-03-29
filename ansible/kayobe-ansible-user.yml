@@ -7,7 +7,7 @@
 # bootstrap process if the account is inaccessible.
 
 - name: Determine whether user bootstrapping is required
-  hosts: seed-hypervisor:seed:overcloud
+  hosts: seed-hypervisor:seed:overcloud:infra-vms
   gather_facts: false
   tags:
     - kayobe-ansible-user

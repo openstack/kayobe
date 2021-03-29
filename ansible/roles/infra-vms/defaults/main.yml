@@ -1,0 +1,7 @@
+---
+
+# Either 'deploy' or 'destroy'.
+infra_vm_action: deploy
+
+# List of inventory hostnames of infra VMs mapped to this hypervisor.
+infra_vm_vms: []

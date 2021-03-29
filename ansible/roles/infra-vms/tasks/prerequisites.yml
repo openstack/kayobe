@@ -1,0 +1,18 @@
+---
+# NOTE(priteau): On seed hypervisors running CentOS 8, the configdrive role
+# will fail to install coreutils if coreutils-single is already present.
+# Until the role handles it, install it using the --allowerasing option
+# which will remove coreutils-single.
+- name: Ensure coreutils package is installed
+  command: "dnf install coreutils -y --allowerasing"
+  become: True
+  when:
+    - ansible_facts.os_family == 'RedHat'
+
+- name: Ensure the image cache directory exists
+  file:
+    path: "{{ image_cache_path }}"
+    state: directory
+    owner: "{{ ansible_facts.user_uid }}"
+    group: "{{ ansible_facts.user_gid }}"
+  become: True

@@ -1,6 +1,6 @@
 ---
 - name: Update host packages
-  hosts: seed-hypervisor:seed:overcloud
+  hosts: seed-hypervisor:seed:overcloud:infra-vms
   vars:
     # Optionally set this to a list of packages to update. Default behaviour is
     # to update all packages.

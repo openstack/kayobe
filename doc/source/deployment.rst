@@ -75,6 +75,8 @@ Seed Hypervisor
    bare metal host or a VM provisioned outside of Kayobe, this section may be
    skipped.
 
+.. _deployment-seed-hypervisor-host-configure:
+
 Host Configuration
 ------------------
 
@@ -109,6 +111,8 @@ volumes.  To provision the seed VM::
 
 When this command has completed the seed VM should be active and accessible via
 SSH.  Kayobe will update the Ansible inventory with the IP address of the VM.
+
+.. _deployment-seed-host-configure:
 
 Host Configuration
 ------------------
@@ -184,7 +188,7 @@ After this command has completed the seed services will be active.
    :ref:`configuration-bifrost-overcloud-root-image` provides information on
    configuring the root disk image build process. See :ref:`here
    <configuration-seed-custom-containers>` for information about deploying
-   additional, custom containers on seed node.
+   additional, custom services (containers) on a seed node.
 
 Building Deployment Images
 --------------------------
@@ -235,6 +239,112 @@ To see the active Docker containers::
 Leave the seed VM and return to the shell on the Ansible control host::
 
     $ exit
+
+.. _deployment-infrastructure-vms:
+
+Infrastructure VMs
+===================
+
+.. warning::
+
+    Support for infrastructure VMs is considered experimental: its
+    design may change in future versions without a deprecation period.
+
+.. note::
+
+    It necessary to perform some configuration before these steps
+    can be followed. Please see :ref:`configuration-infra-vms`.
+
+VM Provisioning
+---------------
+
+The hypervisor used to host a VM is controlled via the ``infra_vm_hypervisor``
+variable. It defaults to use the seed hypervisor. All hypervisors should have
+CentOS or Ubuntu with ``libvirt`` installed. It should have ``libvirt`` networks
+configured for all networks that the VM needs access to and a ``libvirt``
+storage pool available for the VM's volumes. The steps needed for for the
+:ref:`seed<deployment-seed-host-configure>` and the
+:ref:`seed hypervisor<deployment-seed-hypervisor-host-configure>` can be found
+above.
+
+To provision the infra VMs::
+
+    (kayobe) $ kayobe infra vm provision
+
+When this command has completed the infra VMs should be active and accessible
+via SSH.  Kayobe will update the Ansible inventory with the IP address of the
+VM.
+
+Host Configuration
+------------------
+
+To configure the infra VM host OS::
+
+    (kayobe) $ kayobe infra vm host configure
+
+.. note::
+
+    If the infra VM host uses disks that have been in use in a previous
+    installation, it may be necessary to wipe partition and LVM data from those
+    disks.  To wipe all disks that are not mounted during host configuration::
+
+        (kayobe) $ kayobe infra vm host configure --wipe-disks
+
+.. seealso::
+
+    Information on configuration of hosts is available :ref:`here
+    <configuration-hosts>`.
+
+Using Hooks to deploy services on the VMs
+-----------------------------------------
+
+A no-op service deployment command is provided to perform additional
+configuration. The intention is for users to define :ref:`hooks to custom
+playbooks <custom-playbooks-hooks>` that define any further configuration or
+service deployment necessary.
+
+To trigger the hooks::
+
+    (kayobe) $ kayobe infra vm service deploy
+
+Example
+^^^^^^^
+
+In this example we have an infra VM host called ``dns01`` that provides DNS
+services. The host could be added to a ``dns-servers`` group in the inventory:
+
+.. code-block:: ini
+   :caption: ``$KAYOBE_CONFIG_PATH/inventory/infra-vms``
+
+   [dns-servers]
+   an-example-vm
+
+   [infra-vms:children]
+   dns-servers
+
+We have a custom playbook targeting the ``dns-servers`` group that sets up
+the DNS server:
+
+.. code-block:: yaml
+   :caption: ``$KAYOBE_CONFIG_PATH/ansible/dns-server.yml``
+
+   ---
+   - name: Deploy DNS servers
+     hosts: dns-servers
+     tasks:
+       - name: Install bind packages
+         package:
+           name:
+             - bind
+             - bind-utils
+         become: true
+
+Finally, we add a symlink to set up the playbook as a hook for the ``kayobe
+infra vm service deploy`` command::
+
+    (kayobe) $ mkdir -p ${KAYOBE_CONFIG_PATH}/hooks/infra-vm-host-configure/post.d
+    (kayobe) $ cd ${KAYOBE_CONFIG_PATH}/hooks/infra-vm-host-configure/post.d
+    (kayobe) $ ln -s ../../../ansible/dns-server.yml 50-dns-serveryml
 
 Overcloud
 =========

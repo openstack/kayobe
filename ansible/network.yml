@@ -1,6 +1,6 @@
 ---
 - name: Ensure networking is configured
-  hosts: seed-hypervisor:seed:overcloud
+  hosts: seed-hypervisor:seed:overcloud:infra-vms
   tags:
     - config
     - network
