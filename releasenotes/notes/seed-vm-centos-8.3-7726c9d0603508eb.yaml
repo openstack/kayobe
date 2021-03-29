@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    Updates the default image for the seed VM to CentOS 8.3.
