@@ -1,6 +1,7 @@
 ---
 - name: Check whether Ironic is enabled
   hosts: controllers
+  gather_facts: False
   tags:
     - config
     - config-validation
@@ -10,9 +11,11 @@
     - name: Create controllers group with ironic enabled
       group_by:
         key: "controllers_with_ironic_enabled_{{ kolla_enable_ironic | bool }}"
+      changed_when: false
 
 - name: Ensure locally built Ironic Python Agent images are copied
   hosts: controllers_with_ironic_enabled_True[0]
+  gather_facts: False
   tags:
     - kolla-ansible
     - kolla-openstack
