@@ -6,16 +6,17 @@
 
 - name: Check whether Ironic is enabled
   hosts: controllers
+  gather_facts: False
   tags:
     - ipa-build
   tasks:
     - name: Create controllers group with ironic enabled
       group_by:
         key: "controllers_for_ipa_build_{{ kolla_enable_ironic | bool }}"
+      changed_when: false
 
 - name: Ensure Ironic Python Agent images are built and installed
   hosts: controllers_for_ipa_build_True[0]
-  gather_facts: False
   tags:
     - ipa-build
   vars:

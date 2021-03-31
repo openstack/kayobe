@@ -52,10 +52,12 @@
     - name: Group hosts by their switch type
       group_by:
         key: "switches_of_type_{{ switch_type }}"
+      changed_when: false
 
     - name: Group hosts by whether display mode is set
       group_by:
         key: "switches_in_display_mode_{{ physical_network_display | bool }}"
+      changed_when: false
 
     - name: Add discovery interface configuration when enabling discovery
       set_fact:
