@@ -91,9 +91,9 @@
     timeout: 7200
 
 - job:
-    name: kayobe-overcloud-centos8
+    name: kayobe-overcloud-centos8s
     parent: kayobe-overcloud-base
-    nodeset: kayobe-centos8
+    nodeset: kayobe-centos8s
 
 - job:
     name: kayobe-overcloud-ubuntu-focal
@@ -107,9 +107,9 @@
       tls_enabled: true
 
 - job:
-    name: kayobe-overcloud-tls-centos8
+    name: kayobe-overcloud-tls-centos8s
     parent: kayobe-overcloud-tls-base
-    nodeset: kayobe-centos8
+    nodeset: kayobe-centos8s
 
 - job:
     name: kayobe-overcloud-upgrade-base
@@ -124,9 +124,9 @@
     timeout: 9000
 
 - job:
-    name: kayobe-overcloud-upgrade-centos8
+    name: kayobe-overcloud-upgrade-centos8s
     parent: kayobe-overcloud-upgrade-base
-    nodeset: kayobe-centos8
+    nodeset: kayobe-centos8s
 
 - job:
     name: kayobe-seed-base
@@ -140,9 +140,9 @@
     timeout: 5400
 
 - job:
-    name: kayobe-seed-centos8
+    name: kayobe-seed-centos8s
     parent: kayobe-seed-base
-    nodeset: kayobe-centos8
+    nodeset: kayobe-centos8s
 
 - job:
     name: kayobe-seed-ubuntu-focal
@@ -161,9 +161,9 @@
     timeout: 7200
 
 - job:
-    name: kayobe-overcloud-host-configure-centos8
+    name: kayobe-overcloud-host-configure-centos8s
     parent: kayobe-overcloud-host-configure-base
-    nodeset: kayobe-centos8
+    nodeset: kayobe-centos8s
 
 - job:
     name: kayobe-overcloud-host-configure-ubuntu-focal
@@ -183,9 +183,9 @@
     timeout: 5400
 
 - job:
-    name: kayobe-seed-upgrade-centos8
+    name: kayobe-seed-upgrade-centos8s
     parent: kayobe-seed-upgrade-base
-    nodeset: kayobe-centos8
+    nodeset: kayobe-centos8s
 
 - job:
     name: kayobe-seed-vm-base
@@ -200,9 +200,9 @@
     timeout: 5400
 
 - job:
-    name: kayobe-seed-vm-centos8
+    name: kayobe-seed-vm-centos8s
     parent: kayobe-seed-vm-base
-    nodeset: kayobe-centos8
+    nodeset: kayobe-centos8s
 
 - job:
     name: kayobe-seed-vm-ubuntu-focal
