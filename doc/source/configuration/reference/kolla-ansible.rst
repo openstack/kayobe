@@ -413,7 +413,11 @@ Host variables
 
 Kayobe generates a host_vars file for each host in the Kolla Ansible
 inventory. These contain network interfaces and other host-specific
-things.
+things. Some Kayobe Ansible variables are passed through to Kolla Ansible, as
+defined by the following variables. The default set of variables should
+typically be kept. Additional variables may be passed through via the
+``*_extra`` variables, as described below. If a passed through variable is not
+defined for a host, it is ignored.
 
 ``kolla_seed_inventory_pass_through_host_vars``
     List of names of host variables to pass through from kayobe hosts to the
@@ -429,6 +433,9 @@ things.
          - "kolla_api_interface"
          - "kolla_bifrost_network_interface"
 
+    It is possible to extend this list via
+    ``kolla_seed_inventory_pass_through_host_vars_extra``.
+
 ``kolla_seed_inventory_pass_through_host_vars_map``
     Dict mapping names of variables in
     ``kolla_seed_inventory_pass_through_host_vars`` to the variable to use in
@@ -440,6 +447,9 @@ things.
        kolla_seed_inventory_pass_through_host_vars_map:
          kolla_api_interface: "api_interface"
          kolla_bifrost_network_interface: "bifrost_network_interface"
+
+    It is possible to extend this dict via
+    ``kolla_seed_inventory_pass_through_host_vars_map_extra``.
 
 ``kolla_overcloud_inventory_pass_through_host_vars``
     List of names of host variables to pass through from Kayobe hosts to
@@ -466,6 +476,9 @@ things.
          - "kolla_neutron_external_interfaces"
          - "kolla_neutron_bridge_names"
 
+    It is possible to extend this list via
+    ``kolla_overcloud_inventory_pass_through_host_vars_extra``.
+
 ``kolla_overcloud_inventory_pass_through_host_vars_map``
     Dict mapping names of variables in
     ``kolla_overcloud_inventory_pass_through_host_vars`` to the variable to use
@@ -487,6 +500,41 @@ things.
          kolla_tunnel_interface: "tunnel_interface"
          kolla_neutron_external_interfaces: "neutron_external_interface"
          kolla_neutron_bridge_names: "neutron_bridge_name"
+
+    It is possible to extend this dict via
+    ``kolla_overcloud_inventory_pass_through_host_vars_map_extra``.
+
+Example: pass through an additional host variable
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In this example we pass through a variable named ``my_kayobe_var`` from Kayobe
+to Kolla Ansible.
+
+.. code-block:: yaml
+   :caption: ``$KAYOBE_CONFIG_PATH/kolla.yml``
+
+   kolla_overcloud_inventory_pass_through_host_vars_extra:
+     - my_kayobe_var
+
+This variable might be defined in the Kayobe inventory, e.g.
+
+.. code-block:: yaml
+   :caption: ``$KAYOBE_CONFIG_PATH/inventory/host_vars/controller01``
+
+   my_kayobe_var: foo
+
+The variable may then be referenced in
+``$KAYOBE_CONFIG_PATH/kolla/globals.yml``, Kolla Ansible group variables, or in
+Kolla Ansible custom service configuration.
+
+In case the variable requires a different name in Kolla Ansible, use
+``kolla_overcloud_inventory_pass_through_host_vars_map_extra``:
+
+.. code-block:: yaml
+   :caption: ``$KAYOBE_CONFIG_PATH/kolla.yml``
+
+   kolla_overcloud_inventory_pass_through_host_vars_map_extra:
+     my_kayobe_var: my_kolla_ansible_var
 
 Custom Group Variables
 ----------------------
