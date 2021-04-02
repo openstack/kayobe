@@ -40,6 +40,13 @@
     - "{{ kolla_overcloud_inventory_path }}/group_vars"
     - "{{ kolla_node_custom_config_path }}"
 
+- name: Write environment file into Kolla configuration path
+  copy:
+    dest: "{{ kolla_config_path ~ '/.environment' }}"
+    content: |
+      {{ kayobe_environment }}
+  when: (kayobe_environment | default('')) | length > 0
+
 - name: Ensure the Kolla global configuration file exists
   template:
     src: "globals.yml.j2"

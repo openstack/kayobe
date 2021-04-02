@@ -28,8 +28,30 @@
     - kolla-ansible
   gather_facts: false
   pre_tasks:
-    # Configuration of extra user-provided Kolla globals.
     - block:
+        - name: Look for environment file in Kolla configuration path
+          stat:
+            path: "{{ kolla_config_path ~ '/.environment' }}"
+            get_checksum: False
+            get_md5: False
+            mime: False
+          register: kolla_environment_file
+
+        - name: Flag that the Kolla configuration path has been used by another environment
+          vars:
+            kolla_environment: "{{ lookup('file', kolla_config_path ~ '/.environment') }}"
+          fail:
+            msg: >
+              The Kolla configuration path at {{ kolla_config_path }} was
+              already used by environment {{ kolla_environment }}. You should
+              clean up this directory, including the environment file located
+              at {{ kolla_config_path ~ '/.environment' }}, before running
+              Kayobe again.
+          when:
+            - kolla_environment_file.stat.exists
+            - kolla_environment != kayobe_environment
+
+        # Configuration of extra user-provided Kolla globals.
         - name: Check whether a Kolla extra globals configuration file exists
           stat:
             path: "{{ kayobe_env_config_path ~ '/kolla/globals.yml' }}"
