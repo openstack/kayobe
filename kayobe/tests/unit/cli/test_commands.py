@@ -342,7 +342,8 @@ class TestCase(unittest.TestCase):
     def test_seed_hypervisor_host_command_run(self, mock_run):
         command = commands.SeedHypervisorHostCommandRun(TestApp(), [])
         parser = command.get_parser("test")
-        parsed_args = parser.parse_args(["--command", "ls -a"])
+        parsed_args = parser.parse_args(["--command", "ls -a",
+                                         "--show-output"])
 
         result = command.run(parsed_args)
         self.assertEqual(0, result)
@@ -356,7 +357,8 @@ class TestCase(unittest.TestCase):
                 ],
                 limit="seed-hypervisor",
                 extra_vars={
-                    "host_command_to_run": utils.escape_jinja("ls -a")},
+                    "host_command_to_run": utils.escape_jinja("ls -a"),
+                    "show_output": True}
             ),
         ]
         self.assertEqual(expected_calls, mock_run.call_args_list)
@@ -551,7 +553,8 @@ class TestCase(unittest.TestCase):
     def test_seed_host_command_run(self, mock_run):
         command = commands.SeedHostCommandRun(TestApp(), [])
         parser = command.get_parser("test")
-        parsed_args = parser.parse_args(["--command", "ls -a"])
+        parsed_args = parser.parse_args(["--command", "ls -a",
+                                         "--show-output"])
 
         result = command.run(parsed_args)
         self.assertEqual(0, result)
@@ -565,7 +568,8 @@ class TestCase(unittest.TestCase):
                 ],
                 limit="seed",
                 extra_vars={
-                    "host_command_to_run": utils.escape_jinja("ls -a")},
+                    "host_command_to_run": utils.escape_jinja("ls -a"),
+                    "show_output": True}
             ),
         ]
         self.assertEqual(expected_calls, mock_run.call_args_list)
@@ -1057,7 +1061,8 @@ class TestCase(unittest.TestCase):
     def test_overcloud_host_command_run(self, mock_run):
         command = commands.OvercloudHostCommandRun(TestApp(), [])
         parser = command.get_parser("test")
-        parsed_args = parser.parse_args(["--command", "ls -a"])
+        parsed_args = parser.parse_args(["--command", "ls -a",
+                                         "--show-output"])
 
         result = command.run(parsed_args)
         self.assertEqual(0, result)
@@ -1071,7 +1076,8 @@ class TestCase(unittest.TestCase):
                 ],
                 limit="overcloud",
                 extra_vars={
-                    "host_command_to_run": utils.escape_jinja("ls -a")},
+                    "host_command_to_run": utils.escape_jinja("ls -a"),
+                    "show_output": True}
             ),
         ]
         self.assertEqual(expected_calls, mock_run.call_args_list)

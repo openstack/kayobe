@@ -495,12 +495,15 @@ class SeedHypervisorHostCommandRun(KayobeAnsibleMixin, VaultMixin, Command):
         group = parser.add_argument_group("Host Command Run")
         group.add_argument("--command", required=True,
                            help="Command to run (required).")
+        group.add_argument("--show-output", action='store_true',
+                           help="Show command output")
         return parser
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Run command on seed hypervisor host")
         extra_vars = {
-            "host_command_to_run": utils.escape_jinja(parsed_args.command)}
+            "host_command_to_run": utils.escape_jinja(parsed_args.command),
+            "show_output": parsed_args.show_output}
         playbooks = _build_playbook_list("host-command-run")
         self.run_kayobe_playbooks(parsed_args, playbooks,
                                   limit="seed-hypervisor",
@@ -660,12 +663,15 @@ class SeedHostCommandRun(KayobeAnsibleMixin, VaultMixin, Command):
         group = parser.add_argument_group("Host Command Run")
         group.add_argument("--command", required=True,
                            help="Command to run (required).")
+        group.add_argument("--show-output", action='store_true',
+                           help="Show command output")
         return parser
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Run command on seed host")
         extra_vars = {
-            "host_command_to_run": utils.escape_jinja(parsed_args.command)}
+            "host_command_to_run": utils.escape_jinja(parsed_args.command),
+            "show_output": parsed_args.show_output}
         playbooks = _build_playbook_list("host-command-run")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed",
                                   extra_vars=extra_vars)
@@ -1019,12 +1025,15 @@ class OvercloudHostCommandRun(KayobeAnsibleMixin, VaultMixin, Command):
         group = parser.add_argument_group("Host Command Run")
         group.add_argument("--command", required=True,
                            help="Command to run (required).")
+        group.add_argument("--show-output", action='store_true',
+                           help="Show command output")
         return parser
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Run command on overcloud host")
         extra_vars = {
-            "host_command_to_run": utils.escape_jinja(parsed_args.command)}
+            "host_command_to_run": utils.escape_jinja(parsed_args.command),
+            "show_output": parsed_args.show_output}
         playbooks = _build_playbook_list("host-command-run")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud",
                                   extra_vars=extra_vars)
