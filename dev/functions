@@ -122,7 +122,7 @@ function config_init {
 
 function is_dnf {
     if [[ -e /etc/centos-release ]]; then
-        which dnf >/dev/null 2>&1
+        /usr/bin/which dnf >/dev/null 2>&1
     else
         return 1
     fi
@@ -130,7 +130,7 @@ function is_dnf {
 
 function is_yum {
     if [[ -e /etc/centos-release ]]; then
-        which yum >/dev/null 2>&1
+        /usr/bin/which yum >/dev/null 2>&1
     else
         return 1
     fi
