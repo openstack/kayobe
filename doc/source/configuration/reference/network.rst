@@ -67,8 +67,10 @@ supported:
     table to which the route will be added. ``options`` is a list of option
     strings to add to the route.
 ``rules``
-    List of IP routing rules. Each item should be an ``iproute2`` IP routing
-    rule.
+    List of IP routing rules.
+
+    On CentOS, each item should be a string describing an ``iproute2`` IP
+    routing rule.
 ``physical_network``
     Name of the physical network on which this network exists. This aligns with
     the physical network concept in neutron.
@@ -258,8 +260,14 @@ Configuring IP Routing Policy Rules
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 IP routing policy rules may be configured by setting the ``rules`` attribute
-for a network to a list of rules. The format of a rule is the string which
-would be appended to ``ip rule <add|del>`` to create or delete the rule.
+for a network to a list of rules. The format of each rule currently differs
+between CentOS and Ubuntu.
+
+CentOS
+""""""
+
+The format of a rule is the string which would be appended to ``ip rule
+<add|del>`` to create or delete the rule.
 
 To configure a network called ``example`` with an IP routing policy rule to
 handle traffic from the subnet ``10.1.0.0/24`` using the routing table
@@ -270,6 +278,25 @@ handle traffic from the subnet ``10.1.0.0/24`` using the routing table
 
    example_rules:
      - from 10.1.0.0/24 table exampleroutetable
+
+These rules will be configured on all hosts to which the network is mapped.
+
+Ubuntu
+""""""
+
+The format of a rule is a dictionary with optional items ``from``, ``to``,
+``priority``, and ``table``.
+
+To configure a network called ``example`` with an IP routing policy rule to
+handle traffic from the subnet ``10.1.0.0/24`` using the routing table
+``exampleroutetable``:
+
+.. code-block:: yaml
+   :caption: ``networks.yml``
+
+   example_rules:
+     - from: 10.1.0.0/24
+       table: exampleroutetable
 
 These rules will be configured on all hosts to which the network is mapped.
 

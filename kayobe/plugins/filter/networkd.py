@@ -194,6 +194,53 @@ def _veth_netdev(context, veth, inventory_hostname):
     return _filter_options(config)
 
 
+def _network_routes(routes, route_tables):
+    """Return a list of routes for a networkd network.
+
+    :param routes: a list of route dictionaries.
+    :param route_tables: a dict mapping route table names to IDs.
+    :returns: a list of routes for a networkd network.
+    """
+    return [
+        {
+            'Route': [
+                # FIXME(mgoddard): No support for 'options'.
+                {'Destination': route['cidr']},
+                {'Gateway': route.get('gateway')},
+                {'Table': route_tables.get(route.get('table'),
+                                           route.get('table'))},
+            ]
+        }
+        for route in routes or []
+    ]
+
+
+def _network_rules(rules, route_tables):
+    """Return a list of routing policy rules for a networkd network.
+
+    :param rules: a list of rule dictionaries.
+    :param route_tables: a dict mapping route table names to IDs.
+    :returns: a list of rules for a networkd network.
+    """
+    for rule in rules or []:
+        if not isinstance(rule, dict):
+            raise errors.AnsibleFilterError(
+                "Routing policy rules must be defined in dictionary "
+                "format for systemd-networkd")
+    return [
+        {
+            'RoutingPolicyRule': [
+                {'From': rule.get("from")},
+                {'To': rule.get("to")},
+                {'Priority': rule.get("priority")},
+                {'Table': route_tables.get(rule.get('table'),
+                                           rule.get('table'))},
+            ]
+        }
+        for rule in rules or []
+    ]
+
+
 def _network(context, name, inventory_hostname, bridge, bond, vlan_interfaces):
     """Return a networkd network for an interface.
 
@@ -205,7 +252,7 @@ def _network(context, name, inventory_hostname, bridge, bond, vlan_interfaces):
     :param bond: Name of a bond of which the interface is a member, or None.
     :param vlan_interfaces: List of VLAN subinterfaces of the interface.
     """
-    # FIXME(mgoddard): Currently does not support: rules, ethtool_opts, zone,
+    # FIXME(mgoddard): Currently does not support: ethtool_opts, zone,
     # allowed_addresses.
     device = networks.net_interface(context, name, inventory_hostname)
     ip = networks.net_ip(context, name, inventory_hostname)
@@ -223,6 +270,7 @@ def _network(context, name, inventory_hostname, bridge, bond, vlan_interfaces):
 
     mtu = networks.net_mtu(context, name, inventory_hostname)
     routes = networks.net_routes(context, name, inventory_hostname)
+    rules = networks.net_rules(context, name, inventory_hostname)
     bootproto = networks.net_bootproto(context, name, inventory_hostname)
     defroute = networks.net_defroute(context, name, inventory_hostname)
     if defroute is not None:
@@ -256,17 +304,16 @@ def _network(context, name, inventory_hostname, bridge, bond, vlan_interfaces):
             ]
         },
     ]
-    if routes:
-        config += [
-            {
-                'Route': [
-                    # FIXME(mgoddard): No support for 'options'.
-                    {'Destination': route['cidr']},
-                    {'Gateway': route.get('gateway')},
-                ]
-            }
-            for route in routes or []
-        ]
+
+    # NOTE(mgoddard): Systemd-networkd does not support named route tables
+    # until v248. Until then, translate names to numeric IDs using the
+    # network_route_tables variable.
+    route_tables = utils.get_hostvar(context, "network_route_tables",
+                                     inventory_hostname)
+    route_tables = {table["name"]: table["id"] for table in route_tables}
+    config += _network_routes(routes, route_tables)
+    config += _network_rules(rules, route_tables)
+
     return _filter_options(config)
 
 

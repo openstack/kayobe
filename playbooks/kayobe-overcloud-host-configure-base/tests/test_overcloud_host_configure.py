@@ -28,6 +28,13 @@ def test_network_ethernet_vlan(host):
     assert interface.exists
     assert '192.168.35.1' in interface.addresses
     assert host.file('/sys/class/net/dummy2.42/lower_dummy2').exists
+    routes = host.check_output(
+        '/sbin/ip route show dev dummy2.42 table kayobe-test-route-table')
+    assert '192.168.40.0/24 via 192.168.35.254' in routes
+    rules = host.check_output(
+        '/sbin/ip rule show table kayobe-test-route-table')
+    expected = 'from 192.168.35.0/24 lookup kayobe-test-route-table'
+    assert expected in rules
 
 
 def test_network_bridge(host):

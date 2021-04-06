@@ -48,6 +48,8 @@ class BaseNetworkdTest(unittest.TestCase):
         "network_patch_prefix": "p-",
         "network_patch_suffix_ovs": "-ovs",
         "network_patch_suffix_phy": "-phy",
+        # List of route tables.
+        "network_route_tables": [],
     }
 
     def setUp(self):
@@ -317,6 +319,18 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                 },
                 {
                     "cidr": "1.2.6.0/24",
+                    "table": 42,
+                },
+            ],
+            "net1_rules": [
+                {
+                    "from": "1.2.7.0/24",
+                    "table": 43,
+                },
+                {
+                    "to": "1.2.8.0/24",
+                    "table": 44,
+                    "priority": 1,
                 },
             ],
             "net1_bootproto": "dhcp",
@@ -358,6 +372,20 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                 {
                     "Route": [
                         {"Destination": "1.2.6.0/24"},
+                        {"Table": 42},
+                    ]
+                },
+                {
+                    "RoutingPolicyRule": [
+                        {"From": "1.2.7.0/24"},
+                        {"Table": 43},
+                    ]
+                },
+                {
+                    "RoutingPolicyRule": [
+                        {"To": "1.2.8.0/24"},
+                        {"Priority": 1},
+                        {"Table": 44},
                     ]
                 },
             ]

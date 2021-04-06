@@ -307,6 +307,19 @@ def _route_obj(route):
     return route_obj
 
 
+def _validate_rules(rules):
+    """Validate the format of policy-based routing rules.
+
+    :param rules: a list of rules or None.
+    :raises: AnsibleFilterError if any rule is invalid.
+    """
+    for rule in rules or []:
+        if not isinstance(rule, str):
+            raise errors.AnsibleFilterError(
+                "Routing policy rules must be defined in string format "
+                "for CentOS")
+
+
 @jinja2.contextfilter
 def net_interface_obj(context, name, inventory_hostname=None):
     """Return a dict representation of a network interface.
@@ -338,6 +351,7 @@ def net_interface_obj(context, name, inventory_hostname=None):
     zone = net_zone(context, name, inventory_hostname)
     vip_address = net_vip_address(context, name, inventory_hostname)
     allowed_addresses = [vip_address] if vip_address else None
+    _validate_rules(rules)
     interface = {
         'device': device,
         'address': ip,
@@ -390,6 +404,7 @@ def net_bridge_obj(context, name, inventory_hostname=None):
     zone = net_zone(context, name, inventory_hostname)
     vip_address = net_vip_address(context, name, inventory_hostname)
     allowed_addresses = [vip_address] if vip_address else None
+    _validate_rules(rules)
     interface = {
         'device': device,
         'address': ip,
@@ -450,6 +465,7 @@ def net_bond_obj(context, name, inventory_hostname=None):
     zone = net_zone(context, name, inventory_hostname)
     vip_address = net_vip_address(context, name, inventory_hostname)
     allowed_addresses = [vip_address] if vip_address else None
+    _validate_rules(rules)
     interface = {
         'device': device,
         'address': ip,
