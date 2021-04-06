@@ -13,7 +13,6 @@
         - kayobe-tox-ansible
         - kayobe-tox-molecule
         - kayobe-overcloud-centos
-        - kayobe-overcloud-upgrade-centos
         - kayobe-seed-centos
         - kayobe-seed-upgrade-centos
 
@@ -24,6 +23,5 @@
         - kayobe-tox-ansible
         - kayobe-tox-molecule
         - kayobe-overcloud-centos
-        - kayobe-overcloud-upgrade-centos
         - kayobe-seed-centos
         - kayobe-seed-upgrade-centos
