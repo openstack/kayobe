@@ -767,6 +767,8 @@ class SeedContainerImageBuild(KayobeAnsibleMixin, VaultMixin, Command):
         parser = super(SeedContainerImageBuild, self).get_parser(
             prog_name)
         group = parser.add_argument_group("Container Image Build")
+        group.add_argument("--nocache", action="store_true",
+                           help="whether to not use cache")
         group.add_argument("--push", action="store_true",
                            help="whether to push images to a registry after "
                                 "building")
@@ -780,7 +782,10 @@ class SeedContainerImageBuild(KayobeAnsibleMixin, VaultMixin, Command):
         playbooks = _build_playbook_list(
             "container-image-builders-check", "kolla-build",
             "container-image-build")
-        extra_vars = {"push_images": parsed_args.push}
+        extra_vars = {
+            "nocache": parsed_args.nocache,
+            "push_images": parsed_args.push
+        }
         if parsed_args.regex:
             regexes = " ".join(parsed_args.regex)
             extra_vars["container_image_regexes"] = regexes
@@ -1493,6 +1498,8 @@ class OvercloudContainerImageBuild(KayobeAnsibleMixin, VaultMixin, Command):
         parser = super(OvercloudContainerImageBuild, self).get_parser(
             prog_name)
         group = parser.add_argument_group("Container Image Build")
+        group.add_argument("--nocache", action="store_true",
+                           help="whether to not use cache")
         group.add_argument("--push", action="store_true",
                            help="whether to push images to a registry after "
                                 "building")
@@ -1506,7 +1513,10 @@ class OvercloudContainerImageBuild(KayobeAnsibleMixin, VaultMixin, Command):
         playbooks = _build_playbook_list(
             "container-image-builders-check", "kolla-build",
             "container-image-build")
-        extra_vars = {"push_images": parsed_args.push}
+        extra_vars = {
+            "nocache": parsed_args.nocache,
+            "push_images": parsed_args.push
+        }
         if parsed_args.regex:
             regexes = " ".join(parsed_args.regex)
             extra_vars["container_image_regexes"] = regexes

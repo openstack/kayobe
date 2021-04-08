@@ -698,6 +698,7 @@ class TestCase(unittest.TestCase):
                     "container_image_sets": (
                         "{{ seed_container_image_sets }}"),
                     "push_images": False,
+                    "nocache": False
                 }
             ),
         ]
@@ -724,6 +725,35 @@ class TestCase(unittest.TestCase):
                 extra_vars={
                     "container_image_regexes": "^regex1$ ^regex2$",
                     "push_images": True,
+                    "nocache": False
+                }
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_seed_container_image_build_with_nocache(self, mock_run):
+        command = commands.SeedContainerImageBuild(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args(["--nocache"])
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    utils.get_data_files_path(
+                        "ansible", "container-image-builders-check.yml"),
+                    utils.get_data_files_path("ansible", "kolla-build.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "container-image-build.yml")
+                ],
+                extra_vars={
+                    "container_image_sets": (
+                        "{{ seed_container_image_sets }}"),
+                    "push_images": False,
+                    "nocache": True
                 }
             ),
         ]
@@ -1641,6 +1671,7 @@ class TestCase(unittest.TestCase):
                     "container_image_sets": (
                         "{{ overcloud_container_image_sets }}"),
                     "push_images": False,
+                    "nocache": False
                 }
             ),
         ]
@@ -1667,6 +1698,7 @@ class TestCase(unittest.TestCase):
                 extra_vars={
                     "container_image_regexes": "^regex1$ ^regex2$",
                     "push_images": True,
+                    "nocache": False
                 }
             ),
         ]
