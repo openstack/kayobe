@@ -225,14 +225,27 @@ def intersect_limits(args_limit, cli_limit):
     return separator.join(limits)
 
 
-def copy_dir(src, dest):
+def copy_dir(src, dest, exclude=None):
+    """Copy recursively a directory.
+
+    :param src: path of the source directory
+    :param dest: destination path, will be created if it does not exist
+    :param exclude: names of files or directories at the root of the source
+                    directory to exclude during copy
+    """
+    if exclude is None:
+        exclude = []
+
     if not os.path.isdir(dest):
-        shutil.copytree(src, dest)
-    else:
-        for file in os.listdir(src):
-            src_path = os.path.join(src, file)
-            dest_path = os.path.join(dest, file)
-            if os.path.isdir(src_path):
-                copy_dir(src_path, dest_path)
-            else:
-                shutil.copy2(src_path, dest_path)
+        os.mkdir(dest)
+
+    for file in os.listdir(src):
+        if file in exclude:
+            continue
+
+        src_path = os.path.join(src, file)
+        dest_path = os.path.join(dest, file)
+        if os.path.isdir(src_path):
+            copy_dir(src_path, dest_path)
+        else:
+            shutil.copy2(src_path, dest_path)

@@ -61,4 +61,4 @@ def create_kayobe_environment(parsed_args):
 
     source_config_path = parsed_args.source_config_path
     if source_config_path:
-        utils.copy_dir(source_config_path, env_path)
+        utils.copy_dir(source_config_path, env_path, exclude=["environments"])

@@ -261,5 +261,6 @@ configurations.
    (kayobe) $ kayobe environment create --source-config-path ~/kayobe-config-staging/etc/kayobe \
                   --environment staging
 
-This command recursively copies files and directories under the existing
-configuration. Merging shared configuration must be done manually.
+This command recursively copies files and directories (except the
+``environments`` directory if one exists) under the existing configuration to a
+new environment. Merging shared configuration must be done manually.

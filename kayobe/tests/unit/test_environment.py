@@ -80,4 +80,5 @@ class TestCase(unittest.TestCase):
         ]
         self.assertEqual(expected_calls, mock_mkdir.call_args_list)
         mock_copy_dir.assert_called_once_with(
-            "/path/to/foo", "/path/to/config/environments/foo")
+            "/path/to/foo", "/path/to/config/environments/foo",
+            exclude=["environments"])
