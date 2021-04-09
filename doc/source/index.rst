@@ -49,6 +49,7 @@ Advanced Documentation
 
    control-plane-service-placement
    custom-ansible-playbooks
+   multiple-environments
 
 Contributor Guide
 -----------------

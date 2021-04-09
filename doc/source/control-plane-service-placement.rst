@@ -241,7 +241,7 @@ Next, we must configure kayobe to use this inventory template.
 .. code-block:: yaml
    :caption: ``kolla.yml``
 
-   kolla_overcloud_inventory_custom_components: "{{ lookup('template', kayobe_config_path ~ '/kolla/inventory/overcloud-components.j2') }}"
+   kolla_overcloud_inventory_custom_components: "{{ lookup('template', kayobe_env_config_path ~ '/kolla/inventory/overcloud-components.j2') }}"
 
 Here we use the ``template`` lookup plugin to render the Jinja2-formatted
 inventory template.
