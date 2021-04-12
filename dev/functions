@@ -266,8 +266,7 @@ function seed_hypervisor_deploy {
     # Deploy a seed hypervisor.
     environment_setup
 
-    echo "Bootstrapping the Ansible control host"
-    run_kayobe control host bootstrap
+    control_host_bootstrap
 
     echo "Configuring the seed hypervisor"
     run_kayobe seed hypervisor host configure
