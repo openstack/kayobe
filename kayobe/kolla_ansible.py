@@ -50,8 +50,8 @@ def add_args(parser):
                              "YAML/JSON for Kolla Ansible")
     parser.add_argument("-ki", "--kolla-inventory", metavar="INVENTORY",
                         help="specify inventory host path "
-                             "(default=$%s/inventory or %s/inventory) or "
-                             "comma-separated host list for Kolla Ansible" %
+                             "(default=$%s/inventory or %s/inventory) for "
+                             "Kolla Ansible" %
                              (CONFIG_PATH_ENV, DEFAULT_CONFIG_PATH))
     parser.add_argument("-kl", "--kolla-limit", metavar="SUBSET",
                         help="further limit selected hosts to an additional "
@@ -87,7 +87,7 @@ def _validate_args(parsed_args, inventory_filename):
         sys.exit(1)
 
     inventory = _get_inventory_path(parsed_args, inventory_filename)
-    result = utils.is_readable_dir(parsed_args.kolla_venv)
+    result = utils.is_readable_dir(inventory)
     if not result["result"]:
         # NOTE(mgoddard): Previously the inventory was a file, now it is a
         # directory to allow us to support inventory host_vars. Support both

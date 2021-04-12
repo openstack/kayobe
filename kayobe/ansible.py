@@ -58,8 +58,7 @@ def add_args(parser):
     parser.add_argument("-i", "--inventory", metavar="INVENTORY",
                         action="append",
                         help="specify inventory host path "
-                             "(default=$%s/inventory or %s/inventory) or "
-                             "comma-separated host list" %
+                             "(default=$%s/inventory or %s/inventory) " %
                              (CONFIG_PATH_ENV, DEFAULT_CONFIG_PATH))
     parser.add_argument("-l", "--limit", metavar="SUBSET",
                         help="further limit selected hosts to an additional "
