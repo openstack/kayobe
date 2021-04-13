@@ -30,7 +30,13 @@ aio_bridge_ports:
   - dummy1
 
 # Build seed deployment images (IPA) with extra-hardware element
+#
+# NOTE(priteau): Building IPA images on CentOS 7 is broken in CI due to:
+# distutils.errors.DistutilsError: Could not find suitable distribution for
+# Requirement.parse('pbr>=2.0.0')
+{% if ansible_os_family == 'RedHat' and ansible_distribution_major_version | int == 8 %}
 ipa_build_images: true
+{% endif %}
 
 # Building CentOS 8 IPA images requires custom configuration. See
 # doc/source/centos8.rst for details.

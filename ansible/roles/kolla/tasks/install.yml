@@ -45,7 +45,7 @@
   become: True
   when: kolla_venv is not none
 
-- name: Ensure the latest version of pip is installed
+- name: Ensure the latest versions of pip and setuptools are installed
   pip:
     name: "{{ item.name }}"
     state: latest
@@ -53,6 +53,7 @@
     virtualenv_python: "python{{ ansible_python.version.major }}.{{ ansible_python.version.minor }}"
   with_items:
     - { name: pip }
+    - { name: setuptools }
 
 - name: Ensure Python package docker-py is absent
   # In version 2.0.0, docker renamed the docker-py python package to docker.
