@@ -124,6 +124,9 @@ function install_venv {
         set +u
         source "${venv_path}/bin/activate"
         pip install -U pip
+        # Update setuptools as workaround for distutils.errors.DistutilsError:
+        # Could not find suitable distribution for Requirement.parse('pbr')
+        pip install -U setuptools
         pip install $pip_paths
         deactivate
         set -u
