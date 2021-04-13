@@ -2,6 +2,11 @@
 Multiple Environments
 =====================
 
+.. warning::
+
+    Support for multiple Kayobe environments is considered experimental: its
+    design may change in future versions without a deprecation period.
+
 Sometimes it can be useful to support deployment of multiple environments from
 a single Kayobe configuration. Most commonly this is to support a deployment
 pipeline, such as the traditional development, test, staging and production
