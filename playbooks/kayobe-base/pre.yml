@@ -9,7 +9,7 @@
   tasks:
     # NOTE(mgoddard): Copying upper constraints to somewhere accessible by both
     # the zuul and stack users.
-    - name: Ensure upper-contraints.txt exists
+    - name: Ensure upper-constraints.txt exists
       copy:
         src: "{{ requirements_src_dir }}/upper-constraints.txt"
         dest: "/tmp"
