@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    Timezone configuration was moved from the ``ntp.yml`` configuration file to
+    ``time.yml`` in the Ussuri release. The ``ntp.yml`` file has now been
+    removed.
