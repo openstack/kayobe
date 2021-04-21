@@ -1,0 +1,14 @@
+---
+features:
+  - |
+    Adds an ``os_distribution`` variable in ``etc/kayobe/globals.yml``, with a
+    default value of ``centos``. The variable can also be set to ``ubuntu``,
+    and sets sensible default values for other variables.
+upgrade:
+  - |
+    Modifies the default value of ``controller_bootstrap_user``,
+    ``compute_bootstrap_user``, ``seed_bootstrap_user``,
+    ``seed_hypervisor_bootstrap_user`` and ``storage_bootstrap_user`` from
+    using the ``$USER`` environment variable of the Ansible control host to
+    ``os_distribution``. This provides a more predictable default that does not
+    depend on the Ansible execution environment.

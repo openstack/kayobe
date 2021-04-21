@@ -3,7 +3,7 @@
 # Seed node configuration.
 
 # User with which to access the seed via SSH during bootstrap, in order to
-# setup the Kayobe user account.
+# setup the Kayobe user account. Default is {{ os_distribution }}.
 #seed_bootstrap_user:
 
 ###############################################################################
