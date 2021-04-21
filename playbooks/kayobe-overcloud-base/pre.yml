@@ -24,7 +24,6 @@
       template:
         src: globals.yml.j2
         dest: "{{ kayobe_config_src_dir }}/etc/kayobe/kolla/globals.yml"
-      when: tls_enabled
 
     - name: Ensure kayobe is installed
       shell:

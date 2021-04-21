@@ -12,10 +12,5 @@ nova_compute_virt_type: qemu
 openstack_service_workers: "1"
 openstack_service_rpc_workers: "1"
 
-{% if tls_enabled %}
-# TLS
-kolla_copy_ca_into_containers: "yes"
-kolla_enable_tls_backend: "yes"
-openstack_cacert: "/etc/pki/tls/certs/ca-bundle.crt"
-kolla_admin_openrc_cacert: "{% raw %}{{ '{{' }} kolla_certificates_dir }}{% endraw %}/ca/root.crt"
-{% endif %}
+# TODO(priteau): Remove me once binary images with wallaby packages are available
+nova_install_type: "source"

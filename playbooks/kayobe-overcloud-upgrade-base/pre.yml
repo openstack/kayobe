@@ -19,3 +19,8 @@
         dest: "{{ previous_kayobe_config_src_dir }}/etc/kayobe/zz-overrides.yml"
       vars:
         is_previous_release: true
+
+    - name: Ensure kolla-ansible globals.yml override config file exists
+      template:
+        src: globals.yml.j2
+        dest: "{{ previous_kayobe_config_src_dir }}/etc/kayobe/kolla/globals.yml"
