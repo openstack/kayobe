@@ -10,6 +10,11 @@
         src: overrides.yml.j2
         dest: "{{ kayobe_config_src_dir }}/etc/kayobe/zz-overrides.yml"
 
+    - name: Ensure kolla-ansible globals.yml override config file exists
+      template:
+        src: globals.yml.j2
+        dest: "{{ kayobe_config_src_dir }}/etc/kayobe/kolla/globals.yml"
+
     - name: Ensure bifrost overrides directory exists
       file:
         path: "{{ kayobe_config_src_dir }}/etc/kayobe/kolla/config/bifrost"
