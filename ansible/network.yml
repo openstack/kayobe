@@ -75,43 +75,8 @@
   tags:
     - config
     - network
-  vars:
-    veth_mtu_map: {}
-    veth_interfaces: []
-  pre_tasks:
-    # When these networks are VLANs, we need to use the underlying tagged
-    # interface rather than the untagged interface. We therefore strip
-    # the .<vlan> suffix of the interface name. We use a union here as a single
-    # tagged interface may be shared between these networks.
-    - name: Update a fact containing bridges to be patched to the Neutron OVS bridge
-      set_fact:
-        veth_mtu_map: >
-          {{ veth_mtu_map | combine({interface: mtu}) }}
-      with_items: "{{ [provision_wl_net_name, cleaning_net_name] + external_net_names | unique | list }}"
-      when:
-        - item in network_interfaces
-        - item | net_is_bridge
+  tasks:
+    - import_role:
+        name: veth
       vars:
-        interface: "{{ item | net_interface | replace('.' ~ item | net_vlan | default('!nomatch!'), '') }}"
-        # Determine the MTU as the maximum of all subinterface MTUs. Only
-        # interfaces with an explicit MTU set will be taken account of. If no
-        # interface has an explicit MTU set, then the corresponding veth will
-        # not either.
-        mtu_list: "{{ [veth_mtu_map.get(interface), item | net_mtu] | select | map('int') | list }}"
-        mtu: "{{ mtu_list | max if mtu_list | length > 0 else None }}"
-
-    - name: Update a fact containing veth interfaces
-      set_fact:
-        veth_interfaces: >
-          {{ veth_interfaces +
-             [{'device': network_patch_prefix ~ item.key ~ network_patch_suffix_phy,
-               'bootproto': 'static',
-               'bridge': item.key,
-               'mtu': item.value,
-               'peer_device': network_patch_prefix ~ item.key ~ network_patch_suffix_ovs,
-               'peer_bootproto': 'static',
-               'peer_mtu': item.value,
-               'onboot': 'yes'}] }}
-      with_dict: "{{ veth_mtu_map }}"
-  roles:
-    - role: veth
+        veth_interfaces: "{{ network_interfaces | net_ovs_veths }}"

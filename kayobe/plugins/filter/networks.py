@@ -15,8 +15,130 @@
 from ansible import errors
 import jinja2
 import netaddr
+import re
 
 from kayobe.plugins.filter import utils
+
+
+def get_and_validate_interface(context, name, inventory_hostname):
+    """Return a validated interface for a network.
+
+    :param context: a Jinja2 Context object.
+    :param name: name of the network.
+    :param inventory_hostname: Ansible inventory hostname.
+    :returns: a validated interface for a network.
+    :raises: ansible.errors.AnsibleFilterError
+    """
+    device = net_interface(context, name, inventory_hostname)
+    if not device:
+        raise errors.AnsibleFilterError(
+            "Network interface for network '%s' on host '%s' not found" %
+            (name, inventory_hostname))
+    return device
+
+
+def _get_veth_interface(context, bridge, inventory_hostname):
+    """Return a veth link name for a bridge.
+
+    :param context: a Jinja2 Context object.
+    :param bridge: name of the bridge interface into which the veth is plugged.
+    :param inventory_hostname: Ansible inventory hostname.
+    :returns: a veth link name for a bridge.
+    """
+    prefix = utils.get_hostvar(context, 'network_patch_prefix',
+                               inventory_hostname)
+    suffix = utils.get_hostvar(context, 'network_patch_suffix_phy',
+                               inventory_hostname)
+    return prefix + bridge + suffix
+
+
+def _get_veth_peer(context, bridge, inventory_hostname):
+    """Return a veth peer name for a bridge.
+
+    :param context: a Jinja2 Context object.
+    :param bridge: name of the bridge interface into which the veth is plugged.
+    :param inventory_hostname: Ansible inventory hostname.
+    :returns: a veth peer name for a bridge.
+    """
+    prefix = utils.get_hostvar(context, 'network_patch_prefix',
+                               inventory_hostname)
+    suffix = utils.get_hostvar(context, 'network_patch_suffix_ovs',
+                               inventory_hostname)
+    return prefix + bridge + suffix
+
+
+def get_ovs_veths(context, names, inventory_hostname):
+    """Return a list of dicts describing veth pairs to plug into Open vSwitch.
+
+    :param context: a Jinja2 Context object.
+    :param names: list of names of networks.
+    :param inventory_hostname: Ansible inventory hostname.
+    :returns: a list of dicts describing veth pairs. Each dict has keys 'name',
+              'peer', 'bridge', and 'mtu'.
+    """
+    # The following networks need to be plugged into Open vSwitch:
+    # * workload provisioning network
+    # * workload cleaning network
+    # * neutron external networks
+    ironic_networks = [
+        utils.get_hostvar(context, 'provision_wl_net_name',
+                          inventory_hostname),
+        utils.get_hostvar(context, 'cleaning_net_name', inventory_hostname),
+    ]
+    external_networks = utils.get_hostvar(context, 'external_net_names',
+                                          inventory_hostname)
+    veth_networks = ironic_networks + (external_networks or [])
+
+    # Make a list of all bridge interfaces.
+    bridges = net_select_bridges(context, names, inventory_hostname)
+    bridge_interfaces = [net_interface(context, bridge, inventory_hostname)
+                         for bridge in bridges]
+
+    # Dict mapping bridge interfaces to the MTU of a connected veth pair.
+    veth_mtu_map = {}
+    for name in veth_networks:
+        if name not in names:
+            continue
+        device = get_and_validate_interface(context, name, inventory_hostname)
+        # When these networks are VLANs, we need to use the underlying tagged
+        # interface rather than the untagged interface. We therefore strip the
+        # .<vlan> suffix of the interface name. We use a union here as a single
+        # tagged interface may be shared between these networks.
+        vlan = net_vlan(context, name, inventory_hostname)
+        if vlan:
+            parent_or_device = get_vlan_parent(device, vlan)
+        else:
+            parent_or_device = device
+        if parent_or_device in bridge_interfaces:
+            # Determine the MTU as the maximum of all subinterface MTUs. Only
+            # interfaces with an explicit MTU set will be taken account of. If
+            # no interface has an explicit MTU set, then the corresponding veth
+            # will not either.
+            # Allow for the case where an MTU is not specified.
+            mtu = net_mtu(context, name, inventory_hostname)
+            veth_mtu_map.setdefault(parent_or_device, mtu)
+            if (veth_mtu_map.get(parent_or_device) or 0) < (mtu or 0):
+                veth_mtu_map[parent_or_device] = mtu
+
+    return [
+        {
+            'name': _get_veth_interface(context, bridge, inventory_hostname),
+            'peer': _get_veth_peer(context, bridge, inventory_hostname),
+            'bridge': bridge,
+            'mtu': mtu
+        }
+        for bridge, mtu in veth_mtu_map.items()
+    ]
+
+
+def get_vlan_parent(device, vlan):
+    """Return the parent interface of a VLAN subinterface.
+
+    :param device: VLAN interface name.
+    :param vlan: VLAN ID.
+    :returns: parent interface name.
+    """
+    return re.sub(r'\.{}$'.format(vlan), '', device)
 
 
 @jinja2.contextfilter
@@ -480,6 +602,29 @@ def net_libvirt_vm_network(context, name, inventory_hostname=None):
     }
 
 
+@jinja2.contextfilter
+def net_ovs_veths(context, names, inventory_hostname=None):
+    """Return a list of virtual Ethernet pairs for OVS.
+
+    The format is as expected by the veth_interfaces variable of the Kayobe
+    veth role.
+    """
+    veths = get_ovs_veths(context, names, inventory_hostname)
+    return [
+        {
+            'device': veth['name'],
+            'bootproto': 'static',
+            'bridge': veth['bridge'],
+            'mtu': veth['mtu'],
+            'peer_device': veth['peer'],
+            'peer_bootproto': 'static',
+            'peer_mtu': veth['mtu'],
+            'onboot': 'yes',
+        }
+        for veth in veths
+    ]
+
+
 def get_filters():
     return {
         'net_attr': net_attr,
@@ -526,4 +671,5 @@ def get_filters():
         'net_libvirt_network_name': net_libvirt_network_name,
         'net_libvirt_network': net_libvirt_network,
         'net_libvirt_vm_network': net_libvirt_vm_network,
+        'net_ovs_veths': net_ovs_veths,
     }
