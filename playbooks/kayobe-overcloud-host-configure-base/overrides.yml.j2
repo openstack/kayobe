@@ -19,6 +19,11 @@ controller_extra_network_interfaces:
   - test_net_bond
   - test_net_bond_vlan
 
+# Custom IP routing tables.
+network_route_tables:
+  - id: 2
+    name: kayobe-test-route-table
+
 # dummy2: Ethernet interface.
 test_net_eth_cidr: 192.168.34.0/24
 test_net_eth_routes:
@@ -30,6 +35,17 @@ test_net_eth_interface: dummy2
 test_net_eth_vlan_cidr: 192.168.35.0/24
 test_net_eth_vlan_interface: "{% raw %}{{ test_net_eth_interface }}.{{ test_net_eth_vlan_vlan }}{% endraw %}"
 test_net_eth_vlan_vlan: 42
+test_net_eth_vlan_routes:
+  - cidr: 192.168.40.0/24
+    gateway: 192.168.35.254
+    table: kayobe-test-route-table
+test_net_eth_vlan_rules:
+{% if ansible_os_family == 'RedHat' %}
+  - from 192.168.35.0/24 table kayobe-test-route-table
+{% else %}
+  - from: 192.168.35.0/24
+    table: kayobe-test-route-table
+{% endif %}
 
 # br0: bridge with ports dummy3, dummy4.
 test_net_bridge_cidr: 192.168.36.0/24

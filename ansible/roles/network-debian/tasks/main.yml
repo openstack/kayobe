@@ -4,6 +4,15 @@
   when: resolv_is_managed | bool
   become: True
 
+- name: Ensure IP routing tables are defined for iproute2
+  become: true
+  blockinfile:
+    dest: /etc/iproute2/rt_tables
+    block: |
+      {% for table in network_route_tables %}
+      {{ table.id }} {{ table.name }}
+      {% endfor %}
+
 - name: Remove netplan.io packages
   become: true
   package:
