@@ -6,8 +6,8 @@ driver:
 lint:
   name: yamllint
 platforms:
-  - name: centos-8
-    image: centos:8
+  - name: centos-stream8
+    image: quay.io/centos/centos:stream8
 provisioner:
   name: ansible
   lint:
