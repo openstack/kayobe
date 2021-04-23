@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Adds support for Ubuntu Focal 20.04 as a host and container Operating
+    System for seed, seed hypervisor and overcloud hosts.

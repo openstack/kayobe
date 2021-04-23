@@ -10,6 +10,7 @@ options.
 
    kayobe
    ansible
+   os-distribution
    physical-network
    network
    routed-control-plane-networks

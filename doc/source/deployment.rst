@@ -100,10 +100,10 @@ VM Provisioning
    bare metal host or a VM provisioned outside of Kayobe, this step may be
    skipped.  Ensure that the Ansible inventory contains a host for the seed.
 
-The seed hypervisor should have CentOS and ``libvirt`` installed.  It should
-have ``libvirt`` networks configured for all networks that the seed VM needs
-access to and a ``libvirt`` storage pool available for the seed VM's volumes.
-To provision the seed VM::
+The seed hypervisor should have CentOS or Ubuntu with ``libvirt`` installed.
+It should have ``libvirt`` networks configured for all networks that the seed
+VM needs access to and a ``libvirt`` storage pool available for the seed VM's
+volumes.  To provision the seed VM::
 
     (kayobe) $ kayobe seed vm provision
 

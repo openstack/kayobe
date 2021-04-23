@@ -71,6 +71,12 @@ supported:
 
     On CentOS, each item should be a string describing an ``iproute2`` IP
     routing rule.
+
+    On Ubuntu, each item should be a dict containing optional items ``from``,
+    ``to``, ``priority`` and ``table``. ``from`` is the source address prefix
+    to match with optional prefix. ``to`` is the destination address prefix to
+    match with optional prefix. ``priority`` is the priority of the rule.
+    ``table`` is the routing table ID.
 ``physical_network``
     Name of the physical network on which this network exists. This aligns with
     the physical network concept in neutron.
@@ -167,6 +173,8 @@ If necessary, custom options may be added to the route:
        options:
          - onlink
          - metric 400
+
+Note that custom options are not currently supported on Ubuntu.
 
 Configuring a VLAN
 ------------------
