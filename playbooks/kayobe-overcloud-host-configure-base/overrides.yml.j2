@@ -16,11 +16,8 @@ controller_extra_network_interfaces:
   - test_net_eth_vlan
   - test_net_bridge
   - test_net_bridge_vlan
-{# Bond configuration does not seem to work with dummy interfaces on Ubuntu #}
-{% if ansible_os_family != 'Debian' %}
   - test_net_bond
   - test_net_bond_vlan
-{% endif %}
 
 # dummy2: Ethernet interface.
 test_net_eth_cidr: 192.168.34.0/24
@@ -44,7 +41,6 @@ test_net_bridge_vlan_cidr: 192.168.37.0/24
 test_net_bridge_vlan_interface: "{% raw %}{{ test_net_bridge_interface }}.{{ test_net_bridge_vlan_vlan }}{% endraw %}"
 test_net_bridge_vlan_vlan: 43
 
-{% if ansible_os_family != 'Debian' %}
 # bond0: bond with slaves dummy5, dummy6.
 test_net_bond_cidr: 192.168.38.0/24
 test_net_bond_interface: bond0
@@ -54,7 +50,6 @@ test_net_bond_bond_slaves: [dummy5, dummy6]
 test_net_bond_vlan_cidr: 192.168.39.0/24
 test_net_bond_vlan_interface: "{% raw %}{{ test_net_bond_interface }}.{{ test_net_bond_vlan_vlan }}{% endraw %}"
 test_net_bond_vlan_vlan: 44
-{% endif %}
 
 # Define a software RAID device consisting of two loopback devices.
 controller_mdadm_arrays:

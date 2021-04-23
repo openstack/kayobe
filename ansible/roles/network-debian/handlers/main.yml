@@ -1,0 +1,16 @@
+---
+- name: Find netplan systemd-networkd configuration
+  become: true
+  find:
+    path: /run/systemd/network
+  register: netplan_systemd_networkd_config
+  listen: Remove netplan systemd-networkd configuration
+
+- name: Remove netplan systemd-networkd configuration
+  become: true
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ netplan_systemd_networkd_config.files }}"
+  loop_control:
+    label: "{{ item.path }}"

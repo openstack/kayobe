@@ -6,4 +6,19 @@
     - "ip l add {{ bridge_interface }} type bridge"
     - "ip l add {{ bridge_port_interface }} type dummy"
 
-- include_tasks: "{{ ansible_os_family }}.yml"
+- name: Ensure all-in-one network bridge interface exists
+  vars:
+    bridge_cidr: "{{ bridge_ip }}/{{ bridge_prefix }}"
+    bridge_broadcast: "{{ bridge_cidr | ipaddr('broadcast') }}"
+  command: "{{ item }}"
+  become: true
+  with_items:
+    - "ip l set {{ bridge_interface }} up"
+    - "ip a add {{ bridge_cidr }} brd {{ bridge_broadcast }} dev {{ bridge_interface }}"
+    # NOTE(mgoddard): CentOS 8 removes interfaces from their bridge during
+    # ifdown, and removes the bridge if there are no interfaces left. When
+    # Kayobe bounces veth links plugged into the bridge, it causes the
+    # bridge which has the IP we are using for SSH to be removed. Use a
+    # dummy interface.
+    - "ip l set {{ bridge_port_interface }} up"
+    - "ip l set {{ bridge_port_interface }} master {{ bridge_interface }}"
