@@ -73,6 +73,10 @@ noauth_mode: true
 # Enable discovery of nodes in Ironic Inspector.
 enable_inspector_discovery: true
 
+# Disable cleaning for backwards compatibility. It is enabled by default in
+# Bifrost since the Victoria release.
+cleaning: false
+
 {% if kolla_bifrost_extra_globals %}
 ###############################################################################
 # Extra configuration
