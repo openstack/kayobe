@@ -1,0 +1,46 @@
+---
+- name: Ensure NetworkManager is disabled
+  service:
+    name: NetworkManager
+    state: stopped
+    enabled: no
+  become: True
+  register: nm_result
+  failed_when:
+    - nm_result is failed
+    # Ugh, Ansible's service module doesn't handle uninstalled services.
+    - "'Could not find the requested service' not in nm_result.msg"
+
+- import_role:
+    name: ahuffman.resolv
+  when: resolv_is_managed | bool
+  become: True
+
+- name: Configure network interfaces (RedHat)
+  import_role:
+    name: MichaelRigart.interfaces
+  vars:
+    interfaces_route_tables: "{{ network_route_tables }}"
+    interfaces_ether_interfaces: >
+      {{ network_interfaces |
+         net_select_ethers |
+         map('net_interface_obj') |
+         list }}
+    interfaces_bridge_interfaces: >
+      {{ network_interfaces |
+         net_select_bridges |
+         map('net_bridge_obj') |
+         list }}
+    interfaces_bond_interfaces: >
+      {{ network_interfaces |
+         net_select_bonds |
+         map('net_bond_obj') |
+         list }}
+
+# Configure virtual ethernet patch links to connect the workload provision
+# and external network bridges to the Neutron OVS bridge.
+- name: Ensure OVS patch links exist
+  import_role:
+    name: veth
+  vars:
+    veth_interfaces: "{{ network_interfaces | net_ovs_veths }}"
