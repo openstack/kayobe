@@ -52,16 +52,18 @@ configuration drive built by Bifrost, rather than the Bifrost default of
 :diskimage-builder-doc:`simple-init <elements/simple-init/README>`.
 
 ``kolla_bifrost_dib_os_element``
-    DIB base OS element. Default is ``centos``.
+    DIB base OS element. Default is ``{{ os_distribution }}``.
 ``kolla_bifrost_dib_os_release``
-    DIB image OS release. Default is ``8``.
+    DIB image OS release. Default is ``{{ os_release }}``.
 ``kolla_bifrost_dib_elements_default``
     *Added in the Train release. Use kolla_bifrost_dib_elements in earlier
     releases.*
 
     List of default DIB elements. Default is ``["disable-selinux",
-    "enable-serial-console", "vm"]``. The ``vm`` element is poorly named, and
-    causes DIB to build a whole disk image rather than a single partition.
+    "enable-serial-console", "vm"]`` when ``os_distribution`` is ``centos``, or
+    ``["enable-serial-console", "vm"]`` otherwise. The ``vm`` element is
+    poorly named, and causes DIB to build a whole disk image rather than a
+    single partition.
 ``kolla_bifrost_dib_elements_extra``
     *Added in the Train release. Use kolla_bifrost_dib_elements in earlier
     releases.*
