@@ -284,7 +284,6 @@ def _network(context, name, inventory_hostname, bridge, bond, vlan_interfaces):
         {
             'Network': [
                 {'Address': ip},
-                {'Broadcast': 'true' if ip else None},
                 {'Gateway': gateway},
                 {'DHCP': ('yes' if bootproto and bootproto.lower() == 'dhcp'
                           else None)},
@@ -314,6 +313,34 @@ def _network(context, name, inventory_hostname, bridge, bond, vlan_interfaces):
     config += _network_routes(routes, route_tables)
     config += _network_rules(rules, route_tables)
 
+    return _filter_options(config)
+
+
+def _vlan_parent_network(device, mtu, vlan_interfaces):
+    """Return a networkd network configuration for a VLAN parent interface.
+
+    :param device: name of the interface.
+    :param mtu: Interface MTU.
+    :param vlan_interfaces: List of VLAN subinterfaces of the interface.
+    """
+    config = [
+        {
+            'Match': [
+                {'Name': device},
+            ]
+        },
+        {
+            'Network': [
+                {'VLAN': vlan_interface}
+                for vlan_interface in vlan_interfaces
+            ]
+        },
+        {
+            'Link': [
+                {'MTUBytes': mtu},
+            ]
+        }
+    ]
     return _filter_options(config)
 
 
@@ -437,6 +464,25 @@ def _veth_peer_network(context, veth, inventory_hostname):
     return _filter_options(config)
 
 
+def _add_to_result(result, prefix, device, config):
+    """Add configuration for an interface to a filter result.
+
+    :param result: the result dict.
+    :param prefix: the systemd-networkd configuration file prefix.
+    :param device: the interface being configured.
+    :param config: the configuration to add to the result.
+    :raises: AnsibleFilterError if the interface already exists in the result.
+    """
+    key = "%s%s" % (prefix, device)
+    # Catch the case where interface configuration is added multiple times.
+    # This should not happen.
+    if key in result:
+        raise errors.AnsibleFilterError(
+            "Programming error: duplicate interface configuration for %s"
+            % device)
+    result[key] = config
+
+
 @jinja2.contextfilter
 def networkd_netdevs(context, names, inventory_hostname=None):
     """Return a dict representation of networkd NetDev configuration.
@@ -459,7 +505,7 @@ def networkd_netdevs(context, names, inventory_hostname=None):
         device = networks.get_and_validate_interface(context, name,
                                                      inventory_hostname)
         netdev = _vlan_netdev(context, name, inventory_hostname)
-        result["%s%s" % (prefix, device)] = netdev
+        _add_to_result(result, prefix, device, netdev)
 
     # Bridges.
     for name in networks.net_select_bridges(context, names,
@@ -467,21 +513,21 @@ def networkd_netdevs(context, names, inventory_hostname=None):
         device = networks.get_and_validate_interface(context, name,
                                                      inventory_hostname)
         netdev = _bridge_netdev(context, name, inventory_hostname)
-        result["%s%s" % (prefix, device)] = netdev
+        _add_to_result(result, prefix, device, netdev)
 
     # Bonds.
     for name in networks.net_select_bonds(context, names, inventory_hostname):
         device = networks.get_and_validate_interface(context, name,
                                                      inventory_hostname)
         netdev = _bond_netdev(context, name, inventory_hostname)
-        result["%s%s" % (prefix, device)] = netdev
+        _add_to_result(result, prefix, device, netdev)
 
     # Virtual Ethernet pairs.
     veths = networks.get_ovs_veths(context, names, inventory_hostname)
     for veth in veths:
         netdev = _veth_netdev(context, veth, inventory_hostname)
         device = veth['name']
-        result["%s%s" % (prefix, device)] = netdev
+        _add_to_result(result, prefix, device, netdev)
 
     return result
 
@@ -551,9 +597,10 @@ def networkd_networks(context, names, inventory_hostname=None):
         device = networks.get_and_validate_interface(context, name,
                                                      inventory_hostname)
         vlan = networks.net_vlan(context, name, inventory_hostname)
+        mtu = networks.net_mtu(context, name, inventory_hostname)
         parent = networks.get_vlan_parent(device, vlan)
         vlan_interfaces = interface_to_vlans.setdefault(parent, [])
-        vlan_interfaces.append(device)
+        vlan_interfaces.append({"device": device, "mtu": mtu})
 
     # Prefix for configuration file names.
     prefix = utils.get_hostvar(context, "networkd_prefix", inventory_hostname)
@@ -568,8 +615,22 @@ def networkd_networks(context, names, inventory_hostname=None):
         bond = bond_member_to_bond.get(device)
         vlan_interfaces = interface_to_vlans.get(device, [])
         net = _network(context, name, inventory_hostname, bridge, bond,
-                       vlan_interfaces)
-        result["%s%s" % (prefix, device)] = net
+                       [vlan["device"] for vlan in vlan_interfaces])
+        _add_to_result(result, prefix, device, net)
+
+    # VLAN parent interfaces that are not in configured networks, bridge ports
+    # or bond members.
+    implied_vlan_parents = (set(interface_to_vlans) -
+                            set(interfaces) -
+                            set(bridge_port_to_bridge) -
+                            set(bond_member_to_bond))
+    for device in implied_vlan_parents:
+        vlan_interfaces = interface_to_vlans[device]
+        mtu = max([vlan["mtu"] for vlan in vlan_interfaces])
+        net = _vlan_parent_network(device, mtu,
+                                   [vlan["device"]
+                                    for vlan in vlan_interfaces])
+        _add_to_result(result, prefix, device, net)
 
     # Bridge ports that are not in configured networks.
     for name in networks.net_select_bridges(context, names,
@@ -580,9 +641,10 @@ def networkd_networks(context, names, inventory_hostname=None):
                                                  inventory_hostname)
         for port in set(bridge_ports) - set(interfaces):
             vlan_interfaces = interface_to_vlans.get(port, [])
-            netdev = _bridge_port_network(context, name, port,
-                                          inventory_hostname, vlan_interfaces)
-            result["%s%s" % (prefix, port)] = netdev
+            net = _bridge_port_network(context, name, port, inventory_hostname,
+                                       [vlan["device"]
+                                        for vlan in vlan_interfaces])
+            _add_to_result(result, prefix, port, net)
 
     # Bond members that are not in configured networks.
     for name in networks.net_select_bonds(context, names, inventory_hostname):
@@ -592,20 +654,22 @@ def networkd_networks(context, names, inventory_hostname=None):
                                                 inventory_hostname)
         for member in set(bond_members) - set(interfaces):
             vlan_interfaces = interface_to_vlans.get(member, [])
-            netdev = _bond_member_network(context, name, member,
-                                          inventory_hostname, vlan_interfaces)
-            result["%s%s" % (prefix, member)] = netdev
+            net = _bond_member_network(context, name, member,
+                                       inventory_hostname,
+                                       [vlan["device"]
+                                        for vlan in vlan_interfaces])
+            _add_to_result(result, prefix, member, net)
 
     # Virtual Ethernet pairs for Open vSwitch.
     veths = networks.get_ovs_veths(context, names, inventory_hostname)
     for veth in veths:
         net = _veth_network(context, veth, inventory_hostname)
         device = veth['name']
-        result["%s%s" % (prefix, device)] = net
+        _add_to_result(result, prefix, device, net)
 
         net = _veth_peer_network(context, veth, inventory_hostname)
         device = veth['peer']
-        result["%s%s" % (prefix, device)] = net
+        _add_to_result(result, prefix, device, net)
 
     return result
 
