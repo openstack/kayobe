@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Adds support for managing multiple Kayobe environments from a single
+    configuration repository. See the `documentation
+    <https://docs.openstack.org/kayobe/latest/multiple-environments.html>`__
+    for more details. Note that this feature is considered experimental: its
+    design may change in future versions without a deprecation period.
