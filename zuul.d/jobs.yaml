@@ -11,6 +11,7 @@
       - ^doc/.*
       - ^releasenotes/.*
       - ^setup.cfg$
+      - ^zuul.d/.*
 
 - job:
     name: kayobe-tox-ansible
@@ -26,6 +27,7 @@
       - ^doc/.*
       - ^releasenotes/.*
       - ^setup.cfg$
+      - ^zuul.d/.*
 
 - job:
     name: kayobe-tox-molecule
@@ -43,6 +45,7 @@
       - ^doc/.*
       - ^releasenotes/.*
       - ^setup.cfg$
+      - ^zuul.d/.*
 
 - job:
     name: kayobe-base
@@ -64,8 +67,10 @@
       - ^doc/.*
       - ^releasenotes/.*
       - ^setup.cfg$
+      - ^test-requirements.txt
       - ^tools/.*$
       - ^tox.ini$
+      - ^zuul.d/.*
     vars:
       # Name of the release to upgrade from for upgrade jobs.
       previous_release: victoria
