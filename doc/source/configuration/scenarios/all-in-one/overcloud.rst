@@ -2,6 +2,12 @@
 Overcloud
 =========
 
+.. note::
+   This documentation is intended as a walk through of the configuration
+   required for a minimal all-in-one overcloud host. If you are looking
+   for an all-in-one environment for test or development, see
+   :ref:`contributor-automated`.
+
 Installation
 ============
 
