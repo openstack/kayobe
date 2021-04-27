@@ -13,20 +13,15 @@
     - kayobe-ansible-user
   tasks:
     - name: Check whether the host is accessible via SSH
-      local_action:
-        module: command ssh -o BatchMode=yes -p {{ ssh_port }} {{ ssh_user }}@{{ ssh_host }} hostname
-      failed_when: false
+      raw: hostname
+      ignore_unreachable: true
       changed_when: false
       check_mode: no
       register: ssh_result
-      vars:
-        ssh_user: "{{ ansible_user }}"
-        ssh_host: "{{ ansible_host | default(inventory_hostname) }}"
-        ssh_port: "{{ ansible_ssh_port | default('22') }}"
 
     - name: Group hosts requiring kayobe user bootstrapping
       group_by:
-        key: kayobe_user_bootstrap_required_{{ ssh_result.rc != 0 }}
+        key: kayobe_user_bootstrap_required_{{ ssh_result.unreachable | default(false) }}
       changed_when: false
 
     - name: Display a message when bootstrapping is required
@@ -34,7 +29,7 @@
         msg: >
           Cannot access host via SSH using Kayobe Ansible user account -
           attempting bootstrap
-      when: ssh_result.rc != 0
+      when: ssh_result.unreachable | default(false)
 
 - name: Ensure python is installed
   hosts: kayobe_user_bootstrap_required_True
