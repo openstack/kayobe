@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    Until the Victoria release, Bifrost disabled node cleaning, however it
+    became enabled in Victoria. To maintain backward compatibility, Kayobe now
+    modifies the configuration in Bifrost to disable node cleaning of overcloud
+    hosts.
