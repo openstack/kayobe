@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an issue where custom SSH arguments, such as when setting
+    ``ansible_ssh_extra_args``, were not being respected when rebooting
+    a host to disable selinux.

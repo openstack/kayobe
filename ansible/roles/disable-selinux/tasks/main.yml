@@ -22,36 +22,16 @@
       set_fact:
         is_local: "{{ lookup('pipe', 'hostname') in [ansible_hostname, ansible_nodename] }}"
 
-    # Any SSH connection errors cause ansible to fail the task. We therefore
-    # perform a manual SSH connection and allow the command to fail.
-    - name: Reboot the system to apply SELinux changes (remote)
-      local_action:
-        # Use -tt to force a pseudo tty.
-        module: >
-          command
-          ssh -tt {{ ansible_user }}@{{ ansible_host | default(inventory_hostname) }}
-          sudo shutdown -r now "Applying SELinux changes"
-      register: reboot_result
-      failed_when:
-        - reboot_result is failed
-        - "'closed by remote host' not in reboot_result.stderr"
-      when: not is_local | bool
-
     - name: Reboot the system to apply SELinux changes (local)
       command: shutdown -r now "Applying SELinux changes"
       become: True
       when: is_local | bool
 
-    # If we're running this locally we won't get here.
-    - name: Wait for the system to boot up (remote)
-      local_action:
-        module: wait_for
-        host: "{{ ansible_host | default(inventory_hostname) }}"
-        port: 22
-        state: started
-        # Wait for 10 seconds before polling to ensure the node has shutdown.
-        delay: 10
-        timeout: "{{ disable_selinux_reboot_timeout }}"
+    - name: Reboot the machine to apply SELinux
+      reboot:
+        reboot_timeout: "{{ disable_selinux_reboot_timeout }}"
+        msg: Applying SELinux changes
+      become: true
       when: not is_local | bool
   when:
     - disable_selinux_do_reboot | bool
