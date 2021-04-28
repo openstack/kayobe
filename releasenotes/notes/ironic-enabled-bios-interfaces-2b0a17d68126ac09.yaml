@@ -1,5 +1,5 @@
 ---
 features:
   - |
-    Allow users to modify Ironic `kolla_ironic_enabled_bios_interfaces` and
-    `kolla_ironic_default_bios_interface` in ironic.yml.
+    Allow users to modify Ironic ``kolla_ironic_enabled_bios_interfaces`` and
+    ``kolla_ironic_default_bios_interface`` in ``ironic.yml``.

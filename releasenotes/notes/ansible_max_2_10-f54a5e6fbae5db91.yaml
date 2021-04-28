@@ -2,5 +2,5 @@
 upgrade:
   - |
     Updates the maximum supported version of Ansible from 2.9 to 2.10. The
-    minimum supported version stays at 2.9. This is true for both Kayobe and
-    Kolla Ansible.
+    minimum supported version is updated from 2.8 to 2.9. This is true for both
+    Kayobe and Kolla Ansible.
