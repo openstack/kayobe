@@ -55,6 +55,69 @@ Testing
 
 Test the code and fix at a minimum all critical issues.
 
+Synchronise with Kolla Ansible feature flags
+--------------------------------------------
+
+Clone the Kolla Ansible repository, and run the
+Kayobe ``tools/kolla-feature-flags.sh`` script:
+
+.. code-block:: console
+
+   tools/kolla-feature-flags.sh <path to kolla-ansible source>
+
+Copy the output of the script, and replace the ``kolla_feature_flags`` list in
+``ansible/roles/kolla-ansible/vars/main.yml``.
+
+The ``kolla.yml`` configuration file should be updated to match:
+
+.. code-block:: console
+
+   tools/feature-flags.py
+
+Copy the output of the script, and replace the list of ``kolla_enable_*`` flags
+in ``etc/kayobe/kolla.yml``.
+
+Synchronise with Kolla Ansible inventory
+----------------------------------------
+
+Clone the Kolla Ansible repository, and copy across any relevant changes. The
+Kayobe inventory is based on the ``ansible/inventory/multinode`` inventory, but
+split into 3 parts - top-level, components and services.
+
+Top level
+^^^^^^^^^
+
+The top level inventory template is
+``ansible/roles/kolla-ansible/templates/overcloud-top-level.j2``. It is heavily
+templated, and does not typically need to be changed. Look out for changes in
+the ``multinode`` inventory before the ``[baremetal]`` group.
+
+Components
+^^^^^^^^^^
+
+The components inventory template is
+``ansible/roles/kolla-ansible/templates/overcloud-components.j2``.
+
+This includes groups in the ``multinode`` inventory from the ``[baremetal]``
+group down to the following text::
+
+    # Additional control implemented here. These groups allow you to control which
+    # services run on which hosts at a per-service level.
+
+Services
+^^^^^^^^
+
+The services inventory template is
+``ansible/roles/kolla-ansible/templates/overcloud-services.j2``.
+
+This includes groups in the ``multinode`` inventory from the following text to
+the end of the file::
+
+    # Additional control implemented here. These groups allow you to control which
+    # services run on which hosts at a per-service level.
+
+There are some small changes in this section which should be maintained.
+
 .. _update-dependencies-for-release:
 
 Update dependencies to upcoming release

@@ -2,6 +2,8 @@
 
 # Usage: run this script and copy the output to etc/kayobe/kolla.yml
 
+# See also: tools/kolla-feature-flags.sh
+
 import os
 import pathlib
 
