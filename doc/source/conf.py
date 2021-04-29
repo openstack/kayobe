@@ -26,6 +26,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import openstackdocstheme
+
+
+# -- Kayobe configuration --------------------------------------
+# Variables to override
+
+# Smart variable replacements with what we can. The openstackdocstheme has
+# no stable interface though. This works with 1.20.
+current_series = openstackdocstheme.ext._get_series_name()
+
+if current_series == "latest":
+    branch = "master"
+else:
+    branch = "stable/{}".format(current_series)
+
+# Substitutions loader
+rst_epilog = """
+.. |current_release_git_branch_name| replace:: {current_release_git_branch_name}
+""".format(  # noqa: E501
+    current_release_git_branch_name=branch,
+)
+
 # -- General configuration ----------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
