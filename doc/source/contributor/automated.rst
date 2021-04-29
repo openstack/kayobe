@@ -42,18 +42,22 @@ Overcloud
 Preparation
 -----------
 
-Clone the Kayobe repository::
+Clone the Kayobe repository:
 
-    git clone https://opendev.org/openstack/kayobe.git
+.. parsed-literal::
+
+   git clone \https://opendev.org/openstack/kayobe.git -b |current_release_git_branch_name|
 
 Change the current directory to the Kayobe repository::
 
     cd kayobe
 
-Clone the ``kayobe-config-dev`` repository to ``config/src/kayobe-config``::
+Clone the ``kayobe-config-dev`` repository to ``config/src/kayobe-config``
 
-    mkdir -p config/src
-    git clone https://opendev.org/openstack/kayobe-config-dev.git config/src/kayobe-config
+.. parsed-literal::
+
+   mkdir -p config/src
+   git clone \https://opendev.org/openstack/kayobe-config-dev.git config/src/kayobe-config -b |current_release_git_branch_name|
 
 Inspect the Kayobe configuration and make any changes necessary for your
 environment.
@@ -191,18 +195,22 @@ VM.
 Preparation
 -----------
 
-Clone the Kayobe repository::
+Clone the Kayobe repository:
 
-    git clone https://opendev.org/openstack/kayobe.git
+.. parsed-literal::
+
+   git clone \https://opendev.org/openstack/kayobe.git -b |current_release_git_branch_name|
 
 Change to the ``kayobe`` directory::
 
     cd kayobe
 
-Clone the ``kayobe-config-dev`` repository to ``config/src/kayobe-config``::
+Clone the ``kayobe-config-dev`` repository to ``config/src/kayobe-config``:
 
-    mkdir -p config/src
-    git clone https://opendev.org/openstack/kayobe-config-dev.git config/src/kayobe-config
+.. parsed-literal::
+
+   mkdir -p config/src
+   git clone \https://opendev.org/openstack/kayobe-config-dev.git config/src/kayobe-config -b |current_release_git_branch_name|
 
 Inspect the Kayobe configuration and make any changes necessary for your
 environment.
