@@ -298,7 +298,6 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                 {
                     "Network": [
                         {"Address": "1.2.3.4/24"},
-                        {"Broadcast": "true"},
                     ]
                 },
             ]
@@ -347,7 +346,6 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                 {
                     "Network": [
                         {"Address": "1.2.3.4/24"},
-                        {"Broadcast": "true"},
                         {"Gateway": "1.2.3.1"},
                         {"DHCP": "yes"},
                         {'UseGateway': "false"},
@@ -400,6 +398,18 @@ class TestNetworkdNetworks(BaseNetworkdTest):
     def test_vlan(self):
         nets = networkd.networkd_networks(self.context, ["net2"])
         expected = {
+            "50-kayobe-eth0": [
+                {
+                    "Match": [
+                        {"Name": "eth0"}
+                    ],
+                },
+                {
+                    "Network": [
+                        {"VLAN": "eth0.2"},
+                    ]
+                },
+            ],
             "50-kayobe-eth0.2": [
                 {
                     "Match": [
@@ -422,7 +432,6 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                 {
                     "Network": [
                         {"Address": "1.2.3.4/24"},
-                        {"Broadcast": "true"},
                         {"VLAN": "eth0.2"},
                     ]
                 },
@@ -527,6 +536,106 @@ class TestNetworkdNetworks(BaseNetworkdTest):
         }
         self.assertEqual(expected, nets)
 
+    def test_bridge_with_bridge_port_vlan(self):
+        # Test the case where one of the bridge ports has a VLAN subinterface.
+        self._update_context({
+            "net2_interface": "eth1.2",
+        })
+        nets = networkd.networkd_networks(self.context, ["net2", "net3"])
+        expected = {
+            "50-kayobe-br0": [
+                {
+                    "Match": [
+                        {"Name": "br0"}
+                    ]
+                },
+            ],
+            "50-kayobe-eth0": [
+                {
+                    "Match": [
+                        {"Name": "eth0"}
+                    ]
+                },
+                {
+                    "Network": [
+                        {"Bridge": "br0"},
+                    ]
+                },
+            ],
+            "50-kayobe-eth1": [
+                {
+                    "Match": [
+                        {"Name": "eth1"}
+                    ]
+                },
+                {
+                    "Network": [
+                        {"Bridge": "br0"},
+                        {"VLAN": "eth1.2"}
+                    ]
+                },
+            ],
+            "50-kayobe-eth1.2": [
+                {
+                    "Match": [
+                        {"Name": "eth1.2"}
+                    ]
+                },
+            ],
+        }
+        self.assertEqual(expected, nets)
+
+    def test_bridge_with_bridge_port_vlan_net(self):
+        # Test the case where one of the bridge ports has a VLAN subinterface,
+        # and is also a Kayobe network (here eth0 is net1).
+        self._update_context({
+            "net1_ips": None,
+        })
+        nets = networkd.networkd_networks(self.context,
+                                          ["net1", "net2", "net3"])
+        expected = {
+            "50-kayobe-br0": [
+                {
+                    "Match": [
+                        {"Name": "br0"}
+                    ]
+                },
+            ],
+            "50-kayobe-eth0": [
+                {
+                    "Match": [
+                        {"Name": "eth0"}
+                    ]
+                },
+                {
+                    "Network": [
+                        {"Bridge": "br0"},
+                        {"VLAN": "eth0.2"}
+                    ]
+                },
+            ],
+            "50-kayobe-eth0.2": [
+                {
+                    "Match": [
+                        {"Name": "eth0.2"}
+                    ]
+                },
+            ],
+            "50-kayobe-eth1": [
+                {
+                    "Match": [
+                        {"Name": "eth1"}
+                    ]
+                },
+                {
+                    "Network": [
+                        {"Bridge": "br0"},
+                    ]
+                },
+            ]
+        }
+        self.assertEqual(expected, nets)
+
     def test_bridge_no_interface(self):
         self._update_context({"net3_interface": None})
         self.assertRaises(errors.AnsibleFilterError,
@@ -599,6 +708,106 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                 {
                     "Link": [
                         {"MTUBytes": 1400},
+                    ]
+                },
+            ],
+            "50-kayobe-eth1": [
+                {
+                    "Match": [
+                        {"Name": "eth1"}
+                    ]
+                },
+                {
+                    "Network": [
+                        {"Bond": "bond0"},
+                    ]
+                },
+            ]
+        }
+        self.assertEqual(expected, nets)
+
+    def test_bond_with_bond_member_vlan(self):
+        # Test the case where one of the bond members has a VLAN subinterface.
+        self._update_context({
+            "net2_interface": "eth1.2",
+        })
+        nets = networkd.networkd_networks(self.context, ["net2", "net4"])
+        expected = {
+            "50-kayobe-bond0": [
+                {
+                    "Match": [
+                        {"Name": "bond0"}
+                    ]
+                },
+            ],
+            "50-kayobe-eth0": [
+                {
+                    "Match": [
+                        {"Name": "eth0"}
+                    ]
+                },
+                {
+                    "Network": [
+                        {"Bond": "bond0"},
+                    ]
+                },
+            ],
+            "50-kayobe-eth1": [
+                {
+                    "Match": [
+                        {"Name": "eth1"}
+                    ]
+                },
+                {
+                    "Network": [
+                        {"Bond": "bond0"},
+                        {"VLAN": "eth1.2"},
+                    ]
+                },
+            ],
+            "50-kayobe-eth1.2": [
+                {
+                    "Match": [
+                        {"Name": "eth1.2"}
+                    ]
+                },
+            ],
+        }
+        self.assertEqual(expected, nets)
+
+    def test_bond_with_bond_member_vlan_net(self):
+        # Test the case where one of the bond members has a VLAN subinterface,
+        # and is also a Kayobe network (here eth0 is net1).
+        self._update_context({
+            "net1_ips": None,
+        })
+        nets = networkd.networkd_networks(self.context,
+                                          ["net1", "net2", "net4"])
+        expected = {
+            "50-kayobe-bond0": [
+                {
+                    "Match": [
+                        {"Name": "bond0"}
+                    ]
+                },
+            ],
+            "50-kayobe-eth0": [
+                {
+                    "Match": [
+                        {"Name": "eth0"}
+                    ]
+                },
+                {
+                    "Network": [
+                        {"Bond": "bond0"},
+                        {"VLAN": "eth0.2"},
+                    ]
+                },
+            ],
+            "50-kayobe-eth0.2": [
+                {
+                    "Match": [
+                        {"Name": "eth0.2"}
                     ]
                 },
             ],
@@ -737,7 +946,6 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                 {
                     "Network": [
                         {"Address": "1.2.3.4/24"},
-                        {"Broadcast": "true"},
                     ]
                 },
             ]
@@ -760,7 +968,6 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                 {
                     "Network": [
                         {"Address": "1.2.3.4/24"},
-                        {"Broadcast": "true"},
                         {"VLAN": "eth0.2"},
                     ]
                 },
