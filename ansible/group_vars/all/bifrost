@@ -18,15 +18,18 @@ kolla_bifrost_firewalld_internal_zone: trusted
 ###############################################################################
 # Diskimage-builder configuration.
 
-# DIB base OS element.
-kolla_bifrost_dib_os_element: "centos"
+# DIB base OS element. Default is {{ os_distribution }}.
+kolla_bifrost_dib_os_element: "{{ os_distribution }}"
 
-# DIB image OS release.
-kolla_bifrost_dib_os_release: "8"
+# DIB image OS release. Default is "focal" when os_distribution is "ubuntu", or
+# "8" otherwise.
+kolla_bifrost_dib_os_release: "{{ 'focal' if os_distribution == 'ubuntu' else '8' }}"
 
-# List of default DIB elements.
+# List of default DIB elements. Default is ["disable-selinux",
+# "enable-serial-console", "vm"] when os_distribution is "centos", or
+# ["enable-serial-console", "vm"] otherwise.
 kolla_bifrost_dib_elements_default:
-  - "disable-selinux"
+  - "{% if os_distribution == 'centos' %}disable-selinux{% endif %}"
   - "enable-serial-console"
   - "vm"
 
@@ -34,7 +37,7 @@ kolla_bifrost_dib_elements_default:
 kolla_bifrost_dib_elements_extra: []
 
 # List of all DIB elements.
-kolla_bifrost_dib_elements: "{{ kolla_bifrost_dib_elements_default + kolla_bifrost_dib_elements_extra }}"
+kolla_bifrost_dib_elements: "{{ kolla_bifrost_dib_elements_default | select | list + kolla_bifrost_dib_elements_extra }}"
 
 # DIB init element.
 kolla_bifrost_dib_init_element: "cloud-init-datasources"

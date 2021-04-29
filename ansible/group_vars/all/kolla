@@ -52,8 +52,9 @@ kolla_node_custom_config_path: "{{ kolla_config_path }}/config"
 ###############################################################################
 # Kolla configuration.
 
-# Kolla base container image distribution.
-kolla_base_distro: "centos"
+# Kolla base container image distribution. Options are "centos", "debian",
+# "ubuntu". Default is {{ os_distribution }}.
+kolla_base_distro: "{{ os_distribution }}"
 
 # Kolla container image type: binary or source.
 kolla_install_type: "binary"

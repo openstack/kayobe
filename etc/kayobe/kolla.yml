@@ -61,7 +61,8 @@
 ###############################################################################
 # Kolla configuration.
 
-# Kolla base container image distribution. Default is 'centos'.
+# Kolla base container image distribution. Options are "centos", "debian",
+# "ubuntu". Default is {{ os_distribution }}.
 #kolla_base_distro:
 
 # Kolla container image type: binary or source. Default is 'binary'.
