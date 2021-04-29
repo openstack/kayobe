@@ -37,9 +37,11 @@ Later sections in the development guide cover in more detail how to use the
 development VM in different configurations.  These steps cover bringing up and
 accessing the VM.
 
-Clone the kayobe repository::
+Clone the kayobe repository:
 
-    git clone https://opendev.org/openstack/kayobe.git
+.. parsed-literal::
+
+   git clone \https://opendev.org/openstack/kayobe.git -b |current_release_git_branch_name|
 
 Change the current directory to the kayobe repository::
 
