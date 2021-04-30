@@ -23,6 +23,7 @@ ipa_builder_source_version: master
 # images. Default is ["centos", "enable-serial-console",
 # "ironic-python-agent-ramdisk"].
 ipa_build_dib_elements_default:
+  # TODO(mgoddard): Use {{ os_distribution }} here when Ubuntu IPA builds work.
   - centos
   - enable-serial-console
   - ironic-python-agent-ramdisk
@@ -41,6 +42,9 @@ ipa_build_dib_elements: >
 # Dictionary of default environment variables to provide to Diskimage Builder
 # (DIB) during IPA image build.
 ipa_build_dib_env_default:
+  # TODO(mgoddard): Use {{ os_release }} here when we use os_distribution
+  # above.
+  DIB_RELEASE: "8-stream"
   DIB_REPOLOCATION_ironic_agent: "{{ ipa_build_source_url }}"
   DIB_REPOREF_ironic_agent: "{{ ipa_build_source_version }}"
 
