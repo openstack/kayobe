@@ -23,6 +23,11 @@
   notify:
     - Remove netplan systemd-networkd configuration
 
+# NOTE(mgoddard): The above needs to fire before any restart of
+# systemd-networkd, to avoid shadowing of our configuration files by those
+# provided by netplan.
+- meta: flush_handlers
+
 - name: Configure systemd-networkd
   import_role:
     name: stackhpc.systemd_networkd
