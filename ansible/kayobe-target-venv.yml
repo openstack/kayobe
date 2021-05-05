@@ -69,7 +69,7 @@
       vars:
         # Use the system python interpreter since the virtualenv might not
         # exist.
-        ansible_python_interpreter: /usr/libexec/platform-python
+        ansible_python_interpreter: /usr/bin/python3
       when: virtualenv is defined
 
     # If we gathered facts earlier it would have been with a different Python
