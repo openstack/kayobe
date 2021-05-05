@@ -131,7 +131,7 @@ def test_yum_local_package_mirrors(host, repo):
     assert os.getenv('SITE_MIRROR_FQDN') in info
 
 
-@pytest.mark.parametrize('repo', ["AppStream", "BaseOS", "Extras", "epel",
+@pytest.mark.parametrize('repo', ["appstream", "baseos", "extras", "epel",
                                   "epel-modular"])
 @pytest.mark.skipif(not _is_dnf(), reason="DNF only supported on CentOS 8")
 def test_dnf_local_package_mirrors(host, repo):
