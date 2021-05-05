@@ -3,7 +3,10 @@ features:
   - |
     Adds an ``os_distribution`` variable in ``etc/kayobe/globals.yml``, with a
     default value of ``centos``. The variable can also be set to ``ubuntu``,
-    and sets sensible default values for other variables.
+    and sets sensible default values for other variables. Also adds an
+    ``os_release`` variable in the same file, with a default value of
+    ``8-stream`` when ``os_distribution`` is ``centos`` or ``focal`` when
+    ``os_distribution`` is ``ubuntu``.
 upgrade:
   - |
     Modifies the default value of ``controller_bootstrap_user``,

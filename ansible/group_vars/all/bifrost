@@ -21,9 +21,8 @@ kolla_bifrost_firewalld_internal_zone: trusted
 # DIB base OS element. Default is {{ os_distribution }}.
 kolla_bifrost_dib_os_element: "{{ os_distribution }}"
 
-# DIB image OS release. Default is "focal" when os_distribution is "ubuntu", or
-# "8" otherwise.
-kolla_bifrost_dib_os_release: "{{ 'focal' if os_distribution == 'ubuntu' else '8' }}"
+# DIB image OS release. Default is {{ os_release }}.
+kolla_bifrost_dib_os_release: "{{ os_release }}"
 
 # List of default DIB elements. Default is ["disable-selinux",
 # "enable-serial-console", "vm"] when os_distribution is "centos", or
