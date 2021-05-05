@@ -25,7 +25,7 @@
 - src: stackhpc.libvirt-host
   version: v1.8.2
 - src: stackhpc.libvirt-vm
-  version: v1.13.0
+  version: v1.14.1
 - src: stackhpc.luks
   version: 0.4.0
 - src: stackhpc.mellanox-switch
