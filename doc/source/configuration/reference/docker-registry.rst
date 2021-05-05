@@ -27,9 +27,16 @@ Configuring the registry
     Docker Hub by setting REGISTRY_PROXY_REMOTEURL to
     "https://registry-1.docker.io".  Note that it is not possible to push to a
     registry configured as a pull through cache. Default is ``{}``.
+``docker_registry_network_mode``
+    The network mode used for the docker registry container. Default is
+    ``host``. When set to ``bridge``, port mapping is configured to expose the
+    registry through port ``docker_registry_port``.
 ``docker_registry_port``
     The port on which the docker registry server should listen. Default is
-    4000.
+    4000. When ``docker_registry_network_mode`` is set to ``host``, configures
+    the port used by the registry server inside the container. When
+    ``docker_registry_network_mode`` is set to ``bridge``, configures the
+    overlay network port.
 ``docker_registry_datadir_volume``
     Name or path to use as the volume for the docker registry. Default is
     ``docker_registry``.
