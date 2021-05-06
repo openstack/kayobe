@@ -77,8 +77,8 @@ is ``stack``.
 Typically, the image used to provision these hosts will not include this user
 account, so Kayobe performs a bootstrapping step to create it, as a different
 user. In cloud images, there is often a user named after the OS distro, e.g.
-``centos`` or ``ubuntu``. This user defaults to the name of the user running
-Kayobe, but may be set via the following variables:
+``centos`` or ``ubuntu``. This user defaults to the ``os_distribution``
+variable, but may be set via the following variables:
 
 * ``seed_hypervisor_bootstrap_user``
 * ``seed_bootstrap_user``
@@ -87,12 +87,12 @@ Kayobe, but may be set via the following variables:
 * ``monitoring_bootstrap_user``
 * ``storage_bootstrap_user``
 
-For example, to set the bootstrap user for controllers to ``centos``:
+For example, to set the bootstrap user for controllers to ``example-user``:
 
 .. code-block:: yaml
    :caption: ``controllers.yml``
 
-   controller_bootstrap_user: centos
+   controller_bootstrap_user: example-user
 
 PyPI Mirror and proxy
 =====================
@@ -202,13 +202,13 @@ added to the Kayobe configuration.
       ssh_key:
         - "{{ lookup('file', kayobe_config_path ~ '/ssh-keys/id_rsa_bob.pub') }}"
 
-Package Repositories
-====================
+DNF Package Repositories
+========================
 *tags:*
   | ``dnf``
 
-Kayobe supports configuration of package repositories via DNF, via variables in
-``${KAYOBE_CONFIG_PATH}/dnf.yml``.
+On CentOS, Kayobe supports configuration of package repositories via DNF, via
+variables in ``${KAYOBE_CONFIG_PATH}/dnf.yml``.
 
 Configuration of dnf.conf
 -------------------------
@@ -295,10 +295,24 @@ installed by setting ``dnf_automatic_upgrade_type`` to ``default``. This may
 cause the system to be less predictable as packages are updated without
 oversight or testing.
 
+Apt
+===
+
+On Ubuntu, Apt is used to manage packages and package repositories. Currently
+Kayobe does not provide support for configuring custom Apt repositories.
+
+Apt cache
+---------
+
+The Apt cache timeout may be configured via ``apt_cache_valid_time`` (in
+seconds) in ``etc/kayobe/apt.yml``, and defaults to 3600.
+
 SELinux
 =======
 *tags:*
   | ``disable-selinux``
+
+.. note:: SELinux applies to CentOS systems only.
 
 SELinux is not supported by Kolla Ansible currently, so it is disabled by
 Kayobe. If necessary, Kayobe will reboot systems in order to apply a change to

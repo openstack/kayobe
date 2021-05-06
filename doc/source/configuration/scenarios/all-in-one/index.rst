@@ -40,7 +40,8 @@ Prerequisites
 This scenario requires:
 
 * a basic understanding of Linux, networking and OpenStack
-* a single CentOS 8 host (VM or bare metal)
+* a single host running a :ref:`supported operating system
+  <support-matrix-supported-os>` (VM or bare metal)
 * at least one network interface that has Internet access
 * an IP subnet with a free IP address for the OpenStack API virtual IP, and a
   range of free IP addresses for external network access

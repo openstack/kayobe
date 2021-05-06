@@ -184,6 +184,15 @@ Use the correct hostname and IP address for your environment.
    aio_ips:
      controller0: 192.168.33.3
 
+The default OS distribution in Kayobe is CentOS. If using an Ubuntu host, set
+the ``os_distribution`` variable in ``etc/kayobe/globals.yml`` to ``ubuntu``.
+
+.. code-block:: yaml
+   :caption: ``etc/kayobe/globals.yml``
+
+   ---
+   os_distribution: "ubuntu"
+
 In a development environment, we may wish to tune some Kolla Ansible variables.
 Using QEMU as the virtualisation type will be necessary if KVM is not
 available. Reducing the number of OpenStack service workers helps to avoid

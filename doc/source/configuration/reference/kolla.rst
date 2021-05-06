@@ -73,7 +73,8 @@ used to generate the Kolla configuration file, ``kolla-build.conf``, and also
 affect :ref:`Kolla Ansible configuration <configuration-kolla-ansible-global>`.
 
 ``kolla_base_distro``
-    Kolla base container image distribution. Default is ``centos``.
+    Kolla base container image distribution. Options are ``centos``,
+    ``debian``, or ``ubuntu``. Default is ``{{ os_distribution }}``.
 ``kolla_install_type``
     Kolla container image type: ``binary`` or ``source``. Default is
     ``binary``.
