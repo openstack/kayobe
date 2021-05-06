@@ -1,4 +1,9 @@
 ---
+- name: Slurp /etc/centos-release
+  slurp:
+    src: /etc/centos-release
+  register: centos_release
+
 - name: Copy CentOS repo templates
   template:
     src: "{{ item }}.j2"
@@ -8,9 +13,11 @@
     mode: 0664
   become: True
   loop:
-    - CentOS-Linux-AppStream.repo
-    - CentOS-Linux-BaseOS.repo
-    - CentOS-Linux-Extras.repo
+    - "CentOS-{{ linux_or_stream }}-AppStream.repo"
+    - "CentOS-{{ linux_or_stream }}-BaseOS.repo"
+    - "CentOS-{{ linux_or_stream }}-Extras.repo"
+  vars:
+    linux_or_stream: "{{ 'Stream' if 'Stream' in centos_release['content'] | b64decode else 'Linux' }}"
 
 - name: Remove old (pre CentOS 8.3) repo files
   file:
