@@ -89,7 +89,7 @@
 
     - block:
         - name: Gather facts about provisioning network
-          os_networks_facts:
+          os_networks_info:
             auth: "{{ openstack_auth }}"
             auth_type: "{{ openstack_auth_type }}"
             cacert: "{{ openstack_cacert | default(omit, true) }}"
@@ -100,7 +100,7 @@
         - name: Set provisioning network to unshared
           command: "{{ venv }}/bin/openstack network set {{ provision_net.name }} --no-share"
           changed_when: true
-          when: openstack_networks[0].shared
+          when: provisioning_network_facts.openstack_networks[0].shared
           environment: "{{ openstack_auth_env }}"
       vars:
         ansible_python_interpreter: "{{ venv }}/bin/python"
@@ -108,7 +108,7 @@
 
     - block:
         - name: Gather facts about cleaning network
-          os_networks_facts:
+          os_networks_info:
             auth: "{{ openstack_auth }}"
             auth_type: "{{ openstack_auth_type }}"
             cacert: "{{ openstack_cacert | default(omit, true) }}"
@@ -119,7 +119,7 @@
         - name: Set cleaning network to unshared
           command: "{{ venv }}/bin/openstack network set {{ cleaning_net.name }} --no-share"
           changed_when: true
-          when: openstack_networks[0].shared
+          when: cleaning_network_facts.openstack_networks[0].shared
           environment: "{{ openstack_auth_env }}"
       vars:
         ansible_python_interpreter: "{{ venv }}/bin/python"
