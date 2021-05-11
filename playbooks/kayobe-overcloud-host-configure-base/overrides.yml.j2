@@ -122,3 +122,11 @@ dnf_custom_repos:
 # Enable DNF Automatic.
 dnf_automatic_enabled: true
 {% endif %}
+
+# Override the default NTP pool
+chrony_ntp_servers:
+  - server: time.cloudflare.com
+    type: pool
+    options:
+      - option: maxsources
+        val: 2

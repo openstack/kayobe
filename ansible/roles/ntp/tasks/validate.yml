@@ -1,0 +1,11 @@
+---
+
+- name: Validate structure of chrony_ntp_servers dictionary
+  assert:
+    that:
+      - chrony_ntp_servers is sequence
+      - chrony_ntp_servers | selectattr('server', 'undefined') | list | length == 0
+    msg: "chrony_ntp_servers set to invalid value"
+  when:
+    - chrony_ntp_servers is defined
+    - chrony_ntp_servers | length > 0

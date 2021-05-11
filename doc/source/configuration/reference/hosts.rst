@@ -406,23 +406,48 @@ timezone. For example:
 
 NTP
 ===
+*tags:*
+  | ``ntp``
 
-Since the Ussuri release, Kayobe no longer supports configuration of an NTP
-daemon on the host, since the ``ntp`` package is no longer available in CentOS
-8.
+Kayobe will configure `Chrony <https://chrony.tuxfamily.org/>`__ on all hosts in the
+``ntp`` group. The default hosts in this group are::
 
-Kolla Ansible can deploy a chrony container on overcloud hosts, and from the
-Ussuri release chrony is enabled by default. There is no support for running a
-chrony container on the seed or seed hypervisor hosts.
+.. code-block:: console
 
-To disable the containerised chrony daemon, set the following in
-``${KAYOBE_CONFIG_PATH}/kolla.yml``:
+    [ntp:children]
+    # Kayobe will configure Chrony on members of this group.
+    seed
+    seed-hypervisor
+    overcloud
+
+This provides a flexible way to opt in or out of having kayobe manage
+the NTP service.
+
+Variables
+---------
+
+Network Time Protocol (NTP) may be configured via variables in
+``${KAYOBE_CONFIG_PATH}/time.yml``. The list of NTP servers is
+configured via ``chrony_ntp_servers``, and by default the ``pool.ntp.org``
+servers are used.
+
+Internally, kayobe uses the the `mrlesmithjr.chrony
+<https://galaxy.ansible.com/mrlesmithjr/chrony>`__ Ansible role. Rather than
+maintain a mapping between the ``kayobe`` and ``mrlesmithjr.chrony`` worlds, all
+variables are simply passed through. This means you can use all variables that
+the role defines. For example to change ``chrony_maxupdateskew`` and override
+the kayobe defaults for ``chrony_ntp_servers``:
 
 .. code-block:: yaml
+   :caption: ``time.yml``
 
-   kolla_enable_chrony: false
-
-.. _configuration-hosts-mdadm:
+   chrony_ntp_servers:
+     - server: 0.debian.pool.ntp.org
+       options:
+         - option: iburst
+         - option: minpoll
+           val: 8
+   chrony_maxupdateskew: 150.0
 
 Software RAID
 =============
