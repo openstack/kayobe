@@ -81,6 +81,12 @@
           shell:
             cmd: "{{ kayobe_src_dir }}/dev/overcloud-upgrade.sh &> {{ logs_dir }}/ansible/overcloud-upgrade"
 
+        # Remove unused Docker images to avoid reaching full disk
+        - name: Remove unused Docker images
+          shell:
+            cmd: "docker image prune --all --force"
+          become: true
+
         # Perform a smoke test against the upgraded current release.
 
         - name: Perform testing of VMs in the upgraded overcloud
