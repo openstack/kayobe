@@ -10,9 +10,6 @@
 ###############################################################################
 # Network Time Protocol (NTP).
 
-# Kayobe default time sources
-#chrony_ntp_servers_default:
-
 # List of NTP time sources to configure. Format is a list of dictionaries with
 # the following keys:
 # server:  host or pool
