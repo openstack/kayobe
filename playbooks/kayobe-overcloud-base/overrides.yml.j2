@@ -7,6 +7,9 @@ disable_selinux_do_reboot: false
 docker_registry_mirrors:
   - "http://{{ zuul_site_mirror_fqdn }}:8082/"
 
+kolla_docker_namespace: "openstack.kolla"
+# use the published images from a site mirror of quay.io
+kolla_docker_registry: "{{ zuul_site_mirror_fqdn }}:4447"
 kolla_source_url: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/kolla'].src_dir }}"
 kolla_source_version: "{{ zuul.projects['opendev.org/openstack/kolla'].checkout }}"
 kolla_ansible_source_url: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/kolla-ansible'].src_dir }}"

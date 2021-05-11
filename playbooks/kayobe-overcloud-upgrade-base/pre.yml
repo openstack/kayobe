@@ -10,6 +10,11 @@
       vars:
         is_previous_release: true
 
+    - name: Ensure kolla-ansible globals.yml override config file exists
+      template:
+        src: globals.yml.j2
+        dest: "{{ previous_kayobe_config_src_dir }}/etc/kayobe/kolla/globals.yml"
+
     # NOTE(mgoddard): The kayobe dev config by default expects a bridge -
     # breth1 - to exist with an IP address of 192.168.33.3.
     - name: Ensure all-in-one network bridge interface exists
