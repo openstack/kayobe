@@ -44,7 +44,7 @@ libvirt_vm_engine: "qemu"
 
 # QEMU may not be installed on the host, so set the path and avoid
 # autodetection.
-libvirt_vm_emulator: "{% if ansible_os_family == 'RedHat' %}/usr/libexec/qemu-kvm{% else %}/usr/bin/qemu-system-x86_64{% endif %}"
+libvirt_vm_emulator: "{% if ansible_facts.os_family == 'RedHat' %}/usr/libexec/qemu-kvm{% else %}/usr/bin/qemu-system-x86_64{% endif %}"
 
 # Specify a log path in the kolla_logs Docker volume. It is accessible on the
 # host at the same path.

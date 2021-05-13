@@ -5,7 +5,7 @@
     - timezone
   tasks:
     - import_role:
-        name: yatesr.timezone
+        name: stackhpc.timezone
       become: True
 
 - name: Ensure ntp group exists

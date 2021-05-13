@@ -38,4 +38,4 @@
 
     - name: Configure the network
       include_role:
-        name: "network-{{ ansible_os_family | lower }}"
+        name: "network-{{ ansible_facts.os_family | lower }}"

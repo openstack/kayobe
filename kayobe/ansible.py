@@ -336,6 +336,7 @@ def prune_galaxy_roles(parsed_args):
         'resmo.ntp',
         'stackhpc.ntp',
         'stackhpc.os-shade',
+        'yatesr.timezone',
     ]
     LOG.debug("Removing roles: %s", ",".join(roles_to_remove))
     utils.galaxy_remove(roles_to_remove, "ansible/roles")
