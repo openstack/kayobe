@@ -46,8 +46,8 @@
           package:
             name: wget
             state: present
-            cache_valid_time: "{{ apt_cache_valid_time if ansible_os_family == 'Debian' else omit }}"
-            update_cache: "{{ True if ansible_os_family == 'Debian' else omit }}"
+            cache_valid_time: "{{ apt_cache_valid_time if ansible_facts.os_family == 'Debian' else omit }}"
+            update_cache: "{{ True if ansible_facts.os_family == 'Debian' else omit }}"
 
         - name: Ensure Dell srvadmin repository is installed
           shell: "wget -q -O - http://linux.dell.com/repo/hardware/latest/bootstrap.cgi | bash"

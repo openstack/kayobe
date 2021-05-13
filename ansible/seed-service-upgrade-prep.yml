@@ -20,7 +20,7 @@
 
         - name: Set a fact about the current time
           set_fact:
-            ipa_extension: "{{ ansible_date_time.iso8601 }}"
+            ipa_extension: "{{ ansible_facts.date_time.iso8601 }}"
 
         - name: Move old IPA deployment images to make way for new ones
           command: mv {{ item.path }} {{ item.path }}.{{ ipa_extension }}

@@ -1,5 +1,14 @@
 ---
 - hosts: primary
+  vars:
+    ansible_cfg: |
+      [defaults]
+      # Ensure that facts are referenced via ansible_facts.<fact>.
+      inject_facts_as_vars = False
+
+      [ssh_connection]
+      pipelining = True
+      retries = 3
   roles:
     - role: kayobe-diagnostics
       kayobe_diagnostics_phase: "pre"
@@ -21,6 +30,11 @@
         path: "{{ kayobe_src_dir }}/dev/config.sh"
         line: "export KAYOBE_EXTRA_ARGS=-vvv"
         regexp: "^#export KAYOBE_EXTRA_ARGS=$"
+
+    - name: Ensure ansible.cfg exists
+      copy:
+        content: "{{ ansible_cfg }}"
+        dest: "{{ kayobe_config_src_dir }}/etc/kayobe/ansible.cfg"
 
     - block:
         - name: Ensure previous kayobe directory exists

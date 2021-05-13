@@ -5,7 +5,7 @@
 
 - name: Mask alternative NTP clients to prevent conflicts
   vars:
-    service_exists: "{{ item in services }}"
+    service_exists: "{{ item in ansible_facts.services }}"
   systemd:
     name: "{{ item }}"
     enabled: "{{ 'false' if service_exists else omit }}"
@@ -24,4 +24,4 @@
   # can't possibly exist, but trying to execute this unconditionally will fail
   # with: No module named 'docker' as we have not yet added the docker package
   # to the kayobe target venv.
-  when: "'docker.service' in services"
+  when: "'docker.service' in ansible_facts.services"
