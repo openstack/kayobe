@@ -17,10 +17,10 @@
     - name: Ensure overcloud hosts' /etc/hosts does not contain incorrect IPs
       lineinfile:
         dest: /etc/hosts
-        regexp: "^(?!{{ internal_net_name | net_ip | regex_escape }})[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+[ \t]*{{ ansible_hostname }}"
+        regexp: "^(?!{{ internal_net_name | net_ip | regex_escape }})[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+[ \t]*{{ ansible_facts.hostname }}"
         state: absent
         # Ensure that the correct entry is present.
-        validate: "grep -E '^({{ internal_net_name | net_ip | regex_escape }}).*{{ ansible_hostname }}' %s"
+        validate: "grep -E '^({{ internal_net_name | net_ip | regex_escape }}).*{{ ansible_facts.hostname }}' %s"
       become: True
 
 - name: Ensure rabbitmq containers' /etc/hosts does not contain incorrect IPs

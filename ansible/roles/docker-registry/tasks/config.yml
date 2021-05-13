@@ -3,8 +3,8 @@
   file:
     path: "{{ docker_registry_config_path }}"
     state: directory
-    owner: "{{ ansible_user_uid }}"
-    group: "{{ ansible_user_gid }}"
+    owner: "{{ ansible_facts.user_uid }}"
+    group: "{{ ansible_facts.user_gid }}"
     mode: 0750
   become: True
   when: >-
@@ -15,8 +15,8 @@
   copy:
     src: "{{ docker_registry_cert_path }}"
     dest: "{{ docker_registry_config_path }}/cert.pem"
-    owner: "{{ ansible_user_uid }}"
-    group: "{{ ansible_user_gid }}"
+    owner: "{{ ansible_facts.user_uid }}"
+    group: "{{ ansible_facts.user_gid }}"
     mode: 0600
   become: True
   when: docker_registry_enable_tls | bool
@@ -27,8 +27,8 @@
   copy:
     src: "{{ docker_registry_key_path }}"
     dest: "{{ docker_registry_config_path }}/key.pem"
-    owner: "{{ ansible_user_uid }}"
-    group: "{{ ansible_user_gid }}"
+    owner: "{{ ansible_facts.user_uid }}"
+    group: "{{ ansible_facts.user_gid }}"
     mode: 0600
   become: True
   when: docker_registry_enable_tls | bool
@@ -39,8 +39,8 @@
   copy:
     src: "{{ docker_registry_basic_auth_htpasswd_path }}"
     dest: "{{ docker_registry_config_path }}/htpasswd"
-    owner: "{{ ansible_user_uid }}"
-    group: "{{ ansible_user_gid }}"
+    owner: "{{ ansible_facts.user_uid }}"
+    group: "{{ ansible_facts.user_gid }}"
     mode: 0600
   become: True
   when: docker_registry_enable_basic_auth | bool

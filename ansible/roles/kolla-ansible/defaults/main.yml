@@ -13,7 +13,7 @@ kolla_ansible_source_url:
 kolla_ansible_source_version:
 
 # Virtualenv directory where Kolla-ansible will be installed.
-kolla_ansible_venv: "{{ ansible_env['PWD'] }}/kolla-venv"
+kolla_ansible_venv: "{{ ansible_facts.env['PWD'] }}/kolla-venv"
 
 # Python interpreter to use to create Kolla Ansible virtualenv.
 kolla_ansible_venv_python: python3

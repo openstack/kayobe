@@ -5,7 +5,7 @@
     state: present
   become: True
   when:
-    - ansible_os_family == 'RedHat'
+    - ansible_facts.os_family == 'RedHat'
     - kolla_install_epel | bool
 
 - name: Ensure required packages are installed
@@ -24,8 +24,8 @@
   file:
     path: "{{ kolla_source_path | dirname }}"
     state: directory
-    owner: "{{ ansible_user_uid }}"
-    group: "{{ ansible_user_gid }}"
+    owner: "{{ ansible_facts.user_uid }}"
+    group: "{{ ansible_facts.user_gid }}"
   become: True
   when: kolla_ctl_install_type == 'source'
 
@@ -40,8 +40,8 @@
   file:
     path: "{{ kolla_venv | dirname }}"
     state: directory
-    owner: "{{ ansible_user_uid }}"
-    group: "{{ ansible_user_gid }}"
+    owner: "{{ ansible_facts.user_uid }}"
+    group: "{{ ansible_facts.user_gid }}"
   become: True
   when: kolla_venv is not none
 
@@ -50,7 +50,7 @@
     name: "{{ item.name }}"
     state: latest
     virtualenv: "{{ kolla_venv }}"
-    virtualenv_python: "python3.{{ ansible_python.version.minor }}"
+    virtualenv_python: "python3.{{ ansible_facts.python.version.minor }}"
   with_items:
     - { name: pip }
 

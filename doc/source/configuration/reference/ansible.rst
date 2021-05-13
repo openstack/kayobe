@@ -57,7 +57,7 @@ In order to make this work with Kayobe, it is necessary to change Ansible's
 <https://docs.ansible.com/ansible/latest/reference_appendices/config.html#default-gathering>`__
 configuration option to ``smart``. Additionally, it is necessary to use
 separate fact caches for Kayobe and Kolla Ansible due to some of the facts
-(e.g. ``ansible_user_uid`` and ``ansible_python``) differing.
+(e.g. ``ansible_facts.user_uid`` and ``ansible_facts.python``) differing.
 
 Example
 -------
