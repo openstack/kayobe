@@ -13,7 +13,7 @@ kolla_source_url:
 kolla_source_version:
 
 # Virtualenv directory where Kolla will be installed.
-kolla_venv: "{{ ansible_env['PWD'] }}/kolla-venv"
+kolla_venv: "{{ ansible_facts.env['PWD'] }}/kolla-venv"
 
 # Upper constraints file which is passed to pip when installing packages
 # into the kolla venv.

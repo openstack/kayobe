@@ -20,7 +20,7 @@
 - block:
     - name: Set a fact to determine whether we are running locally
       set_fact:
-        is_local: "{{ lookup('pipe', 'hostname') in [ansible_hostname, ansible_nodename] }}"
+        is_local: "{{ lookup('pipe', 'hostname') in [ansible_facts.hostname, ansible_facts.nodename] }}"
 
     - name: Reboot the system to apply SELinux changes (local)
       command: shutdown -r now "Applying SELinux changes"

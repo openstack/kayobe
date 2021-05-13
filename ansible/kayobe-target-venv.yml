@@ -19,7 +19,7 @@
     - block:
         - name: Gather facts
           setup:
-          when: not module_setup | default(false)
+          when: not ansible_facts.module_setup | default(false)
           register: gather_facts
 
         - name: Ensure the Python virtualenv package is installed
@@ -32,8 +32,8 @@
           file:
             path: "{{ virtualenv_path }}"
             state: directory
-            owner: "{{ ansible_user_uid }}"
-            group: "{{ ansible_user_gid }}"
+            owner: "{{ ansible_facts.user_uid }}"
+            group: "{{ ansible_facts.user_gid }}"
             mode: 0755
           # Check whether the virtualenv directory is a subdirectory of the
           # global virtualenv directory.
@@ -44,8 +44,8 @@
           file:
             path: "{{ virtualenv }}"
             state: directory
-            owner: "{{ ansible_user_uid }}"
-            group: "{{ ansible_user_gid }}"
+            owner: "{{ ansible_facts.user_uid }}"
+            group: "{{ ansible_facts.user_gid }}"
             mode: 0700
           become: True
 
@@ -57,7 +57,7 @@
             # Site packages are required for using the dnf module, which is not
             # available via PyPI.
             virtualenv_site_packages: True
-            virtualenv_python: "python3.{{ ansible_python.version.minor }}"
+            virtualenv_python: "python3.{{ ansible_facts.python.version.minor }}"
 
         - name: Ensure kayobe virtualenv has SELinux bindings installed
           pip:
@@ -65,7 +65,7 @@
             state: latest
             virtualenv: "{{ virtualenv }}"
           when:
-            - ansible_os_family == 'RedHat'
+            - ansible_facts.os_family == 'RedHat'
       vars:
         # Use the system python interpreter since the virtualenv might not
         # exist.

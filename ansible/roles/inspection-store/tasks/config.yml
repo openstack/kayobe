@@ -3,8 +3,8 @@
   file:
     path: "{{ inspection_store_config_path }}"
     state: directory
-    owner: "{{ ansible_user_uid }}"
-    group: "{{ ansible_user_gid }}"
+    owner: "{{ ansible_facts.user_uid }}"
+    group: "{{ ansible_facts.user_gid }}"
     mode: 0750
   become: True
 
