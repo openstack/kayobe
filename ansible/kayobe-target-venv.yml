@@ -19,7 +19,9 @@
     - block:
         - name: Gather facts
           setup:
-          when: not ansible_facts.module_setup | default(false)
+            filter: "{{ kayobe_ansible_setup_filter }}"
+            gather_subset: "{{ kayobe_ansible_setup_gather_subset }}"
+          when: not ansible_facts
           register: gather_facts
 
         - name: Ensure the Python virtualenv package is installed
@@ -79,6 +81,8 @@
     # again using the interpreter from the virtual environment.
     - name: Gather facts
       setup:
+        filter: "{{ kayobe_ansible_setup_filter }}"
+        gather_subset: "{{ kayobe_ansible_setup_gather_subset }}"
       when:
         - virtualenv is defined
         - gather_facts is not skipped
