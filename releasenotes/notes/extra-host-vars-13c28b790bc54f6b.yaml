@@ -1,0 +1,13 @@
+---
+features:
+  - |
+    Adds support for passing through additional host variables from Kayobe to
+    Kolla Ansible. This is done via the following variables:
+
+    * ``kolla_seed_inventory_pass_through_host_vars_extra``
+    * ``kolla_seed_inventory_pass_through_host_vars_map_extra``
+    * ``kolla_overcloud_inventory_pass_through_host_vars_extra``
+    * ``kolla_overcloud_inventory_pass_through_host_vars_map_extra``
+
+    See `story 2008797 <https://storyboard.openstack.org/#!/story/2008797>`__
+    for details.
