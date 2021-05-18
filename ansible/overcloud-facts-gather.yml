@@ -1,0 +1,10 @@
+---
+- name: Gather facts
+  hosts: overcloud
+  gather_facts: false
+  tasks:
+    - name: Gather facts
+      setup:
+        filter: "{{ kayobe_ansible_setup_filter }}"
+        gather_subset: "{{ kayobe_ansible_setup_gather_subset }}"
+      when: not ansible_facts

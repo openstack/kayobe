@@ -236,3 +236,15 @@ Or to perform an incremental backup, run the following command:
 Further information on backing up and restoring the database is available in
 the :kolla-ansible-doc:`Kolla Ansible documentation
 <admin/mariadb-backup-and-restore.html>`.
+
+Gathering Facts
+===============
+
+The following command may be used to gather facts for all overcloud hosts, for
+both Kayobe and Kolla Ansible:
+
+.. code-block:: console
+
+   kayobe overcloud facts gather
+
+This may be useful to populate a fact cache in advance of other operations.
