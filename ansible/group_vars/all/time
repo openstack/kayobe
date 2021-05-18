@@ -10,15 +10,6 @@ timezone: "{{ ansible_date_time.tz }}"
 ###############################################################################
 # Network Time Protocol (NTP).
 
-# Kayobe default time sources
-chrony_ntp_servers_default:
-  - server: pool.ntp.org
-    type: pool
-    options:
-      - option: iburst
-      - option: minpoll
-        val: 8
-
 # List of NTP time sources to configure. Format is a list of dictionaries with
 # the following keys:
 # server:  host or pool
@@ -37,5 +28,10 @@ chrony_ntp_servers_default:
 #       - option: maxsources
 #         val: 3
 #
-chrony_ntp_servers: "{{ chrony_ntp_servers_default }}"
-###############################################################################
+chrony_ntp_servers:
+  - server: pool.ntp.org
+    type: pool
+    options:
+      - option: iburst
+      - option: minpoll
+        val: 8
