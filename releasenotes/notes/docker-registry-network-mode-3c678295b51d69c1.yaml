@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds a new flag, ``docker_registry_network_mode``, which defaults to
+    ``host``. This may be used to set the network mode of the Docker registry
+    container.

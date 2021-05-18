@@ -14,6 +14,9 @@ docker_registry_enabled: False
 # pull through cache.
 docker_registry_env: {}
 
+# The network mode of the docker registry container. Default is 'host'.
+docker_registry_network_mode: host
+
 # The port on which the docker registry server should listen.
 # NOTE: This is set to 4000 rather than the default of 5000 to avoid clashing
 #       with keystone.
