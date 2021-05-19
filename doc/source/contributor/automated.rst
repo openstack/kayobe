@@ -56,10 +56,6 @@ Clone the ``kayobe-config-dev`` repository to ``config/src/kayobe-config``::
 Inspect the Kayobe configuration and make any changes necessary for your
 environment.
 
-If using Ubuntu, configure the OS distribution::
-
-    sed -i -e 's/#os_distribution:/os_distribution: ubuntu/' config/src/kayobe-config/etc/kayobe/globals.yml
-
 If using Vagrant, follow the steps in :ref:`contributor-vagrant` to prepare
 your environment for use with Vagrant and bring up a Vagrant VM.
 
@@ -205,10 +201,6 @@ Clone the ``kayobe-config-dev`` repository to ``config/src/kayobe-config``::
 
 Inspect the Kayobe configuration and make any changes necessary for your
 environment.
-
-If using Ubuntu, configure the OS distribution::
-
-    sed -i -e 's/#os_distribution:/os_distribution: ubuntu/' config/src/kayobe-config/etc/kayobe/globals.yml
 
 The default development configuration expects the presence of a bridge
 interface on the seed host to carry provisioning traffic.  The bridge should be
