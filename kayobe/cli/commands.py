@@ -1044,7 +1044,8 @@ class OvercloudHostCommandRun(KayobeAnsibleMixin, VaultMixin, Command):
                                   extra_vars=extra_vars)
 
 
-class OvercloudHostUpgrade(KayobeAnsibleMixin, VaultMixin, Command):
+class OvercloudHostUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
+                           Command):
     """Upgrade the overcloud host services.
 
     Performs the changes necessary to make the host services suitable for the
@@ -1056,6 +1057,15 @@ class OvercloudHostUpgrade(KayobeAnsibleMixin, VaultMixin, Command):
         playbooks = _build_playbook_list(
             "kayobe-target-venv", "kolla-target-venv",
             "overcloud-docker-sdk-upgrade", "overcloud-etc-hosts-fixup")
+        self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
+
+        # TODO(mgoddard): Remove this in Y cycle after Kolla Ansible chrony
+        # container has been dropped for a cycle.
+        # NOTE(mgoddard): Clean up the chrony container if it exists, and
+        # deploy a host chrony daemon.
+        self.generate_kolla_ansible_config(parsed_args, service_config=False)
+        self.run_kolla_ansible_overcloud(parsed_args, "chrony-cleanup")
+        playbooks = _build_playbook_list("time")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
 
 
