@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Adds a new ``kayobe overcloud service prechecks`` command to run Kolla
+    Ansible prechecks without deploying services.
