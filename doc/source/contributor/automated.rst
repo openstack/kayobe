@@ -28,11 +28,13 @@ The following development environments are supported:
 
 * Overcloud (single OpenStack controller)
 * Seed
-* Seed hypervisor
-* Seed VM
 
-The seed VM environment may be used in an environment already deployed as a
-seed hypervisor.
+The `Universe from Nothing
+<https://github.com/stackhpc/a-universe-from-nothing/>`_ workshop may be of use
+for more advanced testing scenarios involving a seed hypervisor, seed VM, and
+separate control and compute nodes.
+
+.. _contributor-automated-overcloud:
 
 Overcloud
 =========
@@ -184,8 +186,7 @@ Seed
 ====
 
 These instructions cover deploying the seed services directly rather than in a
-VM. See :ref:`contributor-automated-seed-vm` for instructions covering
-deployment of the seed services in a VM.
+VM.
 
 Preparation
 -----------
@@ -246,6 +247,9 @@ The seed services may be tested using the `Tenks
 <https://tenks.readthedocs.io/en/latest/>`__ project to create fake bare metal
 nodes.
 
+If your seed has a non-standard MTU, you should set it via ``aio_mtu`` in
+``etc/kayobe/networks.yml``.
+
 Clone the tenks repository::
 
     git clone https://opendev.org/openstack/tenks.git
@@ -265,121 +269,23 @@ Verify that VirtualBMC is running::
 
     ~/tenks-venv/bin/vbmc list
 
+It is now possible to discover, inspect and provision the controller VM::
+
+    source dev/environment-setup.sh
+    kayobe overcloud inventory discover
+    kayobe overcloud hardware inspect
+    kayobe overcloud provision
+
+The controller VM is now accessible via SSH as the bootstrap user (``centos``
+or ``ubuntu``) at ``192.168.33.3``.
+
 The machines and networking created by Tenks can be cleaned up via
 ``dev/tenks-teardown-overcloud.sh``::
 
     ./dev/tenks-teardown-overcloud.sh ./tenks
 
-.. _contributor-automated-seed-hypervisor:
-
-Seed Hypervisor
-===============
-
-The seed hypervisor development environment is supported for CentOS 8.  The
-system must be either bare metal, or a VM on a system with nested
-virtualisation enabled.
-
-Preparation
------------
-
-The following commands should be executed on the seed hypervisor.
-
-Clone the Kayobe repository::
-
-    git clone https://opendev.org/openstack/kayobe.git
-
-Change the current directory to the Kayobe repository::
-
-    cd kayobe
-
-Clone the ``add-seed-and-hv`` branch of the ``kayobe-config-dev`` repository to
-``config/src/kayobe-config``::
-
-    mkdir -p config/src
-    git clone https://github.com/markgoddard/dev-kayobe-config -b add-seed-and-hv config/src/kayobe-config
-
-Inspect the Kayobe configuration and make any changes necessary for your
-environment.
-
-Usage
------
-
-Run the ``dev/install-dev.sh`` script to install Kayobe and its dependencies in a
-Python virtual environment::
-
-    ./dev/install-dev.sh
-
-.. note::
-
-   This will create an :ref:`editable install <installation-editable>`.
-   It is also possible to install Kayobe in a non-editable way, such that
-   changes will not been seen until you reinstall the package. To do this you
-   can run ``./dev/install.sh``.
-
-Run the ``dev/seed-hypervisor-deploy.sh`` script to deploy the seed
-hypervisor::
-
-    ./dev/seed-hypervisor-deploy.sh
-
-Upon successful completion of this script, the seed hypervisor will be active.
-
-.. _contributor-automated-seed-vm:
-
-Seed VM
-=======
-
-The seed VM should be deployed on a system configured as a libvirt/KVM
-hypervisor, using :ref:`contributor-automated-seed-hypervisor` or otherwise.
-
-Preparation
------------
-
-The following commands should be executed on the seed hypervisor.
-
-Clone the Kayobe repository::
-
-    git clone https://opendev.org/openstack/kayobe.git
-
-Change to the ``kayobe`` directory::
-
-    cd kayobe
-
-Clone the ``add-seed-and-hv`` branch of the ``kayobe-config-dev`` repository to
-``config/src/kayobe-config``::
-
-    mkdir -p config/src
-    git clone https://github.com/markgoddard/dev-kayobe-config -b add-seed-and-hv config/src/kayobe-config
-
-Inspect the Kayobe configuration and make any changes necessary for your
-environment.
-
-If using Ubuntu, configure the OS distribution::
-
-    sed -i -e 's/#os_distribution:/os_distribution: ubuntu/' config/src/kayobe-config/etc/kayobe/globals.yml
-
-Usage
------
-
-Run the ``dev/install-dev.sh`` script to install Kayobe and its dependencies in a
-Python virtual environment::
-
-    ./dev/install-dev.sh
-
-.. note::
-
-   This will create an :ref:`editable install <installation-editable>`.
-   It is also possible to install Kayobe in a non-editable way, such that
-   changes will not been seen until you reinstall the package. To do this you
-   can run ``./dev/install.sh``.
-
-Run the ``dev/seed-deploy.sh`` script to deploy the seed VM::
-
-    ./dev/seed-deploy.sh
-
-Upon successful completion of this script, the seed VM will be active.  The
-seed VM may be accessed via SSH as the ``stack`` user::
-
-    ssh stack@192.168.33.5
+Upgrading
+---------
 
 It is possible to test an upgrade by running the ``dev/seed-upgrade.sh``
 script::
