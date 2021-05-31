@@ -30,7 +30,7 @@ All this and more, automated from top to bottom using Ansible.
 * Source: https://opendev.org/openstack/kayobe
 * Bugs: https://storyboard.openstack.org/#!/project/openstack/kayobe
 * Release Notes: https://docs.openstack.org/releasenotes/kayobe/
-* IRC: #openstack-kolla
+* IRC: #openstack-kolla on OFTC
 
 Features
 --------
