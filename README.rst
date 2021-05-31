@@ -69,7 +69,7 @@ https://storyboard.openstack.org/#!/project/openstack/kayobe
 Community
 ---------
 
-Freenode's `IRC channel <http://webchat.freenode.net/?channels=openstack-kolla>`_: #openstack-kolla
+OFTC's `IRC channel <http://webchat.oftc.net/?channels=openstack-kolla>`_: #openstack-kolla
 
 License
 -------
