@@ -11,6 +11,10 @@ install_type={{ kolla_install_type }}
 # Docker namespace to use for Kolla images.
 namespace={{ kolla_docker_namespace }}
 
+# Use host networking by default, in line with Kolla Ansible's default Docker
+# engine configuration.
+network_mode=host
+
 # Docker image tag to apply.
 tag={{ kolla_tag }}
 
