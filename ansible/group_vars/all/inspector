@@ -40,8 +40,8 @@ inspector_processing_hooks_default:
   - validate_interfaces
   - capabilities
   - pci_devices
-  - local_link_connection
   - lldp_basic
+  - local_link_connection
 
 # List of of additional inspector processing plugins.
 inspector_processing_hooks_extra: []
