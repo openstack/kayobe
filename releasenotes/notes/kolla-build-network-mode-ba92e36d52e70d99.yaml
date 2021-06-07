@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an issue with container image builds by using ``host`` as the default
+    ``network_mode`` for ``kolla-build``. See `story 2008942
+    <https://storyboard.openstack.org/#!/story/2008942>`__ for details.
