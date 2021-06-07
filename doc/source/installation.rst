@@ -47,6 +47,10 @@ On Ubuntu::
 
     $ apt install -y git
 
+On Ubuntu, ensure that /usr/bin/python points to a Python 3 interpreter::
+
+    $ apt install -y python-is-python3
+
 Local directory structure
 =========================
 
