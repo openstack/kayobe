@@ -59,14 +59,8 @@
       - name: openstack/kayobe
       - name: openstack/kayobe-config-dev
       - name: openstack/kolla
-        # TODO(mnasiadka): Remove when kayobe stable/wallaby exists.
-        override-checkout: stable/wallaby
       - name: openstack/kolla-ansible
-        # TODO(mnasiadka): Remove when kayobe stable/wallaby exists.
-        override-checkout: stable/wallaby
       - name: openstack/requirements
-        # TODO(mnasiadka): Remove when kayobe stable/wallaby exists.
-        override-checkout: stable/wallaby
       - name: openstack/tenks
     irrelevant-files:
       - ^.*\.rst$
