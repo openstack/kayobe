@@ -1293,6 +1293,29 @@ class OvercloudServiceDeployContainers(KollaAnsibleMixin, KayobeAnsibleMixin,
                                   extra_vars=extra_vars, limit="overcloud")
 
 
+class OvercloudServicePrechecks(KollaAnsibleMixin, KayobeAnsibleMixin,
+                                VaultMixin, Command):
+    """Run prechecks against overcloud services.
+
+    * Configure kolla-ansible.
+    * Configure overcloud services in kolla-ansible.
+    * Perform kolla-ansible prechecks to verify the system state for
+      deployment.
+
+    This can be used in conjunction with the --tags and --kolla-tags arguments
+    to check specific services.
+    """
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Running overcloud prechecks")
+
+        # First prepare configuration.
+        self.generate_kolla_ansible_config(parsed_args)
+
+        # Run the kolla-ansible prechecks.
+        self.run_kolla_ansible_overcloud(parsed_args, "prechecks")
+
+
 class OvercloudServiceReconfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
                                   VaultMixin, Command):
     """Reconfigure the overcloud services.

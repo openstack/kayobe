@@ -130,6 +130,18 @@ and/or kolla-ansible::
 
     (kayobe) $ kayobe overcloud service upgrade --tags config --kolla-tags keystone
 
+Running Prechecks
+=================
+
+Sometimes it may be useful to run prechecks without deploying services::
+
+    (kayobe) $ kayobe overcloud service prechecks
+
+As for other similar commands, it is possible to specify tags for Kayobe and/or
+kolla-ansible::
+
+    (kayobe) $ kayobe overcloud service upgrade --tags config --kolla-tags keystone
+
 Stopping the Overcloud Services
 ===============================
 
