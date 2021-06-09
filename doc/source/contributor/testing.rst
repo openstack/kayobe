@@ -44,12 +44,14 @@ Running Unit Tests Locally
 ==========================
 
 If you haven't already, the kayobe source code should be pulled directly from
-git::
+git:
 
-    # from your home or source directory
-    cd ~
-    git clone https://opendev.org/openstack/kayobe.git
-    cd kayobe
+.. parsed-literal::
+
+   # from your home or source directory
+   cd ~
+   git clone \https://opendev.org/openstack/kayobe.git -b |current_release_git_branch_name|
+   cd kayobe
 
 Running Unit and Style Tests
 ----------------------------
