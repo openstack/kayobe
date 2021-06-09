@@ -32,6 +32,8 @@ nova_flavors: []
 physnet_mappings:
   physnet1: breth1
 
+bridge_type: linuxbridge
+
 # No placement service.
 wait_for_placement: false
 
