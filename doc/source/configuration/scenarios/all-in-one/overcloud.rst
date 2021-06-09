@@ -21,12 +21,12 @@ Configuration
 
 Clone the `kayobe-config <https://opendev.org/openstack/kayobe-config>`_
 git repository, using the correct branch for the release you are deploying.  In
-this example we will use the ``master`` branch.
+this example we will use the |current_release_git_branch_name| branch.
 
-.. code-block:: console
+.. parsed-literal::
 
    cd <base path>/src
-   git clone https://opendev.org/openstack/kayobe-config -b master
+   git clone \https://opendev.org/openstack/kayobe-config.git -b |current_release_git_branch_name|
    cd kayobe-config
 
 This repository is bare, and needs to be populated.  The repository includes an
