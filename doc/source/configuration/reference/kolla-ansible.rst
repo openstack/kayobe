@@ -470,7 +470,7 @@ directory is copied directly into the Kolla Ansible inventory, Kolla
 Ansible group names should be used. It should be noted that
 ``extra-vars`` and ``host_vars`` take precedence over ``group_vars``. For
 more information on variable precedence see the Ansible `documentation
-<http://docs.ansible.com/ansible/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable>`_.
+<https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable>`_.
 
 Example: configure a Nova cell
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
