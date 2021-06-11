@@ -55,12 +55,3 @@
         cmd: dev/install.sh &> {{ logs_dir }}/ansible/install
         chdir: "{{ kayobe_src_dir }}"
         executable: /bin/bash
-
-    # TODO(priteau): Remove when edk2-ovmf bug is resolved upstream
-    # https://bugzilla.redhat.com/show_bug.cgi?id=1961562
-    - name: Exclude buggy edk2-ovmf package version
-      lineinfile:
-        path: /etc/yum.repos.d/CentOS-Stream-AppStream.repo
-        line: exclude=edk2-ovmf-20200602gitca407c7246bf-5.el8
-      become: true
-      when: ansible_os_family == 'RedHat'
