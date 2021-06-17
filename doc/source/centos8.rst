@@ -93,7 +93,7 @@ image:
 .. code-block:: yaml
    :caption: ``${KAYOBE_CONFIG_PATH}/seed-vm.yml``
 
-   seed_vm_root_image: https://cloud.centos.org/centos/8/x86_64/images/CentOS-8-GenericCloud-8.3.2011-20201204.2.x86_64.qcow2
+   seed_vm_root_image: https://cloud.centos.org/centos/8/x86_64/images/CentOS-8-GenericCloud-8.4.2105-20210603.0.x86_64.qcow2
 
 Migrating a Seed VM to CentOS 8
 -------------------------------
