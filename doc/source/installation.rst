@@ -122,10 +122,12 @@ code repositories and python virtual environments::
     $ cd <base_path>
     $ mkdir -p src venvs
 
-Next, obtain the Kayobe source code. For example::
+Next, obtain the Kayobe source code. For example:
 
-    $ cd <base_path>/src
-    $ git clone https://opendev.org/openstack/kayobe.git
+.. parsed-literal::
+
+   $ cd <base_path>/src
+   $ git clone \https://opendev.org/openstack/kayobe.git -b |current_release_git_branch_name|
 
 Create a virtualenv for Kayobe::
 
