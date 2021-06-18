@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Adds support for configuring a firewall via firewalld on CentOS. See `story
+    2008991 <https://storyboard.openstack.org/#!/story/2008991>`__ for details.

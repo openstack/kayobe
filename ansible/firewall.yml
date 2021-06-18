@@ -1,0 +1,12 @@
+---
+- name: Ensure firewall is configured
+  hosts: seed-hypervisor:seed:overcloud
+  tags:
+    - config
+    - firewall
+  tasks:
+    - name: Configure the firewall
+      include_role:
+        name: "firewall-{{ ansible_facts.os_family | lower }}"
+      when:
+        - ansible_facts.os_family == 'RedHat'

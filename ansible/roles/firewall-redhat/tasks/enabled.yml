@@ -1,0 +1,71 @@
+---
+- name: Ensure firewalld package is installed
+  package:
+    name: firewalld
+  become: true
+
+- name: Ensure firewalld service is enabled
+  service:
+    name: firewalld
+    enabled: true
+    # FIXME: should be possible to configure firewalld offline, but it fails to
+    # apply config.
+    state: started
+  become: true
+
+- block:
+    - name: Get firewalld current default zone
+      command:
+        cmd: "firewall-offline-cmd --get-default-zone"
+      changed_when: false
+      register: current_default_zone
+
+    - name: Set firewalld default zone
+      command: "firewall-offline-cmd --set-default-zone {{ firewalld_default_zone }}"
+      when: current_default_zone.stdout != firewalld_default_zone
+      notify: Restart firewalld
+  become: true
+  when:
+    - firewalld_default_zone is not none
+    - firewalld_default_zone | length > 0
+
+- name: Ensure firewalld zones exist
+  firewalld:
+    offline: true
+    permanent: true
+    state: "{{ item.state | default('present') }}"
+    zone: "{{ item.zone }}"
+  become: true
+  loop: "{{ firewalld_zones }}"
+
+- name: Set firewalld zones for network interfaces
+  firewalld:
+    interface: "{{ item | net_interface }}"
+    offline: true
+    permanent: true
+    state: enabled
+    zone: "{{ item | net_zone }}"
+  become: true
+  loop: "{{ network_interfaces }}"
+  when: item | net_zone
+  notify: Restart firewalld
+
+- name: Ensure firewalld rules are applied
+  firewalld:
+    icmp_block: "{{ item.icmp_block | default(omit) }}"
+    icmp_block_inversion: "{{ item.icmp_block_inversion | default(omit) }}"
+    immediate: "{{ item.immediate | default(omit) }}"
+    interface: "{{ item.interface | default(omit) }}"
+    masquerade: "{{ item.masquerade | default(omit) }}"
+    offline: "{{ item.offline | default(true) }}"
+    permanent: "{{ item.permanent | default(true) }}"
+    port: "{{ item.port | default(omit) }}"
+    rich_rule: "{{ item.rich_rule | default(omit) }}"
+    service: "{{ item.service | default(omit) }}"
+    source: "{{ item.source | default(omit) }}"
+    state: "{{ item.state | default('enabled') }}"
+    timeout: "{{ item.timeout | default(omit) }}"
+    zone: "{{ item.zone | default(omit) }}"
+  become: true
+  loop: "{{ firewalld_rules }}"
+  notify: Restart firewalld

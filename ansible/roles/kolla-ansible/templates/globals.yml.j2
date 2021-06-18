@@ -565,6 +565,9 @@ kolla_group: "{{ kolla_ansible_group }}"
 virtualenv: {{ kolla_ansible_target_venv }}
 {% endif %}
 
+# Avoid disabling the firewall on CentOS, since we manage it in Kayobe.
+disable_firewall: "{% raw %}{{ ansible_facts.os_family == 'Debian' }}{% endraw %}"
+
 {% if kolla_extra_globals %}
 #######################
 # Extra configuration

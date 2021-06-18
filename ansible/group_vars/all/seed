@@ -113,3 +113,24 @@ seed_users: "{{ users_default }}"
 #     post: "{{ kayobe_env_config_path }}/containers/squid/post.yml"
 #
 seed_containers: {}
+
+###############################################################################
+# Seed node firewalld configuration.
+
+# Whether to install and enable firewalld.
+seed_firewalld_enabled: false
+
+# A list of zones to create. Each item is a dict containing a 'zone' item.
+seed_firewalld_zones: []
+
+# A firewalld zone to set as the default. Default is unset, in which case the
+# default zone will not be changed.
+seed_firewalld_default_zone:
+
+# A list of firewall rules to apply. Each item is a dict containing arguments
+# to pass to the firewalld module. Arguments are omitted if not provided, with
+# the following exceptions:
+# - offline: true
+# - permanent: true
+# - state: enabled
+seed_firewalld_rules: []
