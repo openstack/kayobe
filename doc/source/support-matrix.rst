@@ -2,6 +2,8 @@
 Support Matrix
 ==============
 
+.. _support-matrix-supported-os:
+
 Supported Operating Systems
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
