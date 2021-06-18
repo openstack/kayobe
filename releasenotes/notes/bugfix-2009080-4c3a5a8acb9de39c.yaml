@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Setting `kolla_enable_ovn` in ``kolla.yml`` did not configure Neutron's
+    integration with OVN.
+    See `story 2009080 <https://storyboard.openstack.org/#!/story/2009080>`__
+    for details.
