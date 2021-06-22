@@ -1,46 +1,47 @@
 ---
-- src: ahuffman.resolv
-  version: 1.3.1
-- src: stackhpc.systemd_networkd
-  version: v1.0.1
-- src: jriguera.configdrive
-  # There are no versioned releases of this role.
-  version: e12d38378ae127c9c61d170fa4ba4729f2c5f2ad
-- src: MichaelRigart.interfaces
-  version: v1.12.0
-- src: mrlesmithjr.chrony
-  version: v0.1.1
-- src: mrlesmithjr.manage-lvm
-  version: v0.2.2
-- src: mrlesmithjr.mdadm
-  version: v0.1.1
-- src: singleplatform-eng.users
-  version: v1.2.5
-- src: stackhpc.dell-powerconnect-switch
-  version: v1.1.0
-- src: stackhpc.drac
-  version: 1.1.5
-- src: stackhpc.drac-facts
-  version: 1.0.0
-- src: stackhpc.grafana-conf
-  version: 1.1.1
-- src: stackhpc.libvirt-host
-  version: v1.8.3
-- src: stackhpc.libvirt-vm
-  version: v1.14.2
-- src: stackhpc.luks
-  version: 0.4.1
-- src: stackhpc.mellanox-switch
-  version: v1.0.0
-- src: stackhpc.os-images
-  version: v1.10.7
-- src: stackhpc.os-ironic-state
-  version: v1.3.1
-- src: stackhpc.os-networks
-  version: v1.5.3
-- src: stackhpc.os-openstackclient
-  version: v1.4.1
-- src: stackhpc.os_openstacksdk
-  version: v1.0.1
-- src: stackhpc.timezone
-  version: 1.2.1
+roles:
+  - src: ahuffman.resolv
+    version: 1.3.1
+  - src: stackhpc.systemd_networkd
+    version: v1.0.1
+  - src: jriguera.configdrive
+    # There are no versioned releases of this role.
+    version: e12d38378ae127c9c61d170fa4ba4729f2c5f2ad
+  - src: MichaelRigart.interfaces
+    version: v1.12.0
+  - src: mrlesmithjr.chrony
+    version: v0.1.1
+  - src: mrlesmithjr.manage-lvm
+    version: v0.2.2
+  - src: mrlesmithjr.mdadm
+    version: v0.1.1
+  - src: singleplatform-eng.users
+    version: v1.2.5
+  - src: stackhpc.dell-powerconnect-switch
+    version: v1.1.0
+  - src: stackhpc.drac
+    version: 1.1.5
+  - src: stackhpc.drac-facts
+    version: 1.0.0
+  - src: stackhpc.grafana-conf
+    version: 1.1.1
+  - src: stackhpc.libvirt-host
+    version: v1.8.3
+  - src: stackhpc.libvirt-vm
+    version: v1.14.2
+  - src: stackhpc.luks
+    version: 0.4.1
+  - src: stackhpc.mellanox-switch
+    version: v1.0.0
+  - src: stackhpc.os-images
+    version: v1.10.7
+  - src: stackhpc.os-ironic-state
+    version: v1.3.1
+  - src: stackhpc.os-networks
+    version: v1.5.3
+  - src: stackhpc.os-openstackclient
+    version: v1.4.1
+  - src: stackhpc.os_openstacksdk
+    version: v1.0.1
+  - src: stackhpc.timezone
+    version: 1.2.1

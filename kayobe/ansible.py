@@ -291,7 +291,7 @@ def config_dump(parsed_args, host=None, hosts=None, var_name=None,
 def install_galaxy_roles(parsed_args, force=False):
     """Install Ansible Galaxy role dependencies.
 
-    Installs dependencies specified in kayobe, and if present, in kayobe
+    Installs role dependencies specified in kayobe, and if present, in kayobe
     configuration.
 
     :param parsed_args: Parsed command line arguments.
@@ -300,7 +300,7 @@ def install_galaxy_roles(parsed_args, force=False):
     LOG.info("Installing galaxy role dependencies from kayobe")
     requirements = utils.get_data_files_path("requirements.yml")
     roles_destination = utils.get_data_files_path('ansible', 'roles')
-    utils.galaxy_install(requirements, roles_destination, force=force)
+    utils.galaxy_role_install(requirements, roles_destination, force=force)
 
     # Check for requirements in kayobe configuration.
     kc_reqs_path = os.path.join(parsed_args.config_path,
@@ -323,7 +323,49 @@ def install_galaxy_roles(parsed_args, force=False):
                                   (parsed_args.config_path, str(e)))
 
     # Install roles from kayobe-config.
-    utils.galaxy_install(kc_reqs_path, kc_roles_path, force=force)
+    utils.galaxy_role_install(kc_reqs_path, kc_roles_path, force=force)
+
+
+def install_galaxy_collections(parsed_args, force=False):
+    """Install Ansible Galaxy collection dependencies.
+
+    Installs collection dependencies specified in kayobe, and if present, in
+    kayobe configuration.
+
+    :param parsed_args: Parsed command line arguments.
+    :param force: Whether to force reinstallation of roles.
+    """
+    LOG.info("Installing galaxy collection dependencies from kayobe")
+    requirements = utils.get_data_files_path("requirements.yml")
+    collections_destination = utils.get_data_files_path('ansible',
+                                                        'collections')
+    utils.galaxy_collection_install(requirements, collections_destination,
+                                    force=force)
+
+    # Check for requirements in kayobe configuration.
+    kc_reqs_path = os.path.join(parsed_args.config_path,
+                                "ansible", "requirements.yml")
+    if not utils.is_readable_file(kc_reqs_path)["result"]:
+        LOG.info("Not installing galaxy collection dependencies from kayobe "
+                 "config - requirements.yml not present")
+        return
+
+    LOG.info("Installing galaxy collection dependencies from kayobe config")
+    # Ensure a collections directory exists in kayobe-config.
+    kc_collections_path = os.path.join(parsed_args.config_path,
+                                       "ansible", "collections")
+    try:
+        os.makedirs(kc_collections_path)
+    except OSError as e:
+        if e.errno != errno.EEXIST:
+            raise exception.Error("Failed to create directory "
+                                  "ansible/collections/ "
+                                  "in kayobe configuration at %s: %s" %
+                                  (parsed_args.config_path, str(e)))
+
+    # Install collections from kayobe-config.
+    utils.galaxy_collection_install(kc_reqs_path, kc_collections_path,
+                                    force=force)
 
 
 def prune_galaxy_roles(parsed_args):
