@@ -10,6 +10,7 @@
           shell:
             cmd: dev/install.sh &> {{ logs_dir }}/ansible/install-pre-upgrade
             chdir: "{{ previous_kayobe_src_dir }}"
+            executable: /bin/bash
 
         - name: Configure the firewall
           # We run kayobe commands to determine variable values. So this must
@@ -19,14 +20,21 @@
             # TODO(mgoddard): Use the previous repo when the previous release
             # is no longer Wallaby.
             chdir: "{{ kayobe_src_dir }}"
+            executable: /bin/bash
 
         - name: Ensure overcloud is deployed
           shell:
             cmd: dev/overcloud-deploy.sh &> {{ logs_dir }}/ansible/overcloud-deploy-pre-upgrade
             chdir: "{{ previous_kayobe_src_dir }}"
+            executable: /bin/bash
 
       environment:
         KAYOBE_CONFIG_SOURCE_PATH: "{{ previous_kayobe_config_src_dir }}"
+
+    - name: Ensure qemu-img is available for Tenks
+      command: docker exec -u root nova_libvirt bash -c 'apt update && apt -y install qemu-utils'
+      become: true
+      when: ansible_os_family == 'Debian'
 
     # Update the Kayobe configuration to the current release.
 
@@ -66,22 +74,32 @@
             # cause this to fail.
             cmd: dev/tenks-deploy-compute.sh '{{ tenks_src_dir }}' &> {{ logs_dir }}/ansible/tenks-deploy
             chdir: "{{ kayobe_src_dir }}"
+            executable: /bin/bash
 
         - name: Perform testing of the VMs in the overcloud prior to upgrade
           shell:
             cmd: dev/overcloud-test-vm.sh &> {{ logs_dir }}/ansible/overcloud-test-vm-pre-upgrade
             chdir: "{{ previous_kayobe_src_dir }}"
+            executable: /bin/bash
 
         - name: Perform testing of the baremetal machines in the overcloud prior to upgrade
           shell:
             cmd: dev/overcloud-test-baremetal.sh &> {{ logs_dir }}/ansible/overcloud-test-bm-pre-upgrade
             chdir: "{{ previous_kayobe_src_dir }}"
+            executable: /bin/bash
+          # FIXME(mgoddard): Bare metal testing is unreliable on Ubuntu - some jobs
+          # see IPMI failures such as the following:
+          # ipmitool chassis bootdev pxe
+          # Error setting Chassis Boot Parameter 5\nError setting Chassis Boot
+          # Parameter 0\n
+          when: ansible_os_family != 'Debian'
 
         # Upgrade Kayobe, and use it to perform an upgrade of the control plane.
 
         - name: Ensure overcloud is upgraded
           shell:
             cmd: "{{ kayobe_src_dir }}/dev/overcloud-upgrade.sh &> {{ logs_dir }}/ansible/overcloud-upgrade"
+            executable: /bin/bash
 
         # Remove unused Docker images to avoid reaching full disk
         - name: Remove unused Docker images
@@ -98,6 +116,7 @@
               source {{ kayobe_config_src_dir }}/etc/kolla/public-openrc.sh &&
               openstack baremetal node set tk0 --deploy-interface direct &&
               openstack baremetal node set tk1 --deploy-interface direct
+            executable: /bin/bash
 
         # Perform a smoke test against the upgraded current release.
 
@@ -105,11 +124,19 @@
           shell:
             cmd: dev/overcloud-test-vm.sh &> {{ logs_dir }}/ansible/overcloud-test-vm-post-upgrade
             chdir: "{{ kayobe_src_dir }}"
+            executable: /bin/bash
 
         - name: Perform testing of the baremetal machines in the upgraded overcloud
           shell:
             cmd: dev/overcloud-test-baremetal.sh &> {{ logs_dir }}/ansible/overcloud-test-bm-post-upgrade
             chdir: "{{ kayobe_src_dir }}"
+            executable: /bin/bash
+          # FIXME(mgoddard): Bare metal testing is unreliable on Ubuntu - some jobs
+          # see IPMI failures such as the following:
+          # ipmitool chassis bootdev pxe
+          # Error setting Chassis Boot Parameter 5\nError setting Chassis Boot
+          # Parameter 0\n
+          when: ansible_os_family != 'Debian'
 
       environment:
         KAYOBE_CONFIG_SOURCE_PATH: "{{ kayobe_config_src_dir }}"

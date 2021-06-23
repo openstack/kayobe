@@ -10,11 +10,13 @@
           shell:
             cmd: dev/install.sh &> {{ logs_dir }}/ansible/install-pre-upgrade
             chdir: "{{ previous_kayobe_src_dir }}"
+            executable: /bin/bash
 
         - name: Ensure seed is deployed
           shell:
             cmd: dev/seed-deploy.sh &> {{ logs_dir }}/ansible/seed-deploy-pre-upgrade
             chdir: "{{ previous_kayobe_src_dir }}"
+            executable: /bin/bash
       environment:
         KAYOBE_CONFIG_SOURCE_PATH: "{{ previous_kayobe_config_src_dir }}"
         # Don't provision a seed VM - use the Zuul VM as the seed host.
@@ -56,6 +58,7 @@
         - name: Ensure seed is upgraded
           shell:
             cmd: "{{ kayobe_src_dir }}/dev/seed-upgrade.sh &> {{ logs_dir }}/ansible/seed-upgrade"
+            executable: /bin/bash
 
         # TODO(mgoddard): Perform a smoke test against the upgraded current release.
       environment:
