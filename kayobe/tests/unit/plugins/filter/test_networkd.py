@@ -420,6 +420,44 @@ class TestNetworkdNetworks(BaseNetworkdTest):
         }
         self.assertEqual(expected, nets)
 
+    def test_vlan_multiple(self):
+        # Test the case with multiple VLANs on an implied parent without MTUs.
+        # https://storyboard.openstack.org/#!/story/2009013
+        self._update_context({
+            "net5_interface": "eth0.3",
+            "net5_vlan": 3})
+        nets = networkd.networkd_networks(self.context, ["net2", "net5"])
+        expected = {
+            "50-kayobe-eth0": [
+                {
+                    "Match": [
+                        {"Name": "eth0"}
+                    ],
+                },
+                {
+                    "Network": [
+                        {"VLAN": "eth0.2"},
+                        {"VLAN": "eth0.3"},
+                    ]
+                },
+            ],
+            "50-kayobe-eth0.2": [
+                {
+                    "Match": [
+                        {"Name": "eth0.2"}
+                    ]
+                },
+            ],
+            "50-kayobe-eth0.3": [
+                {
+                    "Match": [
+                        {"Name": "eth0.3"}
+                    ]
+                },
+            ]
+        }
+        self.assertEqual(expected, nets)
+
     def test_vlan_with_parent(self):
         nets = networkd.networkd_networks(self.context, ["net1", "net2"])
         expected = {
