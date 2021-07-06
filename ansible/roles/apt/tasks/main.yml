@@ -1,0 +1,17 @@
+---
+- name: Configure apt proxy
+  template:
+    src: "01proxy.j2"
+    dest: /etc/apt/apt.conf.d/01proxy
+    owner: root
+    group: root
+    mode: 0664
+  become: true
+  when: apt_proxy_http | default('', true) | length > 0 or apt_proxy_https | default('', true) | length > 0
+
+- name: Remove old apt proxy config
+  file:
+    path: /etc/apt/apt.conf.d/01proxy
+    state: absent
+  become: true
+  when: apt_proxy_http | default('', true) | length == 0 and apt_proxy_https | default('', true) | length == 0

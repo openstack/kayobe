@@ -1,0 +1,8 @@
+Acquire {
+{% if apt_proxy_http | default('', true) | length > 0 -%}
+  HTTP::proxy "{{ apt_proxy_http }}";
+{% endif -%}
+{% if apt_proxy_https | default('', true) | length > 0 -%}
+  HTTPS::proxy "{{ apt_proxy_https }}";
+{% endif -%}
+}
