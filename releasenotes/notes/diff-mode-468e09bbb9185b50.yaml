@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    Adds a ``--diff`` argument to kayobe CLI commands. This is passed through
+    to ``ansible-playbook`` for Kayobe and Kolla Ansible playbooks, and can be
+    used with the ``--check`` argument to see changes that would be made to
+    files.
+upgrade:
+  - |
+    The ``--check`` argument to kayobe CLI commands is now passed through to
+    Kolla Ansible playbooks.

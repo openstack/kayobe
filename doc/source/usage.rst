@@ -69,3 +69,13 @@ playbooks to be limited to matching plays and tasks.  The ``--kolla-tags
 limited to matching plays and tasks.  The ``--skip-tags <TAGS>`` and
 ``--kolla-skip-tags <TAGS>`` arguments allow for avoiding execution of matching
 plays and tasks.
+
+Check and diff mode
+-------------------
+
+Ansible supports `check and diff modes
+<https://docs.ansible.com/ansible/latest/user_guide/playbooks_checkmode.html>`_,
+which can be used to improve visibility into changes that would be made on
+target systems. The Kayobe CLI supports the ``--check`` argument, and since
+11.0.0, the ``--diff`` argument. Note that these modes are not always
+guaranteed to work, when some tasks are dependent on earlier ones.
