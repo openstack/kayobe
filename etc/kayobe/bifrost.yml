@@ -39,7 +39,7 @@
 #kolla_bifrost_dib_init_element:
 
 # DIB default environment variables. Default is {"DIB_CLOUD_INIT_DATASOURCES":
-# "ConfigDrive", "DIB_DISABLE_KERNEL_CLEANUP": 1}.
+# "ConfigDrive"}.
 #kolla_bifrost_dib_env_vars_default:
 
 # DIB additional environment variables. Default is none.

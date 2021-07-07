@@ -78,8 +78,7 @@ configuration drive built by Bifrost, rather than the Bifrost default of
     releases.*
 
     DIB default environment variables. Default is
-    ``{"DIB_CLOUD_INIT_DATASOURCES": "ConfigDrive",
-    "DIB_DISABLE_KERNEL_CLEANUP": 1}``.
+    ``{"DIB_CLOUD_INIT_DATASOURCES": "ConfigDrive"}``.
 ``kolla_bifrost_dib_env_vars_extra``
     *Added in the Train release. Use kolla_bifrost_dib_env_vars in earlier
     releases.*
