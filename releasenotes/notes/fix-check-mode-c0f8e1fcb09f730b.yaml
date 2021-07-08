@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes some issues seen when using the ``--check`` argument with ``kayobe
+    overcloud host configure``. See `story 2004798
+    <https://storyboard.openstack.org/#!/story/2004798>`__.
