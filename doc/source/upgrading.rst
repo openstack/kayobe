@@ -262,30 +262,6 @@ locally::
 In order to push images to a registry after they are built, add the ``--push``
 argument.
 
-Migrating to Ironic Hardware Types
-----------------------------------
-
-Classic drivers in ironic were `deprecated
-<https://docs.openstack.org/releasenotes/ironic/queens.html#relnotes-10-1-0-stable-queens-deprecation-notes>`__
-in the Queens release, and `removed
-<https://docs.openstack.org/releasenotes/ironic/rocky.html#relnotes-11-0-0-stable-rocky-upgrade-notes>`__
-in the Rocky release. Nodes registered with ironic in Pike and earlier releases
-of Bifrost use the classic drivers by default, and will need to be migrated to
-use the new hardware types. The :ironic-doc:`ironic documentation
-<admin/upgrade-to-hardware-types.html>` provides details for how to do this,
-but for the default case of the ``agent_ipmitool`` driver the following
-procedure may be used, replacing ``<node>`` with the name of the host to
-migrate:
-
-.. code-block:: console
-
-   $ docker exec -it bifrost_deploy bash
-   (bifrost_deploy) $ export OS_URL=http://localhost:6385
-   (bifrost_deploy) $ export OS_TOKEN=fake
-   (bifrost_deploy) $ openstack baremetal node maintenance set <node>
-   (bifrost_deploy) $ openstack baremetal node set <node> --driver ipmi
-   (bifrost_deploy) $ openstack baremetal node maintenance unset <node>
-
 Upgrading Containerised Services
 --------------------------------
 
