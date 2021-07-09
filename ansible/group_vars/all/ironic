@@ -34,11 +34,10 @@ kolla_ironic_default_console_interface: ipmitool-socat
 # Specify the list of deploy interfaces to load during service initialization.
 kolla_ironic_enabled_deploy_interfaces:
   - direct
-  - iscsi
 
 # Default deploy interface to be used for nodes that do not have
 # deploy_interface field set.
-kolla_ironic_default_deploy_interface: iscsi
+kolla_ironic_default_deploy_interface: direct
 
 # Specify the list of inspect interfaces to load during service initialization.
 kolla_ironic_enabled_inspect_interfaces:

@@ -1,0 +1,11 @@
+---
+upgrade:
+  - |
+    Removes the ``iscsi`` interface from
+    ``kolla_ironic_enabled_deploy_interfaces``, and changes
+    ``kolla_ironic_default_deploy_interface`` to ``direct``. This is in line
+    with upstream changes in Ironic during the Xena cycle, in which the
+    ``iscsi`` deploy driver was removed.
+
+    Existing nodes using the ``iscsi`` deploy driver should be updated to an
+    alternative such as ``direct`` before upgrading.

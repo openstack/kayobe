@@ -813,9 +813,7 @@ function configure_iptables {
     sudo iptables -I INPUT -d $INTERNAL_VIP -p tcp --dport ${SWIFT_DEFAULT_BIND_PORT:-8080} -j ACCEPT || true
     sudo iptables -I INPUT -d $INTERNAL_VIP -p tcp --dport $GLANCE_SERVICE_PORT -j ACCEPT || true
 
-    if is_ipxe_enabled; then
-        sudo iptables -I INPUT -d $HOST_IP -p tcp --dport $IRONIC_HTTP_PORT -j ACCEPT || true
-    fi
+    sudo iptables -I INPUT -d $HOST_IP -p tcp --dport $IRONIC_HTTP_PORT -j ACCEPT || true
 
     if is_cinder_enabled; then
         sudo iptables -I INPUT -d $HOST_IP -p tcp --dport $ISCSI_SERVICE_PORT -j ACCEPT || true
