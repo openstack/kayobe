@@ -877,11 +877,14 @@ class TestCase(unittest.TestCase):
     def test_multiple_inventories(self, mock_validate, mock_vars, mock_run,
                                   mock_exists):
         mock_vars.return_value = []
-        # os.path.exists gets called three times:
-        # 1) shared inventory
-        # 2) environment inventory
-        # 3) ansible.cfg
-        mock_exists.side_effect = [True, True, False]
+
+        def exists_replacement(path):
+            if path == "/etc/kayobe/inventory":
+                return True
+            if path == "/etc/kayobe/environments/test-env/inventory":
+                return True
+            return False
+        mock_exists.side_effect = exists_replacement
         parser = argparse.ArgumentParser()
         ansible.add_args(parser)
         vault.add_args(parser)
@@ -907,12 +910,6 @@ class TestCase(unittest.TestCase):
             "ANSIBLE_FILTER_PLUGINS": mock.ANY,
             "ANSIBLE_TEST_PLUGINS": mock.ANY,
         }
-        expected_calls = [
-            mock.call("/etc/kayobe/inventory"),
-            mock.call("/etc/kayobe/environments/test-env/inventory"),
-            mock.call("/etc/kayobe/ansible.cfg"),
-        ]
-        self.assertListEqual(expected_calls, mock_exists.mock_calls)
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
         mock_vars.assert_called_once_with(
@@ -925,11 +922,12 @@ class TestCase(unittest.TestCase):
     def test_shared_inventory_only(self, mock_validate, mock_vars, mock_run,
                                    mock_exists):
         mock_vars.return_value = []
-        # os.path.exists gets called three times:
-        # 1) shared inventory
-        # 2) environment inventory
-        # 3) ansible.cfg
-        mock_exists.side_effect = [True, False, False]
+
+        def exists_replacement(path):
+            if path == "/etc/kayobe/inventory":
+                return True
+            return False
+        mock_exists.side_effect = exists_replacement
         parser = argparse.ArgumentParser()
         ansible.add_args(parser)
         vault.add_args(parser)
@@ -954,12 +952,6 @@ class TestCase(unittest.TestCase):
             "ANSIBLE_FILTER_PLUGINS": mock.ANY,
             "ANSIBLE_TEST_PLUGINS": mock.ANY,
         }
-        expected_calls = [
-            mock.call("/etc/kayobe/inventory"),
-            mock.call("/etc/kayobe/environments/test-env/inventory"),
-            mock.call("/etc/kayobe/ansible.cfg"),
-        ]
-        self.assertListEqual(expected_calls, mock_exists.mock_calls)
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
         mock_vars.assert_called_once_with(
@@ -972,11 +964,13 @@ class TestCase(unittest.TestCase):
     def test_env_inventory_only(self, mock_validate, mock_vars, mock_run,
                                 mock_exists):
         mock_vars.return_value = []
-        # os.path.exists gets called three times:
-        # 1) shared inventory
-        # 2) environment inventory
-        # 3) ansible.cfg
-        mock_exists.side_effect = [False, True, False]
+        # We only want it to find the inventory in the environment
+
+        def exists_replacement(path):
+            if path == "/etc/kayobe/environments/test-env/inventory":
+                return True
+            return False
+        mock_exists.side_effect = exists_replacement
         parser = argparse.ArgumentParser()
         ansible.add_args(parser)
         vault.add_args(parser)
@@ -1001,13 +995,138 @@ class TestCase(unittest.TestCase):
             "ANSIBLE_FILTER_PLUGINS": mock.ANY,
             "ANSIBLE_TEST_PLUGINS": mock.ANY,
         }
-        expected_calls = [
-            mock.call("/etc/kayobe/inventory"),
-            mock.call("/etc/kayobe/environments/test-env/inventory"),
-            mock.call("/etc/kayobe/ansible.cfg"),
-        ]
-        self.assertListEqual(expected_calls, mock_exists.mock_calls)
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
         mock_vars.assert_called_once_with(
             ["/etc/kayobe", "/etc/kayobe/environments/test-env"])
+
+    @mock.patch.object(utils.EnvironmentFinder, "ordered")
+    @mock.patch.object(os.path, "exists")
+    @mock.patch.object(utils, "run_command")
+    @mock.patch.object(ansible, "_get_vars_files")
+    @mock.patch.object(ansible, "_validate_args")
+    def test_multi_env_inventory_only(self, mock_validate, mock_vars,
+                                      mock_run, mock_exists, mock_finder):
+        mock_vars.return_value = []
+        mock_finder.return_value = ["dependency-env", "test-env"]
+
+        def exists_replacement(path):
+            if path == "/etc/kayobe/environments/test-env/inventory":
+                return True
+            if path == "/etc/kayobe/environments/dependency-env/inventory":
+                return True
+            return False
+        mock_exists.side_effect = exists_replacement
+
+        parser = argparse.ArgumentParser()
+        ansible.add_args(parser)
+        vault.add_args(parser)
+        args = [
+            "--environment", "test-env",
+        ]
+        parsed_args = parser.parse_args(args)
+        ansible.run_playbooks(parsed_args, ["playbook1.yml", "playbook2.yml"])
+        expected_cmd = [
+            "ansible-playbook",
+            "--inventory", utils.get_data_files_path("ansible", "inventory"),
+            "--inventory", "/etc/kayobe/environments/dependency-env/inventory",
+            "--inventory", "/etc/kayobe/environments/test-env/inventory",
+            "playbook1.yml",
+            "playbook2.yml",
+        ]
+        expected_env = {
+            "KAYOBE_CONFIG_PATH": "/etc/kayobe",
+            "KAYOBE_ENVIRONMENT": "test-env",
+            "ANSIBLE_ROLES_PATH": mock.ANY,
+            "ANSIBLE_COLLECTIONS_PATH": mock.ANY,
+            "ANSIBLE_ACTION_PLUGINS": mock.ANY,
+            "ANSIBLE_FILTER_PLUGINS": mock.ANY,
+            "ANSIBLE_TEST_PLUGINS": mock.ANY,
+        }
+        mock_run.assert_called_once_with(expected_cmd, check_output=False,
+                                         quiet=False, env=expected_env)
+        mock_vars.assert_called_once_with(
+            ["/etc/kayobe",
+             "/etc/kayobe/environments/dependency-env",
+             "/etc/kayobe/environments/test-env"]
+        )
+
+    @mock.patch.object(utils.EnvironmentFinder, "ordered")
+    @mock.patch.object(os.path, "exists")
+    @mock.patch.object(utils, "run_command")
+    @mock.patch.object(ansible, "_get_vars_files")
+    @mock.patch.object(ansible, "_validate_args")
+    def test_multi_env_vars(self, mock_validate, mock_vars,
+                            mock_run, mock_exists, mock_finder):
+
+        def get_vars_replacement(paths):
+            result = []
+            for path in paths:
+                if path == "/etc/kayobe/environments/test-env":
+                    result.extend(
+                        ["vars-test-env-1.yml", "vars-test-env-2.yml"]
+                    )
+                    continue
+                if path == "/etc/kayobe/environments/dependency-env":
+                    result.extend(
+                        ["vars-dependency-env-1.yml",
+                         "vars-dependency-env-2.yml"]
+                    )
+                    continue
+                if path == "/etc/kayobe":
+                    result.extend(
+                        ["vars-1.yml", "vars-2.yml"]
+                    )
+                    continue
+            return result
+        mock_vars.side_effect = get_vars_replacement
+
+        mock_finder.return_value = ["dependency-env", "test-env"]
+
+        def exists_replacement(path):
+            if path == "/etc/kayobe/environments/test-env/inventory":
+                return True
+            if path == "/etc/kayobe/environments/dependency-env/inventory":
+                return True
+            return False
+
+        mock_exists.side_effect = exists_replacement
+
+        parser = argparse.ArgumentParser()
+        ansible.add_args(parser)
+        vault.add_args(parser)
+        args = [
+            "--environment", "test-env",
+        ]
+        parsed_args = parser.parse_args(args)
+        ansible.run_playbooks(parsed_args, ["playbook1.yml", "playbook2.yml"])
+        expected_cmd = [
+            "ansible-playbook",
+            "--inventory", utils.get_data_files_path("ansible", "inventory"),
+            "--inventory", "/etc/kayobe/environments/dependency-env/inventory",
+            "--inventory", "/etc/kayobe/environments/test-env/inventory",
+            '-e', '@vars-1.yml',
+            '-e', '@vars-2.yml',
+            '-e', '@vars-dependency-env-1.yml',
+            '-e', '@vars-dependency-env-2.yml',
+            '-e', '@vars-test-env-1.yml',
+            '-e', '@vars-test-env-2.yml',
+            "playbook1.yml",
+            "playbook2.yml",
+        ]
+        expected_env = {
+            "KAYOBE_CONFIG_PATH": "/etc/kayobe",
+            "KAYOBE_ENVIRONMENT": "test-env",
+            "ANSIBLE_ROLES_PATH": mock.ANY,
+            "ANSIBLE_COLLECTIONS_PATH": mock.ANY,
+            "ANSIBLE_ACTION_PLUGINS": mock.ANY,
+            "ANSIBLE_FILTER_PLUGINS": mock.ANY,
+            "ANSIBLE_TEST_PLUGINS": mock.ANY,
+        }
+        mock_run.assert_called_once_with(expected_cmd, check_output=False,
+                                         quiet=False, env=expected_env)
+        mock_vars.assert_called_once_with(
+            ["/etc/kayobe",
+             "/etc/kayobe/environments/dependency-env",
+             "/etc/kayobe/environments/test-env"]
+        )

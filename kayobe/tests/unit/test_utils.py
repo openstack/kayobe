@@ -223,3 +223,56 @@ key2: value2
     def test_intersect_limits_arg_and_cli_colon(self):
         result = utils.intersect_limits("foo:bar", "baz")
         self.assertEqual("foo:bar:&baz", result)
+
+    def test_environment_finder_with_single_environment(self):
+        finder = utils.EnvironmentFinder('/etc/kayobe', 'environment-A')
+        environments = finder.ordered()
+        expected = ["environment-A"]
+        self.assertEqual(expected, environments)
+
+        expected = ["/etc/kayobe/environments/environment-A"]
+        paths = finder.ordered_paths()
+        self.assertEqual(expected, paths)
+
+    @mock.patch.object(utils.EnvironmentFinder, "_read_metadata")
+    def test_environment_finder_with_dependency_chain(self, mock_yaml):
+        def yaml_replacement(path):
+            if path == ("/etc/kayobe/environments/environment-C/"
+                        ".kayobe-environment"):
+                return {"dependencies": ["environment-A", "environment-B"]}
+            if path == ("/etc/kayobe/environments/environment-B/"
+                        ".kayobe-environment"):
+                return {"dependencies": ["environment-A"]}
+            return {}
+        mock_yaml.side_effect = yaml_replacement
+        finder = utils.EnvironmentFinder('/etc/kayobe', 'environment-C')
+        result = finder.ordered()
+        expected = ["environment-A", "environment-B", "environment-C"]
+        self.assertEqual(expected, result)
+
+        expected = ["/etc/kayobe/environments/environment-A",
+                    "/etc/kayobe/environments/environment-B",
+                    "/etc/kayobe/environments/environment-C"]
+        paths = finder.ordered_paths()
+        self.assertEqual(expected, paths)
+
+    @mock.patch.object(utils.EnvironmentFinder, "_read_metadata")
+    def test_environment_finder_with_cycle(self, mock_yaml):
+        # The cycle is: C - B - C
+        def yaml_replacement(path):
+            if path == ("/etc/kayobe/environments/environment-C/"
+                        ".kayobe-environment"):
+                return {"dependencies": ["environment-A", "environment-B"]}
+            if path == ("/etc/kayobe/environments/environment-B/"
+                        ".kayobe-environment"):
+                return {"dependencies": ["environment-A", "environment-C"]}
+            return {}
+        mock_yaml.side_effect = yaml_replacement
+        finder = utils.EnvironmentFinder('/etc/kayobe', 'environment-C')
+        self.assertRaises(exception.Error, finder.ordered)
+        self.assertRaises(exception.Error, finder.ordered_paths)
+
+    def test_environment_finder_no_environment(self):
+        finder = utils.EnvironmentFinder('/etc/kayobe', None)
+        self.assertEqual([], finder.ordered())
+        self.assertEqual([], finder.ordered_paths())

@@ -379,6 +379,63 @@ This would configure the external FQDN for the staging environment at
 ``staging-api.example.com``, while the production external FQDN would be at
 ``production-api.example.com``.
 
+Environment Dependencies
+------------------------
+
+.. warning::
+
+   This is an experimental feature and is still subject to change whilst
+   the design is finalised.
+
+Since the Antelope 14.0.0 release, multiple environments can be layered on top
+of each of each other by declaring dependencies in a ``.kayobe-environment``
+file located in the environment subdirectory. For example:
+
+.. code-block:: yaml
+   :caption: ``$KAYOBE_CONFIG_PATH/environments/environment-C/.kayobe-environment``
+
+   dependencies:
+     - environment-B
+
+.. code-block:: yaml
+   :caption: ``$KAYOBE_CONFIG_PATH/environments/environment-B/.kayobe-environment``
+
+   dependencies:
+     - environment-A
+
+Kayobe uses a dependency resolver to order these environments into a linear
+chain. Any dependency cycles in will result in an error. Using the example
+above the chain would be resolved to:
+
+.. code-block:: text
+
+   C -> B -> A
+
+Where C is the environment with highest precedence. Kayobe will make sure to
+include the inventory and extra-vars in an order matching this chain when
+running any playbooks.
+
+Mixin environments
+^^^^^^^^^^^^^^^^^^
+
+Environment dependencies can be used to design fragments of re-useable
+configuration that can be shared across multiple environments. For example:
+
+.. code-block:: yaml
+   :caption: ``$KAYOBE_CONFIG_PATH/environments/environment-A/.kayobe-environment``
+
+   dependencies:
+     - environment-mixin-1
+     - environment-mixin-2
+     - environment-mixin-3
+
+In this case, each environment dependency could provide the configuration
+necessary for one or more features. The mixin environments do not necessarily
+need to define any dependencies between them, however Kayobe will perform a
+topological sort to determine a suitable precedence. Care should be taken to
+make sure that environments without an explicit ordering do not modify the same
+variables.
+
 Final Considerations
 --------------------
 
