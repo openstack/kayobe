@@ -1,5 +1,5 @@
 ---
-- name: Ensure defined container images are deployed on Seed node
+- name: Ensure defined container images are deployed on seed node
   hosts: seed
   tags:
     - seed-deploy-containers
