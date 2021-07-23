@@ -79,8 +79,12 @@ kolla_ansible_become: false
 # Full custom seed inventory contents.
 kolla_seed_inventory_custom:
 
-# Directory containing custom Kolla-Ansible group vars.
-kolla_overcloud_group_vars_path:
+# Directories in kayobe config to search for kolla inventories. The inventory
+# is assumed to be in a directory, 'kolla/inventory', relative to the search path.
+# Any inventories discovered are passed through to kolla-ansible in the order
+# in which they are discovered i.e search paths placed later in the list have
+# precedence over the earlier ones.
+kolla_overcloud_inventory_search_paths: []
 
 # Custom overcloud inventory containing a mapping from top level groups to
 # hosts.

@@ -52,7 +52,8 @@ def add_args(parser):
                         help="specify inventory host path "
                              "(default=$%s/inventory or %s/inventory) for "
                              "Kolla Ansible" %
-                             (CONFIG_PATH_ENV, DEFAULT_CONFIG_PATH))
+                             (CONFIG_PATH_ENV, DEFAULT_CONFIG_PATH),
+                        action='append')
     parser.add_argument("-kl", "--kolla-limit", metavar="SUBSET",
                         help="further limit selected hosts to an additional "
                              "pattern")
@@ -70,13 +71,30 @@ def add_args(parser):
                              (VENV_PATH_ENV, DEFAULT_VENV_PATH))
 
 
-def _get_inventory_path(parsed_args, inventory_filename):
+def _get_inventory_paths(parsed_args, inventory_filename):
     """Return the path to the Kolla inventory."""
     if parsed_args.kolla_inventory:
         return parsed_args.kolla_inventory
     else:
-        return os.path.join(parsed_args.kolla_config_path, "inventory",
-                            inventory_filename)
+        paths = [os.path.join(parsed_args.kolla_config_path, "inventory",
+                              inventory_filename)]
+
+        def append_path(directory):
+            candidate_path = os.path.join(
+                parsed_args.kolla_config_path, "extra-inventories",
+                directory)
+            if utils.is_readable_dir(candidate_path)["result"]:
+                paths.append(candidate_path)
+
+        # Inventory in the base layer is placed in the "kayobe"
+        # directory. This means that you can't have an environment
+        # called kayobe as it would conflict.
+        append_path("kayobe")
+
+        if parsed_args.environment:
+            append_path(parsed_args.environment)
+
+        return paths
 
 
 def _validate_args(parsed_args, inventory_filename):
@@ -88,17 +106,18 @@ def _validate_args(parsed_args, inventory_filename):
                   parsed_args.kolla_config_path, result["message"])
         sys.exit(1)
 
-    inventory = _get_inventory_path(parsed_args, inventory_filename)
-    result = utils.is_readable_dir(inventory)
-    if not result["result"]:
-        # NOTE(mgoddard): Previously the inventory was a file, now it is a
-        # directory to allow us to support inventory host_vars. Support both
-        # formats for now.
-        result_f = utils.is_readable_file(inventory)
-        if not result_f["result"]:
-            LOG.error("Kolla inventory %s is invalid: %s",
-                      inventory, result["message"])
-            sys.exit(1)
+    inventories = _get_inventory_paths(parsed_args, inventory_filename)
+    for inventory in inventories:
+        result = utils.is_readable_dir(inventory)
+        if not result["result"]:
+            # NOTE(mgoddard): Previously the inventory was a file, now it is a
+            # directory to allow us to support inventory host_vars. Support
+            # both formats for now.
+            result_f = utils.is_readable_file(inventory)
+            if not result_f["result"]:
+                LOG.error("Kolla inventory %s is invalid: %s",
+                          inventory, result["message"])
+                sys.exit(1)
 
     result = utils.is_readable_dir(parsed_args.kolla_venv)
     if not result["result"]:
@@ -125,8 +144,9 @@ def build_args(parsed_args, command, inventory_filename, extra_vars=None,
     if parsed_args.kolla_playbook:
         cmd += ["--playbook", parsed_args.kolla_playbook]
     cmd += vault.build_args(parsed_args, "--key")
-    inventory = _get_inventory_path(parsed_args, inventory_filename)
-    cmd += ["--inventory", inventory]
+    inventories = _get_inventory_paths(parsed_args, inventory_filename)
+    for inventory in inventories:
+        cmd += ["--inventory", inventory]
     if parsed_args.kolla_config_path != DEFAULT_CONFIG_PATH:
         cmd += ["--configdir", parsed_args.kolla_config_path]
         cmd += ["--passwords",

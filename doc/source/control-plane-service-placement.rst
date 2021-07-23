@@ -210,6 +210,8 @@ providing the necessary variables for a control plane host.
 Here we are using the controller-specific values for some of these variables,
 but they could equally be different.
 
+.. _custom-kolla-inventory-templates:
+
 Example 2: Overriding the Kolla-ansible Inventory
 -------------------------------------------------
 

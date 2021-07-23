@@ -1,3 +1,5 @@
+.. _multiple-environments:
+
 =====================
 Multiple Environments
 =====================
@@ -64,6 +66,12 @@ Kayobe configuration.
            ├── networks.yml
            └── overcloud.yml
 
+Naming
+------
+
+The environment name ``kayobe`` is reserved for internal use. The name should
+be a valid directory name, otherwise there are no other restrictions.
+
 Ansible Inventories
 -------------------
 
@@ -90,6 +98,22 @@ files) shows an example of multiple inventories.
    └── inventory/
        ├── groups
        └── group_vars/
+
+Custom Kolla Ansible inventories
+--------------------------------
+
+Kayobe has a :ref:`feature <custom_kolla_inventory>` to pass through
+additional inventories to Kolla Ansible. When using multiple environments,
+these are passed though as additional inventories to Ansible. The ordering is
+such that the inventory in the base layer of kayobe config overrides the
+internal kayobe inventory, and inventory in the environment overrides inventory
+in the base layer:
+
+.. code-block:: bash
+
+   ansible-playbook -i <internal kayobe inventory> -i <inventory from base layer> -i <inventory from environment>
+
+See :ref:`custom_kolla_inventory` for more details.
 
 Shared Extra Variables Files
 ----------------------------

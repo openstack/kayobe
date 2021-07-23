@@ -37,7 +37,7 @@
   with_items:
     - "{{ kolla_config_path }}"
     - "{{ kolla_seed_inventory_path }}"
-    - "{{ kolla_overcloud_inventory_path }}/group_vars"
+    - "{{ kolla_overcloud_inventory_path }}"
     - "{{ kolla_node_custom_config_path }}"
 
 - name: Write environment file into Kolla configuration path
@@ -65,16 +65,52 @@
     dest: "{{ kolla_overcloud_inventory_path }}/hosts"
     mode: 0640
 
-- name: Look for custom Kolla overcloud group vars
-  stat:
-    path: "{{ kolla_overcloud_group_vars_path }}"
-  register: kolla_ansible_custom_overcloud_group_vars
+- name: Make sure extra-inventories directory exists
+  file:
+    path: "{{ kolla_extra_inventories_path }}"
+    mode: "0750"
+    state: directory
 
-- name: Copy over custom Kolla overcloud group vars
-  copy:
-    src: "{{ kolla_overcloud_group_vars_path }}"
-    dest: "{{ kolla_overcloud_inventory_path }}/"
-  when: kolla_ansible_custom_overcloud_group_vars.stat.exists
+- name: Copying custom inventory
+  vars:
+    # This will be the environment name in the case of a kayobe environment
+    inventory_name: "{{ (item  ~ '/../..') | realpath | basename }}"
+  synchronize:
+    dest: "{{ kolla_extra_inventories_path }}/{{ inventory_name }}"
+    recursive: true
+    delete: true
+    src: "{{ item }}/"
+    rsync_opts:
+      - --exclude=kayobe_blank_hosts
+      - --exclude=*.j2
+  loop: "{{ kolla_overcloud_inventory_search_paths | product(['/kolla/inventory']) | map('join') | select('exists') | unique | list }}"
+  loop_control:
+    label: "{{ inventory_name }}"
+
+- name: Create blank hosts file to prevent ansible warning
+  # Silence a benign warning: Unable to parse
+  # <kolla-config-path>/extra-inventories/level2/inventory as an inventory source
+  # When no hosts are defined. This occurs when you only define group_vars.
+  vars:
+    inventory_name: "{{ (item  ~ '/../..') | realpath | basename }}"
+  file:
+    path: "{{ kolla_extra_inventories_path }}/{{ inventory_name }}/kayobe_blank_hosts"
+    state: touch
+    modification_time: preserve
+    access_time: preserve
+  loop: "{{ kolla_overcloud_inventory_search_paths | product(['/kolla/inventory']) | map('join') | select('exists') | unique | list }}"
+  loop_control:
+    label: "{{ inventory_name }}"
+
+- name: Clean up inventories that no longer exist
+  vars:
+    inventory_name: "{{ (item  ~ '/../..') | realpath | basename }}"
+  file:
+    path: "{{ kolla_extra_inventories_path }}/{{ inventory_name }}"
+    state: absent
+  loop: "{{ kolla_overcloud_inventory_search_paths | product(['/kolla/inventory']) | map('join') | reject('exists') | unique | list }}"
+  loop_control:
+    label: "{{ inventory_name }}"
 
 - name: Ensure the Kolla passwords file exists
   vars:

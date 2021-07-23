@@ -241,6 +241,40 @@ class TestCase(unittest.TestCase):
         mock_readable.assert_called_once_with("/etc/kayobe/kolla/ansible.cfg")
 
     @mock.patch.object(utils, "run_command")
+    @mock.patch.object(utils, "is_readable_dir")
+    @mock.patch.object(utils, "is_readable_file")
+    @mock.patch.object(kolla_ansible, "_validate_args")
+    def test_run_environment_inventories(self, mock_validate, mock_readable,
+                                         mock_readable_dir, mock_run):
+        mock_readable.return_value = {"result": True}
+        mock_readable_dir.return_value = {"result": True}
+        parser = argparse.ArgumentParser()
+        ansible.add_args(parser)
+        kolla_ansible.add_args(parser)
+        vault.add_args(parser)
+        args = [
+            "--environment", "myenv",
+        ]
+        parsed_args = parser.parse_args(args)
+        kolla_ansible.run(parsed_args, "command", "overcloud")
+        expected_cmd = [
+            ".", "/path/to/cwd/venvs/kolla-ansible/bin/activate", "&&",
+            "kolla-ansible", "command",
+            "--inventory", "/etc/kolla/inventory/overcloud",
+            "--inventory", "/etc/kolla/extra-inventories/kayobe",
+            "--inventory", '/etc/kolla/extra-inventories/myenv'
+        ]
+        expected_cmd = " ".join(expected_cmd)
+        mock_run.assert_called_once_with(expected_cmd, shell=True, quiet=False,
+                                         env=mock.ANY)
+        mock_readable_dir.assert_any_call(
+            "/etc/kolla/extra-inventories/kayobe"
+        )
+        mock_readable_dir.assert_any_call(
+            "/etc/kolla/extra-inventories/myenv"
+        )
+
+    @mock.patch.object(utils, "run_command")
     @mock.patch.object(utils, "is_readable_file")
     @mock.patch.object(kolla_ansible, "_validate_args")
     def test_run_custom_ansible_cfg_2(self, mock_validate, mock_readable,
