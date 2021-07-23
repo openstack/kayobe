@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Adds a experimental support for layering multiple environments using a
+    .kayobe-environment file.
