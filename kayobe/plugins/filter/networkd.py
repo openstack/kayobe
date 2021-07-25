@@ -176,13 +176,11 @@ def _veth_netdev(context, veth, inventory_hostname):
     """
     interface = veth['name']
     peer = veth['peer']
-    mtu = veth['mtu']
     config = [
         {
             'NetDev': [
                 {'Name': interface},
                 {'Kind': 'veth'},
-                {'MTUBytes': mtu},
             ],
         },
         {
@@ -425,6 +423,7 @@ def _veth_network(context, veth, inventory_hostname):
     """
     interface = veth['name']
     bridge = veth['bridge']
+    mtu = veth['mtu']
     config = [
         {
             'Match': [
@@ -434,6 +433,11 @@ def _veth_network(context, veth, inventory_hostname):
         {
             'Network': [
                 {'Bridge': bridge},
+            ]
+        },
+        {
+            'Link': [
+                {'MTUBytes': mtu},
             ]
         }
     ]
@@ -448,6 +452,7 @@ def _veth_peer_network(context, veth, inventory_hostname):
     :param inventory_hostname: Ansible inventory hostname.
     """
     interface = veth['peer']
+    mtu = veth['mtu']
     config = [
         {
             'Match': [
@@ -458,6 +463,11 @@ def _veth_peer_network(context, veth, inventory_hostname):
             'Network': [
                 # NOTE(mgoddard): bring the interface up, even without an IP.
                 {'ConfigureWithoutCarrier': 'true'},
+            ]
+        },
+        {
+            'Link': [
+                {'MTUBytes': mtu},
             ]
         }
     ]

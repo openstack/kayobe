@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an issue with systemd-networkd MTU mismatch in veth pair on Ubuntu.
+    See `story 2009072 <https://storyboard.openstack.org/#!/story/2009072>`__
+    for details.

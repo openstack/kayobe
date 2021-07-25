@@ -235,37 +235,6 @@ class TestNetworkdNetDevs(BaseNetworkdTest):
         }
         self.assertEqual(expected, devs)
 
-    def test_veth_with_mtu(self):
-        self._update_context({"external_net_names": ["net3"],
-                              "net3_mtu": 1400})
-        devs = networkd.networkd_netdevs(self.context, ["net3"])
-        expected = {
-            "50-kayobe-br0": [
-                {
-                    "NetDev": [
-                        {"Name": "br0"},
-                        {"Kind": "bridge"},
-                        {"MTUBytes": 1400},
-                    ]
-                },
-            ],
-            "50-kayobe-p-br0-phy": [
-                {
-                    "NetDev": [
-                        {"Name": "p-br0-phy"},
-                        {"Kind": "veth"},
-                        {"MTUBytes": 1400},
-                    ]
-                },
-                {
-                    "Peer": [
-                        {"Name": "p-br0-ovs"},
-                    ]
-                },
-            ]
-        }
-        self.assertEqual(expected, devs)
-
     def test_veth_no_interface(self):
         self._update_context({"external_net_names": ["net3"],
                               "net3_interface": None})
@@ -864,6 +833,61 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                 {
                     "Network": [
                         {"ConfigureWithoutCarrier": "true"},
+                    ]
+                },
+            ],
+        }
+        self.assertEqual(expected, nets)
+
+    def test_veth_with_mtu(self):
+        self._update_context({"external_net_names": ["net3"],
+                              "net3_bridge_ports": [],
+                              "net3_mtu": 1400})
+        nets = networkd.networkd_networks(self.context, ["net3"])
+        expected = {
+            "50-kayobe-br0": [
+                {
+                    "Match": [
+                        {"Name": "br0"}
+                    ]
+                },
+                {
+                    "Link": [
+                        {"MTUBytes": 1400},
+                    ]
+                },
+            ],
+            "50-kayobe-p-br0-phy": [
+                {
+                    "Match": [
+                        {"Name": "p-br0-phy"}
+                    ]
+                },
+                {
+                    "Network": [
+                        {"Bridge": "br0"},
+                    ]
+                },
+                {
+                    "Link": [
+                        {"MTUBytes": 1400},
+                    ]
+                },
+            ],
+            "50-kayobe-p-br0-ovs": [
+                {
+                    "Match": [
+                        {"Name": "p-br0-ovs"}
+                    ]
+                },
+                {
+                    "Network": [
+                        {"ConfigureWithoutCarrier": "true"},
+                    ]
+                },
+                {
+                    "Link": [
+                        {"MTUBytes": 1400},
                     ]
                 },
             ],
