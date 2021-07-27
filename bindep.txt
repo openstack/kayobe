@@ -1,2 +1,5 @@
 libpcre3-dev [platform:dpkg test]
 pcre-devel [platform:rpm test]
+
+# PDF Docs package dependencies
+tex-gyre [platform:dpkg doc]
