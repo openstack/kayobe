@@ -3,7 +3,7 @@
   yum_repository:
     name: "{{ item.key }}"
     description: "{% if 'description' in item.value %}{{ item.value.description }}{% else %}{{ item.key }} repository{% endif %}"
-    baseurl: "{{ item.value.baseurl }}"
+    baseurl: "{{ item.value.baseurl | default(omit)}}"
     file: "{{ item.value.file | default(omit)}}"
     gpgkey: "{{ item.value.gpgkey | default(omit)}}"
     gpgcheck: "{{ item.value.gpgcheck | default(omit)}}"
@@ -11,6 +11,7 @@
     enabled: "{{ item.value.enabled | default(omit)}}"
     gpgcakey: "{{ item.value.gpgcakey | default(omit)}}"
     metadata_expire: "{{ item.value.metadata_expire | default(omit)}}"
+    metalink: "{{ item.value.metalink | default(omit)}}"
     mirrorlist: "{{ item.value.mirrorlist | default(omit)}}"
     mirrorlist_expire: "{{ item.value.mirrorlist_expire | default(omit)}}"
     priority: "{{ item.value.priority | default(omit)}}"

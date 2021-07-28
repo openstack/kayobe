@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Adds support for the ``metalink`` option in custom DNF repositories
+    configured with ``dnf_custom_repos`` in ``dnf.yml``.
