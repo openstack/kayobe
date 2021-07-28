@@ -11,3 +11,4 @@
         source_ip: "{{ ansible_facts.default_ipv4.address }}"
   roles:
     - role: snat
+      when: seed_enable_snat | bool

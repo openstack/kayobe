@@ -7,3 +7,4 @@
     - ip-routing
   roles:
     - role: ip-routing
+      when: seed_enable_snat | bool
