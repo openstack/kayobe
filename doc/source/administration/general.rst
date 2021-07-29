@@ -71,3 +71,8 @@ Note that this will run on the seed, seed hypervisor, and overcloud hosts. If
 any of these hosts are not expected to be active (e.g. prior to overcloud
 deployment), the set of target hosts may be limited using the ``--limit``
 argument.
+
+These checks will attempt to ping the external IP address ``8.8.8.8`` and
+external hostname ``google.com``. They can be configured with the
+``nc_external_ip`` and ``nc_external_hostname`` variables in
+``$KAYOBE_CONFIG_PATH/networks.yml``.
