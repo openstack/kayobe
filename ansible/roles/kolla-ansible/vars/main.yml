@@ -86,7 +86,6 @@ kolla_feature_flags:
   - cinder_backend_lvm
   - cinder_backend_nfs
   - cinder_backend_quobyte
-  - cinder_backend_zfssa_iscsi
   - cinder_backup
   - cinder_horizon_policy_file
   - cloudkitty
