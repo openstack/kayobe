@@ -1,6 +1,5 @@
 ---
-
-- name: Populate service facts.
+- name: Populate service facts
   service_facts:
 
 - name: Mask alternative NTP clients to prevent conflicts
