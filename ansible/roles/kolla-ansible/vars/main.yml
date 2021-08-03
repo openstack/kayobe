@@ -74,8 +74,8 @@ kolla_feature_flags:
   - aodh
   - barbican
   - blazar
-  - cadf_notifications
   - ceilometer
+  - ceilometer_horizon_policy_file
   - ceilometer_ipmi
   - cells
   - central_logging
@@ -86,22 +86,30 @@ kolla_feature_flags:
   - cinder_backend_lvm
   - cinder_backend_nfs
   - cinder_backend_quobyte
-  - cinder_backend_zfssa_iscsi
   - cinder_backup
+  - cinder_horizon_policy_file
   - cloudkitty
   - collectd
+  - container_healthchecks
   - cyborg
   - designate
   - destroy_images
   - elasticsearch
+  - elasticsearch_curator
   - etcd
+  - external_mariadb_load_balancer
   - fluentd
   - freezer
   - glance
+  - glance_horizon_policy_file
+  - glance_image_cache
   - gnocchi
+  - gnocchi_statsd
   - grafana
   - haproxy
+  - haproxy_memcached
   - heat
+  - heat_horizon_policy_file
   - horizon
   - horizon_blazar
   - horizon_cloudkitty
@@ -114,6 +122,7 @@ kolla_feature_flags:
   - horizon_manila
   - horizon_masakari
   - horizon_mistral
+  - horizon_monasca
   - horizon_murano
   - horizon_neutron_vpnaas
   - horizon_octavia
@@ -127,7 +136,6 @@ kolla_feature_flags:
   - horizon_vitrage
   - horizon_watcher
   - horizon_zun
-  - hyperv
   - influxdb
   - ironic
   - ironic_ipxe
@@ -138,6 +146,7 @@ kolla_feature_flags:
   - karbor
   - keepalived
   - keystone
+  - keystone_horizon_policy_file
   - kibana
   - kuryr
   - magnum
@@ -158,6 +167,7 @@ kolla_feature_flags:
   - neutron_agent_ha
   - neutron_bgp_dragent
   - neutron_dvr
+  - neutron_horizon_policy_file
   - neutron_infoblox_ipam_agent
   - neutron_metering
   - neutron_mlnx
@@ -167,20 +177,36 @@ kolla_feature_flags:
   - neutron_segments
   - neutron_sfc
   - neutron_sriov
+  - neutron_trunk
   - neutron_vpnaas
   - nova
+  - nova_fake
+  - nova_horizon_policy_file
   - nova_serialconsole_proxy
   - nova_ssh
   - octavia
-  - onos
+  - octavia_driver_agent
   - openstack_core
   - openvswitch
   - osprofiler
   - outward_rabbitmq
+  - ovn
   - ovs_dpdk
   - panko
   - placement
   - prometheus
+  - prometheus_alertmanager
+  - prometheus_blackbox_exporter
+  - prometheus_cadvisor
+  - prometheus_ceph_mgr_exporter
+  - prometheus_elasticsearch_exporter
+  - prometheus_haproxy_exporter
+  - prometheus_memcached_exporter
+  - prometheus_mysqld_exporter
+  - prometheus_node_exporter
+  - prometheus_openstack_exporter
+  - prometheus_rabbitmq_exporter
+  - prometheus_server
   - qdrouterd
   - qinling
   - rabbitmq
@@ -193,6 +219,7 @@ kolla_feature_flags:
   - solum
   - storm
   - swift
+  - swift_recon
   - swift_s3api
   - tacker
   - telegraf
@@ -200,6 +227,7 @@ kolla_feature_flags:
   - trove
   - trove_singletenant
   - vitrage
+  - vitrage_prometheus_datasource
   - vmtp
   - watcher
   - zookeeper
