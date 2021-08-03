@@ -265,7 +265,6 @@
 #kolla_enable_cinder_backend_lvm:
 #kolla_enable_cinder_backend_nfs:
 #kolla_enable_cinder_backend_quobyte:
-#kolla_enable_cinder_backend_zfssa_iscsi:
 #kolla_enable_cinder_backup:
 #kolla_enable_cinder_horizon_policy_file:
 #kolla_enable_cloudkitty:
