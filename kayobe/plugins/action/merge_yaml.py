@@ -86,7 +86,7 @@ class ActionModule(action.ActionBase):
     def read_config(self, source):
         result = None
         # Only use config if present
-        if os.access(source, os.R_OK):
+        if source and os.access(source, os.R_OK):
             with open(source, 'r') as f:
                 template_data = f.read()
 

@@ -1,23 +1,12 @@
 ---
-- name: Check whether a Kolla build extra configuration file exists
-  local_action:
-    module: stat
-    path: "{{ kolla_build_extra_config_path }}"
-    get_checksum: False
-    get_md5: False
-    mime: False
-  register: stat_result
-
-- name: Set a fact containing extra configuration
-  set_fact:
-    kolla_build_extra_config: "{{ lookup('template', kolla_build_extra_config_path) }}"
-  when: stat_result.stat.exists
-
-- name: Ensure the Kolla build configuration files exist
-  template:
-    src: "{{ item.src }}"
-    dest: "{{ kolla_build_config_path }}/{{ item.dest }}"
+- name: Ensure the Kolla build configuration file exists
+  merge_configs:
+    sources: "{{ kolla_build_config_paths | product(['/kolla/kolla-build.conf']) | map('join') | list }}"
+    dest: "{{ kolla_build_config_path }}/kolla-build.conf"
     mode: 0644
-  with_items:
-    - { src: kolla-build.conf.j2, dest: kolla-build.conf }
-    - { src: template-override.j2.j2, dest: template-override.j2 }
+
+- name: Ensure the Kolla build template overrides file exists
+  template:
+    src: template-override.j2.j2
+    dest: "{{ kolla_build_config_path }}/template-override.j2"
+    mode: 0644

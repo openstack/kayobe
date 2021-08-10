@@ -1,0 +1,22 @@
+---
+features:
+  - |
+    Adds support for merging the following configuration files from the
+    environment-specific directory (``etc/kayobe/environments/<environment>``)
+    and the base directory (``etc/kayobe``).
+
+    * ``kolla/config/bifrost/bifrost.yml``
+    * ``kolla/config/bifrost/dib.yml``
+    * ``kolla/config/bifrost/servers.yml``
+    * ``kolla/globals.yml``
+    * ``kolla/kolla-build.conf``
+
+    See `story 2002009 <https://storyboard.openstack.org/#!/story/2002009>`__
+    for details.
+deprecations:
+  - |
+    The following variables are deprecated, in favour of using configuration
+    files ``kolla/globals.yml`` and ``kolla/kolla-build.conf`` respectively.
+
+    * ``kolla_extra_globals``
+    * ``kolla_bifrost_extra_globals``

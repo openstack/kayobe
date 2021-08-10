@@ -3,23 +3,6 @@
   hosts: localhost
   tags:
     - kolla-bifrost
-  vars:
-    kolla_bifrost_extra_globals_path: "{{ kayobe_env_config_path ~ '/kolla/config/bifrost/bifrost.yml' }}"
-
-  pre_tasks:
-    - name: Check whether a Kolla Bifrost extra globals configuration file exists
-      stat:
-        path: "{{ kolla_bifrost_extra_globals_path }}"
-        get_checksum: False
-        get_md5: False
-        mime: False
-      register: globals_stat
-
-    - name: Read the Kolla Bifrost extra globals configuration file
-      set_fact:
-        kolla_bifrost_extra_globals: "{{ lookup('template', kolla_bifrost_extra_globals_path) | from_yaml }}"
-      when: globals_stat.stat.exists
-
   roles:
     - role: kolla-bifrost
 
@@ -30,3 +13,6 @@
       kolla_bifrost_dnsmasq_dns_servers: "{{ resolv_nameservers | default([]) }}"
       kolla_bifrost_domain: "{{ resolv_domain | default }}"
       kolla_bifrost_download_ipa: "{{ not ipa_build_images | bool }}"
+      kolla_bifrost_config_paths_extra:
+        - "{{ kayobe_config_path }}"
+        - "{{ kayobe_env_config_path }}"

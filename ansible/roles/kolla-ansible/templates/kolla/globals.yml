@@ -1,6 +1,4 @@
 ---
-# {{ ansible_managed }}
-
 # You can use this file to override _any_ variable throughout Kolla.
 # Additional options can be found in the
 # 'kolla-ansible/ansible/group_vars/all.yml' file. Default value of all the
