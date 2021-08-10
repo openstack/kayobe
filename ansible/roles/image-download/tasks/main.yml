@@ -1,4 +1,9 @@
 ---
+- name: Ensure destination directory exists
+  file:
+    state: directory
+    path: "{{ image_download_dest | dirname }}"
+
 - block:
     - block:
         - name: Fail if the checksum algorithm is not set

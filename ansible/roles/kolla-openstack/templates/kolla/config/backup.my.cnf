@@ -1,9 +1,7 @@
-# {{ ansible_managed }}
-
-{% if kolla_extra_manila %}
+{% if kolla_extra_mariabackup %}
 #######################
 # Extra configuration
 #######################
 
-{{ kolla_extra_manila }}
+{{ kolla_extra_mariabackup }}
 {% endif %}

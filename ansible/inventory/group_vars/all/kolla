@@ -572,6 +572,16 @@ kolla_enable_watcher: "no"
 kolla_enable_zun: "no"
 
 ###############################################################################
+# Kolla custom config generation.
+
+# Feature flag to add $KAYOBE_CONFIG_PATH to the list of search paths used
+# when searching for Kolla custom service configuration. Only has an effect in
+# a multiple environments setup. This allows you to configure merging between
+# your environment and the base layer. Defaults to true. Set to false for
+# backwards compatibility.
+kolla_openstack_custom_config_environment_merging_enabled: true
+
+###############################################################################
 # Passwords and credentials.
 
 # Dictionary containing base custom passwords to add or override in the

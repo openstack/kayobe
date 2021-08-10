@@ -25,3 +25,8 @@
       until: docker_jobs.finished
       retries: 300
       with_items: "{{ server.results }}"
+
+    - name: Clean up temporary path
+      file:
+        path: "{{ lookup('env', 'MOLECULE_TEMP_PATH') | default('/tmp/molecule', true) }}"
+        state: absent

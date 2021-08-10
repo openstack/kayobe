@@ -15,7 +15,16 @@ provisioner:
   inventory:
     group_vars:
       all:
-        kolla_extra_config_path: ${MOLECULE_TEMP_PATH:-/tmp}/molecule/kolla/config
+        kolla_extra_config_path: ${MOLECULE_TEMP_PATH:-/tmp/molecule}/kolla/config
+        kolla_openstack_custom_config_paths_extra:
+          - "{{ kolla_extra_config_path }}/../.."
+        kolla_openstack_custom_config_rules_extra:
+          - glob: aodh/dummy.yml
+            strategy: merge_yaml
+            priority: 1000
+          - glob: aodh/dummy.ini
+            strategy: merge_configs
+            priority: 1000
         kolla_enable_aodh: true
         kolla_extra_aodh: |
           [extra-aodh.conf]
@@ -44,6 +53,7 @@ provisioner:
         kolla_extra_designate: |
           [extra-designate.conf]
           foo=bar
+        kolla_enable_fluentd: true
         kolla_enable_glance: true
         kolla_extra_glance: |
           [extra-glance.conf]
@@ -72,8 +82,9 @@ provisioner:
         kolla_extra_inspector: |
           [extra-ironic-inspector.conf]
           foo=bar
-        kolla_inspector_ipa_kernel_path: ${MOLECULE_TEMP_PATH:-/tmp}/ironic-agent.kernel
-        kolla_inspector_ipa_ramdisk_path: ${MOLECULE_TEMP_PATH:-/tmp}/ironic-agent.initramfs
+        kolla_inspector_ipa_kernel_path: ${MOLECULE_TEMP_PATH:-/tmp/molecule}/ironic-agent.kernel
+        kolla_inspector_ipa_ramdisk_path: ${MOLECULE_TEMP_PATH:-/tmp/molecule}/ironic-agent.initramfs
+        kolla_enable_keepalived: true
         kolla_enable_keystone: true
         kolla_extra_keystone: |
           [extra-keystone.conf]
@@ -119,7 +130,7 @@ provisioner:
           [extra-nova.conf]
           foo=bar
         kolla_libvirt_tls: true
-        kolla_nova_libvirt_certificates_src: ${MOLECULE_TEMP_PATH:-/tmp}/molecule/nova-libvirt/certificates
+        kolla_nova_libvirt_certificates_src: ${MOLECULE_TEMP_PATH:-/tmp/molecule}/nova-libvirt/certificates
         kolla_enable_octavia: true
         kolla_extra_octavia: |
           [extra-octavia.conf]
