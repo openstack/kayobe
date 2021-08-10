@@ -1,6 +1,19 @@
 ---
-# Path to extra kolla-ansible configuration files.
-kolla_extra_config_path:
+# Ordered list of paths to default kolla-ansible configuration files. Least
+# specific first. Default is search the role templates in
+# templates/kolla/config.
+kolla_openstack_custom_config_paths_default:
+  - "{{ role_path }}/templates"
+
+# Ordered list of paths to extra kolla-ansible configuration files. Least
+# specific first. Default is an empty list.
+kolla_openstack_custom_config_paths_extra: []
+
+# Ordered list of paths to kolla-ansible configuration files. Least specific
+# first. Default is a combination of
+# kolla_openstack_custom_config_paths_default and
+# kolla_openstack_custom_config_paths_extra.
+kolla_openstack_custom_config_paths: "{{ kolla_openstack_custom_config_paths_default + kolla_openstack_custom_config_paths_extra }}"
 
 # Directory where Kolla custom configuration files will be installed.
 kolla_node_custom_config_path: /etc/kolla/config
@@ -8,15 +21,307 @@ kolla_node_custom_config_path: /etc/kolla/config
 ###############################################################################
 # Global configuration.
 
+# Deprecated:
 # Free form extra configuration to append to global.conf.
 kolla_extra_global:
+
+###############################################################################
+# Kolla custom config generation.
+
+# Default value for kolla_openstack_custom_config_include_globs.
+kolla_openstack_custom_config_include_globs_default:
+  - enabled: '{{ kolla_enable_aodh | bool }}'
+    glob: aodh.conf
+  - enabled: '{{ kolla_enable_aodh | bool }}'
+    glob: aodh/**
+  - enabled: '{{ kolla_enable_barbican | bool }}'
+    glob: barbican.conf
+  - enabled: '{{ kolla_enable_barbican | bool }}'
+    glob: barbican/**
+  - enabled: '{{ kolla_enable_barbican | bool }}'
+    glob: barbican-api/**
+  - enabled: '{{ kolla_enable_blazar | bool }}'
+    glob: blazar.conf
+  - enabled: '{{ kolla_enable_blazar | bool }}'
+    glob: blazar/**
+  - enabled: '{{ kolla_enable_ceilometer | bool }}'
+    glob: ceilometer.conf
+  - enabled: '{{ kolla_enable_ceilometer | bool }}'
+    glob: ceilometer/**
+  - enabled: '{{ kolla_enable_cinder | bool }}'
+    glob: cinder.conf
+  - enabled: '{{ kolla_enable_cinder | bool }}'
+    glob: nfs_shares
+  - enabled: '{{ kolla_enable_cinder | bool }}'
+    glob: cinder/**
+  - enabled: '{{ kolla_enable_cloudkitty | bool }}'
+    glob: cloudkitty.conf
+  - enabled: '{{ kolla_enable_cloudkitty | bool }}'
+    glob: cloudkitty/**
+  - enabled: '{{ kolla_enable_designate | bool }}'
+    glob: designate.conf
+  - enabled: '{{ kolla_enable_designate | bool }}'
+    glob: designate/**
+  - enabled: '{{ kolla_enable_fluentd | bool }}'
+    glob: fluentd/**/*.conf
+  - enabled: '{{ kolla_enable_mariadb | bool }}'
+    glob: galera.cnf
+  - enabled: '{{ kolla_enable_glance | bool }}'
+    glob: glance*.conf
+  - enabled: '{{ kolla_enable_glance | bool }}'
+    glob: glance/**
+  - enabled: true
+    glob: global.conf
+  - enabled: '{{ kolla_enable_gnocchi | bool }}'
+    glob: gnocchi.conf
+  - enabled: '{{ kolla_enable_gnocchi | bool }}'
+    glob: gnocchi/**
+  - enabled: '{{ kolla_enable_grafana | bool }}'
+    glob: grafana.ini
+  - enabled: '{{ kolla_enable_grafana | bool }}'
+    glob: grafana/**
+  - enabled: '{{ kolla_enable_haproxy | bool }}'
+    glob: haproxy-config/**
+  - enabled: '{{ kolla_enable_haproxy | bool }}'
+    glob: haproxy/**
+  - enabled: '{{ kolla_enable_heat | bool }}'
+    glob: heat.conf
+  - enabled: '{{ kolla_enable_heat | bool }}'
+    glob: heat/**
+  - enabled: '{{ kolla_enable_horizon | bool }}'
+    glob: horizon/**
+  - enabled: '{{ kolla_enable_influxdb | bool }}'
+    glob: influx*
+  - enabled: '{{ kolla_enable_ironic | bool }}'
+    glob: ironic-inspector.conf
+  - enabled: '{{ kolla_enable_ironic | bool }}'
+    glob: ironic.conf
+  - enabled: '{{ kolla_enable_ironic | bool }}'
+    glob: ironic/**
+  - enabled: '{{ kolla_enable_keepalived | bool }}'
+    glob: keepalived/**
+  - enabled: '{{ kolla_enable_keystone | bool }}'
+    glob: keystone.conf
+  - enabled: '{{ kolla_enable_keystone | bool }}'
+    glob: keystone/**
+  - enabled: true
+    glob: kolla-toolbox/**
+  - enabled: '{{ kolla_enable_magnum | bool }}'
+    glob: magnum.conf
+  - enabled: '{{ kolla_enable_magnum | bool }}'
+    glob: magnum/**
+  - enabled: '{{ kolla_enable_manila | bool }}'
+    glob: manila.conf
+  - enabled: '{{ kolla_enable_manila | bool }}'
+    glob: manila/**
+  - enabled: '{{ kolla_enable_mariadb | bool }}'
+    glob: backup.my.cnf
+  - enabled: '{{ kolla_enable_mariadb | bool }}'
+    glob: mariadb/**
+  - enabled: '{{ kolla_enable_masakari | bool }}'
+    glob: masakari.conf
+  - enabled: '{{ kolla_enable_masakari | bool }}'
+    glob: masakari/**
+  - enabled: '{{ kolla_enable_multipathd | bool }}'
+    glob: multipath.conf
+  - enabled: '{{ kolla_enable_multipathd | bool }}'
+    glob: multipath/**
+  - enabled: '{{ kolla_enable_murano | bool }}'
+    glob: murano.conf
+  - enabled: '{{ kolla_enable_murano | bool }}'
+    glob: murano/**
+  - enabled: '{{ kolla_enable_neutron | bool }}'
+    glob: neutron.conf
+  - enabled: '{{ kolla_enable_neutron | bool }}'
+    glob: neutron/**
+  - enabled: '{{ kolla_enable_nova | bool }}'
+    glob: nova.conf
+  - enabled: '{{ kolla_enable_nova | bool }}'
+    glob: nova/**
+  - enabled: '{{ kolla_enable_nova | bool }}'
+    glob: nova_compute/**
+  - enabled: '{{ kolla_enable_octavia | bool  }}'
+    glob: octavia.conf
+  - enabled: '{{ kolla_enable_octavia | bool }}'
+    glob: octavia/**
+  - enabled: '{{ kolla_enable_opensearch | bool }}'
+    glob: opensearch.yml
+  - enabled: '{{ kolla_enable_opensearch | bool }}'
+    glob: opensearch/**
+  - enabled: '{{ kolla_enable_placement | bool }}'
+    glob: placement.conf
+  - enabled: '{{ kolla_enable_placement | bool }}'
+    glob: placement/**
+  - enabled: '{{ kolla_enable_prometheus | bool }}'
+    glob: prometheus/**
+  - enabled: '{{ kolla_enable_sahara | bool }}'
+    glob: sahara.conf
+  - enabled: '{{ kolla_enable_sahara | bool }}'
+    glob: sahara/**
+  - enabled: '{{ kolla_enable_swift | bool }}'
+    glob: swift/**
+
+# Extra items to add to kolla_openstack_custom_config_include_globs_default
+# to produce kolla_openstack_custom_config_include_globs.
+kolla_openstack_custom_config_include_globs_extra: []
+
+# List of dictionaries with the following keys:
+#   glob: a glob pattern. Any files matching this pattern will be copied to the
+#         the kolla custom config directory
+#   enabled: boolean to disable the glob.
+# This determines the list of files to copy to the generated kolla config
+# directory.
+kolla_openstack_custom_config_include_globs: "{{
+  kolla_openstack_custom_config_include_globs_default +
+  kolla_openstack_custom_config_include_globs_extra }}"
+
+# Kolla config generation rules. These operate on the list of files produced by
+# applying kolla_openstack_custom_config_include_globs. Each of the paths in
+# kolla_openstack_custom_config_paths is searched for files matching one of the
+# globs. If a match is found, any files with the same relative path are grouped
+# together. The rules determine what to do with these matching files e.g copy
+# the most specific file without templating, merge the files with
+# merge_configs, etc.
+# List of dictionaries with the following keys:
+#   glob: A glob matching files for this rule to match on (relative to the
+#     search path)
+#   priority: The rules are processed in increasing priority order with the
+#     first rule matching taking effect.
+#   strategy: How to process the matched file. One of copy, concat, template,
+#      merge_configs, merge_yaml
+#   params: List of params to pass to module enacting the strategy
+# Strategies:
+#   copy: Copy most specific file to kolla config without templating
+#   template: Template most specific file to kolla config
+#   concat: Concatenate files and copy the result to generated kolla config
+#   merge_configs: Use the merge_configs module to merge an ini file, before
+#     copying to the generated kolla-config.
+#   merge_yaml: Use the merge_yaml module to merge a file, before copying to
+#     the generated kolla-config.
+kolla_openstack_custom_config_rules: "{{ kolla_openstack_custom_config_rules_default | rejectattr('glob', 'in', kolla_openstack_custom_config_rules_default_remove) + kolla_openstack_custom_config_rules_extra }}"
+
+# Whether to enable ini merging rules in
+# kolla_openstack_custom_config_rules_default. Default is true.
+kolla_openstack_custom_config_merge_configs_enabled: true
+
+# Whether to enable yaml merging rules in
+# kolla_openstack_custom_config_rules_default. Default is true.
+kolla_openstack_custom_config_merge_yaml_enabled: true
+
+# Default merge strategy for ini files in
+# kolla_openstack_custom_config_rules_default. Default is concat.
+kolla_openstack_custom_config_ini_merge_strategy_default: concat
+
+# Default value for kolla_openstack_custom_config_rules.
+kolla_openstack_custom_config_rules_default:
+  - glob: horizon/themes/**
+    strategy: copy
+    priority: 1000
+  - glob: ironic/ironic-agent.initramfs
+    strategy: copy
+    priority: 1000
+  - glob: ironic/ironic-agent.kernel
+    strategy: copy
+    priority: 1000
+  - glob: swift/*.builder
+    strategy: copy
+    priority: 1000
+  - glob: swift/*.ring.gz
+    strategy: copy
+    priority: 1000
+  - glob: '**/*.pem'
+    strategy: copy
+    priority: 1000
+  # Exceptions for *.conf files which are not INI format
+  - glob: "**/collectd.conf"
+    strategy: template
+    priority: 1000
+  - glob: designate/**/named.conf
+    strategy: template
+    priority: 1000
+  - glob: designate/**/rndc.conf
+    strategy: template
+    priority: 1000
+  - glob: "**/dnsmasq.conf"
+    strategy: template
+    priority: 1000
+  - glob: fluentd/**/*.conf
+    strategy: template
+    priority: 1000
+  - glob: hacluster-corosync/**/corosync.conf
+    strategy: template
+    priority: 1000
+  - glob: horizon/**/horizon.conf
+    strategy: template
+    priority: 1000
+  - glob: "**/*httpd.conf"
+    strategy: template
+    priority: 1000
+  - glob: "**/influxdb.conf"
+    strategy: template
+    priority: 1000
+  - glob: "**/keepalived.conf"
+    strategy: template
+    priority: 1000
+  - glob: "**/multipath.conf"
+    strategy: template
+    priority: 1000
+  - glob: "**/rabbitmq*.conf"
+    strategy: template
+    priority: 1000
+  - glob: "**/*wsgi*.conf"
+    strategy: template
+    priority: 1000
+  # INI files
+  - glob: "**/*.conf"
+    strategy: "{{ kolla_openstack_custom_config_ini_merge_strategy_default }}"
+    priority: 2000
+    enabled: "{{ kolla_openstack_custom_config_merge_configs_enabled | bool }}"
+  - glob: "**/*.ini"
+    strategy: "{{ kolla_openstack_custom_config_ini_merge_strategy_default }}"
+    priority: 2000
+    enabled: "{{ kolla_openstack_custom_config_merge_configs_enabled | bool }}"
+  - glob: "**/galera.cnf"
+    strategy: "{{ kolla_openstack_custom_config_ini_merge_strategy_default }}"
+    priority: 2000
+    enabled: "{{ kolla_openstack_custom_config_merge_configs_enabled | bool }}"
+  - glob: "**/kafka.server.properties"
+    strategy: "{{ kolla_openstack_custom_config_ini_merge_strategy_default }}"
+    priority: 2000
+    enabled: "{{ kolla_openstack_custom_config_merge_configs_enabled | bool }}"
+  - glob: "**/*my.cnf"
+    strategy: "{{ kolla_openstack_custom_config_ini_merge_strategy_default }}"
+    priority: 2000
+    enabled: "{{ kolla_openstack_custom_config_merge_configs_enabled | bool }}"
+  # YAML files
+  - glob: "**/*.yml"
+    strategy: merge_yaml
+    priority: 2000
+    enabled: "{{ kolla_openstack_custom_config_merge_yaml_enabled | bool }}"
+  - glob: "**/*.yaml"
+    strategy: merge_yaml
+    priority: 2000
+    enabled: "{{ kolla_openstack_custom_config_merge_yaml_enabled | bool }}"
+  # Catch all. Fallback to templating to match legacy behaviour.
+  - glob: '**'
+    strategy: template
+    priority: 65535
+
+# List of globs to filter from kolla_openstack_custom_config_rules_default.
+# Default is an empty list.
+kolla_openstack_custom_config_rules_default_remove: []
+
+# Extra items to add to kolla_openstack_custom_config_rules_default
+# to produce kolla_openstack_custom_config_rules.
+kolla_openstack_custom_config_rules_extra: []
 
 ###############################################################################
 # Aodh configuration.
 
 # Whether to enable Aodh.
-kolla_enable_aodh:
+kolla_enable_aodh: false
 
+# Deprecated:
 # Free form extra configuration to append to aodh.conf.
 kolla_extra_aodh:
 
@@ -24,8 +329,9 @@ kolla_extra_aodh:
 # Barbican configuration.
 
 # Whether to enable Barbican.
-kolla_enable_barbican:
+kolla_enable_barbican: false
 
+# Deprecated:
 # Free form extra configuration to append to barbican.conf.
 kolla_extra_barbican:
 
@@ -33,8 +339,9 @@ kolla_extra_barbican:
 # Blazar configuration.
 
 # Whether to enable Blazar.
-kolla_enable_blazar:
+kolla_enable_blazar: false
 
+# Deprecated:
 # Free form extra configuration to append to blazar.conf.
 kolla_extra_blazar:
 
@@ -42,8 +349,9 @@ kolla_extra_blazar:
 # Ceilometer configuration.
 
 # Whether to enable Ceilometer.
-kolla_enable_ceilometer:
+kolla_enable_ceilometer: false
 
+# Deprecated:
 # Free form extra configuration to append to ceilometer.conf.
 kolla_extra_ceilometer:
 
@@ -51,8 +359,9 @@ kolla_extra_ceilometer:
 # cinder configuration.
 
 # Whether to enable cinder.
-kolla_enable_cinder:
+kolla_enable_cinder: false
 
+# Deprecated:
 # Free form extra configuration to append to cinder.conf.
 kolla_extra_cinder:
 
@@ -60,8 +369,9 @@ kolla_extra_cinder:
 # CloudKitty configuration.
 
 # Whether to enable CloudKitty.
-kolla_enable_cloudkitty:
+kolla_enable_cloudkitty: false
 
+# Deprecated:
 # Free form extra configuration to append to cloudkitty.conf.
 kolla_extra_cloudkitty:
 
@@ -69,17 +379,25 @@ kolla_extra_cloudkitty:
 # designate configuration.
 
 # Whether to enable designate.
-kolla_enable_designate:
+kolla_enable_designate: false
 
+# Deprecated:
 # Free form extra configuration to append to designate.conf.
 kolla_extra_designate:
+
+###############################################################################
+# Fluentd configuration.
+
+# Whether to enable Fluentd.
+kolla_enable_fluentd: false
 
 ###############################################################################
 # Glance configuration.
 
 # Whether to enable Glance.
-kolla_enable_glance:
+kolla_enable_glance: false
 
+# Deprecated:
 # Free form extra configuration to append to glance-api.conf and
 # glance-registry.conf.
 kolla_extra_glance:
@@ -88,8 +406,9 @@ kolla_extra_glance:
 # Gnocchi configuration.
 
 # Whether to enable Gnocchi.
-kolla_enable_gnocchi:
+kolla_enable_gnocchi: false
 
+# Deprecated:
 # Free form extra configuration to append to gnocchi.conf.
 kolla_extra_gnocchi:
 
@@ -97,11 +416,12 @@ kolla_extra_gnocchi:
 # Grafana configuration.
 
 # Whether to enable Grafana.
-kolla_enable_grafana:
+kolla_enable_grafana: false
 
 # Name of the admin user for Grafana.
 grafana_local_admin_user_name:
 
+# Deprecated:
 # Free form extra configuration to append to grafana.ini.
 kolla_extra_grafana:
 
@@ -109,23 +429,15 @@ kolla_extra_grafana:
 # HAProxy configuration.
 
 # Whether to enable HAProxy.
-kolla_enable_haproxy:
-
-###############################################################################
-# Keystone configuration.
-
-# Whether to enable Keystone.
-kolla_enable_keystone:
-
-# Free form extra configuration to append to Keystone.conf
-kolla_extra_keystone:
+kolla_enable_haproxy: false
 
 ##############################################################################
 # Heat configuration.
 
 # Whether to enable Heat.
-kolla_enable_heat:
+kolla_enable_heat: false
 
+# Deprecated:
 # Free form extra configuration to append to heat.conf.
 kolla_extra_heat:
 
@@ -133,19 +445,19 @@ kolla_extra_heat:
 # Horizon configuration.
 
 # Whether to enable Horizon.
-kolla_enable_horizon:
+kolla_enable_horizon: false
 
 ###############################################################################
 # InfluxDB configuration.
 
 # Whether to enable InfluxDB.
-kolla_enable_influxdb:
+kolla_enable_influxdb: false
 
 ###############################################################################
 # Ironic configuration.
 
 # Whether to enable Ironic.
-kolla_enable_ironic:
+kolla_enable_ironic: false
 
 # List of enabled Ironic drivers.
 kolla_ironic_drivers:
@@ -252,6 +564,7 @@ kolla_ironic_provisioning_network:
 # List of additional append parameters for baremetal PXE boot.
 kolla_ironic_pxe_append_params: []
 
+# Deprecated:
 # Free form extra configuration to append to ironic.conf.
 kolla_extra_ironic:
 
@@ -313,15 +626,33 @@ kolla_inspector_enable_swift:
 # store.
 kolla_inspector_swift_auth: {}
 
+# Deprecated:
 # Free form extra configuration to append to ironic-inspector.conf.
 kolla_extra_inspector:
+
+###############################################################################
+# Keepalived configuration.
+
+# Whether to enable Keepalived.
+kolla_enable_keepalived: false
+
+###############################################################################
+# Keystone configuration.
+
+# Whether to enable Keystone.
+kolla_enable_keystone: false
+
+# Deprecated:
+# Free form extra configuration to append to Keystone.conf
+kolla_extra_keystone:
 
 ###############################################################################
 # Magnum configuration.
 
 # Whether to enable Magnum.
-kolla_enable_magnum:
+kolla_enable_magnum: false
 
+# Deprecated:
 # Free form extra configuration to append to magnum.conf.
 kolla_extra_magnum:
 
@@ -329,8 +660,9 @@ kolla_extra_magnum:
 # Mariabackup configuration.
 
 # Whether to enable Mariabackup.
-kolla_enable_mariabackup:
+kolla_enable_mariabackup: false
 
+# Deprecated:
 # Free form extra configuration to append to backup.my.cnf.
 kolla_extra_mariabackup:
 
@@ -338,8 +670,9 @@ kolla_extra_mariabackup:
 # MariaDB configuration.
 
 # Whether to enable MariaDB.
-kolla_enable_mariadb:
+kolla_enable_mariadb: false
 
+# Deprecated:
 # Free form extra configuration to append to galera.cnf.
 kolla_extra_mariadb:
 
@@ -347,14 +680,19 @@ kolla_extra_mariadb:
 # Manila configuration.
 
 # Whether to enable Manila.
-kolla_enable_manila:
+kolla_enable_manila: false
+
+# Deprecated:
+# Free form extra configuration to append to manila.conf.
+kolla_extra_manila:
 
 ###############################################################################
 # Masakari configuration.
 
 # Whether to enable Masakari.
-kolla_enable_masakari:
+kolla_enable_masakari: false
 
+# Deprecated:
 # Free form extra configuration to append to masakari.conf.
 kolla_extra_masakari:
 
@@ -362,7 +700,7 @@ kolla_extra_masakari:
 # Multipathd configuration.
 
 # Whether to enable Multipathd.
-kolla_enable_multipathd:
+kolla_enable_multipathd: false
 
 # Free form extra configuration to append to multipath.conf.
 kolla_extra_multipathd:
@@ -371,8 +709,9 @@ kolla_extra_multipathd:
 # Murano configuration.
 
 # Whether to enable Murano.
-kolla_enable_murano:
+kolla_enable_murano: false
 
+# Deprecated:
 # Free form extra configuration to append to murano.conf.
 kolla_extra_murano:
 
@@ -380,7 +719,7 @@ kolla_extra_murano:
 # Neutron configuration.
 
 # Whether to enable Neutron.
-kolla_enable_neutron:
+kolla_enable_neutron: false
 
 # List of Neutron ML2 mechanism drivers to use.
 kolla_neutron_ml2_mechanism_drivers: []
@@ -416,9 +755,11 @@ kolla_neutron_ml2_generic_switches: []
 # secret: not currently supported
 kolla_neutron_ml2_generic_switch_hosts: []
 
+# Deprecated:
 # Free form extra configuration to append to neutron.conf.
 kolla_extra_neutron:
 
+# Deprecated:
 # Free form extra configuration to append to ml2_conf.ini.
 kolla_extra_neutron_ml2:
 
@@ -426,11 +767,12 @@ kolla_extra_neutron_ml2:
 # Nova configuration.
 
 # Whether to enable Nova.
-kolla_enable_nova:
+kolla_enable_nova: false
 
 # Whether to enable Nova libvirt container.
 kolla_enable_nova_libvirt_container:
 
+# Deprecated:
 # Free form extra configuration to append to nova.conf.
 kolla_extra_nova:
 
@@ -442,23 +784,28 @@ kolla_libvirt_tls:
 kolla_nova_libvirt_certificates_src:
 
 ###############################################################################
+# OpenSearch configuration.
+
+# Whether to enable OpenSearch.
+kolla_enable_opensearch: false
+
+###############################################################################
 # Octavia configuration.
 
 # Whether to enable Octavia.
-kolla_enable_octavia:
+kolla_enable_octavia: false
 
-###############################################################################
-# OpenSearch configuration.
-
-# Whether to enable opensearch.
-kolla_enable_opensearch:
+# Deprecated:
+# Free form extra configuration to append to octavia.conf
+kolla_extra_octavia:
 
 ###############################################################################
 # Placement configuration.
 
 # Whether to enable placement.
-kolla_enable_placement:
+kolla_enable_placement: false
 
+# Deprecated:
 # Free form extra configuration to append to placement.conf.
 kolla_extra_placement:
 
@@ -466,14 +813,15 @@ kolla_extra_placement:
 # Prometheus configuration.
 
 # Whether to enable Prometheus.
-kolla_enable_prometheus:
+kolla_enable_prometheus: false
 
 ###############################################################################
 # Sahara configuration.
 
 # Whether to enable sahara.
-kolla_enable_sahara:
+kolla_enable_sahara: false
 
+# Deprecated:
 # Free form extra configuration to append to sahara.conf.
 kolla_extra_sahara:
 
@@ -481,4 +829,4 @@ kolla_extra_sahara:
 # Swift configuration.
 
 # Whether to enable swift.
-kolla_enable_swift:
+kolla_enable_swift: false

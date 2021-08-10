@@ -177,10 +177,8 @@ Kolla Configuration
 -------------------
 
 In the Wallaby release, Kolla configuration was independent in each
-environment.
-
-As of the Xena release, the following files support combining the
-environment-specific and shared configuration file content:
+environment. The Xena release supported combining environment-specific
+and shared configuration file content for the following subset of the files:
 
 * ``kolla/config/bifrost/bifrost.yml``
 * ``kolla/config/bifrost/dib.yml``
@@ -189,8 +187,156 @@ environment-specific and shared configuration file content:
 * ``kolla/kolla-build.conf``
 * ``kolla/repos.yml`` or ``kolla/repos.yaml``
 
-Options in the environment-specific files take precedence over those in the
-shared files.
+The Antelope release expands upon this list to add support for combining Kolla
+Ansible custom service configuration. This behaviour is configured using two
+variables:
+
+* ``kolla_openstack_custom_config_include_globs``: Specifies which files are
+  considered when templating the Kolla configuration. The Kayobe defaults
+  are set using ``kolla_openstack_custom_config_include_globs_default``.
+  An optional list of additional globs can be set using:
+  ``kolla_openstack_custom_config_include_globs_extra``. These are
+  combined with ``kolla_openstack_custom_config_include_globs_default``
+  to produce ``kolla_openstack_custom_config_include_globs``.
+  Each list entry is a dictionary with the following keys:
+
+   * ``enabled``: Boolean which determines if this rule is used. Set to
+     ``false`` to disable the rule.
+   * ``glob``: String glob matching a relative path in the ``kolla/config``
+     directory
+
+   An example of such a rule:
+
+   .. code-block:: yaml
+
+      enabled: '{{ kolla_enable_aodh | bool }}'
+      glob: aodh/**
+
+* ``kolla_openstack_custom_config_rules``: List of rules that specify the
+  strategy to use when generating a particular file. The Kayobe defaults
+  are set using ``kolla_openstack_custom_config_rules_default``.
+  An optional list of additional rules can be set using:
+  ``kolla_openstack_custom_config_rules_extra``. These are
+  combined with ``kolla_openstack_custom_config_rules_default``
+  to produce ``kolla_openstack_custom_config_rules``.
+  Each list entry is a dictionary with the format:
+
+   * ``glob``: A glob matching files for this rule to match on (relative to the
+     search path)
+   * ``priority``: The rules are processed in increasing priority order with the
+     first rule matching taking effect
+   * ``strategy``: How to process the matched file. One of ``copy``,
+     ``concat``, ``template``, ``merge_configs``, ``merge_yaml``
+   * ``params``: Optional list of additional params to pass to module enacting
+     the strategy
+
+   An example of such a rule:
+
+   .. code-block:: yaml
+
+      glob: a/path/test.yml
+      strategy: merge_yaml
+      priority: 1000
+      params:
+        extend_lists: true
+
+The Kayobe defaults fallback to using the ``template`` strategy, with a
+priority of 65535. To override this behaviour configure a rule with a lower
+priority e.g:
+
+   .. code-block:: yaml
+
+      glob: horizon/themes/**
+      strategy: copy
+      priority: 1000
+
+The default INI merging strategy can be configured using:
+``kolla_openstack_custom_config_ini_merge_strategy_default``. It defaults to ``concat``
+for backwards compatibility. An alternative strategy is ``merge_configs`` which will
+merge the two INI files so that values set in the environment take precedence over values
+set in the shared files. The caveat with the ``merge_configs`` strategy is that files
+must template to valid INI. This is mostly an issue when you use raw Jinja
+tags, for example:
+
+   .. code-block:: ini
+
+      [defaults]
+      {% raw %}
+      {% if inventory_hostname in 'compute' %}
+      foo=bar
+      {% else %}
+      foo=baz
+      {% endif %}
+      {% endraw %}
+
+After the first round of templating by Kayobe the raw tags are stripped. This leaves:
+
+   .. code-block:: ini
+
+      [defaults]
+      {% if inventory_hostname in 'compute' %}
+      foo=bar
+      {% else %}
+      foo=baz
+      {% endif %}
+
+Which isn't valid INI (due to the Jinja if blocks) and cannot be merged. In most cases
+the templating can be refactored:
+
+   .. code-block:: ini
+
+      [defaults]
+      {% raw %}
+      foo={{ 'bar' if inventory_hostname in 'compute' else 'baz' }}
+      {% endraw %}
+
+Alternatively, you can use Kolla host or group variables.
+
+Disabling the default rules
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+There are some convenience variables to disable a subset of the
+rules in ``kolla_openstack_custom_config_rules_default``:
+
+* ``kolla_openstack_custom_config_rules_default_remove``: Allows you remove
+  a rule by matching on the glob:
+
+   .. code-block:: yaml
+
+      kolla_openstack_custom_config_rules_default_remove:
+         - "**/*.ini"
+
+* ``kolla_openstack_custom_config_merge_configs_enabled``: Enables rules for
+  matching INI files. Default is ``true``.
+
+* ``kolla_openstack_custom_config_merge_yaml_enabled``: Enables rules for
+  matching YAML files. Default is ``true``.
+
+These allow you to more easily keep in sync with the upstream defaults. If
+you had an override on ``kolla_openstack_custom_config_rules``, that
+replicated most of ``kolla_openstack_custom_config_rules_default`` you'd have
+to keep this in sync with the upstream kayobe defaults.
+
+Search paths
+^^^^^^^^^^^^
+
+When merging config files the following locations are "searched" to find
+files with an identical relative path:
+
+- ``<environment-path>/kolla/config``
+- ``<shared-files-path>/kolla/config``
+- ``<kolla-openstack-role-path>/templates/kolla/config``
+
+Not all strategies use all of the files when generating the kolla config.
+For instance, the copy strategy will use the first file found when searching
+each of the paths.
+
+There is a feature flag: ``kolla_openstack_custom_config_environment_merging_enabled``,
+that may be set to ``false`` to prevent Kayobe searching the shared files path
+when merging configs. This is to replicate the legacy behaviour where the
+environment Kolla custom service configuration was not merged with the base
+layer. We still merge the files with Kayobe's defaults in the
+``kolla-openstack`` role's internal templates.
 
 Managing Independent Environment Files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

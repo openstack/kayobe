@@ -9,4 +9,5 @@ selinux # MIT
 oslo.config>=5.2.0 # Apache-2.0
 paramiko # LGPL
 jsonschema<5 # MIT
+wcmatch>=8.2,<=9.0 # MIT
 hvac>=0.10.1

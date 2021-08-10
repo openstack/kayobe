@@ -100,53 +100,6 @@
     ipa_image_name: "ipa"
   pre_tasks:
     - block:
-        - name: Check whether Kolla extra configuration files exist
-          stat:
-            path: "{{ kayobe_env_config_path }}/kolla/config/{{ item.file }}"
-            get_checksum: False
-            get_md5: False
-            mime: False
-          register: stat_result
-          with_items:
-            - { name: aodh, file: aodh.conf }
-            - { name: barbican, file: barbican.conf }
-            - { name: blazar, file: blazar.conf }
-            - { name: ceilometer, file: ceilometer.conf }
-            - { name: cinder, file: cinder.conf }
-            - { name: cloudkitty, file: cloudkitty.conf }
-            - { name: designate, file: designate.conf }
-            - { name: glance, file: glance.conf }
-            - { name: global, file: global.conf }
-            - { name: gnocchi, file: gnocchi.conf }
-            - { name: grafana, file: grafana.ini }
-            - { name: heat, file: heat.conf }
-            - { name: inspector, file: ironic-inspector.conf }
-            - { name: ironic, file: ironic.conf }
-            - { name: keystone, file: keystone.conf }
-            - { name: magnum, file: magnum.conf }
-            - { name: manila, file: manila.conf }
-            - { name: mariabackup, file: backup.my.cnf }
-            - { name: mariadb, file: galera.cnf }
-            - { name: masakari, file: masakari.conf }
-            - { name: multipathd, file: multipath.conf }
-            - { name: murano, file: murano.conf }
-            - { name: neutron, file: neutron.conf }
-            - { name: neutron_ml2, file: neutron/ml2_conf.ini }
-            - { name: nova, file: nova.conf }
-            - { name: octavia, file: octavia.conf }
-            - { name: placement, file: placement.conf }
-            - { name: sahara, file: sahara.conf }
-
-        - name: Initialise a fact containing extra configuration
-          set_fact:
-            kolla_extra_config: {}
-
-        - name: Update a fact containing extra configuration
-          set_fact:
-            kolla_extra_config: "{{ kolla_extra_config | combine({item.item.name: lookup('template', '{{ item.stat.path }}')}) }}"
-          with_items: "{{ stat_result.results }}"
-          when: item.stat.exists
-
         - name: Validate switch configuration for Neutron ML2 genericswitch driver
           fail:
             msg: >
@@ -217,35 +170,11 @@
       kolla_inspector_swift_auth:
         auth_type: none
         endpoint_override: "http://{% raw %}{{ api_interface_address }}{% endraw %}:{{ inspector_store_port }}"
-      # Extra free-form user-provided configuration.
-      kolla_extra_aodh: "{{ kolla_extra_config.aodh | default }}"
-      kolla_extra_barbican: "{{ kolla_extra_config.barbican | default }}"
-      kolla_extra_blazar: "{{ kolla_extra_config.blazar | default }}"
-      kolla_extra_ceilometer: "{{ kolla_extra_config.ceilometer | default }}"
-      kolla_extra_cinder: "{{ kolla_extra_config.cinder | default }}"
-      kolla_extra_cloudkitty: "{{ kolla_extra_config.cloudkitty | default }}"
-      kolla_extra_designate: "{{ kolla_extra_config.designate | default }}"
-      kolla_extra_glance: "{{ kolla_extra_config.glance | default }}"
-      kolla_extra_global: "{{ kolla_extra_config.global | default }}"
-      kolla_extra_gnocchi: "{{ kolla_extra_config.gnocchi | default }}"
-      kolla_extra_grafana: "{{ kolla_extra_config.grafana | default }}"
-      kolla_extra_heat: "{{ kolla_extra_config.heat | default }}"
-      kolla_extra_inspector: "{{ kolla_extra_config.inspector | default }}"
-      kolla_extra_ironic: "{{ kolla_extra_config.ironic | default }}"
-      kolla_extra_keystone: "{{ kolla_extra_config.keystone | default }}"
-      kolla_extra_magnum: "{{ kolla_extra_config.magnum | default }}"
-      kolla_extra_manila: "{{ kolla_extra_config.manila | default }}"
-      kolla_extra_mariabackup: "{{ kolla_extra_config.mariabackup | default }}"
-      kolla_extra_mariadb: "{{ kolla_extra_config.mariadb | default }}"
-      kolla_extra_masakari: "{{ kolla_extra_config.masakari | default }}"
-      kolla_extra_multipathd: "{{ kolla_extra_config.multipathd | default }}"
-      kolla_extra_murano: "{{ kolla_extra_config.murano | default }}"
-      kolla_extra_neutron: "{{ kolla_extra_config.neutron | default }}"
-      kolla_extra_neutron_ml2: "{{ kolla_extra_config.neutron_ml2 | default }}"
-      kolla_extra_nova: "{{ kolla_extra_config.nova | default }}"
-      kolla_extra_octavia: "{{ kolla_extra_config.octavia | default }}"
-      kolla_extra_placement: "{{ kolla_extra_config.placement | default }}"
-      kolla_extra_sahara: "{{ kolla_extra_config.sahara | default }}"
-      kolla_extra_config_path: "{{ kayobe_env_config_path }}/kolla/config"
+      kolla_openstack_custom_config_paths_extra_multi_env:
+        - "{{ kayobe_config_path }}"
+        - "{{ kayobe_env_config_path }}"
+      kolla_openstack_custom_config_paths_extra_legacy:
+        - "{{ kayobe_env_config_path }}"
+      kolla_openstack_custom_config_paths_extra: "{{ kolla_openstack_custom_config_paths_extra_multi_env if kolla_openstack_custom_config_environment_merging_enabled | bool else kolla_openstack_custom_config_paths_extra_legacy }}"
       kolla_libvirt_tls: "{{ compute_libvirt_enable_tls | bool }}"
       kolla_nova_libvirt_certificates_src: "{{ kayobe_env_config_path }}/certificates/libvirt"

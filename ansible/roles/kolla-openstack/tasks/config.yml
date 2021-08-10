@@ -1,48 +1,4 @@
 ---
-- name: Ensure the Kolla OpenStack configuration directories exist
-  file:
-    path: "{{ item.dest }}"
-    state: directory
-    mode: 0750
-  with_items: "{{ kolla_openstack_custom_config }}"
-  when: item.enabled | bool
-
-- name: Ensure the Kolla OpenStack configuration files exist
-  template:
-    src: "{{ item.src }}"
-    dest: "{{ kolla_node_custom_config_path }}/{{ item.dest }}"
-    mode: 0640
-  with_items:
-    - { src: aodh.conf.j2, dest: aodh.conf, enabled: "{{ kolla_enable_aodh }}" }
-    - { src: barbican.conf.j2, dest: barbican.conf, enabled: "{{ kolla_enable_barbican }}" }
-    - { src: blazar.conf.j2, dest: blazar.conf, enabled: "{{ kolla_enable_blazar }}" }
-    - { src: ceilometer.conf.j2, dest: ceilometer.conf, enabled: "{{ kolla_enable_ceilometer }}" }
-    - { src: cinder.conf.j2, dest: cinder.conf, enabled: "{{ kolla_enable_cinder }}" }
-    - { src: cloudkitty.conf.j2, dest: cloudkitty.conf, enabled: "{{ kolla_enable_cloudkitty }}" }
-    - { src: designate.conf.j2, dest: designate.conf, enabled: "{{ kolla_enable_designate }}" }
-    - { src: galera.cnf.j2, dest: galera.cnf, enabled: "{{ kolla_enable_mariadb }}" }
-    - { src: glance.conf.j2, dest: glance.conf, enabled: "{{ kolla_enable_glance }}" }
-    - { src: global.conf.j2, dest: global.conf, enabled: true }
-    - { src: gnocchi.conf.j2, dest: gnocchi.conf, enabled: "{{ kolla_enable_gnocchi }}" }
-    - { src: grafana.ini.j2, dest: grafana.ini, enabled: "{{ kolla_enable_grafana }}" }
-    - { src: heat.conf.j2, dest: heat.conf, enabled: "{{ kolla_enable_heat }}" }
-    - { src: ironic.conf.j2, dest: ironic.conf, enabled: "{{ kolla_enable_ironic }}" }
-    - { src: ironic-inspector.conf.j2, dest: ironic-inspector.conf, enabled: "{{ kolla_enable_ironic }}" }
-    - { src: keystone.conf.j2, dest: keystone.conf, enabled: "{{ kolla_enable_keystone }}" }
-    - { src: magnum.conf.j2, dest: magnum.conf, enabled: "{{ kolla_enable_magnum }}" }
-    - { src: manila.conf.j2, dest: manila.conf, enabled: "{{ kolla_enable_manila }}" }
-    - { src: backup.my.cnf.j2, dest: backup.my.cnf, enabled: "{{ kolla_enable_mariabackup }}" }
-    - { src: masakari.conf.j2, dest: masakari.conf, enabled: "{{ kolla_enable_masakari }}" }
-    - { src: ml2_conf.ini.j2, dest: neutron/ml2_conf.ini, enabled: "{{ kolla_enable_neutron }}" }
-    - { src: multipath.conf.j2, dest: multipath.conf, enabled: "{{ kolla_enable_multipathd }}" }
-    - { src: murano.conf.j2, dest: murano.conf, enabled: "{{ kolla_enable_murano }}" }
-    - { src: neutron.conf.j2, dest: neutron.conf, enabled: "{{ kolla_enable_neutron }}" }
-    - { src: nova.conf.j2, dest: nova.conf, enabled: "{{ kolla_enable_nova }}" }
-    - { src: octavia.conf.j2, dest: octavia.conf, enabled: "{{ kolla_enable_octavia }}" }
-    - { src: placement.conf.j2, dest: placement.conf, enabled: "{{ kolla_enable_placement }}" }
-    - { src: sahara.conf.j2, dest: sahara.conf, enabled: "{{ kolla_enable_sahara }}" }
-  when: item.enabled | bool
-
 - name: Ensure ironic inspector kernel and ramdisk images are present
   vars:
     image_download_url: "{{ item.url }}"
@@ -67,84 +23,110 @@
   loop_control:
     label: "{{ item.dest }}"
 
+- name: Make destination directory for Nova certificates
+  file:
+    state: directory
+    path: "{{ kolla_node_custom_config_path }}/nova/nova-libvirt/"
+  when: kolla_enable_nova | bool and kolla_libvirt_tls | bool
+
+- name: Copy client TLS certificates for Nova
+  vars:
+    certificates:
+      - clientcert.pem
+      - clientkey.pem
+      - cacert.pem
+  copy:
+    src: "{{ kolla_nova_libvirt_certificates_src }}/{{ item }}"
+    dest: "{{ kolla_node_custom_config_path }}/nova/nova-libvirt/{{ item }}"
+  loop: "{{ certificates if kolla_enable_nova | bool and kolla_libvirt_tls | bool else [] }}"
+
+- name: Copy server TLS certificates for Nova
+  vars:
+    certificates:
+      - servercert.pem
+      - serverkey.pem
+  copy:
+    src: "{{ kolla_nova_libvirt_certificates_src }}/{{ item }}"
+    dest: "{{ kolla_node_custom_config_path }}/nova/nova-libvirt/{{ item }}"
+  loop: "{{ certificates if kolla_enable_nova | bool and kolla_enable_nova_libvirt_container | bool and kolla_libvirt_tls | bool else [] }}"
+
 # We support a fairly flexible mechanism of dropping config file templates into
 # an 'extra' config directory, and passing these through to kolla-ansible. We
 # look for matching files in the source directory to template, and also remove
 # any unexpected files from the destination, to support removal of files.
 
-- name: Find extra configuration files
-  find:
-    path: "{{ item.src }}"
-    patterns: "{{ item.patterns }}"
-    recurse: true
-  with_items: "{{ kolla_openstack_custom_config }}"
-  register: find_src_result
-  delegate_to: localhost
+- name: Collect details about custom config
+  kolla_custom_config_info:
+    destination: "{{ kolla_node_custom_config_path }}"
+    ignore_globs: "{{ _kolla_openstack_custom_config_cleanup_ignore_globs }}"
+    include_globs: "{{ kolla_openstack_custom_config_include_globs }}"
+    rules: "{{ kolla_openstack_custom_config_rules }}"
+    search_paths: "{{ kolla_openstack_custom_config_paths | product(['/kolla/config']) | map('join') | list }}"
+  register: kolla_custom_config_info
 
-- name: Find previously generated extra configuration files
-  find:
-    path: "{{ item.dest }}"
-    patterns: "{{ item.patterns }}"
-  with_items: "{{ kolla_openstack_custom_config }}"
-  register: find_dest_result
+- name: Print kolla_custom_config_info when using -v
+  debug:
+    msg: "{{ kolla_custom_config_info }}"
+    verbosity: 1
 
 - name: Ensure extra configuration parent directories are present
   file:
-    path: "{{ item.0.item.dest }}/{{ item.1.path | relpath(item.0.item.src) | dirname }}"
+    path: "{{ item }}"
+    recurse: true
     state: directory
-    mode: 0750
-  with_subelements:
-    - "{{ find_src_result.results }}"
-    - files
-    - skip_missing: true
-  when:
-    - item.0.item.enabled | bool
-    - item.1.path | basename not in item.0.item.ignore | default([])
+  with_items: "{{ kolla_custom_config_info.create_dir }}"
 
-- name: Ensure templated extra configuration files exist
-  template:
-    src: "{{ item.1.path }}"
-    dest: "{{ item.0.item.dest }}/{{ item.1.path | relpath(item.0.item.src) }}"
-    mode: 0640
-  with_subelements:
-    - "{{ find_src_result.results }}"
-    - files
-    - skip_missing: true
-  when:
-    - item.0.item.enabled | bool
-    - item.1.path | basename not in item.0.item.ignore | default([])
-    - item.1.path | basename not in item.0.item.untemplated | default([])
-    - (item.1.path | dirname | relpath(item.0.item.src)).split("/")[0] not in item.0.item.untemplated_dirs | default([])
+- name: "Ensure extra configuration files exist (strategy: template)"
+  vars:
+    params:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      mode: 0640
+  template: "{{ params | combine(item.params) }}"
+  with_items: "{{ kolla_custom_config_info.template }}"
 
-- name: Ensure untemplated extra configuration files exist
-  copy:
-    src: "{{ item.1.path }}"
-    dest: "{{ item.0.item.dest }}/{{ item.1.path | relpath(item.0.item.src) }}"
-    mode: 0640
-  with_subelements:
-    - "{{ find_src_result.results }}"
-    - files
-    - skip_missing: true
-  when:
-    - item.0.item.enabled | bool
-    - item.1.path | basename not in item.0.item.ignore | default([])
-    - (item.1.path | basename in item.0.item.untemplated | default([])) or
-      ((item.1.path | dirname | relpath(item.0.item.src)).split("/")[0] in item.0.item.untemplated_dirs | default([]))
+- name: "Ensure extra configuration files exist (strategy: copy)"
+  vars:
+    params:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      mode: 0640
+  copy: "{{ params | combine(item.params) }}"
+  # NOTE: .copy is ambiguous with copy method
+  with_items: "{{ kolla_custom_config_info['copy'] }}"
+
+- name: "Ensure extra configuration files exist (strategy: merge_configs)"
+  vars:
+    params:
+      sources: "{{ item.sources }}"
+      dest: "{{ item.dest }}"
+      mode: 0640
+  merge_configs: "{{ params | combine(item.params) }}"
+  with_items: "{{ kolla_custom_config_info.merge_configs }}"
+
+- name: "Ensure extra configuration files exist (strategy: merge_yaml)"
+  vars:
+    params:
+      sources: "{{ item.sources }}"
+      dest: "{{ item.dest }}"
+      mode: 0640
+  merge_yaml: "{{ params | combine(item.params) }}"
+  with_items: "{{ kolla_custom_config_info.merge_yaml }}"
+
+- name: "Ensure extra configuration files exist (strategy: concat)"
+  vars:
+    params:
+      content: |
+        {%- for path in item.sources -%}
+        {{ lookup('template', path) }}
+        {%- endfor -%}
+      dest: "{{ item.dest }}"
+      mode: 0640
+  copy: "{{ params | combine(item.params) }}"
+  with_items: "{{ kolla_custom_config_info.concat }}"
 
 - name: Ensure unnecessary extra configuration files are absent
   file:
-    path: "{{ item.1.path }}"
+    path: "{{ item }}"
     state: absent
-  with_subelements:
-    - "{{ find_dest_result.results }}"
-    - files
-    - skip_missing: true
-  when:
-    - not item.0.item.enabled or
-      item.1.path | basename not in src_files
-    - item.1.path | basename not in item.0.item.ignore | default([])
-  vars:
-    # Find the source result that corresponds to this one.
-    src_result: "{{ (find_src_result.results | selectattr('item', 'equalto', item.0.item) | list)[0] }}"
-    # Find the list of files in the source.
-    src_files: "{{ src_result.files | map(attribute='path') | map('basename') | list }}"
+  with_items: "{{ kolla_custom_config_info.delete }}"
