@@ -48,8 +48,8 @@ follows:
 
 * create groups in the inventory for the different sets of networks
 * place hosts in the appropriate groups
-* move ``vip_address`` and ``fqdn`` network attributes to `global variables
-  <configuration-kolla-ansible-api-addresses>`
+* move ``vip_address`` and ``fqdn`` network attributes to :ref:`global
+  variables <configuration-kolla-ansible-api-addresses>`
 * move global network name configuration to group variables
 * add new networks to configuration
 * add network interface group variables
@@ -177,8 +177,8 @@ Kolla API addresses
 -------------------
 
 Remove all variables defining ``vip_address`` or ``fqdn`` network attributes
-from ``networks.yml``, and move the configuration to the `API address variables
-<configuration-kolla-ansible-api-addresses>` in ``kolla.yml``.
+from ``networks.yml``, and move the configuration to the :ref:`API address
+variables <configuration-kolla-ansible-api-addresses>` in ``kolla.yml``.
 
 Network names
 -------------
