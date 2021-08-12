@@ -233,7 +233,7 @@ API Addresses
 .. note::
 
    These variables should be used over the deprecated ``vip_address`` and
-   ``fqdn`` `network attributes <configuration-network-global>`
+   ``fqdn`` :ref:`network attributes <configuration-network-global>`.
 
 The following variables affect the addresses used for the external and internal
 API.
