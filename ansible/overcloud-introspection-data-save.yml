@@ -13,7 +13,7 @@
       command: >
         docker exec bifrost_deploy
         bash -c '
-        export BIFROST_INVENTORY_SOURCE=ironic &&
+        env BIFROST_INVENTORY_SOURCE=ironic OS_CLOUD=bifrost
         ansible baremetal
         --connection local
         --inventory /etc/bifrost/inventory/
