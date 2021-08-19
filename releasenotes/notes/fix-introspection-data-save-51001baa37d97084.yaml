@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an issue bug where introspection data save would fail. See `story
+    2009129 <https://storyboard.openstack.org/#!/story/2009129>`__ for more
+    details.
