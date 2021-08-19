@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an issue with configuration validation when no public API network is
+    in use. See `story 2009134
+    <https://storyboard.openstack.org/#!/story/2009134>`__ for details.
