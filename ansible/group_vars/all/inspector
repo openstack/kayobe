@@ -208,6 +208,10 @@ inspector_rule_lldp_switch_port_desc_to_name:
       invert: True
     - field: "data://all_interfaces.{{inspector_rule_var_lldp_switch_port_interface}}.lldp_processed.switch_port_description"
       op: "matches"
+      value: "^twentyFiveGigE ?([0-9/]*)$"
+      invert: True
+    - field: "data://all_interfaces.{{inspector_rule_var_lldp_switch_port_interface}}.lldp_processed.switch_port_description"
+      op: "matches"
       value: "^fortyGigE ?([0-9/]*)$"
       invert: True
     - field: "data://all_interfaces.{{inspector_rule_var_lldp_switch_port_interface}}.lldp_processed.switch_port_description"
