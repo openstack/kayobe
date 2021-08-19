@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Filter out 25 Gigabit Ethernet interface names in the Ironic inspector rule
+    setting node names from interface LLDP switch port descriptions.
