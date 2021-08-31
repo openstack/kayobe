@@ -87,10 +87,10 @@
           required: True
         - var_name: "kolla_external_vip_address"
           description: "external API VIP address"
-          required: True
+          required: "{{ public_net_name != internal_net_name }}"
         - var_name: "kolla_external_fqdn"
           description: "External API Fully Qualified Domain Name (FQDN)"
-          required: True
+          required: "{{ public_net_name != internal_net_name }}"
       tags:
         - config
         - config-validation
