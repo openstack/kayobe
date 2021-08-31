@@ -19,20 +19,20 @@
       command: "dnf install coreutils -y --allowerasing"
       become: True
       when:
-        - ansible_os_family == 'RedHat'
+        - ansible_facts.os_family == 'RedHat'
 
     - name: Ensure the image cache directory exists
       file:
         path: "{{ image_cache_path }}"
         state: directory
-        owner: "{{ ansible_user_uid }}"
-        group: "{{ ansible_user_gid }}"
+        owner: "{{ ansible_facts.user_uid }}"
+        group: "{{ ansible_facts.user_gid }}"
       become: True
 
   roles:
     - role: jriguera.configdrive
       # For now assume the VM OS family is the same as the hypervisor's.
-      configdrive_os_family: "{{ ansible_os_family }}"
+      configdrive_os_family: "{{ ansible_facts.os_family }}"
       configdrive_uuid: "{{ seed_host | to_uuid }}"
       configdrive_fqdn: "{{ seed_host }}"
       configdrive_name: "{{ seed_host }}"

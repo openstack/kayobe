@@ -1,13 +1,13 @@
 ---
 - name: Include OS family-specific variables
-  include_vars: "{{ ansible_os_family }}.yml"
+  include_vars: "{{ ansible_facts.os_family }}.yml"
 
 - name: Ensure required packages are installed
   package:
     name: "{{ bootstrap_package_dependencies }}"
     state: present
-    cache_valid_time: "{{ apt_cache_valid_time if ansible_os_family == 'Debian' else omit }}"
-    update_cache: "{{ True if ansible_os_family == 'Debian' else omit }}"
+    cache_valid_time: "{{ apt_cache_valid_time if ansible_facts.os_family == 'Debian' else omit }}"
+    update_cache: "{{ True if ansible_facts.os_family == 'Debian' else omit }}"
   become: True
 
 - name: Check whether an SSH key exists
@@ -24,7 +24,7 @@
 
 - name: Ensure SSH public key is in authorized keys
   authorized_key:
-    user: "{{ ansible_user_id }}"
+    user: "{{ ansible_facts.user_id }}"
     key: "{{ lookup('file', bootstrap_ssh_private_key_path ~ '.pub') }}"
 
 - name: Scan for SSH keys

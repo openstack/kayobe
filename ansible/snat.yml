@@ -7,7 +7,7 @@
     - snat
   vars:
     snat_rules:
-      - interface: "{{ ansible_default_ipv4.interface }}"
-        source_ip: "{{ ansible_default_ipv4.address }}"
+      - interface: "{{ ansible_facts.default_ipv4.interface }}"
+        source_ip: "{{ ansible_facts.default_ipv4.address }}"
   roles:
     - role: snat
