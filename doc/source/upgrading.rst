@@ -7,7 +7,7 @@ Upgrading
 This section describes how to upgrade from one OpenStack release to another.
 
 CentOS Stream 8
----------------
+===============
 
 The Wallaby release adds support for CentOS Stream 8 as a host operating
 system. CentOS Stream 8 support will also be added to a Victoria stable
