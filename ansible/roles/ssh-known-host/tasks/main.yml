@@ -7,7 +7,7 @@
     msg: >-
       Host {{ inventory_hostname }} has no address configured on the admin
       network. IP addresses may be manually configured in
-      'network-allocations.yml', or are automatically allocated during the
+      'network-allocation.yml', or are automatically allocated during the
       following commands: 'kayobe seed hypervisor host configure', 'kayobe
       seed host configure', 'kayobe overcloud host configure', 'kayobe seed
       vm provision' and 'kayobe overcloud inventory discover'.
