@@ -47,7 +47,10 @@
             name: docker
             state: latest
             virtualenv: "{{ kolla_ansible_target_venv }}"
-            extra_args: "{% if kolla_upper_constraints_file %}-c {{ kolla_upper_constraints_file }}{% endif %}"
+            # FIXME(mgoddard): docker 5.0.1 is currently in master
+            # upper-constraints, but fails with an unexpected keyword argument,
+            # 'disable_buffering'. Install it without UC for now.
+            # extra_args: "{% if kolla_upper_constraints_file %}-c {{ kolla_upper_constraints_file }}{% endif %}"
           become: True
 
         - name: Ensure kolla-ansible virtualenv has SELinux bindings installed

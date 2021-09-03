@@ -2,11 +2,9 @@
 # of appearance. Changing the order has an impact on the overall integration
 # process, which may cause wedges in the gate later.
 
-ansible-lint>=3.0.0,!=4.3.0 # MIT
-bashate>=0.2 # Apache-2.0
-coverage>=4.0 # Apache-2.0
-doc8 # Apache-2.0
-hacking>=3.0.1,<3.1.0 # Apache-2.0
-oslotest>=1.10.0 # Apache-2.0
-stestr # Apache-2.0
+docker # Apache-2.0
+molecule # MIT
+molecule-docker # MIT
+pytest-molecule # MIT
+pytest-testinfra
 yamllint # GPLv3
