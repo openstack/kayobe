@@ -11,6 +11,9 @@ set -o pipefail
 # environment. This script should be sourced rather than executed in a
 # subprocess. e.g. source dev/environment-setup.sh
 
+# Arguments passed to this script are passed through to the kayobe-env script
+# in kayobe-config. This can be used to set the Kayobe environment.
+
 PARENT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 source "${PARENT}/functions"
@@ -18,10 +21,10 @@ source "${PARENT}/functions"
 
 function main {
     config_init
-    environment_setup
+    environment_setup "$@"
 }
 
-main
+main "$@"
 
 # Restore previous shell options.
 eval "$oldstate"
