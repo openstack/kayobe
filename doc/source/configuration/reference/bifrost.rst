@@ -179,6 +179,22 @@ Rather than needing to write a custom DIB element, we can use the
    kolla_bifrost_dib_packages:
      - "biosdevname"
 
+Disk image deployment configuration
+===================================
+
+The name of the root disk image to deploy can be configured via the
+``kolla_bifrost_deploy_image_filename`` option, which defaults to
+``deployment_image.qcow2``. It can be defined globally in
+``${KAYOBE_CONFIG_PATH}/bifrost.yml``, or defined per-group or per-host in the
+Kayobe inventory. This can be used to provision different images across the
+overcloud.
+
+.. note::
+
+   Support for building multiple disk images is not yet available. Images can
+   be manually renamed before changing the Kayobe configuration to build a
+   different image.
+
 Ironic configuration
 ====================
 
@@ -283,7 +299,7 @@ Inventory configuration
    This feature is currently not well tested. It is advisable to use
    autodiscovery of overcloud servers instead.
 
-The following options are used to configure a static inventory of servers for
+The following option is used to configure a static inventory of servers for
 Bifrost.
 
 ``kolla_bifrost_servers``

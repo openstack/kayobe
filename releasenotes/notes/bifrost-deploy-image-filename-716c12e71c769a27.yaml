@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds a new ``kolla_bifrost_deploy_image_filename`` variable used to define
+    the name of the root disk image to provision. This may be used to deploy
+    different images on different hosts.

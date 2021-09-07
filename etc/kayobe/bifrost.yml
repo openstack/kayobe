@@ -54,6 +54,12 @@
 #kolla_bifrost_dib_packages:
 
 ###############################################################################
+# Disk image deployment configuration.
+
+# Name of disk image file to deploy. Default is "deployment_image.qcow2".
+#kolla_bifrost_deploy_image_filename:
+
+###############################################################################
 # Ironic configuration.
 
 # List of hardware types to enable for Bifrost's Ironic.
