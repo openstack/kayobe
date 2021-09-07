@@ -215,7 +215,7 @@ function environment_setup {
     set +u
     source "${KAYOBE_VENV_PATH}/bin/activate"
     set -u
-    source "${KAYOBE_CONFIG_SOURCE_PATH}/kayobe-env"
+    source "${KAYOBE_CONFIG_SOURCE_PATH}/kayobe-env" "$@"
 }
 
 function run_kayobe {
