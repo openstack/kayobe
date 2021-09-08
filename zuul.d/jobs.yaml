@@ -104,6 +104,11 @@
     nodeset: kayobe-centos8
 
 - job:
+    name: kayobe-overcloud-centos8s
+    parent: kayobe-overcloud-base
+    nodeset: kayobe-centos8s
+
+- job:
     name: kayobe-overcloud-tls-base
     parent: kayobe-overcloud-base
     vars:
@@ -113,6 +118,11 @@
     name: kayobe-overcloud-tls-centos8
     parent: kayobe-overcloud-tls-base
     nodeset: kayobe-centos8
+
+- job:
+    name: kayobe-overcloud-tls-centos8s
+    parent: kayobe-overcloud-tls-base
+    nodeset: kayobe-centos8s
 
 - job:
     name: kayobe-overcloud-upgrade-base
@@ -135,6 +145,11 @@
     nodeset: kayobe-centos8
 
 - job:
+    name: kayobe-overcloud-upgrade-centos8s
+    parent: kayobe-overcloud-upgrade-base
+    nodeset: kayobe-centos8s
+
+- job:
     name: kayobe-seed-base
     parent: kayobe-base
     description: |
@@ -151,6 +166,11 @@
     nodeset: kayobe-centos8
 
 - job:
+    name: kayobe-seed-centos8s
+    parent: kayobe-seed-base
+    nodeset: kayobe-centos8s
+
+- job:
     name: kayobe-overcloud-host-configure-base
     parent: kayobe-overcloud-base
     description: |
@@ -165,6 +185,11 @@
     name: kayobe-overcloud-host-configure-centos8
     parent: kayobe-overcloud-host-configure-base
     nodeset: kayobe-centos8
+
+- job:
+    name: kayobe-overcloud-host-configure-centos8s
+    parent: kayobe-overcloud-host-configure-base
+    nodeset: kayobe-centos8s
 
 - job:
     name: kayobe-seed-upgrade-base
@@ -187,6 +212,11 @@
     nodeset: kayobe-centos8
 
 - job:
+    name: kayobe-seed-upgrade-centos8s
+    parent: kayobe-seed-upgrade-base
+    nodeset: kayobe-centos8s
+
+- job:
     name: kayobe-seed-vm-base
     parent: kayobe-base
     description: |
@@ -202,3 +232,8 @@
     name: kayobe-seed-vm-centos8
     parent: kayobe-seed-vm-base
     nodeset: kayobe-centos8
+
+- job:
+    name: kayobe-seed-vm-centos8s
+    parent: kayobe-seed-vm-base
+    nodeset: kayobe-centos8s
