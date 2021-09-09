@@ -72,7 +72,7 @@ copy_logs() {
     (docker info && docker images && docker ps -a) > ${LOG_DIR}/system_logs/docker-info.txt
 
     for container in $(docker ps -a --format "{{.Names}}"); do
-        docker logs --tail all ${container} > ${LOG_DIR}/docker_logs/${container}.txt
+        docker logs --tail all ${container} &> ${LOG_DIR}/docker_logs/${container}.txt
     done
 
     # Bifrost: grab config files and logs from the container.
