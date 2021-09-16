@@ -45,6 +45,8 @@ copy_logs() {
     cp /etc/sudoers ${LOG_DIR}/system_logs/sudoers.txt
 
     df -h > ${LOG_DIR}/system_logs/df.txt
+    # Gather disk usage statistics for files and directories larger than 1MB
+    du -d 5 -hx / | sort -hr | grep '^[0-9\.]*[MGT]' > ${LOG_DIR}/system_logs/du.txt
     free  > ${LOG_DIR}/system_logs/free.txt
     cat /etc/hosts  > ${LOG_DIR}/system_logs/hosts.txt
     parted -l > ${LOG_DIR}/system_logs/parted-l.txt
