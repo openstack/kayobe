@@ -56,8 +56,8 @@ may be encrypted via Ansible Vault.
    :caption: ``docker-registry.yml``
 
    docker_registry_enable_tls: true
-   docker_registry_cert_path: "{{ kayobe_config_path }}/docker-registry/cert.pem
-   docker_registry_key_path: "{{ kayobe_config_path }}/docker-registry/key.pem
+   docker_registry_cert_path: "{{ kayobe_config_path }}/docker-registry/cert.pem"
+   docker_registry_key_path: "{{ kayobe_config_path }}/docker-registry/key.pem"
 
 Basic authentication
 --------------------
