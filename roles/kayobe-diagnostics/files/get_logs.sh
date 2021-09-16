@@ -20,6 +20,8 @@ copy_logs() {
         # Don't save the IPA images.
         rm ${LOG_DIR}/kayobe_configs/kolla/config/ironic/ironic-agent.{kernel,initramfs}
         rm ${LOG_DIR}/kolla_configs/config/ironic/ironic-agent.{kernel,initramfs}
+        rm ${LOG_DIR}/kolla_node_configs/ironic-ipxe/ironic-agent.{kernel,initramfs}
+        rm ${LOG_DIR}/kolla_node_configs/ironic-pxe/ironic-agent.{kernel,initramfs}
     fi
     if [[ -n ${PREVIOUS_CONFIG_DIR} ]] && [[ -d ${PREVIOUS_CONFIG_DIR} ]]; then
         mkdir -p ${LOG_DIR}/previous_{kayobe,kolla}_configs
