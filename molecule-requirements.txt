@@ -3,7 +3,7 @@
 # process, which may cause wedges in the gate later.
 
 docker # Apache-2.0
-molecule # MIT
+molecule<3.5.0 # MIT
 molecule-docker # MIT
 pytest-molecule # MIT
 pytest-testinfra
