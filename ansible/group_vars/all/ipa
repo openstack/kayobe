@@ -88,9 +88,7 @@ ipa_build_upper_constraints_file: "{{ pip_upper_constraints_file }}"
 
 # Suffix of upstream Ironic deployment image files. Default is based on
 # {{ openstack_branch }}.
-#ipa_images_upstream_url_suffix: "-{{ openstack_branch | replace('/', '-') }}"
-# TODO(mgoddard): revert to the above when Kolla images contain master/Xena.
-ipa_images_upstream_url_suffix: "-stable-wallaby"
+ipa_images_upstream_url_suffix: "-{{ openstack_branch | replace('/', '-') }}"
 
 # Name of Ironic deployment kernel image to register in Glance.
 ipa_images_kernel_name: "ipa.kernel"
