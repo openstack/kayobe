@@ -114,7 +114,7 @@ docker_custom_config: {{ kolla_docker_custom_config | to_nice_json | indent(2) }
 #dns_address_family: "{% raw %}{{ network_address_family }}{% endraw %}"
 
 # Valid options are [ openvswitch, linuxbridge ]
-neutron_plugin_agent: "openvswitch"
+neutron_plugin_agent: "{% if kolla_enable_ovn | default(False) | bool %}ovn{% else %}openvswitch{% endif %}"
 
 # Valid options are [ internal, infoblox ]
 #neutron_ipam_driver: "internal"
