@@ -169,6 +169,8 @@
     name: kayobe-seed-centos8s
     parent: kayobe-seed-base
     nodeset: kayobe-centos8s
+    vars:
+      is_centos_stream: true
 
 - job:
     name: kayobe-overcloud-host-configure-base
