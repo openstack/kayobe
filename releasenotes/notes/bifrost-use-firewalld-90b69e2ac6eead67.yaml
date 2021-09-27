@@ -1,0 +1,16 @@
+---
+features:
+  - |
+    Adds a new ``kolla_bifrost_use_firewalld`` variable used to define whether
+    Bifrost uses firewalld, which is now disabled by default.
+upgrade:
+  - |
+    Bifrost is now configured to avoid using firewalld, to prevent conflicts
+    with firewall rules set by Kayobe on the seed host. The existing behaviour
+    can be retained by setting ``kolla_bifrost_use_firewalld`` to ``True`` in
+    ``bifrost.yml``.
+fixes:
+  - |
+    Prevents Bifrost from using firewalld to avoid conflicts with firewall
+    rules set by Kayobe on the seed host. See `story 2009252
+    <https://storyboard.openstack.org/#!/story/2009252>`__ for more details.

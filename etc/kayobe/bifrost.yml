@@ -11,6 +11,10 @@
 # {{ openstack_branch }}.
 #kolla_bifrost_source_version:
 
+# Whether Bifrost uses firewalld. Default value is false to avoid conflicting
+# with iptables rules configured on the seed host by Kayobe.
+#kolla_bifrost_use_firewalld:
+
 # Firewalld zone used by Bifrost. Default is "trusted", to avoid blocking other
 # services running on the seed host.
 #kolla_bifrost_firewalld_internal_zone:
