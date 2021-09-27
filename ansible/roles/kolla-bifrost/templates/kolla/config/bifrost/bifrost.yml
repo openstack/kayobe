@@ -64,6 +64,9 @@ ipa_ramdisk_upstream_checksum_url: "{{ kolla_bifrost_ipa_ramdisk_checksum_url }}
 # Algorithm of checksum of Ironic Python Agent (IPA) ramdisk image.
 ipa_ramdisk_upstream_checksum_algo: "{{ kolla_bifrost_ipa_ramdisk_checksum_algorithm }}"
 
+# Whether Bifrost uses firewalld.
+use_firewalld: "{{ kolla_bifrost_use_firewalld }}"
+
 # Firewalld zone used by Bifrost.
 firewalld_internal_zone: "{{ kolla_bifrost_firewalld_internal_zone }}"
 
