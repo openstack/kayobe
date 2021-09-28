@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Adds support for configuring active built-in tuned profile by using the
+    ``giovtorres.tuned`` Ansible role. This is only supported on CentOS.

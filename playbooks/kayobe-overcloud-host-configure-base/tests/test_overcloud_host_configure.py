@@ -197,3 +197,10 @@ def test_dnf_automatic(host):
     assert host.package("dnf-automatic").is_installed
     assert host.service("dnf-automatic.timer").is_enabled
     assert host.service("dnf-automatic.timer").is_running
+
+
+@pytest.mark.skipif(not _is_dnf(),
+                    reason="tuned profile setting only supported on CentOS 8")
+def test_tuned_profile_is_active(host):
+    tuned_output = host.check_output("tuned-adm active")
+    assert "throughput-performance" in tuned_output

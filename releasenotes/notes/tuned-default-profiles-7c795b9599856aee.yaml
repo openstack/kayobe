@@ -1,0 +1,9 @@
+---
+upgrade:
+  - |
+    Kayobe now applies a sensible ``tuned`` profile to each host by default.
+    This may need to be customised, for example if the seed node is not a
+    virtual machine. See the `documentation
+    <https://docs.openstack.org/kayobe/latest/configuration/reference/hosts.html#tuned>`_
+    and `story 2007853 <https://storyboard.openstack.org/#!/story/2007853>`__
+    for details.
