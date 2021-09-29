@@ -75,14 +75,16 @@ These symlinks can even be committed to the kayobe-config Git repository.
 Ansible Galaxy
 --------------
 
-Ansible Galaxy provides a means for sharing Ansible roles.  Kayobe
-configuration may provide a Galaxy requirements file that defines roles to be
-installed from Galaxy.  These roles may then be used by custom playbooks.
+Ansible Galaxy provides a means for sharing Ansible roles and collections.
+Kayobe configuration may provide a Galaxy requirements file that defines roles
+and collections to be installed from Galaxy.  These roles and collections may
+then be used by custom playbooks.
 
-Galaxy role dependencies may be defined in
-``$KAYOBE_CONFIG_PATH/ansible/requirements.yml``.  These roles will be
-installed in ``$KAYOBE_CONFIG_PATH/ansible/roles/`` when bootstrapping the
-Ansible control host::
+Galaxy dependencies may be defined in
+``$KAYOBE_CONFIG_PATH/ansible/requirements.yml``.  These roles and collections
+will be installed in ``$KAYOBE_CONFIG_PATH/ansible/roles/`` and
+``$KAYOBE_CONFIG_PATH/ansible/collections`` when bootstrapping the Ansible
+control host::
 
     (kayobe) $ kayobe control host bootstrap
 
@@ -90,8 +92,8 @@ And updated when upgrading the Ansible control host::
 
     (kayobe) $ kayobe control host upgrade
 
-Example
-=======
+Example: roles
+==============
 
 The following example adds a ``foo.yml`` playbook to a set of kayobe
 configuration.  The playbook uses a Galaxy role, ``bar.baz``.
@@ -116,10 +118,50 @@ Here is the playbook, ``ansible/foo.yml``::
 Here is the Galaxy requirements file, ``ansible/requirements.yml``::
 
     ---
-    - bar.baz
+    roles:
+      - bar.baz
 
 We should first install the Galaxy role dependencies, to download the
 ``bar.baz`` role::
+
+    (kayobe) $ kayobe control host bootstrap
+
+Then, to run the ``foo.yml`` playbook::
+
+    (kayobe) $ kayobe playbook run $KAYOBE_CONFIG_PATH/ansible/foo.yml
+
+Example: collections
+====================
+
+The following example adds a ``foo.yml`` playbook to a set of kayobe
+configuration.  The playbook uses a role from a Galaxy collection,
+``bar.baz.qux``.
+
+Here is the kayobe configuration repository structure::
+
+    etc/kayobe/
+        ansible/
+            collections/
+            foo.yml
+            requirements.yml
+        bifrost.yml
+    ...
+
+Here is the playbook, ``ansible/foo.yml``::
+
+    ---
+    - hosts: controllers
+      roles:
+        - name: bar.baz.qux
+
+Here is the Galaxy requirements file, ``ansible/requirements.yml``::
+
+    ---
+    collections:
+      - bar.baz
+
+We should first install the Galaxy dependencies, to download the ``bar.baz``
+collection::
 
     (kayobe) $ kayobe control host bootstrap
 

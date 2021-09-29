@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Adds support for installing Ansible collections. See `story 2008391
+    <https://storyboard.openstack.org/#!/story/2008391>`__ for details.

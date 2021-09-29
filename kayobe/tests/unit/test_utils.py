@@ -26,23 +26,72 @@ from kayobe import utils
 class TestCase(unittest.TestCase):
 
     @mock.patch.object(utils, "run_command")
-    def test_galaxy_install(self, mock_run):
-        utils.galaxy_install("/path/to/role/file", "/path/to/roles")
-        mock_run.assert_called_once_with(["ansible-galaxy", "install",
+    def test_galaxy_role_install(self, mock_run):
+        utils.galaxy_role_install("/path/to/role/file", "/path/to/roles")
+        mock_run.assert_called_once_with(["ansible-galaxy", "role", "install",
                                           "--roles-path", "/path/to/roles",
                                           "--role-file", "/path/to/role/file"])
 
     @mock.patch.object(utils, "run_command")
-    def test_galaxy_install_failure(self, mock_run):
+    def test_galaxy_role_install_failure(self, mock_run):
         mock_run.side_effect = subprocess.CalledProcessError(1, "command")
         self.assertRaises(SystemExit,
-                          utils.galaxy_install, "/path/to/role/file",
+                          utils.galaxy_role_install, "/path/to/role/file",
                           "/path/to/roles")
+
+    @mock.patch.object(utils, "run_command")
+    @mock.patch.object(utils, "read_yaml_file")
+    def test_galaxy_collection_install(self, mock_read, mock_run):
+        mock_read.return_value = {"collections": []}
+        utils.galaxy_collection_install("/path/to/collection/file",
+                                        "/path/to/collections")
+        mock_run.assert_called_once_with(["ansible-galaxy", "collection",
+                                          "install", "--collections-path",
+                                          "/path/to/collections",
+                                          "--requirements-file",
+                                          "/path/to/collection/file"])
+
+    @mock.patch.object(utils, "run_command")
+    @mock.patch.object(utils, "read_yaml_file")
+    def test_galaxy_collection_install_failure(self, mock_read, mock_run):
+        mock_read.return_value = {"collections": []}
+        mock_run.side_effect = subprocess.CalledProcessError(1, "command")
+        self.assertRaises(SystemExit,
+                          utils.galaxy_collection_install,
+                          "/path/to/collection/file", "/path/to/collections")
+
+    @mock.patch.object(utils, "run_command")
+    @mock.patch.object(utils, "read_file")
+    def test_galaxy_collection_read_failure(self, mock_read, mock_run):
+        mock_read.side_effect = IOError
+        self.assertRaises(SystemExit,
+                          utils.galaxy_collection_install,
+                          "/path/to/collection/file", "/path/to/collections")
+
+    @mock.patch.object(utils, "run_command")
+    @mock.patch.object(utils, "read_yaml_file")
+    def test_galaxy_collection_no_collections(self, mock_read, mock_run):
+        mock_read.return_value = {"roles": []}
+        utils.galaxy_collection_install("/path/to/collection/file",
+                                        "/path/to/collections")
+        mock_run.assert_called_once_with(["ansible-galaxy", "collection",
+                                          "install", "--collections-path",
+                                          "/path/to/collections",
+                                          "--requirements-file",
+                                          "/path/to/collection/file"])
+
+    @mock.patch.object(utils, "run_command")
+    @mock.patch.object(utils, "read_yaml_file")
+    def test_galaxy_collection_legacy_format(self, mock_read, mock_run):
+        mock_read.return_value = []
+        utils.galaxy_collection_install("/path/to/collection/file",
+                                        "/path/to/collections")
+        self.assertFalse(mock_run.called)
 
     @mock.patch.object(utils, "run_command")
     def test_galaxy_remove(self, mock_run):
         utils.galaxy_remove(["role1", "role2"], "/path/to/roles")
-        mock_run.assert_called_once_with(["ansible-galaxy", "remove",
+        mock_run.assert_called_once_with(["ansible-galaxy", "role", "remove",
                                           "--roles-path", "/path/to/roles",
                                           "role1", "role2"])
 
@@ -50,7 +99,7 @@ class TestCase(unittest.TestCase):
     def test_galaxy_remove_failure(self, mock_run):
         mock_run.side_effect = subprocess.CalledProcessError(1, "command")
         self.assertRaises(SystemExit,
-                          utils.galaxy_install, ["role1", "role2"],
+                          utils.galaxy_remove, ["role1", "role2"],
                           "/path/to/roles")
 
     @mock.patch.object(utils, "read_file")

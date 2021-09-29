@@ -35,18 +35,21 @@ class TestApp(cliff.app.App):
 class TestCase(unittest.TestCase):
 
     @mock.patch.object(ansible, "install_galaxy_roles", autospec=True)
+    @mock.patch.object(ansible, "install_galaxy_collections", autospec=True)
     @mock.patch.object(ansible, "passwords_yml_exists", autospec=True)
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
     def test_control_host_bootstrap(self, mock_run, mock_passwords,
-                                    mock_install):
+                                    mock_install_collections,
+                                    mock_install_roles):
         mock_passwords.return_value = False
         command = commands.ControlHostBootstrap(TestApp(), [])
         parser = command.get_parser("test")
         parsed_args = parser.parse_args([])
         result = command.run(parsed_args)
         self.assertEqual(0, result)
-        mock_install.assert_called_once_with(parsed_args)
+        mock_install_roles.assert_called_once_with(parsed_args)
+        mock_install_collections.assert_called_once_with(parsed_args)
         expected_calls = [
             mock.call(
                 mock.ANY,
@@ -63,20 +66,23 @@ class TestCase(unittest.TestCase):
         self.assertEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(ansible, "install_galaxy_roles", autospec=True)
+    @mock.patch.object(ansible, "install_galaxy_collections", autospec=True)
     @mock.patch.object(ansible, "passwords_yml_exists", autospec=True)
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
     @mock.patch.object(commands.KollaAnsibleMixin,
                        "run_kolla_ansible_overcloud")
     def test_control_host_bootstrap_with_passwords(
-            self, mock_kolla_run, mock_run, mock_passwords, mock_install):
+            self, mock_kolla_run, mock_run, mock_passwords,
+            mock_install_collections, mock_install_roles):
         mock_passwords.return_value = True
         command = commands.ControlHostBootstrap(TestApp(), [])
         parser = command.get_parser("test")
         parsed_args = parser.parse_args([])
         result = command.run(parsed_args)
         self.assertEqual(0, result)
-        mock_install.assert_called_once_with(parsed_args)
+        mock_install_roles.assert_called_once_with(parsed_args)
+        mock_install_collections.assert_called_once_with(parsed_args)
         expected_calls = [
             mock.call(
                 mock.ANY,
@@ -106,16 +112,21 @@ class TestCase(unittest.TestCase):
         self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
 
     @mock.patch.object(ansible, "install_galaxy_roles", autospec=True)
+    @mock.patch.object(ansible, "install_galaxy_collections", autospec=True)
     @mock.patch.object(ansible, "prune_galaxy_roles", autospec=True)
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
-    def test_control_host_upgrade(self, mock_run, mock_prune, mock_install):
+    def test_control_host_upgrade(self, mock_run, mock_prune,
+                                  mock_install_roles,
+                                  mock_install_collections):
         command = commands.ControlHostUpgrade(TestApp(), [])
         parser = command.get_parser("test")
         parsed_args = parser.parse_args([])
         result = command.run(parsed_args)
         self.assertEqual(0, result)
-        mock_install.assert_called_once_with(parsed_args, force=True)
+        mock_install_roles.assert_called_once_with(parsed_args, force=True)
+        mock_install_collections.assert_called_once_with(parsed_args,
+                                                         force=True)
         mock_prune.assert_called_once_with(parsed_args)
         expected_calls = [
             mock.call(

@@ -72,9 +72,9 @@ def _get_base_path():
     return os.path.join(os.path.realpath(__file__), "..")
 
 
-def galaxy_install(role_file, roles_path, force=False):
+def galaxy_role_install(role_file, roles_path, force=False):
     """Install Ansible roles via Ansible Galaxy."""
-    cmd = ["ansible-galaxy", "install"]
+    cmd = ["ansible-galaxy", "role", "install"]
     cmd += ["--roles-path", roles_path]
     cmd += ["--role-file", role_file]
     if force:
@@ -87,10 +87,29 @@ def galaxy_install(role_file, roles_path, force=False):
         sys.exit(e.returncode)
 
 
+def galaxy_collection_install(requirements_file, collections_path,
+                              force=False):
+    requirements = read_yaml_file(requirements_file)
+    if not isinstance(requirements, dict):
+        # Handle legacy role list format, which causes the command to fail.
+        return
+    cmd = ["ansible-galaxy", "collection", "install"]
+    cmd += ["--collections-path", collections_path]
+    cmd += ["--requirements-file", requirements_file]
+    if force:
+        cmd += ["--force"]
+    try:
+        run_command(cmd)
+    except subprocess.CalledProcessError as e:
+        LOG.error("Failed to install Ansible collections from %s via Ansible "
+                  "Galaxy: returncode %d", requirements_file, e.returncode)
+        sys.exit(e.returncode)
+
+
 def galaxy_remove(roles_to_remove, roles_path):
 
     """Remove Ansible roles via Ansible Galaxy."""
-    cmd = ["ansible-galaxy", "remove"]
+    cmd = ["ansible-galaxy", "role", "remove"]
     cmd += ["--roles-path", roles_path]
     cmd += roles_to_remove
     try:

@@ -232,6 +232,7 @@ class ControlHostBootstrap(KayobeAnsibleMixin, KollaAnsibleMixin, VaultMixin,
     def take_action(self, parsed_args):
         self.app.LOG.debug("Bootstrapping Kayobe Ansible control host")
         ansible.install_galaxy_roles(parsed_args)
+        ansible.install_galaxy_collections(parsed_args)
         playbooks = _build_playbook_list("bootstrap")
         self.run_kayobe_playbooks(parsed_args, playbooks, ignore_limit=True)
 
@@ -271,8 +272,9 @@ class ControlHostUpgrade(KayobeAnsibleMixin, VaultMixin, Command):
         # Remove roles that are no longer used. Do this before installing new
         # ones, just in case a custom role dependency includes any.
         ansible.prune_galaxy_roles(parsed_args)
-        # Use force to upgrade roles.
+        # Use force to upgrade roles and collections.
         ansible.install_galaxy_roles(parsed_args, force=True)
+        ansible.install_galaxy_collections(parsed_args, force=True)
         playbooks = _build_playbook_list("bootstrap")
         self.run_kayobe_playbooks(parsed_args, playbooks, ignore_limit=True)
         playbooks = _build_playbook_list("kolla-ansible")
