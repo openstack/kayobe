@@ -112,6 +112,14 @@ Update the pip package::
 
     (kayobe) $ pip install -U pip
 
+.. note::
+
+   When updating Ansible above version 2.9.x, first uninstall it with ``pip
+   uninstall ansible``. A newer version will be installed with the next
+   command, as a Kayobe dependency. If Ansible 2.10.x was installed and you
+   want to use a newer version, also uninstall the ``ansible-base`` package
+   with ``pip uninstall ansible-base``.
+
 If upgrading to the latest version of Kayobe::
 
     (kayobe) $ pip install -U kayobe

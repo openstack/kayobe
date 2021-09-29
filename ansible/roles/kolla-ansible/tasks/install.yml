@@ -54,6 +54,36 @@
   with_items:
     - { name: pip }
 
+- block:
+    - name: Gather list of installed Python packages
+      pip_package_info:
+        clients: "{{ kolla_ansible_pip }}"
+      register: pip_packages
+
+    # Upgrading directly from Ansible 2.9 to Ansible 2.10 or from Ansible 2.10
+    # to Ansible 4 is known to cause problems. Uninstall Ansible first if its
+    # version is lower than 4.0.0. Although 2.10 is allowed by version limits,
+    # this is needed even it is present from Wallaby, because we request
+    # `state: latest`.
+    - name: Uninstall Ansible if an old version is present
+      pip:
+        name: ansible
+        state: absent
+        virtualenv: "{{ kolla_ansible_venv }}"
+        virtualenv_python: "{{ kolla_ansible_venv_python }}"
+      when:
+        - "'ansible' in pip_packages.packages[kolla_ansible_pip]"
+        - pip_packages.packages[kolla_ansible_pip].ansible[0].version is version('4.0.0', '<')
+
+    - name: Uninstall ansible-base
+      pip:
+        name: ansible-base
+        state: absent
+        virtualenv: "{{ kolla_ansible_venv }}"
+        virtualenv_python: "{{ kolla_ansible_venv_python }}"
+  vars:
+    kolla_ansible_pip: "{{ kolla_ansible_venv }}/bin/pip"
+
 - name: Ensure required Python packages are installed
   vars:
     kolla_ansible_packages:
@@ -67,7 +97,7 @@
       # Limit the version of ansible used by kolla-ansible to avoid new
       # releases from breaking tested code. Changes to this limit should be
       # tested.
-      - ansible>=2.9,<2.11,!=2.9.8,!=2.9.12
+      - ansible>=2.10.0,<5.0
       - selinux
   pip:
     name: "{{ (kolla_ansible_packages + kolla_ansible_venv_extra_requirements) | select | list }}"

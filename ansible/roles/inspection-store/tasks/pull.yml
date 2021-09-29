@@ -3,6 +3,7 @@
   docker_image:
     name: "{{ item.value.image }}"
     repository: "{{ item.value.image }}"
+    source: pull
     state: present
   with_dict: "{{ inspection_store_services }}"
   when:

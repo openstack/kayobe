@@ -18,17 +18,20 @@
       register: platforms
 
     - name: Discover local Docker images
-      docker_image_facts:
+      docker_image_info:
         name: "molecule_local/{{ item.item.name }}"
       with_items: "{{ platforms.results }}"
       register: docker_images
 
     - name: Build an Ansible compatible image
       docker_image:
-        path: "{{ molecule_ephemeral_directory }}"
         name: "molecule_local/{{ item.item.image }}"
-        dockerfile: "{{ item.item.dockerfile | default(item.invocation.module_args.dest) }}"
-        force: "{{ item.item.force | default(true) }}"
+        source: build
+        build:
+          path: "{{ molecule_ephemeral_directory }}"
+          dockerfile: "{{ item.item.dockerfile | default(item.invocation.module_args.dest) }}"
+        force_source: "{{ item.item.force | default(true) }}"
+        force_tag: "{{ item.item.force | default(true) }}"
       with_items: "{{ platforms.results }}"
       when: platforms.changed or docker_images.results | map(attribute='images') | select('equalto', []) | list | count >= 0
 
