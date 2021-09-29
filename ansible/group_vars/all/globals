@@ -51,3 +51,14 @@ os_distribution: "centos"
 # OS release. Valid options are "8-stream" when os_distribution is "centos", or
 # "focal" when os_distribution is "ubuntu".
 os_release: "{{ '8-stream' if os_distribution == 'centos' else 'focal' }}"
+
+###############################################################################
+# Ansible configuration.
+
+# Filter to apply to the setup module when gathering facts. Default is to not
+# specify a filter.
+kayobe_ansible_setup_filter: "{{ omit }}"
+
+# Gather subset to apply to the setup module when gathering facts. Default is
+# to not specify a gather subset.
+kayobe_ansible_setup_gather_subset: "{{ omit }}"
