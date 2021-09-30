@@ -77,7 +77,7 @@ affect :ref:`Kolla Ansible configuration <configuration-kolla-ansible-global>`.
     ``debian``, or ``ubuntu``. Default is ``{{ os_distribution }}``.
 ``kolla_install_type``
     Kolla container image type: ``binary`` or ``source``. Default is
-    ``binary``.
+    ``source``.
 ``kolla_docker_namespace``
     Docker namespace to use for Kolla images. Default is ``kolla``.
 ``kolla_docker_registry``

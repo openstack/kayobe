@@ -1,0 +1,14 @@
+---
+upgrade:
+  - |
+    Updates the default image type to ``source``. Users wishing to build and
+    deploy ``binary`` type images should set ``kolla_install_type`` to
+    ``binary`` in ``kolla.yml``. This change is to reflect the reality that
+    source images are tested more thoroughly and we (as OpenStack community)
+    have better control over them.
+issues:
+  - |
+    Switching an existing deployment from ``binary`` to ``source`` images can
+    break Horizon, which can be resolved by flushing contents of ``memcached``
+    with ``docker restart memcached``. See `Kolla Ansible bug 1886549
+    <https://bugs.launchpad.net/kolla-ansible/+bug/1886549>`__ for details.

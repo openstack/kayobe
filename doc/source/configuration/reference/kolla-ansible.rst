@@ -116,7 +116,7 @@ accessed.
     Kolla base container image distribution. Default is ``centos``.
 ``kolla_install_type``
     Kolla container image type: ``binary`` or ``source``. Default is
-    ``binary``.
+    ``source``.
 ``kolla_docker_registry``
     URL of docker registry to use for Kolla images. Default is not set, in
     which case Dockerhub will be used.
