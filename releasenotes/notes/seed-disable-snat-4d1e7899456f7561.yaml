@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Adds a new variable ``seed_enable_snat`` that allows users to enable SNAT
+    service on the seed. The default value is ``false``.
