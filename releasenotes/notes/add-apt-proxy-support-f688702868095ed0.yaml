@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds support for configuring apt's proxy setting for Ubuntu hosts.
+    See `story 2009035
+    <https://storyboard.openstack.org/#!/story/2009035>`_ for details.
