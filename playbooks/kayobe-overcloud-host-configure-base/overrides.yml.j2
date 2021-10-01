@@ -46,26 +46,31 @@ test_net_eth_vlan_rules:
   - from: 192.168.35.0/24
     table: kayobe-test-route-table
 {% endif %}
+test_net_eth_vlan_zone: test-zone1
 
 # br0: bridge with ports dummy3, dummy4.
 test_net_bridge_cidr: 192.168.36.0/24
 test_net_bridge_interface: br0
 test_net_bridge_bridge_ports: [dummy3, dummy4]
+test_net_bridge_zone: test-zone2
 
 # br0.43: VLAN subinterface of br0.
 test_net_bridge_vlan_cidr: 192.168.37.0/24
 test_net_bridge_vlan_interface: "{% raw %}{{ test_net_bridge_interface }}.{{ test_net_bridge_vlan_vlan }}{% endraw %}"
 test_net_bridge_vlan_vlan: 43
+test_net_bridge_vlan_zone: test-zone3
 
 # bond0: bond with slaves dummy5, dummy6.
 test_net_bond_cidr: 192.168.38.0/24
 test_net_bond_interface: bond0
 test_net_bond_bond_slaves: [dummy5, dummy6]
+test_net_bond_zone: test-zone3
 
 # bond0.44: VLAN subinterface of bond0.
 test_net_bond_vlan_cidr: 192.168.39.0/24
 test_net_bond_vlan_interface: "{% raw %}{{ test_net_bond_interface }}.{{ test_net_bond_vlan_vlan }}{% endraw %}"
 test_net_bond_vlan_vlan: 44
+test_net_bond_vlan_zone: public
 
 # Define a software RAID device consisting of two loopback devices.
 controller_mdadm_arrays:
@@ -130,3 +135,21 @@ chrony_ntp_servers:
     options:
       - option: maxsources
         val: 2
+
+# Enable firewalld (CentOS only).
+controller_firewalld_enabled: true
+controller_firewalld_zones:
+  - zone: test-zone1
+  - zone: test-zone2
+  - zone: test-zone3
+controller_firewalld_default_zone:
+controller_firewalld_rules:
+  - port: 8080/tcp
+    zone: test-zone1
+  - service: http
+    zone: test-zone2
+  - icmp_block: echo-request
+    zone: test-zone3
+  - service: cockpit
+    state: disabled
+    zone: public

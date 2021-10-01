@@ -5,9 +5,15 @@
 
 import ipaddress
 import os
+import time
 
 import distro
 import pytest
+
+
+def _is_firewalld_supported():
+    info = distro.linux_distribution()
+    return info[0].startswith('CentOS')
 
 
 def _is_dnf():
@@ -204,3 +210,75 @@ def test_dnf_automatic(host):
 def test_tuned_profile_is_active(host):
     tuned_output = host.check_output("tuned-adm active")
     assert "throughput-performance" in tuned_output
+
+
+@pytest.mark.skipif(not _is_firewalld_supported(),
+                    reason="Firewalld only supported on CentOS")
+def test_firewalld_running(host):
+    assert host.package("firewalld").is_installed
+    assert host.service("firewalld.service").is_enabled
+    assert host.service("firewalld.service").is_running
+
+
+@pytest.mark.skipif(not _is_firewalld_supported(),
+                    reason="Firewalld only supported on CentOS")
+def test_firewalld_zones(host):
+    # Verify that interfaces are on correct zones.
+    expected_zones = {
+        'dummy2.42': 'test-zone1',
+        'br0': 'test-zone2',
+        'br0.43': 'test-zone3',
+        'bond0': 'test-zone3',
+        'bond0.44': 'public'
+    }
+    for interface, expected_zone in expected_zones.items():
+        with host.sudo():
+            zone = host.check_output(
+                "firewall-cmd --get-zone-of-interface %s", interface)
+            assert zone == expected_zone
+
+            zone = host.check_output(
+                "firewall-cmd --permanent --get-zone-of-interface %s",
+                interface)
+            assert zone == expected_zone
+
+
+@pytest.mark.skipif(not _is_firewalld_supported(),
+                    reason="Firewalld only supported on CentOS")
+def test_firewalld_rules(host):
+    # Verify that expected rules are present.
+    expected_info = {
+        'test-zone1': [
+            '  services: ',
+            '  ports: 8080/tcp',
+            '  icmp-blocks: ',
+        ],
+        'test-zone2': [
+            '  services: http',
+            '  ports: ',
+            '  icmp-blocks: ',
+        ],
+        'test-zone3': [
+            '  services: ',
+            '  ports: ',
+            '  icmp-blocks: echo-request',
+        ],
+        'public': [
+            '  services: dhcpv6-client ssh',
+            '  ports: ',
+            '  icmp-blocks: ',
+        ],
+    }
+
+    for zone, expected_lines in expected_info.items():
+        with host.sudo():
+            info = host.check_output(
+                "firewall-cmd --info-zone %s", zone)
+            info = info.splitlines()
+            perm_info = host.check_output(
+                "firewall-cmd --permanent --info-zone %s", zone)
+            perm_info = perm_info.splitlines()
+
+        for expected_line in expected_lines:
+            assert expected_line in info
+            assert expected_line in perm_info
