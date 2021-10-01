@@ -1,6 +1,6 @@
 ---
 - name: Include OS family-specific variables
-  include_vars: "{{ ansible_os_family }}.yml"
+  include_vars: "{{ ansible_facts.os_family }}.yml"
 
 - name: Ensure EPEL repo is installed
   package:
@@ -8,7 +8,7 @@
     state: present
   become: True
   when:
-    - ansible_os_family == 'RedHat'
+    - ansible_facts.os_family == 'RedHat'
     - kolla_ansible_install_epel | bool
 
 - name: Ensure required packages are installed
@@ -22,8 +22,8 @@
   file:
     path: "{{ kolla_ansible_source_path | dirname }}"
     state: directory
-    owner: "{{ ansible_user_uid }}"
-    group: "{{ ansible_user_gid }}"
+    owner: "{{ ansible_facts.user_uid }}"
+    group: "{{ ansible_facts.user_gid }}"
   become: True
   when: kolla_ansible_ctl_install_type == 'source'
 
@@ -38,8 +38,8 @@
   file:
     path: "{{ kolla_ansible_venv | dirname }}"
     state: directory
-    owner: "{{ ansible_user_uid }}"
-    group: "{{ ansible_user_gid }}"
+    owner: "{{ ansible_facts.user_uid }}"
+    group: "{{ ansible_facts.user_gid }}"
   become: True
   when: kolla_ansible_venv is not none
 

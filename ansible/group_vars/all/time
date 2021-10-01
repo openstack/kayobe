@@ -5,4 +5,4 @@
 # Timezone.
 
 # Name of the local timezone.
-timezone: "{{ ansible_date_time.tz }}"
+timezone: "{{ ansible_facts.date_time.tz }}"

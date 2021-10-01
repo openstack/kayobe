@@ -3,8 +3,8 @@
   file:
     path: "{{ ipa_images_cache_path }}"
     state: directory
-    owner: "{{ ansible_user_uid }}"
-    group: "{{ ansible_user_gid }}"
+    owner: "{{ ansible_facts.user_uid }}"
+    group: "{{ ansible_facts.user_gid }}"
   become: True
 
 - name: Ensure Ironic Python Agent (IPA) images are present
@@ -71,7 +71,7 @@
 
     - name: Set a fact containing the Ironic Python Agent (IPA) kernel image
       set_fact:
-        ipa_images_kernel_openstack_image: "{{ openstack_image if openstack_image else {} }}"
+        ipa_images_kernel_openstack_image: "{{ ansible_facts.openstack_image if ansible_facts.openstack_image else {} }}"
 
     - name: Gather facts about Ironic Python Agent (IPA) ramdisk image
       os_image_facts:
@@ -83,7 +83,7 @@
 
     - name: Set a fact containing the Ironic Python Agent (IPA) ramdisk image
       set_fact:
-        ipa_images_ramdisk_openstack_image: "{{ openstack_image if openstack_image else {} }}"
+        ipa_images_ramdisk_openstack_image: "{{ ansible_facts.openstack_image if ansible_facts.openstack_image else {} }}"
 
     # The os_image module will get confused if there are multiple images with the
     # same name, so rename the old images. They will still be accessible via UUID.

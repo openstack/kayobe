@@ -21,7 +21,7 @@
     - block:
         - name: Gather facts
           setup:
-          when: not module_setup | default(false)
+          when: not ansible_facts.module_setup | default(false)
 
         - name: Ensure the Python virtualenv package is installed
           package:
@@ -37,7 +37,7 @@
             # Site packages are required for using the dnf python module, which
             # is not available via PyPI.
             virtualenv_site_packages: True
-            virtualenv_python: "python3.{{ ansible_python.version.minor }}"
+            virtualenv_python: "python3.{{ ansible_facts.python.version.minor }}"
           become: True
 
         - name: Ensure kolla-ansible virtualenv has docker SDK for python installed
@@ -55,7 +55,7 @@
             virtualenv: "{{ kolla_ansible_target_venv }}"
           become: True
           when:
-            - ansible_os_family == 'RedHat'
+            - ansible_facts.os_family == 'RedHat'
 
         - name: Ensure kolla-ansible virtualenv has correct ownership
           file:
