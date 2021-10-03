@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fixes an issue with ``systemd-networkd`` configuration for VLAN interfaces
+    when the interface is untagged.

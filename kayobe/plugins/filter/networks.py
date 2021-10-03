@@ -536,6 +536,14 @@ def net_is_vlan(context, name, inventory_hostname=None):
 
 
 @jinja2.contextfilter
+def net_is_vlan_interface(context, name, inventory_hostname=None):
+    device = get_and_validate_interface(context, name, inventory_hostname)
+    # Use a heuristic to match conventional VLAN names, ending with a
+    # period and a numerical extension to an interface name
+    return re.match(r"^[a-zA-Z0-9_\-]+\.[1-9][\d]{0,3}$", device)
+
+
+@jinja2.contextfilter
 def net_select_ethers(context, names, inventory_hostname=None):
     return [name for name in names
             if net_is_ether(context, name, inventory_hostname)]
@@ -557,6 +565,12 @@ def net_select_bonds(context, names, inventory_hostname=None):
 def net_select_vlans(context, names, inventory_hostname=None):
     return [name for name in names
             if net_is_vlan(context, name, inventory_hostname)]
+
+
+@jinja2.contextfilter
+def net_select_vlan_interfaces(context, names, inventory_hostname=None):
+    return [name for name in names
+            if net_is_vlan_interface(context, name, inventory_hostname)]
 
 
 @jinja2.contextfilter
