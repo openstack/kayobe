@@ -526,6 +526,7 @@ class TestCase(unittest.TestCase):
             'resmo.ntp',
             'stackhpc.ntp',
             'stackhpc.os-shade',
+            'yatesr.timezone',
         ]
         mock_remove.assert_called_once_with(expected_roles,
                                             "ansible/roles")
