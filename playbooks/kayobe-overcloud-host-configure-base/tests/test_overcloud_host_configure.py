@@ -12,7 +12,7 @@ import pytest
 
 def _is_dnf():
     info = distro.linux_distribution()
-    return info[0] == 'CentOS Linux' and info[1].startswith('8')
+    return info[0].startswith('CentOS') and info[1].startswith('8')
 
 
 def test_network_ethernet(host):
