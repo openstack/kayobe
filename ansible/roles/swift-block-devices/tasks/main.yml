@@ -15,8 +15,8 @@
       - parted
       - xfsprogs
     state: present
-    cache_valid_time: "{{ apt_cache_valid_time if ansible_os_family == 'Debian' else omit }}"
-    update_cache: "{{ True if ansible_os_family == 'Debian' else omit }}"
+    cache_valid_time: "{{ apt_cache_valid_time if ansible_facts.os_family == 'Debian' else omit }}"
+    update_cache: "{{ True if ansible_facts.os_family == 'Debian' else omit }}"
   become: True
   when: swift_block_devices | length > 0
 

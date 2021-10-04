@@ -1,6 +1,6 @@
 ---
 - name: Include OS family-specific variables
-  include_vars: "{{ ansible_os_family }}.yml"
+  include_vars: "{{ ansible_facts.os_family }}.yml"
 
 - name: Ensure EPEL repo is installed
   package:
@@ -8,7 +8,7 @@
     state: present
   become: True
   when:
-    - ansible_os_family == 'RedHat'
+    - ansible_facts.os_family == 'RedHat'
     - kolla_ansible_install_epel | bool
 
 - name: Ensure required packages are installed
@@ -16,16 +16,16 @@
     # NOTE(mgoddard): select non-empty packages.
     name: "{{ kolla_ansible_package_dependencies | select | list }}"
     state: present
-    cache_valid_time: "{{ apt_cache_valid_time if ansible_os_family == 'Debian' else omit }}"
-    update_cache: "{{ True if ansible_os_family == 'Debian' else omit }}"
+    cache_valid_time: "{{ apt_cache_valid_time if ansible_facts.os_family == 'Debian' else omit }}"
+    update_cache: "{{ True if ansible_facts.os_family == 'Debian' else omit }}"
   become: True
 
 - name: Ensure source code checkout parent directory exists
   file:
     path: "{{ kolla_ansible_source_path | dirname }}"
     state: directory
-    owner: "{{ ansible_user_uid }}"
-    group: "{{ ansible_user_gid }}"
+    owner: "{{ ansible_facts.user_uid }}"
+    group: "{{ ansible_facts.user_gid }}"
   become: True
   when: kolla_ansible_ctl_install_type == 'source'
 
@@ -40,8 +40,8 @@
   file:
     path: "{{ kolla_ansible_venv | dirname }}"
     state: directory
-    owner: "{{ ansible_user_uid }}"
-    group: "{{ ansible_user_gid }}"
+    owner: "{{ ansible_facts.user_uid }}"
+    group: "{{ ansible_facts.user_gid }}"
   become: True
   when: kolla_ansible_venv is not none
 
