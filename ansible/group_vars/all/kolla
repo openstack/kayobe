@@ -65,6 +65,11 @@ kolla_docker_namespace: "openstack.kolla"
 # Url of docker registry to use for Kolla images.
 kolla_docker_registry: "{{ docker_registry }}"
 
+# Whether docker should be configured to use an insecure registry for Kolla
+# images. Default is false, unless docker_registry_enabled is true and
+# docker_registry_enable_tls is false.
+kolla_docker_registry_insecure: "{{ docker_registry_enabled | bool and not docker_registry_enable_tls | bool }}"
+
 # Username to use to access a docker registry.
 kolla_docker_registry_username:
 

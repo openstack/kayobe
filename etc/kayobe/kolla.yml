@@ -75,6 +75,11 @@
 # Docker namespace to use for Kolla images. Default is 'kolla'.
 #kolla_docker_namespace:
 
+# Whether docker should be configured to use an insecure registry for Kolla
+# images. Default is false, unless docker_registry_enabled is true and
+# docker_registry_enable_tls is false.
+#kolla_docker_registry_insecure:
+
 # Username to use to access a docker registry. Default is not set, in which
 # case the registry will be used without authentication.
 #kolla_docker_registry_username:

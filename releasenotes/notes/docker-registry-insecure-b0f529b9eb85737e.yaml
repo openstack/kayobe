@@ -1,0 +1,14 @@
+---
+features:
+  - |
+    Adds a new variable ``kolla_docker_registry_insecure`` to configure whether
+    Docker should use an insecure registry for Kolla images.
+upgrade:
+  - |
+    The default configuration of Docker, as set by Kolla Ansible, has changed
+    to stop using an insecure registry for Kolla images. To avoid breaking
+    existing deployments, ``kolla_docker_registry_insecure`` is automatically
+    set to ``true`` if Kayobe is configured to deploy an insecure registry
+    service. If using an insecure registry not deployed by Kayobe, you will
+    need to set the value of ``kolla_docker_registry_insecure`` to ``true`` or
+    configure TLS for your registry.
