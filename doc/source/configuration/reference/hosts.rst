@@ -332,6 +332,98 @@ Network Configuration
 Configuration of host networking is covered in depth in
 :ref:`configuration-network`.
 
+Firewalld
+=========
+*tags:*
+  | ``firewall``
+
+.. note:: Firewalld is supported on CentOS systems only. Currently no
+          firewall is supported on Ubuntu.
+
+Firewalld can be used to provide a firewall on CentOS systems. Since the Xena
+release, Kayobe provides support for enabling or disabling firewalld, as well
+as defining zones and rules.
+
+The following variables can be used to set whether to enable firewalld:
+
+* ``seed_hypervisor_firewalld_enabled``
+* ``seed_firewalld_enabled``
+* ``compute_firewalld_enabled``
+* ``controller_firewalld_enabled``
+* ``monitoring_firewalld_enabled``
+* ``storage_firewalld_enabled``
+
+When firewalld is enabled, the following variables can be used to configure a
+list of zones to create. Each item is a dict containing a ``zone`` item:
+
+* ``seed_hypervisor_firewalld_zones``
+* ``seed_firewalld_zones``
+* ``compute_firewalld_zones``
+* ``controller_firewalld_zones``
+* ``monitoring_firewalld_zones``
+* ``storage_firewalld_zones``
+
+The following variables can be used to set a default zone. The default is
+unset, in which case the default zone will not be changed:
+
+* ``seed_hypervisor_firewalld_default_zone``
+* ``seed_firewalld_default_zone``
+* ``compute_firewalld_default_zone``
+* ``controller_firewalld_default_zone``
+* ``monitoring_firewalld_default_zone``
+* ``storage_firewalld_default_zone``
+
+The following variables can be used to set a list of rules to apply. Each item
+is a dict containing arguments to pass to the ``firewalld`` module. Arguments
+are omitted if not provided, with the following exceptions: ``offline``
+(default ``true``), ``permanent`` (default ``true``), ``state`` (default
+``enabled``):
+
+* ``seed_hypervisor_firewalld_rules``
+* ``seed_firewalld_rules``
+* ``compute_firewalld_rules``
+* ``controller_firewalld_rules``
+* ``monitoring_firewalld_rules``
+* ``storage_firewalld_rules``
+
+In the following example, firewalld is enabled on controllers. ``public`` and
+``internal`` zones are created, with their default rules disabled. TCP port
+8080 is open in the ``internal`` zone, and the ``http`` service is open in the
+``public`` zone:
+
+.. code-block:: yaml
+
+   controller_firewalld_enabled: true
+
+   controller_firewalld_zones:
+     - zone: public
+     - zone: internal
+
+   controller_firewalld_rules:
+     # Disable default rules in internal zone.
+     - service: dhcpv6-client
+       state: disabled
+       zone: internal
+     - service: samba-client
+       state: disabled
+       zone: internal
+     - service: ssh
+       state: disabled
+       zone: internal
+     # Disable default rules in public zone.
+     - service: dhcpv6-client
+       state: disabled
+       zone: public
+     - service: ssh
+       state: disabled
+       zone: public
+     # Enable TCP port 8080 in internal zone.
+     - port: 8080/tcp
+       zone: internal
+     # Enable the HTTP service in the public zone.
+     - service: http
+       zone: public
+
 Sysctls
 =======
 *tags:*

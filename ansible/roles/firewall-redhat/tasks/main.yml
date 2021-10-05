@@ -1,0 +1,3 @@
+---
+- name: Include tasks
+  include_tasks: "{{ 'enabled' if firewalld_enabled | bool else 'disabled' }}.yml"

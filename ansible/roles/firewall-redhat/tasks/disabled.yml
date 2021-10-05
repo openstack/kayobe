@@ -1,0 +1,18 @@
+---
+- name: Ensure firewalld service is stopped and disabled
+  service:
+    name: firewalld
+    enabled: false
+    state: stopped
+  become: true
+  register: firewalld_result
+  failed_when:
+    - firewalld_result is failed
+    # Ugh, Ansible's service module doesn't handle uninstalled services.
+    - "'Could not find the requested service' not in firewalld_result.msg"
+
+- name: Ensure firewalld package is uninstalled
+  package:
+    name: firewalld
+    state: absent
+  become: true

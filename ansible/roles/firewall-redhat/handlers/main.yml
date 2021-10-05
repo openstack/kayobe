@@ -1,0 +1,10 @@
+---
+- name: Restart firewalld
+  service:
+    name: firewalld
+    state: restarted
+  become: true
+
+- name: Check connectivity after firewalld restart
+  ping:
+  listen: Restart firewalld
