@@ -1,0 +1,11 @@
+---
+upgrade:
+  - |
+    Consistent network device naming is now enabled by default in overcloud
+    root disk images, by setting ``net.ifnames=1`` on the kernel command line.
+    This is performed using the ``DIB_BOOTLOADER_DEFAULT_CMDLINE``
+    diskimage-builder environment variable, which is set to ``nofb nomodeset
+    gfxpayload=text net.ifnames=1`` to preserve diskimage-builder defaults. To
+    restore existing behaviour, set ``DIB_BOOTLOADER_DEFAULT_CMDLINE`` to
+    ``nofb nomodeset gfxpayload=text net.ifnames=0`` in the
+    ``kolla_bifrost_dib_env_vars_extra`` dictionary.

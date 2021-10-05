@@ -39,8 +39,10 @@
 # DIB init element. Default is "cloud-init-datasources".
 #kolla_bifrost_dib_init_element:
 
-# DIB default environment variables. Default is {"DIB_CLOUD_INIT_DATASOURCES":
-# "ConfigDrive"}.
+# DIB default environment variables. Default is
+# {DIB_BOOTLOADER_DEFAULT_CMDLINE:
+# "nofb nomodeset gfxpayload=text net.ifnames=1",
+# "DIB_CLOUD_INIT_DATASOURCES": "ConfigDrive"}.
 #kolla_bifrost_dib_env_vars_default:
 
 # DIB additional environment variables. Default is none.
