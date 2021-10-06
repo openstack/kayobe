@@ -800,6 +800,18 @@ networks to attach.  Alternatively, the list may be
 completely overridden by setting ``seed_hypervisor_network_interfaces``.  These
 variables are found in ``${KAYOBE_CONFIG_PATH}/seed-hypervisor.yml``.
 
+Infra VMs
+---------
+
+By default, infrastructure VMs are attached to the following network:
+
+* overcloud admin network
+
+This list may be extended by setting ``infra_vm_extra_network_interfaces`` to a
+list of names of additional networks to attach.  Alternatively, the list may be
+completely overridden by setting ``infra_vm_network_interfaces``.  These
+variables are found in ``${KAYOBE_CONFIG_PATH}/infra-vms.yml``.
+
 Controllers
 -----------
 
