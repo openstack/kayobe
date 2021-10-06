@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an issue where cached seed VM images are unnecessarily owned by root.
+    See `story 2009277 <https://storyboard.openstack.org/#!/story/2009277>`__
+    for details.
