@@ -1,0 +1,9 @@
+---
+fixes:
+  - |
+    In production environments, the provision network may be separated from the
+    other networks, so in this case, if you want Bifrost's DHCP service provides
+    the correct gateway for the clients the ``inspection_gateway`` should be
+    used instead of the ``gateway`` attribute for the provision network. This
+    also avoids configuring the multiple IP gateways on a single host which
+    leads to unpredictable results.
