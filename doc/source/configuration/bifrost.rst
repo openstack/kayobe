@@ -181,7 +181,7 @@ Rather than needing to write a custom DIB element, we can use the
 ``biosdevname`` package:
 
 .. code-block:: yaml
-   :caption: ``ipa.yml``
+   :caption: ``bifrost.yml``
 
    kolla_bifrost_dib_packages:
      - "biosdevname"
