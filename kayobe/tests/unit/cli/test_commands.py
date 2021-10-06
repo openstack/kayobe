@@ -1000,6 +1000,7 @@ class TestCase(unittest.TestCase):
                     utils.get_data_files_path(
                         "ansible", "disable-selinux.yml"),
                     utils.get_data_files_path("ansible", "network.yml"),
+                    utils.get_data_files_path("ansible", "firewall.yml"),
                     utils.get_data_files_path("ansible", "sysctl.yml"),
                     utils.get_data_files_path("ansible", "disable-glean.yml"),
                     utils.get_data_files_path(

@@ -884,6 +884,7 @@ class InfraVMHostConfigure(KayobeAnsibleMixin, VaultMixin,
     * Configure user accounts, group associations, and authorised SSH keys.
     * Disable SELinux.
     * Configure the host's network interfaces.
+    * Configure a firewall.
     * Set sysctl parameters.
     * Disable bootstrap interface configuration.
     * Configure timezone.
@@ -915,7 +916,7 @@ class InfraVMHostConfigure(KayobeAnsibleMixin, VaultMixin,
         if parsed_args.wipe_disks:
             playbooks += _build_playbook_list("wipe-disks")
         playbooks += _build_playbook_list(
-            "users", "dev-tools", "disable-selinux", "network",
+            "users", "dev-tools", "disable-selinux", "network", "firewall",
             "sysctl", "disable-glean", "disable-cloud-init", "time",
             "mdadm", "luks", "lvm", "docker-devicemapper", "docker")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="infra-vms")
