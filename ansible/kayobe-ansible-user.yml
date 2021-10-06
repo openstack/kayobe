@@ -40,6 +40,9 @@
   gather_facts: no
   vars:
     ansible_user: "{{ bootstrap_user }}"
+    dnf_options:
+      - "-y"
+      - "{% if 'proxy' in dnf_config %}--setopt=proxy={{ dnf_config['proxy'] }}{% endif %}"
   tags:
     - ensure-python
   tasks:
@@ -49,8 +52,9 @@
       failed_when: false
       register: check_python
 
+    # TODO(priteau): Support apt proxy
     - name: Ensure python is installed
-      raw: test -e /usr/bin/apt && (sudo apt -y update && sudo apt install -y python3-minimal) || (sudo dnf -y install python3)
+      raw: "test -e /usr/bin/apt && (sudo apt -y update && sudo apt install -y python3-minimal) || (sudo dnf {{ dnf_options | select | join(' ') }} install python3)"
       when: check_python.rc != 0
 
 - name: Ensure the Kayobe Ansible user account exists
