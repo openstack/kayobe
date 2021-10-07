@@ -1,0 +1,55 @@
+---
+# NOTE(mgoddard): Don't reboot after disabling SELinux during CI testing, as
+# Ansible is run directly on the controller.
+disable_selinux_do_reboot: false
+
+# Use the OpenStack infra's Dockerhub mirror.
+docker_registry_mirrors:
+  - "http://{{ zuul_site_mirror_fqdn }}:8082/"
+
+kolla_source_url: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/kolla'].src_dir }}"
+kolla_source_version: "{{ zuul.projects['opendev.org/openstack/kolla'].checkout }}"
+kolla_ansible_source_url: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/kolla-ansible'].src_dir }}"
+kolla_ansible_source_version: "{{ zuul.projects['opendev.org/openstack/kolla-ansible'].checkout }}"
+kolla_openstack_logging_debug: True
+pip_upper_constraints_file: "/tmp/upper-constraints.txt"
+
+# The hosts used by Zuul may or may not have Virtualization Technology (VT)
+# enabled. Don't fail if it's disabled.
+libvirt_host_require_vt: false
+
+# Nested virtualisation is not working well in CI currently. Force the use of
+# QEMU.
+libvirt_vm_engine: "qemu"
+
+# Use the CI infra's PyPI mirror.
+pip_local_mirror: true
+pip_index_url: "http://{{ zuul_site_mirror_fqdn }}/pypi/simple"
+pip_trusted_hosts:
+  - "{{ zuul_site_mirror_fqdn }}"
+
+# Try with only a single VCPU, word on the street is that QEMU doesn't play
+# nicely with more than one.
+infra_vm_vcpus: 1
+
+# Reduce the memory footprint of the infra VM.
+infra_vm_memory_mb: "{{ 1 * 1024 }}"
+
+# Use cirros rather than CentOS for the VM.
+infra_vm_bootstrap_user: cirros
+infra_vm_root_image: /opt/cache/files/cirros-0.5.2-x86_64-disk.img
+
+# Cirros doesn't load cdom drivers by default.
+vm_configdrive_device: disk
+
+# Cirros is Debian family, but doesn't support path globs in
+# /etc/network/interfaces.
+configdrive_os_family: Debian
+configdrive_debian_network_interfaces_supports_glob: false
+
+# NOTE(mgoddard): CentOS 8 removes interfaces from their bridge during ifdown,
+# and removes the bridge if there are no interfaces left. When Kayobe bounces
+# veth links plugged into the bridge, it causes the bridge which has the IP we
+# are using for SSH to be removed. Use a dummy interface.
+aio_bridge_ports:
+  - dummy1

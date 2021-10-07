@@ -1,0 +1,57 @@
+---
+- hosts: primary
+  environment:
+    KAYOBE_CONFIG_SOURCE_PATH: "{{ kayobe_config_src_dir }}"
+  tasks:
+    # NOTE(mgoddard): The kayobe dev config by default expects a bridge -
+    # braio - to exist with an IP address of 192.168.33.4.
+    - import_role:
+        name: kayobe-network-bootstrap
+      vars:
+        bridge_interface: braio
+        bridge_ip: 192.168.33.4
+        bridge_prefix: 24
+        bridge_port_interface: dummy1
+
+    # NOTE(mgoddard): Configure IP forwarding and NAT to allow communication
+    # from the infra VM to the outside world.
+
+    # FIXME(mgoddard): use a libvirt network?
+    - name: Ensure NAT is configured
+      iptables:
+        chain: POSTROUTING
+        table: nat
+        out_interface: "{{ ansible_default_ipv4.interface }}"
+        jump: MASQUERADE
+      become: true
+
+    # FIXME(mgoddard): use a libvirt network?
+    - name: Ensure IP forwarding is enabled
+      sysctl:
+        name: net.ipv4.conf.all.forwarding
+        value: 1
+      become: true
+
+    - name: Ensure SELinux is disabled
+      selinux:
+        state: disabled
+      become: True
+      when: ansible_os_family == 'RedHat'
+
+    # NOTE(mgoddard): Use the name zz-overrides.yml to ensure this takes
+    # precedence over the standard config files.
+    - name: Ensure kayobe-config override config file exists
+      template:
+        src: overrides.yml.j2
+        dest: "{{ kayobe_config_src_dir }}/etc/kayobe/zz-overrides.yml"
+
+    - name: Ensure infra-vms group variables exist
+      template:
+        src: infra-vms-group-vars.j2
+        dest: "{{ kayobe_config_src_dir }}/etc/kayobe/inventory/group_vars/infra-vms/network-interfaces"
+
+    - name: Ensure kayobe is installed
+      shell:
+        cmd: dev/install.sh &> {{ logs_dir }}/ansible/install
+        chdir: "{{ kayobe_src_dir }}"
+        executable: /bin/bash
