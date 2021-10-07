@@ -15,6 +15,16 @@
       shell:
         cmd: "{{ kayobe_src_dir }}/dev/overcloud-deploy.sh > {{ logs_dir }}/ansible/overcloud-deploy"
 
+    - name: Return artifact to Zuul
+      zuul_return:
+        data:
+          zuul:
+            artifacts:
+              - name: "Unit Test Report"
+                url: "{{ inventory_hostname }}/test-results.html"
+                metadata:
+                  type: unit_test_report
+
     - name: Run testinfra tests
       command: "{{ testinfra_venv }}/bin/py.test {{ test_path }} --html={{ logs_dir }}/test-results.html --self-contained-html"
       environment:
@@ -29,13 +39,3 @@
         decrypt
         --vault-password-file {{ kayobe_venv }}/bin/kayobe-vault-password-helper
         {{ kayobe_config_src_dir }}/etc/kayobe/kolla/passwords.yml
-
-    - name: Return artifact to Zuul
-      zuul_return:
-        data:
-          zuul:
-            artifacts:
-              - name: "Unit Test Report"
-                url: "{{ inventory_hostname }}/test-results.html"
-                metadata:
-                  type: unit_test_report
