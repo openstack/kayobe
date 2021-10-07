@@ -60,7 +60,7 @@ kolla_base_distro: "{{ os_distribution }}"
 kolla_install_type: "source"
 
 # Docker namespace to use for Kolla images.
-kolla_docker_namespace: "kolla"
+kolla_docker_namespace: "openstack.kolla"
 
 # Url of docker registry to use for Kolla images.
 kolla_docker_registry: "{{ docker_registry }}"
