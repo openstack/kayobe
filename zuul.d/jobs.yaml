@@ -229,3 +229,25 @@
     name: kayobe-seed-vm-ubuntu-focal
     parent: kayobe-seed-vm-base
     nodeset: kayobe-ubuntu-focal
+
+- job:
+    name: kayobe-infra-vm-base
+    parent: kayobe-base
+    description: |
+      Base job for testing infra VM provisioning.
+
+      Configures the primary VM as a libvirt hypervisor, and provisions an
+      infra VM.
+    pre-run: playbooks/kayobe-infra-vm-base/pre.yml
+    run: playbooks/kayobe-infra-vm-base/run.yml
+    timeout: 5400
+
+- job:
+    name: kayobe-infra-vm-centos8s
+    parent: kayobe-infra-vm-base
+    nodeset: kayobe-centos8s
+
+- job:
+    name: kayobe-infra-vm-ubuntu-focal
+    parent: kayobe-infra-vm-base
+    nodeset: kayobe-ubuntu-focal
