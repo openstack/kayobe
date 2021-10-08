@@ -117,6 +117,7 @@
             grafana_local_admin_user_name: "grafana-admin"
             kolla_inspector_dhcp_pool_start: "1.2.3.4"
             kolla_inspector_dhcp_pool_end: "1.2.3.5"
+            kolla_inspector_netmask: "255.255.255.0"
             kolla_inspector_default_gateway: "1.2.3.6"
             # Enable everything.
             kolla_enable_aodh: True
@@ -242,7 +243,7 @@
               kolla_internal_fqdn_cert: "{{ temp_path }}/etc/kolla/certificates/internal.pem"
               openstack_logging_debug: True
               grafana_admin_username: "grafana-admin"
-              ironic_dnsmasq_dhcp_range: "1.2.3.4,1.2.3.5"
+              ironic_dnsmasq_dhcp_range: "1.2.3.4,1.2.3.5,255.255.255.0"
               ironic_dnsmasq_default_gateway: "1.2.3.6"
               # NOTE: The following options are not present in globals.yml.
               # It's possible this is related to the use of hostvars and
