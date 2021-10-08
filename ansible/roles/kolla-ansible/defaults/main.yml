@@ -165,6 +165,9 @@ kolla_inspector_dhcp_pool_start:
 # End of range of IP addresses for dnsmasq to allocate from.
 kolla_inspector_dhcp_pool_end:
 
+# The inspection network netmask.
+kolla_inspector_netmask:
+
 # Default gateway to use for inspection network.
 kolla_inspector_default_gateway:
 
