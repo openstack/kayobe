@@ -1,0 +1,12 @@
+---
+- name: Ensure APT is configured
+  hosts: seed-hypervisor:seed:overcloud
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  tags:
+    - apt
+  tasks:
+    - name: include apt role
+      include_role:
+        name: apt
+      when: ansible_facts.os_family == 'Debian'
