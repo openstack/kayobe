@@ -348,6 +348,7 @@ The following variables can be used to set whether to enable firewalld:
 
 * ``seed_hypervisor_firewalld_enabled``
 * ``seed_firewalld_enabled``
+* ``infra_vm_firewalld_enabled``
 * ``compute_firewalld_enabled``
 * ``controller_firewalld_enabled``
 * ``monitoring_firewalld_enabled``
@@ -358,6 +359,7 @@ list of zones to create. Each item is a dict containing a ``zone`` item:
 
 * ``seed_hypervisor_firewalld_zones``
 * ``seed_firewalld_zones``
+* ``infra_vm_firewalld_zones``
 * ``compute_firewalld_zones``
 * ``controller_firewalld_zones``
 * ``monitoring_firewalld_zones``
@@ -368,6 +370,7 @@ unset, in which case the default zone will not be changed:
 
 * ``seed_hypervisor_firewalld_default_zone``
 * ``seed_firewalld_default_zone``
+* ``infra_vm_firewalld_default_zone``
 * ``compute_firewalld_default_zone``
 * ``controller_firewalld_default_zone``
 * ``monitoring_firewalld_default_zone``
@@ -381,6 +384,7 @@ are omitted if not provided, with the following exceptions: ``offline``
 
 * ``seed_hypervisor_firewalld_rules``
 * ``seed_firewalld_rules``
+* ``infra_vm_firewalld_rules``
 * ``compute_firewalld_rules``
 * ``controller_firewalld_rules``
 * ``monitoring_firewalld_rules``
