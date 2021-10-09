@@ -118,6 +118,13 @@
 #controller_sysctl_parameters:
 
 ###############################################################################
+# Controller node tuned configuration.
+
+# Builtin tuned profile to use. Format is same as that used by giovtorres.tuned
+# role. Default is throughput-performance.
+#controller_tuned_active_builtin_profile:
+
+###############################################################################
 # Controller node user configuration.
 
 # List of users to create. This should be in a format accepted by the

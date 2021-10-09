@@ -1,0 +1,10 @@
+---
+###############################################################################
+# Monitoring node tuned configuration.
+
+# Builtin tuned profile to use. Format is same as that used by giovtorres.tuned
+# role.
+tuned_active_builtin_profile: >
+  {{ controller_tuned_active_builtin_profile
+     if inventory_hostname in groups['controllers'] else
+     monitoring_tuned_active_builtin_profile }}

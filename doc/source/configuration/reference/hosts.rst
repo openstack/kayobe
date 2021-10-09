@@ -428,6 +428,45 @@ In the following example, firewalld is enabled on controllers. ``public`` and
      - service: http
        zone: public
 
+.. _configuration-hosts-tuned:
+
+Tuned
+=====
+*tags:*
+  | ``tuned``
+
+.. note:: Tuned configuration only supports CentOS systems for now.
+
+Built-in ``tuned`` profiles can be applied to hosts. The following variables
+can be used to set a ``tuned`` profile to specific types of hosts:
+
+* ``seed_hypervisor_tuned_active_builtin_profile``
+* ``seed_tuned_active_builtin_profile``
+* ``compute_tuned_active_builtin_profile``
+* ``controller_tuned_active_builtin_profile``
+* ``monitoring_tuned_active_builtin_profile``
+* ``storage_tuned_active_builtin_profile``
+* ``infra_vm_tuned_active_builtin_profile``
+
+By default, Kayobe applies a ``tuned`` profile matching the role of each host
+in the system:
+
+* seed hypervisor: ``virtual-host``
+* seed: ``virtual-guest``
+* infrastructure VM: ``virtual-guest``
+* compute: ``virtual-host``
+* controllers: ``throughput-performance``
+* monitoring: ``throughput-performance``
+* storage: ``throughput-performance``
+
+For example, to change the ``tuned`` profile of controllers to
+``network-throughput``:
+
+.. code-block:: yaml
+   :caption: ``controllers.yml``
+
+   controller_tuned_active_builtin_profile: network-throughput
+
 Sysctls
 =======
 *tags:*
