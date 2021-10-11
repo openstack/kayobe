@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    Kolla images Docker namespace used in Kayobe was switched from  ``kolla``
+    to ``openstack.kolla`` to reflect Kolla project changes.
