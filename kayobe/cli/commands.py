@@ -561,7 +561,7 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     * Optionally, create a virtualenv for remote target hosts.
     * Optionally, wipe unmounted disk partitions (--wipe-disks).
     * Configure user accounts, group associations, and authorised SSH keys.
-    * Disable SELinux.
+    * Configure SELinux.
     * Configure the host's network interfaces.
     * Configure a firewall.
     * Configure tuned profile.
@@ -866,7 +866,7 @@ class InfraVMHostConfigure(KayobeAnsibleMixin, VaultMixin,
     * Optionally, create a virtualenv for remote target hosts.
     * Optionally, wipe unmounted disk partitions (--wipe-disks).
     * Configure user accounts, group associations, and authorised SSH keys.
-    * Disable SELinux.
+    * Configure SELinux.
     * Configure the host's network interfaces.
     * Configure a firewall.
     * Configure tuned profile.
@@ -1112,7 +1112,7 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     * Optionally, create a virtualenv for remote target hosts.
     * Optionally, wipe unmounted disk partitions (--wipe-disks).
     * Configure user accounts, group associations, and authorised SSH keys.
-    * Disable SELinux.
+    * Configure SELinux.
     * Configure the host's network interfaces.
     * Configure a firewall.
     * Configure tuned profile.

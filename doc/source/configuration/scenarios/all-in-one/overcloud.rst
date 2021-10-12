@@ -230,16 +230,16 @@ seen in MAAS):
 
    controller_bootstrap_user: "cloud-user"
 
-By default, on systems with SELinux enabled, Kayobe will disable SELinux and
-reboot the system to apply the change. In a test or development environment
-this can be a bit disruptive, particularly when using ephemeral network
-configuration.  To avoid rebooting the system after disabling SELinux, set
-``disable_selinux_do_reboot`` to ``false`` in ``etc/kayobe/globals.yml``.
+By default, on systems with SELinux disabled, Kayobe will put SELinux in
+permissive mode and reboot the system to apply the change. In a test or
+development environment this can be a bit disruptive, particularly when using
+ephemeral network configuration.  To avoid rebooting the system after enabling
+SELinux, set ``selinux_do_reboot`` to ``false`` in ``etc/kayobe/globals.yml``.
 
 .. code-block:: yaml
    :caption: ``etc/kayobe/globals.yml``
 
-   disable_selinux_do_reboot: false
+   selinux_do_reboot: false
 
 In a development environment, we may wish to tune some Kolla Ansible variables.
 Using QEMU as the virtualisation type will be necessary if KVM is not

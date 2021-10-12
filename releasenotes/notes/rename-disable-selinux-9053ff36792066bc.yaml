@@ -1,0 +1,18 @@
+---
+features:
+  - |
+    Adds functionality to configure desired SELinux state (in addition to
+    disabling SELinux previously).
+upgrade:
+  - |
+    The ``disable-selinux`` role has been renamed to ``selinux`` and so have
+    been the related variables. If you set one of them, adapt your
+    configuration:
+
+    * ``disable_selinux_do_reboot`` becomes ``selinux_do_reboot``
+    * ``disable_selinux_reboot_timeout`` becomes ``selinux_reboot_timeout``
+  - |
+    Kayobe now sets SELinux to ``permissive`` by default (compared to
+    ``disabled`` previously). This may require a reboot, which will only be
+    triggered if ``selinux_do_reboot`` is set to ``true``. If you want to
+    retain previous behaviour, set ``selinux_state`` to ``disabled``.

@@ -1,9 +1,0 @@
----
-- name: Disable SELinux and reboot if required
-  hosts: seed:overcloud:infra-vms
-  tags:
-    - disable-selinux
-  roles:
-    - role: disable-selinux
-      disable_selinux_reboot_timeout: "{{ 600 if ansible_facts.virtualization_role == 'host' else 300 }}"
-      when: ansible_facts.os_family == 'RedHat'

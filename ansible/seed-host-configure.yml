@@ -9,7 +9,7 @@
 - import_playbook: "wipe-disks.yml"
 - import_playbook: "users.yml"
 - import_playbook: "dev-tools.yml"
-- import_playbook: "disable-selinux.yml"
+- import_playbook: "selinux.yml"
 - import_playbook: "network.yml"
 - import_playbook: "firewall.yml"
 - import_playbook: "tuned.yml"

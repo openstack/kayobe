@@ -445,15 +445,16 @@ that is signed by the key.
 SELinux
 =======
 *tags:*
-  | ``disable-selinux``
+  | ``selinux``
 
 .. note:: SELinux applies to CentOS and Rocky systems only.
 
-SELinux is not supported by Kolla Ansible currently, so it is disabled by
-Kayobe. If necessary, Kayobe will reboot systems in order to apply a change to
+SELinux is not supported by Kolla Ansible currently, so it is set to permissive
+by Kayobe. If necessary, it can be configured to disabled by setting
+``selinux_state`` to ``disabled``. Kayobe will reboot systems when required for
 the SELinux configuration. The timeout for waiting for systems to reboot is
-``disable_selinux_reboot_timeout``. Alternatively, the reboot may be avoided by
-setting ``disable_selinux_do_reboot`` to ``false``.
+``selinux_reboot_timeout``. Alternatively, the reboot may be avoided by setting
+``selinux_do_reboot`` to ``false``.
 
 Network Configuration
 =====================

@@ -1,6 +1,8 @@
 ---
 # NOTE(mgoddard): Don't reboot after disabling SELinux during CI testing, as
 # Ansible is run directly on the controller.
+# TODO(priteau): This is needed for the deployment of the previous release.
+# Remove when previous_release is zed.
 disable_selinux_do_reboot: false
 
 # Use the OpenStack infra's Dockerhub mirror.
