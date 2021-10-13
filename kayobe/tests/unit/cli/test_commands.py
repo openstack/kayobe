@@ -298,23 +298,14 @@ class TestCase(unittest.TestCase):
         self.assertEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
-                       "run_kayobe_config_dump")
-    @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
-    def test_seed_hypervisor_host_configure(self, mock_run, mock_dump):
+    def test_seed_hypervisor_host_configure(self, mock_run):
         command = commands.SeedHypervisorHostConfigure(TestApp(), [])
         parser = command.get_parser("test")
         parsed_args = parser.parse_args([])
-        mock_dump.return_value = "stack"
 
         result = command.run(parsed_args)
         self.assertEqual(0, result)
-
-        expected_calls = [
-            mock.call(mock.ANY, host="seed-hypervisor",
-                      var_name="kayobe_ansible_user", tags="dump-config")
-        ]
-        self.assertEqual(expected_calls, mock_dump.call_args_list)
 
         expected_calls = [
             mock.call(
