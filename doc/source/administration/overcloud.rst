@@ -250,6 +250,27 @@ Further information on backing up and restoring the database is available in
 the :kolla-ansible-doc:`Kolla Ansible documentation
 <admin/mariadb-backup-and-restore.html>`.
 
+Performing Database Recovery
+============================
+
+Recover a completely stopped MariaDB cluster using the underlying support in
+Kolla Ansible.
+
+To perform recovery run the following command:
+
+.. code-block:: console
+
+   kayobe overcloud database recover
+
+Or to perform recovery on specified host, run the following command:
+
+.. code-block:: console
+
+   kayobe overcloud database recover --force-recovery-host <host>
+
+By default the underlying kolla-ansible will automatically determine which
+host to use, and this option should not be used.
+
 Gathering Facts
 ===============
 
