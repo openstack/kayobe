@@ -431,16 +431,6 @@ class SeedHypervisorHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Configuring seed hypervisor host OS")
-        # Explicitly request the dump-config tag to ensure this play runs even
-        # if the user specified tags.
-        ansible_user = self.run_kayobe_config_dump(
-            parsed_args, host="seed-hypervisor",
-            var_name="kayobe_ansible_user", tags="dump-config")
-        if not ansible_user:
-            self.app.LOG.error("Could not determine kayobe_ansible_user "
-                               "variable for seed hypervisor host")
-            sys.exit(1)
-
         # Allocate IP addresses.
         playbooks = _build_playbook_list("ip-allocation")
         self.run_kayobe_playbooks(parsed_args, playbooks,
