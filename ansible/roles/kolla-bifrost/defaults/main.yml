@@ -74,5 +74,17 @@ kolla_bifrost_ipa_ramdisk_checksum_algorithm:
 # Server inventory to be configured in {{ kolla_node_custom_config_path }}/bifrost/servers.yml.
 kolla_bifrost_servers: {}
 
+# Deprecated.
 # Free form extra configuration to append to {{ kolla_node_custom_config_path }}/bifrost/bifrost.yml.
 kolla_bifrost_extra_globals:
+
+# Paths to Kolla Ansible custom configuration.
+kolla_bifrost_config_paths_default:
+  - "{{ role_path }}/templates"
+
+# Paths to Kolla Ansible custom configuration.
+kolla_bifrost_config_paths_extra: []
+
+# Paths to Kolla Ansible custom configuration. Defaults to a combination of
+# kolla_bifrost_config_paths_default and kolla_bifrost_config_paths_extra.
+kolla_bifrost_config_paths: "{{ kolla_bifrost_config_paths_default + kolla_bifrost_config_paths_extra }}"

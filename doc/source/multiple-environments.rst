@@ -70,7 +70,7 @@ Ansible Inventories
 Each environment can include its own inventory, which overrides any variable
 declaration done in the shared inventory. Typically, a shared inventory may be
 used to define groups and group variables, while hosts and host variables would
-be set in enviroment inventories. The following layout (ignoring non-inventory
+be set in environment inventories. The following layout (ignoring non-inventory
 files) shows an example of multiple inventories.
 
 .. code-block:: text
@@ -152,10 +152,31 @@ like the ``network-allocation.yml`` file.
 Kolla Configuration
 -------------------
 
-Kolla configuration is currently independent in each environment. To avoid
-duplicating configuration, symbolic links can be used to share common variable
-definitions. It is advised to avoid sharing credentials between environments by
-making each Kolla ``passwords.yml`` file unique.
+In the Wallaby release, Kolla configuration was independent in each
+environment.
+
+As of the Xena release, the following files support combining the
+environment-specific and shared configuration file content:
+
+* ``kolla/config/bifrost/bifrost.yml``
+* ``kolla/config/bifrost/dib.yml``
+* ``kolla/config/bifrost/servers.yml``
+* ``kolla/globals.yml``
+* ``kolla/kolla-build.conf``
+
+Options in the environment-specific files take precedence over those in the
+shared files.
+
+Managing Independent Environment Files
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For files that are independent in each environment, i.e. they do not support
+combining the environment-specific and shared configuration file content, there
+are some techniques that may be used to avoid duplication.
+
+For example, symbolic links can be used to share common variable definitions.
+It is advised to avoid sharing credentials between environments by making each
+Kolla ``passwords.yml`` file unique.
 
 Custom Ansible Playbooks and Hooks
 ----------------------------------

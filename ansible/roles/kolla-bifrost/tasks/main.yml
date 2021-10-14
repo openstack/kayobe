@@ -6,11 +6,11 @@
     mode: 0750
 
 - name: Ensure the Kolla Bifrost configuration files exist
-  template:
-    src: "{{ item.src }}"
-    dest: "{{ kolla_node_custom_config_path }}/bifrost/{{ item.dest }}"
+  merge_yaml:
+    sources: "{{ kolla_bifrost_config_paths | product(['/kolla/config/bifrost/' ~ item]) | map('join') | list }}"
+    dest: "{{ kolla_node_custom_config_path }}/bifrost/{{ item }}"
     mode: 0640
   with_items:
-    - { src: bifrost.yml.j2, dest: bifrost.yml }
-    - { src: dib.yml.j2, dest: dib.yml }
-    - { src: servers.yml.j2, dest: servers.yml }
+    - bifrost.yml
+    - dib.yml
+    - servers.yml

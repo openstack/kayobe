@@ -51,19 +51,6 @@
             - kolla_environment_file.stat.exists
             - kolla_environment != kayobe_environment
 
-        # Configuration of extra user-provided Kolla globals.
-        - name: Check whether a Kolla extra globals configuration file exists
-          stat:
-            path: "{{ kayobe_env_config_path ~ '/kolla/globals.yml' }}"
-            get_checksum: False
-            get_md5: False
-            mime: False
-          register: globals_stat
-
-        - name: Read the Kolla extra globals configuration file
-          set_fact:
-            kolla_extra_globals: "{{ lookup('template', kayobe_env_config_path ~ '/kolla/globals.yml') | from_yaml }}"
-          when: globals_stat.stat.exists
       tags:
         - config
 
@@ -117,6 +104,9 @@
         kolla_inspector_extra_kernel_options: "{{ inspector_extra_kernel_options }}"
         kolla_enable_host_ntp: false
         docker_daemon_mtu: "{{ public_net_name | net_mtu | default }}"
+        kolla_globals_paths_extra:
+          - "{{ kayobe_config_path }}"
+          - "{{ kayobe_env_config_path }}"
 
 - name: Generate Kolla Ansible host vars for the seed host
   hosts: seed

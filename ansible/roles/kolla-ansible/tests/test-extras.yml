@@ -28,6 +28,14 @@
         path: "{{ tempfile_result.path ~ '/etc/kayobe/kolla/inventory/group_vars/foo_group' }}"
         state: directory
 
+    - name: Create extra globals file
+      copy:
+        content: |
+          ---
+          extra-global-1: "extra-val-1"
+          extra-global-2: "extra-val-2"
+        dest: "{{ tempfile_result.path ~ '/etc/kayobe/kolla/globals.yml' }}"
+
     - name: Create custom overcloud foo group vars
       copy:
         dest: "{{ tempfile_result.path ~ '/etc/kayobe/kolla/inventory/group_vars/foo_group/all' }}"
@@ -181,9 +189,8 @@
             kolla_enable_watcher: True
             kolla_enable_zookeeper: True
             kolla_enable_zun: True
-            kolla_extra_globals:
-              extra-global-1: "extra-val-1"
-              extra-global-2: "extra-val-2"
+            kolla_globals_paths_extra:
+              - "{{ tempfile_result.path ~ '/etc/kayobe/' }}"
             kolla_ansible_custom_passwords:
               custom-password-1: "custom-password-1"
               custom-password-2: "custom-password-2"

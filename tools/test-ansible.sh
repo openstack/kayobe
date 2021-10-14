@@ -6,6 +6,7 @@
 set -e
 
 failed=0
+export ANSIBLE_ACTION_PLUGINS="kayobe/plugins/action:~/.ansible/plugins/action:/usr/share/ansible/plugins/action"
 for playbook in ansible/roles/*/tests/main.yml; do
     # We declare extra variables to install the {{ openstack_branch }} version
     # of kolla-ansible. We should use {{ kolla_ansible_source_version }}, but

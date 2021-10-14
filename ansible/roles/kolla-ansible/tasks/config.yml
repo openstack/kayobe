@@ -48,8 +48,8 @@
   when: (kayobe_environment | default('')) | length > 0
 
 - name: Ensure the Kolla global configuration file exists
-  template:
-    src: "globals.yml.j2"
+  merge_yaml:
+    sources: "{{ kolla_globals_paths | product(['/kolla/globals.yml']) | map('join') | unique | list }}"
     dest: "{{ kolla_config_path }}/globals.yml"
     mode: 0640
   vars:

@@ -1,0 +1,116 @@
+---
+- name: Test kolla-ansible role defaults
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Create a temporary directory
+      tempfile:
+        state: directory
+      register: tempfile_result
+
+    - block:
+
+        - name: Ensure directories exists
+          file:
+            state: directory
+            mode: "0700"
+            recurse: true
+            path: "{{ item }}"
+          with_items:
+            - "{{ tempfile_result.path }}/etc/kayobe/kolla/"
+            - "{{ tempfile_result.path }}//etc/kayobe/environments/level1/kolla"
+            - "{{ tempfile_result.path }}//etc/kayobe/environments/level2/kolla"
+
+        - name: Write contents to base globals.yml
+          copy:
+            content: |
+              _overridden_level_1_var: base
+              _base_var: base
+            dest: "{{ tempfile_result.path }}/etc/kayobe/kolla/globals.yml"
+
+        - name: Write contents to level1 globals.yml
+          copy:
+            content: |
+              _overridden_level_1_var: level1
+              _overridden_level_2_var: level1
+            dest: "{{ tempfile_result.path }}//etc/kayobe/environments/level1/kolla/globals.yml"
+
+        - name: Write contents to level2 globals.yml
+          copy:
+            content: |
+              _overridden_level_2_var: level2
+            dest: "{{ tempfile_result.path }}//etc/kayobe/environments/level2/kolla/globals.yml"
+
+        - name: Test the kolla-ansible role with default values
+          include_role:
+            name: ../../kolla-ansible
+          vars:
+            kolla_ansible_source_path: "{{ temp_path }}/src"
+            kolla_ansible_ctl_install_type: "source"
+            kolla_ansible_source_url: "http://github.com/openstack/kolla-ansible"
+            kolla_ansible_source_version: "{{ openstack_branch }}"
+            kolla_ansible_venv: "{{ temp_path }}/venv"
+            kolla_config_path: "{{ temp_path }}/etc/kolla"
+            kolla_node_custom_config_path: "{{ temp_path }}/etc/kolla/config"
+            # Purposely does not exist to simulate the case when no group vars
+            # are provided
+            kolla_overcloud_group_vars_path: "{{ temp_path }}/etc/kayobe/kolla/inventory/group_vars"
+            kolla_ansible_passwords_path: "{{ temp_path }}/passwords.yml"
+            # Required config.
+            kolla_base_distro: "fake-distro"
+            kolla_install_type: "fake-install-type"
+            kolla_docker_namespace: "fake-namespace"
+            kolla_openstack_release: "fake-release"
+            kolla_internal_vip_address: "10.0.0.1"
+            kolla_internal_fqdn: "fake.internal.fqdn"
+            kolla_external_vip_address: "10.0.0.2"
+            kolla_external_fqdn: "fake.external.fqdn"
+            kolla_ansible_certificates_path: "{{ temp_path }}/etc/kayobe/kolla/certificates"
+            kolla_enable_tls_external: False
+            kolla_enable_tls_internal: False
+            kolla_enable_grafana: False
+            kolla_openstack_logging_debug: False
+            kolla_globals_paths_extra:
+              - "{{ tempfile_result.path ~ '/etc/kayobe/' }}"
+              - "{{ tempfile_result.path ~ '/etc/kayobe/environments/level1/' }}"
+              - "{{ tempfile_result.path ~ '/etc/kayobe/environments/level2/' }}"
+            apt_cache_valid_time: 3600
+
+        - name: Verify kolla-ansible installation
+          shell: ". {{ temp_path }}/venv/bin/activate && kolla-ansible -h"
+          changed_when: False
+
+        - name: Verify ansible installation
+          command: "{{ temp_path }}/venv/bin/ansible -h"
+          changed_when: False
+
+        - name: Validate globals.yml contents
+          assert:
+            that:
+              - item.key in globals_yml
+              - globals_yml[item.key] == item.value
+            msg: >
+              Unexpected value for variable "{{ item.key }}" in globals.yml.
+              Expected "{{ item.value }}", actual
+              "{{ globals_yml.get(item.key, '<missing>') }}".
+          with_dict: "{{ expected_variables }}"
+          vars:
+            # NOTE: Can't use set_fact for this, as it causes kolla-ansible
+            # Jinja expressions to be evaluated.
+            globals_yml: "{{ lookup('file', temp_path ~ '/etc/kolla/globals.yml') | from_yaml }}"
+            expected_variables:
+              _overridden_level_1_var: level1
+              _overridden_level_2_var: level2
+              _base_var: base
+
+      always:
+        - name: Ensure the temporary directory is removed
+          file:
+            path: "{{ temp_path }}"
+            state: absent
+      rescue:
+        - name: Flag that a failure occurred
+          set_fact:
+            test_failures: "{{ test_failures | default(0) | int + 1 }}"
+      vars:
+        temp_path: "{{ tempfile_result.path }}"

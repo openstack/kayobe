@@ -9,6 +9,7 @@
 - import_playbook: test-defaults.yml
 - import_playbook: test-extras.yml
 - import_playbook: test-requirements.yml
+- import_playbook: test-globals-merge.yml
 
 - hosts: localhost
   connection: local
