@@ -79,14 +79,14 @@ kolla_feature_flags:
   - ceilometer_ipmi
   - cells
   - central_logging
-  - chrony
+  - ceph_rgw
+  - ceph_rgw_loadbalancer
   - cinder
   - cinder_backend_hnas_nfs
   - cinder_backend_iscsi
   - cinder_backend_lvm
   - cinder_backend_nfs
   - cinder_backend_quobyte
-  - cinder_backend_zfssa_iscsi
   - cinder_backup
   - cinder_horizon_policy_file
   - cloudkitty
@@ -148,6 +148,7 @@ kolla_feature_flags:
   - keystone_horizon_policy_file
   - kibana
   - kuryr
+  - loadbalancer
   - magnum
   - manila
   - manila_backend_cephfs_native
@@ -171,6 +172,7 @@ kolla_feature_flags:
   - neutron_infoblox_ipam_agent
   - neutron_metering
   - neutron_mlnx
+  - neutron_packet_logging
   - neutron_port_forwarding
   - neutron_provider_networks
   - neutron_qos
@@ -192,7 +194,6 @@ kolla_feature_flags:
   - outward_rabbitmq
   - ovn
   - ovs_dpdk
-  - panko
   - placement
   - prometheus
   - prometheus_alertmanager
@@ -200,6 +201,7 @@ kolla_feature_flags:
   - prometheus_cadvisor
   - prometheus_ceph_mgr_exporter
   - prometheus_elasticsearch_exporter
+  - prometheus_fluentd_integration
   - prometheus_haproxy_exporter
   - prometheus_memcached_exporter
   - prometheus_mysqld_exporter
@@ -209,7 +211,6 @@ kolla_feature_flags:
   - prometheus_server
   - qdrouterd
   - rabbitmq
-  - rally
   - redis
   - sahara
   - senlin
@@ -221,7 +222,6 @@ kolla_feature_flags:
   - swift_s3api
   - tacker
   - telegraf
-  - tempest
   - trove
   - trove_singletenant
   - vitrage
