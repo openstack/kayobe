@@ -123,8 +123,6 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_blazar | bool }}"
   - regex: ^ceilometer
     enabled: "{{ kolla_enable_ceilometer | bool }}"
-  - regex: ^chrony
-    enabled: "{{ kolla_enable_chrony | bool }}"
   - regex: ^cinder
     enabled: "{{ kolla_enable_cinder | bool }}"
   - regex: ^cloudkitty
@@ -212,8 +210,6 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_ovn | bool }}"
   - regex: ^ovsdpdk
     enabled: "{{ kolla_enable_ovs_dpdk | bool }}"
-  - regex: ^panko
-    enabled: "{{ kolla_enable_panko | bool }}"
   - regex: ^placement
     enabled: "{{ kolla_enable_placement | bool }}"
   - regex: ^prometheus
@@ -222,8 +218,6 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_qdrouterd | bool }}"
   - regex: ^rabbitmq
     enabled: "{{ kolla_enable_rabbitmq | bool }}"
-  - regex: ^rally
-    enabled: "{{ kolla_enable_rally | bool }}"
   - regex: ^redis
     enabled: "{{ kolla_enable_redis | bool }}"
   - regex: ^sahara
@@ -242,8 +236,6 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_tacker | bool }}"
   - regex: ^telegraf
     enabled: "{{ kolla_enable_telegraf | bool }}"
-  - regex: ^tempest
-    enabled: "{{ kolla_enable_tempest | bool }}"
   - regex: ^tgtd
     enabled: "{{ kolla_enable_cinder | bool or kolla_enable_ironic | bool }}"
   - regex: ^trove
@@ -522,7 +514,6 @@ kolla_enable_barbican: "no"
 kolla_enable_blazar: "no"
 kolla_enable_ceilometer: "no"
 kolla_enable_central_logging: "no"
-kolla_enable_chrony: "no"
 kolla_enable_cinder: "no"
 kolla_enable_cinder_backend_iscsi: "{{ kolla_enable_cinder_backend_lvm | bool or kolla_enable_cinder_backend_zfssa_iscsi | bool }}"
 kolla_enable_cinder_backend_lvm: "no"
@@ -561,11 +552,9 @@ kolla_enable_openvswitch: "{{ kolla_enable_neutron | bool }}"
 kolla_enable_ovn: "no"
 kolla_enable_ovs_dpdk: "no"
 kolla_enable_osprofiler: "no"
-kolla_enable_panko: "no"
 kolla_enable_placement: "{{ kolla_enable_nova | bool or kolla_enable_zun | bool }}"
 kolla_enable_prometheus: "no"
 kolla_enable_qdrouterd: "no"
-kolla_enable_rally: "no"
 kolla_enable_redis: "no"
 kolla_enable_sahara: "no"
 kolla_enable_senlin: "no"
@@ -575,7 +564,6 @@ kolla_enable_storm: "{{ kolla_enable_monasca | bool }}"
 kolla_enable_swift: "no"
 kolla_enable_tacker: "no"
 kolla_enable_telegraf: "no"
-kolla_enable_tempest: "no"
 kolla_enable_trove: "no"
 kolla_enable_vitrage: "no"
 kolla_enable_vmtp: "no"

@@ -132,7 +132,6 @@
             kolla_enable_blazar: True
             kolla_enable_ceilometer: True
             kolla_enable_central_logging: True
-            kolla_enable_chrony: True
             kolla_enable_cinder: True
             kolla_enable_cinder_backend_hnas_iscsi: True
             kolla_enable_cinder_backend_hnas_nfs: True
@@ -173,9 +172,7 @@
             kolla_enable_nova_serialconsole_proxy: True
             kolla_enable_octavia: True
             kolla_enable_osprofiler: True
-            kolla_enable_panko: True
             kolla_enable_prometheus: True
-            kolla_enable_rally: True
             kolla_enable_sahara: True
             kolla_enable_senlin: True
             kolla_enable_skydive: True
@@ -184,7 +181,6 @@
             kolla_enable_swift: True
             kolla_enable_tacker: True
             kolla_enable_telegraf: True
-            kolla_enable_tempest: True
             kolla_enable_trove: True
             kolla_enable_watcher: True
             kolla_enable_zookeeper: True
@@ -260,7 +256,6 @@
               #enable_blazar: True
               #enable_ceilometer: True
               #enable_central_logging: True
-              #enable_chrony: True
               #enable_cinder: True
               #enable_cinder_backend_iscsi: True
               #enable_cinder_backend_hnas_iscsi: True
@@ -301,9 +296,7 @@
               #enable_nova_serialconsole_proxy: True
               #enable_octavia: True
               #enable_osprofiler: True
-              #enable_panko: True
               #enable_prometheus: True
-              #enable_rally: True
               #enable_sahara: True
               #enable_skydive: True
               #enable_solum: True
@@ -312,7 +305,6 @@
               #enable_swift: True
               #enable_tacker: True
               #enable_telegraf: True
-              #enable_tempest: True
               #enable_trove: True
               #enable_watcher: True
               #enable_zookeeper: True

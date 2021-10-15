@@ -21,7 +21,6 @@
       run_once: true
       when:
         - "'ntp' not in groups"
-        - not kolla_enable_chrony | bool
 
 - name: Ensure Chrony is installed and configured
   hosts: ntp
@@ -30,4 +29,3 @@
   tasks:
     - import_role:
         name: ntp
-      when: not kolla_enable_chrony | bool
