@@ -65,6 +65,9 @@ docker_registry_username: "{{ kolla_docker_registry_username }}"
 {% endif %}
 docker_storage_driver: "{{ docker_storage_driver }}"
 docker_custom_config: {{ kolla_docker_custom_config | to_nice_json | indent(2) }}
+{% if kolla_docker_registry_insecure | bool %}
+docker_registry_insecure: "yes"
+{% endif %}
 
 #docker_configure_for_zun: "no"
 
