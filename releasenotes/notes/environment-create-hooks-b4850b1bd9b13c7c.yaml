@@ -1,0 +1,4 @@
+---
+fixes:
+  - |
+    Adds missing hook support for the ``kayobe environment create`` command.
