@@ -50,6 +50,17 @@ kolla_external_vip_address: "{{ kolla_external_vip_address }}"
 kolla_external_fqdn: "{{ kolla_external_fqdn }}"
 {% endif %}
 
+# Proxy settings for containers such as magnum that need Internet access
+{% if kolla_http_proxy is not none and kolla_http_proxy | length > 0 %}
+container_http_proxy: "{{ kolla_http_proxy }}"
+{% endif %}
+{% if kolla_https_proxy is not none and kolla_https_proxy | length > 0 %}
+container_https_proxy: "{{ kolla_https_proxy }}"
+{% endif %}
+{% if kolla_no_proxy is not none and kolla_no_proxy | length > 0 %}
+container_no_proxy: "{{ kolla_no_proxy | select | join(',') }}"
+{% endif %}
+
 ################
 # Docker options
 ################
@@ -65,6 +76,16 @@ docker_registry_username: "{{ kolla_docker_registry_username }}"
 {% endif %}
 docker_storage_driver: "{{ docker_storage_driver }}"
 docker_custom_config: {{ kolla_docker_custom_config | to_nice_json | indent(2) }}
+
+{% if kolla_http_proxy is not none and kolla_http_proxy | length > 0 %}
+docker_http_proxy: "{{ kolla_http_proxy }}"
+{% endif %}
+{% if kolla_https_proxy is not none and kolla_https_proxy | length > 0 %}
+docker_https_proxy: "{{ kolla_https_proxy }}"
+{% endif %}
+{% if kolla_no_proxy is not none and kolla_no_proxy | length > 0 %}
+docker_no_proxy: "{{ kolla_no_proxy | select | join(',') }}"
+{% endif %}
 
 #docker_configure_for_zun: "no"
 
