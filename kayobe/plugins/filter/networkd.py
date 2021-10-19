@@ -488,8 +488,9 @@ def _add_to_result(result, prefix, device, config):
     # This should not happen.
     if key in result:
         raise errors.AnsibleFilterError(
-            "Programming error: duplicate interface configuration for %s"
-            % device)
+            "Programming error: duplicate interface configuration for %s: "
+            "have %s"
+            % (device, result))
     result[key] = config
 
 
@@ -511,7 +512,8 @@ def networkd_netdevs(context, names, inventory_hostname=None):
     result = {}
 
     # VLANs.
-    for name in networks.net_select_vlans(context, names, inventory_hostname):
+    for name in networks.net_select_vlan_interfaces(context, names,
+                                                    inventory_hostname):
         device = networks.get_and_validate_interface(context, name,
                                                      inventory_hostname)
         netdev = _vlan_netdev(context, name, inventory_hostname)

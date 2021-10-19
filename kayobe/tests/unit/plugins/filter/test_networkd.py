@@ -74,6 +74,19 @@ class TestNetworkdNetDevs(BaseNetworkdTest):
         devs = networkd.networkd_netdevs(self.context, [])
         self.assertEqual({}, devs)
 
+    def test_eth(self):
+        devs = networkd.networkd_netdevs(self.context, ["net1"])
+        expected = {}
+        self.assertEqual(expected, devs)
+
+    def test_eth_untagged_vlan(self):
+        # An untagged interface on a network with a VLAN defined should not
+        # create a VLAN subinterface.
+        self._update_context({"net1_vlan": 42})
+        devs = networkd.networkd_netdevs(self.context, ["net1"])
+        expected = {}
+        self.assertEqual(expected, devs)
+
     def test_vlan(self):
         devs = networkd.networkd_netdevs(self.context, ["net2"])
         expected = {
@@ -154,6 +167,23 @@ class TestNetworkdNetDevs(BaseNetworkdTest):
         self.assertRaises(errors.AnsibleFilterError,
                           networkd.networkd_netdevs, self.context, ["net3"])
 
+    def test_bridge_untagged_vlan(self):
+        # A bridge on a network with a VLAN defined should not create a VLAN
+        # subinterface.
+        self._update_context({"net3_vlan": 42})
+        devs = networkd.networkd_netdevs(self.context, ["net3"])
+        expected = {
+            "50-kayobe-br0": [
+                {
+                    "NetDev": [
+                        {"Name": "br0"},
+                        {"Kind": "bridge"},
+                    ]
+                },
+            ]
+        }
+        self.assertEqual(expected, devs)
+
     def test_bond(self):
         devs = networkd.networkd_netdevs(self.context, ["net4"])
         expected = {
@@ -206,6 +236,23 @@ class TestNetworkdNetDevs(BaseNetworkdTest):
         self._update_context({"net4_interface": None})
         self.assertRaises(errors.AnsibleFilterError,
                           networkd.networkd_netdevs, self.context, ["net4"])
+
+    def test_bond_untagged_vlan(self):
+        # A bridge on a network with a VLAN defined should not create a VLAN
+        # subinterface.
+        self._update_context({"net4_vlan": 42})
+        devs = networkd.networkd_netdevs(self.context, ["net4"])
+        expected = {
+            "50-kayobe-bond0": [
+                {
+                    "NetDev": [
+                        {"Name": "bond0"},
+                        {"Kind": "bond"},
+                    ]
+                },
+            ]
+        }
+        self.assertEqual(expected, devs)
 
     def test_veth(self):
         self._update_context({"external_net_names": ["net3"]})
