@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Sets proxy option when using ``dnf`` during user bootstrapping, before
+    ``dnf.conf`` is updated. This allows Kayobe to install Python 3 during host
+    configuration when ``dnf`` requires a proxy to operate.
