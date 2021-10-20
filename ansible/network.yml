@@ -67,6 +67,8 @@
         {{ bond_interfaces |
            map('net_bond_obj') |
            list }}
+      interfaces_setup_filter: "{{ kayobe_ansible_setup_filter }}"
+      interfaces_setup_gather_subset: "{{ kayobe_ansible_setup_gather_subset }}"
 
 # Configure virtual ethernet patch links to connect the workload provision
 # and external network bridges to the Neutron OVS bridge.

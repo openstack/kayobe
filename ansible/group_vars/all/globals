@@ -31,3 +31,14 @@ virtualenv_path: "{{ base_path ~ '/venvs' }}"
 # User with which to access remote hosts. This user will be created if it does
 # not exist.
 kayobe_ansible_user: "stack"
+
+###############################################################################
+# Ansible configuration.
+
+# Filter to apply to the setup module when gathering facts. Default is to not
+# specify a filter.
+kayobe_ansible_setup_filter: "{{ omit }}"
+
+# Gather subset to apply to the setup module when gathering facts. Default is
+# to not specify a gather subset.
+kayobe_ansible_setup_gather_subset: "{{ omit }}"
