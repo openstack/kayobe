@@ -84,3 +84,65 @@ caching using the `jsonfile cache plugin
 
 You may also wish to set the expiration timeout for the cache via ``[defaults]
 fact_caching_timeout``.
+
+Fact gathering
+==============
+
+Fact filtering
+--------------
+
+Filtering of facts can be used to speed up Ansible.  Environments with
+many network interfaces on the network and compute nodes can experience very
+slow processing with Kayobe and Kolla Ansible. This happens due to the
+processing of the large per-interface facts with each task.  To avoid storing
+certain facts, we can use the ``kayobe_ansible_setup_filter`` variable, which
+is used as the ``filter`` argument to the ``setup`` module.
+
+One case where this is particularly useful is to avoid collecting facts for
+virtual tap (beginning with t) and bridge (beginning with q) interfaces
+created by Neutron. These facts are large map values which can consume a lot
+of resources on the Ansible control host. Kayobe and Kolla Ansible typically
+do not need to reference them, so they may be filtered. For example, to
+avoid collecting facts beginning with q or t:
+
+.. code-block:: yaml
+   :caption: ``$KAYOBE_CONFIG_PATH/globals.yml``
+
+   kayobe_ansible_setup_filter: "ansible_[!qt]*"
+
+Similarly, for Kolla Ansible (notice the similar but different file names):
+
+.. code-block:: yaml
+   :caption: ``$KAYOBE_CONFIG_PATH/kolla/globals.yml``
+
+   kolla_ansible_setup_filter: "ansible_[!qt]*"
+
+This causes Ansible to collect but not store facts matching that pattern, which
+includes the virtual interface facts. Currently we are not referencing other
+facts matching the pattern within Kolla Ansible.  Note that including the
+'ansible_' prefix causes meta facts ``module_setup`` and ``gather_subset`` to
+be filtered, but this seems to be the only way to get a good match on the
+interface facts.
+
+The exact improvement will vary, but has been reported to be as large as 18x on
+systems with many virtual interfaces.
+
+Fact gathering subsets
+----------------------
+
+It is also possible to configure which subsets of facts are gathered, via
+``kayobe_ansible_setup_gather_subset``, which is used as the ``gather_subset``
+argument to the ``setup`` module. For example, if one wants to avoid collecting
+facts via facter:
+
+.. code-block:: yaml
+   :caption: ``$KAYOBE_CONFIG_PATH/globals.yml``
+
+   kayobe_ansible_setup_gather_subset: "all,!facter"
+
+Similarly, for Kolla Ansible (notice the similar but different file names):
+
+.. code-block:: yaml
+   :caption: ``$KAYOBE_CONFIG_PATH/kolla/globals.yml``
+
+   kolla_ansible_setup_gather_subset: "all,!facter"
