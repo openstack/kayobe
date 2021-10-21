@@ -1014,6 +1014,43 @@ class TestCase(unittest.TestCase):
                        "run_kayobe_playbooks")
     @mock.patch.object(commands.KollaAnsibleMixin,
                        "run_kolla_ansible_overcloud")
+    def test_overcloud_facts_gather(self, mock_kolla_run, mock_run):
+        command = commands.OvercloudFactsGather(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    utils.get_data_files_path(
+                        "ansible", "overcloud-facts-gather.yml"),
+                ],
+            ),
+            mock.call(
+                mock.ANY,
+                [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
+                tags="config",
+                ignore_limit=True,
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                "gather-facts"
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    @mock.patch.object(commands.KollaAnsibleMixin,
+                       "run_kolla_ansible_overcloud")
     def test_overcloud_host_configure(self, mock_kolla_run, mock_run):
         command = commands.OvercloudHostConfigure(TestApp(), [])
         parser = command.get_parser("test")

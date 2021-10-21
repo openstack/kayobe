@@ -21,7 +21,9 @@
     - block:
         - name: Gather facts
           setup:
-          when: not ansible_facts.module_setup | default(false)
+            filter: "{{ kayobe_ansible_setup_filter }}"
+            gather_subset: "{{ kayobe_ansible_setup_gather_subset }}"
+          when: not ansible_facts
 
         - name: Ensure the Python virtualenv package is installed
           package:

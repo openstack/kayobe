@@ -932,6 +932,22 @@ class OvercloudDeprovision(KayobeAnsibleMixin, VaultMixin, Command):
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
 
+class OvercloudFactsGather(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
+                           Command):
+    """Gather facts for Kayobe and Kolla Ansible."""
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Gathering overcloud host facts")
+
+        # Gather facts for Kayobe.
+        playbooks = _build_playbook_list("overcloud-facts-gather")
+        self.run_kayobe_playbooks(parsed_args, playbooks)
+
+        # Gather facts for Kolla Ansible.
+        self.generate_kolla_ansible_config(parsed_args, service_config=False)
+        self.run_kolla_ansible_overcloud(parsed_args, "gather-facts")
+
+
 class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
                              Command):
     """Configure the overcloud host OS and services.
