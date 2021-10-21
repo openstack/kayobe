@@ -42,3 +42,4 @@
         # https://github.com/ansible/ansible/issues/49254
         ansible_ssh_extra_args: '{{ infra_vm_wait_connection_ssh_extra_args }}'
         ansible_user: "{{ bootstrap_user }}"
+        ansible_python_interpreter: /usr/bin/python3

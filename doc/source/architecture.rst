@@ -15,6 +15,10 @@ Seed host
     The seed host runs the bifrost deploy container and is used to provision
     the cloud hosts.  By default, container images are built on the seed.
     Typically the seed host is deployed as a VM but this is not mandatory.
+Infrastructure VM hosts
+    Infrastructure VMs (or Infra VMs) are virtual machines that may be deployed
+    to provide supplementary infrastructure services. They may be for things
+    like proxies or DNS servers that are dependencies of the Cloud hosts.
 Cloud hosts
     The cloud hosts run the OpenStack control plane, network, monitoring,
     storage, and virtualised compute services.  Typically the cloud hosts run

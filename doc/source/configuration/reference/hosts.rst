@@ -9,6 +9,7 @@ deployment of containers. Hosts that are configured by Kayobe include:
 
 * Seed hypervisor (``kayobe seed hypervisor host configure``)
 * Seed (``kayobe seed host configure``)
+* Infra VMs (``kayobe infra vm host configure``)
 * Overcloud (``kayobe overcloud host configure``)
 
 Unless otherwise stated, all host configuration described here is applied to
@@ -29,6 +30,7 @@ following files under ``${KAYOBE_CONFIG_PATH}``:
 * ``seed.yml``
 * ``compute.yml``
 * ``controller.yml``
+* ``infra-vms.yml``
 * ``monitoring.yml``
 * ``storage.yml``
 
@@ -82,6 +84,7 @@ variable, but may be set via the following variables:
 
 * ``seed_hypervisor_bootstrap_user``
 * ``seed_bootstrap_user``
+* ``infra_vm_bootstrap_user``
 * ``compute_bootstrap_user``
 * ``controller_bootstrap_user``
 * ``monitoring_bootstrap_user``
@@ -179,6 +182,7 @@ variables can be used to set the users for specific types of hosts:
 
 * ``seed_hypervisor_users``
 * ``seed_users``
+* ``infra_vm_users``
 * ``compute_users``
 * ``controller_users``
 * ``monitoring_users``
@@ -478,6 +482,7 @@ variables can be used to set ``sysctl`` configuration specific types of hosts:
 
 * ``seed_hypervisor_sysctl_parameters``
 * ``seed_sysctl_parameters``
+* ``infra_vm_sysctl_parameters``
 * ``compute_sysctl_parameters``
 * ``controller_sysctl_parameters``
 * ``monitoring_sysctl_parameters``
@@ -602,6 +607,7 @@ convenience, this is mapped to the following variables:
 
 * ``seed_hypervisor_mdadm_arrays``
 * ``seed_mdadm_arrays``
+* ``infra_vm_mdadm_arrays``
 * ``compute_mdadm_arrays``
 * ``controller_mdadm_arrays``
 * ``monitoring_mdadm_arrays``
@@ -637,6 +643,7 @@ convenience, this is mapped to the following variables:
 
 * ``seed_hypervisor_luks_devices``
 * ``seed_luks_devices``
+* ``infra_vm_luks_devices``
 * ``compute_luks_devices``
 * ``controller_luks_devices``
 * ``monitoring_luks_devices``
@@ -673,6 +680,7 @@ this is mapped to the following variables:
 
 * ``seed_hypervisor_lvm_groups``
 * ``seed_lvm_groups``
+* ``infra_vm_lvm_groups``
 * ``compute_lvm_groups``
 * ``controller_lvm_groups``
 * ``monitoring_lvm_groups``
@@ -713,6 +721,7 @@ This configuration is enabled by the following variables, which default to
 * ``compute_lvm_group_data_enabled``
 * ``controller_lvm_group_data_enabled``
 * ``seed_lvm_group_data_enabled``
+* ``infra_vm_lvm_group_data_enabled``
 * ``storage_lvm_group_data_enabled``
 
 These variables can be set to ``true`` to enable the data volume group if the
@@ -723,6 +732,7 @@ To use this configuration, a list of disks must be configured via the following
 variables:
 
 * ``seed_lvm_group_data_disks``
+* ``infra_vm_lvm_group_data_disks``
 * ``compute_lvm_group_data_disks``
 * ``controller_lvm_group_data_disks``
 * ``monitoring_lvm_group_data_disks``
@@ -741,6 +751,7 @@ The Docker volumes LVM volume is assigned a size given by the following
 variables, with a default value of 75% (of the volume group's capacity):
 
 * ``seed_lvm_group_data_lv_docker_volumes_size``
+* ``infra_vm_lvm_group_data_lv_docker_volumes_size``
 * ``compute_lvm_group_data_lv_docker_volumes_size``
 * ``controller_lvm_group_data_lv_docker_volumes_size``
 * ``monitoring_lvm_group_data_lv_docker_volumes_size``
@@ -771,6 +782,7 @@ To define additional logical logical volumes in the default ``data`` volume
 group, modify one of the following variables:
 
 * ``seed_lvm_group_data_lvs``
+* ``infra_vm_lvm_group_data_lvs``
 * ``compute_lvm_group_data_lvs``
 * ``controller_lvm_group_data_lvs``
 * ``monitoring_lvm_group_data_lvs``
@@ -795,6 +807,7 @@ It is possible to define additional LVM volume groups via the following
 variables:
 
 * ``seed_lvm_groups_extra``
+* ``infra_vm_lvm_groups_extra``
 * ``compute_lvm_groups_extra``
 * ``controller_lvm_groups_extra``
 * ``monitoring_lvm_groups_extra``
