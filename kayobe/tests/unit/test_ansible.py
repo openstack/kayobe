@@ -68,6 +68,7 @@ class TestCase(unittest.TestCase):
             "-b",
             "-C",
             "--config-path", "/path/to/config",
+            "-D",
             "--environment", "test-env",
             "-e", "ev_name1=ev_value1",
             "-i", "/path/to/inventory",
@@ -88,6 +89,7 @@ class TestCase(unittest.TestCase):
             "-e", "ev_name1=ev_value1",
             "--become",
             "--check",
+            "--diff",
             "--limit", "group1:host",
             "--tags", "tag1,tag2",
             "playbook1.yml",
@@ -117,6 +119,7 @@ class TestCase(unittest.TestCase):
             "--become",
             "--check",
             "--config-path", "/path/to/config",
+            "--diff",
             "--environment", "test-env",
             "--extra-vars", "ev_name1=ev_value1",
             "--inventory", "/path/to/inventory",
@@ -138,6 +141,7 @@ class TestCase(unittest.TestCase):
             "-e", "ev_name1=ev_value1",
             "--become",
             "--check",
+            "--diff",
             "--limit", "group1:host1",
             "--skip-tags", "tag3,tag4",
             "--tags", "tag1,tag2",
@@ -249,6 +253,7 @@ class TestCase(unittest.TestCase):
             "tags": "tag3,tag4",
             "verbose_level": 0,
             "check": True,
+            "diff": True,
         }
         ansible.run_playbooks(parsed_args, ["playbook1.yml", "playbook2.yml"],
                               **kwargs)
@@ -260,6 +265,7 @@ class TestCase(unittest.TestCase):
             "-e", "ev_name1=ev_value1",
             "-e", "ev_name2='ev_value2'",
             "--check",
+            "--diff",
             "--limit", "group1:host1:&group2:host2",
             "--tags", "tag1,tag2,tag3,tag4",
             "playbook1.yml",
@@ -426,7 +432,7 @@ class TestCase(unittest.TestCase):
                                          },
                                          check_output=True, tags=None,
                                          verbose_level=None, check=False,
-                                         list_tasks=False)
+                                         list_tasks=False, diff=False)
         mock_rmtree.assert_called_once_with(dump_dir)
         mock_listdir.assert_any_call(dump_dir)
         mock_read.assert_has_calls([

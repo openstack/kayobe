@@ -48,6 +48,10 @@ def add_args(parser):
                         help="path to Kayobe configuration. "
                              "(default=$%s or %s)" %
                              (CONFIG_PATH_ENV, DEFAULT_CONFIG_PATH))
+    parser.add_argument("-D", "--diff", action="store_true",
+                        help="when changing (small) files and templates, show "
+                             "the differences in those files; works great "
+                             "with --check")
     parser.add_argument("--environment", default=default_environment,
                         help="specify environment name (default=$%s or None)" %
                              ENVIRONMENT_ENV)
@@ -161,7 +165,7 @@ def _get_vars_files(vars_paths):
 
 def build_args(parsed_args, playbooks,
                extra_vars=None, limit=None, tags=None, verbose_level=None,
-               check=None, ignore_limit=False, list_tasks=None):
+               check=None, ignore_limit=False, list_tasks=None, diff=None):
     """Build arguments required for running Ansible playbooks."""
     cmd = ["ansible-playbook"]
     if verbose_level:
@@ -193,6 +197,8 @@ def build_args(parsed_args, playbooks,
         cmd += ["--become"]
     if check or (parsed_args.check and check is None):
         cmd += ["--check"]
+    if diff or (parsed_args.diff and diff is None):
+        cmd += ["--diff"]
     if not ignore_limit and (parsed_args.limit or limit):
         limit_arg = utils.intersect_limits(parsed_args.limit, limit)
         cmd += ["--limit", limit_arg]
@@ -227,13 +233,14 @@ def _get_environment(parsed_args):
 def run_playbooks(parsed_args, playbooks,
                   extra_vars=None, limit=None, tags=None, quiet=False,
                   check_output=False, verbose_level=None, check=None,
-                  ignore_limit=False, list_tasks=None):
+                  ignore_limit=False, list_tasks=None, diff=None):
     """Run a Kayobe Ansible playbook."""
     _validate_args(parsed_args, playbooks)
     cmd = build_args(parsed_args, playbooks,
                      extra_vars=extra_vars, limit=limit, tags=tags,
                      verbose_level=verbose_level, check=check,
-                     ignore_limit=ignore_limit, list_tasks=list_tasks)
+                     ignore_limit=ignore_limit, list_tasks=list_tasks,
+                     diff=diff)
     env = _get_environment(parsed_args)
     try:
         utils.run_command(cmd, check_output=check_output, quiet=quiet, env=env)
@@ -269,7 +276,7 @@ def config_dump(parsed_args, host=None, hosts=None, var_name=None,
         run_playbook(parsed_args, playbook_path,
                      extra_vars=extra_vars, tags=tags, check_output=True,
                      verbose_level=verbose_level, check=False,
-                     list_tasks=False)
+                     list_tasks=False, diff=False)
         hostvars = {}
         for path in os.listdir(dump_dir):
             LOG.debug("Found dump file %s", path)

@@ -54,6 +54,8 @@ class TestCase(unittest.TestCase):
         kolla_ansible.add_args(parser)
         vault.add_args(parser)
         args = [
+            "-C",
+            "-D",
             "--kolla-config-path", "/path/to/config",
             "-ke", "ev_name1=ev_value1",
             "-ki", "/path/to/inventory",
@@ -73,8 +75,9 @@ class TestCase(unittest.TestCase):
             "--tags", "tag1,tag2",
         ]
         expected_cmd = " ".join(expected_cmd)
+        expected_env = {"EXTRA_OPTS": " --check --diff"}
         mock_run.assert_called_once_with(expected_cmd, shell=True, quiet=False,
-                                         env={})
+                                         env=expected_env)
 
     @mock.patch.object(utils, "run_command")
     @mock.patch.object(kolla_ansible, "_validate_args")
@@ -87,6 +90,8 @@ class TestCase(unittest.TestCase):
         mock_ask.return_value = "test-pass"
         args = [
             "--ask-vault-pass",
+            "--check",
+            "--diff",
             "--kolla-config-path", "/path/to/config",
             "--kolla-extra-vars", "ev_name1=ev_value1",
             "--kolla-inventory", "/path/to/inventory",
@@ -110,7 +115,8 @@ class TestCase(unittest.TestCase):
             "--tags", "tag1,tag2",
         ]
         expected_cmd = " ".join(expected_cmd)
-        expected_env = {"KAYOBE_VAULT_PASSWORD": "test-pass"}
+        expected_env = {"EXTRA_OPTS": " --check --diff",
+                        "KAYOBE_VAULT_PASSWORD": "test-pass"}
         expected_calls = [
             mock.call(["which", "kayobe-vault-password-helper"],
                       check_output=True, universal_newlines=True),
