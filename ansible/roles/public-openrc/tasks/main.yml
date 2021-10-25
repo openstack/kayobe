@@ -3,8 +3,10 @@
   slurp:
     src: "{{ kolla_config_path }}/admin-openrc.sh"
   register: admin_openrc
+  when: (kolla_config_path ~ '/admin-openrc.sh') is exists
 
 - name: Ensure a public OpenStack API environment file exists
   template:
     src: public-openrc.sh.j2
     dest: "{{ public_openrc_kolla_config_path }}/public-openrc.sh"
+  when: admin_openrc is not skipped
