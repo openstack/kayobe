@@ -49,6 +49,26 @@
     mime: False
   register: stat_result
 
+# NOTE(mgoddard): Prior to the Xena release, the seed VM was provisioned using
+# the stackhpc.livirt-vm role with become=true. This resulted in the cached
+# image being owned by root. Since Xena, we execute the role without
+# become=true. Correct the image ownership to avoid a permission denied error
+# when downloading a new image of the same name.
+- name: "[{{ vm_name }}] Stat image files"
+  stat:
+    path: "{{ image_cache_path }}/{{ item.image | basename }}"
+  with_items: "{{ vm_hostvars.infra_vm_volumes | selectattr('image', 'defined') }}"
+  register: image_stat_result
+
+- name: "[{{ vm_name }}] Fix image ownership"
+  file:
+    path: "{{ image_cache_path }}/{{ item.item.image | basename }}"
+    owner: "{{ ansible_facts.user_uid }}"
+    group: "{{ ansible_facts.user_gid }}"
+  with_items: "{{ image_stat_result.results }}"
+  when: item.stat.exists
+  become: true
+
 - name: "[{{ vm_name }}] Ensure that the VM is provisioned"
   include_role:
     name: stackhpc.libvirt-vm
