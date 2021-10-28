@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    The set of commands starting with ``kayobe overcloud database`` now
+    generate the kolla configuration necessary to login to the nodes
+    running the database.
