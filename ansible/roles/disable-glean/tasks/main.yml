@@ -3,6 +3,7 @@
   command: systemctl list-units glean*.service --no-legend --no-pager --state=loaded
   register: glean_services
   changed_when: False
+  check_mode: no
 
 - name: Ensure Glean services are stopped and disabled
   service:

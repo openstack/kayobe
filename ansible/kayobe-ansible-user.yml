@@ -17,6 +17,7 @@
         module: command ssh -o BatchMode=yes -p {{ ssh_port }} {{ ssh_user }}@{{ ssh_host }} hostname
       failed_when: false
       changed_when: false
+      check_mode: no
       register: ssh_result
       vars:
         ssh_user: "{{ ansible_user }}"
