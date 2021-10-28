@@ -5,4 +5,4 @@ features:
     These can be used to provide supplementary services that do not run well
     within a containerised environment or are dependencies of the control
     plane.  See `story 2008741
-    <https://storyboard.openstack.org/#!/story/2008741>` for details.
+    <https://storyboard.openstack.org/#!/story/2008741>`__ for details.
