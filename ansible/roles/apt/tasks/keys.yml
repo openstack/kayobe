@@ -1,0 +1,19 @@
+---
+- name: Ensure keys directory exists
+  file:
+    path: "{{ apt_keys_path }}"
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+  become: true
+
+- name: Ensure keys exist
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ apt_keys_path ~ '/' ~ item.filename | basename }}"
+    owner: root
+    group: root
+    mode: 0644
+  loop: "{{ apt_keys }}"
+  become: true

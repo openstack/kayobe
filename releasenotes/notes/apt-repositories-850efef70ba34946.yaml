@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Adds support for configuring Apt repositories on Ubuntu hosts. See `story
+    2009655 <https://storyboard.openstack.org/#!/story/2009655>`__ for details.

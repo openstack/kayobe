@@ -1,0 +1,15 @@
+# {{ ansible_managed }}
+
+{% for repo in apt_repositories %}
+Types: {{ repo.types | default('deb') }}
+URIs: {{ repo.url }}
+Suites: {{ repo.suites | default(ansible_facts.distribution_release) }}
+Components: {{ repo.components | default('main') }}
+{% if repo.signed_by is defined %}
+Signed-by: {{ apt_keys_path }}/{{ repo.signed_by }}
+{% endif %}
+{% if repo.architecture is defined %}
+Architecture: {{ repo.architecture }}
+{% endif %}
+
+{% endfor %}
