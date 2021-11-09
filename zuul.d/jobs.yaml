@@ -73,7 +73,7 @@
       - ^zuul.d/.*
     vars:
       # Name of the release to upgrade from for upgrade jobs.
-      previous_release: wallaby
+      previous_release: xena
       logs_dir: "/tmp/logs"
       kayobe_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/kayobe'].src_dir }}"
       kayobe_config_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/kayobe-config-dev'].src_dir }}"
