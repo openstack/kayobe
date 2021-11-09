@@ -1,0 +1,9 @@
+---
+# TODO(inc0): Gates don't seem to have ufw executable, check for it instead of ignore errors
+- name: Set firewall default policy
+  become: True
+  ufw:
+    state: disabled
+    policy: allow
+  when: not ufw_enabled | bool
+  ignore_errors: yes

@@ -3,6 +3,7 @@
   environment:
     KAYOBE_CONFIG_SOURCE_PATH: "{{ kayobe_config_src_dir }}"
     KAYOBE_OVERCLOUD_GENERATE_CERTIFICATES: "{{ tls_enabled | ternary(1, 0) }}"
+    KAYOBE_VAULT_PASSWORD: 'test-password'
     # TODO(mgoddard): Remove this when libvirt on host is used by default.
     TENKS_CONFIG_PATH: "dev/tenks-deploy-config-compute{% if tls_enabled %}-libvirt-on-host{% endif %}.yml"
   tasks:
@@ -10,6 +11,16 @@
       shell:
         cmd: "{{ kayobe_src_dir }}/dev/overcloud-deploy.sh &> {{ logs_dir }}/ansible/overcloud-deploy"
         executable: /bin/bash
+
+    # Check that passwords are Vault encrypted.
+    - name: View passwords.yml using Ansible Vault
+      vars:
+        kayobe_venv: "{{ ansible_env.HOME }}/kayobe-venv"
+      command: >-
+        {{ kayobe_venv }}/bin/ansible-vault
+        view
+        --vault-password-file {{ kayobe_venv }}/bin/kayobe-vault-password-helper
+        {{ kayobe_config_src_dir }}/etc/kayobe/kolla/passwords.yml
 
     - name: Ensure test Tenks cluster is deployed
       shell:

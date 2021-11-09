@@ -4,8 +4,13 @@
     description: |
       Tox job that checks Ansible playbook syntax.
     parent: openstack-tox
+    pre-run: playbooks/kayobe-tox-ansible-syntax/pre.yml
+    required-projects:
+      - name: openstack/ansible-collection-kolla
     vars:
       tox_envlist: ansible-syntax
+      ansible_collection_kolla_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/ansible-collection-kolla'].src_dir }}"
+      kayobe_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/kayobe'].src_dir }}"
     irrelevant-files:
       - ^.*\.rst$
       - ^doc/.*

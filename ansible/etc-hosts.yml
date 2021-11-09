@@ -1,0 +1,15 @@
+---
+- name: Ensure /etc/hosts is configured
+  hosts: overcloud
+  tags:
+    - etc-hosts
+  tasks:
+    # NOTE(mgoddard): Need to ensure that all hosts have facts available.
+    - import_role:
+        name: gather-facts-delegated
+      tags:
+        - gather-facts-delegated
+      when: etc_hosts_gather_facts | default(true)
+
+    - import_role:
+        name: etc-hosts

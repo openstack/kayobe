@@ -1,0 +1,8 @@
+---
+- hosts: all
+  tasks:
+    - name: Update kayobe requirements.yml
+      include_role:
+        name: kayobe-galaxy-requirements
+      vars:
+        kayobe_galaxy_requirements_src_dir: "{{ kayobe_src_dir }}"

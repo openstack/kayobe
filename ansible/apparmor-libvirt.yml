@@ -1,0 +1,21 @@
+---
+- name: Ensure AppArmor is disabled for containerised libvirt
+  hosts: compute
+  tags:
+    - apparmor-libvirt
+  vars:
+    # kolla_overcloud_inventory_top_level_group_map looks like:
+    # kolla_overcloud_inventory_top_level_group_map:
+    #  control:
+    #    groups:
+    #      - controllers
+    hosts_in_kolla_inventory: >-
+      {{ kolla_overcloud_inventory_top_level_group_map.values() |
+         map(attribute='groups') | flatten | unique | join(':') }}
+  tasks:
+    - name: Include openstack.kolla.apparmor_libvirt role
+      include_role:
+        name: openstack.kolla.apparmor_libvirt
+      when:
+        - inventory_hostname in query('inventory_hostnames', hosts_in_kolla_inventory)
+        - ansible_facts.distribution == "Ubuntu"

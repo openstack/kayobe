@@ -6,6 +6,5 @@
     - firewall
   tasks:
     - name: Configure firewalld
-      include_role:
+      import_role:
         name: "firewalld"
-

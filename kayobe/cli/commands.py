@@ -424,8 +424,7 @@ class PhysicalNetworkConfigure(KayobeAnsibleMixin, VaultMixin, Command):
                                  extra_vars=extra_vars)
 
 
-class SeedHypervisorHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
-                                  VaultMixin, Command):
+class SeedHypervisorHostConfigure(KayobeAnsibleMixin, VaultMixin, Command):
     """Configure the seed hypervisor node host OS and services.
 
     * Allocate IP addresses for all configured networks.
@@ -572,8 +571,7 @@ class SeedVMDeprovision(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
                                  _get_playbook_path("seed-vm-deprovision"))
 
 
-class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
-                        Command):
+class SeedHostConfigure(KayobeAnsibleMixin, VaultMixin, Command):
     """Configure the seed node host OS and services.
 
     * Allocate IP addresses for all configured networks.
@@ -619,27 +617,12 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed")
 
         # Run kayobe playbooks.
-        kwargs = {}
+        extra_vars = {"kayobe_action": "deploy"}
         if parsed_args.wipe_disks:
-            kwargs["extra_vars"] = {"wipe_disks": True}
+            extra_vars["wipe_disks"] = True
         playbooks = _build_playbook_list("seed-host-configure")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed",
-                                  **kwargs)
-
-        self.generate_kolla_ansible_config(parsed_args, service_config=False)
-
-        # Run kolla-ansible bootstrap-servers.
-        self.run_kolla_ansible_seed(parsed_args, "bootstrap-servers")
-
-        # Run final kayobe playbooks.
-        playbooks = _build_playbook_list("docker")
-        self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed")
-
-        # Optionally, deploy a Docker Registry.
-        playbooks = _build_playbook_list("docker-registry")
-        extra_vars = {"kayobe_action": "deploy"}
-        self.run_kayobe_playbooks(parsed_args, playbooks,
-                                  extra_vars=extra_vars, limit="seed")
+                                  extra_vars=extra_vars)
 
 
 class SeedHostPackageUpdate(KayobeAnsibleMixin, VaultMixin, Command):
@@ -689,8 +672,7 @@ class SeedHostCommandRun(KayobeAnsibleMixin, VaultMixin, Command):
                                   extra_vars=extra_vars)
 
 
-class SeedHostUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
-                      Command):
+class SeedHostUpgrade(KayobeAnsibleMixin, VaultMixin, Command):
     """Upgrade the seed host services.
 
     Performs the changes necessary to make the host services suitable for the
@@ -879,8 +861,7 @@ class InfraVMDeprovision(KayobeAnsibleMixin, VaultMixin, Command):
                                  ignore_limit=True, extra_vars=extra_vars)
 
 
-class InfraVMHostConfigure(KayobeAnsibleMixin, VaultMixin,
-                           Command):
+class InfraVMHostConfigure(KayobeAnsibleMixin, VaultMixin, Command):
     """Configure the infra VMs host OS and services.
 
     * Allocate IP addresses for all configured networks.
@@ -1126,8 +1107,7 @@ class OvercloudFactsGather(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         self.run_kolla_ansible_overcloud(parsed_args, "gather-facts")
 
 
-class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
-                             Command):
+class OvercloudHostConfigure(KayobeAnsibleMixin, VaultMixin, Command):
     """Configure the overcloud host OS and services.
 
     * Allocate IP addresses for all configured networks.
@@ -1179,16 +1159,6 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud",
                                   **kwargs)
 
-        self.generate_kolla_ansible_config(parsed_args, service_config=False)
-
-        # Kolla-ansible bootstrap-servers.
-        self.run_kolla_ansible_overcloud(parsed_args, "bootstrap-servers")
-
-        # Further kayobe playbooks.
-        playbooks = _build_playbook_list(
-            "docker", "swift-block-devices", "compute-libvirt-host")
-        self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
-
 
 class OvercloudHostPackageUpdate(KayobeAnsibleMixin, VaultMixin, Command):
     """Update packages on the overcloud hosts."""
@@ -1237,8 +1207,7 @@ class OvercloudHostCommandRun(KayobeAnsibleMixin, VaultMixin, Command):
                                   extra_vars=extra_vars)
 
 
-class OvercloudHostUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
-                           Command):
+class OvercloudHostUpgrade(KayobeAnsibleMixin, VaultMixin, Command):
     """Upgrade the overcloud host services.
 
     Performs the changes necessary to make the host services suitable for the
