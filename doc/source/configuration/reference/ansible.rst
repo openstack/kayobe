@@ -146,3 +146,30 @@ Similarly, for Kolla Ansible (notice the similar but different file names):
    :caption: ``$KAYOBE_CONFIG_PATH/kolla/globals.yml``
 
    kolla_ansible_setup_gather_subset: "all,!facter"
+
+Max failure percentage
+======================
+
+It is possible to specify a `maximum failure percentage
+<https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_error_handling.html#setting-a-maximum-failure-percentage>`__
+using ``kayobe_max_fail_percentage``. By default this is undefined, which is
+equivalent to a value of 100, meaning that Ansible will continue execution
+until all hosts have failed or completed. For example:
+
+.. code-block:: yaml
+   :caption: ``$KAYOBE_CONFIG_PATH/globals.yml``
+
+   kayobe_max_fail_percentage: 50
+
+A max fail percentage may be set for the ``kayobe * host configure`` commands
+using ``host_configure_max_fail_percentage``, or for a specific playbook using
+``<playbook>_max_fail_percentage`` where ``<playbook>`` is the playbook name
+with dashes replaced with underscores and without the ``.yml`` extension. For
+example:
+
+.. code-block:: yaml
+   :caption: ``$KAYOBE_CONFIG_PATH/globals.yml``
+
+   kayobe_max_fail_percentage: 50
+   host_configure_max_fail_percentage: 25
+   time_max_fail_percentage: 100

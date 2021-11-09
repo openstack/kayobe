@@ -4,6 +4,11 @@
 # interfaces. In some cases this can lead to timeouts.
 - name: Ensure Glean is disabled and its artifacts are removed
   hosts: seed:overcloud:infra-vms
+  max_fail_percentage: >-
+    {{ disable_glean_max_fail_percentage |
+       default(host_configure_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - disable-glean
   roles:

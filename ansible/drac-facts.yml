@@ -2,6 +2,10 @@
 - name: Gather and display BIOS and RAID facts from iDRACs
   hosts: overcloud
   gather_facts: no
+  max_fail_percentage: >-
+    {{ drac_facts_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   roles:
     # The role simply pulls in the drac_facts module.
     - role: stackhpc.drac-facts

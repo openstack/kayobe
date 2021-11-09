@@ -5,6 +5,11 @@
 # and cause some issues in network configuration
 - name: Disable Cloud-init service
   hosts: overcloud:infra-vms
+  max_fail_percentage: >-
+    {{ disable_cloud_init_max_fail_percentage |
+       default(host_configure_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - disable-cloud-init
   roles:

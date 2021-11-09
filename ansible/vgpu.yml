@@ -1,6 +1,11 @@
 ---
 - name: Configure IOMMU
   hosts: iommu
+  max_fail_percentage: >-
+    {{ vgpu_max_fail_percentage |
+       default(host_configure_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - iommu
     - vgpu
@@ -15,6 +20,11 @@
 
 - name: Configure NVIDIA VGPUs
   hosts: vgpu
+  max_fail_percentage: >-
+    {{ vgpu_max_fail_percentage |
+       default(host_configure_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - vgpu
   tasks:
@@ -28,6 +38,11 @@
 
 - name: Reboot when required
   hosts: iommu:vgpu
+  max_fail_percentage: >-
+    {{ vgpu_max_fail_percentage |
+       default(host_configure_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - reboot
     - iommu

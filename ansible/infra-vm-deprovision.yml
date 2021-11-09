@@ -15,6 +15,10 @@
 
 - name: Ensure defined infra VMs are destroyed
   hosts: hypervisors
+  max_fail_percentage: >-
+    {{ infra_vm_deprovision_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - infra-vm-deprovision
   tasks:
@@ -27,6 +31,10 @@
 - name: Set facts about infra VMs
   gather_facts: false
   hosts: "{{ infra_vm_limit | default('infra-vms') }}"
+  max_fail_percentage: >-
+    {{ infra_vm_deprovision_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - infra-vm-deprovision
   tasks:

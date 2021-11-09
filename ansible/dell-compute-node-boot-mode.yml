@@ -7,6 +7,11 @@
 - name: Ensure Dell baremetal compute nodes boot mode is set
   hosts: baremetal-compute
   gather_facts: no
+  max_fail_percentage: >-
+    {{ dell_compute_node_boot_mode_max_fail_percentage |
+       default(baremetal_compute_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   vars:
     # Set this to the required boot mode. One of 'bios' or 'uefi'.
     drac_boot_mode: "bios"

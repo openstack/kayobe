@@ -1,6 +1,10 @@
 ---
 - name: Check network connectivity between hosts
   hosts: seed:seed-hypervisor:overcloud:infra-vms
+  max_fail_percentage: >-
+    {{ network_connectivity_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   vars:
     # Set this to an external IP address to check.
     nc_external_ip: 8.8.8.8

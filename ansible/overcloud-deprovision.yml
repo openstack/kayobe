@@ -3,6 +3,10 @@
 
 - name: Ensure the overcloud nodes are deprovisioned
   hosts: overcloud
+  max_fail_percentage: >-
+    {{ overcloud_deprovision_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - deprovision
   vars:

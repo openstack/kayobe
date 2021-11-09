@@ -5,6 +5,10 @@
 - name: Group hosts by their switch type and apply configuration filters
   hosts: switches
   gather_facts: no
+  max_fail_percentage: >-
+    {{ physical_network_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   vars:
     # Set this variable to True to configure the network for hardware
     # discovery.
@@ -90,6 +94,10 @@
 - name: Display switch configuration
   hosts: switches_in_display_mode_True
   gather_facts: no
+  max_fail_percentage: >-
+    {{ physical_network_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tasks:
     - name: Display the candidate global switch configuration
       debug:
@@ -102,6 +110,10 @@
 - name: Ensure Arista physical switches are configured
   hosts: switches_of_type_arista:&switches_in_display_mode_False
   gather_facts: no
+  max_fail_percentage: >-
+    {{ physical_network_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   roles:
     - role: ssh-known-host
 
@@ -114,6 +126,10 @@
 - name: Ensure DellOS physical switches are configured
   hosts: switches_of_type_dellos6:switches_of_type_dellos9:switches_of_type_dellos10:&switches_in_display_mode_False
   gather_facts: no
+  max_fail_percentage: >-
+    {{ physical_network_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   roles:
     - role: ssh-known-host
 
@@ -127,6 +143,10 @@
 - name: Ensure Dell PowerConnect physical switches are configured
   hosts: switches_of_type_dell-powerconnect:&switches_in_display_mode_False
   gather_facts: no
+  max_fail_percentage: >-
+    {{ physical_network_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   roles:
     - role: ssh-known-host
 
@@ -139,6 +159,10 @@
 - name: Ensure Juniper physical switches are configured
   hosts: switches_of_type_junos:&switches_in_display_mode_False
   gather_facts: no
+  max_fail_percentage: >-
+    {{ physical_network_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   roles:
     - role: ssh-known-host
 
@@ -152,6 +176,10 @@
 - name: Ensure Mellanox physical switches are configured
   hosts: switches_of_type_mellanox:&switches_in_display_mode_False
   gather_facts: no
+  max_fail_percentage: >-
+    {{ physical_network_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   roles:
     - role: ssh-known-host
 
@@ -164,6 +192,10 @@
 - name: Ensure Cumulus physical switches are configured with NCLU
   hosts: switches_of_type_nclu:&switches_in_display_mode_False
   gather_facts: no
+  max_fail_percentage: >-
+    {{ physical_network_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   roles:
     - role: ssh-known-host
 

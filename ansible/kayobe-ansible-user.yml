@@ -9,6 +9,11 @@
 - name: Determine whether user bootstrapping is required
   hosts: seed-hypervisor:seed:overcloud:infra-vms
   gather_facts: false
+  max_fail_percentage: >-
+    {{ kayobe_ansible_user_max_fail_percentage |
+       default(host_configure_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - kayobe-ansible-user
   tasks:
@@ -31,15 +36,24 @@
           attempting bootstrap
       when: ssh_result.unreachable | default(false)
 
-- name: Ensure python is installed
+- name: Ensure python is installed and the Kayobe Ansible user account exists
   hosts: kayobe_user_bootstrap_required_True
   gather_facts: no
+  max_fail_percentage: >-
+    {{ kayobe_ansible_user_max_fail_percentage |
+       default(host_configure_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   vars:
     ansible_user: "{{ bootstrap_user }}"
+    # We can't assume that a virtualenv exists at this point, so use the system
+    # python interpreter.
+    ansible_python_interpreter: /usr/bin/python3
     dnf_options:
       - "-y"
       - "{% if 'proxy' in dnf_config %}--setopt=proxy={{ dnf_config['proxy'] }}{% endif %}"
   tags:
+    - kayobe-ansible-user
     - ensure-python
   tasks:
     - name: Check if python is installed
@@ -53,29 +67,19 @@
       raw: "test -e /usr/bin/apt && (sudo apt -y update && sudo apt install -y python3-minimal) || (sudo dnf {{ dnf_options | select | join(' ') }} install python3)"
       when: check_python.rc != 0
 
-- name: Ensure the Kayobe Ansible user account exists
-  hosts: kayobe_user_bootstrap_required_True
-  gather_facts: false
-  tags:
-    - kayobe-ansible-user
-  vars:
-    ansible_user: "{{ bootstrap_user }}"
-    # We can't assume that a virtualenv exists at this point, so use the system
-    # python interpreter.
-    ansible_python_interpreter: /usr/bin/python3
-  roles:
-    - role: singleplatform-eng.users
-      groups_to_create: "{{ [{'name': 'docker'}] if 'docker' in group_names else [] }}"
-      users:
-        - username: "{{ kayobe_ansible_user }}"
-          name: Kayobe deployment user
-          groups: "{{ ['docker'] if 'docker' in group_names else [] }}"
-          append: True
-          ssh_key:
-            - "{{ lookup('file', ssh_public_key_path) }}"
+    - import_role:
+        name: singleplatform-eng.users
+      vars:
+        groups_to_create: "{{ [{'name': 'docker'}] if 'docker' in group_names else [] }}"
+        users:
+          - username: "{{ kayobe_ansible_user }}"
+            name: Kayobe deployment user
+            groups: "{{ ['docker'] if 'docker' in group_names else [] }}"
+            append: True
+            ssh_key:
+              - "{{ lookup('file', ssh_public_key_path) }}"
       become: True
 
-  post_tasks:
     - name: Ensure the Kayobe Ansible user has passwordless sudo
       copy:
         content: "{{ kayobe_ansible_user }} ALL=(ALL) NOPASSWD: ALL"
@@ -86,6 +90,11 @@
 - name: Verify that the Kayobe Ansible user account is accessible
   hosts: seed-hypervisor:seed:overcloud:infra-vms
   gather_facts: false
+  max_fail_percentage: >-
+    {{ kayobe_ansible_user_max_fail_percentage |
+       default(host_configure_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - kayobe-ansible-user
   vars:

@@ -15,6 +15,10 @@
 
 - name: Ensure defined infra VMs are deployed
   hosts: hypervisors
+  max_fail_percentage: >-
+    {{ infra_vm_provision_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - infra-vm-provision
   tasks:
@@ -26,6 +30,10 @@
 - name: Wait for infra VMs to be accessible
   hosts: "{{ infra_vm_limit | default('infra-vms') }}"
   gather_facts: false
+  max_fail_percentage: >-
+    {{ infra_vm_provision_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - infra-vm-provision
   tasks:

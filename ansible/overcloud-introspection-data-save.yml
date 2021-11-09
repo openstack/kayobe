@@ -1,6 +1,10 @@
 ---
 - name: Ensure the overcloud nodes' hardware introspection data is saved
   hosts: overcloud
+  max_fail_percentage: >-
+    {{ overcloud_introspection_data_save_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   vars:
     seed_host: "{{ groups['seed'][0] }}"
     # Override this to save results to another location.

@@ -1,6 +1,11 @@
 ---
 - name: Configure SELinux state and reboot if required
   hosts: seed:seed-hypervisor:overcloud:infra-vms
+  max_fail_percentage: >-
+    {{ selinux_max_fail_percentage |
+       default(host_configure_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - selinux
   roles:

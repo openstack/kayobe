@@ -9,6 +9,10 @@
 - name: Group overcloud nodes by their BMC type
   hosts: overcloud
   gather_facts: no
+  max_fail_percentage: >-
+    {{ overcloud_bios_raid_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - bios
     - raid
@@ -35,6 +39,10 @@
 - name: Check whether any changes to nodes' BIOS and RAID configuration are required
   hosts: overcloud_with_bmcs_of_type_idrac
   gather_facts: no
+  max_fail_percentage: >-
+    {{ overcloud_bios_raid_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - bios
     - raid
@@ -57,6 +65,10 @@
 - name: Ensure that overcloud BIOS and RAID volumes are configured
   hosts: overcloud_with_bmcs_of_type_idrac
   gather_facts: no
+  max_fail_percentage: >-
+    {{ overcloud_bios_raid_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - bios
     - raid

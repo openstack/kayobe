@@ -1,6 +1,10 @@
 ---
 - name: Gather facts
   hosts: overcloud
+  max_fail_percentage: >-
+    {{ overcloud_facts_gather_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   gather_facts: false
   tasks:
     - name: Gather facts

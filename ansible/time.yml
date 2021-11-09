@@ -1,6 +1,11 @@
 ---
 - name: Ensure timezone is configured
   hosts: seed-hypervisor:seed:overcloud:infra-vms
+  max_fail_percentage: >-
+    {{ time_max_fail_percentage |
+       default(host_configure_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - timezone
   tasks:
@@ -24,6 +29,11 @@
 
 - name: Ensure Chrony is installed and configured
   hosts: ntp
+  max_fail_percentage: >-
+    {{ time_max_fail_percentage |
+       default(host_configure_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - ntp
   tasks:

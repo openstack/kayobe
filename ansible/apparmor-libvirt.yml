@@ -1,6 +1,11 @@
 ---
 - name: Ensure AppArmor is disabled for containerised libvirt
   hosts: compute
+  max_fail_percentage: >-
+    {{ apparmor_libvirt_max_fail_percentage |
+       default(host_configure_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - apparmor-libvirt
   vars:

@@ -1,6 +1,11 @@
 ---
 - name: Ensure /etc/hosts is configured
   hosts: overcloud
+  max_fail_percentage: >-
+    {{ etc_hosts_max_fail_percentage |
+       default(host_configure_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - etc-hosts
   tasks:

@@ -1,6 +1,11 @@
 ---
 - name: Ensure networking is configured
   hosts: seed-hypervisor:seed:overcloud:infra-vms
+  max_fail_percentage: >-
+    {{ network_max_fail_percentage |
+       default(host_configure_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - config
     - network

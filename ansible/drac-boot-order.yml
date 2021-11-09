@@ -2,6 +2,10 @@
 - name: Ensure that overcloud nodes' boot order is configured
   hosts: overcloud
   gather_facts: no
+  max_fail_percentage: >-
+    {{ drac_boot_order_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   vars:
     ansible_host: "{{ ipmi_address }}"
     ansible_user: "{{ ipmi_username }}"

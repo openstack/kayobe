@@ -3,6 +3,10 @@
 
 - name: Ensure the overcloud nodes' hardware is inspected
   hosts: overcloud
+  max_fail_percentage: >-
+    {{ overcloud_hardware_inspect_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - hardware-inspect
   vars:
