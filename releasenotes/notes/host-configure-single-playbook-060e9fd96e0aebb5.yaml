@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Improves error handling by adding a top-level playbook for the ``kayobe *
+    host configure`` and ``kayobe * host upgrade`` commands. This ensures that
+    if a host fails during a host configuration command, other hosts are able
+    to continue to completion. This is useful at scale, where host failures
+    occur more frequently. See `story 2009854
+    <https://storyboard.openstack.org/#!/story/2009854>`__ for details.

@@ -1,0 +1,3 @@
+---
+- import_playbook: "kayobe-target-venv.yml"
+- import_playbook: "kolla-target-venv.yml"
