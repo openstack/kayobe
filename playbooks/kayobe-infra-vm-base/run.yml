@@ -1,0 +1,17 @@
+---
+- hosts: primary
+  environment:
+    KAYOBE_CONFIG_SOURCE_PATH: "{{ kayobe_config_src_dir }}"
+    # The CirrOS image does not support much beyond logging in.
+    KAYOBE_INFRA_VM_HOST_CONFIGURE: 0
+    KAYOBE_INFRA_VM_SERVICE_DEPLOY: 0
+  tasks:
+    - name: Ensure seed hypervisor is deployed
+      shell:
+        cmd: "{{ kayobe_src_dir }}/dev/seed-hypervisor-deploy.sh &> {{ logs_dir }}/ansible/seed-hypervisor-deploy"
+        executable: /bin/bash
+
+    - name: Ensure infra VM is deployed
+      shell:
+        cmd: "{{ kayobe_src_dir }}/dev/infra-vm-deploy.sh &> {{ logs_dir }}/ansible/infra-vm-deploy"
+        executable: /bin/bash

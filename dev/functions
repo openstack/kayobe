@@ -40,6 +40,15 @@ function config_defaults {
     # Whether to deploy seed services.
     export KAYOBE_SEED_SERVICE_DEPLOY=${KAYOBE_SEED_SERVICE_DEPLOY:-1}
 
+    # Whether to provision a VM for the infra VM host.
+    export KAYOBE_INFRA_VM_PROVISION=${KAYOBE_INFRA_VM_PROVISION:-1}
+
+    # Whether to configure the infra VM host.
+    export KAYOBE_INFRA_VM_HOST_CONFIGURE=${KAYOBE_INFRA_VM_HOST_CONFIGURE:-1}
+
+    # Whether to deploy infra VM services.
+    export KAYOBE_INFRA_VM_SERVICE_DEPLOY=${KAYOBE_INFRA_VM_SERVICE_DEPLOY:-1}
+
     # Whether to use the 'kolla-ansible certificates' command to generate X.509
     # certificates.
     export KAYOBE_OVERCLOUD_GENERATE_CERTIFICATES=${KAYOBE_OVERCLOUD_GENERATE_CERTIFICATES:-0}
@@ -338,6 +347,28 @@ function seed_upgrade {
 
     echo "Upgrading containerised seed services"
     run_kayobe seed service upgrade
+}
+
+function infra_vm_deploy {
+    # Deploy a kayobe infra VM.
+    environment_setup
+
+    control_host_bootstrap
+
+    if [[ ${KAYOBE_INFRA_VM_PROVISION} = 1 ]]; then
+        echo "Provisioning the infra VM"
+        run_kayobe infra vm provision
+    fi
+
+    if [[ ${KAYOBE_INFRA_VM_HOST_CONFIGURE} = 1 ]]; then
+        echo "Configuring the infra VM host"
+        run_kayobe infra vm host configure
+    fi
+
+    if [[ ${KAYOBE_INFRA_VM_SERVICE_DEPLOY} = 1 ]]; then
+        echo "Deploying containerised infra VM services"
+        run_kayobe infra vm service deploy
+    fi
 }
 
 function overcloud_deploy {

@@ -23,6 +23,8 @@
         - kayobe-seed-upgrade-ubuntu-focal
         - kayobe-seed-vm-centos8s
         - kayobe-seed-vm-ubuntu-focal
+        - kayobe-infra-vm-centos8s
+        - kayobe-infra-vm-ubuntu-focal
 
     gate:
       queue: kayobe
@@ -43,3 +45,5 @@
         - kayobe-seed-upgrade-ubuntu-focal
         - kayobe-seed-vm-centos8s
         - kayobe-seed-vm-ubuntu-focal
+        - kayobe-infra-vm-centos8s
+        - kayobe-infra-vm-ubuntu-focal
