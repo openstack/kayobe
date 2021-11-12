@@ -91,10 +91,11 @@ def _get_kayobe_environment_path(parsed_args):
 
 def _get_inventories_paths(parsed_args, env_path):
     """Return the paths to the Kayobe inventories."""
+    default_inventory = utils.get_data_files_path("ansible", "inventory")
+    inventories = [default_inventory]
     if parsed_args.inventory:
-        return parsed_args.inventory
+        inventories.extend(parsed_args.inventory)
     else:
-        inventories = []
         shared_inventory = os.path.join(parsed_args.config_path, "inventory")
         if env_path:
             if os.path.exists(shared_inventory):
@@ -106,7 +107,7 @@ def _get_inventories_paths(parsed_args, env_path):
             # Preserve existing behaviour: don't check if an inventory
             # directory exists when no environment is specified
             inventories.append(shared_inventory)
-        return inventories
+    return inventories
 
 
 def _validate_args(parsed_args, playbooks):

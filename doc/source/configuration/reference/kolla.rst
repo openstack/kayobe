@@ -153,7 +153,7 @@ images that will be built:
 
 If a required image is not built when the corresponding flag is set, check the
 image sets defined in ``overcloud_container_image_sets`` in
-``ansible/group_vars/all/kolla``.
+``ansible/inventory/group_vars/all/kolla``.
 
 Image Customisation
 ===================

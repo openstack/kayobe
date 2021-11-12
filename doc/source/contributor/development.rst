@@ -31,7 +31,7 @@ Kayobe's Ansible playbooks live in `ansible/*.yml
 typically execute roles in `ansible/roles/
 <https://opendev.org/openstack/kayobe/src/branch/master/ansible/roles>`__.
 Global variable defaults are defined in group variable files in
-`ansible/group_vars/all/
+`ansible/inventory/group_vars/all/
 <https://opendev.org/openstack/kayobe/src/branch/master/ansible/group_vars/>`__
 and these typically map to commented out variables in the configuration files
 in `etc/kayobe/*.yml

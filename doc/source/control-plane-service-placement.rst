@@ -46,10 +46,10 @@ Variables For Custom Server Roles
 Certain variables must be defined for hosts in the ``overcloud`` group.  For
 hosts in the ``controllers`` group, many variables are mapped to other
 variables with a ``controller_`` prefix in files under
-``ansible/group_vars/controllers/``. This is done in order that they may be set
-in a global extra variables file, typically ``controllers.yml``, with defaults
-set in ``ansible/group_vars/all/controllers``.  A similar scheme is used for
-hosts in the ``monitoring`` group.
+``ansible/inventory/group_vars/controllers/``. This is done in order that they
+may be set in a global extra variables file, typically ``controllers.yml``,
+with defaults set in ``ansible/inventory/group_vars/all/controllers``.  A
+similar scheme is used for hosts in the ``monitoring`` group.
 
 .. table:: Overcloud host variables
 
