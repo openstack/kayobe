@@ -15,6 +15,7 @@
 import argparse
 import errno
 import os
+import os.path
 import shutil
 import subprocess
 import tempfile
@@ -52,7 +53,41 @@ class TestCase(unittest.TestCase):
             "playbook1.yml",
             "playbook2.yml",
         ]
-        expected_env = {"KAYOBE_CONFIG_PATH": "/etc/kayobe"}
+        home = os.path.expanduser("~")
+        expected_env = {
+            "KAYOBE_CONFIG_PATH": "/etc/kayobe",
+            "ANSIBLE_ROLES_PATH": ":".join([
+                "/etc/kayobe/ansible/roles",
+                utils.get_data_files_path("ansible", "roles"),
+                home + "/.ansible/roles",
+                "/usr/share/ansible/roles",
+                "/etc/ansible/roles",
+            ]),
+            "ANSIBLE_COLLECTIONS_PATH": ":".join([
+                "/etc/kayobe/ansible/collections",
+                utils.get_data_files_path("ansible", "collections"),
+                home + "/.ansible/collections",
+                "/usr/share/ansible/collections",
+            ]),
+            "ANSIBLE_ACTION_PLUGINS": ":".join([
+                "/etc/kayobe/ansible/action_plugins",
+                utils.get_data_files_path("ansible", "action_plugins"),
+                home + "/.ansible/plugins/action",
+                "/usr/share/ansible/plugins/action",
+            ]),
+            "ANSIBLE_FILTER_PLUGINS": ":".join([
+                "/etc/kayobe/ansible/filter_plugins",
+                utils.get_data_files_path("ansible", "filter_plugins"),
+                home + "/.ansible/plugins/filter",
+                "/usr/share/ansible/plugins/filter",
+            ]),
+            "ANSIBLE_TEST_PLUGINS": ":".join([
+                "/etc/kayobe/ansible/test_plugins",
+                utils.get_data_files_path("ansible", "test_plugins"),
+                home + "/.ansible/plugins/test",
+                "/usr/share/ansible/plugins/test",
+            ]),
+        }
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
         mock_vars.assert_called_once_with(["/etc/kayobe"])
@@ -99,8 +134,42 @@ class TestCase(unittest.TestCase):
             "playbook1.yml",
             "playbook2.yml",
         ]
-        expected_env = {"KAYOBE_CONFIG_PATH": "/path/to/config",
-                        "KAYOBE_ENVIRONMENT": "test-env"}
+        home = os.path.expanduser("~")
+        expected_env = {
+            "KAYOBE_CONFIG_PATH": "/path/to/config",
+            "KAYOBE_ENVIRONMENT": "test-env",
+            "ANSIBLE_ROLES_PATH": ":".join([
+                "/path/to/config/ansible/roles",
+                utils.get_data_files_path("ansible", "roles"),
+                home + "/.ansible/roles",
+                "/usr/share/ansible/roles",
+                "/etc/ansible/roles",
+            ]),
+            "ANSIBLE_COLLECTIONS_PATH": ":".join([
+                "/path/to/config/ansible/collections",
+                utils.get_data_files_path("ansible", "collections"),
+                home + "/.ansible/collections",
+                "/usr/share/ansible/collections",
+            ]),
+            "ANSIBLE_ACTION_PLUGINS": ":".join([
+                "/path/to/config/ansible/action_plugins",
+                utils.get_data_files_path("ansible", "action_plugins"),
+                home + "/.ansible/plugins/action",
+                "/usr/share/ansible/plugins/action",
+            ]),
+            "ANSIBLE_FILTER_PLUGINS": ":".join([
+                "/path/to/config/ansible/filter_plugins",
+                utils.get_data_files_path("ansible", "filter_plugins"),
+                home + "/.ansible/plugins/filter",
+                "/usr/share/ansible/plugins/filter",
+            ]),
+            "ANSIBLE_TEST_PLUGINS": ":".join([
+                "/path/to/config/ansible/test_plugins",
+                utils.get_data_files_path("ansible", "test_plugins"),
+                home + "/.ansible/plugins/test",
+                "/usr/share/ansible/plugins/test",
+            ]),
+        }
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
         mock_vars.assert_called_once_with(
@@ -153,9 +222,16 @@ class TestCase(unittest.TestCase):
             "playbook1.yml",
             "playbook2.yml",
         ]
-        expected_env = {"KAYOBE_CONFIG_PATH": "/path/to/config",
-                        "KAYOBE_ENVIRONMENT": "test-env",
-                        "KAYOBE_VAULT_PASSWORD": "test-pass"}
+        expected_env = {
+            "KAYOBE_CONFIG_PATH": "/path/to/config",
+            "KAYOBE_ENVIRONMENT": "test-env",
+            "KAYOBE_VAULT_PASSWORD": "test-pass",
+            "ANSIBLE_ROLES_PATH": mock.ANY,
+            "ANSIBLE_COLLECTIONS_PATH": mock.ANY,
+            "ANSIBLE_ACTION_PLUGINS": mock.ANY,
+            "ANSIBLE_FILTER_PLUGINS": mock.ANY,
+            "ANSIBLE_TEST_PLUGINS": mock.ANY,
+        }
         expected_calls = [
             mock.call(["which", "kayobe-vault-password-helper"],
                       check_output=True, universal_newlines=True),
@@ -189,7 +265,14 @@ class TestCase(unittest.TestCase):
             "--inventory", "/etc/kayobe/inventory",
             "playbook1.yml",
         ]
-        expected_env = {"KAYOBE_CONFIG_PATH": "/etc/kayobe"}
+        expected_env = {
+            "KAYOBE_CONFIG_PATH": "/etc/kayobe",
+            "ANSIBLE_ROLES_PATH": mock.ANY,
+            "ANSIBLE_COLLECTIONS_PATH": mock.ANY,
+            "ANSIBLE_ACTION_PLUGINS": mock.ANY,
+            "ANSIBLE_FILTER_PLUGINS": mock.ANY,
+            "ANSIBLE_TEST_PLUGINS": mock.ANY,
+        }
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
         mock_update.assert_called_once_with(mock.ANY, expected_env)
@@ -219,8 +302,15 @@ class TestCase(unittest.TestCase):
             "--inventory", "/etc/kayobe/inventory",
             "playbook1.yml",
         ]
-        expected_env = {"KAYOBE_CONFIG_PATH": "/etc/kayobe",
-                        "KAYOBE_VAULT_PASSWORD": "test-pass"}
+        expected_env = {
+            "KAYOBE_CONFIG_PATH": "/etc/kayobe",
+            "KAYOBE_VAULT_PASSWORD": "test-pass",
+            "ANSIBLE_ROLES_PATH": mock.ANY,
+            "ANSIBLE_COLLECTIONS_PATH": mock.ANY,
+            "ANSIBLE_ACTION_PLUGINS": mock.ANY,
+            "ANSIBLE_FILTER_PLUGINS": mock.ANY,
+            "ANSIBLE_TEST_PLUGINS": mock.ANY,
+        }
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
 
@@ -279,7 +369,14 @@ class TestCase(unittest.TestCase):
             "playbook1.yml",
             "playbook2.yml",
         ]
-        expected_env = {"KAYOBE_CONFIG_PATH": "/etc/kayobe"}
+        expected_env = {
+            "KAYOBE_CONFIG_PATH": "/etc/kayobe",
+            "ANSIBLE_ROLES_PATH": mock.ANY,
+            "ANSIBLE_COLLECTIONS_PATH": mock.ANY,
+            "ANSIBLE_ACTION_PLUGINS": mock.ANY,
+            "ANSIBLE_FILTER_PLUGINS": mock.ANY,
+            "ANSIBLE_TEST_PLUGINS": mock.ANY,
+        }
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
         mock_vars.assert_called_once_with(["/etc/kayobe"])
@@ -309,7 +406,14 @@ class TestCase(unittest.TestCase):
             "playbook1.yml",
             "playbook2.yml",
         ]
-        expected_env = {"KAYOBE_CONFIG_PATH": "/etc/kayobe"}
+        expected_env = {
+            "KAYOBE_CONFIG_PATH": "/etc/kayobe",
+            "ANSIBLE_ROLES_PATH": mock.ANY,
+            "ANSIBLE_COLLECTIONS_PATH": mock.ANY,
+            "ANSIBLE_ACTION_PLUGINS": mock.ANY,
+            "ANSIBLE_FILTER_PLUGINS": mock.ANY,
+            "ANSIBLE_TEST_PLUGINS": mock.ANY,
+        }
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
         mock_vars.assert_called_once_with(["/etc/kayobe"])
@@ -339,7 +443,14 @@ class TestCase(unittest.TestCase):
             "playbook1.yml",
             "playbook2.yml",
         ]
-        expected_env = {"KAYOBE_CONFIG_PATH": "/etc/kayobe"}
+        expected_env = {
+            "KAYOBE_CONFIG_PATH": "/etc/kayobe",
+            "ANSIBLE_ROLES_PATH": mock.ANY,
+            "ANSIBLE_COLLECTIONS_PATH": mock.ANY,
+            "ANSIBLE_ACTION_PLUGINS": mock.ANY,
+            "ANSIBLE_FILTER_PLUGINS": mock.ANY,
+            "ANSIBLE_TEST_PLUGINS": mock.ANY,
+        }
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
         mock_vars.assert_called_once_with(["/etc/kayobe"])
@@ -365,7 +476,12 @@ class TestCase(unittest.TestCase):
         ]
         expected_env = {
             "ANSIBLE_CONFIG": "/etc/kayobe/ansible.cfg",
-            "KAYOBE_CONFIG_PATH": "/etc/kayobe"
+            "KAYOBE_CONFIG_PATH": "/etc/kayobe",
+            "ANSIBLE_ROLES_PATH": mock.ANY,
+            "ANSIBLE_COLLECTIONS_PATH": mock.ANY,
+            "ANSIBLE_ACTION_PLUGINS": mock.ANY,
+            "ANSIBLE_FILTER_PLUGINS": mock.ANY,
+            "ANSIBLE_TEST_PLUGINS": mock.ANY,
         }
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
@@ -394,7 +510,12 @@ class TestCase(unittest.TestCase):
         ]
         expected_env = {
             "ANSIBLE_CONFIG": "/path/to/ansible.cfg",
-            "KAYOBE_CONFIG_PATH": "/etc/kayobe"
+            "KAYOBE_CONFIG_PATH": "/etc/kayobe",
+            "ANSIBLE_ROLES_PATH": mock.ANY,
+            "ANSIBLE_COLLECTIONS_PATH": mock.ANY,
+            "ANSIBLE_ACTION_PLUGINS": mock.ANY,
+            "ANSIBLE_FILTER_PLUGINS": mock.ANY,
+            "ANSIBLE_TEST_PLUGINS": mock.ANY,
         }
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
@@ -689,7 +810,14 @@ class TestCase(unittest.TestCase):
             "playbook1.yml",
             "playbook2.yml",
         ]
-        expected_env = {"KAYOBE_CONFIG_PATH": "/etc/kayobe"}
+        expected_env = {
+            "KAYOBE_CONFIG_PATH": "/etc/kayobe",
+            "ANSIBLE_ROLES_PATH": mock.ANY,
+            "ANSIBLE_COLLECTIONS_PATH": mock.ANY,
+            "ANSIBLE_ACTION_PLUGINS": mock.ANY,
+            "ANSIBLE_FILTER_PLUGINS": mock.ANY,
+            "ANSIBLE_TEST_PLUGINS": mock.ANY,
+        }
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
         mock_vars.assert_called_once_with(["/etc/kayobe"])
@@ -722,8 +850,15 @@ class TestCase(unittest.TestCase):
             "playbook1.yml",
             "playbook2.yml",
         ]
-        expected_env = {"KAYOBE_CONFIG_PATH": "/etc/kayobe",
-                        "KAYOBE_ENVIRONMENT": "test-env"}
+        expected_env = {
+            "KAYOBE_CONFIG_PATH": "/etc/kayobe",
+            "KAYOBE_ENVIRONMENT": "test-env",
+            "ANSIBLE_ROLES_PATH": mock.ANY,
+            "ANSIBLE_COLLECTIONS_PATH": mock.ANY,
+            "ANSIBLE_ACTION_PLUGINS": mock.ANY,
+            "ANSIBLE_FILTER_PLUGINS": mock.ANY,
+            "ANSIBLE_TEST_PLUGINS": mock.ANY,
+        }
         expected_calls = [
             mock.call("/etc/kayobe/inventory"),
             mock.call("/etc/kayobe/environments/test-env/inventory"),
@@ -762,8 +897,15 @@ class TestCase(unittest.TestCase):
             "playbook1.yml",
             "playbook2.yml",
         ]
-        expected_env = {"KAYOBE_CONFIG_PATH": "/etc/kayobe",
-                        "KAYOBE_ENVIRONMENT": "test-env"}
+        expected_env = {
+            "KAYOBE_CONFIG_PATH": "/etc/kayobe",
+            "KAYOBE_ENVIRONMENT": "test-env",
+            "ANSIBLE_ROLES_PATH": mock.ANY,
+            "ANSIBLE_COLLECTIONS_PATH": mock.ANY,
+            "ANSIBLE_ACTION_PLUGINS": mock.ANY,
+            "ANSIBLE_FILTER_PLUGINS": mock.ANY,
+            "ANSIBLE_TEST_PLUGINS": mock.ANY,
+        }
         expected_calls = [
             mock.call("/etc/kayobe/inventory"),
             mock.call("/etc/kayobe/environments/test-env/inventory"),
@@ -802,8 +944,15 @@ class TestCase(unittest.TestCase):
             "playbook1.yml",
             "playbook2.yml",
         ]
-        expected_env = {"KAYOBE_CONFIG_PATH": "/etc/kayobe",
-                        "KAYOBE_ENVIRONMENT": "test-env"}
+        expected_env = {
+            "KAYOBE_CONFIG_PATH": "/etc/kayobe",
+            "KAYOBE_ENVIRONMENT": "test-env",
+            "ANSIBLE_ROLES_PATH": mock.ANY,
+            "ANSIBLE_COLLECTIONS_PATH": mock.ANY,
+            "ANSIBLE_ACTION_PLUGINS": mock.ANY,
+            "ANSIBLE_FILTER_PLUGINS": mock.ANY,
+            "ANSIBLE_TEST_PLUGINS": mock.ANY,
+        }
         expected_calls = [
             mock.call("/etc/kayobe/inventory"),
             mock.call("/etc/kayobe/environments/test-env/inventory"),

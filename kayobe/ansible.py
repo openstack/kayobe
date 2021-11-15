@@ -21,6 +21,8 @@ import subprocess
 import sys
 import tempfile
 
+import ansible.constants
+
 from kayobe import exception
 from kayobe import utils
 from kayobe import vault
@@ -231,6 +233,40 @@ def _get_environment(parsed_args):
     ansible_cfg_path = os.path.join(parsed_args.config_path, "ansible.cfg")
     if utils.is_readable_file(ansible_cfg_path)["result"]:
         env.setdefault("ANSIBLE_CONFIG", ansible_cfg_path)
+
+    # Update various role, collection and plugin paths to include the Kayobe
+    # roles, collections and plugins. This allows custom playbooks to use these
+    # resources.
+    roles_paths = [
+        os.path.join(parsed_args.config_path, "ansible", "roles"),
+        utils.get_data_files_path("ansible", "roles"),
+    ] + ansible.constants.DEFAULT_ROLES_PATH
+    env.setdefault("ANSIBLE_ROLES_PATH", ":".join(roles_paths))
+
+    collections_paths = [
+        os.path.join(parsed_args.config_path, "ansible", "collections"),
+        utils.get_data_files_path("ansible", "collections"),
+    ] + ansible.constants.COLLECTIONS_PATHS
+    env.setdefault("ANSIBLE_COLLECTIONS_PATH", ":".join(collections_paths))
+
+    action_plugins = [
+        os.path.join(parsed_args.config_path, "ansible", "action_plugins"),
+        utils.get_data_files_path("ansible", "action_plugins"),
+    ] + ansible.constants.DEFAULT_ACTION_PLUGIN_PATH
+    env.setdefault("ANSIBLE_ACTION_PLUGINS", ":".join(action_plugins))
+
+    filter_plugins = [
+        os.path.join(parsed_args.config_path, "ansible", "filter_plugins"),
+        utils.get_data_files_path("ansible", "filter_plugins"),
+    ] + ansible.constants.DEFAULT_FILTER_PLUGIN_PATH
+    env.setdefault("ANSIBLE_FILTER_PLUGINS", ":".join(filter_plugins))
+
+    test_plugins = [
+        os.path.join(parsed_args.config_path, "ansible", "test_plugins"),
+        utils.get_data_files_path("ansible", "test_plugins"),
+    ] + ansible.constants.DEFAULT_TEST_PLUGIN_PATH
+    env.setdefault("ANSIBLE_TEST_PLUGINS", ":".join(test_plugins))
+
     return env
 
 

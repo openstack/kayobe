@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    Roles, collections and plugins included with Kayobe configuration are now
+    accessible to all Kayobe playbook executions.
+upgrade:
+  - |
+    Changes the environment used during Kayobe playbook execution to include
+    Kayobe's collections, roles and plugins in the Ansible lookup paths.
+    This allows custom playbooks to use these items, without the requirement to
+    symlink into the Kayobe installation. Existing symlinks may be removed.
