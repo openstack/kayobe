@@ -8,7 +8,7 @@
 # also closed and removed from crypttab.
 
 - name: Ensure that all unmounted block devices are wiped
-  hosts: seed-hypervisor:seed:overcloud
+  hosts: seed-hypervisor:seed:overcloud:infra-vms
   tags:
     - wipe-disks
   roles:

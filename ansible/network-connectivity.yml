@@ -1,6 +1,6 @@
 ---
 - name: Check network connectivity between hosts
-  hosts: seed:seed-hypervisor:overcloud
+  hosts: seed:seed-hypervisor:overcloud:infra-vms
   vars:
     # Set this to an external IP address to check.
     nc_external_ip: 8.8.8.8
