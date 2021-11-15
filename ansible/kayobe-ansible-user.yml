@@ -87,7 +87,7 @@
       become: True
 
 - name: Verify that the Kayobe Ansible user account is accessible
-  hosts: seed-hypervisor:seed:overcloud
+  hosts: seed-hypervisor:seed:overcloud:infra-vms
   gather_facts: false
   tags:
     - kayobe-ansible-user
