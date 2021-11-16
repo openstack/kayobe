@@ -14,6 +14,7 @@ configure`` command.  See :ref:`physical-network` for details.
 
 The following switch operating systems are currently supported:
 
+* Arista EOS
 * Cumulus Linux (via `Network Command Line Utility (NCLU)
   <https://docs.nvidia.com/networking-ethernet-software/cumulus-linux-44/System-Configuration/Network-Command-Line-Utility-NCLU/>`__)
 * Dell OS 6
@@ -174,6 +175,26 @@ example:
 
 Device-specific Configuration Variables
 =======================================
+
+Arista EOS
+----------
+
+Configuration for these devices is applied using the ``arista-switch`` Ansible
+role in Kayobe. The role configures Arista switches using the ``eos`` Ansible
+modules.
+
+``switch_type`` should be set to ``arista``.
+
+Provider
+^^^^^^^^
+
+* ``ansible_host`` is the hostname or IP address.  Optional.
+
+* ``ansible_user`` is the SSH username.
+
+* ``ansible_ssh_pass`` is the SSH password.
+
+* ``switch_auth_pass`` is the 'enable' password.
 
 Cumulus Linux (with NCLU)
 -------------------------
