@@ -8,9 +8,9 @@
     host_package_update_security: false
   tasks:
     - name: Update host packages
-      dnf:
+      package:
         name: "{{ host_package_update_packages }}"
-        security: "{{ host_package_update_security | bool }}"
+        security: "{{ host_package_update_security | bool if ansible_facts.os_family == 'RedHat' else omit }}"
         state: latest
-      when: ansible_facts.os_family == 'RedHat'
+        update_cache: "{{ True if ansible_facts.os_family == 'Debian' else omit }}"
       become: true

@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    Adds support for running package updates on Ubuntu hosts via the following
+    existing commands:
+
+    * ``kayobe seed host package update --packages <packages>``
+    * ``kayobe seed hypervisor host package update --packages <packages>``
+    * ``kayobe infra vm host package update --packages <packages>``
+    * ``kayobe overcloud host package update --packages <packages>``
