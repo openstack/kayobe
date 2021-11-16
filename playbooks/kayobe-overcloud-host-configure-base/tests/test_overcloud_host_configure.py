@@ -193,6 +193,13 @@ def test_ntp_clock_synchronized(host):
 
 
 @pytest.mark.skipif(not _is_apt(), reason="Apt only supported on Ubuntu")
+def test_apt_config(host):
+    apt_config = host.file("/etc/apt/apt.conf.d/99retries")
+    assert apt_config.exists
+    assert apt_config.content_string == "Acquire::Retries 1;\n"
+
+
+@pytest.mark.skipif(not _is_apt(), reason="Apt only supported on Ubuntu")
 def test_apt_custom_package_repository_is_available(host):
     with host.sudo():
         host.check_output("apt -y install td-agent")

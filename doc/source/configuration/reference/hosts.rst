@@ -324,6 +324,30 @@ Apt can be configured to use a proxy via ``apt_proxy_http`` and
 ``apt_proxy_https`` in ``etc/kayobe/apt.yml``. These should be set to the full
 URL of the relevant proxy (e.g. ``http://squid.example.com:3128``).
 
+Apt configuration
+-----------------
+
+Arbitrary global configuration options for Apt may be defined via the
+``apt_config`` variable in ``etc/kayobe/apt.yml`` since the Yoga release. The
+format is a list, with each item mapping to a dict/map with the following
+items:
+
+* ``content``: free-form configuration file content
+* ``filename``: name of a file in ``/etc/apt/apt.conf.d/`` in which to write
+  the configuration
+
+The default of ``apt_config`` is an empty list.
+
+For example, the following configuration tells Apt to use 2 attempts when
+downloading packages:
+
+.. code-block:: yaml
+
+   apt_config:
+     - content: |
+         Acquire::Retries 1;
+       filename: 99retries
+
 Apt repositories
 ----------------
 

@@ -115,6 +115,10 @@ docker_storage_driver: devicemapper
 timezone: Pacific/Honolulu
 
 {% if ansible_os_family == "Debian" %}
+apt_config:
+  - content: |
+      Acquire::Retries 1;
+    filename: 99retries
 apt_keys:
   - url: https://packages.treasuredata.com/GPG-KEY-td-agent
     filename: td-agent.asc
