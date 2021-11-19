@@ -210,7 +210,9 @@ The following options configure the Ironic Inspector service in the
 ``kolla_bifrost_inspector_extra_kernel_options``
     List of extra kernel parameters for the inspector default PXE
     configuration. Default is ``{{ inspector_extra_kernel_options }}``, defined
-    in ``${KAYOBE_CONFIG_PATH}/inspector.yml``.
+    in ``${KAYOBE_CONFIG_PATH}/inspector.yml``. When customising this variable,
+    the default extra kernel parameters should be kept to retain full node
+    inspection capabilities.
 ``kolla_bifrost_inspector_rules``
     List of introspection rules for Bifrost's Ironic Inspector service. Default
     is ``{{ inspector_rules }}``, defined in
