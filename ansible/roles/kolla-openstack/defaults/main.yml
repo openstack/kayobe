@@ -457,6 +457,15 @@ kolla_extra_nova:
 kolla_enable_octavia:
 
 ###############################################################################
+# Placement configuration.
+
+# Whether to enable placement.
+kolla_enable_placement:
+
+# Free form extra configuration to append to placement.conf.
+kolla_extra_placement:
+
+###############################################################################
 # Prometheus configuration.
 
 # Whether to enable Prometheus.

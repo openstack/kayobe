@@ -51,6 +51,7 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
      'neutron',
      'nova',
      'octavia',
+     'placement',
      'prometheus',
      'sahara',
      'storm',
@@ -84,6 +85,7 @@ def test_service_config_directory(host, path):
      'neutron.conf',
      'nova.conf',
      'octavia.conf',
+     'placement.conf',
      'sahara.conf',
      'backup.my.cnf',
      'zookeeper.cfg'])
