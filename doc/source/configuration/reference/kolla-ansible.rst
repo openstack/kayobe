@@ -720,6 +720,8 @@ which files are supported.
    ``nova/*``                      Extended nova configuration.
    ``octavia.conf``                Octavia configuration.
    ``octavia/*``                   Extended Octavia configuration.
+   ``placement.conf``              Placement configuration.
+   ``placement/*``                 Extended Placement configuration.
    ``prometheus/*``                Prometheus configuration.
    ``sahara.conf``                 Sahara configuration.
    ``sahara/*``                    Extended sahara configuration.
