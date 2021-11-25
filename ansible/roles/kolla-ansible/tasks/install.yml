@@ -81,6 +81,7 @@
         state: absent
         virtualenv: "{{ kolla_ansible_venv }}"
         virtualenv_python: "{{ kolla_ansible_venv_python }}"
+      when: "'ansible-base' in pip_packages.packages[kolla_ansible_pip]"
   vars:
     kolla_ansible_pip: "{{ kolla_ansible_venv }}/bin/pip"
 
