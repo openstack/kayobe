@@ -17,9 +17,7 @@
           # be run after install.
           shell:
             cmd: dev/configure-firewall.sh
-            # TODO(mgoddard): Use the previous repo when the previous release
-            # is no longer Wallaby.
-            chdir: "{{ kayobe_src_dir }}"
+            chdir: "{{ previous_kayobe_src_dir }}"
             executable: /bin/bash
 
         - name: Ensure overcloud is deployed
@@ -106,17 +104,6 @@
           shell:
             cmd: "docker image prune --all --force"
           become: true
-
-        # TODO(mgoddard): Remove this task when the previous release is no
-        # longer Wallaby.
-        - name: Switch ironic nodes deploy interface to direct
-          shell:
-            cmd: >-
-              source ~/tenks-venv/bin/activate &&
-              source {{ kayobe_config_src_dir }}/etc/kolla/public-openrc.sh &&
-              openstack baremetal node set tk0 --deploy-interface direct &&
-              openstack baremetal node set tk1 --deploy-interface direct
-            executable: /bin/bash
 
         # Perform a smoke test against the upgraded current release.
 
