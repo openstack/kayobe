@@ -1,0 +1,54 @@
+---
+# Overcloud host disk image configuration.
+
+###############################################################################
+# Diskimage-builder configuration for overcloud host disk images.
+
+# Whether to build host disk images with DIB directly instead of through
+# Bifrost. Setting it to true disables Bifrost image build and allows images to
+# be built with the `kayobe overcloud host image build` command. Default value
+# is False. This will change in a future release.
+overcloud_dib_build_host_images: False
+
+# DIB base OS element. Default is {{ os_distribution }}.
+overcloud_dib_os_element: "{{ os_distribution }}"
+
+# DIB image OS release. Default is {{ os_release }}.
+overcloud_dib_os_release: "{{ os_release }}"
+
+# List of default DIB elements. Default is ["centos", "cloud-init-datasources",
+# "disable-selinux", "enable-serial-console", "vm"] when
+# overcloud_dib_os_element is "centos", or ["ubuntu", "cloud-init-datasources",
+# "enable-serial-console", "vm"] when overcloud_dib_os_element is "ubuntu".
+overcloud_dib_elements_default:
+  - "{{ overcloud_dib_os_element }}"
+  - "cloud-init-datasources"
+  - "{% if overcloud_dib_os_element == 'centos' %}disable-selinux{% endif %}"
+  - "enable-serial-console"
+  - "vm"
+
+# List of additional DIB elements. Default is none.
+overcloud_dib_elements_extra: []
+
+# List of DIB elements. Default is a combination of
+# overcloud_dib_elements_default and overcloud_dib_elements_extra.
+overcloud_dib_elements: "{{ overcloud_dib_elements_default | select | list + overcloud_dib_elements_extra }}"
+
+# DIB default environment variables. Default is
+# {"DIB_BOOTLOADER_DEFAULT_CMDLINE": "nofb nomodeset gfxpayload=text
+# net.ifnames=1", "DIB_CLOUD_INIT_DATASOURCES": "ConfigDrive", "DIB_RELEASE":
+# "{{ overcloud_dib_os_release }}"}.
+overcloud_dib_env_vars_default:
+  DIB_BOOTLOADER_DEFAULT_CMDLINE: "nofb nomodeset gfxpayload=text net.ifnames=1"
+  DIB_CLOUD_INIT_DATASOURCES: "ConfigDrive"
+  DIB_RELEASE: "{{ overcloud_dib_os_release }}"
+
+# DIB additional environment variables. Default is none.
+overcloud_dib_env_vars_extra: {}
+
+# DIB environment variables. Default is combination of
+# overcloud_dib_env_vars_default and overcloud_dib_env_vars_extra.
+overcloud_dib_env_vars: "{{ overcloud_dib_env_vars_default | combine(overcloud_dib_env_vars_extra) }}"
+
+# List of DIB packages to install. Default is to install no extra packages.
+overcloud_dib_packages: []

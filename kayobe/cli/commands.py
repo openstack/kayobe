@@ -1762,6 +1762,31 @@ class OvercloudDeploymentImageBuild(KayobeAnsibleMixin, VaultMixin, Command):
                                   extra_vars=extra_vars)
 
 
+class OvercloudHostImageBuild(KayobeAnsibleMixin, VaultMixin, Command):
+    """Build overcloud host disk images.
+
+    Builds host disk images using Diskimage Builder (DIB) for use when
+    provisioning the overcloud hosts.
+    """
+
+    def get_parser(self, prog_name):
+        parser = super(OvercloudHostImageBuild, self).get_parser(
+            prog_name)
+        group = parser.add_argument_group("Host Image Build")
+        group.add_argument("--force-rebuild", action="store_true",
+                           help="whether to force rebuilding the images")
+        return parser
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Building overcloud host disk images")
+        playbooks = _build_playbook_list("overcloud-host-image-build")
+        extra_vars = {}
+        if parsed_args.force_rebuild:
+            extra_vars["overcloud_host_image_force_rebuild"] = True
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  extra_vars=extra_vars)
+
+
 class OvercloudPostConfigure(KayobeAnsibleMixin, VaultMixin, Command):
     """Perform post-deployment configuration.
 

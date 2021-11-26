@@ -2002,6 +2002,50 @@ class TestCase(unittest.TestCase):
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
+    def test_overcloud_host_image_build(self, mock_run):
+        command = commands.OvercloudHostImageBuild(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    utils.get_data_files_path(
+                        "ansible", "overcloud-host-image-build.yml"),
+                ],
+                extra_vars={},
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_overcloud_host_image_build_force_rebuild(self, mock_run):
+        command = commands.OvercloudHostImageBuild(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args(["--force-rebuild"])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    utils.get_data_files_path(
+                        "ansible", "overcloud-host-image-build.yml"),
+                ],
+                extra_vars={"overcloud_host_image_force_rebuild": True},
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
     def test_overcloud_deployment_image_build(self, mock_run):
         command = commands.OvercloudDeploymentImageBuild(TestApp(), [])
         parser = command.get_parser("test")

@@ -219,6 +219,11 @@ function is_ironic_enabled {
     [[ $ironic_enabled =~ ^true$ ]]
 }
 
+function is_overcloud_host_image_built_by_dib {
+    overcloud_dib_build_host_images=$(kayobe configuration dump --host controllers[0] --var-name overcloud_dib_build_host_images)
+    [[ $overcloud_dib_build_host_images =~ ^true$ ]]
+}
+
 function environment_setup {
     # NOTE: Virtualenv's activate script references an unbound variable.
     set +u
@@ -315,6 +320,13 @@ function seed_deploy {
         run_kayobe seed deployment image build
     else
         echo "Not building seed deployment images"
+    fi
+
+    if is_overcloud_host_image_built_by_dib; then
+        echo "Building overcloud host images"
+        run_kayobe overcloud host image build
+    else
+        echo "Not building overcloud host images"
     fi
 }
 
