@@ -102,6 +102,12 @@ copy_logs() {
         cp /opt/kayobe/images/ipa/ipa.stderr /opt/kayobe/images/ipa/ipa.stdout ${LOG_DIR}/kayobe/
     fi
 
+    # Overcloud host image build logs
+    if [[ -f /opt/kayobe/images/deployment_image/deployment_image.stderr ]] || [[ -f /opt/kayobe/images/deployment_image/deployment_image.stdout ]]; then
+        mkdir -p ${LOG_DIR}/kayobe
+        cp /opt/kayobe/images/deployment_image/deployment_image.stderr /opt/kayobe/images/deployment_image/deployment_image.stdout ${LOG_DIR}/kayobe/
+    fi
+
     # Rename files to .txt; this is so that when displayed via
     # logs.openstack.org clicking results in the browser shows the
     # files, rather than trying to send it to another app or make you
