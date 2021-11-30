@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    Updates base CentOS Stream cloud image to CentOS-Stream-GenericCloud-8-20210603.0.x86_64.
