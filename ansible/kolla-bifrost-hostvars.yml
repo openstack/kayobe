@@ -15,6 +15,7 @@
     bifrost_hostvars:
       addressing_mode: static
       deploy_image_filename: "{{ kolla_bifrost_deploy_image_filename }}"
+      deploy_image_rootfs: "{{ kolla_bifrost_deploy_image_rootfs | default(omit, true) }}"
       ipv4_interface_mac: "{% raw %}{{ extra.pxe_interface_mac | default }}{% endraw %}"
       ipv4_address: "{{ admin_oc_net_name | net_ip }}"
       ipv4_subnet_mask: "{{ admin_oc_net_name | net_mask }}"
