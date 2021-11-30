@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    Adds dependencies for EFI and LVM based overcloud images.
