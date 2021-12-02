@@ -14,7 +14,6 @@
 
 import base64
 import glob
-import itertools
 import logging
 import os
 import shutil
@@ -40,13 +39,11 @@ def _detect_install_prefix(path):
     script_path = os.path.realpath(path)
     script_path = os.path.normpath(script_path)
     components = script_path.split(os.sep)
-    # use heuristic: anything before 'lib' in path is the prefix
+    # use heuristic: anything before the last 'lib' in path is the prefix
     if 'lib' not in components:
         return None
-    prefix = itertools.takewhile(
-        lambda x: x != "lib",
-        components
-    )
+    last_lib = len(components) - 1 - components[::-1].index('lib')
+    prefix = components[:last_lib]
     prefix_path = os.sep.join(prefix)
     return prefix_path
 
