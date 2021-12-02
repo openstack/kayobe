@@ -355,6 +355,10 @@ The following attributes are supported:
     bridge.
 ``bond_mode``
     For bond interfaces, the bond's mode, e.g. 802.3ad.
+``bond_ad_select``
+    For bond interfaces, the 802.3ad aggregation selection logic to use. Valid
+    values are ``stable`` (default selection logic if not configured),
+    ``bandwidth`` or ``count``.
 ``bond_slaves``
     For bond interfaces, a list of names of network interfaces to act as slaves
     for the bond.
