@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes a failure to detect the Kayobe installation prefix when ``lib`` is
+    present multiple times in the installation path. See `story 2009721
+    <https://storyboard.openstack.org/#!/story/2009721>`__ for details.
