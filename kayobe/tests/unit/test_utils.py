@@ -179,6 +179,13 @@ key2: value2
         result = utils._detect_install_prefix(path)
         self.assertEqual(expected, os.path.normpath(result))
 
+    def test_detect_install_prefix_multiple_lib_components(self):
+        tmp_path = os.path.realpath('/tmp')
+        path = "%s/lib/test/local/lib/python3.6/dist-packages" % tmp_path
+        expected = os.path.normpath("%s/lib/test/local/" % tmp_path)
+        result = utils._detect_install_prefix(path)
+        self.assertEqual(expected, os.path.normpath(result))
+
     def test_intersect_limits_no_arg_no_cli(self):
         result = utils.intersect_limits(None, None)
         self.assertEqual("", result)
