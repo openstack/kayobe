@@ -1,0 +1,3 @@
+---
+# Whether to enable SNAT on seed hypervisor node.
+enable_snat: "{{ seed_hypervisor_enable_snat }}"
