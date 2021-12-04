@@ -330,6 +330,8 @@ class TestCase(unittest.TestCase):
                     utils.get_data_files_path("ansible", "firewall.yml"),
                     utils.get_data_files_path("ansible", "tuned.yml"),
                     utils.get_data_files_path("ansible", "sysctl.yml"),
+                    utils.get_data_files_path("ansible", "ip-routing.yml"),
+                    utils.get_data_files_path("ansible", "snat.yml"),
                     utils.get_data_files_path("ansible", "time.yml"),
                     utils.get_data_files_path("ansible", "mdadm.yml"),
                     utils.get_data_files_path("ansible", "luks.yml"),

@@ -2,9 +2,9 @@
 # Enable IP routing in the kernel.
 
 - name: Ensure IP routing is enabled
-  hosts: seed
+  hosts: seed-hypervisor:seed
   tags:
     - ip-routing
   roles:
     - role: ip-routing
-      when: seed_enable_snat | bool
+      when: enable_snat | bool

@@ -448,7 +448,8 @@ class SeedHypervisorHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
             playbooks += _build_playbook_list("wipe-disks")
         playbooks += _build_playbook_list(
             "users", "dev-tools", "network", "firewall", "tuned", "sysctl",
-            "time", "mdadm", "luks", "lvm", "seed-hypervisor-libvirt-host")
+            "ip-routing", "snat", "time", "mdadm", "luks", "lvm",
+            "seed-hypervisor-libvirt-host")
         self.run_kayobe_playbooks(parsed_args, playbooks,
                                   limit="seed-hypervisor")
 

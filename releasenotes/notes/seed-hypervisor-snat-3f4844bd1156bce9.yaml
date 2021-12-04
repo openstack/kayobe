@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Adds a new variable ``seed_hypervisor_enable_snat`` that allows users to
+    enable SNAT service on the seed hypervisor. The default value is ``false``.
