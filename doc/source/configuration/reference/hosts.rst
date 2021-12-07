@@ -496,6 +496,17 @@ For example, to set the ``net.ipv4.ip_forward`` parameter to ``1`` on controller
    controller_sysctl_parameters:
      net.ipv4.ip_forward: 1
 
+IP routing and Source NAT
+=========================
+*tags:*
+  | ``ip-routing``
+  | ``snat``
+
+IP routing and source NAT (SNAT) can be configured on the seed host, which
+allows it to be used as a default gateway for overcloud hosts. This is disabled
+by default since the Xena 11.0.0 release, and may be enabled by setting
+``seed_enable_snat`` to ``true`` in ``${KAYOBE_CONFIG_PATH}/seed.yml``.
+
 Disable cloud-init
 ==================
 *tags:*
