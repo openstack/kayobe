@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Enables hardware clock (RTC) synchronisation by default when applying the
+    chrony role. This setting is configurable with the new variable
+    ``chrony_rtcsync_enabled``.
