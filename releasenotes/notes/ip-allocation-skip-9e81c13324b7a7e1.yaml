@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    The new filter ``net_no_ip`` adds the attribute ``no_ip`` which can be set
+    to ``true`` to skip IP address allocation and configuration for specific
+    networks.

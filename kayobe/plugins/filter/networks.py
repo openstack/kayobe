@@ -175,6 +175,11 @@ def net_interface(context, name, inventory_hostname=None):
 
 
 @jinja2.contextfilter
+def net_no_ip(context, name, inventory_hostname=None):
+    return net_attr(context, name, 'no_ip', inventory_hostname)
+
+
+@jinja2.contextfilter
 def net_cidr(context, name, inventory_hostname=None):
     return net_attr(context, name, 'cidr', inventory_hostname)
 
@@ -670,6 +675,7 @@ def get_filters():
         'net_fqdn': _make_attr_filter('fqdn'),
         'net_ip': net_ip,
         'net_interface': net_interface,
+        'net_no_ip': net_no_ip,
         'net_cidr': net_cidr,
         'net_mask': net_mask,
         'net_prefix': net_prefix,
