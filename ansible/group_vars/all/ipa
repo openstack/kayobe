@@ -16,8 +16,8 @@ ipa_build_source_version: "{{ openstack_branch }}"
 # URL of IPA builder source repository.
 ipa_builder_source_url: "https://opendev.org/openstack/ironic-python-agent-builder"
 
-# Version of IPA builder source repository. Default is master.
-ipa_builder_source_version: master
+# Version of IPA builder source repository. Default is stable/wallaby.
+ipa_builder_source_version: "stable/wallaby"
 
 # List of default Diskimage Builder (DIB) elements to use when building IPA
 # images. Default is ["centos", "enable-serial-console",
@@ -41,8 +41,8 @@ ipa_build_dib_elements: >
 # Dictionary of default environment variables to provide to Diskimage Builder
 # (DIB) during IPA image build.
 ipa_build_dib_env_default:
-  DIB_REPOLOCATION_ironic_agent: "{{ ipa_build_source_url }}"
-  DIB_REPOREF_ironic_agent: "{{ ipa_build_source_version }}"
+  DIB_REPOLOCATION_ironic_python_agent: "{{ ipa_build_source_url }}"
+  DIB_REPOREF_ironic_python_agent: "{{ ipa_build_source_version }}"
 
 # Dictionary of additional environment variables to provide to Diskimage
 # Builder (DIB) during IPA image build.
