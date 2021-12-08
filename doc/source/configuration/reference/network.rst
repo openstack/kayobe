@@ -83,6 +83,9 @@ supported:
 ``libvirt_network_name``
     A name to give to a Libvirt network representing this network on the seed
     hypervisor.
+``no_ip``
+    Whether to allocate an IP address for this network. If set to ``true``, an
+    IP address will not be allocated.
 
 Configuring an IP Subnet
 ------------------------

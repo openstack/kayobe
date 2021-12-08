@@ -39,4 +39,4 @@
     - name: Ensure dummy network interfaces exist
       command: ip link add dummy{{ item }} type dummy
       become: true
-      loop: "{{ range(2, 7) | list }}"
+      loop: "{{ range(2, 8) | list }}"

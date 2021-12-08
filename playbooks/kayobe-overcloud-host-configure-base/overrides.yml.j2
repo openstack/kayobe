@@ -18,6 +18,7 @@ controller_extra_network_interfaces:
   - test_net_bridge_vlan
   - test_net_bond
   - test_net_bond_vlan
+  - test_net_bridge_noip
 
 # Custom IP routing tables.
 network_route_tables:
@@ -71,6 +72,12 @@ test_net_bond_vlan_cidr: 192.168.39.0/24
 test_net_bond_vlan_interface: "{% raw %}{{ test_net_bond_interface }}.{{ test_net_bond_vlan_vlan }}{% endraw %}"
 test_net_bond_vlan_vlan: 44
 test_net_bond_vlan_zone: public
+
+# br1: Bridge interface without IP address.
+test_net_bridge_noip_cidr: 192.168.40.0/24
+test_net_bridge_noip_interface: br1
+test_net_bridge_noip_bridge_ports: [dummy7]
+test_net_bridge_noip_no_ip: true
 
 # Define a software RAID device consisting of two loopback devices.
 controller_mdadm_arrays:
