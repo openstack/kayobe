@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an issue with IPA image builds which used the ``master``
+    branch of ``ironic-python-agent``, even on stable releases
+    of Kayobe, or when explicitly setting ``ipa_build_source_version``.
