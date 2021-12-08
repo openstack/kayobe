@@ -27,6 +27,7 @@
       when:
         - item | net_cidr != None
         - item | net_bootproto != 'dhcp'
+        - not item | net_no_ip | bool
   roles:
     - role: ip-allocation
       ip_allocation_filename: "{{ kayobe_env_config_path }}/network-allocation.yml"
