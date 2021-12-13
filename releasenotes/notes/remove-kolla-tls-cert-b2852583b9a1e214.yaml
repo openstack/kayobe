@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The variable ``kolla_tls_cert`` which was deprecated in the Train release
+    has been removed. Use ``kolla_external_tls_cert`` instead.
