@@ -37,6 +37,9 @@ aio_bridge_ports:
 ipa_build_images: {{ build_images }}
 ipa_build_dib_elements_extra:
   - "extra-hardware"
+  - "openstack-ci-mirrors"
 
 # Build overcloud host image.
 overcloud_dib_build_host_images: {{ build_images }}
+overcloud_dib_elements_extra:
+  - "openstack-ci-mirrors"
