@@ -52,3 +52,8 @@ overcloud_dib_env_vars: "{{ overcloud_dib_env_vars_default | combine(overcloud_d
 
 # List of DIB packages to install. Default is to install no extra packages.
 overcloud_dib_packages: []
+
+# Upper constraints file for installing packages in the virtual environment
+# used for building overcloud host disk images. Default is {{
+# pip_upper_constraints_file }}.
+overcloud_dib_upper_constraints_file: "{{ pip_upper_constraints_file }}"

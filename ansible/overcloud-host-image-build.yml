@@ -19,7 +19,7 @@
           vars:
             os_images_venv: "{{ virtualenv_path }}/overcloud-host-image-dib"
             os_images_package_state: latest
-            os_images_upper_constraints_file: "{{ pip_upper_constraints_file }}"
+            os_images_upper_constraints_file: "{{ overcloud_dib_upper_constraints_file }}"
             os_images_cache: "{{ image_cache_path }}"
             os_images_common: ""
             os_images_list:

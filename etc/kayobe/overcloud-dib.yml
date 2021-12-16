@@ -45,6 +45,11 @@
 # List of DIB packages to install. Default is to install no extra packages.
 #overcloud_dib_packages:
 
+# Upper constraints file for installing packages in the virtual environment
+# used for building overcloud host disk images. Default is {{
+# pip_upper_constraints_file }}.
+#overcloud_dib_upper_constraints_file:
+
 ###############################################################################
 # Dummy variable to allow Ansible to accept this file.
 workaround_ansible_issue_8743: yes
