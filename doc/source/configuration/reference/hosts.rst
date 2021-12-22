@@ -276,11 +276,18 @@ For example, the following configuration defines a single DNF repository called
        gpgkey: http://example.com/gpgkey
        gpgcheck: yes
 
-Disabling EPEL
---------------
+Enabling or disabling EPEL
+--------------------------
 
-It is possible to disable the EPEL DNF repository by setting
-``dnf_install_epel`` to ``false``.
+Prior to the Yoga release, the EPEL DNF repository was enabled by default
+(``dnf_install_epel: true``). Since Yoga, it is disabled by default
+(``dnf_install_epel: false``).
+
+Previously, EPEL was required to install some packages such as ``python-pip``,
+however this is no longer the case.
+
+It is possible to enable or disable the EPEL DNF repository by setting
+``dnf_install_epel`` to ``true`` or ``false`` respectively.
 
 DNF Automatic
 -------------

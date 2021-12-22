@@ -1,0 +1,9 @@
+---
+upgrade:
+  - |
+    The default value of ``dnf_install_epel`` has been changed to ``false``.
+    This means that the EPEL DNF repository is no longer installed by default.
+    Neither existing EPEL repositories nor the ``epel-release`` package will be
+    removed. If necessary, EPEL may be enabled by setting ``dnf_install_epel``
+    to ``true`` in ``dnf.yml``. See `story 2009757
+    <https://storyboard.openstack.org/#!/story/2009757>`__ for details.

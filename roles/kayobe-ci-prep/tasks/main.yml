@@ -8,14 +8,14 @@
 
 - block:
     # NOTE(mgoddard): The CentOS image used in CI has epel-release installed,
-    # but the configure-mirrors role used by Zuul disables epel. Since we
-    # install epel-release and expect epel to be enabled, enable it here.
+    # but the configure-mirrors role used by Zuul disables epel. We no longer
+    # install EPEL by default, but let's just be sure it's disabled.
     - name: Ensure dnf-plugins-core is installed
       package:
         name: dnf-plugins-core
         state: present
 
     - name: Enable the EPEL repository
-      command: dnf config-manager --enable epel
+      command: dnf config-manager --disable epel
   when: ansible_os_family == 'RedHat'
   become: true
