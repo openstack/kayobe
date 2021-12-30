@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Enables deployment of Grafana when Monasca is enabled, as a replacement for
+    the retired ``monasca-grafana`` image. See `story 2009717
+    <https://storyboard.openstack.org/#!/story/2009717>`__ for details.
+
