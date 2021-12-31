@@ -113,6 +113,7 @@
         kolla_selinux_state: disabled
         kolla_inspector_dhcp_pool_start: "{{ inspection_net_name | net_inspection_allocation_pool_start }}"
         kolla_inspector_dhcp_pool_end: "{{ inspection_net_name | net_inspection_allocation_pool_end }}"
+        kolla_inspector_netmask: "{{ inspection_net_name | net_mask }}"
         kolla_inspector_default_gateway: "{{ inspection_net_name | net_inspection_gateway or inspection_net_name | net_gateway }}"
         kolla_inspector_extra_kernel_options: "{{ inspector_extra_kernel_options }}"
         kolla_enable_host_ntp: false

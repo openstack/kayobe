@@ -396,7 +396,7 @@ enable_{{ feature_flag }}: {{ hostvars[inventory_hostname]['kolla_enable_' ~ fea
 # Ironic options
 #############################
 {% if kolla_inspector_dhcp_pool_start and kolla_inspector_dhcp_pool_end %}
-ironic_dnsmasq_dhcp_range: {{ kolla_inspector_dhcp_pool_start }},{{ kolla_inspector_dhcp_pool_end }}
+ironic_dnsmasq_dhcp_range: "{{ kolla_inspector_dhcp_pool_start }},{{ kolla_inspector_dhcp_pool_end }}{% if kolla_inspector_netmask %},{{ kolla_inspector_netmask }}{% endif %}"
 {% endif %}
 {% if kolla_inspector_default_gateway %}
 ironic_dnsmasq_default_gateway: {{ kolla_inspector_default_gateway }}
