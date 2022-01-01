@@ -2,7 +2,7 @@
 # Enable SNAT using iptables.
 
 - name: Ensure SNAT is configured
-  hosts: seed:overcloud
+  hosts: seed
   tags:
     - snat
   vars:
