@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    Adds support for inspection of L3-routed Ironic networks via DHCP-relay.
