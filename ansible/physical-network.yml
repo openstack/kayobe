@@ -27,6 +27,7 @@
       - arista
       - dellos6
       - dellos9
+      - dellos10
       - dell-powerconnect
       - junos
       - mellanox
@@ -111,7 +112,7 @@
       arista_switch_interface_config: "{{ switch_interface_config }}"
 
 - name: Ensure DellOS physical switches are configured
-  hosts: switches_of_type_dellos6:switches_of_type_dellos9:&switches_in_display_mode_False
+  hosts: switches_of_type_dellos6:switches_of_type_dellos9:switches_of_type_dellos10:&switches_in_display_mode_False
   gather_facts: no
   roles:
     - role: ssh-known-host

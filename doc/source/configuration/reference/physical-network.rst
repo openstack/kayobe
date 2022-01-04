@@ -18,6 +18,7 @@ The following switch operating systems are currently supported:
   <https://docs.nvidia.com/networking-ethernet-software/cumulus-linux-44/System-Configuration/Network-Command-Line-Utility-NCLU/>`__)
 * Dell OS 6
 * Dell OS 9
+* Dell OS 10
 * Dell PowerConnect
 * Juniper Junos OS
 * Mellanox MLNX OS
@@ -192,13 +193,13 @@ default connection parameters used by Ansible:
 
 * ``ansible_user`` is the SSH username.
 
-Dell OS6 and OS9
-----------------
+Dell OS6, OS9, and OS10
+-----------------------
 
-Configuration for these devices is applied using the ``dellos6_config`` and
-``dellos9_config`` Ansible modules.
+Configuration for these devices is applied using the ``dellos6_config``,
+``dellos9_config``, and ``dellos10_config`` Ansible modules.
 
-``switch_type`` should be set to ``dellos6`` or ``dellos9``.
+``switch_type`` should be set to ``dellos6``, ``dellos9``, or ``dellos10``.
 
 Provider
 ^^^^^^^^

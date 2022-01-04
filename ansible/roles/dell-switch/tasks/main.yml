@@ -12,3 +12,10 @@
     provider: "{{ dell_switch_provider }}"
     src: dellos9-config.j2
   when: dell_switch_type == 'dellos9'
+
+- name: Ensure DellOS10 switches are configured
+  local_action:
+    module: dellos10_config
+    provider: "{{ dell_switch_provider }}"
+    src: "{{ lookup('template', 'dellos10-config.j2') }}"
+  when: dell_switch_type == 'dellos10'
