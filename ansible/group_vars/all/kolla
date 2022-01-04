@@ -650,3 +650,18 @@ kolla_internal_tls_cert:
 # in admin-openrc.sh file when TLS is enabled, instead of Kolla-Ansible's
 # default.
 kolla_internal_fqdn_cacert:
+
+###############################################################################
+# Proxy configuration
+
+# HTTP proxy URL (format: http(s)://[user:password@]proxy_name:port) used by
+# Kolla. Default value is "{{ http_proxy }}".
+kolla_http_proxy: "{{ http_proxy }}"
+
+# HTTPS proxy URL (format: http(s)://[user:password@]proxy_name:port) used by
+# Kolla. Default value is "{{ https_proxy }}".
+kolla_https_proxy: "{{ https_proxy }}"
+
+# List of domains, hostnames, IP addresses and networks for which no proxy is
+# used. Default value is "{{ no_proxy }}".
+kolla_no_proxy: "{{ no_proxy }}"

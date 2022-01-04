@@ -1,0 +1,41 @@
+- name: Configure HTTP(S) proxy settings
+  hosts: seed-hypervisor:seed:overcloud
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  tags:
+    - proxy
+  tasks:
+    - name: Add HTTP proxy configuration to /etc/environment
+      lineinfile:
+        path: "/etc/environment"
+        create: yes
+        mode: 0644
+        state: present
+        regexp: "^http_proxy=.*"
+        line: "http_proxy={{ http_proxy }}"
+      become: True
+      when: http_proxy is defined and http_proxy | length > 0
+
+    - name: Add HTTPS proxy configuration to /etc/environment
+      lineinfile:
+        path: "/etc/environment"
+        create: yes
+        mode: 0644
+        state: present
+        regexp: "^https_proxy=.*"
+        line: "https_proxy={{ https_proxy }}"
+      become: True
+      when: https_proxy is defined and https_proxy | length > 0
+
+    - name: Add no_proxy configuration to /etc/environment
+      lineinfile:
+        path: "/etc/environment"
+        create: yes
+        mode: 0644
+        state: present
+        regexp: "^no_proxy=.*"
+        line: "no_proxy={{ no_proxy | select | join(',') }}"
+      become: True
+      when:
+        - no_proxy | length > 0
+        - http_proxy is defined and http_proxy | length > 0 or https_proxy is defined and https_proxy | length > 0

@@ -137,7 +137,6 @@ kolla_external_vip_address:
 # kolla_external_vip_address.
 kolla_external_fqdn:
 
-
 ####################
 # Networking options
 ####################
@@ -306,3 +305,16 @@ docker_daemon_mtu: 1500
 
 # Enable live-restore on docker daemon
 docker_daemon_live_restore: false
+
+###############################################################################
+# Proxy configuration
+
+# HTTP proxy URL (format: http(s)://[user:password@]proxy_name:port).
+kolla_http_proxy:
+
+# HTTPS proxy URL (format: http(s)://[user:password@]proxy_name:port).
+kolla_https_proxy:
+
+# List of domains, hostnames, IP addresses and networks for which no proxy is
+# used.
+kolla_no_proxy:

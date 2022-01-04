@@ -409,6 +409,7 @@ class SeedHypervisorHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
     * Allocate IP addresses for all configured networks.
     * Add the host to SSH known hosts.
     * Configure a user account for use by kayobe for SSH access.
+    * Configure proxy settings.
     * Configure package repos.
     * Configure a PyPI mirror.
     * Optionally, create a virtualenv for remote target hosts.
@@ -442,7 +443,7 @@ class SeedHypervisorHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
                                   limit="seed-hypervisor")
 
         playbooks = _build_playbook_list(
-            "ssh-known-host", "kayobe-ansible-user",
+            "ssh-known-host", "kayobe-ansible-user", "proxy",
             "apt", "dnf", "pip", "kayobe-target-venv")
         if parsed_args.wipe_disks:
             playbooks += _build_playbook_list("wipe-disks")
@@ -558,6 +559,7 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     * Allocate IP addresses for all configured networks.
     * Add the host to SSH known hosts.
     * Configure a user account for use by kayobe for SSH access.
+    * Configure proxy settings.
     * Configure package repos.
     * Configure a PyPI mirror.
     * Optionally, create a virtualenv for remote target hosts.
@@ -598,7 +600,7 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 
         # Run kayobe playbooks.
         playbooks = _build_playbook_list(
-            "ssh-known-host", "kayobe-ansible-user",
+            "ssh-known-host", "kayobe-ansible-user", "proxy",
             "apt", "dnf", "pip", "kayobe-target-venv")
         if parsed_args.wipe_disks:
             playbooks += _build_playbook_list("wipe-disks")
@@ -869,6 +871,7 @@ class InfraVMHostConfigure(KayobeAnsibleMixin, VaultMixin,
     * Allocate IP addresses for all configured networks.
     * Add the host to SSH known hosts.
     * Configure a user account for use by kayobe for SSH access.
+    * Configure proxy settings.
     * Configure package repos.
     * Configure a PyPI mirror.
     * Optionally, create a virtualenv for remote target hosts.
@@ -904,7 +907,7 @@ class InfraVMHostConfigure(KayobeAnsibleMixin, VaultMixin,
 
         # Kayobe playbooks.
         playbooks = _build_playbook_list(
-            "ssh-known-host", "kayobe-ansible-user",
+            "ssh-known-host", "kayobe-ansible-user", "proxy",
             "apt", "dnf", "pip", "kayobe-target-venv")
         if parsed_args.wipe_disks:
             playbooks += _build_playbook_list("wipe-disks")
@@ -1118,6 +1121,7 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     * Allocate IP addresses for all configured networks.
     * Add the host to SSH known hosts.
     * Configure a user account for use by kayobe for SSH access.
+    * Configure proxy settings.
     * Configure package repos.
     * Configure a PyPI mirror.
     * Optionally, create a virtualenv for remote target hosts.
@@ -1156,7 +1160,7 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 
         # Kayobe playbooks.
         playbooks = _build_playbook_list(
-            "ssh-known-host", "kayobe-ansible-user",
+            "ssh-known-host", "kayobe-ansible-user", "proxy",
             "apt", "dnf", "pip", "kayobe-target-venv")
         if parsed_args.wipe_disks:
             playbooks += _build_playbook_list("wipe-disks")

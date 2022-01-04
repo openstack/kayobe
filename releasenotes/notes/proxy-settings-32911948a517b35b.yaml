@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Adds support for configuring HTTP(S) proxy settings using the
+    ``http_proxy``, ``https_proxy`` and ``no_proxy`` variables in
+    ``proxy.yml``. These variables are passed down to Kolla Ansible which uses
+    them to configure Docker, allowing container image pull operations and
+    container networking to use HTTP(S) proxies.
