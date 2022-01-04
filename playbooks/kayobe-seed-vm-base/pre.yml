@@ -32,12 +32,6 @@
         value: 1
       become: true
 
-    - name: Ensure SELinux is disabled
-      selinux:
-        state: disabled
-      become: True
-      when: ansible_os_family in ['RedHat', 'Rocky']
-
     # NOTE(mgoddard): Use the name zz-overrides.yml to ensure this takes
     # precedence over the standard config files.
     - name: Ensure kayobe-config override config file exists

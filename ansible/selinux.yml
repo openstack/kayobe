@@ -1,6 +1,6 @@
 ---
 - name: Configure SELinux state and reboot if required
-  hosts: seed:overcloud:infra-vms
+  hosts: seed:seed-hypervisor:overcloud:infra-vms
   tags:
     - selinux
   roles:

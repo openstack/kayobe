@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Kayobe now configures SELinux on the seed hypervisor. The default is to set
+    SELinux to ``permissive``.
+fixes:
+  - |
+    Configures SELinux to ``permissive`` on the seed hypervisor, which fixes
+    permission issues when provisioning seed or infra VMs.
