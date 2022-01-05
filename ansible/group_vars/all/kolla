@@ -203,6 +203,8 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_neutron | bool }}"
   - regex: neutron-mlnx-agent
     enabled: "{{ kolla_enable_neutron_mlnx | bool }}"
+  - regex: neutron-sriov-agent
+    enabled: "{{ kolla_enable_neutron_sriov | bool }}"
   - regex: ^nova
     enabled: "{{ kolla_enable_nova | bool }}"
   - regex: ^octavia
@@ -510,6 +512,7 @@ kolla_enable_multipathd: "no"
 kolla_enable_murano: "no"
 kolla_enable_neutron_mlnx: "no"
 kolla_enable_neutron_provider_networks: "no"
+kolla_enable_neutron_sriov: "no"
 kolla_enable_octavia: "no"
 kolla_enable_openvswitch: "{{ kolla_enable_neutron | bool }}"
 kolla_enable_ovn: "no"
