@@ -1,11 +1,5 @@
 ---
 - nodeset:
-    name: kayobe-centos8
-    nodes:
-      - name: primary
-        label: centos-8
-
-- nodeset:
     name: kayobe-centos8s
     nodes:
       - name: primary
