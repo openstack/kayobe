@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Adds support for the ``exclude`` and ``includepkgs`` options in custom DNF
+    repositories configured with ``dnf_custom_repos`` in ``dnf.yml``. See
+    `documentation of the yum_repository Ansible module
+    <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/yum_repository_module.html>`__
+    for usage.
