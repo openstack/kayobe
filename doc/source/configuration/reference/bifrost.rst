@@ -39,6 +39,11 @@ For example, to install Bifrost from a custom git repository:
 Overcloud root disk image configuration
 =======================================
 
+.. note::
+
+   This configuration only applies when ``overcloud_dib_build_host_images``
+   (set in ``${KAYOBE_CONFIG_PATH}/overcloud-dib.yml``) is not changed to true.
+
 Bifrost uses Diskimage builder (DIB) to build a root disk image that is
 deployed to overcloud hosts when they are provisioned. The following options
 configure how this image is built.  Consult the
@@ -180,6 +185,8 @@ Rather than needing to write a custom DIB element, we can use the
    kolla_bifrost_dib_packages:
      - "biosdevname"
 
+.. _configuration-bifrost-image-deployment-config:
+
 Disk image deployment configuration
 ===================================
 
@@ -190,11 +197,10 @@ The name of the root disk image to deploy can be configured via the
 Kayobe inventory. This can be used to provision different images across the
 overcloud.
 
-.. note::
-
-   Support for building multiple disk images is not yet available. Images can
-   be manually renamed before changing the Kayobe configuration to build a
-   different image.
+While only a single disk image can be built with Bifrost, starting from the
+Yoga 12.0.0 release, Kayobe supports building multiple disk images directly
+through Diskimage builder. Consult the :ref:`overcloud host disk image build
+documentation <overcloud-dib>` for more details.
 
 Ironic configuration
 ====================

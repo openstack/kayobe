@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Adds support for building overcloud root disk images directly with DIB
+    rather than through Bifrost. This includes support for building multiple
+    images, each with a different configuration. See `story 2002098
+    <https://storyboard.openstack.org/#!/story/2002098>` for details.
