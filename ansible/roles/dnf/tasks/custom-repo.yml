@@ -20,6 +20,7 @@
     proxy_username: "{{ item.value.proxy_username | default(omit)}}"
     repo_gpgcheck: "{{ item.value.repo_gpgcheck | default(omit)}}"
     sslverify: "{{ item.value.sslverify | default(omit)}}"
+    state: "{{ item.value.state | default(omit)}}"
   with_dict: "{{ dnf_custom_repos }}"
   register: register_dnf_command
   retries: 3

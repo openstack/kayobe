@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Add support for a ``state`` parameter in repositories listed in
+    ``dnf_custom_repos``.
