@@ -28,6 +28,7 @@
             os_images_cache: "{{ image_cache_path }}"
             os_images_common: ""
             os_images_list: "{{ overcloud_dib_host_images }}"
+            os_images_git_elements: "{{ overcloud_dib_git_elements }}"
             os_images_upload: False
             os_images_force_rebuild: "{{ overcloud_host_image_force_rebuild }}"
 
