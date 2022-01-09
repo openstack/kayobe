@@ -414,9 +414,9 @@ NTP
   | ``ntp``
 
 Kayobe will configure `Chrony <https://chrony.tuxfamily.org/>`__ on all hosts in the
-``ntp`` group. The default hosts in this group are::
+``ntp`` group. The default hosts in this group are:
 
-.. code-block:: console
+.. code-block:: ini
 
     [ntp:children]
     # Kayobe will configure Chrony on members of this group.
