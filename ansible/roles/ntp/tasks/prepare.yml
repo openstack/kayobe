@@ -15,13 +15,21 @@
   with_items: "{{ ntp_service_disable_list }}"
 
 - name: Remove kolla-ansible installed chrony container
-  docker_container:
-    name: chrony
-    state: absent
+  shell:
+    cmd: >
+      if [[ -n $(docker ps -aq -f name=chrony) ]]; then
+        docker rm -f -v chrony
+      fi
+    executable: "/bin/bash"
+  register: result
+  changed_when: result.stdout != ""
   become: true
   # NOTE(wszumski):  There is an ordering issue where on a fresh host, docker
   # will not have been configured, but if that is the case, the chrony container
   # can't possibly exist, but trying to execute this unconditionally will fail
   # with: No module named 'docker' as we have not yet added the docker package
-  # to the kayobe target venv.
-  when: "'docker.service' in ansible_facts.services"
+  # to the kayobe target venv, so we use 'docker rm' command with force and
+  # don't fail on error.
+  when:
+    - "'docker.service' in ansible_facts.services"
+    - ansible_facts.services['docker.service'].status == 'running'
