@@ -1478,14 +1478,27 @@ class TestCase(unittest.TestCase):
         ]
         self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
 
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
     @mock.patch.object(commands.KollaAnsibleMixin,
                        "run_kolla_ansible_overcloud")
-    def test_overcloud_database_backup(self, mock_run):
+    def test_overcloud_database_backup(self, mock_kolla_run, mock_run):
         command = commands.OvercloudDatabaseBackup(TestApp(), [])
         parser = command.get_parser("test")
         parsed_args = parser.parse_args([])
         result = command.run(parsed_args)
         self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
+                tags="config",
+                ignore_limit=True,
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
         expected_calls = [
             mock.call(
                 mock.ANY,
@@ -1493,16 +1506,30 @@ class TestCase(unittest.TestCase):
                 extra_args=[]
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
 
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
     @mock.patch.object(commands.KollaAnsibleMixin,
                        "run_kolla_ansible_overcloud")
-    def test_overcloud_database_backup_incremental(self, mock_run):
+    def test_overcloud_database_backup_incremental(self, mock_kolla_run,
+                                                   mock_run):
         command = commands.OvercloudDatabaseBackup(TestApp(), [])
         parser = command.get_parser("test")
         parsed_args = parser.parse_args(["--incremental"])
         result = command.run(parsed_args)
         self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
+                tags="config",
+                ignore_limit=True,
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
         expected_calls = [
             mock.call(
                 mock.ANY,
@@ -1510,16 +1537,37 @@ class TestCase(unittest.TestCase):
                 extra_args=["--incremental"]
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
 
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
     @mock.patch.object(commands.KollaAnsibleMixin,
                        "run_kolla_ansible_overcloud")
-    def test_overcloud_database_recover(self, mock_run):
+    def test_overcloud_database_recover(self, mock_kolla_run, mock_run):
         command = commands.OvercloudDatabaseRecover(TestApp(), [])
         parser = command.get_parser("test")
         parsed_args = parser.parse_args([])
         result = command.run(parsed_args)
         self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
+                tags="config",
+                ignore_limit=True,
+            ),
+            mock.call(
+                mock.ANY,
+                [
+                    utils.get_data_files_path("ansible",
+                                              "kolla-openstack.yml"),
+                ],
+                ignore_limit=True,
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
         expected_calls = [
             mock.call(
                 mock.ANY,
@@ -1527,16 +1575,38 @@ class TestCase(unittest.TestCase):
                 extra_vars={}
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
 
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
     @mock.patch.object(commands.KollaAnsibleMixin,
                        "run_kolla_ansible_overcloud")
-    def test_overcloud_database_recover_force_host(self, mock_run):
+    def test_overcloud_database_recover_force_host(self, mock_kolla_run,
+                                                   mock_run):
         command = commands.OvercloudDatabaseRecover(TestApp(), [])
         parser = command.get_parser("test")
         parsed_args = parser.parse_args(["--force-recovery-host", "foo"])
         result = command.run(parsed_args)
         self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
+                tags="config",
+                ignore_limit=True,
+            ),
+            mock.call(
+                mock.ANY,
+                [
+                    utils.get_data_files_path("ansible",
+                                              "kolla-openstack.yml"),
+                ],
+                ignore_limit=True,
+            ),
+        ]
+        self.assertEqual(expected_calls, mock_run.call_args_list)
+
         expected_calls = [
             mock.call(
                 mock.ANY,
@@ -1546,7 +1616,7 @@ class TestCase(unittest.TestCase):
                 }
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
