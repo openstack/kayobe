@@ -507,6 +507,11 @@ allows it to be used as a default gateway for overcloud hosts. This is disabled
 by default since the Xena 11.0.0 release, and may be enabled by setting
 ``seed_enable_snat`` to ``true`` in ``${KAYOBE_CONFIG_PATH}/seed.yml``.
 
+The seed-hypervisor host also can be configured the same way to be used as a
+default gateway. This is disabled by default too, and may be enabled by setting
+``seed_hypervisor_enable_snat`` to ``true``
+in ``${KAYOBE_CONFIG_PATH}/seed-hypervisor.yml``.
+
 Disable cloud-init
 ==================
 *tags:*
