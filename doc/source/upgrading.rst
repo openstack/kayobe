@@ -9,10 +9,10 @@ This section describes how to upgrade from one OpenStack release to another.
 CentOS Stream 8
 ===============
 
-The Wallaby release adds support for CentOS Stream 8 as a host operating
-system. CentOS Stream 8 support will also be added to a Victoria stable
-release. CentOS Linux users upgrading from Victoria should first migrate hosts
-and container images from CentOS Linux to CentOS Stream before upgrading to
+The Wallaby release introduced support for CentOS Stream 8 as a host operating
+system. CentOS Stream 8 support was also added to Victoria in version 9.2.0.
+CentOS Linux users upgrading from Victoria should first migrate hosts and
+container images from CentOS Linux to CentOS Stream before upgrading to
 Wallaby.
 
 Preparation
