@@ -45,8 +45,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Kayobe Release Notes'
-copyright = u'2018, The Kayobe team'
+project = 'Kayobe Release Notes'
+copyright = '2018, The Kayobe team'
 
 # Release notes do not need a version number in the title, they
 # cover multiple releases.
@@ -181,8 +181,8 @@ htmlhelp_basename = 'KayobeReleaseNotesdoc'
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     ('index', 'KayobeReleaseNotes.tex',
-     u'Kayobe Release Notes Documentation',
-     u'Kayobe Developers', 'manual'),
+     'Kayobe Release Notes Documentation',
+     'Kayobe Developers', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -212,8 +212,8 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'kayobereleasenotes',
-     u'Kayobe Release Notes Documentation',
-     [u'Kayobe Developers'], 1)
+     'Kayobe Release Notes Documentation',
+     ['Kayobe Developers'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -227,8 +227,8 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     ('index', 'KayobeReleaseNotes',
-     u'Kayobe Release Notes Documentation',
-     u'Kayobe Developers',
+     'Kayobe Release Notes Documentation',
+     'Kayobe Developers',
      'kayobereleasenotes',
      'Deployment of containerised OpenStack to bare metal.',
      'Miscellaneous'),
