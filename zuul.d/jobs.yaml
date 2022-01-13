@@ -96,11 +96,6 @@
     timeout: 7200
 
 - job:
-    name: kayobe-overcloud-centos8
-    parent: kayobe-overcloud-base
-    nodeset: kayobe-centos8
-
-- job:
     name: kayobe-overcloud-centos8s
     parent: kayobe-overcloud-base
     nodeset: kayobe-centos8s
@@ -121,11 +116,6 @@
     attempts: 3
 
 - job:
-    name: kayobe-overcloud-upgrade-centos8
-    parent: kayobe-overcloud-upgrade-base
-    nodeset: kayobe-centos8
-
-- job:
     name: kayobe-overcloud-upgrade-centos8s
     parent: kayobe-overcloud-upgrade-base
     nodeset: kayobe-centos8s
@@ -142,11 +132,6 @@
     timeout: 5400
 
 - job:
-    name: kayobe-seed-centos8
-    parent: kayobe-seed-base
-    nodeset: kayobe-centos8
-
-- job:
     name: kayobe-seed-centos8s
     parent: kayobe-seed-base
     nodeset: kayobe-centos8s
@@ -161,11 +146,6 @@
     pre-run: playbooks/kayobe-overcloud-host-configure-base/pre.yml
     run: playbooks/kayobe-overcloud-host-configure-base/run.yml
     timeout: 7200
-
-- job:
-    name: kayobe-overcloud-host-configure-centos8
-    parent: kayobe-overcloud-host-configure-base
-    nodeset: kayobe-centos8
 
 - job:
     name: kayobe-overcloud-host-configure-centos8s
@@ -188,11 +168,6 @@
     attempts: 3
 
 - job:
-    name: kayobe-seed-upgrade-centos8
-    parent: kayobe-seed-upgrade-base
-    nodeset: kayobe-centos8
-
-- job:
     name: kayobe-seed-upgrade-centos8s
     parent: kayobe-seed-upgrade-base
     nodeset: kayobe-centos8s
@@ -208,11 +183,6 @@
     pre-run: playbooks/kayobe-seed-vm-base/pre.yml
     run: playbooks/kayobe-seed-vm-base/run.yml
     timeout: 5400
-
-- job:
-    name: kayobe-seed-vm-centos8
-    parent: kayobe-seed-vm-base
-    nodeset: kayobe-centos8
 
 - job:
     name: kayobe-seed-vm-centos8s
