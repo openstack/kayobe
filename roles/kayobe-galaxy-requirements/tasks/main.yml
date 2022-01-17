@@ -1,0 +1,20 @@
+---
+- name: Slurp requirements.yml
+  command:
+    cmd: "git show {{ kayobe_galaxy_requirements_branch }}:{{ kayobe_galaxy_requirements_src_path }}"
+    chdir: "{{ kayobe_galaxy_requirements_src_dir }}"
+  register: requirements_yml
+
+- name: Write requirements.yml
+  copy:
+    content: "{{ new_requirements | to_nice_yaml }}"
+    dest: "{{ kayobe_galaxy_requirements_dest_path }}"
+  vars:
+    old_requirements: "{{ requirements_yml.stdout | from_yaml }}"
+    new_requirement:
+      name: "file://{{ ansible_collection_kolla_src_dir }}"
+      type: git
+      version: "{{ kayobe_galaxy_requirements_branch }}"
+    new_requirements:
+      collections: "{{ (old_requirements.collections | rejectattr('name', 'search', 'ansible-collection-kolla') | list) + [new_requirement] }}"
+      roles: "{{ old_requirements.roles | default([]) }}"

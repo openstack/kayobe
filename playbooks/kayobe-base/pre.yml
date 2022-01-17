@@ -36,6 +36,12 @@
         content: "{{ ansible_cfg }}"
         dest: "{{ kayobe_config_src_dir }}/etc/kayobe/ansible.cfg"
 
+    - name: Update kayobe requirements.yml
+      include_role:
+        name: kayobe-galaxy-requirements
+      vars:
+        kayobe_galaxy_requirements_src_dir: "{{ kayobe_src_dir }}"
+
     - block:
         - name: Ensure previous kayobe directory exists
           file:
@@ -60,4 +66,14 @@
             path: "{{ previous_kayobe_src_dir }}/dev/config.sh"
             line: "export KAYOBE_EXTRA_ARGS=-vvv"
             regexp: "^#export KAYOBE_EXTRA_ARGS=$"
+
+        - name: Update kayobe requirements.yml
+          include_role:
+            name: kayobe-galaxy-requirements
+          vars:
+            kayobe_galaxy_requirements_src_dir: "{{ previous_kayobe_src_dir }}"
+            kayobe_galaxy_requirements_branch: "stable/{{ previous_release | lower }}"
+          # TODO(mgoddard): Always do this when previous release is Yoga.
+          when: previous_release != 'xena'
+
       when: is_upgrade

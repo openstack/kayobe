@@ -1,4 +1,8 @@
 ---
+collections:
+  - name: https://opendev.org/openstack/ansible-collection-kolla
+    type: git
+    version: master
 roles:
   - src: ahuffman.resolv
     version: 1.3.1
