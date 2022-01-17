@@ -15,7 +15,10 @@ kolla_source_url: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/opensta
 kolla_source_version: "{{ zuul.projects['opendev.org/openstack/kolla'].checkout }}"
 kolla_ansible_source_url: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/kolla-ansible'].src_dir }}"
 kolla_ansible_source_version: "{{ zuul.projects['opendev.org/openstack/kolla-ansible'].checkout }}"
+kolla_ansible_requirements_yml: "/tmp/kolla-ansible-requirements.yml"
 pip_upper_constraints_file: "/tmp/upper-constraints.txt"
+{% else %}
+kolla_ansible_requirements_yml: "/tmp/previous-kolla-ansible-requirements.yml"
 {% endif %}
 kolla_openstack_logging_debug: true
 

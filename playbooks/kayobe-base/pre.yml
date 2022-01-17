@@ -42,6 +42,13 @@
       vars:
         kayobe_galaxy_requirements_src_dir: "{{ kayobe_src_dir }}"
 
+    - name: Update kolla-ansible requirements.yml
+      include_role:
+        name: kayobe-galaxy-requirements
+      vars:
+        kayobe_galaxy_requirements_src_dir: "{{ kolla_ansible_src_dir }}"
+        kayobe_galaxy_requirements_dest_path: "/tmp/kolla-ansible-requirements.yml"
+
     - block:
         - name: Ensure previous kayobe directory exists
           file:
@@ -73,6 +80,16 @@
           vars:
             kayobe_galaxy_requirements_src_dir: "{{ previous_kayobe_src_dir }}"
             kayobe_galaxy_requirements_branch: "stable/{{ previous_release | lower }}"
+          # TODO(mgoddard): Always do this when previous release is Yoga.
+          when: previous_release != 'xena'
+
+        - name: Update kolla-ansible requirements.yml
+          include_role:
+            name: kayobe-galaxy-requirements
+          vars:
+            kayobe_galaxy_requirements_src_dir: "{{ previous_kolla_ansible_src_dir }}"
+            kayobe_galaxy_requirements_branch: "stable/{{ previous_release | lower }}"
+            kayobe_galaxy_requirements_dest_path: "/tmp/previous-kolla-ansible-requirements.yml"
           # TODO(mgoddard): Always do this when previous release is Yoga.
           when: previous_release != 'xena'
 

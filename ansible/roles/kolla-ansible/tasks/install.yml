@@ -106,3 +106,10 @@
     extra_args: "{% if kolla_upper_constraints_file %}-c {{ kolla_upper_constraints_file }}{% endif %}"
     virtualenv: "{{ kolla_ansible_venv }}"
     virtualenv_python: "{{ kolla_ansible_venv_python }}"
+
+- name: Ensure Ansible collections are installed
+  command:
+    cmd: >-
+      ansible-galaxy collection install
+      -r {{ kolla_ansible_requirements_yml }}
+      -p {{ kolla_ansible_venv }}/share/kolla-ansible/ansible/collections/
