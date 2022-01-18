@@ -1432,9 +1432,7 @@ class TestCase(unittest.TestCase):
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
-    @mock.patch.object(commands.KollaAnsibleMixin,
-                       "run_kolla_ansible_overcloud")
-    def test_overcloud_host_upgrade(self, mock_kolla_run, mock_run):
+    def test_overcloud_host_upgrade(self, mock_run):
         command = commands.OvercloudHostUpgrade(TestApp(), [])
         parser = command.get_parser("test")
         parsed_args = parser.parse_args([])
@@ -1457,30 +1455,8 @@ class TestCase(unittest.TestCase):
                 ],
                 limit="overcloud",
             ),
-            mock.call(
-                mock.ANY,
-                [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
-                ignore_limit=True,
-                tags="config",
-            ),
-            mock.call(
-                mock.ANY,
-                [
-                    utils.get_data_files_path(
-                        "ansible", "time.yml"),
-                ],
-                limit="overcloud",
-            ),
         ]
         self.assertEqual(expected_calls, mock_run.call_args_list)
-
-        expected_calls = [
-            mock.call(
-                mock.ANY,
-                "chrony-cleanup",
-            ),
-        ]
-        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")

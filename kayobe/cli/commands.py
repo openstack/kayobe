@@ -1245,15 +1245,6 @@ class OvercloudHostUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
             "overcloud-docker-sdk-upgrade", "overcloud-etc-hosts-fixup")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
 
-        # TODO(mgoddard): Remove this in Y cycle after Kolla Ansible chrony
-        # container has been dropped for a cycle.
-        # NOTE(mgoddard): Clean up the chrony container if it exists, and
-        # deploy a host chrony daemon.
-        self.generate_kolla_ansible_config(parsed_args, service_config=False)
-        self.run_kolla_ansible_overcloud(parsed_args, "chrony-cleanup")
-        playbooks = _build_playbook_list("time")
-        self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
-
 
 class OvercloudDatabaseBackup(KollaAnsibleMixin, KayobeAnsibleMixin,
                               VaultMixin, Command):
