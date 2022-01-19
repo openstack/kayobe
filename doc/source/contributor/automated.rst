@@ -131,11 +131,6 @@ For a control plane with Ironic enabled, a "bare metal" instance can be
 deployed. We can use the `Tenks <https://tenks.readthedocs.io/en/latest/>`__
 project to create fake bare metal nodes.
 
-On Ubuntu, the ``nova_libvirt`` image does not contain the ``qemu-utils``
-package necessary for image operations used by Tenks. Install it as follows::
-
-    sudo docker exec -u root nova_libvirt bash -c 'apt update && apt -y install qemu-utils'
-
 Clone the tenks repository::
 
     git clone https://opendev.org/openstack/tenks.git

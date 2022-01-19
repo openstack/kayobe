@@ -25,3 +25,23 @@
       with_items:
         - "{{ kolla_inspector_ipa_kernel_path }}"
         - "{{ kolla_inspector_ipa_ramdisk_path }}"
+
+    - name: Ensure nova libvirt certificates directory exists
+      local_action:
+        module: file
+        path: "{{ kolla_nova_libvirt_certificates_src }}"
+        state: directory
+
+    # NOTE(mgoddard): Previously we were creating empty files for the kernel
+    # and ramdisk, but this was found to cause ansible to hang on recent
+    # versions of docker. Using non-empty files seems to resolve the issue.
+    # See https://github.com/ansible/ansible/issues/36725.
+    - name: Ensure nova libvirt certificates exist
+      local_action:
+        module: copy
+        content: fake cert
+        dest: "{{ kolla_nova_libvirt_certificates_src }}/{{ item }}"
+      with_items:
+        - "cacert.pem"
+        - "clientcert.pem"
+        - "clientkey.pem"

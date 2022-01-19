@@ -178,6 +178,27 @@ kolla_openstack_custom_config:
     dest: "{{ kolla_node_custom_config_path }}/nova"
     patterns: "*"
     enabled: "{{ kolla_enable_nova }}"
+  # Nova.
+  - src: "{{ kolla_nova_libvirt_certificates_src }}"
+    dest: "{{ kolla_node_custom_config_path }}/nova/nova-libvirt"
+    patterns:
+      - clientcert.pem
+      - clientkey.pem
+      - cacert.pem
+    enabled: "{{ kolla_enable_nova | bool and kolla_libvirt_tls | bool }}"
+    untemplated:
+      - clientcert.pem
+      - clientkey.pem
+      - cacert.pem
+  - src: "{{ kolla_nova_libvirt_certificates_src }}"
+    dest: "{{ kolla_node_custom_config_path }}/nova/nova-libvirt"
+    patterns:
+      - servercert.pem
+      - serverkey.pem
+    enabled: "{{ kolla_enable_nova | bool and kolla_enable_nova_libvirt_container | bool and kolla_libvirt_tls | bool }}"
+    untemplated:
+      - servercert.pem
+      - serverkey.pem
   # Octavia.
   - src: "{{ kolla_extra_config_path }}/octavia"
     dest: "{{ kolla_node_custom_config_path }}/octavia"

@@ -3,6 +3,8 @@
   environment:
     KAYOBE_CONFIG_SOURCE_PATH: "{{ kayobe_config_src_dir }}"
     KAYOBE_OVERCLOUD_GENERATE_CERTIFICATES: "{{ tls_enabled | ternary(1, 0) }}"
+    # TODO(mgoddard): Remove this when libvirt on host is used by default.
+    TENKS_CONFIG_PATH: "dev/tenks-deploy-config-compute{% if tls_enabled %}-libvirt-on-host{% endif %}.yml"
   tasks:
     - name: Ensure overcloud is deployed
       shell:
@@ -18,8 +20,6 @@
         executable: /bin/bash
 
     - name: Perform testing of the virtualized machines
-      # We must do this before tenks-deploy as that will stop the nova_libvirt
-      # container
       shell:
         cmd: dev/overcloud-test-vm.sh &> {{ logs_dir }}/ansible/overcloud-test-vm
         chdir: "{{ kayobe_src_dir }}"

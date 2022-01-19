@@ -1,0 +1,56 @@
+---
+- name: Ensure the libvirt daemon is configured
+  hosts: compute
+  tags:
+    - libvirt-host
+  tasks:
+    - name: Ensure Ceph package repository is available
+      package:
+        name: "centos-release-ceph-{{ compute_libvirt_ceph_repo_release }}"
+        state: present
+      when:
+        - compute_libvirt_enabled | bool
+        - ansible_facts.distribution in ['CentOS', 'Rocky']
+        - compute_libvirt_ceph_repo_install | bool
+      become: true
+
+    - name: Include stackhpc.libvirt-host role
+      include_role:
+        name: stackhpc.libvirt-host
+      vars:
+        libvirt_host_libvirtd_conf: "{{ compute_libvirt_conf }}"
+        libvirt_host_qemu_conf: "{{ compute_qemu_conf }}"
+        libvirt_host_tcp_listen: "{{ not compute_libvirt_enable_tls | bool }}"
+        libvirt_host_tcp_listen_address: "{{ internal_net_name | net_ip }}:16509"
+        libvirt_host_tls_listen: "{{ compute_libvirt_enable_tls | bool }}"
+        libvirt_host_tls_listen_address: "{{ internal_net_name | net_ip }}:16514"
+        # TLS server and client certificates.
+        libvirt_host_tls_server_cert: >-
+          {{ lookup('file', lookup('first_found', lookup_params | combine({'files': ['servercert.pem']})))
+             if libvirt_host_tls_listen | default(False) | bool else '' }}
+        libvirt_host_tls_server_key: >-
+          {{ lookup('file', lookup('first_found', lookup_params | combine({'files': ['serverkey.pem']})))
+             if libvirt_host_tls_listen | default(False) | bool else '' }}
+        libvirt_host_tls_client_cert: >-
+          {{ lookup('file', lookup('first_found', lookup_params | combine({'files': ['clientcert.pem']})))
+             if libvirt_host_tls_listen | default(False) | bool else '' }}
+        libvirt_host_tls_client_key: >-
+          {{ lookup('file', lookup('first_found', lookup_params | combine({'files': ['clientkey.pem']})))
+             if libvirt_host_tls_listen | default(False) | bool else '' }}
+        libvirt_host_tls_cacert: >-
+          {{ lookup('file', lookup('first_found', lookup_params | combine({'files': ['cacert.pem']})))
+             if libvirt_host_tls_listen | default(False) | bool else '' }}
+        lookup_params:
+          paths: "{{ libvirt_tls_cert_paths }}"
+          skip: true
+        # Support loading libvirt TLS certificates & keys from per-host and
+        # global locations.
+        libvirt_tls_cert_paths: >-
+          {{ (libvirt_tls_cert_dirs | unique | product([inventory_hostname]) | map('path_join') | list +
+              libvirt_tls_cert_dirs | unique | list) | list }}
+        libvirt_tls_cert_dirs:
+          - "{{ kayobe_env_config_path }}/certificates/libvirt"
+          - "{{ kayobe_config_path }}/certificates/libvirt"
+        libvirt_host_enable_efi_support: true
+      when:
+        - compute_libvirt_enabled | bool

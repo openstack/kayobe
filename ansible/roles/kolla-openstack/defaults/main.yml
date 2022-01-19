@@ -447,8 +447,18 @@ kolla_extra_neutron_ml2:
 # Whether to enable Nova.
 kolla_enable_nova:
 
+# Whether to enable Nova libvirt container.
+kolla_enable_nova_libvirt_container:
+
 # Free form extra configuration to append to nova.conf.
 kolla_extra_nova:
+
+# Whether libvirt TLS is enabled.
+kolla_libvirt_tls:
+
+# Directory containing libvirt certificates for nova-compute when running
+# libvirt on the host.
+kolla_nova_libvirt_certificates_src:
 
 ###############################################################################
 # Octavia configuration.

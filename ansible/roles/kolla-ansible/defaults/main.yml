@@ -236,6 +236,8 @@ kolla_openstack_logging_debug:
 # controllers.
 kolla_nova_compute_ironic_host:
 
+kolla_libvirt_tls:
+
 ###############################################################################
 # Extra free-form configuraton.
 

@@ -15,7 +15,7 @@ provisioner:
   inventory:
     group_vars:
       all:
-        kolla_extra_config_path:
+        kolla_extra_config_path: ${MOLECULE_TEMP_PATH:-/tmp}/molecule/kolla/config
         kolla_enable_aodh: true
         kolla_extra_aodh: |
           [extra-aodh.conf]
@@ -116,9 +116,12 @@ provisioner:
           [extra-ml2_conf.ini]
           foo=bar
         kolla_enable_nova: true
+        kolla_enable_nova_libvirt_container: false
         kolla_extra_nova: |
           [extra-nova.conf]
           foo=bar
+        kolla_libvirt_tls: true
+        kolla_nova_libvirt_certificates_src: ${MOLECULE_TEMP_PATH:-/tmp}/molecule/nova-libvirt/certificates
         kolla_enable_octavia: true
         kolla_extra_octavia: |
           [extra-octavia.conf]

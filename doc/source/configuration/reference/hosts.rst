@@ -1044,3 +1044,154 @@ Ansible's containers do), but may be necessary when building images.
 Docker's live restore feature can be configured via
 ``docker_daemon_live_restore``, although it is disabled by default due to
 issues observed.
+
+Compute libvirt daemon
+======================
+*tags:*
+  | ``libvirt-host``
+
+.. note::
+
+   This section is about the libvirt daemon on compute nodes, as opposed to the
+   seed hypervisor.
+
+Since Yoga, Kayobe provides support for deploying and configuring a libvirt
+host daemon, as an alternative to the ``nova_libvirt`` container support by
+Kolla Ansible. The host daemon is not used by default, but it is possible to
+enable it by setting ``kolla_enable_nova_libvirt_container`` to ``false`` in
+``$KAYOBE_CONFIG_PATH/kolla.yml``.
+
+Migration of hosts from a containerised libvirt to host libvirt is currently
+not supported.
+
+The following options are available in ``$KAYOBE_CONFIG_PATH/compute.yml`` and
+are relevant only when using the libvirt daemon rather than the
+``nova_libvirt`` container:
+
+``compute_libvirt_enabled``
+    Whether to enable a host libvirt daemon. Default is true if
+    ``kolla_enable_nova`` is ``true`` and
+    ``kolla_enable_nova_libvirt_container`` is ``false``.
+``compute_libvirt_conf_default``
+    A dict of default configuration options to write to
+    ``/etc/libvirt/libvirtd.conf``.
+``compute_libvirt_conf_extra``
+    A dict of additional configuration options to write to
+    ``/etc/libvirt/libvirtd.conf``.
+``compute_libvirt_conf``
+    A dict of configuration options to write to ``/etc/libvirt/libvirtd.conf``.
+    Default is a combination of ``compute_libvirt_conf_default`` and
+    ``compute_libvirt_conf_extra``.
+``compute_libvirtd_log_level``
+    Numerical log level for libvirtd. Default is 3.
+``compute_qemu_conf_default``
+    A dict of default configuration options to write to
+    ``/etc/libvirt/qemu.conf``.
+``compute_qemu_conf_extra``
+    A dict of additional configuration options to write to
+    ``/etc/libvirt/qemu.conf``.
+``compute_qemu_conf``
+    A dict of configuration options to write to ``/etc/libvirt/qemu.conf``.
+    Default is a combination of ``compute_qemu_conf_default`` and
+    ``compute_qemu_conf_extra``.
+``compute_libvirt_enable_tls``
+    Whether to enable a libvirt TLS listener. Default is false.
+``compute_libvirt_ceph_repo_install``
+    Whether to install a Ceph package repository on CentOS and Rocky hosts.
+    Default is ``true``.
+``compute_libvirt_ceph_repo_release``
+    Ceph package repository release to install on CentOS and Rocky hosts when
+    ``compute_libvirt_ceph_repo_install`` is ``true``. Default is ``pacific``.
+
+Example: custom libvirtd.conf
+-----------------------------
+
+To customise the libvirt daemon log output to send level 3 to the journal:
+
+.. code-block:: yaml
+   :caption: ``compute.yml``
+
+   compute_libvirt_conf_extra:
+     log_outputs: "3:journald"
+
+Example: custom qemu.conf
+-------------------------
+
+To customise QEMU to avoid adding timestamps to logs:
+
+.. code-block:: yaml
+   :caption: ``compute.yml``
+
+   compute_qemu_conf_extra:
+     log_timestamp: 0
+
+Example: enabling libvirt TLS listener
+--------------------------------------
+
+To enable the libvirt TLS listener:
+
+.. code-block:: yaml
+   :caption: ``compute.yml``
+
+   compute_libvirt_enable_tls: true
+
+When the TLS listener is enabled, it is necessary to provide client, server and
+CA certificates. The following files should be provided:
+
+``cacert.pem``
+    CA certificate used to sign client and server certificates.
+``clientcert.pem``
+    Client certificate.
+``clientkey.pem``
+    Client key.
+``servercert.pem``
+    Server certificate.
+``serverkey.pem``
+    Server key.
+
+It is recommended to encrypt the key files using Ansible Vault.
+
+The following paths are searched for these files:
+
+* ``$KAYOBE_CONFIG_PATH/certificates/libvirt/{{ inventory_hostname }}/``
+* ``$KAYOBE_CONFIG_PATH/certificates/libvirt/``
+
+In this way, certificates may be generated for each host, or shared using
+wildcard certificates.
+
+If using Kayobe environments, certificates in the environment take precedence.
+
+Kayobe makes the CA certificate and client certificate and key available to
+Kolla Ansible, for use by the ``nova_compute`` service.
+
+Example: disabling Ceph repository installation
+-----------------------------------------------
+
+On CentOS and Rocky hosts, a CentOS Storage SIG Ceph repository is installed
+that provides more recent Ceph libraries than those available in CentOS/Rocky
+AppStream.  This may be necessary when using Ceph for Cinder volumes or Nova
+ephemeral block devices. In some cases, such as when using local package
+mirrors, the upstream repository may not be appropriate. The installation of
+the repository may be disabled as follows:
+
+.. code-block:: yaml
+   :caption: ``compute.yml``
+
+   compute_libvirt_ceph_repo_install: false
+
+Example: installing additional packages
+---------------------------------------
+
+In some cases it may be useful to install additional packages on compute hosts
+for use by libvirt. The `stackhpc.libvirt-host
+<https://galaxy.ansible.com/stackhpc/libvirt-host>`__ Ansible role supports
+this via the ``libvirt_host_extra_daemon_packages`` variable. The variable
+should be defined via group variables in the Ansible inventory, to avoid
+applying the change to the seed hypervisor. For example, to install the
+``trousers`` package used for accessing TPM hardware:
+
+.. code-block:: yaml
+   :caption: ``inventory/group_vars/compute/libvirt``
+
+   libvirt_host_extra_daemon_packages:
+     - trousers

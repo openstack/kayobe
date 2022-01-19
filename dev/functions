@@ -10,12 +10,8 @@ set -o pipefail
 function config_defaults {
     # Set default values for kayobe development configuration.
 
-    # Try to detect if we are running in a vagrant VM.
-    if [[ -e /vagrant ]]; then
-        KAYOBE_SOURCE_PATH_DEFAULT=/vagrant
-    else
-        KAYOBE_SOURCE_PATH_DEFAULT="$(pwd)"
-    fi
+    PARENT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    KAYOBE_SOURCE_PATH_DEFAULT="$(dirname ${PARENT})"
 
     # Path to the kayobe source code repository. Typically this will be the
     # Vagrant shared directory.
@@ -392,18 +388,26 @@ function overcloud_deploy {
 
     control_host_bootstrap
 
-    echo "Configuring the controller host"
-    run_kayobe overcloud host configure
-
-    # FIXME(mgoddard): Perform host upgrade workarounds to ensure hostname
-    # resolves to IP address of API interface for RabbitMQ. This seems to be
-    # required since https://review.openstack.org/#/c/584427 was merged.
-    echo "Workaround: upgrading the controller host"
-    run_kayobe overcloud host upgrade
-
     if [[ ${KAYOBE_OVERCLOUD_GENERATE_CERTIFICATES} = 1 ]]; then
         echo "Generate TLS certificates"
-        run_kayobe kolla ansible run certificates --kolla-extra kolla_certificates_dir=${KAYOBE_CONFIG_PATH}/kolla/certificates
+        run_kayobe playbook run $KAYOBE_SOURCE_PATH/ansible/kolla-ansible.yml -t config
+        # NOTE(mgoddard): There is a chicken and egg when generating libvirt
+        # TLS certificates using the kolla-ansible certificates command, and
+        # host libvirt. The certificates command needs to be able to gather
+        # facts for all hosts, but since the host configure step hasn't been
+        # run, we don't have SSH or the kolla user configured yet. However, we
+        # can't run host configure without the libvirt TLS certificates.
+        # Workaround: add the host to SSH known hosts and SSH as $USER.
+        run_kayobe playbook run $KAYOBE_SOURCE_PATH/ansible/ssh-known-host.yml -l overcloud
+
+        # Avoid populating the fact cache with this weird setup.
+        export ANSIBLE_CACHE_PLUGIN=memory
+        run_kayobe kolla ansible run certificates \
+          --kolla-extra kolla_certificates_dir=${KAYOBE_CONFIG_PATH}/kolla/certificates \
+          --kolla-extra ansible_user=$USER \
+          --kolla-extra ansible_python_interpreter=/usr/bin/python3
+        unset ANSIBLE_CACHE_PLUGIN
+
         # Add CA cert to trust store.
         ca_cert=${KAYOBE_CONFIG_PATH}/kolla/certificates/ca/root.crt
         if [[ -e /etc/debian_version ]]; then
@@ -416,6 +420,15 @@ function overcloud_deploy {
             sudo update-ca-trust
         fi
     fi
+
+    echo "Configuring the controller host"
+    run_kayobe overcloud host configure
+
+    # FIXME(mgoddard): Perform host upgrade workarounds to ensure hostname
+    # resolves to IP address of API interface for RabbitMQ. This seems to be
+    # required since https://review.openstack.org/#/c/584427 was merged.
+    echo "Workaround: upgrading the controller host"
+    run_kayobe overcloud host upgrade
 
     # Note: This must currently be before host configure, because host
     # configure runs kolla-ansible.yml, which validates the presence of the
