@@ -15,8 +15,7 @@ ansible_control_network_interfaces: >
       ansible_control_extra_network_interfaces) | select | unique | list }}
 
 # List of default networks to which Ansible control host are attached.
-ansible_control_default_network_interfaces: >
-  {{ [admin_oc_net_name] | select | unique | list }}
+ansible_control_default_network_interfaces: "{{ network_interfaces_default }}"
 
 # List of extra networks to which Ansible control host are attached.
 ansible_control_extra_network_interfaces: []

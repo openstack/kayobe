@@ -15,15 +15,21 @@
 from ansible import errors
 
 
-def get_hostvar(context, var_name, inventory_hostname=None):
+def _get_namespace(context, inventory_hostname=None):
     if inventory_hostname is None:
-        namespace = context
-    else:
-        if inventory_hostname not in context['hostvars']:
-            raise errors.AnsibleFilterError(
-                "Inventory hostname '%s' not in hostvars" % inventory_hostname)
-        namespace = context["hostvars"][inventory_hostname]
-    return namespace.get(var_name)
+        return context
+    if inventory_hostname not in context['hostvars']:
+        raise errors.AnsibleFilterError(
+            "Inventory hostname '%s' not in hostvars" % inventory_hostname)
+    return context["hostvars"][inventory_hostname]
+
+
+def get_hostvar(context, var_name, inventory_hostname=None):
+    return _get_namespace(context, inventory_hostname).get(var_name)
+
+
+def hostvar_defined(context, var_name, inventory_hostname=None):
+    return var_name in _get_namespace(context, inventory_hostname)
 
 
 def call_bool_filter(context, value):
