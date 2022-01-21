@@ -65,7 +65,7 @@
           ({{ item.description }}) is invalid. Value:
           "{{ hostvars[inventory_hostname][item.var_name] | default('<undefined>') }}".
       when:
-        - groups['network'] | length > 0
+        - groups[controller_loadbalancer_group] | length > 0
         - item.required | bool
       with_items:
         - var_name: "kolla_internal_vip_address"
@@ -112,6 +112,7 @@
         kolla_globals_paths_static:
           - "{{ kayobe_config_path }}"
         kolla_globals_paths_extra: "{{ kolla_globals_paths_static + kayobe_env_search_paths }}"
+        kolla_ironic_inspector_host: "{{ groups[controller_ironic_inspector_group][0] if groups[controller_ironic_inspector_group] | length > 0 else '' }}"
 
 - name: Generate Kolla Ansible host vars for the seed host
   hosts: seed
@@ -154,7 +155,7 @@
       vars:
         require_ironic_networks: >-
           {{ kolla_enable_ironic | bool and
-             inventory_hostname in groups['controllers'] }}
+             inventory_hostname in groups[controller_ironic_conductor_group] }}
         ironic_networks:
           - network: "{{ provision_wl_net_name }}"
             required: "{{ require_ironic_networks }}"
@@ -162,7 +163,7 @@
             required: "{{ require_ironic_networks }}"
         require_provider_networks: >-
           {{ kolla_enable_neutron | bool and
-             (inventory_hostname in groups['network'] or
+             (inventory_hostname in groups[controller_network_group] or
               (kolla_enable_neutron_provider_networks | bool and inventory_hostname in groups['compute'])) }}
         # This expression generates a list containing an item for each network
         # in external_net_names, in the format required by the
@@ -201,11 +202,11 @@
           - var_name: "kolla_provision_interface"
             description: "Bare metal provisioning network"
             network: "{{ provision_wl_net_name }}"
-            required: "{{ kolla_enable_ironic | bool and inventory_hostname in groups['controllers'] }}"
+            required: "{{ require_ironic_networks }}"
           - var_name: "kolla_inspector_dnsmasq_interface"
             description: "Bare metal introspection network"
             network: "{{ inspection_net_name }}"
-            required: "{{ kolla_enable_ironic | bool and inventory_hostname in groups['controllers'] }}"
+            required: "{{ require_ironic_networks }}"
           - var_name: "kolla_dns_interface"
             description: "DNS network"
             network: "{{ public_net_name }}"
@@ -217,7 +218,7 @@
           - var_name: "kolla_external_vip_interface"
             description: "External network"
             network: "{{ public_net_name }}"
-            required: "{{ inventory_hostname in groups['network'] }}"
+            required: "{{ inventory_hostname in groups[controller_loadbalancer_group] }}"
         external_networks: "{{ ironic_networks + provider_networks }}"
 
     - import_role:

@@ -57,7 +57,7 @@ kolla_neutron_ml2_generic_switch_hosts: []
 # These hosts will be matched against the description fields in the
 # switch_interface_config variable for each switch to determine which
 # interfaces should be configured.
-kolla_neutron_ml2_generic_switch_trunk_port_hosts: "{{ groups['network'] }}"
+kolla_neutron_ml2_generic_switch_trunk_port_hosts: "{{ groups[controller_network_group] }}"
 
 # Dict containing additional configuration for switches managed by the
 # genericswitch ML2 mechanism driver. For per-switch configuration of switches
