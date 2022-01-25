@@ -1064,6 +1064,10 @@ class OvercloudDatabaseBackup(KollaAnsibleMixin, KayobeAnsibleMixin,
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Performing overcloud database backup")
+
+        # First prepare configuration.
+        self.generate_kolla_ansible_config(parsed_args, service_config=False)
+
         extra_args = []
         if parsed_args.incremental:
             extra_args.append('--incremental')
@@ -1088,6 +1092,10 @@ class OvercloudDatabaseRecover(KollaAnsibleMixin, KayobeAnsibleMixin,
     def take_action(self, parsed_args):
         self.app.LOG.debug("Performing overcloud database recovery")
         extra_vars = {}
+
+        # First prepare configuration.
+        self.generate_kolla_ansible_config(parsed_args, service_config=True)
+
         if parsed_args.force_recovery_host:
             extra_vars['mariadb_recover_inventory_name'] = (
                 parsed_args.force_recovery_host)
