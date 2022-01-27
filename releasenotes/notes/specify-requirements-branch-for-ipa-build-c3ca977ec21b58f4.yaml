@@ -1,0 +1,8 @@
+---
+fixes:
+  - |
+    Deployment image (IPA) build no longer uses master version of
+    upper-constraints. Instead, it defaults to using the constraints for the
+    OpenStack release associated with the version of Kayobe being used. See
+    `story 2009810 <https://storyboard.openstack.org/#!/story/2009810>`__ for
+    details.
