@@ -1,0 +1,16 @@
+---
+upgrade:
+  - |
+    Updates the maximum supported version of Ansible from 4.x (ansible-core
+    2.11) to 5.x (ansible-core 2.12). The minimum supported version is updated
+    from 2.10 to 4.x. This is true for both Kayobe and Kolla Ansible. Note that
+    environments with Python 3.7 or lower (e.g. CentOS Stream 8) will be
+    limited to Ansible 4.x (ansible-core 2.11).
+  - |
+    Upgrading directly from Ansible 2.10 to Ansible 4 or later is known to
+    cause problems. You should uninstall ``ansible`` and ``ansible-base``
+    before upgrading your Kayobe virtual environment:
+
+    .. code-block:: console
+
+       pip uninstall ansible ansible-base
