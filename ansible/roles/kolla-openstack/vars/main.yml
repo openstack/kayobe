@@ -98,6 +98,9 @@ kolla_openstack_custom_config:
     dest: "{{ kolla_node_custom_config_path }}/horizon"
     patterns: "*"
     enabled: "{{ kolla_enable_horizon }}"
+    untemplated_dirs:
+    # Do not attempt to template themes directory.
+      - "themes"
   # InfluxDB.
   - src: "{{ kolla_extra_config_path }}/"
     dest: "{{ kolla_node_custom_config_path }}/"

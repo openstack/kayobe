@@ -115,6 +115,7 @@
     - item.0.item.enabled | bool
     - item.1.path | basename not in item.0.item.ignore | default([])
     - item.1.path | basename not in item.0.item.untemplated | default([])
+    - (item.1.path | dirname | relpath(item.0.item.src)).split("/")[0] not in item.0.item.untemplated_dirs | default([])
 
 - name: Ensure untemplated extra configuration files exist
   copy:
@@ -128,7 +129,8 @@
   when:
     - item.0.item.enabled | bool
     - item.1.path | basename not in item.0.item.ignore | default([])
-    - item.1.path | basename in item.0.item.untemplated | default([])
+    - (item.1.path | basename in item.0.item.untemplated | default([])) or
+      ((item.1.path | dirname | relpath(item.0.item.src)).split("/")[0] in item.0.item.untemplated_dirs | default([]))
 
 - name: Ensure unnecessary extra configuration files are absent
   file:
