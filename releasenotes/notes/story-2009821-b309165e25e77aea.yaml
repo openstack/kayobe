@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fixes an issue with masking NTP services which are not found. See `story
+    2009821 <https://storyboard.openstack.org/#!/story/2009821>`__ for details.
