@@ -34,6 +34,8 @@ physnet_mappings:
 deploy_kernel: ipa.kernel
 deploy_ramdisk: ipa.initramfs
 
+default_boot_mode: "bios"
+
 # Use the libvirt daemon deployed by Kolla Ansible in the nova_libvirt
 # container. Tenks will install libvirt client packages.
 libvirt_host_install_daemon: false

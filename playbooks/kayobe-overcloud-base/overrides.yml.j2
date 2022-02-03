@@ -34,6 +34,13 @@ aio_bridge_ports:
 # Enable ironic for testing baremetal compute.
 kolla_enable_ironic: true
 
+{% if ironic_boot_mode == 'uefi' %}
+# iPXE is currently required for UEFI boot mode in Kolla Ansible.
+kolla_enable_ironic_ipxe: true
+kolla_ironic_enabled_boot_interfaces: [ipxe]
+kolla_ironic_default_boot_interface: ipxe
+{% endif %}
+
 {% if tls_enabled %}
 kolla_enable_tls_external: "yes"
 kolla_enable_tls_internal: "yes"
