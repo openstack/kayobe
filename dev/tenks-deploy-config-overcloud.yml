@@ -34,6 +34,8 @@ physnet_mappings:
 
 bridge_type: linuxbridge
 
+default_boot_mode: "bios"
+
 # No placement service.
 wait_for_placement: false
 
