@@ -419,10 +419,11 @@ libvirt_enable_sasl: {{ kolla_libvirt_enable_sasl | bool }}
 # Ironic options
 #############################
 {% if kolla_inspector_dhcp_pool_start and kolla_inspector_dhcp_pool_end %}
-ironic_dnsmasq_dhcp_range: "{{ kolla_inspector_dhcp_pool_start }},{{ kolla_inspector_dhcp_pool_end }}{% if kolla_inspector_netmask %},{{ kolla_inspector_netmask }}{% endif %}"
-{% endif %}
+ironic_dnsmasq_dhcp_ranges:
+  - range: "{{ kolla_inspector_dhcp_pool_start }},{{ kolla_inspector_dhcp_pool_end }}{% if kolla_inspector_netmask %},{{ kolla_inspector_netmask }}{% endif %}"
 {% if kolla_inspector_default_gateway %}
-ironic_dnsmasq_default_gateway: {{ kolla_inspector_default_gateway }}
+    routers: "{{ kolla_inspector_default_gateway }}"
+{% endif %}
 {% endif %}
 {% if kolla_inspector_extra_kernel_options %}
 ironic_inspector_kernel_cmdline_extras:
