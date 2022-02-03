@@ -89,6 +89,7 @@
       tenks_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/tenks'].src_dir }}"
       is_upgrade: "{{ 'upgrade' in zuul.job }}"
       tls_enabled: false
+      ironic_boot_mode: "bios"
 
 - job:
     name: kayobe-overcloud-base
@@ -116,6 +117,7 @@
     parent: kayobe-overcloud-base
     vars:
       tls_enabled: true
+      ironic_boot_mode: "uefi"
 
 - job:
     name: kayobe-overcloud-tls-centos8s
