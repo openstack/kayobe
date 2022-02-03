@@ -5,7 +5,12 @@
 
 - name: Mask alternative NTP clients to prevent conflicts
   vars:
-    service_exists: "{{ item in ansible_facts.services }}"
+    # NOTE(mgoddard): The service_facts module can return services that are not
+    # present, possibly due to After/Before dependencies in other services.
+    # These show up with a status of 'not-found'.
+    service_exists: >-
+      {{ item in ansible_facts.services and
+         ansible_facts.services[item].status != 'not-found' }}
   systemd:
     name: "{{ item }}"
     enabled: "{{ 'false' if service_exists else omit }}"

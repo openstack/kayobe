@@ -24,3 +24,7 @@
       template:
         src: globals.yml.j2
         dest: "{{ previous_kayobe_config_src_dir }}/etc/kayobe/kolla/globals.yml"
+
+    - name: Reduce reserved blocks on root file system
+      command: "tune2fs -m 0 {{ ansible_mounts[0]['device'] }}"
+      become: True
