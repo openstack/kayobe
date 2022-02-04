@@ -535,7 +535,6 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    utils.get_data_files_path("ansible", "kolla-host.yml"),
                     utils.get_data_files_path("ansible", "docker.yml"),
                 ],
                 limit="seed",
@@ -1308,7 +1307,6 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
-                    utils.get_data_files_path("ansible", "kolla-host.yml"),
                     utils.get_data_files_path("ansible", "docker.yml"),
                     utils.get_data_files_path(
                         "ansible", "swift-block-devices.yml"),

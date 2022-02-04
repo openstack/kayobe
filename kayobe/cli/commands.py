@@ -618,8 +618,7 @@ class SeedHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         self.run_kolla_ansible_seed(parsed_args, "bootstrap-servers")
 
         # Run final kayobe playbooks.
-        playbooks = _build_playbook_list(
-            "kolla-host", "docker")
+        playbooks = _build_playbook_list("docker")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed")
 
         # Optionally, deploy a Docker Registry.
@@ -1178,8 +1177,7 @@ class OvercloudHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         self.run_kolla_ansible_overcloud(parsed_args, "bootstrap-servers")
 
         # Further kayobe playbooks.
-        playbooks = _build_playbook_list(
-            "kolla-host", "docker", "swift-block-devices")
+        playbooks = _build_playbook_list("docker", "swift-block-devices")
         self.run_kayobe_playbooks(parsed_args, playbooks, limit="overcloud")
 
 
