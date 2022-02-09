@@ -38,7 +38,7 @@
 #dnf_custom_repos:
 
 # Whether to install the epel-release package. This affects RedHat-based
-# systems only. Default value is 'true'.
+# systems only. Default value is 'false'.
 #dnf_install_epel:
 
 ###############################################################################

@@ -124,6 +124,8 @@ dnf_custom_repos:
     baseurl: http://packages.treasuredata.com/4/redhat/$releasever/$basearch
     gpgkey: https://packages.treasuredata.com/GPG-KEY-td-agent
     gpgcheck: yes
+# Install EPEL local mirror.
+dnf_install_epel: true
 # Enable DNF Automatic.
 dnf_automatic_enabled: true
 {% endif %}

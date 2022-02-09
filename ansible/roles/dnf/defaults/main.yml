@@ -32,4 +32,4 @@ dnf_epel_mirror_directory: 'pub/epel'
 dnf_custom_repos: {}
 
 # Whether to install the epel-release package.
-dnf_install_epel: true
+dnf_install_epel: false
