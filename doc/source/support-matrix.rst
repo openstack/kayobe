@@ -22,8 +22,8 @@ Kayobe supports the following host Operating Systems (OS):
 .. note::
 
    CentOS Linux 8 (as opposed to CentOS Stream 8) is no longer supported as a
-   host OS. The Victoria release will in future support both CentOS Linux 8 and
-   CentOS Stream 8, and provides a route for migration.
+   host OS. The Victoria release supports both CentOS Linux 8 and CentOS Stream
+   8, and provides a route for migration.
 
 Supported container images
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
