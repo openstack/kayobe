@@ -1,19 +1,24 @@
 ---
-# Build and install a overcloud host disk image for the seed host's ironic
+# Build and install overcloud host disk images for the seed host's ironic
 # service.
 
-- name: Ensure overcloud host disk image is built and installed
+- name: Ensure overcloud host disk images are built and installed
   hosts: seed
   tags:
     - overcloud-host-image-build
   vars:
-    overcloud_host_image_name: "deployment_image"
-    overcloud_host_disk_images:
-      - "{{ overcloud_host_image_name }}.qcow2"
     overcloud_host_image_force_rebuild: False
   tasks:
     - block:
-        - name: Ensure overcloud host disk image is built
+        - name: Validate overcloud host disk image configuration
+          assert:
+            that:
+              - overcloud_dib_host_images is sequence
+              - overcloud_dib_host_images | selectattr('name', 'undefined') | list | length == 0
+              - overcloud_dib_host_images | selectattr('elements', 'undefined') | list | length == 0
+            msg: "overcloud_dib_host_images set to invalid value"
+
+        - name: Ensure overcloud host disk images are built
           include_role:
             name: stackhpc.os-images
           vars:
@@ -22,30 +27,17 @@
             os_images_upper_constraints_file: "{{ overcloud_dib_upper_constraints_file }}"
             os_images_cache: "{{ image_cache_path }}"
             os_images_common: ""
-            os_images_list:
-              - name: "{{ overcloud_host_image_name }}"
-                elements: "{{ overcloud_dib_elements }}"
-                env: "{{ overcloud_dib_env_vars }}"
-                packages: "{{ overcloud_dib_packages }}"
-                type: qcow2
+            os_images_list: "{{ overcloud_dib_host_images }}"
             os_images_upload: False
             os_images_force_rebuild: "{{ overcloud_host_image_force_rebuild }}"
 
-        - name: Ensure overcloud host disk image is copied onto seed
+        - name: Copy overcloud host disk images into /httpboot
           copy:
-            src: "{{ image_cache_path }}/{{ overcloud_host_image_name }}/{{ item }}"
-            dest: "/etc/kolla/bifrost/{{ item }}"
+            src: "{{ image_cache_path }}/{{ image.name }}/{{ image.name }}.{{ image.type | default('qcow2') }}"
+            dest: "/var/lib/docker/volumes/bifrost_httpboot/_data/{{ image.name }}.{{ image.type | default('qcow2') }}"
             remote_src: True
-          with_items: "{{ overcloud_host_disk_images }}"
+          with_items: "{{ overcloud_dib_host_images }}"
+          loop_control:
+            loop_var: image
           become: True
-
-        - name: Copy overcloud host disk image into /httpboot
-          command: >
-            docker exec bifrost_deploy
-            bash -c 'ansible -vvvv target
-            -i /bifrost/playbooks/inventory/target
-            -m copy
-            -a "src=/etc/bifrost/{{ item }} dest=/httpboot/{{ item }}"
-            -e "ansible_python_interpreter=/var/lib/kolla/venv/bin/python"'
-          with_items: "{{ overcloud_host_disk_images }}"
       when: overcloud_dib_build_host_images | bool

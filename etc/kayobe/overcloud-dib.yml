@@ -10,6 +10,14 @@
 # is False. This will change in a future release.
 #overcloud_dib_build_host_images:
 
+# List of overcloud host disk images to build. Each element is a dict defining
+# an image in a format accepted by the stackhpc.os-images role. Default is to
+# build an image named "deployment_image" configured with the overcloud_dib_*
+# variables defined below: {"name": "deployment_image", "elements": "{{
+# overcloud_dib_elements }}", "env": "{{ overcloud_dib_env_vars }}",
+# "packages": "{{ overcloud_dib_packages }}"}.
+#overcloud_dib_host_images:
+
 # DIB base OS element. Default is {{ os_distribution }}.
 #overcloud_dib_os_element:
 

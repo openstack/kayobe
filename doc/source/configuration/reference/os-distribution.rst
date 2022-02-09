@@ -1,3 +1,5 @@
+.. _os-distribution:
+
 ===============
 OS Distribution
 ===============
