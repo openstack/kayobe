@@ -629,9 +629,7 @@ kolla_external_fqdn: "{{ public_net_name | net_fqdn or kolla_external_vip_addres
 # certificate bundle for the external API.
 #
 # Note that this should be formatted as a literal style block scalar.
-# TODO(mgoddard): Remove the deprecated support for kolla_tls_cert in the
-# Ussuri cycle.
-kolla_external_tls_cert: "{{ kolla_tls_cert | default }}"
+kolla_external_tls_cert:
 
 # Path to a CA certificate file to use for the OS_CACERT environment variable
 # in public-openrc.sh file when TLS is enabled, instead of Kolla-Ansible's
