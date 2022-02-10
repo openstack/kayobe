@@ -77,6 +77,17 @@ the configuration drive built by Bifrost during provisioning.
     ``overcloud_dib_env_vars_extra``.
 ``overcloud_dib_packages``
     List of DIB packages to install. Default is to install no extra packages.
+``overcloud_dib_git_elements_default``
+    List of default git repositories containing Diskimage Builder (DIB)
+    elements. See stackhpc.os-images role for usage. Default is empty.
+``overcloud_dib_git_elements_extra``
+    List of additional git repositories containing Diskimage Builder (DIB)
+    elements. See stackhpc.os-images role for usage. Default is empty.
+``overcloud_dib_git_elements``
+    List of git repositories containing Diskimage Builder (DIB) elements. See
+    stackhpc.os-images role for usage. Default is a combination of
+    ``overcloud_dib_git_elements_default`` and
+    ``overcloud_dib_git_elements_extra``.
 ``overcloud_dib_upper_constraints_file``
     Upper constraints file for installing packages in the virtual environment
     used for building overcloud host disk images. Default is ``{{
@@ -153,6 +164,28 @@ and password for an account that has passwordless sudo:
 Alternatively, the :diskimage-builder-doc:`dynamic-login element
 <elements/dynamic-login/README>` can be used to authorize SSH keys by appending
 them to the kernel arguments.
+
+Example: Configuring custom DIB elements
+----------------------------------------
+
+Sometimes it is useful to use custom DIB elements that are not shipped with DIB
+itself. This can be done by sharing them in a git repository.
+
+.. code-block:: yaml
+   :caption: ``overcloud-dib.yml``
+
+   overcloud_dib_elements_extra:
+     - "my-element"
+
+   overcloud_dib_git_elements:
+     - repo: "https://git.example.com/custom-dib-elements"
+       local: "{{ source_checkout_path }}/custom-dib-elements"
+       version: "master"
+       elements_path: "elements"
+
+In this example the ``master`` branch of
+https://git.example.com/custom-dib-elements would have a top level ``elements``
+directory, containing a ``my-element`` directory for the element.
 
 Example: Installing a package
 -----------------------------
