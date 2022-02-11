@@ -6,6 +6,24 @@
       # Ensure that facts are referenced via ansible_facts.<fact>.
       inject_facts_as_vars = False
 
+      # Test with fact caching enabled
+      gathering = smart
+      fact_caching = jsonfile
+      fact_caching_connection = /tmp/kayobe-facts
+
+      [ssh_connection]
+      pipelining = True
+      retries = 3
+    ansible_cfg_kolla: |
+      [defaults]
+      # Ensure that facts are referenced via ansible_facts.<fact>.
+      inject_facts_as_vars = False
+
+      # Test with fact caching enabled
+      gathering = smart
+      fact_caching = jsonfile
+      fact_caching_connection = /tmp/kolla-ansible-facts
+
       [ssh_connection]
       pipelining = True
       retries = 3
@@ -31,10 +49,15 @@
         line: "export KAYOBE_EXTRA_ARGS=-vvv"
         regexp: "^#export KAYOBE_EXTRA_ARGS=$"
 
-    - name: Ensure ansible.cfg exists
+    - name: Ensure ansible.cfg exists for Kayobe
       copy:
         content: "{{ ansible_cfg }}"
         dest: "{{ kayobe_config_src_dir }}/etc/kayobe/ansible.cfg"
+
+    - name: Ensure ansible.cfg exists for Kolla Ansible
+      copy:
+        content: "{{ ansible_cfg_kolla }}"
+        dest: "{{ kayobe_config_src_dir }}/etc/kayobe/kolla/ansible.cfg"
 
     - name: Update kayobe requirements.yml
       include_role:
