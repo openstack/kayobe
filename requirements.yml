@@ -14,7 +14,7 @@ roles:
   - src: mrlesmithjr.chrony
     version: v0.1.1
   - src: mrlesmithjr.manage-lvm
-    version: v0.2.2
+    version: v0.2.6
   - src: mrlesmithjr.mdadm
     version: v0.1.1
   - src: singleplatform-eng.users
