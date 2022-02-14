@@ -35,9 +35,3 @@
         cmd: dev/overcloud-test-baremetal.sh &> {{ logs_dir }}/ansible/overcloud-test-baremetal
         chdir: "{{ kayobe_src_dir }}"
         executable: /bin/bash
-      # FIXME(mgoddard): Bare metal testing is unreliable on Ubuntu - some jobs
-      # see IPMI failures such as the following:
-      # ipmitool chassis bootdev pxe
-      # Error setting Chassis Boot Parameter 5\nError setting Chassis Boot
-      # Parameter 0\n
-      when: ansible_os_family != 'Debian'
