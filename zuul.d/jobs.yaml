@@ -111,7 +111,6 @@
     parent: kayobe-overcloud-base
     vars:
       tls_enabled: true
-      ironic_boot_mode: "uefi"
 
 - job:
     name: kayobe-overcloud-tls-centos8s
