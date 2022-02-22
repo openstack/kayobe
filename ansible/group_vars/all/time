@@ -35,3 +35,6 @@ chrony_ntp_servers:
       - option: iburst
       - option: minpoll
         val: 8
+
+# Synchronise hardware clock with system time. Default is true.
+chrony_rtcsync_enabled: true
