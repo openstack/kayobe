@@ -21,4 +21,5 @@ kolla_copy_ca_into_containers: "yes"
 kolla_enable_tls_backend: "yes"
 openstack_cacert: "/etc/pki/tls/certs/ca-bundle.crt"
 kolla_admin_openrc_cacert: "{% raw %}{{ '{{' }} kolla_certificates_dir }}{% endraw %}/ca/root.crt"
+libvirt_tls: "yes"
 {% endif %}
