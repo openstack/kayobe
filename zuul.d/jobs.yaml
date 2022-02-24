@@ -45,6 +45,7 @@
       - ^doc/.*
       - ^releasenotes/.*
       - ^setup.cfg$
+    voting: false
 
 - job:
     name: kayobe-base
@@ -133,6 +134,7 @@
     name: kayobe-overcloud-upgrade-centos8s
     parent: kayobe-overcloud-upgrade-base
     nodeset: kayobe-centos8s
+    voting: false
 
 - job:
     name: kayobe-seed-base
@@ -167,6 +169,7 @@
     name: kayobe-overcloud-host-configure-centos8s
     parent: kayobe-overcloud-host-configure-base
     nodeset: kayobe-centos8s
+    voting: false
 
 - job:
     name: kayobe-seed-upgrade-base
@@ -187,6 +190,7 @@
     name: kayobe-seed-upgrade-centos8s
     parent: kayobe-seed-upgrade-base
     nodeset: kayobe-centos8s
+    voting: false
 
 - job:
     name: kayobe-seed-vm-base
