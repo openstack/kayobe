@@ -226,7 +226,6 @@ kolla_feature_flags:
   - trove_singletenant
   - vitrage
   - vitrage_prometheus_datasource
-  - vmtp
   - watcher
   - zookeeper
   - zun
