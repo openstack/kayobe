@@ -9,7 +9,7 @@ dib_os_release: "{{ kolla_bifrost_dib_os_release }}"
 dib_elements: "{{ (kolla_bifrost_dib_elements + [kolla_bifrost_dib_init_element]) | join(' ') }}"
 
 # DIB image environment variables.
-{{ {'dib_env_vars': kolla_bifrost_dib_env_vars} | to_nice_yaml }}
+{{ {'dib_env_vars': kolla_bifrost_dib_env_vars} | to_nice_yaml(width=131072) }}
 
 # List of DIB image packages.
 dib_packages: "{{ kolla_bifrost_dib_packages | join(',') }}"
