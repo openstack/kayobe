@@ -9,6 +9,7 @@
   merge_yaml:
     sources: "{{ kolla_bifrost_config_paths | product(['/kolla/config/bifrost/' ~ item]) | map('join') | list }}"
     dest: "{{ kolla_node_custom_config_path }}/bifrost/{{ item }}"
+    yaml_width: 131072
     mode: 0640
   with_items:
     - bifrost.yml
