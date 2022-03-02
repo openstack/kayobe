@@ -1,7 +1,7 @@
 ---
-- include: test-invalid-format.yml
-- include: test-mount.yml
-- include: test-bootstrapped.yml
+- import_playbook: test-invalid-format.yml
+- import_playbook: test-mount.yml
+- import_playbook: test-bootstrapped.yml
 
 - hosts: localhost
   connection: local
