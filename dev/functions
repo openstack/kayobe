@@ -361,6 +361,17 @@ function overcloud_deploy {
     if [[ ${KAYOBE_OVERCLOUD_GENERATE_CERTIFICATES} = 1 ]]; then
         echo "Generate TLS certificates"
         run_kayobe kolla ansible run certificates --kolla-extra kolla_certificates_dir=${KAYOBE_CONFIG_PATH}/kolla/certificates
+        # Add CA cert to trust store.
+        ca_cert=${KAYOBE_CONFIG_PATH}/kolla/certificates/ca/root.crt
+        if [[ -e /etc/debian_version ]]; then
+            # Ubuntu
+            sudo cp $ca_cert "/usr/local/share/ca-certificates/kayobe-customca.crt"
+            sudo update-ca-certificates
+        elif [[ -e /etc/redhat-release ]]; then
+            # CentOS
+            sudo cp $ca_cert "/etc/pki/ca-trust/source/anchors/kayobe-customca.crt"
+            sudo update-ca-trust
+        fi
     fi
 
     # Note: This must currently be before host configure, because host
