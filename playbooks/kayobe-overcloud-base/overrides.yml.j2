@@ -38,9 +38,6 @@ kolla_enable_ironic: true
 kolla_enable_tls_external: "yes"
 kolla_enable_tls_internal: "yes"
 
-# FIXME: ipa-images fails to access OS_CACERT from /home/zuul.
-kayobe_ansible_user: zuul
-
 kolla_ironic_pxe_append_params_extra:
   - ipa-insecure=1
 {% endif %}
