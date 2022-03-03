@@ -19,7 +19,8 @@ following option:
     Whether to build host disk images with DIB directly instead of through
     Bifrost. Setting it to true disables Bifrost image build and allows images
     to be built with the ``kayobe overcloud host image build`` command. Default
-    value is false. This will change in a future release.
+    value is false, except on Rocky where it is true. This will change in a
+    future release.
 
 With this option enabled, Bifrost will be configured to stop building a root
 disk image. This will become the default behaviour in a future release.
@@ -35,7 +36,8 @@ information on building disk images.
 
 The default configuration builds a whole disk (partitioned) image using the
 selected :ref:`OS distribution <os-distribution>` (CentOS Stream 8 by default)
-with serial console enabled, and SELinux disabled if CentOS Stream is used.
+with serial console enabled, and SELinux disabled if CentOS Stream or Rocky
+Linux is used.
 `Cloud-init <https://cloudinit.readthedocs.io/en/latest/>`__ is used to process
 the configuration drive built by Bifrost during provisioning.
 
@@ -48,17 +50,19 @@ the configuration drive built by Bifrost during provisioning.
     "elements": "{{ overcloud_dib_elements }}", "env": "{{
     overcloud_dib_env_vars }}", "packages": "{{ overcloud_dib_packages }}"}``.
 ``overcloud_dib_os_element``
-    DIB base OS element. Default is ``{{ os_distribution }}``.
+    DIB base OS element. Default is ``{{ 'rocky-container' if os_distribution == 'rocky' else os_distribution }}``.
 ``overcloud_dib_os_release``
     DIB image OS release. Default is ``{{ os_release }}``.
 ``overcloud_dib_elements_default``
     List of default DIB elements. Default is ``["centos",
     "cloud-init-datasources", "disable-selinux", "enable-serial-console",
-    "vm"]`` when ``overcloud_dib_os_element`` is ``centos``, or ``["ubuntu",
-    "cloud-init-datasources", "enable-serial-console", "vm"]`` when
-    ``overcloud_dib_os_element`` is ``ubuntu``. The ``vm`` element is poorly
-    named, and causes DIB to build a whole disk image rather than a single
-    partition.
+    "vm"]`` when ``overcloud_dib_os_element`` is ``centos``, or
+    ``["rocky-container", "cloud-init-datasources", "disable-selinux",
+    "enable-serial-console", "vm"]`` when overcloud_dib_os_element is ``rocky``
+    or ``["ubuntu", "cloud-init-datasources", "enable-serial-console", "vm"]``
+    when ``overcloud_dib_os_element`` is ``ubuntu``. The ``vm`` element is
+    poorly named, and causes DIB to build a whole disk image rather than a
+    single partition.
 ``overcloud_dib_elements_extra``
     List of additional DIB elements. Default is none.
 ``overcloud_dib_elements``
@@ -67,8 +71,9 @@ the configuration drive built by Bifrost during provisioning.
 ``overcloud_dib_env_vars_default``
     DIB default environment variables. Default is
     ``{"DIB_BOOTLOADER_DEFAULT_CMDLINE": "nofb nomodeset gfxpayload=text
-    net.ifnames=1", "DIB_CLOUD_INIT_DATASOURCES": "ConfigDrive", "DIB_RELEASE":
-    "{{ overcloud_dib_os_release }}"}``.
+    net.ifnames=1", "DIB_CLOUD_INIT_DATASOURCES": "ConfigDrive",
+    "DIB_CONTAINERFILE_RUNTIME": "docker", "DIB_CONTAINERFILE_NETWORK_DRIVER":
+    "host", DIB_RELEASE": "{{ overcloud_dib_os_release }}"}``.
 ``overcloud_dib_env_vars_extra``
     DIB additional environment variables. Default is none.
 ``overcloud_dib_env_vars``

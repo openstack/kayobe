@@ -102,10 +102,10 @@ VM Provisioning
    bare metal host or a VM provisioned outside of Kayobe, this step may be
    skipped.  Ensure that the Ansible inventory contains a host for the seed.
 
-The seed hypervisor should have CentOS or Ubuntu with ``libvirt`` installed.
-It should have ``libvirt`` networks configured for all networks that the seed
-VM needs access to and a ``libvirt`` storage pool available for the seed VM's
-volumes.  To provision the seed VM::
+The seed hypervisor should have CentOS or Rocky or Ubuntu with ``libvirt``
+installed. It should have ``libvirt`` networks configured for all networks
+that the seed VM needs access to and a ``libvirt`` storage pool available
+for the seed VM's volumes.  To provision the seed VM::
 
     (kayobe) $ kayobe seed vm provision
 
@@ -175,6 +175,11 @@ This command will also build the Operating System image that will be used to
 deploy the overcloud nodes using Disk Image Builder (DIB), unless
 ``overcloud_dib_build_host_images`` is set to ``True``.
 
+.. note::
+
+   If you are using Rocky Linux - building of the Operating System image
+   needs to be done using ``kayobe overcloud host image build``.
+
 To deploy the seed services in containers::
 
     (kayobe) $ kayobe seed service deploy
@@ -224,7 +229,8 @@ Building Overcloud Host Disk Images
 .. note::
 
    This step is only relevant if ``overcloud_dib_build_host_images`` is set to
-   ``True``. By default, a host disk image is automatically built by Bifrost.
+   ``True``. By default, a host disk image is automatically built by Bifrost
+   unless you're running Rocky Linux - which requires this step.
 
 Host disk images are deployed on overcloud hosts during provisioning. To build
 host disk images::

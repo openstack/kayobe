@@ -16,6 +16,7 @@ Currently Kayobe supports the following Operating Systems on the Ansible
 control host:
 
 - CentOS Stream 8 (since Wallaby 10.0.0 release)
+- Rocky Linux 8 (since Yoga 12.0.0 release)
 - Ubuntu Focal 20.04 (since Wallaby 10.0.0 release)
 
 See the :doc:`support matrix <support-matrix>` for details of supported
@@ -27,7 +28,7 @@ it is recommended to install Kayobe in a virtualenv. Ensure that the
 necessary to install the GCC compiler chain in order to build the extensions of
 some of kayobe's python dependencies.
 
-On CentOS::
+On CentOS/Rocky::
 
     $ dnf install -y python3-devel python3-virtualenv gcc libffi-devel
 
@@ -38,7 +39,7 @@ On Ubuntu::
 If installing Kayobe from source, then Git is required for cloning and working
 with the source code repository.
 
-On CentOS::
+On CentOS/Rocky::
 
     $ dnf install -y git
 

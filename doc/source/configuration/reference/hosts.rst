@@ -79,8 +79,8 @@ is ``stack``.
 Typically, the image used to provision these hosts will not include this user
 account, so Kayobe performs a bootstrapping step to create it, as a different
 user. In cloud images, there is often a user named after the OS distro, e.g.
-``centos`` or ``ubuntu``. This user defaults to the ``os_distribution``
-variable, but may be set via the following variables:
+``centos``, ``rocky`` or ``ubuntu``. This user defaults to the
+``os_distribution`` variable, but may be set via the following variables:
 
 * ``seed_hypervisor_bootstrap_user``
 * ``seed_bootstrap_user``
@@ -211,8 +211,8 @@ DNF Package Repositories
 *tags:*
   | ``dnf``
 
-On CentOS, Kayobe supports configuration of package repositories via DNF, via
-variables in ``${KAYOBE_CONFIG_PATH}/dnf.yml``.
+On CentOS and Rocky, Kayobe supports configuration of package repositories via
+DNF, via variables in ``${KAYOBE_CONFIG_PATH}/dnf.yml``.
 
 Configuration of dnf.conf
 -------------------------
@@ -227,16 +227,23 @@ section of the file. For example, to configure DNF to use a proxy server:
    dnf_config:
      proxy: https://proxy.example.com
 
-CentOS and EPEL Mirrors
------------------------
+CentOS/Rocky and EPEL Mirrors
+-----------------------------
 
-CentOS and EPEL mirrors can be enabled by setting ``dnf_use_local_mirror`` to
-``true``.  CentOS repository mirrors are configured via the following
-variables:
+CentOS/Rocky and EPEL mirrors can be enabled by setting
+``dnf_use_local_mirror`` to ``true``. CentOS repository mirrors are configured
+via the following variables:
 
 * ``dnf_centos_mirror_host`` (default ``mirror.centos.org``) is the mirror
   hostname.
 * ``dnf_centos_mirror_directory`` (default ``centos``) is a directory on the
+  mirror in which repositories may be accessed.
+
+Rocky repository mirrors are configured via the following variables:
+
+* ``dnf_rocky_mirror_host`` (default ``dl.rockylinux.org``) is the mirror
+  hostname
+* ``dnf_rocky_mirror_directory`` (default ``pub/rocky``) is a directory on the
   mirror in which repositories may be accessed.
 
 EPEL repository mirrors are configured via the following variables:
@@ -327,7 +334,7 @@ SELinux
 *tags:*
   | ``disable-selinux``
 
-.. note:: SELinux applies to CentOS systems only.
+.. note:: SELinux applies to CentOS and Rocky systems only.
 
 SELinux is not supported by Kolla Ansible currently, so it is disabled by
 Kayobe. If necessary, Kayobe will reboot systems in order to apply a change to
@@ -348,12 +355,12 @@ Firewalld
 *tags:*
   | ``firewall``
 
-.. note:: Firewalld is supported on CentOS systems only. Currently no
+.. note:: Firewalld is supported on CentOS and Rocky systems only. Currently no
           firewall is supported on Ubuntu.
 
-Firewalld can be used to provide a firewall on CentOS systems. Since the Xena
-release, Kayobe provides support for enabling or disabling firewalld, as well
-as defining zones and rules.
+Firewalld can be used to provide a firewall on CentOS/Rocky systems. Since the
+Xena release, Kayobe provides support for enabling or disabling firewalld, as
+well as defining zones and rules.
 
 The following variables can be used to set whether to enable firewalld:
 
@@ -446,7 +453,7 @@ Tuned
 *tags:*
   | ``tuned``
 
-.. note:: Tuned configuration only supports CentOS systems for now.
+.. note:: Tuned configuration only supports CentOS/Rocky systems for now.
 
 Built-in ``tuned`` profiles can be applied to hosts. The following variables
 can be used to set a ``tuned`` profile to specific types of hosts:

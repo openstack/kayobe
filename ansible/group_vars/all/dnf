@@ -7,11 +7,17 @@ dnf_config: {}
 # Whether or not to use a local Yum mirror. Default value is 'false'.
 dnf_use_local_mirror: false
 
-# Mirror FQDN for Yum repos. Default value is 'mirror.centos.org'.
+# Mirror FQDN for Yum CentOS repos. Default value is 'mirror.centos.org'.
 dnf_centos_mirror_host: 'mirror.centos.org'
 
 # Mirror directory for Yum CentOS repos. Default value is 'centos'.
 dnf_centos_mirror_directory: 'centos'
+
+# Mirror FQDN for Yum Rocky repos. Default value is 'dl.rockylinux.org'.
+dnf_rocky_mirror_host: 'dl.rockylinux.org'
+
+# Mirror directory for Yum Rocky repos. Default value is 'pub/rocky'.
+dnf_rocky_mirror_directory: 'pub/rocky'
 
 # Mirror FQDN for Yum EPEL repos. Default value is
 # 'download.fedoraproject.org'.
