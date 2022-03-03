@@ -29,11 +29,6 @@
       environment:
         KAYOBE_CONFIG_SOURCE_PATH: "{{ previous_kayobe_config_src_dir }}"
 
-    - name: Ensure qemu-img is available for Tenks
-      command: docker exec -u root nova_libvirt bash -c 'apt update && apt -y install qemu-utils'
-      become: true
-      when: ansible_os_family == 'Debian'
-
     # Update the Kayobe configuration to the current release.
 
     - name: Ensure kolla config directory exists
