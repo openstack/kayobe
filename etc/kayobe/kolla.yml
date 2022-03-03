@@ -410,7 +410,6 @@
 #kolla_enable_trove_singletenant:
 #kolla_enable_vitrage:
 #kolla_enable_vitrage_prometheus_datasource:
-#kolla_enable_vmtp:
 #kolla_enable_watcher:
 #kolla_enable_zookeeper:
 #kolla_enable_zun:

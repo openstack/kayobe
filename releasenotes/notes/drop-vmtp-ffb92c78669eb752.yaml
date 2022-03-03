@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    Removes support for deploying ``vmtp``, following its removal from Kolla.

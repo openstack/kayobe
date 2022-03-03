@@ -249,8 +249,6 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_trove | bool }}"
   - regex: ^vitrage
     enabled: "{{ kolla_enable_vitrage | bool }}"
-  - regex: ^vmtp
-    enabled: "{{ kolla_enable_vmtp | bool }}"
   - regex: ^watcher
     enabled: "{{ kolla_enable_watcher | bool }}"
   - regex: ^zookeeper
@@ -573,7 +571,6 @@ kolla_enable_tacker: "no"
 kolla_enable_telegraf: "no"
 kolla_enable_trove: "no"
 kolla_enable_vitrage: "no"
-kolla_enable_vmtp: "no"
 kolla_enable_watcher: "no"
 kolla_enable_zookeeper: "{{ kolla_enable_kafka | bool or kolla_enable_storm | bool }}"
 kolla_enable_zun: "no"
