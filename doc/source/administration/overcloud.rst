@@ -10,9 +10,9 @@ It is possible to update packages on the overcloud hosts.
 Package Repositories
 --------------------
 
-If using custom DNF package repositories on CentOS, it may be necessary to
-update these prior to running a package update. To do this, update the
-configuration in ``${KAYOBE_CONFIG_PATH}/dnf.yml`` and run the following
+If using custom DNF package repositories on CentOS or Rocky, it may be
+necessary to update these prior to running a package update. To do this, update
+the configuration in ``${KAYOBE_CONFIG_PATH}/dnf.yml`` and run the following
 command::
 
     (kayobe) $ kayobe overcloud host configure --tags dnf --kolla-tags none

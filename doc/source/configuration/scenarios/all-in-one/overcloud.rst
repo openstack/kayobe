@@ -210,7 +210,8 @@ Use the correct hostname and IP address for your environment.
      controller0: 192.168.33.3
 
 The default OS distribution in Kayobe is CentOS. If using an Ubuntu host, set
-the ``os_distribution`` variable in ``etc/kayobe/globals.yml`` to ``ubuntu``.
+the ``os_distribution`` variable in ``etc/kayobe/globals.yml`` to ``ubuntu``
+or ``rocky`` if using Rocky Linux..
 
 .. code-block:: yaml
    :caption: ``etc/kayobe/globals.yml``
@@ -218,9 +219,9 @@ the ``os_distribution`` variable in ``etc/kayobe/globals.yml`` to ``ubuntu``.
    os_distribution: "ubuntu"
 
 Kayobe uses a bootstrap user to create a ``stack`` user account. By default,
-this user is ``centos`` on CentOS, and ``ubuntu`` on Ubuntu, in line with the
-default user in the official cloud images. If you are using a different
-bootstrap user, set the ``controller_bootstrap_user`` variable in
+this user is ``centos`` on CentOS, ``rocky`` on Rocky and ``ubuntu`` on Ubuntu,
+in line with the default user in the official cloud images. If you are using
+a different bootstrap user, set the ``controller_bootstrap_user`` variable in
 ``etc/kayobe/controllers.yml``. For example, to set it to ``cloud-user`` (as
 seen in MAAS):
 
