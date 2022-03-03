@@ -276,6 +276,7 @@ def net_bridge_ports(context, name, inventory_hostname=None):
 
 
 net_bond_mode = _make_attr_filter('bond_mode')
+net_bond_ad_select = _make_attr_filter('bond_ad_select')
 net_bond_slaves = _make_attr_filter('bond_slaves')
 net_bond_miimon = _make_attr_filter('bond_miimon')
 net_bond_updelay = _make_attr_filter('bond_updelay')
@@ -448,6 +449,7 @@ def net_bond_obj(context, name, inventory_hostname=None):
     vlan = net_vlan(context, name, inventory_hostname)
     mtu = net_mtu(context, name, inventory_hostname)
     mode = net_bond_mode(context, name, inventory_hostname)
+    ad_select = net_bond_ad_select(context, name, inventory_hostname)
     slaves = net_bond_slaves(context, name, inventory_hostname)
     miimon = net_bond_miimon(context, name, inventory_hostname)
     updelay = net_bond_updelay(context, name, inventory_hostname)
@@ -475,6 +477,7 @@ def net_bond_obj(context, name, inventory_hostname=None):
         'mtu': mtu,
         'bond_slaves': slaves,
         'bond_mode': mode,
+        'bond_ad_select': ad_select,
         'bond_miimon': miimon,
         'bond_updelay': updelay,
         'bond_downdelay': downdelay,
