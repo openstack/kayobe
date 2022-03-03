@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds support for setting root filesystem's UUID via a new variable
+    ``kolla_bifrost_deploy_image_rootfs``. This is useful when deploying
+    overcloud hosts with software RAID based root disk devices.
