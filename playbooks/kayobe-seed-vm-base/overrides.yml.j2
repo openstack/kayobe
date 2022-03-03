@@ -15,10 +15,6 @@ kolla_ansible_requirements_yml: "/tmp/kolla-ansible-requirements.yml"
 kolla_openstack_logging_debug: True
 pip_upper_constraints_file: "/tmp/upper-constraints.txt"
 
-# The hosts used by Zuul may or may not have Virtualization Technology (VT)
-# enabled. Don't fail if it's disabled.
-libvirt_host_require_vt: false
-
 # Nested virtualisation is not working well in CI currently. Force the use of
 # QEMU.
 libvirt_vm_engine: "qemu"
