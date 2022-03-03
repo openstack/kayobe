@@ -9,11 +9,6 @@
         cmd: "{{ kayobe_src_dir }}/dev/overcloud-deploy.sh &> {{ logs_dir }}/ansible/overcloud-deploy"
         executable: /bin/bash
 
-    - name: Ensure qemu-img is available for Tenks
-      command: docker exec -u root nova_libvirt bash -c 'apt update && apt -y install qemu-utils'
-      become: true
-      when: ansible_os_family == 'Debian'
-
     - name: Ensure test Tenks cluster is deployed
       shell:
         # Pass absolute source directory, since otherwise the `chdir` will
