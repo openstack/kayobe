@@ -1094,6 +1094,12 @@ are relevant only when using the libvirt daemon rather than the
     A dict of configuration options to write to ``/etc/libvirt/qemu.conf``.
     Default is a combination of ``compute_qemu_conf_default`` and
     ``compute_qemu_conf_extra``.
+``compute_libvirt_enable_sasl``
+    Whether to enable libvirt SASL authentication.  Default is the same as
+    ``compute_libvirt_tcp_listen``.
+``compute_libvirt_sasl_password``
+    libvirt SASL password. Default is unset. This must be defined when
+    ``compute_libvirt_enable_sasl`` is ``true``.
 ``compute_libvirt_enable_tls``
     Whether to enable a libvirt TLS listener. Default is false.
 ``compute_libvirt_ceph_repo_install``
@@ -1124,6 +1130,24 @@ To customise QEMU to avoid adding timestamps to logs:
 
    compute_qemu_conf_extra:
      log_timestamp: 0
+
+Example: SASL
+-------------
+
+SASL authentication is enabled by default.  This provides authentication for
+TCP and TLS connections to the libvirt API. A password is required, and should
+be encrypted using Ansible Vault.
+
+.. code-block:: yaml
+   :caption: ``compute.yml``
+
+   compute_libvirt_sasl_password: !vault |
+     $ANSIBLE_VAULT;1.1;AES256
+     63363937303539373738356236393563636466313130633435353933613637343231303836343933
+     3463623265653030323665383337376462363434396361320a653737376237353261303066616637
+     66613562316533313632613433643537346463303363376664396661343835373033326261383065
+     3731643633656636360a623534313665343066656161333866613338313266613465336332376463
+     3234
 
 Example: enabling libvirt TLS listener
 --------------------------------------

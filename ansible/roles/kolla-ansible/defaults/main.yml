@@ -238,6 +238,8 @@ kolla_nova_compute_ironic_host:
 
 kolla_libvirt_tls:
 
+kolla_libvirt_enable_sasl:
+
 ###############################################################################
 # Extra free-form configuraton.
 
