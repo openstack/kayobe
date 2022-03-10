@@ -595,7 +595,7 @@ def net_configdrive_network_device(context, name, inventory_hostname=None):
     bootproto = net_bootproto(context, name, inventory_hostname)
     mtu = net_mtu(context, name, inventory_hostname)
     vlan = net_vlan(context, name, inventory_hostname)
-    if vlan:
+    if vlan and '.' in device:
         backend = [device.split('.')[0]]
     else:
         backend = None
@@ -608,7 +608,7 @@ def net_configdrive_network_device(context, name, inventory_hostname=None):
         'mtu': mtu,
         'backend': backend,
     }
-    if vlan:
+    if backend:
         interface['type'] = 'vlan'
     interface = {k: v for k, v in interface.items() if v is not None}
     return interface
