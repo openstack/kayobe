@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an issue where patch links could be erroneously created
+    on hosts not in the overcloud group. See `Story 2009911
+    <https://storyboard.openstack.org/#!/story/2009911>`__ for details.
