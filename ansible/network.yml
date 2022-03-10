@@ -117,3 +117,4 @@
       with_dict: "{{ veth_mtu_map }}"
   roles:
     - role: veth
+      when: "'overcloud' in group_names"
