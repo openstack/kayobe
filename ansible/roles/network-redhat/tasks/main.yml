@@ -46,3 +46,4 @@
     name: veth
   vars:
     veth_interfaces: "{{ network_interfaces | net_ovs_veths }}"
+  when: "'overcloud' in group_names"
