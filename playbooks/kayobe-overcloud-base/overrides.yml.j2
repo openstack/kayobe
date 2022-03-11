@@ -39,4 +39,9 @@ kolla_enable_tls_internal: "yes"
 
 kolla_ironic_pxe_append_params_extra:
   - ipa-insecure=1
+
+# When TLS is enabled, extra RAM usage is causing the OOM killer to terminate
+# Tenks VMs. Disable Heat and Horizon to free up enough memory.
+kolla_enable_heat: false
+kolla_enable_horizon: false
 {% endif %}
