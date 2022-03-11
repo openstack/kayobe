@@ -12,7 +12,8 @@
         - kayobe-tox-molecule
         - kayobe-overcloud-centos8s
         - kayobe-overcloud-ubuntu-focal
-        - kayobe-overcloud-tls-centos8s
+        # TODO(priteau): Fix and enable again
+        # - kayobe-overcloud-tls-centos8s
         - kayobe-overcloud-host-configure-centos8s
         - kayobe-overcloud-host-configure-ubuntu-focal
         - kayobe-overcloud-upgrade-centos8s
@@ -34,7 +35,8 @@
         - kayobe-tox-molecule
         - kayobe-overcloud-centos8s
         - kayobe-overcloud-ubuntu-focal
-        - kayobe-overcloud-tls-centos8s
+        # TODO(priteau): Fix and enable again
+        # - kayobe-overcloud-tls-centos8s
         - kayobe-overcloud-host-configure-centos8s
         - kayobe-overcloud-host-configure-ubuntu-focal
         - kayobe-overcloud-upgrade-centos8s
