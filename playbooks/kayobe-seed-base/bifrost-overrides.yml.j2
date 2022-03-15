@@ -1,7 +1,9 @@
 ---
-# Don't build an IPA deployment image, instead download upstream images.
+# Don't build an IPA deployment image.
 create_ipa_image: false
-download_ipa: true
+download_ipa: false
 
 # Don't build a disk image. It takes time and can be unreliable.
 use_cirros: true
+# Copy a local file to avoid downloading Cirros image.
+cirros_deploy_image_upstream_url: file:///etc/os-release
