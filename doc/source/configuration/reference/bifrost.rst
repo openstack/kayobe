@@ -54,7 +54,7 @@ configuration drive built by Bifrost, rather than the Bifrost default of
 ``kolla_bifrost_dib_os_element``
     DIB base OS element. Default is ``centos``.
 ``kolla_bifrost_dib_os_release``
-    DIB image OS release. Default is ``8``.
+    DIB image OS release. Default is ``8-stream``.
 ``kolla_bifrost_dib_elements_default``
     *Added in the Train release. Use kolla_bifrost_dib_elements in earlier
     releases.*

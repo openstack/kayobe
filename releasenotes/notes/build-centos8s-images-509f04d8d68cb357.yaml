@@ -1,0 +1,9 @@
+---
+upgrade:
+  - |
+    Kayobe now defaults to building CentOS Stream 8 IPA and root disk images,
+    following the end of life of CentOS Linux 8.
+fixes:
+  - |
+    Fixes IPA and root disk image builds, following the end of life of CentOS
+    Linux 8.
