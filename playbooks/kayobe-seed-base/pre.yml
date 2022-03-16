@@ -30,11 +30,6 @@
         path: "{{ kayobe_config_src_dir }}/etc/kayobe/kolla/config/bifrost"
         state: "directory"
 
-    - name: Ensure bifrost overrides file exists
-      template:
-        src: bifrost-overrides.yml.j2
-        dest: "{{ kayobe_config_src_dir }}/etc/kayobe/kolla/config/bifrost/bifrost.yml"
-
     - name: Ensure kayobe is installed
       shell:
         cmd: dev/install.sh &> {{ logs_dir }}/ansible/install
