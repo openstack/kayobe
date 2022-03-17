@@ -30,6 +30,7 @@ kolla_bifrost_extra_kernel_options: []
 # IP address range for DHCP.
 kolla_bifrost_dhcp_pool_start:
 kolla_bifrost_dhcp_pool_end:
+kolla_bifrost_dhcp_pool_mask:
 
 # Default route provided to nodes via DHCP.
 kolla_bifrost_dnsmasq_router:
