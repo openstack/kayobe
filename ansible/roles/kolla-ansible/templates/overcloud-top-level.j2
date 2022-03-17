@@ -36,7 +36,7 @@ ansible_python_interpreter={{ kolla_ansible_target_venv }}/bin/python
 # Mapping from kolla-ansible group {{ kolla_group }} to top level kayobe
 # groups.
 [{{ kolla_group }}:children]
-{% for group in kolla_group_config.groups %}
+{% for group in renamed_groups %}
 {{ group }}
 {% endfor %}
 
