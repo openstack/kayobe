@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes Ansible inventory generation with some custom group mappings using
+    the same group names for Kayobe and Kolla Ansible. See `story 2009927
+    <https://storyboard.openstack.org/#!/story/2009927>`__ for details.
