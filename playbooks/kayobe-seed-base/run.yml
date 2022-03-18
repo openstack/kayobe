@@ -27,3 +27,4 @@
           source {{ kayobe_src_dir }}/dev/environment-setup.sh &&
           kayobe seed container image build ^base &> {{ logs_dir }}/ansible/container-image-build
         executable: /bin/bash
+      when: ansible_os_family == 'RedHat'
