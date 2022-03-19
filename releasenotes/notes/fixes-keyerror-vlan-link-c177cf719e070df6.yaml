@@ -1,0 +1,8 @@
+---
+fixes:
+  - |
+    Fixes an issue with config drive generation for infrastructure and seed VMs
+    when using untagged interfaces. The symptom of this issue is that kayobe
+    cannot login to the instance. If you check the libvirt console log, you
+    will see ``KeyError: 'vlan_link'``. See `story 2009910
+    <https://storyboard.openstack.org/#!/story/2009910>`__ for details.
