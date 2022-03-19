@@ -87,6 +87,12 @@ def test_network_bond_vlan(host):
     assert host.file('/sys/class/net/bond0.44/lower_bond0').exists
 
 
+def test_network_bridge_no_ip(host):
+    interface = host.interface('br1')
+    assert interface.exists
+    assert not '192.168.40.1' in interface.addresses
+
+
 def test_additional_user_account(host):
       user = host.user("kayobe-test-user")
       assert user.name == "kayobe-test-user"
