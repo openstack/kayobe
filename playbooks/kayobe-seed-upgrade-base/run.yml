@@ -36,7 +36,7 @@
         remote_src: true
       with_items:
         - etc/kayobe/kolla/passwords.yml
-        - etc/kayobe/kolla/config/bifrost/bifrost.yml
+        - etc/kayobe/kolla/config/bifrost/dib.yml
 
     # NOTE(mgoddard): Use the name zz-overrides.yml to ensure this takes
     # precedence over the standard config files.
