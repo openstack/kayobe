@@ -7,8 +7,8 @@
 # Whether to build host disk images with DIB directly instead of through
 # Bifrost. Setting it to true disables Bifrost image build and allows images to
 # be built with the `kayobe overcloud host image build` command. Default value
-# is False. This will change in a future release.
-overcloud_dib_build_host_images: False
+# is {{ os_distribution == 'rocky' }}. This will change in a future release.
+overcloud_dib_build_host_images: "{{ os_distribution == 'rocky' }}"
 
 # List of overcloud host disk images to build. Each element is a dict defining
 # an image in a format accepted by the stackhpc.os-images role. Default is to
@@ -22,20 +22,24 @@ overcloud_dib_host_images:
     env: "{{ overcloud_dib_env_vars }}"
     packages: "{{ overcloud_dib_packages }}"
 
-# DIB base OS element. Default is {{ os_distribution }}.
-overcloud_dib_os_element: "{{ os_distribution }}"
+# DIB base OS element. Default is {{ 'rocky-container' if os_distribution ==
+# 'rocky' else os_distribution }}.
+overcloud_dib_os_element: "{{ 'rocky-container' if os_distribution == 'rocky' else os_distribution }}"
 
 # DIB image OS release. Default is {{ os_release }}.
 overcloud_dib_os_release: "{{ os_release }}"
 
 # List of default DIB elements. Default is ["centos", "cloud-init-datasources",
 # "disable-selinux", "enable-serial-console", "vm"] when
-# overcloud_dib_os_element is "centos", or ["ubuntu", "cloud-init-datasources",
-# "enable-serial-console", "vm"] when overcloud_dib_os_element is "ubuntu".
+# overcloud_dib_os_element is "centos", or ["rocky-container",
+# "cloud-init-datasources", "disable-selinux", "enable-serial-console", "vm"]
+# when overcloud_dib_os_element is "rocky" or
+# ["ubuntu", "cloud-init-datasources", "enable-serial-console", "vm"]
+# when overcloud_dib_os_element is "ubuntu".
 overcloud_dib_elements_default:
   - "{{ overcloud_dib_os_element }}"
   - "cloud-init-datasources"
-  - "{% if overcloud_dib_os_element == 'centos' %}disable-selinux{% endif %}"
+  - "{% if overcloud_dib_os_element in ['centos', 'rocky'] %}disable-selinux{% endif %}"
   - "enable-serial-console"
   - "vm"
 
@@ -48,11 +52,14 @@ overcloud_dib_elements: "{{ overcloud_dib_elements_default | select | list + ove
 
 # DIB default environment variables. Default is
 # {"DIB_BOOTLOADER_DEFAULT_CMDLINE": "nofb nomodeset gfxpayload=text
-# net.ifnames=1", "DIB_CLOUD_INIT_DATASOURCES": "ConfigDrive", "DIB_RELEASE":
-# "{{ overcloud_dib_os_release }}"}.
+# net.ifnames=1", "DIB_CLOUD_INIT_DATASOURCES": "ConfigDrive",
+# "DIB_CONTAINERFILE_RUNTIME": "docker", "DIB_CONTAINERFILE_NETWORK_DRIVER":
+# "host", "DIB_RELEASE": "{{ overcloud_dib_os_release }}"}.
 overcloud_dib_env_vars_default:
   DIB_BOOTLOADER_DEFAULT_CMDLINE: "nofb nomodeset gfxpayload=text net.ifnames=1"
   DIB_CLOUD_INIT_DATASOURCES: "ConfigDrive"
+  DIB_CONTAINERFILE_RUNTIME: "docker"
+  DIB_CONTAINERFILE_NETWORK_DRIVER: "host"
   DIB_RELEASE: "{{ overcloud_dib_os_release }}"
 
 # DIB additional environment variables. Default is none.

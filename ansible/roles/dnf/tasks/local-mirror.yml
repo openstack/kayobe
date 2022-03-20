@@ -1,5 +1,7 @@
 ---
 - name: Copy CentOS repo templates
+  vars:
+    repo_file_prefix: "{{ 'CentOS-Stream' if ansible_facts.distribution == 'CentOS' else 'Rocky' }}"
   template:
     src: "{{ item }}.j2"
     dest: /etc/yum.repos.d/{{ item }}
@@ -8,9 +10,9 @@
     mode: 0664
   become: True
   loop:
-    - CentOS-Stream-AppStream.repo
-    - CentOS-Stream-BaseOS.repo
-    - CentOS-Stream-Extras.repo
+    - "{{ repo_file_prefix }}-AppStream.repo"
+    - "{{ repo_file_prefix }}-BaseOS.repo"
+    - "{{ repo_file_prefix }}-Extras.repo"
 
 - name: Remove old (pre CentOS 8.3) repo files
   file:
@@ -21,6 +23,7 @@
     - CentOS-AppStream.repo
     - CentOS-Base.repo
     - CentOS-Extras.repo
+  when: ansible_facts.distribution == 'CentOS'
 
 - name: Update cache
   dnf:

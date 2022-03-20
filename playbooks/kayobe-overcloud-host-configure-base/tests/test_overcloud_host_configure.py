@@ -12,14 +12,17 @@ import pytest
 
 
 def _is_firewalld_supported():
-    info = distro.linux_distribution()
-    return info[0].startswith('CentOS')
+    info = distro.id()
+    return info in ['centos', 'rocky']
 
 
 def _is_dnf():
-    info = distro.linux_distribution()
-    return info[0].startswith('CentOS')
+    info = distro.id()
+    return info in ['centos', 'rocky']
 
+def _is_dnf_mirror():
+    info = distro.id()
+    return info == 'centos'
 
 def test_network_ethernet(host):
     interface = host.interface('dummy2')
@@ -168,7 +171,8 @@ def test_ntp_running(host):
 def test_ntp_non_default_time_server(host):
     # Tests that the NTP pool has been changed from pool.ntp.org to
     # time.cloudflare.com
-    if 'centos' in host.system_info.distribution.lower():
+    if ('centos' in host.system_info.distribution.lower() or 
+       'rocky' in host.system_info.distribution.lower()):
         chrony_config = host.file("/etc/chrony.conf")
     else:
         # Debian based distributions use the following path
@@ -185,7 +189,7 @@ def test_ntp_clock_synchronized(host):
 
 @pytest.mark.parametrize('repo', ["appstream", "baseos", "extras", "epel",
                                   "epel-modular"])
-@pytest.mark.skipif(not _is_dnf(), reason="DNF only supported on CentOS 8")
+@pytest.mark.skipif(not _is_dnf_mirror(), reason="DNF OpenDev mirror only for CentOS 8")
 def test_dnf_local_package_mirrors(host, repo):
     # Depends on SITE_MIRROR_FQDN environment variable.
     assert os.getenv('SITE_MIRROR_FQDN')
@@ -197,14 +201,14 @@ def test_dnf_local_package_mirrors(host, repo):
     assert os.getenv('SITE_MIRROR_FQDN') in info
 
 
-@pytest.mark.skipif(not _is_dnf(), reason="DNF only supported on CentOS 8")
+@pytest.mark.skipif(not _is_dnf(), reason="DNF only supported on CentOS 8/Rocky 8")
 def test_dnf_custom_package_repository_is_available(host):
     with host.sudo():
         host.check_output("dnf -y install td-agent")
     assert host.package("td-agent").is_installed
 
 
-@pytest.mark.skipif(not _is_dnf(), reason="DNF only supported on CentOS 8")
+@pytest.mark.skipif(not _is_dnf(), reason="DNF only supported on CentOS 8/Rocky 8")
 def test_dnf_automatic(host):
     assert host.package("dnf-automatic").is_installed
     assert host.service("dnf-automatic.timer").is_enabled
@@ -212,14 +216,14 @@ def test_dnf_automatic(host):
 
 
 @pytest.mark.skipif(not _is_dnf(),
-                    reason="tuned profile setting only supported on CentOS 8")
+                    reason="tuned profile setting only supported on CentOS 8/Rocky 8")
 def test_tuned_profile_is_active(host):
     tuned_output = host.check_output("tuned-adm active")
     assert "throughput-performance" in tuned_output
 
 
 @pytest.mark.skipif(not _is_firewalld_supported(),
-                    reason="Firewalld only supported on CentOS")
+                    reason="Firewalld only supported on CentOS and Rocky")
 def test_firewalld_running(host):
     assert host.package("firewalld").is_installed
     assert host.service("firewalld.service").is_enabled
@@ -227,7 +231,7 @@ def test_firewalld_running(host):
 
 
 @pytest.mark.skipif(not _is_firewalld_supported(),
-                    reason="Firewalld only supported on CentOS")
+                    reason="Firewalld only supported on CentOS and Rocky")
 def test_firewalld_zones(host):
     # Verify that interfaces are on correct zones.
     expected_zones = {
@@ -250,7 +254,7 @@ def test_firewalld_zones(host):
 
 
 @pytest.mark.skipif(not _is_firewalld_supported(),
-                    reason="Firewalld only supported on CentOS")
+                    reason="Firewalld only supported on CentOS and Rocky")
 def test_firewalld_rules(host):
     # Verify that expected rules are present.
     expected_info = {

@@ -69,8 +69,8 @@ supported:
 ``rules``
     List of IP routing rules.
 
-    On CentOS, each item should be a string describing an ``iproute2`` IP
-    routing rule.
+    On CentOS or Rocky, each item should be a string describing an ``iproute2``
+    IP routing rule.
 
     On Ubuntu, each item should be a dict containing optional items ``from``,
     ``to``, ``priority`` and ``table``. ``from`` is the source address prefix
@@ -272,10 +272,10 @@ Configuring IP Routing Policy Rules
 
 IP routing policy rules may be configured by setting the ``rules`` attribute
 for a network to a list of rules. The format of each rule currently differs
-between CentOS and Ubuntu.
+between CentOS/Rocky and Ubuntu.
 
-CentOS
-""""""
+CentOS/Rocky
+""""""""""""
 
 The format of a rule is the string which would be appended to ``ip rule
 <add|del>`` to create or delete the rule.
