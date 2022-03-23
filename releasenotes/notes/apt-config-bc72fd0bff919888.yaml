@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds support for global configuration options for Apt in files in
+    ``/etc/apt/apt.conf.d/`` on Ubuntu systems. See `story 2009655
+    <https://storyboard.openstack.org/#!/story/2009655>`__ for details.

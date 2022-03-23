@@ -1,0 +1,14 @@
+---
+- name: Ensure Apt is configured
+  copy:
+    content: "{{ item.content }}"
+    dest: "/etc/apt/apt.conf.d/{{ item.filename }}"
+    owner: root
+    group: root
+    mode: 0664
+  loop: "{{ apt_config }}"
+  loop_control:
+    label: "{{ item.filename }}"
+  become: true
+  notify:
+    - Update apt cache

@@ -11,6 +11,14 @@ apt_proxy_http:
 # Apt proxy URL for HTTPS. Default is {{ apt_proxy_http }}.
 apt_proxy_https: "{{ apt_proxy_http }}"
 
+# List of Apt configuration options. Each item is a dict with the following
+# keys:
+# * content: free-form configuration file content
+# * filename: name of a file in /etc/apt/apt.conf.d/ in which to write the
+#   configuration
+# Default is an empty list.
+apt_config: []
+
 # List of apt keys. Each item is a dict containing the following keys:
 # * url: URL of key
 # * filename: Name of a file in which to store the downloaded key. The
