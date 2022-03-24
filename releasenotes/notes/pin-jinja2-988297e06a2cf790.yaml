@@ -1,0 +1,4 @@
+---
+fixes:
+  - |
+    Pins Jinja2 to less than ``3.1.0`` to avoid breaking changes.
