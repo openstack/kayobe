@@ -36,7 +36,7 @@ roles:
   - src: stackhpc.libvirt-vm
     version: v1.14.2
   - src: stackhpc.luks
-    version: 0.4.1
+    version: 0.4.2
   - src: stackhpc.mellanox-switch
     version: v1.0.0
   - src: stackhpc.os-images

@@ -32,11 +32,3 @@ pip_trusted_hosts:
 # are using for SSH to be removed. Use a dummy interface.
 aio_bridge_ports:
   - dummy1
-
-# Build seed deployment images (IPA) with extra-hardware element
-ipa_build_images: true
-ipa_build_dib_elements_extra:
-  - "extra-hardware"
-
-# Build overcloud host image
-overcloud_dib_build_host_images: true
