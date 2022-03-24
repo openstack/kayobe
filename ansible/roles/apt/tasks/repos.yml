@@ -1,0 +1,22 @@
+---
+# NOTE(mgoddard): Use the modern deb822 repository format rather than the old
+# format used by the apt_repository module.
+- name: Configure apt repositories
+  template:
+    src: "kayobe.sources.j2"
+    dest: "/etc/apt/sources.list.d/kayobe.sources"
+    owner: root
+    group: root
+    mode: 0644
+  become: true
+  notify:
+    - Update apt cache
+
+- name: Disable repositories in /etc/apt/sources.list
+  replace:
+    backup: true
+    path: /etc/apt/sources.list
+    regexp: '^(deb.*)'
+    replace: '# \1'
+  when: apt_disable_sources_list | bool
+  become: true
