@@ -30,8 +30,7 @@
         path: "{{ previous_kayobe_config_src_dir }}/etc/kayobe/kolla/config/bifrost"
         state: "directory"
 
-    # NOTE(mgoddard): Use dib.yml, since it takes precedence over bifrost.yml.
     - name: Ensure bifrost overrides file exists
       template:
         src: bifrost-overrides.yml.j2
-        dest: "{{ previous_kayobe_config_src_dir }}/etc/kayobe/kolla/config/bifrost/dib.yml"
+        dest: "{{ previous_kayobe_config_src_dir }}/etc/kayobe/kolla/config/bifrost/bifrost.yml"

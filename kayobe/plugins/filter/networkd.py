@@ -494,7 +494,7 @@ def _add_to_result(result, prefix, device, config):
     result[key] = config
 
 
-@jinja2.contextfilter
+@jinja2.pass_context
 def networkd_netdevs(context, names, inventory_hostname=None):
     """Return a dict representation of networkd NetDev configuration.
 
@@ -544,7 +544,7 @@ def networkd_netdevs(context, names, inventory_hostname=None):
     return result
 
 
-@jinja2.contextfilter
+@jinja2.pass_context
 def networkd_links(context, names, inventory_hostname=None):
     """Return a dict representation of networkd link configuration.
 
@@ -560,7 +560,7 @@ def networkd_links(context, names, inventory_hostname=None):
     return {}
 
 
-@jinja2.contextfilter
+@jinja2.pass_context
 def networkd_networks(context, names, inventory_hostname=None):
     """Return a dict representation of networkd network configuration.
 

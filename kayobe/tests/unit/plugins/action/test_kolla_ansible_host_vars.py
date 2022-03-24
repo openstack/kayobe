@@ -20,17 +20,17 @@ import jinja2
 from kayobe.plugins.action import kolla_ansible_host_vars
 
 
-@jinja2.contextfilter
+@jinja2.pass_context
 def _net_interface(context, name):
     return context.get(name + '_interface')
 
 
-@jinja2.contextfilter
+@jinja2.pass_context
 def _net_vlan(context, name):
     return context.get(name + '_vlan')
 
 
-@jinja2.contextfilter
+@jinja2.pass_context
 def _net_select_bridges(context, names):
     return [name for name in names
             if (_net_interface(context, name) or "").startswith("br")]
