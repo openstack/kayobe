@@ -187,3 +187,6 @@ controller_firewalld_rules:
   - service: cockpit
     state: disabled
     zone: public
+
+# Generate a password for libvirt SASL authentication.
+compute_libvirt_sasl_password: "{% raw %}{{ lookup('password', '/tmp/libvirt-sasl-password') }}{% endraw %}"

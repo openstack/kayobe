@@ -20,6 +20,9 @@
       vars:
         libvirt_host_libvirtd_conf: "{{ compute_libvirt_conf }}"
         libvirt_host_qemu_conf: "{{ compute_qemu_conf }}"
+        libvirt_host_enable_sasl_support: "{{ compute_libvirt_enable_sasl | bool }}"
+        libvirt_host_sasl_authname: nova
+        libvirt_host_sasl_password: "{{ compute_libvirt_sasl_password }}"
         libvirt_host_tcp_listen: "{{ not compute_libvirt_enable_tls | bool }}"
         libvirt_host_tcp_listen_address: "{{ internal_net_name | net_ip }}:16509"
         libvirt_host_tls_listen: "{{ compute_libvirt_enable_tls | bool }}"

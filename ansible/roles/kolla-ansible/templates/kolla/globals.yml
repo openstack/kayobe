@@ -397,6 +397,9 @@ enable_{{ feature_flag }}: {{ hostvars[inventory_hostname]['kolla_enable_' ~ fea
 libvirt_tls: {{ kolla_libvirt_tls | bool }}
 {% endif %}
 
+{% if kolla_libvirt_enable_sasl is not none %}
+libvirt_enable_sasl: {{ kolla_libvirt_enable_sasl | bool }}
+{% endif %}
 #################
 # Hyper-V options
 #################
