@@ -22,6 +22,7 @@
         - kayobe-seed-centos8s
         - kayobe-seed-rocky8
         - kayobe-seed-ubuntu-focal
+        - kayobe-seed-images-centos8s
         - kayobe-seed-upgrade-centos8s
         - kayobe-seed-upgrade-ubuntu-focal
         - kayobe-seed-vm-centos8s
@@ -57,3 +58,8 @@
         - kayobe-infra-vm-centos8s
         - kayobe-infra-vm-rocky8
         - kayobe-infra-vm-ubuntu-focal
+
+    experimental:
+      jobs:
+        - kayobe-seed-images-rocky8
+        - kayobe-seed-images-ubuntu-focal
