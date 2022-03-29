@@ -393,6 +393,10 @@ enable_{{ feature_flag }}: {{ hostvars[inventory_hostname]['kolla_enable_' ~ fea
 # Valid options are [ none, novnc, spice, rdp ]
 #nova_console: "novnc"
 
+{% if kolla_libvirt_tls is not none %}
+libvirt_tls: {{ kolla_libvirt_tls | bool }}
+{% endif %}
+
 #################
 # Hyper-V options
 #################

@@ -184,6 +184,7 @@ kolla_feature_flags:
   - nova
   - nova_fake
   - nova_horizon_policy_file
+  - nova_libvirt_container
   - nova_serialconsole_proxy
   - nova_ssh
   - octavia

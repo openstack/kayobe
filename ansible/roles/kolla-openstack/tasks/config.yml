@@ -80,6 +80,7 @@
     recurse: true
   with_items: "{{ kolla_openstack_custom_config }}"
   register: find_src_result
+  delegate_to: localhost
 
 - name: Find previously generated extra configuration files
   find:
@@ -91,7 +92,6 @@
 - name: Ensure extra configuration parent directories are present
   file:
     path: "{{ item.0.item.dest }}/{{ item.1.path | relpath(item.0.item.src) | dirname }}"
-    recurse: true
     state: directory
     mode: 0750
   with_subelements:

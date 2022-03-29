@@ -249,3 +249,5 @@
       kolla_extra_sahara: "{{ kolla_extra_config.sahara | default }}"
       kolla_extra_zookeeper: "{{ kolla_extra_config.zookeeper | default }}"
       kolla_extra_config_path: "{{ kayobe_env_config_path }}/kolla/config"
+      kolla_libvirt_tls: "{{ compute_libvirt_enable_tls | bool }}"
+      kolla_nova_libvirt_certificates_src: "{{ kayobe_env_config_path }}/certificates/libvirt"

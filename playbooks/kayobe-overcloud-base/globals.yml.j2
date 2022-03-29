@@ -22,4 +22,5 @@ kolla_enable_tls_backend: "yes"
 openstack_cacert: "/etc/pki/tls/certs/ca-bundle.crt"
 kolla_admin_openrc_cacert: "/etc/pki/tls/certs/ca-bundle.crt"
 libvirt_tls: "yes"
+certificates_libvirt_output_dir: "{% raw %}{{ kayobe_env_config_path }}{% endraw %}/certificates/libvirt"
 {% endif %}

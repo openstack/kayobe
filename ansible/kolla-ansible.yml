@@ -103,6 +103,7 @@
         kolla_inspector_netmask: "{{ inspection_net_name | net_mask }}"
         kolla_inspector_default_gateway: "{{ inspection_net_name | net_inspection_gateway or inspection_net_name | net_gateway }}"
         kolla_inspector_extra_kernel_options: "{{ inspector_extra_kernel_options }}"
+        kolla_libvirt_tls: "{{ compute_libvirt_enable_tls | bool }}"
         kolla_enable_host_ntp: false
         docker_daemon_mtu: "{{ public_net_name | net_mtu | default }}"
         kolla_globals_paths_extra:

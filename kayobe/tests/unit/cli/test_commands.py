@@ -1322,6 +1322,8 @@ class TestCase(unittest.TestCase):
                     utils.get_data_files_path("ansible", "docker.yml"),
                     utils.get_data_files_path(
                         "ansible", "swift-block-devices.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "compute-libvirt-host.yml"),
                 ],
                 limit="overcloud",
             ),
@@ -1376,6 +1378,8 @@ class TestCase(unittest.TestCase):
                     utils.get_data_files_path("ansible", "docker.yml"),
                     utils.get_data_files_path(
                         "ansible", "swift-block-devices.yml"),
+                    utils.get_data_files_path(
+                        "ansible", "compute-libvirt-host.yml"),
                 ],
                 limit="overcloud",
             ),
