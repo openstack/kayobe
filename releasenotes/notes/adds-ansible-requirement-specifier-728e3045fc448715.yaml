@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds the ``kolla_ansible_venv_ansible`` configuration option. This allows
+    you to override the version of ansible installed in the kolla-ansible
+    virtualenv.

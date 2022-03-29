@@ -95,10 +95,7 @@
         {% else %}
         kolla-ansible=={{ kolla_openstack_release }}
         {% endif %}
-      # Limit the version of ansible used by kolla-ansible to avoid new
-      # releases from breaking tested code. Changes to this limit should be
-      # tested.
-      - ansible>=4,<6.0
+      - "{{ kolla_ansible_venv_ansible }}"
       - selinux
   pip:
     name: "{{ (kolla_ansible_packages + kolla_ansible_venv_extra_requirements) | select | list }}"
