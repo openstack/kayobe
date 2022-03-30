@@ -62,7 +62,8 @@
 #ipa_build_dib_packages:
 
 # Upper constraints file for installing packages in the virtual environment
-# used for building IPA images. Default is {{ pip_upper_constraints_file }}.
+# used for building IPA images. To build CentOS Stream 8 images, default is
+# "https://releases.openstack.org/constraints/upper/wallaby".
 #ipa_build_upper_constraints_file:
 
 ###############################################################################

@@ -58,9 +58,10 @@ image build``.
 ``ipa_build_dib_env_default``
     Dictionary of default environment variables to provide to Diskimage Builder
     (DIB) during IPA image build. Default is
-    ``{"DIB_REPOLOCATION_ironic_python_agent": "{{ ipa_build_source_url }}",
-    "DIB_REPOREF_ironic_python_agent": "{{ ipa_build_source_version }}",
-    "DIB_REPOREF_requirements": "{{ openstack_branch }}"}``.
+    ``{"DIB_RELEASE": "8-stream", "DIB_REPOLOCATION_ironic_python_agent": "{{
+    ipa_build_source_url }}", "DIB_REPOREF_ironic_python_agent": "{{
+    ipa_build_source_version }}", "DIB_REPOREF_requirements": "{{
+    openstack_branch }}"}``.
 ``ipa_build_dib_env_extra``
     Dictionary of additional environment variables to provide to Diskimage
     Builder (DIB) during IPA image build. Default is empty.
@@ -87,8 +88,8 @@ image build``.
     List of DIB packages to install. Default is none.
 ``ipa_build_upper_constraints_file``
     Upper constraints file for installing packages in the virtual environment
-    used for building IPA images. Default is ``{{ pip_upper_constraints_file
-    }}``.
+    used for building IPA images. To build CentOS Stream 8 images, default is
+    ``https://releases.openstack.org/constraints/upper/wallaby``.
 
 Example: Building IPA images locally
 ------------------------------------

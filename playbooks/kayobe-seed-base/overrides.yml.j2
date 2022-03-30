@@ -32,10 +32,3 @@ aio_bridge_ports:
 ipa_build_images: true
 ipa_build_dib_elements_extra:
   - "extra-hardware"
-{% if is_centos_stream | default(false) %}
-ipa_build_dib_env_extra:
-  DIB_RELEASE: "8-stream"
-# diskimage-builder 3.2.1 only includes CentOS Stream 8 support in the
-# centos-minimal element.
-ipa_build_upper_constraints_file: "https://releases.openstack.org/constraints/upper/wallaby"
-{% endif %}
