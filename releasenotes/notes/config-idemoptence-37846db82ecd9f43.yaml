@@ -1,0 +1,4 @@
+fixes:
+  - |
+    Fixes an issue with idempotence of local Kolla Ansible configuration
+    generation.
