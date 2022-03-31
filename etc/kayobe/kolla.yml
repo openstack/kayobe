@@ -388,6 +388,7 @@
 #kolla_enable_prometheus_elasticsearch_exporter:
 #kolla_enable_prometheus_fluentd_integration:
 #kolla_enable_prometheus_haproxy_exporter:
+#kolla_enable_prometheus_libvirt_exporter:
 #kolla_enable_prometheus_memcached_exporter:
 #kolla_enable_prometheus_mysqld_exporter:
 #kolla_enable_prometheus_node_exporter:

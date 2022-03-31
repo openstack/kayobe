@@ -203,6 +203,7 @@ kolla_feature_flags:
   - prometheus_elasticsearch_exporter
   - prometheus_fluentd_integration
   - prometheus_haproxy_exporter
+  - prometheus_libvirt_exporter
   - prometheus_memcached_exporter
   - prometheus_mysqld_exporter
   - prometheus_node_exporter
