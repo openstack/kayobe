@@ -77,6 +77,7 @@ kolla_feature_flags:
   - ceilometer
   - ceilometer_horizon_policy_file
   - ceilometer_ipmi
+  - ceilometer_prometheus_pushgateway
   - cells
   - central_logging
   - ceph_rgw
@@ -202,8 +203,10 @@ kolla_feature_flags:
   - prometheus_cadvisor
   - prometheus_ceph_mgr_exporter
   - prometheus_elasticsearch_exporter
+  - prometheus_etcd_integration
   - prometheus_fluentd_integration
   - prometheus_haproxy_exporter
+  - prometheus_libvirt_exporter
   - prometheus_memcached_exporter
   - prometheus_mysqld_exporter
   - prometheus_node_exporter
@@ -225,6 +228,7 @@ kolla_feature_flags:
   - telegraf
   - trove
   - trove_singletenant
+  - venus
   - vitrage
   - vitrage_prometheus_datasource
   - watcher
