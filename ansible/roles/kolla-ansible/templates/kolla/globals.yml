@@ -428,7 +428,7 @@ ironic_dnsmasq_default_gateway: {{ kolla_inspector_default_gateway }}
 ironic_inspector_kernel_cmdline_extras:
 {{ kolla_inspector_extra_kernel_options | to_nice_yaml }}
 {% endif %}
-# PXE bootloader file for Ironic Inspector, relative to /tftpboot.
+# PXE bootloader file for Ironic Inspector, relative to /var/lib/ironic/tftpboot.
 #ironic_dnsmasq_boot_file: "pxelinux.0"
 
 # Configure ironic upgrade option, due to currently kolla support

@@ -138,7 +138,6 @@ kolla_feature_flags:
   - horizon_zun
   - influxdb
   - ironic
-  - ironic_ipxe
   - ironic_neutron_agent
   - ironic_pxe_uefi
   - iscsid

@@ -16,11 +16,12 @@ kolla_ironic_default_bios_interface: no-bios
 
 # Specify the list of boot interfaces to load during service initialization.
 kolla_ironic_enabled_boot_interfaces:
+  - ipxe
   - pxe
 
 # Default boot interface to be used for nodes that do not have boot_interface
 # field set.
-kolla_ironic_default_boot_interface: pxe
+kolla_ironic_default_boot_interface: ipxe
 
 # Specify the list of console interfaces to load during service initialization.
 kolla_ironic_enabled_console_interfaces:
