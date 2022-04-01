@@ -822,11 +822,6 @@ function to_bool {
     fi
 }
 
-function is_ipxe_enabled {
-    flag="$(run_kayobe configuration dump --host controllers[0] --var-name kolla_enable_ironic_ipxe)"
-    to_bool "$flag"
-}
-
 function is_cinder_enabled {
     flag="$(run_kayobe configuration dump --host controllers[0] --var-name kolla_enable_cinder)"
     to_bool "$flag"

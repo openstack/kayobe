@@ -251,10 +251,10 @@ ironic
 {{ groups['controllers'][0] }}
 {% endif %}
 
-[ironic-pxe:children]
+[ironic-tftp:children]
 ironic
 
-[ironic-ipxe:children]
+[ironic-http:children]
 ironic
 
 # Magnum
