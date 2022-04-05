@@ -9,6 +9,7 @@
     irrelevant-files:
       - ^.*\.rst$
       - ^doc/.*
+      - ^molecule-requirements.txt
       - ^releasenotes/.*
       - ^setup.cfg$
       - ^zuul.d/.*
@@ -25,6 +26,7 @@
     irrelevant-files:
       - ^.*\.rst$
       - ^doc/.*
+      - ^molecule-requirements.txt
       - ^releasenotes/.*
       - ^setup.cfg$
       - ^zuul.d/.*
@@ -71,6 +73,7 @@
     irrelevant-files:
       - ^.*\.rst$
       - ^doc/.*
+      - ^molecule-requirements.txt
       - ^releasenotes/.*
       - ^setup.cfg$
       - ^test-requirements.txt
