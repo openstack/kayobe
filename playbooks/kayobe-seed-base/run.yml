@@ -10,21 +10,22 @@
         cmd: "{{ kayobe_src_dir }}/dev/seed-deploy.sh &> {{ logs_dir }}/ansible/seed-deploy"
         executable: /bin/bash
 
-    # NOTE(mgoddard): The stack user cannot read the kolla source code, which
-    # lives in the zuul user's home directory. Copy it to a readable location.
-    - name: Create a readable copy of kolla source code
-      become: true
-      copy:
-        src: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/kolla'].src_dir }}"
-        dest: /tmp
-        owner: stack
-        group: stack
-        remote_src: true
+    - block:
+        # NOTE(mgoddard): The stack user cannot read the kolla source code, which
+        # lives in the zuul user's home directory. Copy it to a readable location.
+        - name: Create a readable copy of kolla source code
+          become: true
+          copy:
+            src: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/kolla'].src_dir }}"
+            dest: /tmp
+            owner: stack
+            group: stack
+            remote_src: true
 
-    - name: Ensure base container image is built
-      shell:
-        cmd: >
-          source {{ kayobe_src_dir }}/dev/environment-setup.sh &&
-          kayobe seed container image build ^base &> {{ logs_dir }}/ansible/container-image-build
-        executable: /bin/bash
-      when: ansible_os_family == 'RedHat'
+        - name: Ensure base container image is built
+          shell:
+            cmd: >
+              source {{ kayobe_src_dir }}/dev/environment-setup.sh &&
+              kayobe seed container image build ^base &> {{ logs_dir }}/ansible/container-image-build
+            executable: /bin/bash
+      when: build_images
