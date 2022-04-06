@@ -139,6 +139,7 @@ def _bond_netdev(context, name, inventory_hostname):
     device = networks.net_interface(context, name, inventory_hostname)
     mtu = networks.net_mtu(context, name, inventory_hostname)
     mode = networks.net_bond_mode(context, name, inventory_hostname)
+    ad_select = networks.net_bond_ad_select(context, name, inventory_hostname)
     miimon = networks.net_bond_miimon(context, name, inventory_hostname)
     updelay = networks.net_bond_updelay(context, name, inventory_hostname)
     downdelay = networks.net_bond_downdelay(context, name, inventory_hostname)
@@ -156,6 +157,7 @@ def _bond_netdev(context, name, inventory_hostname):
         {
             'Bond': [
                 {'Mode': mode},
+                {'AdSelect': ad_select},
                 {'TransmitHashPolicy': xmit_hash_policy},
                 {'LACPTransmitRate': lacp_rate},
                 {'MIIMonitorSec': _ms_to_s(miimon)},
