@@ -629,11 +629,12 @@ For example:
 
    compute_lvm_groups_extra:
      - vgname: other-vg
-       disks: /dev/sdb
+       disks:
+         - /dev/sdb
        create: true
        lvnames:
          - lvname: other-vol
-           size: 100%
+           size: 100%FREE
            create: true
            mount: false
 
