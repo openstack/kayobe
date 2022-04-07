@@ -50,6 +50,11 @@
 # Extra requirements to install inside the kolla-ansible virtualenv.
 #kolla_ansible_venv_extra_requirements:
 
+# Pip requirement specifier for the ansible package. NOTE: This limits the
+# version of ansible used by kolla-ansible to avoid new releases from breaking
+# tested code. Changes to this limit should be tested.
+#kolla_ansible_venv_ansible:
+
 # Path to Kolla-ansible configuration directory. Default is $KOLLA_CONFIG_PATH
 # or /etc/kolla if $KOLLA_CONFIG_PATH is not set.
 #kolla_config_path:
