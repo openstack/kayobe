@@ -457,46 +457,39 @@ kolla_enable_influxdb: false
 # Whether to enable Ironic.
 kolla_enable_ironic: false
 
-# List of enabled Ironic drivers.
-kolla_ironic_drivers:
-  - agent_ssh
-  - agent_ipmitool
-  - pxe_ssh
-  - pxe_ipmitool
-
 # Specify the list of hardware types to load during service initialization.
-kolla_ironic_enabled_hardware_types: []
+kolla_ironic_enabled_hardware_types:
 
 # Specify the list of bios interfaces to load during service initialization.
-kolla_ironic_enabled_bios_interfaces: []
+kolla_ironic_enabled_bios_interfaces:
 
 # Default bios interface to be used for nodes that do not have bios_interface
 # field set.
 kolla_ironic_default_bios_interface:
 
 # Specify the list of boot interfaces to load during service initialization.
-kolla_ironic_enabled_boot_interfaces: []
+kolla_ironic_enabled_boot_interfaces:
 
 # Default boot interface to be used for nodes that do not have boot_interface
 # field set.
 kolla_ironic_default_boot_interface:
 
 # Specify the list of console interfaces to load during service initialization.
-kolla_ironic_enabled_console_interfaces: []
+kolla_ironic_enabled_console_interfaces:
 
 # Default console interface to be used for nodes that do not have
 # console_interface field set.
 kolla_ironic_default_console_interface:
 
 # Specify the list of deploy interfaces to load during service initialization.
-kolla_ironic_enabled_deploy_interfaces: []
+kolla_ironic_enabled_deploy_interfaces:
 
 # Default deploy interface to be used for nodes that do not have
 # deploy_interface field set.
 kolla_ironic_default_deploy_interface:
 
 # Specify the list of inspect interfaces to load during service initialization.
-kolla_ironic_enabled_inspect_interfaces: []
+kolla_ironic_enabled_inspect_interfaces:
 
 # Default inspect interface to be used for nodes that do not have
 # inspect_interface field set.
@@ -504,35 +497,35 @@ kolla_ironic_default_inspect_interface:
 
 # Specify the list of management interfaces to load during service
 # initialization.
-kolla_ironic_enabled_management_interfaces: []
+kolla_ironic_enabled_management_interfaces:
 
 # Default management interface to be used for nodes that do not have
 # management_interface field set.
 kolla_ironic_default_management_interface:
 
 # Specify the list of network interfaces to load during service initialization.
-kolla_ironic_enabled_network_interfaces: []
+kolla_ironic_enabled_network_interfaces:
 
 # Default network interface to be used for nodes that do not have
 # network_interface field set.
 kolla_ironic_default_network_interface:
 
 # Specify the list of power interfaces to load during service initialization.
-kolla_ironic_enabled_power_interfaces: []
+kolla_ironic_enabled_power_interfaces:
 
 # Default power interface to be used for nodes that do not have power_interface
 # field set.
 kolla_ironic_default_power_interface:
 
 # Specify the list of raid interfaces to load during service initialization.
-kolla_ironic_enabled_raid_interfaces: []
+kolla_ironic_enabled_raid_interfaces:
 
 # Default raid interface to be used for nodes that do not have
 # raid_interface field set.
 kolla_ironic_default_raid_interface:
 
 # Specify the list of rescue interfaces to load during service initialization.
-kolla_ironic_enabled_rescue_interfaces: []
+kolla_ironic_enabled_rescue_interfaces:
 
 # Default rescue interface to be used for nodes that do not have
 # rescue_interface field set.
@@ -540,14 +533,14 @@ kolla_ironic_default_rescue_interface:
 
 # Specify the list of storage interfaces to load during
 # service initialization.
-kolla_ironic_enabled_storage_interfaces: []
+kolla_ironic_enabled_storage_interfaces:
 
 # Default storage interface to be used for nodes that do not
 # have storage_interface field set.
 kolla_ironic_default_storage_interface:
 
 # Specify the list of vendor interfaces to load during service initialization.
-kolla_ironic_enabled_vendor_interfaces: []
+kolla_ironic_enabled_vendor_interfaces:
 
 # Default vendor interface to be used for nodes that do not have
 # vendor_interface field set.
