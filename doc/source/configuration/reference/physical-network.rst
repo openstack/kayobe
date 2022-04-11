@@ -15,7 +15,7 @@ configure`` command.  See :ref:`physical-network` for details.
 The following switch operating systems are currently supported:
 
 * Cumulus Linux (via `Network Command Line Utility (NCLU)
-  <https://docs.cumulusnetworks.com/display/DOCS/Network+Command+Line+Utility+-+NCLU>`__)
+  <https://docs.nvidia.com/networking-ethernet-software/cumulus-linux-44/System-Configuration/Network-Command-Line-Utility-NCLU/>`__)
 * Dell OS 6
 * Dell OS 9
 * Dell PowerConnect
