@@ -181,7 +181,7 @@ def main():
     module = AnsibleModule(
         argument_spec = dict(
             dest=dict(default='/etc/kolla/passwords.yml', type='str'),
-            overrides=dict(default={}, type='dict'),
+            overrides=dict(default={}, type='dict', no_log=True),
             sample=dict(default='/usr/share/kolla-ansible/etc_examples/kolla/passwords.yml', type='str'),
             src=dict(default='/etc/kolla/passwords.yml', type='str'),
             vault_password=dict(type='str', no_log=True),
