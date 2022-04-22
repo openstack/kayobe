@@ -22,7 +22,7 @@ roles:
   - src: stackhpc.dell-powerconnect-switch
     version: v1.1.0
   - src: stackhpc.drac
-    version: 1.1.5
+    version: 1.1.6
   - src: stackhpc.drac-facts
     version: 1.0.0
   - src: stackhpc.grafana-conf
