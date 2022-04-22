@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fixes failures to run ``kayobe overcloud bios raid configure`` by upgrading
+    the ``stackhpc.drac`` role to version 1.1.6.
