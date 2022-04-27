@@ -137,7 +137,7 @@ under ``etc/kayobe`` in ``kayobe``. This can be done via:
 
 .. code-block:: console
 
-   cp -aR kayobe/etc/kayobe/* kayobe-config/etc/kayobe
+   rsync -a --delete kayobe/etc/kayobe/ kayobe-config/etc/kayobe
 
 Commit the changes and submit for review.
 
