@@ -9,6 +9,8 @@
     irrelevant-files:
       - ^.*\.rst$
       - ^doc/.*
+      - ^kayobe/tests/
+      - ^LICENSE$
       - ^molecule-requirements.txt
       - ^releasenotes/.*
       - ^setup.cfg$
@@ -26,6 +28,8 @@
     irrelevant-files:
       - ^.*\.rst$
       - ^doc/.*
+      - ^kayobe/tests/
+      - ^LICENSE$
       - ^molecule-requirements.txt
       - ^releasenotes/.*
       - ^setup.cfg$
@@ -45,8 +49,11 @@
     irrelevant-files:
       - ^.*\.rst$
       - ^doc/.*
+      - ^kayobe/tests/
+      - ^LICENSE$
       - ^releasenotes/.*
       - ^setup.cfg$
+      - ^test-requirements.txt
       - ^zuul.d/.*
 
 - job:
@@ -66,8 +73,11 @@
       - name: openstack/requirements
       - name: openstack/tenks
     irrelevant-files:
+      - ^\..+
       - ^.*\.rst$
       - ^doc/.*
+      - ^kayobe/tests/
+      - ^LICENSE$
       - ^molecule-requirements.txt
       - ^releasenotes/.*
       - ^setup.cfg$
