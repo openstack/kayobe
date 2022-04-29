@@ -18,6 +18,7 @@
     venv: "{{ virtualenv_path }}/openstacksdk"
     provision_net:
       name: "{{ kolla_ironic_provisioning_network }}"
+      mtu: "{{ provision_wl_net_name | net_mtu | default(omit, True) }}"
       provider_network_type: "{% if provision_wl_net_name | net_vlan %}vlan{% else %}flat{% endif %}"
       provider_physical_network: "{{ provision_wl_net_name | net_physical_network | default('physnet1', True) }}"
       provider_segmentation_id: "{{ provision_wl_net_name | net_vlan }}"
@@ -31,6 +32,7 @@
           allocation_pool_end: "{{ provision_wl_net_name | net_neutron_allocation_pool_end }}"
     cleaning_net:
       name: "{{ kolla_ironic_cleaning_network }}"
+      mtu: "{{ cleaning_net_name | net_mtu | default(omit, True) }}"
       provider_network_type: "{% if cleaning_net_name | net_vlan %}vlan{% else %}flat{% endif %}"
       provider_physical_network: "{{ cleaning_net_name | net_physical_network | default('physnet1', True) }}"
       provider_segmentation_id: "{{ cleaning_net_name | net_vlan }}"
