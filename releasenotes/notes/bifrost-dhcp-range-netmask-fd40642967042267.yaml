@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Ironic inspection through Bifrost now work even if DHCP-relay is used.
+    The dhcp-range in dnsmasq.conf corrctly configured with network mask.

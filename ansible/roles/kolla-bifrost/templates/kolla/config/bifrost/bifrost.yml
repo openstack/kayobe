@@ -11,6 +11,7 @@ extra_kernel_options: "{{ kolla_bifrost_extra_kernel_options if kolla_bifrost_ex
 # IP address range for DHCP.
 dhcp_pool_start: "{{ kolla_bifrost_dhcp_pool_start }}"
 dhcp_pool_end: "{{ kolla_bifrost_dhcp_pool_end }}"
+dhcp_pool_mask: "{{ kolla_bifrost_dhcp_pool_mask }}"
 
 {% if kolla_bifrost_dnsmasq_router %}
 # Default route provided to nodes via DHCP.
