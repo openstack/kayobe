@@ -246,8 +246,9 @@
               kolla_internal_fqdn_cert: "{{ temp_path }}/etc/kolla/certificates/internal.pem"
               openstack_logging_debug: True
               grafana_admin_username: "grafana-admin"
-              ironic_dnsmasq_dhcp_range: "1.2.3.4,1.2.3.5,255.255.255.0"
-              ironic_dnsmasq_default_gateway: "1.2.3.6"
+              ironic_dnsmasq_dhcp_ranges:
+                - range: "1.2.3.4,1.2.3.5,255.255.255.0"
+                  routers: "1.2.3.6"
               # NOTE: The following options are not present in globals.yml.
               # It's possible this is related to the use of hostvars and
               # include_role, caused by something like
