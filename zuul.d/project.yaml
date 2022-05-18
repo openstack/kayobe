@@ -1,5 +1,6 @@
 ---
 - project:
+    queue: kayobe
     templates:
       - openstack-cover-jobs
       - openstack-python3-wallaby-jobs
@@ -24,7 +25,6 @@
         - kayobe-seed-vm-ubuntu-focal
 
     gate:
-      queue: kayobe
       jobs:
         - kayobe-tox-ansible-syntax
         - kayobe-tox-ansible
