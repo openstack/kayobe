@@ -155,6 +155,8 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_gnocchi | bool }}"
   - regex: ^grafana
     enabled: "{{ kolla_enable_grafana | bool }}"
+  - regex: ^hacluster
+    enabled: "{{ kolla_enable_hacluster | bool }}"
   - regex: ^haproxy$
     enabled: "{{ kolla_enable_haproxy | bool }}"
   - regex: ^heat
