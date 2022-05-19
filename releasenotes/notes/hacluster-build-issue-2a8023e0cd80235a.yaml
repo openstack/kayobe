@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fixes an issue where hacluster images are not built when the service is
+    enabled.
