@@ -54,3 +54,5 @@ libvirt_vm_emulator: "{% if ansible_facts.os_family == 'RedHat' %}/usr/libexec/q
 # Specify a log path in the kolla_logs Docker volume. It is accessible on the
 # host at the same path.
 libvirt_vm_default_console_log_dir: "/var/log/kolla/tenks"
+
+python_upper_constraints_url: "https://releases.openstack.org/constraints/upper/yoga"

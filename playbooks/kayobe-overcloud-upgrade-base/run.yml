@@ -1,5 +1,7 @@
 ---
 - hosts: primary
+  environment:
+    UPPER_CONSTRAINTS_FILE: "https://releases.openstack.org/constraints/upper/yoga"
   tasks:
 
     # Install the previous release of Kayobe, and use it to deploy a control

@@ -42,3 +42,5 @@ wait_for_placement: false
 # Nested virtualisation is not working well in CI currently. Force the use of
 # QEMU.
 libvirt_vm_engine: "qemu"
+
+python_upper_constraints_url: "https://releases.openstack.org/constraints/upper/yoga"
