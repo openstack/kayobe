@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fixes an issue where the MTU defined in Kayobe was not applied to Ironic
+    provisioning and cleaning networks in Neutron.
