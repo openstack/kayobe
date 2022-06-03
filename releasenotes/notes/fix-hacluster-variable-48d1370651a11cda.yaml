@@ -1,0 +1,4 @@
+---
+fixes:
+  - |
+    Fixes an issue with undefined kolla_enable_hacluster variable.
