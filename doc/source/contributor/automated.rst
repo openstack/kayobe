@@ -81,6 +81,30 @@ This can be added using the following commands::
     sudo ip l set eth1 up
     sudo ip l set eth1 master breth1
 
+Configuration
+-------------
+
+Enable TLS
+^^^^^^^^^^
+
+Apply the following configuration if you wish to enable TLS for the OpenStack
+API:
+
+Set the following option in ``config/src/kayobe-config/etc/kayobe/kolla.yml``:
+
+.. code-block:: yaml
+
+   kolla_enable_tls_internal: "yes"
+
+Set the following options in
+``config/src/kayobe-config/etc/kayobe/kolla/globals.yml``:
+
+.. code-block:: yaml
+
+   kolla_copy_ca_into_containers: "yes"
+   openstack_cacert: "{% if os_distribution == 'ubuntu' %}/etc/ssl/certs/ca-certificates.crt{% else %}/etc/pki/tls/certs/ca-bundle.crt{% endif %}"
+   kolla_admin_openrc_cacert: "{% if os_distribution == 'ubuntu' %}/etc/ssl/certs/ca-certificates.crt{% else %}/etc/pki/tls/certs/ca-bundle.crt{% endif %}"
+
 Usage
 -----
 
@@ -100,6 +124,10 @@ its dependencies in a Python virtual environment::
    It is also possible to install Kayobe in a non-editable way, such that
    changes will not been seen until you reinstall the package. To do this you
    can run ``./dev/install.sh``.
+
+If you are using TLS and wish to generate self-signed certificates::
+
+    export KAYOBE_OVERCLOUD_GENERATE_CERTIFICATES=1
 
 Run the ``dev/overcloud-deploy.sh`` script to deploy the OpenStack control
 plane::
