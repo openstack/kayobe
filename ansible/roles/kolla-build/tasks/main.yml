@@ -1,12 +1,39 @@
 ---
+- name: Set facts for repos.y[a]ml
+  set_fact:
+    repos_yaml_dest: "{{ kolla_build_config_path }}/repos.yml"
+    repos_yaml_sources: "{{ kolla_build_config_paths | product(['/kolla/repos.yaml', '/kolla/repos.yml']) | map('join') | unique | list }}"
+
+- name: Check for the presence of any custom repos.y[a]ml file
+  delegate_to: localhost
+  stat:
+    path: "{{ item }}"
+    get_md5: false
+    get_checksum: false
+    mime: false
+  with_items: "{{ repos_yaml_sources }}"
+  register: repos_yaml_stat
+
+- name: Set kolla_build_repos_yaml_path if any custom repos.y[a]ml file exists
+  set_fact:
+    kolla_build_repos_yaml_path: "{{ repos_yaml_dest }}"
+  when: repos_yaml_stat.results | map(attribute='stat.exists') | select | length > 0
+
+- name: Ensure the Kolla repos.yaml configuration file exists
+  merge_yaml:
+    sources: "{{ repos_yaml_sources }}"
+    dest: "{{ repos_yaml_dest }}"
+    mode: "0644"
+  when: kolla_build_repos_yaml_path is defined
+
 - name: Ensure the Kolla build configuration file exists
   merge_configs:
-    sources: "{{ kolla_build_config_paths | product(['/kolla/kolla-build.conf']) | map('join') | list }}"
+    sources: "{{ kolla_build_config_paths | product(['/kolla/kolla-build.conf']) | map('join') | unique | list }}"
     dest: "{{ kolla_build_config_path }}/kolla-build.conf"
-    mode: 0644
+    mode: "0644"
 
 - name: Ensure the Kolla build template overrides file exists
   template:
     src: template-override.j2.j2
     dest: "{{ kolla_build_config_path }}/template-override.j2"
-    mode: 0644
+    mode: "0644"
