@@ -1,4 +1,30 @@
 ---
+- name: Set facts for repos.y[a]ml
+  set_fact:
+    repos_yaml_dest: "{{ kolla_build_config_path }}/repos.yml"
+    repos_yaml_sources: "{{ kolla_build_config_paths | product(['/kolla/repos.yaml', '/kolla/repos.yml']) | map('join') | unique | list }}"
+
+- name: Check for the presence of any custom repos.y[a]ml file
+  stat:
+    path: "{{ item }}"
+    get_md5: False
+    get_checksum: False
+    mime: False
+  with_items: "{{ repos_yaml_sources }}"
+  register: repos_yaml_stat
+
+- name: Set kolla_build_repos_yaml_path if any custom repos.y[a]ml file exists
+  set_fact:
+    kolla_build_repos_yaml_path: "{{ repos_yaml_dest }}"
+  when: repos_yaml_stat.results | map(attribute='stat.exists') | select | length > 0
+
+- name: Ensure the Kolla repos.yaml configuration file exists
+  merge_yaml:
+    sources: "{{ repos_yaml_sources }}"
+    dest: "{{ repos_yaml_dest }}"
+    mode: 0644
+  when: kolla_build_repos_yaml_path is defined
+
 - name: Ensure the Kolla build configuration file exists
   merge_configs:
     sources: "{{ kolla_build_config_paths | product(['/kolla/kolla-build.conf']) | map('join') | list }}"
