@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Since Kolla containers can built with user provided ``repos.yaml`` Kayobe
+    can override the file with their own content. The override files can be
+    ``${KAYOBE_CONFIG_PATH}/kolla/repos.yaml`` (default Kolla filename) or
+    ``${KAYOBE_CONFIG_PATH}/kolla/repos.yml``. Multiple Environments supported.
