@@ -1,10 +1,10 @@
 Dell Switch
 ===========
 
-This role configures Dell switches using the `dellos6` or `dellos9` Ansible
-modules.  It provides a fairly minimal abstraction of the configuration
-interface provided by the `dellos` modules, allowing for application of
-arbitrary switch configuration options.
+This role configures Dell switches using the `dellos6`, `dellos9`, or
+`dellos10` Ansible modules.  It provides a fairly minimal abstraction of the
+configuration interface provided by the `dellos` modules, allowing for
+application of arbitrary switch configuration options.
 
 Requirements
 ------------
@@ -14,7 +14,8 @@ The switches should be configured to allow SSH access.
 Role Variables
 --------------
 
-`dell_switch_type` is the type of Dell switch. One of `dellos6`, `dellos9`.
+`dell_switch_type` is the type of Dell switch. One of `dellos6`, `dellos9`, or
+`dellos10`.
 
 `dell_switch_provider` is authentication provider information passed as the
 `provider` argument to the `dellos` modules.

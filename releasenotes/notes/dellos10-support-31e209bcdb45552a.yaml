@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds support for configuring Dell OS10 Switches using the `dellemc.os10
+    Ansible collection <https://galaxy.ansible.com/dellemc/os10>`__. This is
+    integrated with the ``kayobe physical network configure`` command.

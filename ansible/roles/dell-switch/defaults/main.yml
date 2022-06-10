@@ -1,5 +1,5 @@
 ---
-# Type of Dell switch. One of dellos6, dellos9.
+# Type of Dell switch. One of dellos6, dellos9, or dellos10.
 dell_switch_type:
 
 # Authentication provider information.
