@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    Adds support for specifying a custom playbook when running Kolla Ansible
+    commands via a ``--kolla-playbook`` argument. For example:
+
+    .. code-block:: console
+
+       kayobe overcloud service deploy --kolla-playbook /path/to/playbook.yml
+
+    This may be used to specify a playbook that replaces or extends the default
+    ``site.yml`` playbook, and needs to execute in the Kolla Ansible context.
