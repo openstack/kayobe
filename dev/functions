@@ -72,7 +72,8 @@ function config_defaults {
     if [ -f "${PARENT}/../.gitreview" ]; then
       BRANCH=$(awk -F'=' '/defaultbranch/ {print $2}' "${PARENT}/../.gitreview")
       if [[ "${BRANCH}" == "" ]]; then
-        SERIES="master"
+       # TODO(priteau): Revert to master once we use Python 3.8+
+        SERIES="yoga"
       else
         SERIES="$(echo ${BRANCH} | sed 's|stable/||')"
       fi
