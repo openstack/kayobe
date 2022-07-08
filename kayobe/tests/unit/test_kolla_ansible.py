@@ -28,6 +28,8 @@ from kayobe import vault
 @mock.patch.dict(os.environ, clear=True)
 class TestCase(unittest.TestCase):
 
+    maxDiff = None
+
     @mock.patch.object(utils, "run_command")
     @mock.patch.object(kolla_ansible, "_validate_args")
     def test_run(self, mock_validate, mock_run):
@@ -122,7 +124,7 @@ class TestCase(unittest.TestCase):
                       check_output=True, universal_newlines=True),
             mock.call(expected_cmd, shell=True, quiet=False, env=expected_env)
         ]
-        self.assertEqual(expected_calls, mock_run.mock_calls)
+        self.assertListEqual(expected_calls, mock_run.mock_calls)
 
     @mock.patch.object(utils, "run_command")
     @mock.patch.object(kolla_ansible, "_validate_args")
@@ -259,7 +261,7 @@ class TestCase(unittest.TestCase):
             mock.call("/etc/kayobe/kolla/ansible.cfg"),
             mock.call("/etc/kayobe/ansible.cfg"),
         ]
-        self.assertEqual(mock_readable.call_args_list, expected_calls)
+        self.assertListEqual(mock_readable.call_args_list, expected_calls)
 
     @mock.patch.object(utils, "run_command")
     @mock.patch.object(utils, "is_readable_file")

@@ -23,6 +23,8 @@ from kayobe import vault
 
 class TestCase(unittest.TestCase):
 
+    maxDiff = None
+
     @mock.patch.object(vault.utils, "run_command", autospec=True)
     def test__get_vault_password_helper(self, mock_run):
         mock_run.return_value = "fake-password\n"
