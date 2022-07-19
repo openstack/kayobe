@@ -11,11 +11,6 @@ import distro
 import pytest
 
 
-def _is_firewalld_supported():
-    info = distro.id()
-    return info in ['centos', 'rocky']
-
-
 def _is_apt():
     info = distro.linux_distribution()
     return info[0].startswith('Ubuntu')
@@ -25,9 +20,11 @@ def _is_dnf():
     info = distro.id()
     return info in ['centos', 'rocky']
 
+
 def _is_dnf_mirror():
     info = distro.id()
     return info == 'centos'
+
 
 def test_network_ethernet(host):
     interface = host.interface('dummy2')
@@ -241,16 +238,12 @@ def test_tuned_profile_is_active(host):
     assert "throughput-performance" in tuned_output
 
 
-@pytest.mark.skipif(not _is_firewalld_supported(),
-                    reason="Firewalld only supported on CentOS and Rocky")
 def test_firewalld_running(host):
     assert host.package("firewalld").is_installed
     assert host.service("firewalld.service").is_enabled
     assert host.service("firewalld.service").is_running
 
 
-@pytest.mark.skipif(not _is_firewalld_supported(),
-                    reason="Firewalld only supported on CentOS and Rocky")
 def test_firewalld_zones(host):
     # Verify that interfaces are on correct zones.
     expected_zones = {
@@ -272,8 +265,6 @@ def test_firewalld_zones(host):
             assert zone == expected_zone
 
 
-@pytest.mark.skipif(not _is_firewalld_supported(),
-                    reason="Firewalld only supported on CentOS and Rocky")
 def test_firewalld_rules(host):
     # Verify that expected rules are present.
     expected_info = {
