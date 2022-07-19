@@ -372,7 +372,7 @@ infra vm service deploy`` command::
 
     (kayobe) $ mkdir -p ${KAYOBE_CONFIG_PATH}/hooks/infra-vm-host-configure/post.d
     (kayobe) $ cd ${KAYOBE_CONFIG_PATH}/hooks/infra-vm-host-configure/post.d
-    (kayobe) $ ln -s ../../../ansible/dns-server.yml 50-dns-serveryml
+    (kayobe) $ ln -s ../../../ansible/dns-server.yml 50-dns-server.yml
 
 Overcloud
 =========
