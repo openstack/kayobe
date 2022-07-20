@@ -1,4 +1,8 @@
 ---
+{% if ansible_facts.distribution_release == "jammy" %}
+os_release: "jammy"
+{% endif %}
+
 # Use HTTPS opendev quay.io registry proxy.
 docker_registry_insecure: no
 

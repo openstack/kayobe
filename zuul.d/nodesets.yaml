@@ -17,3 +17,9 @@
     nodes:
       - name: primary
         label: ubuntu-focal
+
+- nodeset:
+    name: kayobe-ubuntu-jammy
+    nodes:
+      - name: primary
+        label: ubuntu-jammy

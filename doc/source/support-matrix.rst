@@ -12,6 +12,7 @@ Kayobe supports the following host Operating Systems (OS):
 * CentOS Stream 8 (since Wallaby 10.0.0 release)
 * Rocky Linux 8 (since Yoga 12.0.0 release)
 * Ubuntu Focal 20.04 (since Wallaby 10.0.0 release)
+* Ubuntu Jammy 22.04 (since Yoga 12.8.0 release)
 
 .. note::
 
@@ -25,6 +26,11 @@ Kayobe supports the following host Operating Systems (OS):
    CentOS Linux 8 (as opposed to CentOS Stream 8) is no longer supported as a
    host OS. The Victoria release supports both CentOS Linux 8 and CentOS Stream
    8, and provides a route for migration.
+
+.. note::
+
+   Ubuntu Jammy support requires setting ``os_distro`` in
+   ``etc/kayobe/globals.yml`` to ``jammy``.
 
 Supported container images
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
