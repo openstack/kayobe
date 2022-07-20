@@ -1,4 +1,13 @@
 ---
+- name: Ensure the Apt sources.list.d directory exists
+  file:
+    path: "/etc/apt/sources.list.d"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  become: true
+
 # NOTE(mgoddard): Use the modern deb822 repository format rather than the old
 # format used by the apt_repository module.
 - name: Configure apt repositories

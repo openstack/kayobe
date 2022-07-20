@@ -41,7 +41,7 @@ seed_vm_root_capacity: 50G
 seed_vm_root_format: qcow2
 
 # Base image for the seed VM root volume. Default is
-# "https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64.img"
+# "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img"
 # when os_distribution is "ubuntu",
 # http://dl.rockylinux.org/pub/rocky/8.5/images/Rocky-8-GenericCloud-8.5-20211114.2.x86_64.qcow2
 # when os_distribution is "rocky",
@@ -50,7 +50,7 @@ seed_vm_root_format: qcow2
 # otherwise.
 seed_vm_root_image: >-
   {%- if os_distribution == 'ubuntu' %}
-  https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64.img
+  https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img
   {%- elif os_distribution == 'rocky' %}
   http://dl.rockylinux.org/pub/rocky/8.5/images/Rocky-8-GenericCloud-8.5-20211114.2.x86_64.qcow2
   {%- else -%}
