@@ -10,6 +10,9 @@
 # is {{ os_distribution == 'rocky' }}. This will change in a future release.
 #overcloud_dib_build_host_images:
 
+# List of additional build host packages to install. Default is an empty list.
+#overcloud_dib_host_packages_extra:
+
 # List of overcloud host disk images to build. Each element is a dict defining
 # an image in a format accepted by the stackhpc.os-images role. Default is to
 # build an image named "deployment_image" configured with the overcloud_dib_*

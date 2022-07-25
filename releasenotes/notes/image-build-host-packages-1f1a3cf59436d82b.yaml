@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Adds support for installing additional build host dependencies when
+    building IPA and overcloud host images via
+    ``ipa_build_dib_host_packages_extra`` and
+    ``overcloud_dib_host_packages_extra``.

@@ -41,6 +41,8 @@ Linux is used.
 `Cloud-init <https://cloudinit.readthedocs.io/en/latest/>`__ is used to process
 the configuration drive built by Bifrost during provisioning.
 
+``overcloud_dib_host_packages_extra``
+    List of additional host packages to install. Default is an empty list.
 ``overcloud_dib_host_images``
     List of overcloud host disk images to build. Each element is a dict
     defining an image in a format accepted by the `stackhpc.os-images

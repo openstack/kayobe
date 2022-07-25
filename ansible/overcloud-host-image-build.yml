@@ -22,6 +22,7 @@
           include_role:
             name: stackhpc.os-images
           vars:
+            os_images_package_dependencies_extra: "{{ overcloud_dib_host_packages_extra | select | list }}"
             os_images_venv: "{{ virtualenv_path }}/overcloud-host-image-dib"
             os_images_package_state: latest
             os_images_upper_constraints_file: "{{ overcloud_dib_upper_constraints_file }}"

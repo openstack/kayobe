@@ -43,7 +43,7 @@ roles:
   - src: stackhpc.mellanox-switch
     version: v1.0.0
   - src: stackhpc.os-images
-    version: v1.11.0
+    version: v1.15.0
   - src: stackhpc.os-ironic-state
     version: v1.3.1
   - src: stackhpc.os-networks
