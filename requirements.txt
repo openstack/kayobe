@@ -8,3 +8,4 @@ selinux # MIT
 # INI parsing
 oslo.config>=5.2.0 # Apache-2.0
 paramiko # LGPL
+jsonschema<5 # MIT

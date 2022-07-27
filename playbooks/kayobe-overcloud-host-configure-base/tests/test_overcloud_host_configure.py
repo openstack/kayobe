@@ -302,3 +302,11 @@ def test_firewalld_rules(host):
         for expected_line in expected_lines:
             assert expected_line in info
             assert expected_line in perm_info
+
+
+def test_swap(host):
+    swapon = host.check_output("swapon -s")
+    swapon = swapon.splitlines()
+    assert len(swapon) > 1
+    swap_devs = [swap.split()[0] for swap in swapon[1:]]
+    assert "/swapfile" in swap_devs

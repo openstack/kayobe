@@ -1,0 +1,6 @@
+---
+###############################################################################
+# Compute node swap configuration.
+
+# List of swap devices. Each item is a dict containing a 'device' item.
+swap: "{{ compute_swap }}"

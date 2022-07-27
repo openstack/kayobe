@@ -122,3 +122,9 @@ monitoring_firewalld_default_zone: "{{ controller_firewalld_default_zone }}"
 # - permanent: true
 # - state: enabled
 monitoring_firewalld_rules: "{{ controller_firewalld_rules }}"
+
+###############################################################################
+# Monitoring node swap configuration.
+
+# List of swap devices. Each item is a dict containing a 'device' item.
+monitoring_swap: []

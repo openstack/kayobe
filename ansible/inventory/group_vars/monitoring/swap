@@ -1,0 +1,9 @@
+---
+###############################################################################
+# Monitoring node swap configuration.
+
+# List of swap devices. Each item is a dict containing a 'device' item.
+swap: >
+  {{ controller_swap
+     if inventory_hostname in groups['controllers'] else
+     monitoring_swap }}

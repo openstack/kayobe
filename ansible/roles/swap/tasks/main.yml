@@ -1,0 +1,46 @@
+---
+- name: Validate swap configuration
+  ansible.utils.validate:
+    data: "{{ swap }}"
+    criteria: "{{ lookup('file', 'schema.json') }}"
+
+# The following two tasks were adapted from
+# https://github.com/geerlingguy/ansible-role-swap.
+
+- name: Ensure swap file exists
+  command:
+    cmd: "{{ swap_file_create_command }}"
+    creates: "{{ item.path }}"
+  register: swap_file_create
+  loop: "{{ swap }}"
+  when: item.path is defined
+
+- name: Set permissions on swap file
+  file:
+    path: "{{ item.path }}"
+    owner: root
+    group: root
+    mode: 0600
+  loop: "{{ swap }}"
+  when: item.path is defined
+
+- name: Ensure swap filesystem is present
+  filesystem:
+    dev: "{{ item.device | default(item.path) }}"
+    fstype: "swap"
+  loop: "{{ swap }}"
+
+- name: Ensure swap device is present in fstab
+  mount:
+    name: "none"
+    src: "{{ item.device | default(item.path) }}"
+    fstype: "swap"
+    state: "present"
+  loop: "{{ swap }}"
+
+# It does no harm to run this when swap is already active.
+- name: Enable swap
+  command: "/sbin/swapon -a"
+  when:
+    - ansible_facts.swaptotal_mb == 0
+  changed_when: true

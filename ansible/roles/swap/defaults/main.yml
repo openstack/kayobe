@@ -1,0 +1,6 @@
+---
+# List of swap devices. Each item is a dict containing a 'device' item.
+swap: []
+
+# Command to use to create a swap file.
+swap_file_create_command: "fallocate -l {{ item.size_mb }}MiB {{ item.path }}"

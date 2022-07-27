@@ -219,3 +219,9 @@ compute_libvirt_ceph_repo_install: true
 # Ceph package repository release to install on CentOS and Rocky hosts when
 # compute_libvirt_ceph_repo_install is true. Default is 'pacific'.
 compute_libvirt_ceph_repo_release: pacific
+
+###############################################################################
+# Compute node swap configuration.
+
+# List of swap devices. Each item is a dict containing a 'device' item.
+compute_swap: []

@@ -159,3 +159,9 @@ seed_hypervisor_firewalld_default_zone:
 # - permanent: true
 # - state: enabled
 seed_hypervisor_firewalld_rules: []
+
+###############################################################################
+# Seed hypervisor node swap configuration.
+
+# List of swap devices. Each item is a dict containing a 'device' item.
+seed_hypervisor_swap: []

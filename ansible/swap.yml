@@ -1,0 +1,11 @@
+---
+- name: Configure swap
+  hosts: seed-hypervisor:seed:overcloud:infra-vms
+  become: true
+  tags:
+    - swap
+  tasks:
+    - name: Include swap role
+      include_role:
+        name: swap
+      when: swap | length > 0
