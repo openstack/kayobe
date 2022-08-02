@@ -9,10 +9,7 @@
       os_openstacksdk_state: latest
       ironic_inspector_venv: "{{ virtualenv_path }}/openstacksdk"
       ironic_inspector_upper_constraints_file: "{{ pip_upper_constraints_file }}"
-      # No auth required for Bifrost.
-      ironic_inspector_auth_type: None
-      ironic_inspector_auth: {}
-      ironic_inspector_url: "http://localhost:5050"
+      ironic_inspector_cloud: bifrost
       ironic_inspector_rules: "{{ kolla_bifrost_inspector_rules }}"
       # These variables may be referenced in the introspection rules.
       inspector_rule_var_ipmi_username: "{{ kolla_bifrost_inspector_ipmi_username }}"

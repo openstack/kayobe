@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Adds support for copying the Bifrost ``clouds.yaml`` file and optionally a
+    TLS CA certificate from the Bifrost container to the seed host. This makes
+    it possible to enable authentication and TLS for Bifrost services.
+upgrade:
+  - |
+    Enables authentication by default in Bifrost.

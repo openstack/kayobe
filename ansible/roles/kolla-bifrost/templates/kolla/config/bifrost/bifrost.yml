@@ -71,9 +71,6 @@ use_firewalld: "{{ kolla_bifrost_use_firewalld }}"
 # Firewalld zone used by Bifrost.
 firewalld_internal_zone: "{{ kolla_bifrost_firewalld_internal_zone }}"
 
-# Disable authentication for the Ironic and Inspector APIs.
-noauth_mode: true
-
 # Enable discovery of nodes in Ironic Inspector.
 enable_inspector_discovery: true
 

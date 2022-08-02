@@ -1,14 +1,4 @@
 ---
-- name: Ensure required Python packages are installed
-  pip:
-    name: "{{ item.name }}"
-    version: "{{ item.version | default(omit) }}"
-    state: latest
-    virtualenv: "{{ ironic_inspector_venv }}"
-    extra_args: "{% if ironic_inspector_upper_constraints_file %}-c {{ ironic_inspector_upper_constraints_file }}{% endif %}"
-  with_items:
-    - name: python-ironic-inspector-client
-
 - name: Ensure introspection rules exist
   vars:
     ansible_python_interpreter: "{{ ironic_inspector_venv }}/bin/python"
@@ -16,11 +6,11 @@
     auth_type: "{{ ironic_inspector_auth_type }}"
     auth: "{{ ironic_inspector_auth }}"
     cacert: "{{ ironic_inspector_cacert | default(omit, true) }}"
+    cloud: "{{ ironic_inspector_cloud | default(omit, true) }}"
     interface: "{{ ironic_inspector_interface | default(omit, true) }}"
     conditions: "{{ item.conditions }}"
     actions: "{{ item.actions }}"
     description: "{{ item.description | default(omit) }}"
     uuid: "{{ item.uuid | default(item.description | to_uuid) | default(omit) }}"
     state: present
-    inspector_url: "{{ ironic_inspector_url }}"
   with_items: "{{ ironic_inspector_rules }}"

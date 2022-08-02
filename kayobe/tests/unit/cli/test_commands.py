@@ -882,6 +882,8 @@ class TestCase(unittest.TestCase):
                 mock.ANY,
                 [
                     utils.get_data_files_path(
+                        "ansible", "seed-credentials.yml"),
+                    utils.get_data_files_path(
                         "ansible", "seed-introspection-rules.yml"),
                     utils.get_data_files_path(
                         "ansible", "dell-switch-bmp.yml"),
@@ -936,6 +938,8 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [
+                    utils.get_data_files_path(
+                        "ansible", "seed-credentials.yml"),
                     utils.get_data_files_path(
                         "ansible",
                         "seed-introspection-rules.yml"),

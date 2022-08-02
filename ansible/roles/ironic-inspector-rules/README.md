@@ -26,8 +26,7 @@ compatible with the `auth` argument of `os_*` Ansible modules.
 
 `ironic_inspector_cacert` is an optional path to a CA certificate.
 
-`ironic_inspector_url` is the URL of Ironic Inspector API endpoint,
-required if no authentication is used.
+`ironic_inspector_cloud` is the name of a cloud in ``clouds.yaml``.
 
 `ironic_inspector_rules` is a list of introspection rules which should
 exist. See the Inspector rules API for details of parameters available

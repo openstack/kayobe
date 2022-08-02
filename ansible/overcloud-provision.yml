@@ -143,7 +143,6 @@
         bash -c '
         export OS_CLOUD=bifrost &&
         export BIFROST_INVENTORY_SOURCE=ironic &&
-        export OS_BAREMETAL_API_VERSION=1.34 &&
         ansible-playbook -vvvv
         /bifrost/playbooks/deploy-dynamic.yaml
         --inventory /etc/bifrost/inventory/
