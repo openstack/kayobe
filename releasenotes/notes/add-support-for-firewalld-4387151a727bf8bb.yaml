@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Adds support for configuring a firewall via firewalld on Ubuntu. See `story
+    2010160 <https://storyboard.openstack.org/#!/story/2010160>`__ for details.
