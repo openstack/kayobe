@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    Updates base Rocky Linux 8 cloud image to
+    Rocky-8-GenericCloud.latest.x86_64.qcow2
