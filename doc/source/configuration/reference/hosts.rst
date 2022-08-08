@@ -366,7 +366,7 @@ items:
 * ``types``: whitespace-separated list of repository types, e.g. ``deb`` or
   ``deb-src`` (optional, default is ``deb``)
 * ``url``: URL of the repository
-* ``suites``: whitespace-separated list of suites, e.g. ``focal`` (optional,
+* ``suites``: whitespace-separated list of suites, e.g. ``jammy`` (optional,
   default is ``ansible_facts.distribution_release``)
 * ``components``: whitespace-separated list of components, e.g. ``main``
   (optional, default is ``main``)
@@ -385,10 +385,10 @@ For example, the following configuration defines a single Apt repository:
    apt_repositories:
      - types: deb
        url: https://example.com/repo
-       suites: focal
+       suites: jammy
        components: all
 
-In the following example, the Ubuntu Focal 20.04 repositories are consumed from
+In the following example, the Ubuntu Jammy 22.04 repositories are consumed from
 a local package mirror. The ``apt_disable_sources_list`` variable is set to
 ``true``, which disables all repositories in ``/etc/apt/sources.list``,
 including the default Ubuntu ones.
@@ -398,10 +398,10 @@ including the default Ubuntu ones.
 
    apt_repositories:
      - url: http://mirror.example.com/ubuntu/
-       suites: focal focal-updates
+       suites: jammy jammy-updates
        components: main restricted universe multiverse
      - url: http://mirror.example.com/ubuntu/
-       suites: focal-security
+       suites: jammy-security
        components: main restricted universe multiverse
 
    apt_disable_sources_list: true
@@ -438,7 +438,7 @@ that is signed by the key.
    apt_repositories:
      - types: deb
        url: https://example.com/repo
-       suites: focal
+       suites: jammy
        components: all
        signed_by: example-key.asc
 

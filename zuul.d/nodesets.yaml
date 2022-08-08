@@ -13,7 +13,7 @@
         label: rockylinux-8
 
 - nodeset:
-    name: kayobe-ubuntu-focal
+    name: kayobe-ubuntu-jammy
     nodes:
       - name: primary
-        label: ubuntu-focal
+        label: ubuntu-jammy

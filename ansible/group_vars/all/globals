@@ -49,12 +49,12 @@ kayobe_ansible_user: "stack"
 os_distribution: "centos"
 
 # OS release. Valid options are "8-stream" when os_distribution is "centos", or
-# "8" when os_distribution is "rocky", or "focal" when os_distribution is
+# "8" when os_distribution is "rocky", or "jammy" when os_distribution is
 # "ubuntu".
 os_release: >-
   {{ '8-stream' if os_distribution == 'centos'
   else '8' if os_distribution == 'rocky'
-  else 'focal' }}
+  else 'jammy' }}
 
 ###############################################################################
 # Ansible configuration.
