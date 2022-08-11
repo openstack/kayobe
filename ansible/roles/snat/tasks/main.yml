@@ -15,5 +15,10 @@
     out_interface: "{{ item.interface }}"
     jump: SNAT
     to_source: "{{ item.source_ip }}"
+    destination: "{{ item.destination | default(omit) }}"
+    destination_port: "{{ item.destination_port | default(omit) }}"
+    destination_ports: "{{ item.destination_ports | default(omit) }}"
+    source: "{{ item.source | default(omit) }}"
+    source_port: "{{ item.source_port | default(omit) }}"
   with_items: "{{ snat_rules }}"
   become: True
