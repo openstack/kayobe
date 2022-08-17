@@ -1,13 +1,4 @@
 ---
-# NOTE(mgoddard): The acl package is required for the setfacl command, used by
-# become_user.
-- name: Ensure acl package is installed
-  package:
-    name: acl
-    cache_valid_time: "{{ apt_cache_valid_time if ansible_facts.os_family == 'Debian' else omit }}"
-    update_cache: "{{ True if ansible_facts.os_family == 'Debian' else omit }}"
-  become: true
-
 - name: Create local .pip directory
   file:
     path: "~{{ item }}/.pip"

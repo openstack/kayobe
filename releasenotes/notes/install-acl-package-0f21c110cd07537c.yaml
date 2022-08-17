@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an issue where a custom playbook using `become_user` could fail when
+    setting permissions on temporary files. The `acl` package is now installed
+    on all systems by default.
