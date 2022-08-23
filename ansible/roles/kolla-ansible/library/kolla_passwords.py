@@ -20,6 +20,7 @@ short_description: Generates a kolla-ansible passwords file
 
 from ansible.module_utils.basic import *
 
+import os
 import os.path
 import shutil
 import tempfile
@@ -158,6 +159,8 @@ def kolla_passwords(module):
             checksum_temp_file = module.sha1(temp_file_path)
             changed = checksum_dest != checksum_temp_file
         else:
+            os.makedirs(os.path.dirname(module.params['dest']),
+                        exist_ok=True)
             changed = True
 
         # Encrypt the file.
