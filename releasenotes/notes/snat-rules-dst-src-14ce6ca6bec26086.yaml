@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds support for specifying SNAT source and destination filters. This is
+    useful if forwarded packets need to exit on a different interface depending
+    on the source or destination IP address or port.
