@@ -22,10 +22,6 @@ from ansible.module_utils.openstack import *
 # Store a list of import errors to report to the user.
 IMPORT_ERRORS = []
 try:
-    import ironic_inspector_client
-except Exception as e:
-    IMPORT_ERRORS.append(e)
-try:
     import openstack
 except Exception as e:
     IMPORT_ERRORS.append(e)
@@ -78,29 +74,21 @@ os_ironic_inspector_rule:
 """
 
 
-def _build_client(module, cloud):
-    """Create and return an Ironic inspector client."""
-    # Ensure the requested API version is supported.
-    # API 1.14 is the latest API version available in Rocky.
-    api_version = (1, 14)
-    client = ironic_inspector_client.v1.ClientV1(
-        inspector_url=module.params['inspector_url'],
-        interface=module.params['interface'],
-        session=cloud.session, region_name=module.params['region_name'],
-        api_version=api_version)
-    return client
+def _get_client(module, cloud):
+    """Return an Ironic inspector client."""
+    return cloud.baremetal_introspection
 
 
 def _ensure_rule_present(module, client):
     """Ensure that an inspector rule is present."""
     if module.params['uuid']:
-        try:
-            rule = client.rules.get(module.params['uuid'])
-        except ironic_inspector_client.ClientError as e:
-            if e.response.status_code != 404:
+        response = client.get('/rules/{}'.format(module.params['uuid']))
+        if not response.ok:
+            if response.status_code != 404:
                 module.fail_json(msg="Failed retrieving Inspector rule %s: %s"
                                  % (module.params['uuid'], repr(e)))
         else:
+            rule = response.json()
             # Check whether the rule differs from the request.
             keys = ('conditions', 'actions', 'description')
             for key in keys:
@@ -121,8 +109,16 @@ def _ensure_rule_present(module, client):
             # Rule differs - delete it before recreating.
             _ensure_rule_absent(module, client)
 
-    client.rules.create(module.params['conditions'], module.params['actions'],
-                        module.params['uuid'], module.params['description'])
+    rule = {
+        "conditions": module.params['conditions'],
+        "actions": module.params['actions'],
+        "description": module.params['description'],
+        "uuid": module.params['uuid'],
+    }
+    response = client.post("/rules", json=rule)
+    if not response.ok:
+        module.fail_json(msg="Failed creating Inspector rule %s: %s"
+                         % (module.params['uuid'], response.text))
     return True
 
 
@@ -130,14 +126,13 @@ def _ensure_rule_absent(module, client):
     """Ensure that an inspector rule is absent."""
     if not module.params['uuid']:
         module.fail_json(msg="UUID is required to ensure rules are absent")
-    try:
-        client.rules.delete(module.params['uuid'])
-    except ironic_inspector_client.ClientError as e:
+    response = client.delete("/rules/{}".format(module.params['uuid']))
+    if not response.ok:
         # If the rule does not exist, no problem and no change.
-        if e.response.status_code == 404:
+        if response.status_code == 404:
             return False
         module.fail_json(msg="Failed retrieving Inspector rule %s: %s"
-                         % (module.params['uuid'], repr(e)))
+                         % (module.params['uuid'], response.text))
     return True
 
 
@@ -149,7 +144,6 @@ def main():
         uuid=dict(required=False),
         state=dict(required=False, default='present',
                    choices=['present', 'absent']),
-        inspector_url=dict(required=False),
     )
     module_kwargs = openstack_module_kwargs()
     module = AnsibleModule(argument_spec, **module_kwargs)
@@ -159,20 +153,9 @@ def main():
         module.fail_json(msg="Import errors: %s" %
                          ", ".join([repr(e) for e in IMPORT_ERRORS]))
 
-    if (module.params['auth_type'] in [None, 'None'] and
-            module.params['inspector_url'] is None):
-        module.fail_json(msg="Authentication appears disabled, please "
-                             "define an inspector_url parameter")
-
-    if (module.params['inspector_url'] and
-            module.params['auth_type'] in [None, 'None']):
-        module.params['auth'] = dict(
-            endpoint=module.params['inspector_url']
-        )
-
     sdk, cloud = openstack_cloud_from_module(module)
     try:
-        client = _build_client(module, cloud)
+        client = _get_client(module, cloud)
         if module.params["state"] == "present":
             changed = _ensure_rule_present(module, client)
         else:

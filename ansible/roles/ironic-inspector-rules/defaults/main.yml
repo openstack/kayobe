@@ -14,11 +14,11 @@ ironic_inspector_auth: {}
 # CA certificate path.
 ironic_inspector_cacert:
 
+# Name of cloud in clouds.yaml.
+ironic_inspector_cloud:
+
 # Interface (public, internal, admin).
 ironic_inspector_interface:
-
-# URL of Ironic Inspector API endpoint.
-ironic_inspector_url:
 
 # List of rules which should exist. See the Inspector rules API for details of
 # parameters available for rules.
