@@ -24,6 +24,8 @@ from kayobe import utils
 
 class TestCase(unittest.TestCase):
 
+    maxDiff = None
+
     @mock.patch.object(utils, "is_readable_dir")
     def test_unreadable_environments_directory(self, mock_readable_dir):
         mock_readable_dir.return_value = {
@@ -78,7 +80,7 @@ class TestCase(unittest.TestCase):
             mock.call("/path/to/config/environments"),
             mock.call("/path/to/config/environments/foo"),
         ]
-        self.assertEqual(expected_calls, mock_mkdir.call_args_list)
+        self.assertListEqual(expected_calls, mock_mkdir.call_args_list)
         mock_copy_dir.assert_called_once_with(
             "/path/to/foo", "/path/to/config/environments/foo",
             exclude=["environments"])

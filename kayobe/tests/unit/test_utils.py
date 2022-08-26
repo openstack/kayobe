@@ -25,6 +25,8 @@ from kayobe import utils
 
 class TestCase(unittest.TestCase):
 
+    maxDiff = None
+
     @mock.patch.object(utils, "run_command")
     def test_galaxy_role_install(self, mock_run):
         utils.galaxy_role_install("/path/to/role/file", "/path/to/roles")

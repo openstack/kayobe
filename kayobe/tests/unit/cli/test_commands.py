@@ -34,6 +34,8 @@ class TestApp(cliff.app.App):
 
 class TestCase(unittest.TestCase):
 
+    maxDiff = None
+
     @mock.patch.object(ansible, "install_galaxy_roles", autospec=True)
     @mock.patch.object(ansible, "install_galaxy_collections", autospec=True)
     @mock.patch.object(ansible, "passwords_yml_exists", autospec=True)
@@ -63,7 +65,7 @@ class TestCase(unittest.TestCase):
                 ignore_limit=True
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(ansible, "install_galaxy_roles", autospec=True)
     @mock.patch.object(ansible, "install_galaxy_collections", autospec=True)
@@ -101,7 +103,7 @@ class TestCase(unittest.TestCase):
                 ignore_limit=True
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
         expected_calls = [
             mock.call(
@@ -109,7 +111,7 @@ class TestCase(unittest.TestCase):
                 "post-deploy",
             )
         ]
-        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_kolla_run.call_args_list)
 
     @mock.patch.object(ansible, "install_galaxy_roles", autospec=True)
     @mock.patch.object(ansible, "install_galaxy_collections", autospec=True)
@@ -141,7 +143,7 @@ class TestCase(unittest.TestCase):
                 ignore_limit=True
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbook")
@@ -161,7 +163,7 @@ class TestCase(unittest.TestCase):
                 }
             )
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbook")
@@ -181,7 +183,7 @@ class TestCase(unittest.TestCase):
                 }
             )
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbook")
@@ -203,7 +205,7 @@ class TestCase(unittest.TestCase):
                 }
             )
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbook")
@@ -225,7 +227,7 @@ class TestCase(unittest.TestCase):
                 }
             )
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     def test_physical_network_configure_enable_disable_disco(self):
         command = commands.PhysicalNetworkConfigure(TestApp(), [])
@@ -256,7 +258,7 @@ class TestCase(unittest.TestCase):
                 }
             )
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbook")
@@ -281,7 +283,7 @@ class TestCase(unittest.TestCase):
                 }
             )
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -295,7 +297,7 @@ class TestCase(unittest.TestCase):
             mock.call(mock.ANY, [utils.get_data_files_path(
                 "ansible", "network-connectivity.yml")]),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -322,7 +324,7 @@ class TestCase(unittest.TestCase):
                 limit="seed-hypervisor",
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -350,7 +352,7 @@ class TestCase(unittest.TestCase):
                 extra_vars={"wipe_disks": True},
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -376,7 +378,7 @@ class TestCase(unittest.TestCase):
                     "show_output": True}
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -402,7 +404,7 @@ class TestCase(unittest.TestCase):
                 },
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -428,7 +430,7 @@ class TestCase(unittest.TestCase):
                 },
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -454,7 +456,7 @@ class TestCase(unittest.TestCase):
                 },
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -476,7 +478,7 @@ class TestCase(unittest.TestCase):
                 limit="seed-hypervisor",
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -527,7 +529,7 @@ class TestCase(unittest.TestCase):
                 extra_vars={'kayobe_action': 'deploy'},
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
         expected_calls = [
             mock.call(
@@ -535,7 +537,7 @@ class TestCase(unittest.TestCase):
                 "bootstrap-servers",
             ),
         ]
-        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_kolla_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -589,7 +591,7 @@ class TestCase(unittest.TestCase):
         ]
         print(expected_calls)
         print(mock_run.call_args_list)
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
         expected_calls = [
             mock.call(
@@ -597,7 +599,7 @@ class TestCase(unittest.TestCase):
                 "bootstrap-servers",
             ),
         ]
-        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_kolla_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -623,7 +625,7 @@ class TestCase(unittest.TestCase):
                     "show_output": True}
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -649,7 +651,7 @@ class TestCase(unittest.TestCase):
                 },
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -675,7 +677,7 @@ class TestCase(unittest.TestCase):
                 },
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -701,7 +703,7 @@ class TestCase(unittest.TestCase):
                 },
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -723,7 +725,7 @@ class TestCase(unittest.TestCase):
                 limit="seed",
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -751,7 +753,7 @@ class TestCase(unittest.TestCase):
                 }
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -778,7 +780,7 @@ class TestCase(unittest.TestCase):
                 }
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -806,7 +808,7 @@ class TestCase(unittest.TestCase):
                 }
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -827,7 +829,7 @@ class TestCase(unittest.TestCase):
                 extra_vars={},
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -848,7 +850,7 @@ class TestCase(unittest.TestCase):
                 extra_vars={"ipa_image_force_rebuild": True},
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -890,7 +892,7 @@ class TestCase(unittest.TestCase):
                 ],
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
         expected_calls = [
             mock.call(
@@ -898,7 +900,7 @@ class TestCase(unittest.TestCase):
                 "deploy-bifrost",
             ),
         ]
-        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_kolla_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -949,7 +951,7 @@ class TestCase(unittest.TestCase):
                 ],
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
         expected_calls = [
             mock.call(
@@ -957,7 +959,7 @@ class TestCase(unittest.TestCase):
                 "upgrade-bifrost",
             ),
         ]
-        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_kolla_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbook")
@@ -984,7 +986,7 @@ class TestCase(unittest.TestCase):
                 extra_vars={'infra_vm_limit': 'infra-vms'}
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbook")
@@ -1005,7 +1007,7 @@ class TestCase(unittest.TestCase):
                 extra_vars={'infra_vm_limit': 'infra-vms'}
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -1032,7 +1034,7 @@ class TestCase(unittest.TestCase):
                 limit="infra-vms",
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -1060,7 +1062,7 @@ class TestCase(unittest.TestCase):
                 extra_vars={"wipe_disks": True},
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -1082,7 +1084,7 @@ class TestCase(unittest.TestCase):
                 limit="infra-vms",
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -1108,7 +1110,7 @@ class TestCase(unittest.TestCase):
                     "show_output": True}
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -1134,7 +1136,7 @@ class TestCase(unittest.TestCase):
                 },
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbook")
@@ -1147,7 +1149,7 @@ class TestCase(unittest.TestCase):
         self.assertEqual(0, result)
 
         expected_calls = []
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -1172,7 +1174,7 @@ class TestCase(unittest.TestCase):
                 utils.get_data_files_path("ansible", "ip-allocation.yml"),
             ),
         ]
-        self.assertEqual(expected_calls, mock_run_one.call_args_list)
+        self.assertListEqual(expected_calls, mock_run_one.call_args_list)
 
         expected_calls = [
             mock.call(
@@ -1182,7 +1184,7 @@ class TestCase(unittest.TestCase):
                 ignore_limit=True,
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -1205,7 +1207,7 @@ class TestCase(unittest.TestCase):
                 ],
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -1228,7 +1230,7 @@ class TestCase(unittest.TestCase):
                 ],
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -1249,7 +1251,7 @@ class TestCase(unittest.TestCase):
                 ],
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -1278,7 +1280,7 @@ class TestCase(unittest.TestCase):
                 ignore_limit=True,
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
         expected_calls = [
             mock.call(
@@ -1286,7 +1288,7 @@ class TestCase(unittest.TestCase):
                 "gather-facts"
             ),
         ]
-        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_kolla_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -1332,7 +1334,7 @@ class TestCase(unittest.TestCase):
                 limit="overcloud",
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
         expected_calls = [
             mock.call(
@@ -1340,7 +1342,7 @@ class TestCase(unittest.TestCase):
                 "bootstrap-servers",
             ),
         ]
-        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_kolla_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -1388,7 +1390,7 @@ class TestCase(unittest.TestCase):
                 limit="overcloud",
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
         expected_calls = [
             mock.call(
@@ -1396,7 +1398,7 @@ class TestCase(unittest.TestCase):
                 "bootstrap-servers",
             ),
         ]
-        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_kolla_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -1422,7 +1424,7 @@ class TestCase(unittest.TestCase):
                     "show_output": True}
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -1448,7 +1450,7 @@ class TestCase(unittest.TestCase):
                 },
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -1474,7 +1476,7 @@ class TestCase(unittest.TestCase):
                 },
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -1500,7 +1502,7 @@ class TestCase(unittest.TestCase):
                 },
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -1522,7 +1524,7 @@ class TestCase(unittest.TestCase):
                 limit="overcloud",
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -1543,7 +1545,7 @@ class TestCase(unittest.TestCase):
                 ignore_limit=True,
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
         expected_calls = [
             mock.call(
@@ -1552,7 +1554,7 @@ class TestCase(unittest.TestCase):
                 extra_args=[]
             ),
         ]
-        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_kolla_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -1574,7 +1576,7 @@ class TestCase(unittest.TestCase):
                 ignore_limit=True,
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
         expected_calls = [
             mock.call(
@@ -1583,7 +1585,7 @@ class TestCase(unittest.TestCase):
                 extra_args=["--incremental"]
             ),
         ]
-        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_kolla_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -1612,7 +1614,7 @@ class TestCase(unittest.TestCase):
                 ignore_limit=True,
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
         expected_calls = [
             mock.call(
@@ -1621,7 +1623,7 @@ class TestCase(unittest.TestCase):
                 extra_vars={}
             ),
         ]
-        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_kolla_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -1651,7 +1653,7 @@ class TestCase(unittest.TestCase):
                 ignore_limit=True,
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
         expected_calls = [
             mock.call(
@@ -1662,7 +1664,7 @@ class TestCase(unittest.TestCase):
                 }
             ),
         ]
-        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_kolla_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -1682,7 +1684,7 @@ class TestCase(unittest.TestCase):
                 extra_vars={}
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -1730,7 +1732,7 @@ class TestCase(unittest.TestCase):
                 ignore_limit=True,
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
         expected_calls = [
             mock.call(
@@ -1746,7 +1748,7 @@ class TestCase(unittest.TestCase):
                 "post-deploy",
             ),
         ]
-        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_kolla_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -1788,7 +1790,7 @@ class TestCase(unittest.TestCase):
                 },
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
         expected_calls = [
             mock.call(
@@ -1800,7 +1802,7 @@ class TestCase(unittest.TestCase):
                 "deploy-containers",
             ),
         ]
-        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_kolla_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -1830,7 +1832,7 @@ class TestCase(unittest.TestCase):
                 ignore_limit=True,
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
         expected_calls = [
             mock.call(
@@ -1838,7 +1840,7 @@ class TestCase(unittest.TestCase):
                 "prechecks",
             ),
         ]
-        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_kolla_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -1886,7 +1888,7 @@ class TestCase(unittest.TestCase):
                 ignore_limit=True,
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
         expected_calls = [
             mock.call(
@@ -1902,7 +1904,7 @@ class TestCase(unittest.TestCase):
                 "post-deploy",
             ),
         ]
-        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_kolla_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -1943,7 +1945,7 @@ class TestCase(unittest.TestCase):
                 },
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
         expected_calls = [
             mock.call(
@@ -1952,7 +1954,7 @@ class TestCase(unittest.TestCase):
                 extra_args=["--yes-i-really-really-mean-it"],
             ),
         ]
-        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_kolla_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -2015,7 +2017,7 @@ class TestCase(unittest.TestCase):
                 ignore_limit=True,
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
         expected_calls = [
             mock.call(
@@ -2031,7 +2033,7 @@ class TestCase(unittest.TestCase):
                 "post-deploy"
             ),
         ]
-        self.assertEqual(expected_calls, mock_kolla_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_kolla_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -2061,7 +2063,7 @@ class TestCase(unittest.TestCase):
                 }
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -2089,7 +2091,7 @@ class TestCase(unittest.TestCase):
                 }
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -2116,7 +2118,7 @@ class TestCase(unittest.TestCase):
                 }
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -2138,7 +2140,7 @@ class TestCase(unittest.TestCase):
                 extra_vars={},
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -2160,7 +2162,7 @@ class TestCase(unittest.TestCase):
                 extra_vars={"overcloud_host_image_force_rebuild": True},
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -2182,7 +2184,7 @@ class TestCase(unittest.TestCase):
                 extra_vars={},
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -2204,7 +2206,7 @@ class TestCase(unittest.TestCase):
                 extra_vars={"ipa_image_force_rebuild": True},
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -2233,7 +2235,7 @@ class TestCase(unittest.TestCase):
                 ],
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -2253,7 +2255,7 @@ class TestCase(unittest.TestCase):
                 ],
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -2272,7 +2274,7 @@ class TestCase(unittest.TestCase):
                 ],
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -2291,7 +2293,7 @@ class TestCase(unittest.TestCase):
                 ],
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -2310,7 +2312,7 @@ class TestCase(unittest.TestCase):
                 ],
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -2329,7 +2331,7 @@ class TestCase(unittest.TestCase):
                 ],
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -2352,7 +2354,7 @@ class TestCase(unittest.TestCase):
                 }
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -2378,7 +2380,7 @@ class TestCase(unittest.TestCase):
                 }
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -2401,7 +2403,7 @@ class TestCase(unittest.TestCase):
                 }
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -2427,7 +2429,7 @@ class TestCase(unittest.TestCase):
                 }
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -2449,7 +2451,7 @@ class TestCase(unittest.TestCase):
                 }
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
@@ -2474,10 +2476,12 @@ class TestCase(unittest.TestCase):
                 }
             ),
         ]
-        self.assertEqual(expected_calls, mock_run.call_args_list)
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
 
 
 class TestHookDispatcher(unittest.TestCase):
+
+    maxDiff = None
 
     @mock.patch('kayobe.cli.commands.os.path')
     def test_hook_ordering(self, mock_path):

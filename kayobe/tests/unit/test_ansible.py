@@ -30,6 +30,8 @@ from kayobe import vault
 @mock.patch.dict(os.environ, clear=True)
 class TestCase(unittest.TestCase):
 
+    maxDiff = None
+
     @mock.patch.object(utils, "run_command")
     @mock.patch.object(ansible, "_get_vars_files")
     @mock.patch.object(ansible, "_validate_args")
@@ -157,7 +159,7 @@ class TestCase(unittest.TestCase):
             mock.call(expected_cmd, check_output=False, quiet=False,
                       env=expected_env)
         ]
-        self.assertEqual(expected_calls, mock_run.mock_calls)
+        self.assertListEqual(expected_calls, mock_run.mock_calls)
         mock_vars.assert_called_once_with(
             ["/path/to/config", "/path/to/config/environments/test-env"])
 
@@ -477,7 +479,7 @@ class TestCase(unittest.TestCase):
                       force=False),
             mock.call("/etc/kayobe/ansible/requirements.yml",
                       "/etc/kayobe/ansible/roles", force=False)]
-        self.assertEqual(expected_calls, mock_install.call_args_list)
+        self.assertListEqual(expected_calls, mock_install.call_args_list)
         mock_is_readable.assert_called_once_with(
             "/etc/kayobe/ansible/requirements.yml")
         mock_mkdirs.assert_called_once_with("/etc/kayobe/ansible/roles")
@@ -500,7 +502,7 @@ class TestCase(unittest.TestCase):
                       force=True),
             mock.call("/etc/kayobe/ansible/requirements.yml",
                       "/etc/kayobe/ansible/roles", force=True)]
-        self.assertEqual(expected_calls, mock_install.call_args_list)
+        self.assertListEqual(expected_calls, mock_install.call_args_list)
         mock_is_readable.assert_called_once_with(
             "/etc/kayobe/ansible/requirements.yml")
         mock_mkdirs.assert_called_once_with("/etc/kayobe/ansible/roles")
@@ -563,7 +565,7 @@ class TestCase(unittest.TestCase):
                       force=False),
             mock.call("/etc/kayobe/ansible/requirements.yml",
                       "/etc/kayobe/ansible/collections", force=False)]
-        self.assertEqual(expected_calls, mock_install.call_args_list)
+        self.assertListEqual(expected_calls, mock_install.call_args_list)
         mock_is_readable.assert_called_once_with(
             "/etc/kayobe/ansible/requirements.yml")
         mock_mkdirs.assert_called_once_with("/etc/kayobe/ansible/collections")
@@ -586,7 +588,7 @@ class TestCase(unittest.TestCase):
                       force=True),
             mock.call("/etc/kayobe/ansible/requirements.yml",
                       "/etc/kayobe/ansible/collections", force=True)]
-        self.assertEqual(expected_calls, mock_install.call_args_list)
+        self.assertListEqual(expected_calls, mock_install.call_args_list)
         mock_is_readable.assert_called_once_with(
             "/etc/kayobe/ansible/requirements.yml")
         mock_mkdirs.assert_called_once_with("/etc/kayobe/ansible/collections")
@@ -715,7 +717,7 @@ class TestCase(unittest.TestCase):
             mock.call("/etc/kayobe/environments/test-env/inventory"),
             mock.call("/etc/kayobe/ansible.cfg"),
         ]
-        self.assertEqual(expected_calls, mock_exists.mock_calls)
+        self.assertListEqual(expected_calls, mock_exists.mock_calls)
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
         mock_vars.assert_called_once_with(
@@ -754,7 +756,7 @@ class TestCase(unittest.TestCase):
             mock.call("/etc/kayobe/environments/test-env/inventory"),
             mock.call("/etc/kayobe/ansible.cfg"),
         ]
-        self.assertEqual(expected_calls, mock_exists.mock_calls)
+        self.assertListEqual(expected_calls, mock_exists.mock_calls)
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
         mock_vars.assert_called_once_with(
@@ -793,7 +795,7 @@ class TestCase(unittest.TestCase):
             mock.call("/etc/kayobe/environments/test-env/inventory"),
             mock.call("/etc/kayobe/ansible.cfg"),
         ]
-        self.assertEqual(expected_calls, mock_exists.mock_calls)
+        self.assertListEqual(expected_calls, mock_exists.mock_calls)
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
         mock_vars.assert_called_once_with(
