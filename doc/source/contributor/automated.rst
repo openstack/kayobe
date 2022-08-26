@@ -14,7 +14,7 @@ Overview
 
 The Kayobe development environment automation tooling is built using simple
 shell scripts.  Some minimal configuration can be applied by setting the
-environment variables in `dev/config.sh`.  Control plane configuration is
+environment variables in ``dev/config.sh``.  Control plane configuration is
 typically provided via the `kayobe-config-dev
 <https://opendev.org/openstack/kayobe-config-dev>`_ repository,
 although it is also possible to use your own Kayobe configuration.  This allows
