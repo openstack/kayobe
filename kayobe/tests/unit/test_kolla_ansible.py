@@ -61,12 +61,14 @@ class TestCase(unittest.TestCase):
             "-ki", "/path/to/inventory",
             "-kl", "host1:host2",
             "-kt", "tag1,tag2",
+            "-kp", "/path/to/playbook",
         ]
         parsed_args = parser.parse_args(args)
         kolla_ansible.run(parsed_args, "command", "overcloud")
         expected_cmd = [
             ".", "/path/to/cwd/venvs/kolla-ansible/bin/activate", "&&",
             "kolla-ansible", "command",
+            "--playbook", "/path/to/playbook",
             "--inventory", "/path/to/inventory",
             "--configdir", "/path/to/config",
             "--passwords", "/path/to/config/passwords.yml",
@@ -98,6 +100,7 @@ class TestCase(unittest.TestCase):
             "--kolla-limit", "host1:host2",
             "--kolla-skip-tags", "tag3,tag4",
             "--kolla-tags", "tag1,tag2",
+            "--kolla-playbook", "/path/to/playbook",
         ]
         parsed_args = parser.parse_args(args)
         mock_run.return_value = "/path/to/kayobe-vault-password-helper"
@@ -105,6 +108,7 @@ class TestCase(unittest.TestCase):
         expected_cmd = [
             ".", "/path/to/cwd/venvs/kolla-ansible/bin/activate", "&&",
             "kolla-ansible", "command",
+            "--playbook", "/path/to/playbook",
             "--key", "/path/to/kayobe-vault-password-helper",
             "--inventory", "/path/to/inventory",
             "--configdir", "/path/to/config",
