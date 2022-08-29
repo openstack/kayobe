@@ -1172,6 +1172,7 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 utils.get_data_files_path("ansible", "ip-allocation.yml"),
+                limit="overcloud",
             ),
         ]
         self.assertListEqual(expected_calls, mock_run_one.call_args_list)
