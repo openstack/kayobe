@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an issue with nclu-switch command ordering, when description was
+    applied first to a non-existent (virtual) interface. See `story 2010279
+    <https://storyboard.openstack.org/#!/story/2010279>`__ for details.
