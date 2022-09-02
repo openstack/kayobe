@@ -53,9 +53,9 @@ kolla_node_custom_config_path: "{{ kolla_config_path }}/config"
 # Kolla configuration.
 
 # Kolla base container image distribution. Options are "centos", "debian",
-# "ubuntu". Default is
-# {{ 'centos' if os_distribution == 'rocky' else os_distribution }}.
-kolla_base_distro: "{{ 'centos' if os_distribution == 'rocky' else os_distribution }}"
+# "rocky", "ubuntu". Default is
+# {{ 'centos' if (os_distribution == 'rocky' and os_release == '8') else os_distribution }}.
+kolla_base_distro: "{{ 'centos' if (os_distribution == 'rocky' and os_release == '8') else os_distribution }}"
 
 # Kolla container image type: binary or source.
 kolla_install_type: "source"

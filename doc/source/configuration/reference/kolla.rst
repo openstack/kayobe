@@ -74,10 +74,10 @@ affect :ref:`Kolla Ansible configuration <configuration-kolla-ansible-global>`.
 
 ``kolla_base_distro``
     Kolla base container image distribution. Options are ``centos``,
-    ``debian``, or ``ubuntu``. Default is ``{{ os_distribution }}``.
+    ``debian``, ``rocky`` or ``ubuntu``. Default is ``{{ os_distribution }}``.
 ``kolla_install_type``
     Kolla container image type: ``binary`` or ``source``. Default is
-    ``source``.
+    ``source``. NOTE: ``rocky`` base_distro does not support ``binary``.
 ``kolla_docker_namespace``
     Docker namespace to use for Kolla images. Default is ``kolla``.
 ``kolla_docker_registry``

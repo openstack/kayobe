@@ -144,13 +144,13 @@ function is_yum {
 function install_dependencies {
     echo "Installing package dependencies for kayobe"
     if is_dnf; then
-        sudo dnf -y install gcc git vim python3-pyyaml python3-virtualenv libffi-devel
+        sudo dnf -y install gcc git vim python3-pyyaml libffi-devel
     elif is_yum; then
         echo "CentOS 7 is no longer supported"
         exit 1
     else
         sudo apt update
-        sudo apt install -y python-is-python3 python3-dev python3-virtualenv gcc git libffi-dev
+        sudo apt install -y python-is-python3 python3-dev python3-venv gcc git libffi-dev
     fi
 }
 
@@ -166,7 +166,33 @@ function install_venv {
     fi
     if [[ ! -f "${venv_path}/bin/activate" ]]; then
         echo "Creating virtual environment in ${venv_path}"
-        virtualenv -p python3 "${venv_path}"
+        python3 -m venv "${venv_path}"
+        # NOTE: Virtualenv's activate and deactivate scripts reference an
+        # unbound variable.
+        set +u
+        source "${venv_path}/bin/activate"
+        pip install -U pip
+        pip install $pip_paths
+        deactivate
+        set -u
+    else
+        echo "Using existing virtual environment in ${venv_path}"
+    fi
+}
+
+function install_venv_system_site_packages {
+    # Install a virtualenv at $1. The rest of the arguments are passed
+    # directly to pip.
+    venv_path="$1"
+    shift
+    pip_paths="$@"
+    local venv_parent="$(dirname ${venv_path})"
+    if [[ ! -d "$venv_parent" ]]; then
+        mkdir -p "$venv_parent"
+    fi
+    if [[ ! -f "${venv_path}/bin/activate" ]]; then
+        echo "Creating virtual environment in ${venv_path}"
+        python3 -m venv --system-site-packages "${venv_path}"
         # NOTE: Virtualenv's activate and deactivate scripts reference an
         # unbound variable.
         set +u
@@ -192,7 +218,7 @@ function install_kayobe_dev_venv {
 
 function upgrade_kayobe_venv {
     echo "Upgrading kayobe virtual environment in ${KAYOBE_VENV_PATH}"
-    virtualenv -p python3 "${KAYOBE_VENV_PATH}"
+    python3 -m venv "${KAYOBE_VENV_PATH}"
     # NOTE: Virtualenv's activate and deactivate scripts reference an
     # unbound variable.
     set +u
@@ -693,11 +719,15 @@ function tenks_deploy {
 
     environment_setup
 
+    # NOTE: Virtualenv's activate and deactivate scripts reference an
+    # unbound variable.
+    set +u
     # We don't want to use the Kayobe venv.
     deactivate
+    set -u
 
     # Install the Tenks venv.
-    install_venv "${TENKS_VENV_PATH}" "$tenks_path" -c "$UPPER_CONSTRAINTS_FILE"
+    install_venv_system_site_packages "${TENKS_VENV_PATH}" "$tenks_path" -c "$UPPER_CONSTRAINTS_FILE"
     source ${TENKS_VENV_PATH:-$HOME/tenks-test-venv}/bin/activate
 
     ${KAYOBE_SOURCE_PATH}/tools/ansible-galaxy-retried.sh install \
@@ -725,8 +755,12 @@ function tenks_teardown {
 
     environment_setup
 
+    # NOTE: Virtualenv's activate and deactivate scripts reference an
+    # unbound variable.
+    set +u
     # We don't want to use the Kayobe venv.
     deactivate
+    set -u
 
     # Source the Tenks venv.
     source ${TENKS_VENV_PATH:-$HOME/tenks-test-venv}/bin/activate

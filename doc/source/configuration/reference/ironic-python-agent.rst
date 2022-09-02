@@ -25,8 +25,8 @@ The following options cover building of IPA images via Diskimage-builder (DIB).
 Consult the :diskimage-builder-doc:`Diskimage-builder documentation <>` for
 full details.
 
-The default configuration builds a CentOS 8 ramdisk image which includes the
-upstream IPA source code, and has a serial console enabled.
+The default configuration builds a CentOS Stream 8 ramdisk image which includes
+the upstream IPA source code, and has a serial console enabled.
 
 The images are built for Bifrost via ``kayobe seed deployment image build``,
 and for Ironic in the overcloud (if enabled) via ``kayobe overcloud deployment

@@ -22,7 +22,7 @@ OpenStack using Kolla, Ansible and Kayobe. The guide makes use of
 baremetal environment running on a single hypervisor.
 
 To complete the walkthrough you will require a baremetal or VM hypervisor
-running CentOS 8 or Ubuntu Focal 20.04 (since Wallaby 10.0.0) with at least
+running CentOS Stream 8 or Rocky Linux 8/9 or Ubuntu Focal 20.04 (since Wallaby 10.0.0) with at least
 32GB RAM & 80GB disk space.  Preparing the deployment can take some time -
 where possible it is beneficial to snapshot the hypervisor. We advise making a
 snapshot after creating the initial 'seed' VM as this will make additional

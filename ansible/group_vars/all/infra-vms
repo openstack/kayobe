@@ -43,16 +43,20 @@ infra_vm_root_format: qcow2
 # Base image for the infra VM root volume. Default is
 # "https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64.img"
 # when os_distribution is "ubuntu", or
-# https://dl.rockylinux.org/pub/rocky/8/images/Rocky-8-GenericCloud.latest.x86_64.qcow2
-# when os_distribution is "rocky",
+# https://dl.rockylinux.org/pub/rocky/8/images/x86_64/Rocky-8-GenericCloud.latest.x86_64.qcow2
+# when os_distribution is "rocky" and os_release is "8"
 # or
+# https://dl.rockylinux.org/pub/rocky/9/images/x86_64/Rocky-9-GenericCloud.latest.x86_64.qcow2
+# when os_distribution is "rocky" and os_release is "9"
 # "https://cloud.centos.org/centos/8-stream/x86_64/images/CentOS-Stream-GenericCloud-8-20220913.0.x86_64.qcow2"
 # otherwise.
 infra_vm_root_image: >-
   {%- if os_distribution == 'ubuntu' %}
   https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64.img
-  {%- elif os_distribution == 'rocky' %}
-  https://dl.rockylinux.org/pub/rocky/8/images/Rocky-8-GenericCloud.latest.x86_64.qcow2
+  {%- elif os_distribution == 'rocky' and os_release == '8' %}
+  https://dl.rockylinux.org/pub/rocky/8/images/x86_64/Rocky-8-GenericCloud.latest.x86_64.qcow2
+  {%- elif os_distribution == 'rocky' and os_release == '9' %}
+  https://dl.rockylinux.org/pub/rocky/9/images/x86_64/Rocky-9-GenericCloud.latest.x86_64.qcow2
   {%- else -%}
   https://cloud.centos.org/centos/8-stream/x86_64/images/CentOS-Stream-GenericCloud-8-20220913.0.x86_64.qcow2
   {%- endif %}
@@ -74,7 +78,7 @@ infra_vm_hypervisor: "{{ groups['seed-hypervisor'] | first }}"
 infra_vm_wait_connection_ssh_extra_args: '-o StrictHostKeyChecking=no'
 
 # OS family. Needed for config drive generation.
-infra_vm_os_family: "{{ 'RedHat' if os_distribution == 'centos' else 'Debian' }}"
+infra_vm_os_family: "{{ 'RedHat' if os_distribution in ['centos', 'rocky'] else 'Debian' }}"
 
 ###############################################################################
 # Infrastructure VM node configuration.

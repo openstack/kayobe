@@ -40,3 +40,14 @@ ipa_build_dib_elements_extra:
 
 # Build overcloud host image.
 overcloud_dib_build_host_images: {{ build_images }}
+
+# NOTE(bbezak): Kolla does not build CentOS Stream 9 container images.
+# Using Rocky Linux 9 images on CentOS Stream 9 in CI.
+{% if ansible_facts.distribution == "CentOS" and ansible_facts.distribution_major_version == "9" %}
+kolla_base_distro: "rocky"
+os_release: "9-stream"
+
+{% elif ansible_facts.distribution == "Rocky" and ansible_facts.distribution_major_version == "9" %}
+kolla_base_distro: "rocky"
+os_release: "9"
+{% endif %}

@@ -25,13 +25,14 @@
             gather_subset: "{{ kayobe_ansible_setup_gather_subset }}"
           when: not ansible_facts
 
-        - name: Ensure the Python virtualenv package is installed
+        - name: Ensure the Python venv package is installed on Debian family systems
           package:
-            name: python3-virtualenv
+            name: python3-venv
             state: present
-            cache_valid_time: "{{ apt_cache_valid_time if ansible_facts.os_family == 'Debian' else omit }}"
-            update_cache: "{{ True if ansible_facts.os_family == 'Debian' else omit }}"
+            cache_valid_time: "{{ apt_cache_valid_time }}"
+            update_cache: "True"
           become: True
+          when: ansible_facts.os_family == 'Debian'
 
         - name: Ensure kolla-ansible virtualenv has the latest version of pip installed
           pip:
@@ -41,7 +42,7 @@
             # Site packages are required for using the dnf python module, which
             # is not available via PyPI.
             virtualenv_site_packages: True
-            virtualenv_python: "python3.{{ ansible_facts.python.version.minor }}"
+            virtualenv_command: "python3.{{ ansible_facts.python.version.minor }} -m venv"
           become: True
 
         - name: Ensure kolla-ansible virtualenv has docker SDK for python installed

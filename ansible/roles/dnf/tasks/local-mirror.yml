@@ -1,7 +1,7 @@
 ---
 - name: Copy CentOS repo templates
   vars:
-    repo_file_prefix: "{{ 'CentOS-Stream' if ansible_facts.distribution == 'CentOS' else 'Rocky' }}"
+    repo_file_prefix: "{{ ansible_facts.distribution }}{% if ansible_facts.distribution == 'CentOS'%}-Stream{% endif %}"
   template:
     src: "{{ item }}.j2"
     dest: /etc/yum.repos.d/{{ item }}
@@ -23,7 +23,7 @@
     - CentOS-AppStream.repo
     - CentOS-Base.repo
     - CentOS-Extras.repo
-  when: ansible_facts.distribution == 'CentOS'
+  when: ansible_facts.distribution == 'CentOS' and ansible_facts.distribution_major_version == '8'
 
 - name: Update cache
   dnf:
@@ -42,16 +42,16 @@
 
 - name: Copy EPEL repo templates
   template:
-    src: "{{ item }}.j2"
-    dest: /etc/yum.repos.d/{{ item }}
+    src: "{{ item.file }}.j2"
+    dest: /etc/yum.repos.d/{{ item.file }}
     owner: root
     group: root
     mode: 0664
   become: True
   loop:
-    - epel.repo
-    - epel-modular.repo
-  when: dnf_install_epel | bool
+    - { file: 'epel.repo', enabled: true }
+    - { file: 'epel-modular.repo', enabled: "{{ ansible_facts.distribution_major_version == '8' }}" }
+  when: dnf_install_epel | bool and item.enabled | bool
 
 - name: Update cache
   dnf:

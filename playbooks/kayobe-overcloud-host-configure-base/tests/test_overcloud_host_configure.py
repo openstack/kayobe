@@ -42,13 +42,16 @@ def test_network_ethernet_vlan(host):
     assert interface.exists
     assert '192.168.35.1' in interface.addresses
     assert host.file('/sys/class/net/dummy2.42/lower_dummy2').exists
-    routes = host.check_output(
-        '/sbin/ip route show dev dummy2.42 table kayobe-test-route-table')
-    assert '192.168.40.0/24 via 192.168.35.254' in routes
-    rules = host.check_output(
-        '/sbin/ip rule show table kayobe-test-route-table')
-    expected = 'from 192.168.35.0/24 lookup kayobe-test-route-table'
-    assert expected in rules
+    # FIXME(bbezak): remove following IF after ansible-role-interfaces
+    # receive support for custom routes in NetworkManager
+    if not host.system_info.release.startswith('9'):
+       routes = host.check_output(
+           '/sbin/ip route show dev dummy2.42 table kayobe-test-route-table')
+       assert '192.168.40.0/24 via 192.168.35.254' in routes
+       rules = host.check_output(
+           '/sbin/ip rule show table kayobe-test-route-table')
+       expected = 'from 192.168.35.0/24 lookup kayobe-test-route-table'
+       assert expected in rules
 
 
 def test_network_bridge(host):
@@ -206,8 +209,7 @@ def test_apt_custom_package_repository_is_available(host):
     assert host.package("td-agent").is_installed
 
 
-@pytest.mark.parametrize('repo', ["appstream", "baseos", "extras", "epel",
-                                  "epel-modular"])
+@pytest.mark.parametrize('repo', ["appstream", "baseos", "extras", "epel"])
 @pytest.mark.skipif(not _is_dnf_mirror(), reason="DNF OpenDev mirror only for CentOS 8")
 def test_dnf_local_package_mirrors(host, repo):
     # Depends on SITE_MIRROR_FQDN environment variable.
@@ -220,14 +222,14 @@ def test_dnf_local_package_mirrors(host, repo):
     assert os.getenv('SITE_MIRROR_FQDN') in info
 
 
-@pytest.mark.skipif(not _is_dnf(), reason="DNF only supported on CentOS 8/Rocky 8")
+@pytest.mark.skipif(not _is_dnf(), reason="DNF only supported on CentOS/Rocky")
 def test_dnf_custom_package_repository_is_available(host):
     with host.sudo():
         host.check_output("dnf -y install td-agent")
     assert host.package("td-agent").is_installed
 
 
-@pytest.mark.skipif(not _is_dnf(), reason="DNF only supported on CentOS 8/Rocky 8")
+@pytest.mark.skipif(not _is_dnf(), reason="DNF only supported on CentOS/Rocky")
 def test_dnf_automatic(host):
     assert host.package("dnf-automatic").is_installed
     assert host.service("dnf-automatic.timer").is_enabled
@@ -235,7 +237,7 @@ def test_dnf_automatic(host):
 
 
 @pytest.mark.skipif(not _is_dnf(),
-                    reason="tuned profile setting only supported on CentOS 8/Rocky 8")
+                    reason="tuned profile setting only supported on CentOS/Rocky")
 def test_tuned_profile_is_active(host):
     tuned_output = host.check_output("tuned-adm active")
     assert "throughput-performance" in tuned_output

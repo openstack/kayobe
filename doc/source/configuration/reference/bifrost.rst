@@ -50,11 +50,11 @@ configure how this image is built.  Consult the
 :diskimage-builder-doc:`Diskimage-builder documentation <>` for further
 information on building disk images.
 
-The default configuration builds a CentOS 8 whole disk (partitioned) image with
-SELinux disabled and a serial console enabled. `Cloud-init
-<https://cloudinit.readthedocs.io/en/latest/>`__ is used to process the
-configuration drive built by Bifrost, rather than the Bifrost default of
-:diskimage-builder-doc:`simple-init <elements/simple-init/README>`.
+The default configuration builds a whole disk (partitioned) image using the
+selected :ref:`OS distribution <os-distribution>` with serial console enabled,
+and SELinux disabled if CentOS Stream is used. Rocky Linux 9 users should use
+the default method of building images with
+:ref:`Diskimage builder directly <overcloud-dib>`.
 
 ``kolla_bifrost_dib_os_element``
     DIB base OS element. Default is ``{{ os_distribution }}``.
@@ -65,9 +65,9 @@ configuration drive built by Bifrost, rather than the Bifrost default of
     releases.*
 
     List of default DIB elements. Default is ``["disable-selinux",
-    "enable-serial-console", "vm"]`` when ``os_distribution`` is ``centos``, or
-    ``["enable-serial-console", "vm"]`` otherwise. The ``vm`` element is
-    poorly named, and causes DIB to build a whole disk image rather than a
+    "enable-serial-console", "vm"]`` when ``os_distribution`` is ``centos`` or
+    ``rocky``, ``["enable-serial-console", "vm"]`` otherwise. The ``vm`` element
+    is poorly named, and causes DIB to build a whole disk image rather than a
     single partition.
 ``kolla_bifrost_dib_elements_extra``
     *Added in the Train release. Use kolla_bifrost_dib_elements in earlier

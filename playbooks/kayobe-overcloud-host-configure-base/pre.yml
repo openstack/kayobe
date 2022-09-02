@@ -15,7 +15,7 @@
           - pytest-testinfra
           - pytest-html
         virtualenv: "{{ testinfra_venv }}"
-        virtualenv_python: python3
+        virtualenv_command: python3 -m venv
 
     # NOTE(mgoddard): Use the name zzz-overrides.yml to ensure this takes
     # precedence over the standard config files and zz-overrides.yml from
@@ -40,3 +40,4 @@
       command: ip link add dummy{{ item }} type dummy
       become: true
       loop: "{{ range(2, 8) | list }}"
+      when: ansible_facts.os_family == 'Debian' or (ansible_facts.os_family == "RedHat" and ansible_facts.distribution_major_version == "8")

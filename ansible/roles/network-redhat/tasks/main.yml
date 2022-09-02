@@ -10,6 +10,7 @@
     - nm_result is failed
     # Ugh, Ansible's service module doesn't handle uninstalled services.
     - "'Could not find the requested service' not in nm_result.msg"
+  when: ansible_facts.os_family == "RedHat" and ansible_facts.distribution_major_version == "8"
 
 - import_role:
     name: ahuffman.resolv

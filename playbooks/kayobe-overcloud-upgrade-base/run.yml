@@ -85,7 +85,7 @@
           # ipmitool chassis bootdev pxe
           # Error setting Chassis Boot Parameter 5\nError setting Chassis Boot
           # Parameter 0\n
-          when: ansible_os_family != 'Debian'
+          when: ansible_facts.os_family != 'Debian'
 
         # Upgrade Kayobe, and use it to perform an upgrade of the control plane.
 
@@ -118,7 +118,7 @@
           # ipmitool chassis bootdev pxe
           # Error setting Chassis Boot Parameter 5\nError setting Chassis Boot
           # Parameter 0\n
-          when: ansible_os_family != 'Debian'
+          when: ansible_facts.os_family != 'Debian'
 
       environment:
         KAYOBE_CONFIG_SOURCE_PATH: "{{ kayobe_config_src_dir }}"

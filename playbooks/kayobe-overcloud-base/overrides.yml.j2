@@ -52,3 +52,14 @@ kolla_enable_tls_internal: "yes"
 kolla_ironic_pxe_append_params_extra:
   - ipa-insecure=1
 {% endif %}
+
+# NOTE(bbezak): Kolla does not build CentOS Stream 9 container images.
+# Using Rocky Linux 9 images on CentOS Stream 9 in CI.
+{% if ansible_facts.distribution == "CentOS" and ansible_facts.distribution_major_version == "9" %}
+kolla_base_distro: "rocky"
+os_release: "9-stream"
+
+{% elif ansible_facts.distribution == "Rocky" and ansible_facts.distribution_major_version == "9" %}
+kolla_base_distro: "rocky"
+os_release: "9"
+{% endif %}
