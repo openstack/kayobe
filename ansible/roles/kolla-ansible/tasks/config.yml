@@ -98,6 +98,14 @@
     sample: "{{ kolla_ansible_install_dir }}/etc_examples/kolla/passwords.yml"
     overrides: "{{ kolla_ansible_custom_passwords }}"
     vault_password: "{{ kolla_ansible_vault_password }}"
+    vault_addr: "{{ kolla_ansible_vault_addr }}"
+    vault_mount_point: "{{ kolla_ansible_vault_mount_point }}"
+    vault_kv_path: "{{ kolla_ansible_vault_kv_path }}"
+    vault_namespace: "{{ kolla_ansible_vault_namespace }}"
+    vault_role_id: "{{ kolla_ansible_vault_role_id or omit }}"
+    vault_secret_id: "{{ kolla_ansible_vault_secret_id or omit }}"
+    vault_token: "{{ kolla_ansible_vault_token or omit }}"
+    vault_cacert: "{{ kolla_ansible_vault_cacert }}"
     virtualenv: "{{ kolla_ansible_venv or omit }}"
 
 - name: Ensure the Kolla passwords file is copied into place

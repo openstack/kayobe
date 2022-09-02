@@ -51,6 +51,49 @@ def kolla_mergepwd(module, old_path, new_path, final_path):
     module.run_command(cmd, check_rc=True,
                        path_prefix=virtualenv_path_prefix(module))
 
+def kolla_readpwd(module, file_path, vault_addr="", vault_mount_point="", vault_kv_path="",
+                  vault_namespace="", vault_role_id=None, vault_secret_id=None,
+                  vault_token=None, vault_cacert=""):
+    """Run the kolla-readpwd command."""
+
+    if vault_role_id and vault_secret_id:
+        vault_auth = ["--vault-role-id", vault_role_id,
+                      "--vault-secret-id", vault_secret_id]
+    else:
+        vault_auth = ["--vault-token", vault_token]
+
+    cmd = ["kolla-readpwd",
+           "--passwords", file_path,
+           "--vault-addr", vault_addr,
+           "--vault-mount-point", vault_mount_point,
+           "--vault-kv-path", vault_kv_path,
+           "--vault-namespace", vault_namespace,
+           "--vault-cacert", vault_cacert] + vault_auth
+
+    module.run_command(cmd, check_rc=True,
+                       path_prefix=virtualenv_path_prefix(module))
+
+def kolla_writepwd(module, file_path, vault_addr="", vault_mount_point="", vault_kv_path="",
+                  vault_namespace="", vault_role_id=None, vault_secret_id=None,
+                  vault_token=None, vault_cacert=""):
+    """Run the kolla-writepwd command."""
+
+    if vault_role_id and vault_secret_id:
+        vault_auth = ["--vault-role-id", vault_role_id,
+                      "--vault-secret-id", vault_secret_id, ]
+    else:
+        vault_auth = ["--vault-token", vault_token, ]
+    cmd = ["kolla-writepwd",
+           "--passwords", file_path,
+           "--vault-addr", vault_addr,
+           "--vault-mount-point", vault_mount_point,
+           "--vault-kv-path", vault_kv_path,
+           "--vault-namespace", vault_namespace,
+           "--vault-cacert", vault_cacert] + vault_auth
+
+    module.run_command(cmd, check_rc=True,
+                       path_prefix=virtualenv_path_prefix(module))
+
 
 def create_vault_password_file(module):
     """Create a vault password file."""
@@ -128,6 +171,33 @@ def kolla_passwords(module):
             finally:
                 os.unlink(src_path)
 
+        if module.params['vault_addr']:
+            src_path = create_named_tempfile()
+            try:
+                shutil.copyfile(module.params['src'], src_path)
+                kolla_readpwd(module, src_path,
+                              module.params['vault_addr'],
+                              module.params['vault_mount_point'],
+                              module.params['vault_kv_path'],
+                              module.params['vault_namespace'],
+                              module.params['vault_role_id'],
+                              module.params['vault_secret_id'],
+                              module.params['vault_token'],
+                              module.params['vault_cacert'])
+                kolla_mergepwd(module, src_path, temp_file_path, temp_file_path)
+                kolla_genpwd(module, temp_file_path)
+                kolla_writepwd(module, temp_file_path,
+                              module.params['vault_addr'],
+                              module.params['vault_mount_point'],
+                              module.params['vault_kv_path'],
+                              module.params['vault_namespace'],
+                              module.params['vault_role_id'],
+                              module.params['vault_secret_id'],
+                              module.params['vault_token'],
+                              module.params['vault_cacert'])
+            finally:
+                os.unlink(src_path)
+
         # Merge in overrides.
         if module.params['overrides']:
             with tempfile.NamedTemporaryFile(delete=False) as f:
@@ -137,6 +207,16 @@ def kolla_passwords(module):
                 overrides_path = f.name
             try:
                 kolla_mergepwd(module, overrides_path, temp_file_path, temp_file_path)
+                if module.params['vault_addr']:
+                    kolla_writepwd(module, temp_file_path,
+                                   module.params['vault_addr'],
+                                   module.params['vault_mount_point'],
+                                   module.params['vault_kv_path'],
+                                   module.params['vault_namespace'],
+                                   module.params['vault_role_id'],
+                                   module.params['vault_secret_id'],
+                                   module.params['vault_token'],
+                                   module.params['vault_cacert'])
             finally:
                 os.unlink(overrides_path)
 
@@ -189,10 +269,23 @@ def main():
             sample=dict(default='/usr/share/kolla-ansible/etc_examples/kolla/passwords.yml', type='str'),
             src=dict(default='/etc/kolla/passwords.yml', type='str'),
             vault_password=dict(type='str', no_log=True),
+            vault_addr=dict(type='str', no_log=False),
+            vault_mount_point=dict(type='str', no_log=False),
+            vault_kv_path=dict(type='str', no_log=False),
+            vault_namespace=dict(type='str', no_log=False),
+            vault_role_id=dict(type='str', no_log=True),
+            vault_secret_id=dict(type='str', no_log=True),
+            vault_token=dict(type='str', no_log=True),
+            vault_cacert=dict(type='str', no_log=False),
             virtualenv=dict(type='str'),
         ),
         add_file_common_args=True,
         supports_check_mode=True,
+        required_together=[['vault_mount_point', 'vault_addr'],
+                            ['vault_role_id', 'vault_secret_id'],
+                            ['vault_mount_point','vault_kv_path']],
+        mutually_exclusive=[['vault_token', 'vault_role_id'],
+                            ['vault_token', 'vault_secret_id']]
     )
 
     if IMPORT_ERRORS:

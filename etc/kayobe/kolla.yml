@@ -235,6 +235,19 @@
 # remotely on the target nodes. If None, no virtualenv will be used.
 #kolla_ansible_target_venv:
 
+# Password to use to encrypt the kolla-ansible passwords.yml file.
+#kolla_ansible_vault_password:
+
+# Hashi Vault
+#kolla_ansible_vault_addr:
+#kolla_ansible_vault_mount_point:
+#kolla_ansible_vault_kv_path:
+#kolla_ansible_vault_namespace:
+#kolla_ansible_vault_role_id:
+#kolla_ansible_vault_secret_id:
+#kolla_ansible_vault_token:
+#kolla_ansible_vault_cacert:
+
 # Whether TLS is enabled for the external API endpoints. Default is 'no'.
 #kolla_enable_tls_external:
 
