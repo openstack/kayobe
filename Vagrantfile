@@ -6,7 +6,7 @@ Vagrant.configure('2') do |config|
 
   config.vm.network 'private_network', ip: '192.168.33.3', auto_config: false
 
-  config.vm.box = 'centos/8'
+  config.vm.box = 'centos/stream8'
 
   # The default CentOS box comes with a root disk that is too small to fit a
   # deployment on so we need to make it bigger.
