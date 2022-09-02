@@ -3,7 +3,7 @@
   apt:
     name: dbus
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts.os_family == 'Debian'
   become: true
 
 - block:
@@ -17,5 +17,5 @@
 
     - name: Enable the EPEL repository
       command: dnf config-manager --disable epel
-  when: ansible_os_family in ['RedHat', 'Rocky']
+  when: ansible_facts.os_family == 'RedHat'
   become: true

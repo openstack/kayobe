@@ -16,8 +16,10 @@ roles:
   - src: jriguera.configdrive
     # There are no versioned releases of this role.
     version: 29871bf3279ef95fc8f7339b9abd13f869980750
-  - src: MichaelRigart.interfaces
-    version: v1.13.1
+  - src: https://github.com/stackhpc/ansible-role-interfaces.git
+    name: MichaelRigart.interfaces
+    scm: git
+    version: networkmanager
   - src: mrlesmithjr.chrony
     version: v0.1.4
   - src: mrlesmithjr.manage-lvm
@@ -35,7 +37,7 @@ roles:
   - src: stackhpc.grafana-conf
     version: 1.1.1
   - src: stackhpc.libvirt-host
-    version: v1.11.0
+    version: v1.12.1
   - src: stackhpc.libvirt-vm
     version: v1.14.2
   - src: stackhpc.luks
@@ -49,8 +51,8 @@ roles:
   - src: stackhpc.os-networks
     version: v1.5.3
   - src: stackhpc.os-openstackclient
-    version: v1.4.1
+    version: v1.5.0
   - src: stackhpc.os_openstacksdk
-    version: v1.0.1
+    version: v1.3.0
   - src: stackhpc.timezone
     version: 1.2.1

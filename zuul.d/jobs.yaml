@@ -115,14 +115,15 @@
     timeout: 7200
 
 - job:
-    name: kayobe-overcloud-centos8s
+    name: kayobe-overcloud-centos9s
     parent: kayobe-overcloud-base
-    nodeset: kayobe-centos8s
+    nodeset: kayobe-centos9s
+    voting: false
 
 - job:
-    name: kayobe-overcloud-rocky8
+    name: kayobe-overcloud-rocky9
     parent: kayobe-overcloud-base
-    nodeset: kayobe-rocky8
+    nodeset: kayobe-rocky9
 
 - job:
     name: kayobe-overcloud-ubuntu-jammy
@@ -137,9 +138,15 @@
       ironic_boot_mode: "uefi"
 
 - job:
-    name: kayobe-overcloud-tls-centos8s
+    name: kayobe-overcloud-tls-centos9s
     parent: kayobe-overcloud-tls-base
-    nodeset: kayobe-centos8s
+    nodeset: kayobe-centos9s
+    voting: false
+
+- job:
+    name: kayobe-overcloud-tls-rocky9
+    parent: kayobe-overcloud-tls-base
+    nodeset: kayobe-rocky9
 
 - job:
     name: kayobe-overcloud-upgrade-base
@@ -177,14 +184,15 @@
       build_images: false
 
 - job:
-    name: kayobe-seed-centos8s
+    name: kayobe-seed-centos9s
     parent: kayobe-seed-base
-    nodeset: kayobe-centos8s
+    nodeset: kayobe-centos9s
+    voting: false
 
 - job:
-    name: kayobe-seed-rocky8
+    name: kayobe-seed-rocky9
     parent: kayobe-seed-base
-    nodeset: kayobe-rocky8
+    nodeset: kayobe-rocky9
 
 - job:
     name: kayobe-seed-ubuntu-jammy
@@ -203,14 +211,15 @@
       build_images: true
 
 - job:
-    name: kayobe-seed-images-centos8s
+    name: kayobe-seed-images-centos9s
     parent: kayobe-seed-images-base
-    nodeset: kayobe-centos8s
+    nodeset: kayobe-centos9s
+    voting: false
 
 - job:
-    name: kayobe-seed-images-rocky8
+    name: kayobe-seed-images-rocky9
     parent: kayobe-seed-images-base
-    nodeset: kayobe-rocky8
+    nodeset: kayobe-rocky9
 
 - job:
     name: kayobe-seed-images-ubuntu-jammy
@@ -229,14 +238,15 @@
     timeout: 7200
 
 - job:
-    name: kayobe-overcloud-host-configure-centos8s
+    name: kayobe-overcloud-host-configure-centos9s
     parent: kayobe-overcloud-host-configure-base
-    nodeset: kayobe-centos8s
+    nodeset: kayobe-centos9s
+    voting: false
 
 - job:
-    name: kayobe-overcloud-host-configure-rocky8
+    name: kayobe-overcloud-host-configure-rocky9
     parent: kayobe-overcloud-host-configure-base
-    nodeset: kayobe-rocky8
+    nodeset: kayobe-rocky9
 
 - job:
     name: kayobe-overcloud-host-configure-ubuntu-jammy
@@ -278,14 +288,15 @@
     timeout: 5400
 
 - job:
-    name: kayobe-seed-vm-centos8s
+    name: kayobe-seed-vm-centos9s
     parent: kayobe-seed-vm-base
-    nodeset: kayobe-centos8s
+    nodeset: kayobe-centos9s
+    voting: false
 
 - job:
-    name: kayobe-seed-vm-rocky8
+    name: kayobe-seed-vm-rocky9
     parent: kayobe-seed-vm-base
-    nodeset: kayobe-rocky8
+    nodeset: kayobe-rocky9
 
 - job:
     name: kayobe-seed-vm-ubuntu-jammy
@@ -305,14 +316,15 @@
     timeout: 5400
 
 - job:
-    name: kayobe-infra-vm-centos8s
+    name: kayobe-infra-vm-centos9s
     parent: kayobe-infra-vm-base
-    nodeset: kayobe-centos8s
+    nodeset: kayobe-centos9s
+    voting: false
 
 - job:
-    name: kayobe-infra-vm-rocky8
+    name: kayobe-infra-vm-rocky9
     parent: kayobe-infra-vm-base
-    nodeset: kayobe-rocky8
+    nodeset: kayobe-rocky9
 
 - job:
     name: kayobe-infra-vm-ubuntu-jammy

@@ -25,8 +25,8 @@ The following options cover building of IPA images via Diskimage-builder (DIB).
 Consult the :diskimage-builder-doc:`Diskimage-builder documentation <>` for
 full details.
 
-The default configuration builds a CentOS 8 ramdisk image which includes the
-upstream IPA source code, and has a serial console enabled.
+The default configuration builds a CentOS Stream 9 ramdisk image which includes
+the upstream IPA source code, and has a serial console enabled.
 
 The images are built for Bifrost via ``kayobe seed deployment image build``,
 and for Ironic in the overcloud (if enabled) via ``kayobe overcloud deployment
@@ -61,7 +61,7 @@ image build``.
 ``ipa_build_dib_env_default``
     Dictionary of default environment variables to provide to Diskimage Builder
     (DIB) during IPA image build. Default is
-    ``{"DIB_RELEASE": "8-stream", "DIB_REPOLOCATION_ironic_python_agent": "{{
+    ``{"DIB_RELEASE": "9-stream", "DIB_REPOLOCATION_ironic_python_agent": "{{
     ipa_build_source_url }}", "DIB_REPOREF_ironic_python_agent": "{{
     ipa_build_source_version }}", "DIB_REPOREF_requirements": "{{
     openstack_branch }}"}``.
@@ -217,7 +217,7 @@ Agent documentation <>` for full details.
     ``ipa.kernel``.
 ``ipa_kernel_upstream_url``
     URL of Ironic deployment kernel image to download. Default is
-    ``https://tarballs.openstack.org/ironic-python-agent/dib/files/ipa-centos8{{
+    ``https://tarballs.openstack.org/ironic-python-agent/dib/files/ipa-centos9{{
     ipa_images_upstream_url_suffix }}.kernel``.
 ``ipa_kernel_checksum_url``
     URL of checksum of Ironic deployment kernel image. Default is ``{{
@@ -230,7 +230,7 @@ Agent documentation <>` for full details.
     ``ipa.initramfs``.
 ``ipa_ramdisk_upstream_url``
     URL of Ironic deployment ramdisk image to download. Default is
-    ``https://tarballs.openstack.org/ironic-python-agent/dib/files/ipa-centos8{{
+    ``https://tarballs.openstack.org/ironic-python-agent/dib/files/ipa-centos9{{
     ipa_images_upstream_url_suffix }}.initramfs``.
 ``ipa_ramdisk_checksum_url``
     URL of checksum of Ironic deployment ramdisk image. Default is ``{{

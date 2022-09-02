@@ -1,0 +1,45 @@
+- name: Ensure veth network manager connections file exists
+  template:
+    src: veth-nmconnection.j2
+    dest: "/etc/NetworkManager/system-connections/{{ item.device }}.nmconnection"
+    owner: root
+    group: root
+    mode: 0600
+  with_items: "{{ veth_interfaces }}"
+  become: True
+  register: veth_result
+
+- name: Ensure veth peer network manager connections file exists
+  template:
+    src: peer-nmconnection.j2
+    dest: "/etc/NetworkManager/system-connections/{{ item.peer_device }}.nmconnection"
+    owner: root
+    group: root
+    mode: 0600
+  with_items: "{{ veth_interfaces }}"
+  become: True
+  register: peer_result
+
+# NOTE(bbezak) For some reason adding veth pair via loading files to nmcli needs
+# peer device to be loaded first. If not, can't start interface.
+# "Error: Connection activation failed: p-br0-ovs failed to create resources:
+# Failed to create veth interface 'p-br0-ovs' for 'p-br0-ovs': exists"
+- name: Add veth interfaces to network manager
+  shell: |
+    nmcli connection load /etc/NetworkManager/system-connections/{{ item[0].item.peer_device }}.nmconnection &&
+    nmcli connection load /etc/NetworkManager/system-connections/{{ item[0].item.device }}.nmconnection
+  with_together:
+    - "{{ veth_result.results }}"
+    - "{{ peer_result.results }}"
+  when: item[0] is changed or item[1] is changed
+  become: True
+
+- name: Start veth interfaces with network manager
+  shell: |
+    nmcli connection up {{ item[0].item.device }} &&
+    nmcli connection up {{ item[0].item.peer_device }}
+  with_together:
+    - "{{ veth_result.results }}"
+    - "{{ peer_result.results }}"
+  when: item[0] is changed or item[1] is changed
+  become: True

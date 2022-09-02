@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Adds support for Rocky Linux 9 as a host Operating System and base
+    container image. CentOS Stream 8 is not supported anymore.
+upgrade:
+  - |
+    The default value of ``os_distribution`` was changed to ``rocky``.
+    CentOS Stream 8 is not supported anymore.

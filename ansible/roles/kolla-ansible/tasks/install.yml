@@ -50,7 +50,7 @@
     name: "{{ item.name }}"
     state: latest
     virtualenv: "{{ kolla_ansible_venv }}"
-    virtualenv_python: "{{ kolla_ansible_venv_python }}"
+    virtualenv_command: "{{ kolla_ansible_venv_python }} -m venv"
   with_items:
     - { name: pip }
 

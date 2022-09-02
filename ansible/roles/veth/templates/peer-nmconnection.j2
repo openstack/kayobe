@@ -1,0 +1,21 @@
+[connection]
+id={{ item.peer_device }}
+type=veth
+interface-name={{ item.peer_device }}
+
+{% if item.peer_mtu is defined and item.peer_mtu %}
+[ethernet]
+mtu={{ item.peer_mtu }}
+{% endif %}
+
+[veth]
+peer={{ item.device }}
+
+[ipv4]
+method=disabled
+
+[ipv6]
+addr-gen-mode=stable-privacy
+method=disabled
+
+[proxy]
