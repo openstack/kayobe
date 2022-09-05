@@ -79,6 +79,10 @@
 # pip_upper_constraints_file }}.
 #overcloud_dib_upper_constraints_file:
 
+# Upper constraints file for installation of DIB to build overcloud host
+# disk images. Default is empty string.
+#overcloud_dib_dib_upper_constraints_file:
+
 ###############################################################################
 # Dummy variable to allow Ansible to accept this file.
 workaround_ansible_issue_8743: yes
