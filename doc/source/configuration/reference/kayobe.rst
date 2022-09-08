@@ -44,19 +44,21 @@ and provide a mechanism we can use for providing site localisation and
 customisation of OpenStack in combination with some reasonable default values.
 For global configuration options, Kayobe typically uses the following patterns:
 
-- Playbook group variables for the *all* group in
-  ``<kayobe repo>/ansible/group_vars/all/*`` set **global defaults**.  These
-  files should not be modified.
-- Playbook group variables for other groups in
-  ``<kayobe repo>/ansible/group_vars/<group>/*`` set **defaults for some subsets
-  of hosts**.  These files should not be modified.
+- Inventory group variables for the *all* group in
+  ``<kayobe repo>/ansible/inventory/group_vars/all/*`` set **global defaults**.
+  These files should not be modified.
+- Inventory group variables for other groups in
+  ``<kayobe repo>/ansible/inventory/group_vars/<group>/*`` set **defaults for
+  some subsets of hosts**.  These files should not be modified.
 - Extra-vars files in ``${KAYOBE_CONFIG_PATH}/*.yml`` set **custom values
   for global variables** and should be used to apply global site localisation
   and customisation.  By default these variables are commented out.
 
-Additionally, variables can be set on a per-host basis using inventory host
-variables files in ``${KAYOBE_CONFIG_PATH}/inventory/host_vars/*``.  It should
-be noted that variables set in extra-vars files take precedence over per-host
+Additionally, variables can be set on a per-group or per-host basis using
+inventory group or host variables files in
+``${KAYOBE_CONFIG_PATH}/inventory/group_vars/*`` or
+``${KAYOBE_CONFIG_PATH}/inventory/host_vars/*`` respectively.  It should be
+noted that variables set in extra-vars files take precedence over per-host
 variables.
 
 .. _configuring-kayobe:

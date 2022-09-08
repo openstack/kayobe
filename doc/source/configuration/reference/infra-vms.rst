@@ -39,7 +39,7 @@ can be added by setting ``infra_vm_network_interfaces_extra``.
 List of Kayobe applied defaults to required docker_container variables.
 Any of these variables can be overridden with a ``host_var``.
 
-.. literalinclude:: ../../../../ansible/group_vars/all/infra-vms
+.. literalinclude:: ../../../../ansible/inventory/group_vars/all/infra-vms
     :language: yaml
 
 Customisations

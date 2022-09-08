@@ -1,0 +1,18 @@
+---
+upgrade:
+  - |
+    Changes the Kayobe playbook group variables in ``ansible/group_vars/`` to
+    be inventory group variables in ``ansible/inventory/group_vars``. This has
+    two important consequences:
+
+    1. Inventory group variables have a lower precedence than playbook group
+       variables. This means that these variables can now be overridden by
+       group variables in the Kayobe configuration inventory.
+
+    2. The new inventory group variables are automatically used by all Kayobe
+       commands, and do not need to be in the same directory as the playbook
+       being executed. This means that the `previous workaround
+       <https://docs.openstack.org/kayobe/yoga/custom-ansible-playbooks.html#packaging-custom-playbooks-with-configuration>`_
+       for custom playbooks involving symlinking to the group_vars directory
+       from the directory containing the custom playbook is no longer
+       necessary.

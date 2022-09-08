@@ -61,7 +61,6 @@ plugins:
 
    cd ${KAYOBE_CONFIG_PATH}/ansible/
    ln -s ../../../../kayobe/ansible/filter_plugins/ filter_plugins
-   ln -s ../../../../kayobe/ansible/group_vars/ group_vars
    ln -s ../../../../kayobe/ansible/test_plugins/ test_plugins
 
 These symlinks can even be committed to the kayobe-config Git repository.
