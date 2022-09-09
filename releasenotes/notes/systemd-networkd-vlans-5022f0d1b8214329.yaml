@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds support for configuring arbitrarily named VLAN interfaces using
+    ``systemd-networkd``. See `story 2010266
+    <https://storyboard.openstack.org/#!/story/2010266>`__ for details.
