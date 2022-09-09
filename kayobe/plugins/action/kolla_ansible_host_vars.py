@@ -123,7 +123,11 @@ class ActionModule(ActionBase):
                 # tagged interface may be shared between these networks.
                 vlan = self._templar.template("{{ '%s' | net_vlan }}" %
                                               net_name)
-                if vlan and iface.endswith(".%s" % vlan):
+                parent = self._templar.template("{{ '%s' | net_parent }}" %
+                                                net_name)
+                if vlan and parent:
+                    iface = parent
+                elif vlan and iface.endswith(".%s" % vlan):
                     iface = iface.replace(".%s" % vlan, "")
                 return iface
             elif required:
