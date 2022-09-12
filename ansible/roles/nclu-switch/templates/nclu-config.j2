@@ -4,10 +4,10 @@
 {% endfor %}
 
 {% for interface, config in nclu_switch_interface_config.items() %}
-{% if config.description is defined %}
-add {{ config.type | default("interface") }} {{ interface }} alias {{ config.description }}
-{% endif %}
 {% for line in config.config %}
 add {{ config.type | default("interface") }} {{ interface }} {{ line }}
 {% endfor %}
+{% if config.description is defined %}
+add {{ config.type | default("interface") }} {{ interface }} alias {{ config.description }}
+{% endif %}
 {% endfor %}
