@@ -99,6 +99,9 @@ the configuration drive built by Bifrost during provisioning.
     Upper constraints file for installing packages in the virtual environment
     used for building overcloud host disk images. Default is ``{{
     pip_upper_constraints_file }}``.
+``overcloud_dib_dib_upper_constraints_file``
+    Upper constraints file for installation of DIB to build overcloud
+    host disk images. Default is empty string.
 
 Disk images are built with the following command:
 
