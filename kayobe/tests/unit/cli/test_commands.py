@@ -2506,5 +2506,47 @@ class TestHookDispatcher(unittest.TestCase):
             "z-test-alphabetical.yml",
         ]
         mock_path.realpath.side_effect = lambda x: x
-        actual = dispatcher.hooks("config/path", "pre")
+        actual = dispatcher.hooks("config/path", "pre", None)
+        self.assertListEqual(actual, expected_result)
+
+    @mock.patch('kayobe.cli.commands.os.path')
+    def test_hook_filter_all(self, mock_path):
+        mock_command = mock.MagicMock()
+        dispatcher = commands.HookDispatcher(command=mock_command)
+        dispatcher._find_hooks = mock.MagicMock()
+        dispatcher._find_hooks.return_value = [
+            "5-hook.yml",
+            "5-multiple-dashes-in-name.yml",
+            "10-before-hook.yml",
+            "10-hook.yml",
+            "no-prefix.yml",
+            "z-test-alphabetical.yml",
+        ]
+        mock_path.realpath.side_effect = lambda x: x
+        actual = dispatcher.hooks("config/path", "pre", "all")
+        self.assertListEqual(actual, [])
+
+    @mock.patch('kayobe.cli.commands.os.path')
+    def test_hook_filter_one(self, mock_path):
+        mock_command = mock.MagicMock()
+        dispatcher = commands.HookDispatcher(command=mock_command)
+        dispatcher._find_hooks = mock.MagicMock()
+        dispatcher._find_hooks.return_value = [
+            "5-hook.yml",
+            "5-multiple-dashes-in-name.yml",
+            "10-before-hook.yml",
+            "10-hook.yml",
+            "no-prefix.yml",
+            "z-test-alphabetical.yml",
+        ]
+        expected_result = [
+            "5-hook.yml",
+            "10-before-hook.yml",
+            "10-hook.yml",
+            "no-prefix.yml",
+            "z-test-alphabetical.yml",
+        ]
+        mock_path.realpath.side_effect = lambda x: x
+        actual = dispatcher.hooks("config/path", "pre",
+                                  "5-multiple-dashes-in-name.yml")
         self.assertListEqual(actual, expected_result)

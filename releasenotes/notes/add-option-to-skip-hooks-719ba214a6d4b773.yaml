@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds the --skip-hooks argument to ignore hooks for the execution of a
+    command. See `story 2009241
+    <https://storyboard.openstack.org/#!/story/2009241>`_ for details.

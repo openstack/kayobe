@@ -77,6 +77,9 @@ def add_args(parser):
                         action="store_true",
                         help="only print names of tasks, don't run them, "
                              "note this has no affect on kolla-ansible.")
+    parser.add_argument("-sh", "--skip-hooks", action="store", default=None,
+                        help="disables hooks. Specify a pattern to skip"
+                             "specific playbooks. \"all\" skips all playbooks")
 
 
 def _get_kayobe_environment_path(parsed_args):
