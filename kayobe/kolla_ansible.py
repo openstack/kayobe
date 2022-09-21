@@ -81,7 +81,7 @@ def _get_inventory_path(parsed_args, inventory_filename):
 
 def _validate_args(parsed_args, inventory_filename):
     """Validate Kayobe Ansible arguments."""
-    vault.validate_args(parsed_args)
+    vault.enforce_single_password_source(parsed_args)
     result = utils.is_readable_dir(parsed_args.kolla_config_path)
     if not result["result"]:
         LOG.error("Kolla configuration path %s is invalid: %s",

@@ -34,33 +34,53 @@ class TestCase(unittest.TestCase):
             universal_newlines=True)
         self.assertEqual('fake-password', result)
 
-    def test_validate_args_ok(self):
+    def test_enforce_single_password_source_ok(self):
         parser = argparse.ArgumentParser()
         vault.add_args(parser)
         parsed_args = parser.parse_args([])
-        vault.validate_args(parsed_args)
+        vault.enforce_single_password_source(parsed_args)
 
     @mock.patch.dict(os.environ, {"KAYOBE_VAULT_PASSWORD": "test-pass"})
-    def test_validate_args_env(self):
+    def test_enforce_single_password_source_env_kayobe(self):
         parser = argparse.ArgumentParser()
         vault.add_args(parser)
         parsed_args = parser.parse_args([])
-        vault.validate_args(parsed_args)
+        vault.enforce_single_password_source(parsed_args)
+
+    @mock.patch.dict(os.environ, {"ANSIBLE_VAULT_PASSWORD_FILE":
+                                  "/path/to/file"})
+    def test_enforce_single_password_source_env_ansible(self):
+        parser = argparse.ArgumentParser()
+        vault.add_args(parser)
+        parsed_args = parser.parse_args([])
+        vault.enforce_single_password_source(parsed_args)
 
     @mock.patch.dict(os.environ, {"KAYOBE_VAULT_PASSWORD": "test-pass"})
-    def test_validate_args_ask_vault_pass(self):
+    def test_enforce_single_password_source_ask_vault_pass(self):
         parser = argparse.ArgumentParser()
         vault.add_args(parser)
         parsed_args = parser.parse_args(["--ask-vault-pass"])
-        self.assertRaises(SystemExit, vault.validate_args, parsed_args)
+        self.assertRaises(SystemExit, vault.enforce_single_password_source,
+                          parsed_args)
 
     @mock.patch.dict(os.environ, {"KAYOBE_VAULT_PASSWORD": "test-pass"})
-    def test_validate_args_vault_password_file(self):
+    def test_enforce_single_password_source_vault_password_file(self):
         parser = argparse.ArgumentParser()
         vault.add_args(parser)
         parsed_args = parser.parse_args(["--vault-password-file",
                                          "/path/to/file"])
-        self.assertRaises(SystemExit, vault.validate_args, parsed_args)
+        self.assertRaises(SystemExit, vault.enforce_single_password_source,
+                          parsed_args)
+
+    @mock.patch.dict(os.environ, {"KAYOBE_VAULT_PASSWORD": "test-pass",
+                                  "ANSIBLE_VAULT_PASSWORD_FILE":
+                                  "/path/to/file"})
+    def test_enforce_single_password_source_vault_both_env(self):
+        parser = argparse.ArgumentParser()
+        vault.add_args(parser)
+        parsed_args = parser.parse_args([])
+        self.assertRaises(SystemExit, vault.enforce_single_password_source,
+                          parsed_args)
 
     @mock.patch.object(vault.getpass, 'getpass')
     def test__ask_vault_pass(self, mock_getpass):
@@ -102,7 +122,7 @@ class TestCase(unittest.TestCase):
         mock_ask.assert_called_once_with()
 
     @mock.patch.object(vault, '_read_vault_password_file')
-    def test_update_environment_file(self, mock_read):
+    def test_update_environment_file_arg(self, mock_read):
         mock_read.return_value = "test-pass"
         parser = argparse.ArgumentParser()
         vault.add_args(parser)
@@ -111,4 +131,18 @@ class TestCase(unittest.TestCase):
         env = {}
         vault.update_environment(parsed_args, env)
         self.assertEqual({"KAYOBE_VAULT_PASSWORD": "test-pass"}, env)
+        mock_read.assert_called_once_with("/path/to/file")
+
+    @mock.patch.dict(os.environ, {"ANSIBLE_VAULT_PASSWORD_FILE":
+                                  "/path/to/file"})
+    @mock.patch.object(vault, '_read_vault_password_file')
+    def test_update_environment_file_env(self, mock_read):
+        mock_read.return_value = "test-pass"
+        parser = argparse.ArgumentParser()
+        vault.add_args(parser)
+        parsed_args = parser.parse_args([])
+        env = {"ANSIBLE_VAULT_PASSWORD_FILE": "/path/to/file"}
+        vault.update_environment(parsed_args, env)
+        self.assertEqual({"KAYOBE_VAULT_PASSWORD": "test-pass",
+                          "ANSIBLE_VAULT_PASSWORD_FILE": "/path/to/file"}, env)
         mock_read.assert_called_once_with("/path/to/file")

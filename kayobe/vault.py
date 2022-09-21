@@ -24,6 +24,7 @@ from kayobe import utils
 LOG = logging.getLogger(__name__)
 
 VAULT_PASSWORD_ENV = "KAYOBE_VAULT_PASSWORD"
+VAULT_PASSWORD_FILE_ENV = "ANSIBLE_VAULT_PASSWORD_FILE"
 
 
 def _get_vault_password_helper():
@@ -45,7 +46,8 @@ def _get_default_vault_password_file():
     It is possible to use an environment variable to avoid typing the vault
     password.
     """
-    if not os.getenv(VAULT_PASSWORD_ENV):
+    if (VAULT_PASSWORD_ENV not in os.environ and
+            VAULT_PASSWORD_FILE_ENV not in os.environ):
         return None
     return _get_vault_password_helper()
 
@@ -75,23 +77,48 @@ def build_args(parsed_args, password_file_arg_name):
     return cmd
 
 
-def validate_args(parsed_args):
-    """Validate command line arguments."""
-    # Ensure that a password prompt or file has not been requested if the
-    # password environment variable is set.
-    if VAULT_PASSWORD_ENV not in os.environ:
-        return
+def _validate_environment_variables():
+    """Verify that only one password environment variable is set"""
+
+    invalid_source = None
+    password_env_var = None
+    if VAULT_PASSWORD_ENV in os.environ:
+        password_env_var = VAULT_PASSWORD_ENV
+        if VAULT_PASSWORD_FILE_ENV in os.environ:
+            invalid_source = "$" + VAULT_PASSWORD_FILE_ENV
+    elif (VAULT_PASSWORD_FILE_ENV in os.environ):
+        password_env_var = VAULT_PASSWORD_FILE_ENV
+    return invalid_source, password_env_var
+
+
+def _validate_args(parsed_args):
+    """Verify that no conflicting arguments are being used"""
 
     helper = _get_vault_password_helper()
-    invalid_arg = None
+    invalid_source = None
     if parsed_args.ask_vault_pass:
-        invalid_arg = "--ask-vault-pass"
+        invalid_source = "--ask-vault-pass"
     elif parsed_args.vault_password_file != helper:
-        invalid_arg = "--vault-password-file"
+        invalid_source = "--vault-password-file"
+    return invalid_source
 
-    if invalid_arg:
+
+def enforce_single_password_source(parsed_args):
+    """Verify that a password is only being received from a single source"""
+    # Ensure that a password prompt or file has not been requested if a
+    # password environment variable is set, and that only one password
+    # environment variable is set
+
+    invalid_source, password_env_var = _validate_environment_variables()
+    if not password_env_var:
+        return
+
+    if not invalid_source and password_env_var:
+        invalid_source = _validate_args(parsed_args)
+
+    if invalid_source:
         LOG.error("Cannot specify %s when $%s is specified" %
-                  (invalid_arg, VAULT_PASSWORD_ENV))
+                  (invalid_source, password_env_var))
         sys.exit(1)
 
 
@@ -124,15 +151,20 @@ def update_environment(parsed_args, env):
     :param parsed_args: Parsed command line arguments.
     :params env: Dict of environment variables to update.
     """
-    # If the Vault password has been specified via --vault-password-file, or a
-    # prompt has been requested via --ask-vault-pass, ensure the environment
-    # variable is set, so that it can be referenced by playbooks to generate
-    # the kolla-ansible passwords.yml file.
+    # If the Vault password has been specified via --vault-password-file, a
+    # prompt has been requested via --ask-vault-pass, or the
+    # $ANSIBLE_VAULT_PASSWORD_FILE environment variable is set, ensure the
+    # $KAYOBE_PASSWORD_ENV environment variable is set, so that it can be
+    # referenced by playbooks to generate the kolla-ansible passwords.yml
+    # file.
     if VAULT_PASSWORD_ENV in env:
         return
 
     vault_password = None
-    if parsed_args.ask_vault_pass:
+    if VAULT_PASSWORD_FILE_ENV in os.environ:
+        vault_password = _read_vault_password_file(
+            os.environ[VAULT_PASSWORD_FILE_ENV])
+    elif parsed_args.ask_vault_pass:
         vault_password = _ask_vault_pass()
     elif parsed_args.vault_password_file:
         vault_password = _read_vault_password_file(
