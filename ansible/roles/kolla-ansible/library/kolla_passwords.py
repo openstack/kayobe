@@ -76,6 +76,12 @@ def vault_encrypt(module, file_path):
 
 def vault_decrypt(module, file_path):
     """Decrypt a file using Ansible vault"""
+
+    # Return immediately if file not encrypted
+    with open(file_path, 'r') as f:
+        if not f.readline()[:15] == "$ANSIBLE_VAULT;":
+            return
+
     password_path = create_vault_password_file(module)
     try:
         cmd = ["ansible-vault", "decrypt",
