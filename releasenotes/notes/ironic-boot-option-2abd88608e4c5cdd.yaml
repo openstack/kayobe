@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    Removes the ``kolla_ironic_default_boot_option`` variable and the
+    ``inspector_rule_local_boot`` inspector rule, since Ironic has removed
+    support for defining a boot option configuration. The ``Set local boot
+    capability`` rule should be removed from Bifrost and Ironic Inspector by
+    the operator.

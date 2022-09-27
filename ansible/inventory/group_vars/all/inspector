@@ -133,15 +133,6 @@ inspector_rule_deploy_ramdisk:
       path: "driver_info/deploy_ramdisk"
       value: "{{ inspector_rule_var_deploy_ramdisk }}"
 
-# Ironic inspector rule to set local boot capability
-inspector_rule_local_boot:
-  description: "Set local boot capability"
-  conditions: []
-  actions:
-    - action: "set-capability"
-      name: "boot_option"
-      value: "local"
-
 # Ironic inspector rule to initialise root device hints.
 inspector_rule_root_hint_init:
   description: "Initialise root device hint"
@@ -306,7 +297,6 @@ inspector_rules_default:
   - "{{ inspector_rule_ipmi_credentials }}"
   - "{{ inspector_rule_deploy_kernel }}"
   - "{{ inspector_rule_deploy_ramdisk }}"
-  - "{{ inspector_rule_local_boot }}"
   - "{{ inspector_rule_root_hint_init }}"
   - "{{ inspector_rule_root_hint_serial }}"
   - "{{ inspector_rule_set_pxe_interface_mac }}"
