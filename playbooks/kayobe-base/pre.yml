@@ -91,6 +91,15 @@
           command: >-
             git clone {{ kayobe_config_src_dir }} {{ previous_kayobe_config_src_dir }} -b stable/{{ previous_release | lower }}
 
+        - name: Ensure previous kolla-ansible directory exists
+          file:
+            path: "{{ previous_kolla_ansible_src_dir }}"
+            state: directory
+
+        - name: Ensure previous kolla-ansible repository is cloned
+          command: >-
+            git clone {{ kolla_ansible_src_dir }} {{ previous_kolla_ansible_src_dir }} -b stable/{{ previous_release | lower }}
+
         - name: Ensure previous kayobe is executed in verbose mode
           lineinfile:
             path: "{{ previous_kayobe_src_dir }}/dev/config.sh"
@@ -103,8 +112,7 @@
           vars:
             kayobe_galaxy_requirements_src_dir: "{{ previous_kayobe_src_dir }}"
             kayobe_galaxy_requirements_branch: "stable/{{ previous_release | lower }}"
-          # TODO(mgoddard): Always do this when previous release is Yoga.
-          when: previous_release != 'xena'
+          when: previous_release == 'yoga'
 
         - name: Update kolla-ansible requirements.yml
           include_role:
@@ -113,7 +121,6 @@
             kayobe_galaxy_requirements_src_dir: "{{ previous_kolla_ansible_src_dir }}"
             kayobe_galaxy_requirements_branch: "stable/{{ previous_release | lower }}"
             kayobe_galaxy_requirements_dest_path: "/tmp/previous-kolla-ansible-requirements.yml"
-          # TODO(mgoddard): Always do this when previous release is Yoga.
-          when: previous_release != 'xena'
+          when: previous_release == 'yoga'
 
       when: is_upgrade

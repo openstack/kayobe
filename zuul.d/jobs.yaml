@@ -88,7 +88,7 @@
       - ^zuul.d/.*
     vars:
       # Name of the release to upgrade from for upgrade jobs.
-      previous_release: xena
+      previous_release: yoga
       logs_dir: "/tmp/logs"
       ansible_collection_kolla_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/ansible-collection-kolla'].src_dir }}"
       kayobe_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/kayobe'].src_dir }}"
@@ -96,6 +96,7 @@
       kolla_ansible_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/kolla-ansible'].src_dir }}"
       previous_kayobe_src_dir: "{{ ansible_env.PWD ~ '/previous/kayobe' }}"
       previous_kayobe_config_src_dir: "{{ ansible_env.PWD ~ '/previous/kayobe-config' }}"
+      previous_kolla_ansible_src_dir: "{{ ansible_env.PWD ~ '/previous/kolla-ansible' }}"
       requirements_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/requirements'].src_dir }}"
       tenks_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/tenks'].src_dir }}"
       is_upgrade: "{{ 'upgrade' in zuul.job }}"
