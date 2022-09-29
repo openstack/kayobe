@@ -1,12 +1,18 @@
 ---
 # List of default packages to install.
 dev_tools_packages_default:
-  # NOTE(mgoddard): The acl package is required for the setfacl command, used by
-  # become_user.
-  - acl
   - bash-completion
   - tcpdump
   - vim
 
+# List of extra packages to install.
+dev_tools_packages_extra: []
+
+# List of required packages to install.
+dev_tools_packages_system:
+  # NOTE(mgoddard): The acl package is required for the setfacl command, used by
+  # become_user.
+  - acl
+
 # List of packages to install.
-dev_tools_packages: "{{ dev_tools_packages_default }}"
+dev_tools_packages: "{{ dev_tools_packages_default + dev_tools_packages_extra + dev_tools_packages_system }}"
