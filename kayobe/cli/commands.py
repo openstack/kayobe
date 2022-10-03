@@ -239,6 +239,13 @@ class ControlHostBootstrap(KayobeAnsibleMixin, KollaAnsibleMixin, VaultMixin,
       exists.
     """
 
+    def get_parser(self, prog_name):
+        parser = super(ControlHostBootstrap, self).get_parser(prog_name)
+        group = parser.add_argument_group("Host Bootstrap")
+        group.add_argument("--add-known-hosts", action='store_true',
+                           help="add SSH known hosts entries for each host")
+        return parser
+
     def take_action(self, parsed_args):
         self.app.LOG.debug("Bootstrapping Kayobe Ansible control host")
         ansible.install_galaxy_roles(parsed_args)
@@ -267,6 +274,11 @@ class ControlHostBootstrap(KayobeAnsibleMixin, KollaAnsibleMixin, VaultMixin,
             playbooks = _build_playbook_list("public-openrc")
             self.run_kayobe_playbooks(parsed_args, playbooks,
                                       ignore_limit=True)
+
+        if parsed_args.add_known_hosts:
+            self.app.LOG.debug("Adding to known_hosts")
+            playbooks = _build_playbook_list("ssh-known-host")
+            self.run_kayobe_playbooks(parsed_args, playbooks)
 
 
 class ControlHostUpgrade(KayobeAnsibleMixin, VaultMixin, Command):

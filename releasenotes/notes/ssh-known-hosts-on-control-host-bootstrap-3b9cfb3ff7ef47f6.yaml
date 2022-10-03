@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Adds the ``--add-known-hosts`` option to control host bootstrap. This will add
+    SSH known hosts entries for each host. This should provide a way around
+    the issues described in `story 2001670
+    <https://storyboard.openstack.org/#!/story/2001670>`__.
