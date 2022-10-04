@@ -621,16 +621,22 @@ function overcloud_test {
 }
 
 function write_bifrost_clouds_yaml {
-    # Generate a clouds.yaml for accessing the Ironic API in Bifrost.
+    SEED_IP="192.168.33.5"
+    
+    # Pull clouds.yaml from Bifrost container and change certificate path.
     if [[ ! -f ~/.config/openstack/clouds.yaml ]]; then
         mkdir -p ~/.config/openstack
-        cat << EOF > ~/.config/openstack/clouds.yaml
----
-clouds:
-  bifrost:
-    auth_type: "none"
-    endpoint: http://192.168.33.5:6385
-EOF
+        scp stack@$SEED_IP:/home/stack/.config/openstack/clouds.yaml ~/.config/openstack/clouds.yaml
+        sed -i 's|/home/stack/.config/openstack/bifrost.crt|~/.config/bifrost/bifrost.crt|g' ~/.config/openstack/clouds.yaml
+    else
+        echo "Not updating clouds.yaml file because it already exists at $HOME/.config/openstack/clouds.yaml. Try removing it if authentication against Bifrost fails."
+    fi
+    #Pull Bifrost PEM certificate from seed.
+    if [[ ! -f ~/.config/openstack/bifrost.crt ]]; then
+        mkdir -p ~/.config/openstack
+        scp stack@$SEED_IP:/home/stack/.config/openstack/bifrost.crt ~/.config/openstack/bifrost.crt
+    else
+        echo "Not updating Bifrost certificate file because it already exists at $HOME/.config/openstack/bifrost.crt. Try removing it if authentication against Bifrost fails."
     fi
 }
 
