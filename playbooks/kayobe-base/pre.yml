@@ -112,7 +112,6 @@
           vars:
             kayobe_galaxy_requirements_src_dir: "{{ previous_kayobe_src_dir }}"
             kayobe_galaxy_requirements_branch: "stable/{{ previous_release | lower }}"
-          when: previous_release == 'yoga'
 
         - name: Update kolla-ansible requirements.yml
           include_role:
@@ -121,6 +120,5 @@
             kayobe_galaxy_requirements_src_dir: "{{ previous_kolla_ansible_src_dir }}"
             kayobe_galaxy_requirements_branch: "stable/{{ previous_release | lower }}"
             kayobe_galaxy_requirements_dest_path: "/tmp/previous-kolla-ansible-requirements.yml"
-          when: previous_release == 'yoga'
 
       when: is_upgrade
