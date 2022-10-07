@@ -415,10 +415,12 @@ class SeedHypervisorHostConfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
     * Optionally, create a virtualenv for remote target hosts.
     * Optionally, wipe unmounted disk partitions (--wipe-disks).
     * Configure user accounts, group associations, and authorised SSH keys.
+    * Configure SELinux.
     * Configure the host's network interfaces.
     * Configure a firewall.
     * Configure tuned profile.
     * Set sysctl parameters.
+    * Configure IP routing and source NAT.
     * Configure timezone and ntp.
     * Optionally, configure software RAID arrays.
     * Optionally, configure encryption.
@@ -874,7 +876,7 @@ class InfraVMHostConfigure(KayobeAnsibleMixin, VaultMixin,
     * Configure tuned profile.
     * Set sysctl parameters.
     * Disable bootstrap interface configuration.
-    * Configure timezone.
+    * Configure timezone and ntp.
     * Optionally, configure software RAID arrays.
     * Optionally, configure encryption.
     * Configure LVM volumes.
