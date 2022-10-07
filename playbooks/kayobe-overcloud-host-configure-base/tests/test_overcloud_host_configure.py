@@ -173,7 +173,7 @@ def test_ntp_running(host):
 def test_ntp_non_default_time_server(host):
     # Tests that the NTP pool has been changed from pool.ntp.org to
     # time.cloudflare.com
-    if ('centos' in host.system_info.distribution.lower() or 
+    if ('centos' in host.system_info.distribution.lower() or
        'rocky' in host.system_info.distribution.lower()):
         chrony_config = host.file("/etc/chrony.conf")
     else:
