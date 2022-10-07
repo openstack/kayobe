@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Adds missing Ansible group following the addition of support in Kolla
+    Ansible for forwarding Prometheus alerts to Microsoft Teams.
