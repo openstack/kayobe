@@ -1779,7 +1779,7 @@ class OvercloudPostConfigure(KayobeAnsibleMixin, VaultMixin, Command):
       Builder (DIB), if building deployment images locally.
     * Register ironic inspector introspection rules with the overcloud
       inspector service.
-    * Register a provisioning network with glance.
+    * Register a provisioning network with neutron.
     * Configure Grafana for control plane.
     * Configure serial consoles for the ironic nodes
     """
