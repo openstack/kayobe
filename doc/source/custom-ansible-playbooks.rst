@@ -213,6 +213,24 @@ you could do the following::
 
 The sequence number for the ``foo.yml`` playbook is ``10``.
 
+Hook execution can be disabled with ``--skip-hooks``. ``--skip-hooks all`` will halt hook execution altogether.
+``--skip-hooks <pattern>`` will skip playbooks matching the ``<pattern>``.
+
+For example, if the following playbooks exist:
+
+- ``$KAYOBE_CONFIG_PATH/hooks/control-host-bootstrap/pre.d/example1.yml``
+- ``$KAYOBE_CONFIG_PATH/hooks/control-host-bootstrap/pre.d/example2.yml``
+- ``$KAYOBE_CONFIG_PATH/hooks/control-host-bootstrap/post.d/example1.yml``
+
+And the following command is used::
+
+    (kayobe) $ kayobe control host bootstrap --skip-hooks example1
+
+Only ``$KAYOBE_CONFIG_PATH/hooks/control-host-bootstrap/pre.d/example2.yml`` will be executed.
+
+This example assumes that the term ``example1`` does not appear in
+``$KAYOBE_CONFIG_PATH``. If it did, all hooks would be skipped.
+
 Failure handling
 ----------------
 

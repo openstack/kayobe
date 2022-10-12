@@ -15,6 +15,7 @@
 import glob
 import json
 import os
+import re
 import sys
 
 from cliff.command import Command
@@ -190,18 +191,27 @@ class HookDispatcher(CommandHook):
         self.logger.debug("Discovered the following hooks: %s" % hooks)
         return hooks
 
-    def hooks(self, config_path, target):
-        hooks = self._find_hooks(config_path, target)
+    def hooks(self, config_path, target, filter):
+        hooks_out = []
+        if filter == "all":
+            self.logger.debug("Skipping all hooks")
+            return hooks_out
+        hooks_in = self._find_hooks(config_path, target)
         # Hooks can be prefixed with a sequence number to adjust running order,
         # e.g 10-my-custom-playbook.yml. Sort by sequence number.
-        hooks = sorted(hooks, key=_split_hook_sequence_number)
-        # Resolve symlinks so that we can reference roles.
-        hooks = [os.path.realpath(hook) for hook in hooks]
-        return hooks
+        hooks_in = sorted(hooks_in, key=_split_hook_sequence_number)
+        for hook in hooks_in:
+            # Resolve symlinks so that we can reference roles.
+            hook = os.path.realpath(hook)
+            if filter and re.search(filter, hook):
+                self.logger.debug("Skipping hook: %s", hook)
+            else:
+                hooks_out.append(hook)
+        return hooks_out
 
     def run_hooks(self, parsed_args, target):
         config_path = parsed_args.config_path
-        hooks = self.hooks(config_path, target)
+        hooks = self.hooks(config_path, target, parsed_args.skip_hooks)
         if hooks:
             self.logger.debug("Running hooks: %s" % hooks)
             self.command.run_kayobe_playbooks(parsed_args, hooks)
