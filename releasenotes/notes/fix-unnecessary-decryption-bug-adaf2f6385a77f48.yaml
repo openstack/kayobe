@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fixes an error when generating passwords.yml if an unencrypted file exists
+    but a password has been supplied.
