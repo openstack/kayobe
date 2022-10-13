@@ -315,6 +315,8 @@ oversight or testing.
 
 Apt
 ===
+*tags:*
+  | ``apt``
 
 On Ubuntu, Apt is used to manage packages and package repositories.
 
