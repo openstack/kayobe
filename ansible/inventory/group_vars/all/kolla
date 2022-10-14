@@ -600,9 +600,15 @@ kolla_ansible_default_custom_passwords: >-
              if compute_libvirt_enabled | bool and compute_libvirt_enable_sasl | bool
              else {}) }}
 
+# Dictionary containing extra custom passwords to add or override in the Kolla
+# passwords file.
+kolla_ansible_extra_custom_passwords: {}
+
 # Dictionary containing custom passwords to add or override in the Kolla
 # passwords file.
-kolla_ansible_custom_passwords: "{{ kolla_ansible_default_custom_passwords }}"
+kolla_ansible_custom_passwords: >-
+  {{ kolla_ansible_default_custom_passwords |
+     combine(kolla_ansible_extra_custom_passwords) }}
 
 ###############################################################################
 # OpenStack API addresses.
