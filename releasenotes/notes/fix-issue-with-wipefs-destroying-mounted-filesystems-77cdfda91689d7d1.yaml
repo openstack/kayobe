@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an issue where a host configure with ``--wipe-disks`` would
+    wipe block devices that were mounted. See `story
+    2010367 <https://storyboard.openstack.org/#!/story/2010367>`__ for details.
