@@ -31,18 +31,22 @@ can be activated by generating and then sourcing the bash completion script::
 Working with Ansible Vault
 --------------------------
 
-If Ansible vault has been used to encrypt Kayobe configuration files, it will
+If Ansible Vault has been used to encrypt Kayobe configuration files, it will
 be necessary to provide the ``kayobe`` command with access to vault password.
-There are three options for doing this:
+There are four options for doing this:
 
 Prompt
     Use ``kayobe --ask-vault-pass`` to prompt for the password.
 File
     Use ``kayobe --vault-password-file <file>`` to read the password from a
     (plain text) file.
-Environment variable
+Environment variable: ``KAYOBE_VAULT_PASSWORD``
     Export the environment variable ``KAYOBE_VAULT_PASSWORD`` to read the
     password from the environment.
+Environment variable: ``ANSIBLE_VAULT_PASSWORD_FILE``
+    Export the environment variable ``ANSIBLE_VAULT_PASSWORD_FILE`` to read the
+    password from a (plain text) file, with the path to that file being read
+    from the environment.
 
 Limiting Hosts
 --------------

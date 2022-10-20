@@ -115,7 +115,7 @@ def _get_inventories_paths(parsed_args, env_path):
 
 def _validate_args(parsed_args, playbooks):
     """Validate Kayobe Ansible arguments."""
-    vault.validate_args(parsed_args)
+    vault.enforce_single_password_source(parsed_args)
     result = utils.is_readable_dir(parsed_args.config_path)
     if not result["result"]:
         LOG.error("Kayobe configuration path %s is invalid: %s",
