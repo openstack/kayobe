@@ -4,6 +4,7 @@
     module: dellos6_config
     provider: "{{ dell_switch_provider }}"
     src: dellos6-config.j2
+    save: "{{ dell_switch_save | bool }}"
   when: dell_switch_type == 'dellos6'
 
 - name: Ensure DellOS9 switches are configured
@@ -11,6 +12,7 @@
     module: dellos9_config
     provider: "{{ dell_switch_provider }}"
     src: dellos9-config.j2
+    save: "{{ dell_switch_save | bool }}"
   when: dell_switch_type == 'dellos9'
 
 - name: Ensure DellOS10 switches are configured
@@ -18,4 +20,5 @@
     module: dellos10_config
     provider: "{{ dell_switch_provider }}"
     src: "{{ lookup('template', 'dellos10-config.j2') }}"
+    save: "{{ dell_switch_save | bool }}"
   when: dell_switch_type == 'dellos10'

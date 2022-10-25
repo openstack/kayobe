@@ -122,6 +122,7 @@
       dell_switch_provider: "{{ switch_dellos_provider }}"
       dell_switch_config: "{{ switch_config }}"
       dell_switch_interface_config: "{{ switch_interface_config }}"
+      dell_switch_save: "{{ switch_config_save }}"
 
 - name: Ensure Dell PowerConnect physical switches are configured
   hosts: switches_of_type_dell-powerconnect:&switches_in_display_mode_False

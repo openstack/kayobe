@@ -229,6 +229,9 @@ Configuration for these devices is applied using the ``dellos6_config``,
 
 ``switch_type`` should be set to ``dellos6``, ``dellos9``, or ``dellos10``.
 
+``switch_config_save`` may be set to ``true`` to enable saving configuration
+after it has been applied.
+
 Provider
 ^^^^^^^^
 
