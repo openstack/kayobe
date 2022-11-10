@@ -227,7 +227,6 @@ kolla_feature_flags:
   - telegraf
   - trove
   - trove_singletenant
-  - venus
   - vitrage
   - vitrage_prometheus_datasource
   - watcher
