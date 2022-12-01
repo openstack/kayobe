@@ -25,7 +25,7 @@
             kolla_ansible_passwords_path: "{{ temp_path }}/passwords.yml"
             # Required config.
             kolla_base_distro: "fake-distro"
-            kolla_install_type: "fake-install-type"
+            kolla_base_distro_version: "1.23"
             kolla_docker_namespace: "fake-namespace"
             kolla_openstack_release: "fake-release"
             kolla_internal_vip_address: "10.0.0.1"

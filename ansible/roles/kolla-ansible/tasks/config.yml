@@ -1,4 +1,12 @@
 ---
+# TODO(mgoddard): Remove this task in the Antelope release.
+- name: Fail if kolla_install_type is defined
+  fail:
+    msg: >
+      Support for binary images was removed in the Zed release.
+      kolla_install_type should no longer be set.
+  when: kolla_install_type is defined
+
 # NOTE: We're not looping over the two inventory files to avoid having the file
 # content displayed in the ansible-playbook output.
 

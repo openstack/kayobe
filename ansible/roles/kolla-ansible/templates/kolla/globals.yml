@@ -11,11 +11,10 @@
 # Valid options are [ COPY_ONCE, COPY_ALWAYS ]
 config_strategy: "COPY_ALWAYS"
 
-# Valid options are ['centos', 'debian', 'oraclelinux', 'rhel', 'ubuntu']
+# Valid options are ['centos', 'debian', 'rocky', 'ubuntu']
 kolla_base_distro: "{{ kolla_base_distro }}"
 
-# Valid options are [ binary, source ]
-kolla_install_type: "{{ kolla_install_type }}"
+kolla_base_distro_version: "{{ kolla_base_distro_version }}"
 
 # Valid option is Docker repository tag
 openstack_release: "{{ kolla_openstack_release }}"
@@ -520,20 +519,6 @@ ironic_inspector_kernel_cmdline_extras:
 # Configure telegraf to use the docker daemon itself as an input for
 # telemetry data.
 #telegraf_enable_docker_input: "no"
-
-#####################################
-# Bifrost - Bare Metal Provisioning
-#####################################
-
-# The Bifrost deployment image only supports a source installation.
-bifrost_install_type: source
-
-#################################
-# Monasca - Monitoring & Alerting
-#################################
-
-# Monasca doesn't support binary type container builds
-monasca_install_type: source
 
 ############################################
 # Grafana - Data visualisation & Monitoring

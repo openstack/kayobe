@@ -114,9 +114,9 @@ accessed.
 
 ``kolla_base_distro``
     Kolla base container image distribution. Default is ``centos``.
-``kolla_install_type``
-    Kolla container image type: ``binary`` or ``source``. Default is
-    ``source``.
+``kolla_base_distro_version``
+    Kolla base container image distribution version. Default is dependent on
+    ``kolla_base_distro``.
 ``kolla_docker_registry``
     URL of docker registry to use for Kolla images. Default is not set, in
     which case Dockerhub will be used.
@@ -138,24 +138,23 @@ accessed.
     (e.g. ``rocky``) on stable branches and tagged releases, or ``master`` on
     the Kayobe ``master`` branch.
 
-For example, to deploy Kolla ``centos`` ``binary`` images with a namespace of
+For example, to deploy Kolla ``centos`` images with a namespace of
 ``example``, and a private Docker registry at ``registry.example.com:4000``,
-tagged with ``7.0.0.1``:
+and the ``zed`` release.
 
 .. code-block:: yaml
    :caption: ``$KAYOBE_CONFIG_PATH/kolla.yml``
 
    kolla_base_distro: centos
-   kolla_install_type: binary
    kolla_docker_namespace: example
    kolla_docker_registry: registry.example.com:4000
-   kolla_openstack_release: 7.0.0.1
+   kolla_openstack_release: zed
 
 The deployed ``ironic-api`` image would be referenced as follows:
 
 .. code-block:: console
 
-   registry.example.com:4000/example/centos-binary-ironic-api:7.0.0.1
+   registry.example.com:4000/example/ironic-api:zed-centos-stream9
 
 Ansible
 -------

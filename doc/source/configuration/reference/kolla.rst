@@ -74,10 +74,10 @@ affect :ref:`Kolla Ansible configuration <configuration-kolla-ansible-global>`.
 
 ``kolla_base_distro``
     Kolla base container image distribution. Options are ``centos``,
-    ``debian``, or ``ubuntu``. Default is ``{{ os_distribution }}``.
-``kolla_install_type``
-    Kolla container image type: ``binary`` or ``source``. Default is
-    ``source``.
+    ``debian``, ``rocky``, or ``ubuntu``. Default is ``{{ os_distribution }}``.
+``kolla_base_distro_version``
+    Kolla base container image distribution version. Default is dependent on
+    ``kolla_base_distro``.
 ``kolla_docker_namespace``
     Docker namespace to use for Kolla images. Default is ``kolla``.
 ``kolla_docker_registry``
@@ -97,25 +97,24 @@ affect :ref:`Kolla Ansible configuration <configuration-kolla-ansible-global>`.
     Kolla container image tag. This is the tag that will be applied to built
     container images. Default is ``kolla_openstack_release``.
 
-For example, to build the Kolla ``centos`` ``binary`` images with a namespace
+For example, to build the Kolla ``centos`` images with a namespace
 of ``example``, and a private Docker registry at ``registry.example.com:4000``,
-tagged with ``7.0.0.1``:
+using the ``zed`` release:
 
 .. code-block:: yaml
    :caption: ``kolla.yml``
 
    kolla_base_distro: centos
-   kolla_install_type: binary
    kolla_docker_namespace: example
    kolla_docker_registry: registry.example.com:4000
-   kolla_openstack_release: 7.0.0.1
+   kolla_openstack_release: zed
 
 The ``ironic-api`` image built with this configuration would be referenced as
 follows:
 
 .. code-block:: console
 
-   registry.example.com:4000/example/centos-binary-ironic-api:7.0.0.1
+   registry.example.com:4000/example/ironic-api:zed-centos-stream9
 
 Further customisation of the Kolla configuration file can be performed by
 writing a file at ``${KAYOBE_CONFIG_PATH/kolla/kolla-build.conf``. For example,
