@@ -7,7 +7,7 @@
 # Whether to build host disk images with DIB directly instead of through
 # Bifrost. Setting it to true disables Bifrost image build and allows images to
 # be built with the `kayobe overcloud host image build` command. Default value
-# is {{ os_distribution == 'rocky' }}. This will change in a future release.
+# is true.
 #overcloud_dib_build_host_images:
 
 # List of additional build host packages to install. Default is an empty list.

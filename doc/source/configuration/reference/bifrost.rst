@@ -42,7 +42,7 @@ Overcloud root disk image configuration
 .. note::
 
    This configuration only applies when ``overcloud_dib_build_host_images``
-   (set in ``${KAYOBE_CONFIG_PATH}/overcloud-dib.yml``) is not changed to true.
+   (set in ``${KAYOBE_CONFIG_PATH}/overcloud-dib.yml``) is changed to false.
 
 Bifrost uses Diskimage builder (DIB) to build a root disk image that is
 deployed to overcloud hosts when they are provisioned. The following options

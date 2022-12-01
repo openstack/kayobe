@@ -172,8 +172,8 @@ At this point the seed services need to be deployed on the seed VM.  These
 services are deployed in the ``bifrost_deploy`` container.
 
 This command will also build the Operating System image that will be used to
-deploy the overcloud nodes using Disk Image Builder (DIB), unless
-``overcloud_dib_build_host_images`` is set to ``True``.
+deploy the overcloud nodes using Disk Image Builder (DIB), if
+``overcloud_dib_build_host_images`` is set to ``False``.
 
 .. note::
 
@@ -229,8 +229,7 @@ Building Overcloud Host Disk Images
 .. note::
 
    This step is only relevant if ``overcloud_dib_build_host_images`` is set to
-   ``True``. By default, a host disk image is automatically built by Bifrost
-   unless you're running Rocky Linux - which requires this step.
+   ``True``, which is the default since the Zed release.
 
 Host disk images are deployed on overcloud hosts during provisioning. To build
 host disk images::
