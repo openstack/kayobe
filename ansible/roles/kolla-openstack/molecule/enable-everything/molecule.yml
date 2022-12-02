@@ -147,5 +147,3 @@ scenario:
   name: enable-everything
 verifier:
   name: testinfra
-  lint:
-    name: flake8
