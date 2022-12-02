@@ -1,0 +1,4 @@
+---
+prelude: |
+    Ubuntu Jammy Jellyfish (22.04) LTS and Rocky Linux 9 are now
+    supported as a host Operating System and base container image.

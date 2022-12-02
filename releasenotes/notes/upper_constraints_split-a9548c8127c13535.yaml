@@ -1,7 +1,7 @@
 ---
 upgrade:
   - |
-    Updates the ``stackhpc.os-images`` to version to 0.16.0. This new releases
+    Updates the ``stackhpc.os-images`` role to version 0.16.0. This new release
     separates configuration of upper constraints for diskimage-builder (DIB)
     from those used by the OpenStack SDK and client. This allows operators to
     use a newer version of DIB while keeping compatible versions of the
@@ -10,5 +10,5 @@ upgrade:
     * ``ipa_build_dib_upper_constraints_file`` in ``ipa.yml``
     * ``overcloud_dib_dib_upper_constraints_file`` in ``overcloud-dib.yml``
 
-    The variables are empty by default in order to allow for Rocky9
+    The variables are empty by default in order to allow for Rocky Linux 9
     image builds.
