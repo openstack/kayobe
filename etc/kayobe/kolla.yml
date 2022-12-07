@@ -282,6 +282,9 @@
 #kolla_enable_cinder_backend_iscsi:
 #kolla_enable_cinder_backend_lvm:
 #kolla_enable_cinder_backend_nfs:
+#kolla_enable_cinder_backend_pure_fc:
+#kolla_enable_cinder_backend_pure_iscsi:
+#kolla_enable_cinder_backend_pure_roce:
 #kolla_enable_cinder_backend_quobyte:
 #kolla_enable_cinder_backup:
 #kolla_enable_cinder_horizon_policy_file:
@@ -291,9 +294,8 @@
 #kolla_enable_cyborg:
 #kolla_enable_designate:
 #kolla_enable_destroy_images:
-#kolla_enable_elasticsearch:
-#kolla_enable_elasticsearch_curator:
 #kolla_enable_etcd:
+#kolla_enable_external_api_firewalld:
 #kolla_enable_external_mariadb_load_balancer:
 #kolla_enable_fluentd:
 #kolla_enable_freezer:
@@ -303,6 +305,7 @@
 #kolla_enable_gnocchi:
 #kolla_enable_gnocchi_statsd:
 #kolla_enable_grafana:
+#kolla_enable_grafana_external:
 #kolla_enable_hacluster:
 #kolla_enable_haproxy:
 #kolla_enable_haproxy_memcached:
@@ -319,7 +322,6 @@
 #kolla_enable_horizon_manila:
 #kolla_enable_horizon_masakari:
 #kolla_enable_horizon_mistral:
-#kolla_enable_horizon_monasca:
 #kolla_enable_horizon_murano:
 #kolla_enable_horizon_neutron_vpnaas:
 #kolla_enable_horizon_octavia:
@@ -336,12 +338,10 @@
 #kolla_enable_ironic_neutron_agent:
 #kolla_enable_ironic_pxe_uefi:
 #kolla_enable_iscsid:
-#kolla_enable_kafka:
 #kolla_enable_keepalived:
 #kolla_enable_keystone:
 #kolla_enable_keystone_federation:
 #kolla_enable_keystone_horizon_policy_file:
-#kolla_enable_kibana:
 #kolla_enable_kuryr:
 #kolla_enable_loadbalancer:
 #kolla_enable_magnum:
@@ -354,9 +354,10 @@
 #kolla_enable_mariabackup:
 #kolla_enable_mariadb:
 #kolla_enable_masakari:
+#kolla_enable_masakari_hostmonitor:
+#kolla_enable_masakari_instancemonitor:
 #kolla_enable_memcached:
 #kolla_enable_mistral:
-#kolla_enable_monasca:
 #kolla_enable_multipathd:
 #kolla_enable_murano:
 #kolla_enable_neutron:
@@ -384,6 +385,9 @@
 #kolla_enable_nova_ssh:
 #kolla_enable_octavia:
 #kolla_enable_octavia_driver_agent:
+#kolla_enable_opensearch:
+#kolla_enable_opensearch_dashboards:
+#kolla_enable_opensearch_dashboards_external:
 #kolla_enable_openstack_core:
 #kolla_enable_openvswitch:
 #kolla_enable_osprofiler:
@@ -393,6 +397,7 @@
 #kolla_enable_placement:
 #kolla_enable_prometheus:
 #kolla_enable_prometheus_alertmanager:
+#kolla_enable_prometheus_alertmanager_external:
 #kolla_enable_prometheus_blackbox_exporter:
 #kolla_enable_prometheus_cadvisor:
 #kolla_enable_prometheus_ceph_mgr_exporter:
@@ -402,19 +407,20 @@
 #kolla_enable_prometheus_haproxy_exporter:
 #kolla_enable_prometheus_libvirt_exporter:
 #kolla_enable_prometheus_memcached_exporter:
+#kolla_enable_prometheus_msteams:
 #kolla_enable_prometheus_mysqld_exporter:
 #kolla_enable_prometheus_node_exporter:
 #kolla_enable_prometheus_openstack_exporter:
+#kolla_enable_prometheus_openstack_exporter_external:
 #kolla_enable_prometheus_rabbitmq_exporter:
 #kolla_enable_prometheus_server:
-#kolla_enable_qdrouterd:
+#kolla_enable_proxysql:
 #kolla_enable_rabbitmq:
 #kolla_enable_redis:
 #kolla_enable_sahara:
 #kolla_enable_senlin:
 #kolla_enable_skydive:
 #kolla_enable_solum:
-#kolla_enable_storm:
 #kolla_enable_swift:
 #kolla_enable_swift_recon:
 #kolla_enable_swift_s3api:
@@ -426,7 +432,6 @@
 #kolla_enable_vitrage:
 #kolla_enable_vitrage_prometheus_datasource:
 #kolla_enable_watcher:
-#kolla_enable_zookeeper:
 #kolla_enable_zun:
 
 ###############################################################################
