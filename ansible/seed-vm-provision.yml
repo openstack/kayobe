@@ -16,7 +16,9 @@
     # Until the role handles it, install it using the --allowerasing option
     # which will remove coreutils-single.
     - name: Ensure coreutils package is installed
-      command: "dnf install coreutils -y --allowerasing"
+      dnf:
+        name: coreutils
+        allowerasing: true
       become: True
       when:
         - ansible_facts.os_family == 'RedHat'
