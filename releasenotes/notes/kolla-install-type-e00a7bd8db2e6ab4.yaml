@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    Removes the ``kolla_install_type`` variable. This is due to removal of
+    support for ``binary`` images from the Kolla project.

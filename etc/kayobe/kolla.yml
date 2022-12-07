@@ -67,12 +67,17 @@
 # Kolla configuration.
 
 # Kolla base container image distribution. Options are "centos", "debian",
-# "ubuntu". Default is
+# "rocky", "ubuntu". Default is
 # {{ 'centos' if os_distribution == 'rocky' else os_distribution }}.
 #kolla_base_distro:
 
-# Kolla container image type: binary or source. Default is 'source'.
-#kolla_install_type:
+# Kolla base container image distribution version default map.
+# Defines default versions for each distribution.
+#kolla_base_distro_version_default_map:
+
+# Kolla base container image distribution version.
+# Default is kolla_base_distro_version_default_map[kolla_base_distro].
+#kolla_base_distro_version:
 
 # URL of docker registry to use for Kolla images. Default is not set, in which
 # case Dockerhub will be used.
@@ -102,8 +107,8 @@
 # {{ kolla_openstack_release }}.
 #kolla_tag:
 
-# Dict mapping names of sources to their definitions for
-# kolla_install_type=source. See kolla.common.config for details.
+# Dict mapping names of sources to their definitions.
+# See kolla.common.config for details.
 # Example:
 # kolla_sources:
 #   ironic-base:

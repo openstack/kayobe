@@ -12,11 +12,11 @@ kolla_build_config_paths_extra: []
 # Paths to extra kolla configuration files.
 kolla_build_config_paths: "{{ kolla_build_config_paths_default + kolla_build_config_paths_extra }}"
 
-# Valid options are [ centos, fedora, oraclelinux, ubuntu ]
+# Valid options are [ centos, debian, rocky, ubuntu ]
 kolla_base_distro:
 
-# Valid options are [ binary, source ]
-kolla_install_type:
+# Kolla base container image tag.
+kolla_base_tag:
 
 # Docker namespace to use for Kolla images.
 kolla_docker_namespace:
@@ -24,8 +24,8 @@ kolla_docker_namespace:
 # Valid option is Docker repository tag
 kolla_tag:
 
-# Dict mapping names of sources to their definitions for
-# kolla_install_type=source. See kolla.common.config for details.
+# Dict mapping names of sources to their definitions.
+# See kolla.common.config for details.
 # Example:
 # kolla_sources:
 #   ironic-base:

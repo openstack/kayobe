@@ -20,8 +20,7 @@
     - name: Display the regexes for container images that will be built
       debug:
         msg: >
-          Building container images of type
-          '{{ item.type | default(kolla_install_type) }}' matching
+          Building container images matching
           '{{ item.regexes }}'. Build logs will be appended to
           {{ kolla_build_log_path }}.
       with_items: "{{ container_image_sets }}"
@@ -52,7 +51,6 @@
           . {{ kolla_venv }}/bin/activate &&
           kolla-build
           --config-dir {{ kolla_build_config_path }}
-          {% if item.type is defined %}--type {{ item.type }}{% endif %}
           {% if kolla_docker_registry is not none %}--registry {{ kolla_docker_registry }}{% endif %}
           {% if push_images | bool %}--push{% endif %}
           {% if nocache | bool %}--nocache{% endif %}

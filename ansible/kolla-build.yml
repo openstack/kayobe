@@ -10,3 +10,4 @@
       kolla_build_config_paths_extra:
         - "{{ kayobe_config_path }}"
         - "{{ kayobe_env_config_path }}"
+      kolla_base_tag: "{{ kolla_base_distro_version }}"
