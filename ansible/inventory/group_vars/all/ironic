@@ -110,10 +110,6 @@ kolla_ironic_enabled_vendor_interfaces:
 # vendor_interface field set.
 kolla_ironic_default_vendor_interface: no-vendor
 
-# Default boot option to use when no boot option is requested in node's
-# driver_info.
-kolla_ironic_default_boot_option: local
-
 # Name of the Neutron network to use for cleaning.
 kolla_ironic_cleaning_network: "{{ kolla_ironic_provisioning_network if cleaning_net_name == provision_wl_net_name else 'cleaning-net' }}"
 

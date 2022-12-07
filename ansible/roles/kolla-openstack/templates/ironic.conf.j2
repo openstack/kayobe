@@ -18,11 +18,6 @@ enabled_hardware_types: {{ kolla_ironic_enabled_hardware_types | join(',') }}
 [agent]
 deploy_logs_local_path = /var/log/kolla/ironic/deploy
 
-[deploy]
-{% if kolla_ironic_default_boot_option %}
-default_boot_option = {{ kolla_ironic_default_boot_option }}
-{% endif %}
-
 [neutron]
 cleaning_network = {{ kolla_ironic_cleaning_network }}
 provisioning_network = {{ kolla_ironic_provisioning_network }}
