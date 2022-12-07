@@ -19,8 +19,7 @@ following option:
     Whether to build host disk images with DIB directly instead of through
     Bifrost. Setting it to true disables Bifrost image build and allows images
     to be built with the ``kayobe overcloud host image build`` command. Default
-    value is false, except on Rocky where it is true. This will change in a
-    future release.
+    value is true since the Zed release.
 
 With this option enabled, Bifrost will be configured to stop building a root
 disk image. This will become the default behaviour in a future release.

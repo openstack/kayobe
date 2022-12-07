@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    Overcloud host images are now built via DIB by default, rather than
+    Bifrost. The old behaviour may be obtained by setting
+    ``overcloud_dib_build_host_images`` to ``false``.
