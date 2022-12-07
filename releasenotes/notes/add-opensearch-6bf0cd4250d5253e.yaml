@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    OpenSearch support has been added.

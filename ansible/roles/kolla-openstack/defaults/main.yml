@@ -464,6 +464,12 @@ kolla_nova_libvirt_certificates_src:
 kolla_enable_octavia:
 
 ###############################################################################
+# OpenSearch configuration.
+
+# Whether to enable opensearch.
+kolla_enable_opensearch:
+
+###############################################################################
 # Placement configuration.
 
 # Whether to enable placement.

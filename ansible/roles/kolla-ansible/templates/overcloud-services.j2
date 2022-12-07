@@ -28,6 +28,13 @@ common
 [elasticsearch-curator:children]
 elasticsearch
 
+[opensearch:children]
+control
+
+# Opensearch dashboards
+[opensearch-dashboards:children]
+opensearch
+
 # Glance
 [glance-api:children]
 glance

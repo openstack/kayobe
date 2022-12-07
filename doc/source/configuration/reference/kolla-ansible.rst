@@ -720,6 +720,7 @@ which files are supported.
    ``nova/*``                      Extended nova configuration.
    ``octavia.conf``                Octavia configuration.
    ``octavia/*``                   Extended Octavia configuration.
+   ``opensearch/*``                OpenSearch configuration.
    ``placement.conf``              Placement configuration.
    ``placement/*``                 Extended Placement configuration.
    ``prometheus/*``                Prometheus configuration.

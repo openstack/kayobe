@@ -189,6 +189,9 @@ kolla_feature_flags:
   - nova_ssh
   - octavia
   - octavia_driver_agent
+  - opensearch
+  - opensearch_dashboards
+  - opensearch_dashboards_external
   - openstack_core
   - openvswitch
   - osprofiler
