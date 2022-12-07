@@ -141,7 +141,6 @@
             kolla_enable_cinder_backend_nfs: True
             kolla_enable_cloudkitty: True
             kolla_enable_designate: True
-            kolla_enable_elasticsearch: True
             kolla_enable_etcd: True
             kolla_enable_freezer: True
             kolla_enable_gnocchi: True
@@ -153,7 +152,6 @@
             kolla_enable_ironic: True
             kolla_enable_ironic_neutron_agent: True
             kolla_enable_kafka: True
-            kolla_enable_kibana: True
             kolla_enable_kuryr: True
             kolla_enable_magnum: True
             kolla_enable_manila: True
@@ -162,8 +160,8 @@
             kolla_enable_mariadb: True
             kolla_enable_mistral: True
             kolla_enable_monasca: True
-            kolla_enable_murano: True
             kolla_enable_multipathd: True
+            kolla_enable_murano: True
             kolla_enable_neutron_agent_ha: True
             kolla_enable_neutron_bgp_dragent: True
             kolla_enable_neutron_dvr: True
@@ -172,6 +170,8 @@
             kolla_enable_neutron_vpnaas: True
             kolla_enable_nova_serialconsole_proxy: True
             kolla_enable_octavia: True
+            kolla_enable_opensearch: True
+            kolla_enable_opensearch_dashboards: True
             kolla_enable_osprofiler: True
             kolla_enable_prometheus: True
             kolla_enable_sahara: True
@@ -259,14 +259,13 @@
               #enable_ceilometer: True
               #enable_central_logging: True
               #enable_cinder: True
-              #enable_cinder_backend_iscsi: True
               #enable_cinder_backend_hnas_iscsi: True
               #enable_cinder_backend_hnas_nfs: True
+              #enable_cinder_backend_iscsi: True
               #enable_cinder_backend_lvm: True
               #enable_cinder_backend_nfs: True
               #enable_cloudkitty: True
               #enable_designate: True
-              #enable_elasticsearch: True
               #enable_etcd: True
               #enable_freezer: True
               #enable_gnocchi: True
@@ -278,7 +277,6 @@
               #enable_ironic: True
               #enable_ironic_neutron_agent: True
               #enable_kafka: True
-              #enable_kibana: True
               #enable_kuryr: True
               #enable_magnum: True
               #enable_manila: True
@@ -287,8 +285,8 @@
               #enable_mariadb: True
               #enable_mistral: True
               #enable_monasca: True
-              #enable_murano: True
               #enable_multipathd: True
+              #enable_murano: True
               #enable_neutron_agent_ha: True
               #enable_neutron_bgp_dragent: True
               #enable_neutron_dvr: True
@@ -297,12 +295,14 @@
               #enable_neutron_vpnaas: True
               #enable_nova_serialconsole_proxy: True
               #enable_octavia: True
+              #enable_opensearch: True
+              #enable_opensearch_dashboards: True
               #enable_osprofiler: True
               #enable_prometheus: True
               #enable_sahara: True
+              #enable_senlin: True
               #enable_skydive: True
               #enable_solum: True
-              #enable_senlin: True
               #enable_storm: True
               #enable_swift: True
               #enable_tacker: True

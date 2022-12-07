@@ -44,7 +44,6 @@ provisioner:
         kolla_extra_designate: |
           [extra-designate.conf]
           foo=bar
-        kolla_enable_elasticsearch: true
         kolla_enable_glance: true
         kolla_extra_glance: |
           [extra-glance.conf]
@@ -126,6 +125,7 @@ provisioner:
         kolla_extra_octavia: |
           [extra-octavia.conf]
           foo=bar
+        kolla_enable_opensearch: true
         kolla_enable_placement: true
         kolla_extra_placement: |
           [extra-placement.conf]

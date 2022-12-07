@@ -75,12 +75,6 @@ kolla_enable_designate:
 kolla_extra_designate:
 
 ###############################################################################
-# Elasticsearch configuration.
-
-# Whether to enable elasticsearch.
-kolla_enable_elasticsearch:
-
-###############################################################################
 # Glance configuration.
 
 # Whether to enable Glance.
@@ -458,6 +452,12 @@ kolla_nova_libvirt_certificates_src:
 
 # Whether to enable Octavia.
 kolla_enable_octavia:
+
+###############################################################################
+# OpenSearch configuration.
+
+# Whether to enable opensearch.
+kolla_enable_opensearch:
 
 ###############################################################################
 # Placement configuration.

@@ -152,8 +152,6 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_designate | bool }}"
   - regex: ^dnsmasq
     enabled: "{{ kolla_enable_ironic | bool }}"
-  - regex: ^elasticsearch
-    enabled: "{{ kolla_enable_elasticsearch | bool }}"
   - regex: ^etcd
     enabled: "{{ kolla_enable_etcd | bool }}"
   - regex: ^fluentd
@@ -188,8 +186,6 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_keepalived | bool }}"
   - regex: ^keystone
     enabled: "{{ kolla_enable_keystone | bool }}"
-  - regex: ^kibana
-    enabled: "{{ kolla_enable_kibana | bool }}"
   - regex: kolla-toolbox
     enabled: True
   - regex: ^logstash
@@ -226,6 +222,10 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_nova | bool }}"
   - regex: ^octavia
     enabled: "{{ kolla_enable_octavia | bool }}"
+  - regex: opensearch
+    enabled: "{{ kolla_enable_opensearch | bool }}"
+  - regex: opensearch-dashboards
+    enabled: "{{ kolla_enable_opensearch_dashboards | bool }}"
   - regex: ^openvswitch
     enabled: "{{ kolla_enable_openvswitch | bool }}"
   - regex: ^ovn
@@ -525,7 +525,6 @@ kolla_enable_cloudkitty: "no"
 kolla_enable_collectd: "no"
 kolla_enable_cyborg: "no"
 kolla_enable_designate: "no"
-kolla_enable_elasticsearch: "{{ 'yes' if kolla_enable_central_logging | bool or kolla_enable_osprofiler | bool or kolla_enable_skydive | bool or kolla_enable_monasca | bool else 'no' }}"
 kolla_enable_etcd: "no"
 kolla_enable_fluentd: "yes"
 kolla_enable_freezer: "no"
@@ -539,7 +538,6 @@ kolla_enable_ironic: "no"
 kolla_enable_ironic_neutron_agent: "{{ kolla_enable_neutron | bool and kolla_enable_ironic | bool }}"
 kolla_enable_iscsid: "{{ kolla_enable_cinder | bool and kolla_enable_cinder_backend_iscsi | bool }}"
 kolla_enable_kafka: "{{ kolla_enable_monasca | bool }}"
-kolla_enable_kibana: "{{ 'yes' if kolla_enable_central_logging | bool or kolla_enable_monasca | bool else 'no' }}"
 kolla_enable_kuryr: "no"
 kolla_enable_magnum: "no"
 kolla_enable_manila: "no"
@@ -556,6 +554,8 @@ kolla_enable_octavia: "no"
 kolla_enable_openvswitch: "{{ kolla_enable_neutron | bool }}"
 kolla_enable_ovn: "no"
 kolla_enable_ovs_dpdk: "no"
+kolla_enable_opensearch: "{{ kolla_enable_central_logging | bool or kolla_enable_osprofiler | bool or kolla_enable_skydive | bool }}"
+kolla_enable_opensearch_dashboards: "{{ kolla_enable_opensearch | bool }}"
 kolla_enable_osprofiler: "no"
 kolla_enable_placement: "{{ kolla_enable_nova | bool or kolla_enable_zun | bool }}"
 kolla_enable_prometheus: "no"
