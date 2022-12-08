@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds support for configuring swap files and devices on seed, seed
+    hypervisor, overcloud and infra VM hosts during ``host configure``
+    commands.

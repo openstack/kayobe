@@ -1222,3 +1222,57 @@ applying the change to the seed hypervisor. For example, to install the
 
    libvirt_host_extra_daemon_packages:
      - trousers
+
+Swap
+====
+
+*tags:*
+  | ``swap``
+
+Swap files and devices may be configured via the ``swap`` variable. For
+convenience, this is mapped to the following variables:
+
+* ``seed_swap``
+* ``seed_hypervisor_swap``
+* ``infra_vm_swap``
+* ``compute_swap``
+* ``controller_swap``
+* ``monitoring_swap``
+* ``storage_swap``
+
+The format is a list, with each item mapping to a dict/map. For a swap device,
+the following item should be present:
+
+* ``device``: Absolute path to a swap device.
+
+For a swap file, the following items should be present:
+
+* ``path``: Absolute path to a swap file to create.
+* ``size_mb``: Size of the swap file in MiB.
+
+The default value of ``swap`` is an empty list.
+
+Example: enabling swap using a swap partition
+---------------------------------------------
+
+The following example defines a swap device using an existing ``/dev/sda3``
+partition on controller hosts:
+
+.. code-block:: yaml
+   :caption: ``controllers.yml``
+
+   controller_swap:
+     - device: /dev/sda3
+
+Example: enabling swap using a swap file
+----------------------------------------
+
+The following example defines a 1GiB swap file that will be created at
+``/swapfile`` on compute hosts:
+
+.. code-block:: yaml
+   :caption: ``compute.yml``
+
+   compute_swap:
+     - path: /swapfile
+       size_mb: 1024

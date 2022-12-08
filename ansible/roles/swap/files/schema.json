@@ -1,0 +1,33 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "List of swap files or devices",
+    "type": "array",
+    "items": {
+        "oneOf": [
+            {
+                "description": "Swap file",
+                "type": "object",
+                "required": ["path", "size_mb"],
+                "properties": {
+                    "path": {
+                        "type": "string"
+                    },
+                    "size_mb": {
+                        "type": "integer",
+                        "minimum": 0
+                    }
+                }
+            },
+            {
+                "description": "Swap device",
+                "type": "object",
+                "required": ["device"],
+                "properties": {
+                    "device": {
+                        "type": "string"
+                    }
+                }
+            }
+        ]
+    }
+}

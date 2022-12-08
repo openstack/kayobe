@@ -183,3 +183,9 @@ controller_firewalld_default_zone:
 # - permanent: true
 # - state: enabled
 controller_firewalld_rules: []
+
+###############################################################################
+# Controller node swap configuration.
+
+# List of swap devices. Each item is a dict containing a 'device' item.
+controller_swap: []

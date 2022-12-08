@@ -188,5 +188,10 @@ controller_firewalld_rules:
     state: disabled
     zone: public
 
+# Configure a swap file.
+controller_swap:
+  - path: /swapfile
+    size_mb: 256
+
 # Generate a password for libvirt SASL authentication.
 compute_libvirt_sasl_password: "{% raw %}{{ lookup('password', '/tmp/libvirt-sasl-password') }}{% endraw %}"

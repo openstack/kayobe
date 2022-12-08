@@ -143,3 +143,9 @@ seed_firewalld_default_zone:
 # - permanent: true
 # - state: enabled
 seed_firewalld_rules: []
+
+###############################################################################
+# Seed node swap configuration.
+
+# List of swap devices. Each item is a dict containing a 'device' item.
+seed_swap: []

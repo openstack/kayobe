@@ -204,3 +204,9 @@ infra_vm_firewalld_default_zone:
 # - permanent: true
 # - state: enabled
 infra_vm_firewalld_rules: []
+
+###############################################################################
+# Infrastructure VM node swap configuration.
+
+# List of swap devices. Each item is a dict containing a 'device' item.
+infra_vm_swap: []

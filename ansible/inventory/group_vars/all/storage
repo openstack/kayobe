@@ -173,3 +173,9 @@ storage_firewalld_default_zone:
 # - permanent: true
 # - state: enabled
 storage_firewalld_rules: []
+
+###############################################################################
+# Storage node swap configuration.
+
+# List of swap devices. Each item is a dict containing a 'device' item.
+storage_swap: []
