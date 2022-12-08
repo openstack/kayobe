@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Adds support for copying ``$KAYOBE_CONFIG_PATH/kolla/config/nova_compute``
+    to Kolla configuration. This folder can contain a `Nova release file
+    <https://opendev.org/openstack/nova/src/branch/master/etc/nova/release.sample>`__
+    which can configure the ``vendor`` or ``product`` strings used by Nova.
