@@ -49,4 +49,5 @@
 
     experimental:
       jobs:
+        - kayobe-seed-images-centos9s
         - kayobe-seed-images-ubuntu-jammy
