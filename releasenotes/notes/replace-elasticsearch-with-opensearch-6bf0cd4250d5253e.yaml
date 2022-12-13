@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    Elasticsearch has been replaced with OpenSearch. Any custom Kayobe
+    configuration should be moved from
+    ``${KAYOBE_CONFIG_PATH}/kolla/config/elasticsearch`` to
+    ``${KAYOBE_CONFIG_PATH}/kolla/config/opensearch``.
