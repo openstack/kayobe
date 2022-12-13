@@ -1,16 +1,15 @@
 ---
 - nodeset:
-    name: kayobe-centos8s
+    name: kayobe-centos9s
     nodes:
       - name: primary
-        label: centos-8-stream
-
+        label: centos-9-stream
 
 - nodeset:
-    name: kayobe-rocky8
+    name: kayobe-rocky9
     nodes:
       - name: primary
-        label: rockylinux-8
+        label: rockylinux-9
 
 - nodeset:
     name: kayobe-ubuntu-jammy

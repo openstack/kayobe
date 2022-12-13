@@ -49,7 +49,7 @@
     name: "{{ item.name }}"
     state: latest
     virtualenv: "{{ kolla_venv }}"
-    virtualenv_python: "python3.{{ ansible_facts.python.version.minor }}"
+    virtualenv_command: "python3.{{ ansible_facts.python.version.minor }} -m venv"
   with_items:
     - { name: pip }
 

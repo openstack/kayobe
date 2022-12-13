@@ -40,12 +40,18 @@ copy_logs() {
         journalctl --no-pager > ${LOG_DIR}/system_logs/syslog.txt
         journalctl --no-pager -u docker.service > ${LOG_DIR}/system_logs/docker.log
         journalctl --no-pager -u vbmcd.service > ${LOG_DIR}/system_logs/vbmcd.log
+        journalctl --no-pager -u NetworkManager.service > ${LOG_DIR}/system_logs/NetworkManager.log
     else
         cp /var/log/upstart/docker.log ${LOG_DIR}/system_logs/docker.log
     fi
 
-    cp -r /etc/sudoers.d ${LOG_DIR}/system_logs/
-    cp /etc/sudoers ${LOG_DIR}/system_logs/sudoers.txt
+    if [[ -d /etc/sysconfig/network-scripts/ ]]; then
+        cp -r /etc/sysconfig/network-scripts/ ${LOG_DIR}/system_logs/
+    fi
+
+    if [[ -d /etc/NetworkManager/system-connections/ ]]; then
+        cp -r /etc/NetworkManager/system-connections/ ${LOG_DIR}/system_logs/
+    fi
 
     df -h > ${LOG_DIR}/system_logs/df.txt
     # Gather disk usage statistics for files and directories larger than 1MB

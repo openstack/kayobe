@@ -113,7 +113,7 @@ The following variables affect which Kolla images are used, and how they are
 accessed.
 
 ``kolla_base_distro``
-    Kolla base container image distribution. Default is ``centos``.
+    Kolla base container image distribution. Default is ``rocky``.
 ``kolla_base_distro_version``
     Kolla base container image distribution version. Default is dependent on
     ``kolla_base_distro``.
@@ -138,14 +138,14 @@ accessed.
     (e.g. ``rocky``) on stable branches and tagged releases, or ``master`` on
     the Kayobe ``master`` branch.
 
-For example, to deploy Kolla ``centos`` images with a namespace of
+For example, to deploy Kolla ``rocky`` images with a namespace of
 ``example``, and a private Docker registry at ``registry.example.com:4000``,
 and the ``zed`` release.
 
 .. code-block:: yaml
    :caption: ``$KAYOBE_CONFIG_PATH/kolla.yml``
 
-   kolla_base_distro: centos
+   kolla_base_distro: rocky
    kolla_docker_namespace: example
    kolla_docker_registry: registry.example.com:4000
    kolla_openstack_release: zed
@@ -154,7 +154,7 @@ The deployed ``ironic-api`` image would be referenced as follows:
 
 .. code-block:: console
 
-   registry.example.com:4000/example/ironic-api:zed-centos-stream9
+   registry.example.com:4000/example/ironic-api:zed-rocky-9
 
 Ansible
 -------

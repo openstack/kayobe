@@ -74,7 +74,7 @@ affect :ref:`Kolla Ansible configuration <configuration-kolla-ansible-global>`.
 
 ``kolla_base_distro``
     Kolla base container image distribution. Options are ``centos``,
-    ``debian``, ``rocky``, or ``ubuntu``. Default is ``{{ os_distribution }}``.
+    ``debian``, ``rocky`` or ``ubuntu``. Default is ``{{ os_distribution }}``.
 ``kolla_base_distro_version``
     Kolla base container image distribution version. Default is dependent on
     ``kolla_base_distro``.
@@ -97,14 +97,14 @@ affect :ref:`Kolla Ansible configuration <configuration-kolla-ansible-global>`.
     Kolla container image tag. This is the tag that will be applied to built
     container images. Default is ``kolla_openstack_release``.
 
-For example, to build the Kolla ``centos`` images with a namespace
+For example, to build the Kolla ``rocky`` images with a namespace
 of ``example``, and a private Docker registry at ``registry.example.com:4000``,
 using the ``zed`` release:
 
 .. code-block:: yaml
    :caption: ``kolla.yml``
 
-   kolla_base_distro: centos
+   kolla_base_distro: rocky
    kolla_docker_namespace: example
    kolla_docker_registry: registry.example.com:4000
    kolla_openstack_release: zed
@@ -114,7 +114,7 @@ follows:
 
 .. code-block:: console
 
-   registry.example.com:4000/example/ironic-api:zed-centos-stream9
+   registry.example.com:4000/example/ironic-api:zed-rocky-9
 
 Further customisation of the Kolla configuration file can be performed by
 writing a file at ``${KAYOBE_CONFIG_PATH/kolla/kolla-build.conf``. For example,

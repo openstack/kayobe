@@ -1,0 +1,16 @@
+[connection]
+id={{ item.device }}
+type=veth
+interface-name={{ item.device }}
+master={{ item.bridge }}
+slave-type=bridge
+
+{% if item.mtu is defined and item.mtu %}
+[ethernet]
+mtu={{ item.mtu }}
+{% endif %}
+
+[veth]
+peer={{ item.peer_device }}
+
+[bridge-port]
