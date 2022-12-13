@@ -1,3 +1,6 @@
 ---
 # Upper constraints file for installation of python packages.
 pip_upper_constraints_file: "https://releases.openstack.org/constraints/upper/{{ openstack_release }}"
+
+# Upper constraints file for installation of openstacksdk.
+openstacksdk_upper_constraints_file: "https://releases.openstack.org/constraints/upper/yoga"

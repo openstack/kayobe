@@ -5,8 +5,7 @@
   roles:
     - role: stackhpc.os-networks
       os_openstacksdk_install_epel: "{{ dnf_install_epel }}"
-      os_openstacksdk_state: latest
-      os_openstacksdk_upper_constraints_file: "{{ pip_upper_constraints_file }}"
+      os_openstacksdk_upper_constraints_file: "{{ openstacksdk_upper_constraints_file }}"
       os_networks_venv: "{{ virtualenv_path }}/openstacksdk"
       os_networks_openstack_auth_type: "{{ openstack_auth_type }}"
       os_networks_openstack_auth: "{{ openstack_auth }}"

@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    Updates the maximum supported version of Ansible from 5.x (ansible-core
+    2.12) to 6.x (ansible-core 2.13). The minimum supported version is updated
+    from 4.x to 5.x. This is true for both Kayobe and Kolla Ansible.

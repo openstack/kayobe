@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 DOCUMENTATION = '''
 ---
 module: blockdevice_info

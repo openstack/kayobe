@@ -126,7 +126,7 @@
   roles:
     - role: ironic-inspector-rules
       os_openstacksdk_install_epel: "{{ dnf_install_epel }}"
-      os_openstacksdk_state: latest
+      os_openstacksdk_upper_constraints_file: "{{ openstacksdk_upper_constraints_file }}"
       ironic_inspector_venv: "{{ virtualenv_path }}/openstacksdk"
       ironic_inspector_upper_constraints_file: "{{ pip_upper_constraints_file }}"
       ironic_inspector_auth_type: "{{ openstack_auth_type }}"
