@@ -87,6 +87,9 @@ kolla_feature_flags:
   - cinder_backend_iscsi
   - cinder_backend_lvm
   - cinder_backend_nfs
+  - cinder_backend_pure_fc
+  - cinder_backend_pure_iscsi
+  - cinder_backend_pure_roce
   - cinder_backend_quobyte
   - cinder_backup
   - cinder_horizon_policy_file
@@ -96,9 +99,8 @@ kolla_feature_flags:
   - cyborg
   - designate
   - destroy_images
-  - elasticsearch
-  - elasticsearch_curator
   - etcd
+  - external_api_firewalld
   - external_mariadb_load_balancer
   - fluentd
   - freezer
@@ -108,6 +110,7 @@ kolla_feature_flags:
   - gnocchi
   - gnocchi_statsd
   - grafana
+  - grafana_external
   - hacluster
   - haproxy
   - haproxy_memcached
@@ -124,7 +127,6 @@ kolla_feature_flags:
   - horizon_manila
   - horizon_masakari
   - horizon_mistral
-  - horizon_monasca
   - horizon_murano
   - horizon_neutron_vpnaas
   - horizon_octavia
@@ -141,12 +143,10 @@ kolla_feature_flags:
   - ironic_neutron_agent
   - ironic_pxe_uefi
   - iscsid
-  - kafka
   - keepalived
   - keystone
   - keystone_federation
   - keystone_horizon_policy_file
-  - kibana
   - kuryr
   - loadbalancer
   - magnum
@@ -159,9 +159,10 @@ kolla_feature_flags:
   - mariabackup
   - mariadb
   - masakari
+  - masakari_hostmonitor
+  - masakari_instancemonitor
   - memcached
   - mistral
-  - monasca
   - multipathd
   - murano
   - neutron
@@ -189,6 +190,9 @@ kolla_feature_flags:
   - nova_ssh
   - octavia
   - octavia_driver_agent
+  - opensearch
+  - opensearch_dashboards
+  - opensearch_dashboards_external
   - openstack_core
   - openvswitch
   - osprofiler
@@ -198,6 +202,7 @@ kolla_feature_flags:
   - placement
   - prometheus
   - prometheus_alertmanager
+  - prometheus_alertmanager_external
   - prometheus_blackbox_exporter
   - prometheus_cadvisor
   - prometheus_ceph_mgr_exporter
@@ -207,19 +212,20 @@ kolla_feature_flags:
   - prometheus_haproxy_exporter
   - prometheus_libvirt_exporter
   - prometheus_memcached_exporter
+  - prometheus_msteams
   - prometheus_mysqld_exporter
   - prometheus_node_exporter
   - prometheus_openstack_exporter
+  - prometheus_openstack_exporter_external
   - prometheus_rabbitmq_exporter
   - prometheus_server
-  - qdrouterd
+  - proxysql
   - rabbitmq
   - redis
   - sahara
   - senlin
   - skydive
   - solum
-  - storm
   - swift
   - swift_recon
   - swift_s3api
@@ -231,5 +237,4 @@ kolla_feature_flags:
   - vitrage
   - vitrage_prometheus_datasource
   - watcher
-  - zookeeper
   - zun
