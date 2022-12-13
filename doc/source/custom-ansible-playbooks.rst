@@ -32,7 +32,7 @@ Running Custom Ansible Playbooks
 
 Run one or more custom ansible playbooks::
 
-    (kayobe) $ kayobe playbook run <playbook>[, <playbook>...]
+    (kayobe) $ kayobe playbook run <playbook>[ <playbook>...]
 
 Playbooks do not by default have access to the Kayobe playbook group variables,
 filter plugins, and test plugins, since these are relative to the current
