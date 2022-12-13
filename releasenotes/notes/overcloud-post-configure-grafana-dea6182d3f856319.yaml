@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    Removes support for configuring Grafana with ``kayobe overcloud post
+    configure``. See the `Kolla Ansible documentation
+    <https://docs.openstack.org/kolla-ansible/zed/reference/logging-and-monitoring/grafana-guide.html>`__
+    for an alternative method of loading dashboards.

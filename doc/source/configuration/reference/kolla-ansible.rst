@@ -696,8 +696,6 @@ which files are supported.
    ``ironic-inspector.conf``       Ironic inspector configuration.
    ``ironic.conf``                 Ironic configuration.
    ``ironic/*``                    Extended ironic configuration.
-   ``kafka.server.properties``     Kafka configuration.
-   ``kafka/*``                     Extended Kafka configuration.
    ``keepalived/*``                Extended keepalived configuration.
    ``keystone.conf``               Keystone configuration.
    ``keystone/*``                  Extended keystone configuration.
@@ -708,7 +706,6 @@ which files are supported.
    ``mariadb/*``                   Extended MariaDB configuration.
    ``masakari.conf``               Masakari configuration.
    ``masakari/*``                  Extended masakari configuration.
-   ``monasca/*``                   Extended Monasca configuration.
    ``murano.conf``                 Murano configuration.
    ``murano/*``                    Extended murano configuration.
    ``neutron.conf``                Neutron configuration.
@@ -724,10 +721,7 @@ which files are supported.
    ``prometheus/*``                Prometheus configuration.
    ``sahara.conf``                 Sahara configuration.
    ``sahara/*``                    Extended sahara configuration.
-   ``storm/*``                     Extended Storm configuration.
    ``swift/*``                     Extended swift configuration.
-   ``zookeeper.cfg``               Zookeeper configuration.
-   ``zookeeper/*``                 Extended Zookeeper configuration.
    =============================== =======================================================
 
 Configuring an OpenStack Component

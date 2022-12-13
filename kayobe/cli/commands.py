@@ -1804,7 +1804,6 @@ class OvercloudPostConfigure(KayobeAnsibleMixin, VaultMixin, Command):
     * Register ironic inspector introspection rules with the overcloud
       inspector service.
     * Register a provisioning network with neutron.
-    * Configure Grafana for control plane.
     * Configure serial consoles for the ironic nodes
     """
 
@@ -1813,8 +1812,7 @@ class OvercloudPostConfigure(KayobeAnsibleMixin, VaultMixin, Command):
         playbooks = _build_playbook_list(
             "overcloud-ipa-images", "overcloud-introspection-rules",
             "overcloud-introspection-rules-dell-lldp-workaround",
-            "provision-net", "overcloud-grafana-configure",
-            "baremetal-compute-serial-console-post-config")
+            "provision-net", "baremetal-compute-serial-console-post-config")
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
 

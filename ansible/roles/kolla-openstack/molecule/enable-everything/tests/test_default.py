@@ -40,13 +40,11 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
      'heat',
      'horizon',
      'ironic',
-     'kafka',
      'keystone',
      'magnum',
      'manila',
      'mariadb',
      'masakari',
-     'monasca',
      'murano',
      'neutron',
      'nova',
@@ -55,9 +53,7 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
      'placement',
      'prometheus',
      'sahara',
-     'storm',
-     'swift',
-     'zookeeper'])
+     'swift'])
 def test_service_config_directory(host, path):
     path = os.path.join('/etc/kolla/config', path)
     utils.test_directory(host, path)
@@ -76,7 +72,6 @@ def test_service_config_directory(host, path):
      'heat.conf',
      'ironic.conf',
      'ironic-inspector.conf',
-     'kafka.server.properties',
      'keystone.conf',
      'magnum.conf',
      'manila.conf',
@@ -88,8 +83,7 @@ def test_service_config_directory(host, path):
      'octavia.conf',
      'placement.conf',
      'sahara.conf',
-     'backup.my.cnf',
-     'zookeeper.cfg'])
+     'backup.my.cnf'])
 def test_service_ini_file(host, path):
     # TODO(mgoddard): Check more of config file contents.
     path = os.path.join('/etc/kolla/config', path)

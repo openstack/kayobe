@@ -101,11 +101,6 @@ kolla_openstack_custom_config:
     dest: "{{ kolla_node_custom_config_path }}/"
     patterns: "influx*"
     enabled: "{{ kolla_enable_influxdb }}"
-  # Storm.
-  - src: "{{ kolla_extra_config_path }}/storm"
-    dest: "{{ kolla_node_custom_config_path }}/storm"
-    patterns: "*"
-    enabled: "{{ kolla_enable_storm }}"
   # Ironic.
   - src: "{{ kolla_extra_config_path }}/ironic"
     dest: "{{ kolla_node_custom_config_path }}/ironic"
@@ -115,11 +110,6 @@ kolla_openstack_custom_config:
       # These are templated by kayobe, so don't remove them.
       - ironic-agent.initramfs
       - ironic-agent.kernel
-  # Kafka.
-  - src: "{{ kolla_extra_config_path }}/kafka"
-    dest: "{{ kolla_node_custom_config_path }}/kafka"
-    patterns: "*"
-    enabled: "{{ kolla_enable_kafka }}"
   # Keystone.
   - src: "{{ kolla_extra_config_path }}/keystone"
     dest: "{{ kolla_node_custom_config_path }}/keystone"
@@ -150,11 +140,6 @@ kolla_openstack_custom_config:
     dest: "{{ kolla_node_custom_config_path }}/masakari"
     patterns: "*"
     enabled: "{{ kolla_enable_masakari }}"
-  # Monasca.
-  - src: "{{ kolla_extra_config_path }}/monasca"
-    dest: "{{ kolla_node_custom_config_path }}/monasca"
-    patterns: "*"
-    enabled: "{{ kolla_enable_monasca }}"
   # Murano.
   - src: "{{ kolla_extra_config_path }}/murano"
     dest: "{{ kolla_node_custom_config_path }}/murano"
@@ -235,8 +220,3 @@ kolla_openstack_custom_config:
       - container.ring.gz
       - object.builder
       - object.ring.gz
-  # Zookeeper.
-  - src: "{{ kolla_extra_config_path }}/zookeeper"
-    dest: "{{ kolla_node_custom_config_path }}/zookeeper"
-    patterns: "*"
-    enabled: "{{ kolla_enable_zookeeper }}"

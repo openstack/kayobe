@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    Removes support for deploying Monasca and its dependencies (Kafka, Storm
+    and Zookeeper).

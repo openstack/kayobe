@@ -2230,8 +2230,6 @@ class TestCase(unittest.TestCase):
                     utils.get_data_files_path("ansible", "overcloud-introspection-rules-dell-lldp-workaround.yml"),  # noqa
                     utils.get_data_files_path("ansible", "provision-net.yml"),
                     utils.get_data_files_path(
-                        "ansible", "overcloud-grafana-configure.yml"),
-                    utils.get_data_files_path(
                         "ansible", "baremetal-compute-serial-console-post-config.yml"),  # noqa
                 ],
             ),

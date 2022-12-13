@@ -74,10 +74,6 @@ provisioner:
           foo=bar
         kolla_inspector_ipa_kernel_path: ${MOLECULE_TEMP_PATH:-/tmp}/ironic-agent.kernel
         kolla_inspector_ipa_ramdisk_path: ${MOLECULE_TEMP_PATH:-/tmp}/ironic-agent.initramfs
-        kolla_enable_kafka: true
-        kolla_extra_kafka: |
-          [extra-kafka.server.properties]
-          foo=bar
         kolla_enable_keystone: true
         kolla_extra_keystone: |
           [extra-keystone.conf]
@@ -102,7 +98,6 @@ provisioner:
         kolla_extra_masakari: |
           [extra-masakari.conf]
           foo=bar
-        kolla_enable_monasca: true
         kolla_enable_murano: true
         kolla_extra_murano: |
           [extra-murano.conf]
@@ -136,11 +131,6 @@ provisioner:
           [extra-sahara.conf]
           foo=bar
         kolla_enable_swift: true
-        kolla_enable_storm: true
-        kolla_enable_zookeeper: true
-        kolla_extra_zookeeper: |
-          [extra-zookeeper.cfg]
-          foo=bar
   lint:
     name: ansible-lint
 scenario:

@@ -1,6 +1,0 @@
----
-deprecations:
-  - |
-    Deprecates support for deploying Monasca and dependent services:
-    Kafka, Storm and Zookeeper. The support will be removed in the
-    Antelope cycle.

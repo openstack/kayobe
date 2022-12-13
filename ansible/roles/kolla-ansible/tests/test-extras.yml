@@ -151,7 +151,6 @@
             kolla_enable_influxdb: True
             kolla_enable_ironic: True
             kolla_enable_ironic_neutron_agent: True
-            kolla_enable_kafka: True
             kolla_enable_kuryr: True
             kolla_enable_magnum: True
             kolla_enable_manila: True
@@ -159,7 +158,6 @@
             kolla_enable_manila_backend_hnas: True
             kolla_enable_mariadb: True
             kolla_enable_mistral: True
-            kolla_enable_monasca: True
             kolla_enable_multipathd: True
             kolla_enable_murano: True
             kolla_enable_neutron_agent_ha: True
@@ -178,13 +176,11 @@
             kolla_enable_senlin: True
             kolla_enable_skydive: True
             kolla_enable_solum: True
-            kolla_enable_storm: True
             kolla_enable_swift: True
             kolla_enable_tacker: True
             kolla_enable_telegraf: True
             kolla_enable_trove: True
             kolla_enable_watcher: True
-            kolla_enable_zookeeper: True
             kolla_enable_zun: True
             kolla_globals_paths_extra:
               - "{{ tempfile_result.path ~ '/etc/kayobe/' }}"
@@ -276,7 +272,6 @@
               #enable_influxdb: True
               #enable_ironic: True
               #enable_ironic_neutron_agent: True
-              #enable_kafka: True
               #enable_kuryr: True
               #enable_magnum: True
               #enable_manila: True
@@ -284,7 +279,6 @@
               #enable_manila_backend_hnas: True
               #enable_mariadb: True
               #enable_mistral: True
-              #enable_monasca: True
               #enable_multipathd: True
               #enable_murano: True
               #enable_neutron_agent_ha: True
@@ -303,13 +297,11 @@
               #enable_senlin: True
               #enable_skydive: True
               #enable_solum: True
-              #enable_storm: True
               #enable_swift: True
               #enable_tacker: True
               #enable_telegraf: True
               #enable_trove: True
               #enable_watcher: True
-              #enable_zookeeper: True
               #enable_zun: True
               extra-global-1: "extra-val-1"
               extra-global-2: "extra-val-2"

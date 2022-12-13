@@ -529,6 +529,8 @@ ironic_inspector_kernel_cmdline_extras:
 # in the Grafana database, breaking the local admin account, and
 # preventing admin API calls to Grafana. To reduce the chance of this
 # happening the local admin account is renamed here.
+# NOTE(priteau): This is kept for compatibility purpose until we validate
+# reverting to the original admin user.
 {% if kolla_enable_grafana and grafana_local_admin_user_name is defined %}
 grafana_admin_username: "{{ grafana_local_admin_user_name }}"
 {% endif %}

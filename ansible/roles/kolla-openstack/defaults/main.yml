@@ -317,15 +317,6 @@ kolla_inspector_swift_auth: {}
 kolla_extra_inspector:
 
 ###############################################################################
-# Kafka configuration.
-
-# Whether to enable Kafka.
-kolla_enable_kafka:
-
-# Free form extra configuration to append to kafka.server.properties.
-kolla_extra_kafka:
-
-###############################################################################
 # Magnum configuration.
 
 # Whether to enable Magnum.
@@ -366,12 +357,6 @@ kolla_enable_masakari:
 
 # Free form extra configuration to append to masakari.conf.
 kolla_extra_masakari:
-
-###############################################################################
-# Monasca configuration.
-
-# Whether to enable Monasca.
-kolla_enable_monasca:
 
 ###############################################################################
 # Murano configuration.
@@ -484,22 +469,7 @@ kolla_enable_sahara:
 kolla_extra_sahara:
 
 ###############################################################################
-# Storm configuration.
-
-# Whether to enable Storm.
-kolla_enable_storm:
-
-###############################################################################
 # Swift configuration.
 
 # Whether to enable swift.
 kolla_enable_swift:
-
-###############################################################################
-# Zookeeper configuration.
-
-# Whether to enable Zookeeper.
-kolla_enable_zookeeper:
-
-# Free form extra configuration to append to zookeeper.cfg.
-kolla_extra_zookeeper:
