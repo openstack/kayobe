@@ -62,6 +62,14 @@ Clone the ``kayobe-config-dev`` repository to ``config/src/kayobe-config``
 Inspect the Kayobe configuration and make any changes necessary for your
 environment.
 
+If you want to test bare metal compute nodes as described in
+:ref:`testing_bare_metal_compute`, enable Ironic by adding the following to
+``config/src/kayobe-config/etc/kayobe/kolla.yml``:
+
+.. code-block:: yaml
+
+   kolla_enable_ironic: True
+
 If using Vagrant, follow the steps in :ref:`contributor-vagrant` to prepare
 your environment for use with Vagrant and bring up a Vagrant VM.
 
@@ -123,6 +131,8 @@ Ansible that registers images, networks, flavors etc. It will then deploy a
 virtual server instance, and delete it once it becomes active::
 
     ./dev/overcloud-test-vm.sh
+
+.. _testing_bare_metal_compute:
 
 Bare Metal Compute
 ^^^^^^^^^^^^^^^^^^
