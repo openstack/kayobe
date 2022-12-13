@@ -43,18 +43,12 @@ monitoring
 [kafka:children]
 control
 
-[kibana:children]
-control
-
 [telegraf:children]
 compute
 control
 monitoring
 network
 storage
-
-[elasticsearch:children]
-control
 
 [hacluster:children]
 control
@@ -72,9 +66,6 @@ control
 control
 
 [outward-rabbitmq:children]
-control
-
-[qdrouterd:children]
 control
 
 [monasca-agent:children]
