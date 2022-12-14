@@ -15,8 +15,7 @@
     - role: stackhpc.os_openstacksdk
       os_openstacksdk_venv: "{{ venv }}"
       os_openstacksdk_install_epel: "{{ dnf_install_epel }}"
-      os_openstacksdk_state: latest
-      os_openstacksdk_upper_constraints_file: "{{ pip_upper_constraints_file }}"
+      os_openstacksdk_upper_constraints_file: "{{ openstacksdk_upper_constraints_file }}"
 
 - name: Ensure baremetal compute nodes are manageable in ironic
   hosts: baremetal-compute
