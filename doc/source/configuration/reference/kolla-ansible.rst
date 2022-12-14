@@ -113,7 +113,8 @@ The following variables affect which Kolla images are used, and how they are
 accessed.
 
 ``kolla_base_distro``
-    Kolla base container image distribution. Default is ``rocky``.
+    Kolla base container image distribution. Default is
+    ``{{ os_distribution }}``.
 ``kolla_base_distro_version``
     Kolla base container image distribution version. Default is dependent on
     ``kolla_base_distro``.
