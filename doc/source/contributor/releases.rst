@@ -127,7 +127,7 @@ Prior to the release, we update the dependencies and upper constraints on the
 master branch to use the upcoming release. This is now quite easy to do,
 following the introduction of the ``openstack_release`` variable. This is done
 prior to creating a release candidate. For example, see
-https://review.opendev.org/#/c/694616/.
+https://review.opendev.org/c/openstack/kayobe/+/867617.
 
 Synchronise kayobe-config
 -------------------------
