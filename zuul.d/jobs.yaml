@@ -71,7 +71,6 @@
       - name: openstack/kolla
       - name: openstack/kolla-ansible
       - name: openstack/requirements
-        override-checkout: stable/yoga
       - name: openstack/tenks
     irrelevant-files:
       - ^\..+

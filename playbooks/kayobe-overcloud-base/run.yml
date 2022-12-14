@@ -5,7 +5,6 @@
     KAYOBE_OVERCLOUD_GENERATE_CERTIFICATES: "{{ tls_enabled | ternary(1, 0) }}"
     # TODO(mgoddard): Remove this when libvirt on host is used by default.
     TENKS_CONFIG_PATH: "dev/tenks-deploy-config-compute{% if tls_enabled %}-libvirt-on-host{% endif %}.yml"
-    UPPER_CONSTRAINTS_FILE: "https://releases.openstack.org/constraints/upper/yoga"
   tasks:
     - name: Ensure overcloud is deployed
       shell:
