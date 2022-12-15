@@ -49,27 +49,19 @@ playbooks in this repository makes a lot of sense, and kayobe has special
 support for this.
 
 It is recommended to store custom playbooks in
-``$KAYOBE_CONFIG_PATH/ansible/``.  Roles located in
-``$KAYOBE_CONFIG_PATH/ansible/roles/`` will be automatically available to
-playbooks in this directory.
+``$KAYOBE_CONFIG_PATH/ansible/``.  It is also possible to use the following
+subdirectories, and since the Zed 13.0.0 release these will be available to all
+Kayobe playbook executions.
 
-With this directory layout, the following commands could be used to create
-symlinks that allow access to Kayobe's filter plugins, group variables and test
-plugins:
+* ``roles``
+* ``collections``
+* ``action_plugins``
+* ``filter_plugins``
+* ``test_plugins``
 
-.. code-block:: console
-
-   cd ${KAYOBE_CONFIG_PATH}/ansible/
-   ln -s ../../../../kayobe/ansible/filter_plugins/ filter_plugins
-   ln -s ../../../../kayobe/ansible/test_plugins/ test_plugins
-
-These symlinks can even be committed to the kayobe-config Git repository.
-
-.. note::
-
-   These symlinks rely on having a kayobe source checkout at the same level as
-   the kayobe-config repository checkout, as described in
-   :ref:`installation-source`.
+Note that since the Zed 13.0.0 release, it is no longer necessary to create
+symlinks in order to use Kayobe's roles, collections or plugins. Existing
+symlinks may be removed.
 
 Ansible Galaxy
 --------------
