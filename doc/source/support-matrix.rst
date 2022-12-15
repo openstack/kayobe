@@ -9,22 +9,24 @@ Supported Operating Systems
 
 Kayobe supports the following host Operating Systems (OS):
 
-* CentOS Stream 9 (since Zed 13.0.0 release)
 * Rocky Linux 9 (since Zed 13.0.0 release)
 * Ubuntu Jammy 22.04 (since Zed 13.0.0 release)
 
-.. note::
-
-   CentOS 7 is no longer supported as a host OS. The Train release supports
-   both CentOS 7 and 8, and provides a route for migration. See the `Kayobe
-   Train documentation <https://docs.openstack.org/kayobe/train/centos8.html>`_
-   for information on migrating to CentOS 8.
+In addition to that CentOS Stream 9 host OS is functional, but not officially
+supported. Kolla does not publish CentOS Stream 9 images to Docker Hub/Quay.io,
+therefore users need to build them by themselves.
 
 .. note::
 
-   CentOS Linux 8 (as opposed to CentOS Stream 8) is no longer supported as a
-   host OS. The Victoria release supports both CentOS Linux 8 and CentOS Stream
-   8, and provides a route for migration.
+   CentOS Stream 8 is no longer supported as a host OS. The Yoga release will
+   in future support both CentOS Stream 8 and 9, and provides a route for
+   migration.
+
+.. note::
+
+   Rocky Linux 8 is no longer supported as a host OS. The Yoga release will
+   in future support both Rocky Linux 8 and 9, and provides a route for
+   migration.
 
 Supported container images
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
