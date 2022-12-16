@@ -27,6 +27,10 @@
     interfaces_setup_filter: "{{ kayobe_ansible_setup_filter }}"
     interfaces_setup_gather_subset: "{{ kayobe_ansible_setup_gather_subset }}"
 
+# NOTE(priteau): We need to run handlers from MichaelRigart.interfaces before
+# we start configuring any veth interfaces.
+- meta: flush_handlers
+
 # Configure virtual ethernet patch links to connect the workload provision
 # and external network bridges to the Neutron OVS bridge.
 - name: Ensure OVS patch links exist
