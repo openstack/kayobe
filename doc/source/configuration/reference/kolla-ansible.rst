@@ -268,10 +268,6 @@ The following variables affect TLS encryption of the public API.
     A TLS certificate bundle to use for the public API endpoints, if
     ``kolla_enable_tls_external`` is ``true``.  Note that this should be
     formatted as a literal style block scalar.
-``kolla_external_fqdn_cacert``
-    Path to a CA certificate file to use for the ``OS_CACERT`` environment
-    variable in openrc files when TLS is enabled, instead of Kolla Ansible's
-    default.
 
 The following variables affect TLS encryption of the internal API. Currently
 this requires all Kolla images to be built with the API's root CA trusted.
@@ -282,10 +278,18 @@ this requires all Kolla images to be built with the API's root CA trusted.
     A TLS certificate bundle to use for the internal API endpoints, if
     ``kolla_enable_tls_internal`` is ``true``.  Note that this should be
     formatted as a literal style block scalar.
-``kolla_internal_fqdn_cacert``
+
+The following variables affect the generated ``admin-openrc.sh`` and
+``public-openrc.sh`` environment files.
+
+``kolla_public_openrc_cacert``
     Path to a CA certificate file to use for the ``OS_CACERT`` environment
-    variable in openrc files when TLS is enabled, instead of Kolla Ansible's
-    default.
+    variable in the ``public-openrc.sh`` file when TLS is enabled, instead of
+    ``kolla_admin_openrc_cacert``.
+``kolla_admin_openrc_cacert``
+    Path to a CA certificate file to use for the ``OS_CACERT`` environment
+    variable in the ``admin-openrc.sh`` and ``public-openrc.sh`` files when TLS
+    is enabled, instead of Kolla Ansible's default.
 
 Example: enabling TLS for the public API
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -302,7 +306,7 @@ Here is an example:
      -----BEGIN CERTIFICATE-----
      ...
      -----END CERTIFICATE-----
-   kolla_external_fqdn_cacert: /path/to/ca/certificate/bundle
+   kolla_admin_openrc_cacert: /path/to/ca/certificate/bundle
 
 Example: enabling TLS for the internal API
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -319,7 +323,7 @@ Here is an example:
      -----BEGIN CERTIFICATE-----
      ...
      -----END CERTIFICATE-----
-   kolla_internal_fqdn_cacert: /path/to/ca/certificate/bundle
+   kolla_admin_openrc_cacert: /path/to/ca/certificate/bundle
 
 Other certificates
 ------------------
