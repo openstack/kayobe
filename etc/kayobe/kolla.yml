@@ -480,7 +480,7 @@
 # Path to a CA certificate file to use for the OS_CACERT environment variable
 # in public-openrc.sh file when TLS is enabled, instead of Kolla-Ansible's
 # default.
-#kolla_external_fqdn_cacert:
+#kolla_public_openrc_cacert:
 
 # Internal API certificate bundle.
 #
@@ -493,7 +493,7 @@
 # Path to a CA certificate file to use for the OS_CACERT environment variable
 # in admin-openrc.sh file when TLS is enabled, instead of Kolla-Ansible's
 # default.
-#kolla_internal_fqdn_cacert:
+#kolla_admin_openrc_cacert:
 
 ###############################################################################
 # Proxy configuration

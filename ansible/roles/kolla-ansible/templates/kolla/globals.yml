@@ -206,8 +206,7 @@ kolla_external_fqdn_cert: "{{ kolla_external_fqdn_cert }}"
 {% if kolla_internal_tls_cert is not none and kolla_internal_tls_cert | length > 0 %}
 kolla_internal_fqdn_cert: "{{ kolla_internal_fqdn_cert }}"
 {% endif %}
-kolla_external_fqdn_cacert: "{{ kolla_external_fqdn_cacert }}"
-kolla_internal_fqdn_cacert: "{{ kolla_internal_fqdn_cacert }}"
+kolla_admin_openrc_cacert: "{{ kolla_admin_openrc_cacert }}"
 
 ################
 # Region options
