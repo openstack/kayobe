@@ -6,14 +6,13 @@ Upgrading
 
 This section describes how to upgrade from one OpenStack release to another.
 
-CentOS Stream 8
-===============
+Rocky Linux 9
+=============
 
-The Wallaby release introduced support for CentOS Stream 8 as a host operating
-system. CentOS Stream 8 support was also added to Victoria in version 9.2.0.
-CentOS Linux users upgrading from Victoria should first migrate hosts and
-container images from CentOS Linux to CentOS Stream before upgrading to
-Wallaby.
+The Zed release introduced support for Rocky Linux 9 as a host operating
+system. Rocky Linux 9 support will also added to Yoga in a future release.
+CentOS Stream 8 users upgrading from Yoga should wait for Rocky Linux 9 support
+to become available before upgrading to Zed.
 
 Preparation
 ===========
