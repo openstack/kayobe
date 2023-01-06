@@ -102,8 +102,9 @@
 # Default is {{ openstack_release }}.
 #kolla_openstack_release:
 
-# Docker tag applied to built container images. Default is
-# {{ kolla_openstack_release }}.
+# Docker tag applied to built container images. Default is {{
+# kolla_openstack_release }}-{{ kolla_base_distro }}-{{
+# kolla_base_distro_version }}.
 #kolla_tag:
 
 # Dict mapping names of sources to their definitions.
