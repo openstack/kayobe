@@ -218,6 +218,17 @@ specified directory, with one subdirectory per container. This command may be
 followed by ``kayobe overcloud service configuration save`` to gather the
 generated configuration to the Ansible control host.
 
+Validating Overcloud Service Configuration
+==========================================
+
+Issues can arise in Kolla Ansible deployments when incorrect options are used
+in configuration files. This is because OpenStack services will ignore unknown
+options. It is also important to keep on top of deprecated options that may be
+removed in the future. The ``oslo-config-validator`` can be used to check both
+of these. This command will run it on the OpenStack control plane services::
+
+    (kayobe) $ kayobe overcloud service configuration validate --output-dir /path/to/save/results
+
 Performing Database Backups
 ===========================
 

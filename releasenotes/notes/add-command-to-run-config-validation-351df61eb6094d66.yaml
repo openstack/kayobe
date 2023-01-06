@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Adds the command ``kayobe overcloud service configuration validate`` to run
+    the ``oslo-config-validator`` on all hosts via Kolla-Ansible.

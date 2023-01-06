@@ -1320,7 +1320,7 @@ class OvercloudServiceConfigurationGenerate(KayobeAnsibleMixin,
     def get_parser(self, prog_name):
         parser = super(OvercloudServiceConfigurationGenerate,
                        self).get_parser(prog_name)
-        group = parser.add_argument_group("Service Configuration")
+        group = parser.add_argument_group("Service Configuration Generate")
         group.add_argument("--node-config-dir", required=True,
                            help="the directory to store the config files on "
                                 "the remote node (required)")
@@ -1346,6 +1346,30 @@ class OvercloudServiceConfigurationGenerate(KayobeAnsibleMixin,
                                          extra_vars=extra_vars)
 
 
+class OvercloudServiceConfigurationValidate(KayobeAnsibleMixin,
+                                            KollaAnsibleMixin, VaultMixin,
+                                            Command):
+    """Runs oslo config validator on the OpenStack control plane services."""
+
+    def get_parser(self, prog_name):
+        parser = super(OvercloudServiceConfigurationValidate,
+                       self).get_parser(prog_name)
+        group = parser.add_argument_group("Service Configuration Validate")
+        group.add_argument("--output-dir", required=True,
+                           help="the directory to store the results of running"
+                                "the config validator (required)")
+        return parser
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Validating overcloud service configuration")
+        extra_vars = {}
+        if parsed_args.output_dir:
+            extra_vars[
+                "service_config_validate_output_dir"] = parsed_args.output_dir
+        self.run_kolla_ansible_overcloud(parsed_args, "validate-config",
+                                         extra_vars=extra_vars)
+
+
 class OvercloudServiceConfigurationSave(KayobeAnsibleMixin, VaultMixin,
                                         Command):
     """Gather and save the overcloud service configuration files.
@@ -1359,7 +1383,7 @@ class OvercloudServiceConfigurationSave(KayobeAnsibleMixin, VaultMixin,
     def get_parser(self, prog_name):
         parser = super(OvercloudServiceConfigurationSave, self).get_parser(
             prog_name)
-        group = parser.add_argument_group("Service configuration")
+        group = parser.add_argument_group("Service Configuration Save")
         group.add_argument("--exclude",
                            help="optional comma-separated list of patterns "
                                 "matching filenames to exclude")
