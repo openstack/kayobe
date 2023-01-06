@@ -268,7 +268,7 @@ Building Container Images
 .. note::
 
    It is possible to use prebuilt container images from an image registry such
-   as Dockerhub.  In this case, this step can be skipped.
+   as Quay.io.  In this case, this step can be skipped.
 
 In some cases it may be necessary to build images locally either to apply local
 image customisation or to use a downstream version of kolla.  To build images
@@ -382,7 +382,7 @@ Building Container Images
 .. note::
 
    It is possible to use prebuilt container images from an image registry such
-   as Dockerhub.  In this case, this step can be skipped.
+   as Quay.io.  In this case, this step can be skipped.
 
 In some cases it may be necessary to build images locally either to apply local
 image customisation or to use a downstream version of kolla.  To build images
@@ -404,12 +404,12 @@ Pulling Container Images
 .. note::
 
    It is possible to build container images locally avoiding the need for an
-   image registry such as Dockerhub.  In this case, this step can be skipped.
+   image registry such as Quay.io.  In this case, this step can be skipped.
 
-In most cases suitable prebuilt kolla images will be available on Dockerhub.
-The `kolla account <https://hub.docker.com/u/kolla>`_ provides image
-repositories suitable for use with kayobe and will be used by default.  To
-pull images from the configured image registry::
+In most cases suitable prebuilt kolla images will be available on Quay.io. The
+`openstack.kolla organisation <https://quay.io/organization/openstack.kolla>`_
+provides image repositories suitable for use with kayobe and will be used by
+default. To pull images from the configured image registry::
 
     (kayobe) $ kayobe overcloud container image pull
 
