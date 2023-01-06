@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Synchronises the default value ``kolla_tag`` with the container image
+    tagging scheme expected by Kolla Ansible. This ensures images are built
+    with tags such as ``zed-ubuntu-jammy`` instead of ``zed``.
