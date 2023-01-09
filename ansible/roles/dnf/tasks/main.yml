@@ -8,7 +8,8 @@
   loop: "{{ query('dict', dnf_config) }}"
   become: true
 
-- include_tasks: local-mirror.yml
+- name: Configure local mirror
+  include_tasks: local-mirror.yml
   when: dnf_use_local_mirror | bool
 
-- include_tasks: custom-repo.yml
+- import_tasks: custom-repo.yml
