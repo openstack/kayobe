@@ -1,3 +1,5 @@
 ---
+interfaces_use_networkmanager: "{{ ansible_facts.distribution_major_version | int >= 9 }}"
+
 # List of virtual interfaces to configure.
 veth_interfaces: []
