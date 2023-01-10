@@ -66,19 +66,11 @@
     required-projects:
       # Include kayobe to ensure other projects can use this job.
       - name: openstack/ansible-collection-kolla
-        # TODO(bbezak): Remove when kayobe stable/zed exists.
-        override-checkout: stable/zed
       - name: openstack/kayobe
       - name: openstack/kayobe-config-dev
       - name: openstack/kolla
-        # TODO(bbezak): Remove when kayobe stable/zed exists.
-        override-checkout: stable/zed
       - name: openstack/kolla-ansible
-        # TODO(bbezak): Remove when kayobe stable/zed exists.
-        override-checkout: stable/zed
       - name: openstack/requirements
-        # TODO(bbezak): Remove when kayobe stable/zed exists.
-        override-checkout: stable/zed
       - name: openstack/tenks
     irrelevant-files:
       - ^\..+
