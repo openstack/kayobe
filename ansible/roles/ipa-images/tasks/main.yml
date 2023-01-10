@@ -88,13 +88,13 @@
         extension: "{{ item.created_at | replace(':', '-') }}~"
       with_items:
         - name: "{{ ipa_images_kernel_name }}"
-          created_at: "{{ ipa_images_kernel.openstack_image.created_at | default }}"
+          created_at: "{{ ipa_images_kernel.openstack_images[0].created_at | default }}"
           checksum: "{{ ipa_images_checksum.results[0].stat.checksum }}"
-          glance_checksum: "{{ ipa_images_kernel.openstack_image.checksum | default }}"
+          glance_checksum: "{{ ipa_images_kernel.openstack_images[0].checksum | default }}"
         - name: "{{ ipa_images_ramdisk_name }}"
-          created_at: "{{ ipa_images_ramdisk.openstack_image.created_at | default }}"
+          created_at: "{{ ipa_images_ramdisk.openstack_images[0].created_at | default }}"
           checksum: "{{ ipa_images_checksum.results[1].stat.checksum }}"
-          glance_checksum: "{{ ipa_images_ramdisk.openstack_image.checksum | default }}"
+          glance_checksum: "{{ ipa_images_ramdisk.openstack_images[0].checksum | default }}"
       when:
         - item.glance_checksum
         - item.checksum != item.glance_checksum

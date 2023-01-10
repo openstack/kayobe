@@ -45,6 +45,7 @@
         - etc/kayobe/kolla/passwords.yml
         - etc/kolla/admin-openrc.sh
         - etc/kolla/public-openrc.sh
+        - etc/kolla/clouds.yaml
 
     # NOTE(mgoddard): Use the name zz-overrides.yml to ensure this takes
     # precedence over the standard config files.
