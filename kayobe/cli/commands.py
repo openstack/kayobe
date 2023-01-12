@@ -104,15 +104,15 @@ class KayobeAnsibleMixin(object):
         tags = None if install else "config"
         playbooks = _build_playbook_list("kolla-ansible")
         self.run_kayobe_playbooks(parsed_args, playbooks, tags=tags,
-                                  ignore_limit=True)
+                                  ignore_limit=True, check=False)
         if service_config:
             playbooks = _build_playbook_list("kolla-openstack")
             self.run_kayobe_playbooks(parsed_args, playbooks,
-                                      ignore_limit=True)
+                                      ignore_limit=True, check=False)
         if bifrost_config:
             playbooks = _build_playbook_list("kolla-bifrost")
             self.run_kayobe_playbooks(parsed_args, playbooks,
-                                      ignore_limit=True)
+                                      ignore_limit=True, check=False)
 
 
 class KollaAnsibleMixin(object):
@@ -244,7 +244,7 @@ class ControlHostBootstrap(KayobeAnsibleMixin, KollaAnsibleMixin, VaultMixin,
             ka_tags = "install"
         playbooks = _build_playbook_list("kolla-ansible")
         self.run_kayobe_playbooks(parsed_args, playbooks, tags=ka_tags,
-                                  ignore_limit=True)
+                                  ignore_limit=True, check=False)
 
         if passwords_exist:
             # If we are bootstrapping a control host for an existing
@@ -279,7 +279,7 @@ class ControlHostUpgrade(KayobeAnsibleMixin, VaultMixin, Command):
         self.run_kayobe_playbooks(parsed_args, playbooks, ignore_limit=True)
         playbooks = _build_playbook_list("kolla-ansible")
         self.run_kayobe_playbooks(parsed_args, playbooks, tags="install",
-                                  ignore_limit=True)
+                                  ignore_limit=True, check=False)
 
 
 class ConfigurationDump(KayobeAnsibleMixin, VaultMixin, Command):
