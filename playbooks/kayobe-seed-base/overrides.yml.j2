@@ -32,8 +32,13 @@ aio_bridge_ports:
 # Build seed deployment images (IPA) with extra-hardware element
 ipa_build_images: {{ build_images }}
 ipa_build_dib_elements_extra:
-  - "extra-hardware"
+  # extra-hardware is currently failing on Ubuntu
+  - "{% raw %}{{ 'extra-hardware' if os_distribution != 'ubuntu' else '' }}{% endraw %}"
   - "openstack-ci-mirrors"
+
+# Workaround for limited tmpfs space in CI
+ipa_build_dib_env_extra:
+  DIB_NO_TMPFS: 1
 
 # Build overcloud host image.
 overcloud_dib_build_host_images: {{ build_images }}

@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    ``ipa_build_dib_elements_default`` and ``ipa_build_dib_env_default`` now
+    use ``os_distribution`` and ``os_release`` by default. This means that
+    Ubuntu images will now be built with the Ironic Python Agent when running
+    on Ubuntu. Rocky will still build CentOS images, as Rocky IPA images have
+    not been tested yet.
