@@ -612,7 +612,8 @@ def networkd_networks(context, names, inventory_hostname=None):
                                                      inventory_hostname)
         vlan = networks.net_vlan(context, name, inventory_hostname)
         mtu = networks.net_mtu(context, name, inventory_hostname)
-        parent = networks.get_vlan_parent(device, vlan)
+        parent = networks.get_vlan_parent(
+            context, name, device, vlan, inventory_hostname)
         vlan_interfaces = interface_to_vlans.setdefault(parent, [])
         vlan_interfaces.append({"device": device, "mtu": mtu})
 
