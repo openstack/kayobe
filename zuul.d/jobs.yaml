@@ -165,9 +165,9 @@
     nodeset: kayobe-centos8s
 
 - job:
-    name: kayobe-overcloud-upgrade-ubuntu-focal
+    name: kayobe-overcloud-upgrade-ubuntu-jammy
     parent: kayobe-overcloud-upgrade-base
-    nodeset: kayobe-ubuntu-focal
+    nodeset: kayobe-ubuntu-jammy
 
 - job:
     name: kayobe-seed-base
@@ -270,9 +270,9 @@
     nodeset: kayobe-centos8s
 
 - job:
-    name: kayobe-seed-upgrade-ubuntu-focal
+    name: kayobe-seed-upgrade-ubuntu-jammy
     parent: kayobe-seed-upgrade-base
-    nodeset: kayobe-ubuntu-focal
+    nodeset: kayobe-ubuntu-jammy
 
 - job:
     name: kayobe-seed-vm-base
