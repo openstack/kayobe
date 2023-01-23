@@ -457,6 +457,16 @@ kolla_ansible_target_venv: "{{ virtualenv_path ~ '/kolla-ansible' }}"
 # Password to use to encrypt the kolla-ansible passwords.yml file.
 kolla_ansible_vault_password: "{{ lookup('env', 'KAYOBE_VAULT_PASSWORD') | default }}"
 
+# Hashi Vault
+kolla_ansible_vault_addr: "{{ lookup('env', 'KAYOBE_VAULT_ADDR') | default }}"
+kolla_ansible_vault_mount_point: "{{ lookup('env', 'KAYOBE_VAULT_MOUNT_POINT') | default }}"
+kolla_ansible_vault_kv_path: "{{ lookup('env', 'KAYOBE_VAULT_KV_PATH') | default }}"
+kolla_ansible_vault_namespace: "{{ lookup('env', 'KAYOBE_VAULT_NAMESPACE') | default }}"
+kolla_ansible_vault_role_id: "{{ lookup('env', 'KAYOBE_VAULT_ROLE_ID') | default }}"
+kolla_ansible_vault_secret_id: "{{ lookup('env', 'KAYOBE_VAULT_SECRET_ID') | default }}"
+kolla_ansible_vault_token: "{{ lookup('env', 'KAYOBE_VAULT_TOKEN') | default }}"
+kolla_ansible_vault_cacert: "{{ lookup('env', 'KAYOBE_VAULT_CACERT') | default }}"
+
 # Whether TLS is enabled for the external API endpoints.
 kolla_enable_tls_external: "{{ kolla_enable_tls_internal if public_net_name == internal_net_name else 'no' }}"
 
