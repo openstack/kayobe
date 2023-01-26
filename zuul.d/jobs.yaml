@@ -160,9 +160,9 @@
     timeout: 9000
 
 - job:
-    name: kayobe-overcloud-upgrade-centos8s
+    name: kayobe-overcloud-upgrade-rocky9
     parent: kayobe-overcloud-upgrade-base
-    nodeset: kayobe-centos8s
+    nodeset: kayobe-rocky9
 
 - job:
     name: kayobe-overcloud-upgrade-ubuntu-jammy
@@ -265,9 +265,9 @@
     timeout: 5400
 
 - job:
-    name: kayobe-seed-upgrade-centos8s
+    name: kayobe-seed-upgrade-rocky9
     parent: kayobe-seed-upgrade-base
-    nodeset: kayobe-centos8s
+    nodeset: kayobe-rocky9
 
 - job:
     name: kayobe-seed-upgrade-ubuntu-jammy
