@@ -25,6 +25,13 @@
         src: globals.yml.j2
         dest: "{{ kayobe_config_src_dir }}/etc/kayobe/kolla/globals.yml"
 
+    - name: Configure Tenks to use UEFI boot mode
+      replace:
+        path: "{{ kayobe_src_dir }}/dev/tenks-deploy-config-compute.yml"
+        regexp: '^default_boot_mode: .*$'
+        replace: 'default_boot_mode: "uefi"'
+      when: ironic_boot_mode == 'uefi'
+
     - name: Ensure kayobe is installed
       shell:
         cmd: dev/install.sh &> {{ logs_dir }}/ansible/install
