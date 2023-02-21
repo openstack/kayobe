@@ -56,15 +56,17 @@
 
     # Configuration and validation of network host networking.
     - name: Validate Kolla Ansible API address configuration
-      fail:
-        msg: >
+      assert:
+        that:
+          - hostvars[inventory_hostname][item.var_name] is defined
+          - hostvars[inventory_hostname][item.var_name] | length > 0
+        fail_msg: >
           The Kolla Ansible variable {{ item.var_name }}
           ({{ item.description }}) is invalid. Value:
           "{{ hostvars[inventory_hostname][item.var_name] | default('<undefined>') }}".
       when:
         - groups['network'] | length > 0
         - item.required | bool
-        - hostvars[inventory_hostname][item.var_name] is not defined or not hostvars[inventory_hostname][item.var_name]
       with_items:
         - var_name: "kolla_internal_vip_address"
           description: "Internal API VIP address"
