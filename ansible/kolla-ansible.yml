@@ -12,14 +12,14 @@
   tasks:
     - name: Validate serial console configuration
       block:
-        - name: Check ipmitool-socat is in enabled in kolla_ironic_enabled_console_interfaces
-          fail:
-            msg: >
+        - name: Check ipmitool-socat is in kolla_ironic_enabled_console_interfaces
+          assert:
+            that:
+              - kolla_ironic_enabled_console_interfaces is defined
+              - "'ipmitool-socat' in kolla_ironic_enabled_console_interfaces"
+            fail_msg: >
               kolla_ironic_enabled_console_interfaces must contain ipmitool-socat if you set
               ironic_serial_console_autoenable to true
-          when:
-            - kolla_ironic_enabled_console_interfaces is defined
-            - "'ipmitool-socat' not in kolla_ironic_enabled_console_interfaces"
       when: ironic_serial_console_autoenable | bool
 
 - name: Ensure Kolla Ansible is configured
