@@ -1,4 +1,8 @@
 ---
+{% if ansible_facts.distribution_release == "jammy" %}
+os_release: "jammy"
+{% endif %}
+
 # NOTE(mgoddard): Don't reboot after disabling SELinux during CI testing, as
 # Ansible is run directly on the controller.
 disable_selinux_do_reboot: false
