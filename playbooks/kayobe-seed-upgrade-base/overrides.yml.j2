@@ -24,6 +24,10 @@ pip_index_url: "http://{{ zuul_site_mirror_fqdn }}/pypi/simple"
 pip_trusted_hosts:
   - "{{ zuul_site_mirror_fqdn }}"
 
+# Disable overcloud host disk image build. The image build in Bifrost is
+# disabled via bifrost-overrides.yml.j2.
+overcloud_dib_build_host_images: False
+
 # NOTE(mgoddard): CentOS 8 removes interfaces from their bridge during ifdown,
 # and removes the bridge if there are no interfaces left. When Kayobe bounces
 # veth links plugged into the bridge, it causes the bridge which has the IP we
