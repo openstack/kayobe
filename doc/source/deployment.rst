@@ -35,7 +35,7 @@ Physical Network
 ================
 
 The physical network can be managed by Kayobe, which uses Ansible's network
-modules.  Currently Dell Network OS 6 and Dell Network OS 9 switches are
+modules.  Currently the most popular switches for cloud infrastructure are
 supported but this could easily be extended.  To provision the physical
 network::
 

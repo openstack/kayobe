@@ -24,6 +24,13 @@ The following switch operating systems are currently supported:
 * Juniper Junos OS
 * Mellanox MLNX OS
 
+.. note::
+
+   When developing switch configuration, it can be helpful to see what commands
+   will be generated.  This can be done using the ``--display`` parameter for
+   ``kayobe physical network configure``, which will output switch global and port
+   configuration as terminal output without applying it.
+
 Adding Devices to the Inventory
 ===============================
 
