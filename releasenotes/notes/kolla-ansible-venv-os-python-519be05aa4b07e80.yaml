@@ -1,0 +1,6 @@
+upgrade:
+  - |
+    Modifies the default value of ``kolla_ansible_venv_python`` to
+    ``/usr/bin/python3``. Using operating system python to create
+    kolla-ansible venv fixes corner cases when using older venvs created with
+    ``virtualenv`` command.

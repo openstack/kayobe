@@ -16,7 +16,7 @@ kolla_ansible_source_version:
 kolla_ansible_venv: "{{ ansible_facts.env['PWD'] }}/kolla-venv"
 
 # Python interpreter to use to create Kolla Ansible virtualenv.
-kolla_ansible_venv_python: python3
+kolla_ansible_venv_python: /usr/bin/python3
 
 # Extra requirements to install inside the kolla-ansible virtualenv.
 kolla_ansible_venv_extra_requirements: []
