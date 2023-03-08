@@ -53,6 +53,14 @@ copy_logs() {
         cp -r /etc/NetworkManager/system-connections/ ${LOG_DIR}/system_logs/
     fi
 
+    if [[ -d /etc/yum.repos.d/ ]]; then
+        cp -r /etc/yum.repos.d/ ${LOG_DIR}/system_logs/
+    fi
+
+    if [[ -d /etc/apt/sources.list.d/ ]]; then
+        cp -r /etc/apt/sources.list.d/ ${LOG_DIR}/system_logs/
+    fi
+
     df -h > ${LOG_DIR}/system_logs/df.txt
     # Gather disk usage statistics for files and directories larger than 1MB
     du -d 5 -hx / | sort -hr | grep '^[0-9\.]*[MGT]' > ${LOG_DIR}/system_logs/du.txt
