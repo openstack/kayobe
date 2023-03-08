@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fixes repositories files names in Rocky Linux 9. Distributions moved to
+    lowercase names with RHEL 9 release.
