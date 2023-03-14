@@ -42,7 +42,14 @@
 
 # NOTE(priteau): We need to run handlers from MichaelRigart.interfaces before
 # we start configuring any veth interfaces.
-- meta: flush_handlers
+# NOTE(bbezak): Flush handlers does not support when clause, workaround applied:
+# https://github.com/ansible/ansible/issues/77616
+# https://github.com/jmnavarrol/ansible-issue-flush-handlers/tree/master#workaround
+
+- name: "flush_handlers"
+  include_tasks:
+    file: include_flush.yml
+  when: ansible_facts.os_family == "RedHat" and ansible_facts.distribution_major_version == "9"
 
 # Configure virtual ethernet patch links to connect the workload provision
 # and external network bridges to the Neutron OVS bridge.
