@@ -216,9 +216,9 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_nova | bool }}"
   - regex: ^octavia
     enabled: "{{ kolla_enable_octavia | bool }}"
-  - regex: opensearch
+  - regex: ^opensearch$
     enabled: "{{ kolla_enable_opensearch | bool }}"
-  - regex: opensearch-dashboards
+  - regex: ^opensearch-dashboards$
     enabled: "{{ kolla_enable_opensearch_dashboards | bool }}"
   - regex: ^openvswitch
     enabled: "{{ kolla_enable_openvswitch | bool }}"
