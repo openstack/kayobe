@@ -95,6 +95,7 @@
         {% else %}
         kolla-ansible=={{ kolla_openstack_release }}
         {% endif %}
+      - "{{ kolla_ansible_venv_ansible_core }}"
       - "{{ kolla_ansible_venv_ansible }}"
       - selinux
   pip:
