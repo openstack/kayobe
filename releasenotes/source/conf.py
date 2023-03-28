@@ -251,7 +251,6 @@ locale_dirs = ['locale/']
 
 # openstackdocstheme options
 openstackdocs_repo_name = 'openstack/kayobe'
-openstackdocs_use_storyboard = True
 openstackdocs_auto_name = False
 
 openstackdocs_projects = [
