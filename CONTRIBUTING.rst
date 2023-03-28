@@ -9,9 +9,9 @@ to set up and use Gerrit:
 
    https://docs.openstack.org/contributors/code-and-documentation/quick-start.html
 
-Bugs should be filed on Storyboard:
+Bugs should be filed on Launchpad:
 
-   https://storyboard.openstack.org/#!/project/openstack/kayobe
+   https://bugs.launchpad.net/kayobe
 
 For more specific information about contributing to this repository, see the
 Kayobe contributor guide:
