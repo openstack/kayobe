@@ -67,7 +67,7 @@ https://docs.openstack.org/releasenotes/kayobe/
 Bugs
 ----
 
-https://storyboard.openstack.org/#!/project/openstack/kayobe
+https://bugs.launchpad.net/kayobe
 
 Community
 ---------
