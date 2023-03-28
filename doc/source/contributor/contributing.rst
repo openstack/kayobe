@@ -71,15 +71,17 @@ New Feature Planning
 ~~~~~~~~~~~~~~~~~~~~
 
 New features are discussed via IRC or mailing list (with [kolla] prefix).
-Kayobe project keeps RFEs in `Storyboard
-<https://storyboard.openstack.org/#!/project/openstack/kayobe>`__.  Specs are
-welcome but not strictly required.
+Kayobe project keeps RFEs in `Launchpad
+<https://bugs.launchpad.net/kayobe>`__.
+Please use [RFE] prefix in the bug subject.
+Note this is the same place as for bugs.
+Specs are welcome but not strictly required.
 
 Task Tracking
 ~~~~~~~~~~~~~
 
-Kolla project tracks tasks in `Storyboard
-<https://storyboard.openstack.org/#!/project/openstack/kayobe>`__.  Note this
+Kayobe project tracks tasks in `Launchpad
+<https://bugs.launchpad.net/kayobe>`__.  Note this
 is the same place as for bugs.
 
 A more lightweight task tracking is done via etherpad - `Whiteboard
@@ -89,7 +91,7 @@ Reporting a Bug
 ~~~~~~~~~~~~~~~
 
 You found an issue and want to make sure we are aware of it? You can do so
-on `Storyboard <https://storyboard.openstack.org/#!/project/openstack/kayobe>`__.
+on `Launchpad <https://bugs.launchpad.net/kayobe>`__.
 Note this is the same place as for tasks.
 
 Getting Your Patch Merged

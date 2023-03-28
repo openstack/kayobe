@@ -119,7 +119,6 @@ latex_use_xindy = False
 openstackdocs_repo_name = 'openstack/kayobe'
 openstackdocs_pdf_link = True
 openstackdocs_auto_name = False
-openstackdocs_use_storyboard = True
 
 openstackdocs_projects = [
     'bifrost',
