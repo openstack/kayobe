@@ -707,6 +707,7 @@ which files are supported.
    ``mariadb/*``                   Extended MariaDB configuration.
    ``masakari.conf``               Masakari configuration.
    ``masakari/*``                  Extended masakari configuration.
+   ``multipath.conf``              Multipathd configuration.
    ``murano.conf``                 Murano configuration.
    ``murano/*``                    Extended murano configuration.
    ``neutron.conf``                Neutron configuration.
