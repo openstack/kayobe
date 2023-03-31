@@ -35,6 +35,7 @@
     - { src: backup.my.cnf.j2, dest: backup.my.cnf, enabled: "{{ kolla_enable_mariabackup }}" }
     - { src: masakari.conf.j2, dest: masakari.conf, enabled: "{{ kolla_enable_masakari }}" }
     - { src: ml2_conf.ini.j2, dest: neutron/ml2_conf.ini, enabled: "{{ kolla_enable_neutron }}" }
+    - { src: multipath.conf.j2, dest: multipath.conf, enabled: "{{ kolla_enable_multipathd }}" }
     - { src: murano.conf.j2, dest: murano.conf, enabled: "{{ kolla_enable_murano }}" }
     - { src: neutron.conf.j2, dest: neutron.conf, enabled: "{{ kolla_enable_neutron }}" }
     - { src: nova.conf.j2, dest: nova.conf, enabled: "{{ kolla_enable_nova }}" }

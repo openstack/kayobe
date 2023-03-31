@@ -104,6 +104,10 @@ provisioner:
           [extra-masakari.conf]
           foo=bar
         kolla_enable_monasca: true
+        kolla_enable_multipathd: true
+        kolla_extra_multipathd: |
+          [extra-multipath.conf]
+          foo=bar
         kolla_enable_murano: true
         kolla_extra_murano: |
           [extra-murano.conf]
