@@ -71,6 +71,8 @@ copy_logs() {
     env > ${LOG_DIR}/system_logs/env.txt
     ip address > ${LOG_DIR}/system_logs/ip-address.txt
     ip route > ${LOG_DIR}/system_logs/ip-route.txt
+    ip route show table all > ${LOG_DIR}/system_logs/ip-route-all-tables.txt
+    ip rule list > ${LOG_DIR}/system_logs/ip-rule-list.txt
 
     iptables-save > ${LOG_DIR}/system_logs/iptables.txt
 
