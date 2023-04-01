@@ -150,7 +150,11 @@ class ActionModule(action.ActionBase):
                 loader=self._loader,
                 templar=self._templar,
                 shared_loader_obj=self._shared_loader_obj)
-            result.update(copy_action.run(task_vars=task_vars))
+            copy_result = copy_action.run(task_vars=task_vars)
+            copy_result['invocation']['module_args'].update({
+                'src': result_file, 'sources': sources,
+                'extend_lists': extend_lists})
+            result.update(copy_result)
         finally:
             shutil.rmtree(local_tempdir)
         return result
