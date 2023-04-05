@@ -26,6 +26,7 @@
       ipv4_nameserver: "{{ resolv_nameservers }}"
       network_mtu: "{{ admin_oc_net_name | net_mtu or '1500' }}"
       vlan_id: "{{ '' if admin_oc_net_name == provision_oc_net_name else (admin_oc_net_name | net_vlan) }}"
+      user_data_content: "{{ kolla_bifrost_deploy_image_user_data_content }}"
   tasks:
     - block:
         - name: Ensure the Bifrost host variables directory exists

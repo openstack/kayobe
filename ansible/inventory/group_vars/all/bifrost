@@ -71,6 +71,10 @@ kolla_bifrost_deploy_image_filename: "deployment_image.qcow2"
 # Default is none.
 kolla_bifrost_deploy_image_rootfs:
 
+# Custom cloud-init user-data passed to deploy of the deployment image.
+# Default is an empty string.
+kolla_bifrost_deploy_image_user_data_content: ''
+
 ###############################################################################
 # Ironic configuration.
 
