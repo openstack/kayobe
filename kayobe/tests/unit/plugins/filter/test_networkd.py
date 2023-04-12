@@ -42,6 +42,15 @@ class BaseNetworkdTest(unittest.TestCase):
         # net4: bond on bond0 with members eth0 and eth1.
         "net4_interface": "bond0",
         "net4_bond_slaves": ["eth0", "eth1"],
+        # net5: VLAN on vlan.5 with VLAN 5 on interface eth0.
+        "net5_interface": "vlan.5",
+        "net5_parent": "eth0",
+        "net5_vlan": 5,
+        # net6: VLAN on vlan6 with VLAN 6 on interface eth0.
+        "net6_interface": "vlan6",
+        "net6_parent": "eth0",
+        "net6_vlan": 6,
+        # NOTE(priteau): net7 is used in test_veth_on_vlan
         # Prefix for networkd config file names.
         "networkd_prefix": "50-kayobe-",
         # Veth pair patch link prefix and suffix.
@@ -131,6 +140,52 @@ class TestNetworkdNetDevs(BaseNetworkdTest):
         self._update_context({"net2_interface": None})
         self.assertRaises(errors.AnsibleFilterError,
                           networkd.networkd_netdevs, self.context, ["net2"])
+
+    def test_vlan_with_parent(self):
+        devs = networkd.networkd_netdevs(self.context,
+                                         ["net1", "net2", "net5", "net6"])
+        expected = {
+            "50-kayobe-eth0.2": [
+                {
+                    "NetDev": [
+                        {"Name": "eth0.2"},
+                        {"Kind": "vlan"},
+                    ]
+                },
+                {
+                    "VLAN": [
+                        {"Id": 2},
+                    ]
+                },
+            ],
+            "50-kayobe-vlan.5": [
+                {
+                    "NetDev": [
+                        {"Name": "vlan.5"},
+                        {"Kind": "vlan"},
+                    ]
+                },
+                {
+                    "VLAN": [
+                        {"Id": 5},
+                    ]
+                },
+            ],
+            "50-kayobe-vlan6": [
+                {
+                    "NetDev": [
+                        {"Name": "vlan6"},
+                        {"Kind": "vlan"},
+                    ]
+                },
+                {
+                    "VLAN": [
+                        {"Id": 6},
+                    ]
+                },
+            ]
+        }
+        self.assertEqual(expected, devs)
 
     def test_bridge(self):
         devs = networkd.networkd_netdevs(self.context, ["net3"])
@@ -475,7 +530,8 @@ class TestNetworkdNetworks(BaseNetworkdTest):
         self.assertEqual(expected, nets)
 
     def test_vlan_with_parent(self):
-        nets = networkd.networkd_networks(self.context, ["net1", "net2"])
+        nets = networkd.networkd_networks(self.context,
+                                          ["net1", "net2", "net5", "net6"])
         expected = {
             "50-kayobe-eth0": [
                 {
@@ -487,6 +543,8 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                     "Network": [
                         {"Address": "1.2.3.4/24"},
                         {"VLAN": "eth0.2"},
+                        {"VLAN": "vlan.5"},
+                        {"VLAN": "vlan6"},
                     ]
                 },
             ],
@@ -494,6 +552,20 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                 {
                     "Match": [
                         {"Name": "eth0.2"}
+                    ]
+                },
+            ],
+            "50-kayobe-vlan.5": [
+                {
+                    "Match": [
+                        {"Name": "vlan.5"}
+                    ]
+                },
+            ],
+            "50-kayobe-vlan6": [
+                {
+                    "Match": [
+                        {"Name": "vlan6"}
                     ]
                 },
             ]
@@ -984,11 +1056,11 @@ class TestNetworkdNetworks(BaseNetworkdTest):
         # needs patching to OVS. The parent interface is a bridge, and the veth
         # pair should be plugged into it.
         self._update_context({
-            "provision_wl_net_name": "net5",
+            "provision_wl_net_name": "net7",
             "net3_bridge_ports": [],
-            "net5_interface": "br0.42",
-            "net5_vlan": 42})
-        nets = networkd.networkd_networks(self.context, ["net3", "net5"])
+            "net7_interface": "br0.42",
+            "net7_vlan": 42})
+        nets = networkd.networkd_networks(self.context, ["net3", "net7"])
         expected = {
             "50-kayobe-br0": [
                 {
