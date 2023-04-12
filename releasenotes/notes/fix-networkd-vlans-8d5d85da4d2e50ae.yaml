@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an issue with systemd-networkd configuration on Ubuntu with multiple
+    VLAN interfaces. See `story 2009013
+    <https://storyboard.openstack.org/#!/story/2009013>`__ for details.

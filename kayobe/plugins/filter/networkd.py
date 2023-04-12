@@ -641,7 +641,8 @@ def networkd_networks(context, names, inventory_hostname=None):
                             set(bond_member_to_bond))
     for device in implied_vlan_parents:
         vlan_interfaces = interface_to_vlans[device]
-        mtu = max([vlan["mtu"] for vlan in vlan_interfaces])
+        vlan_mtus = [vlan["mtu"] for vlan in vlan_interfaces if vlan["mtu"]]
+        mtu = max(vlan_mtus) if vlan_mtus else None
         net = _vlan_parent_network(device, mtu,
                                    [vlan["device"]
                                     for vlan in vlan_interfaces])
