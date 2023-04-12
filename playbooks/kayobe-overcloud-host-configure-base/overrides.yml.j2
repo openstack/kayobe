@@ -19,6 +19,9 @@ controller_extra_network_interfaces:
   - test_net_bond
   - test_net_bond_vlan
   - test_net_bridge_noip
+{% if ansible_os_family == "Debian" %}
+  - test_net_systemd_vlan
+{% endif %}
 
 # Custom IP routing tables.
 network_route_tables:
@@ -78,6 +81,15 @@ test_net_bridge_noip_cidr: 192.168.40.0/24
 test_net_bridge_noip_interface: br1
 test_net_bridge_noip_bridge_ports: [dummy7]
 test_net_bridge_noip_no_ip: true
+
+{% if ansible_os_family == "Debian" %}
+# vlan45: VLAN interface of bond0 using systemd-networkd style
+test_net_systemd_vlan_cidr: 192.168.41.0/24
+test_net_systemd_vlan_interface: "vlan{% raw %}{{ test_net_systemd_vlan_vlan }}{% endraw %}"
+test_net_systemd_vlan_parent: "{% raw %}{{ test_net_bond_interface }}{% endraw %}"
+test_net_systemd_vlan_vlan: 45
+test_net_systemd_vlan_zone: public
+{% endif %}
 
 # Define a software RAID device consisting of two loopback devices.
 controller_mdadm_arrays:

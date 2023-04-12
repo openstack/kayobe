@@ -104,6 +104,14 @@ def test_network_bridge_no_ip(host):
     assert not '192.168.40.1' in interface.addresses
 
 
+@pytest.mark.skipif(not _is_apt(),
+                    reason="systemd-networkd VLANs only supported on Ubuntu")
+def test_network_systemd_vlan(host):
+    interface = host.interface('vlan45')
+    assert interface.exists
+    assert '192.168.41.1' in interface.addresses
+
+
 def test_additional_user_account(host):
       user = host.user("kayobe-test-user")
       assert user.name == "kayobe-test-user"
