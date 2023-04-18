@@ -1,0 +1,3 @@
+---
+- include_tasks: etc-hosts.yml
+  when: customize_etc_hosts | bool

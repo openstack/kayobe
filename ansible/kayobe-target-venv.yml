@@ -100,3 +100,14 @@
             state: present
           become: True
       when: virtualenv is not defined
+
+    - name: Ensure kolla-ansible virtualenv has docker SDK for python installed
+      pip:
+        name: docker
+        state: latest
+        virtualenv: "{{ virtualenv | default(omit) }}"
+        extra_args: "{% if docker_upper_constraints_file %}-c {{ docker_upper_constraints_file }}{% endif %}"
+      become: "{{ virtualenv is not defined }}"
+      vars:
+        docker_upper_constraints_file: "{{ pip_upper_constraints_file }}"
+      when: "'docker' in group_names"

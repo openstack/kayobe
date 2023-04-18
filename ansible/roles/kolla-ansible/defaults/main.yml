@@ -299,29 +299,8 @@ kolla_enable_host_ntp:
 ###############################################################################
 # Docker configuration.
 
-# Name of the docker storage driver.
-docker_storage_driver: overlay2
-
-# Name of the docker storage LVM volume group.
-docker_storage_volume_group:
-
-# Name of the docker storage data LVM volume.
-docker_storage_volume_thinpool:
-
 # URL of docker registry
 docker_registry:
-
-# CA of docker registry
-docker_registry_ca:
-
-# List of Docker registry mirrors.
-docker_registry_mirrors: []
-
-# MTU to pass through to containers not using net=host
-docker_daemon_mtu: 1500
-
-# Enable live-restore on docker daemon
-docker_daemon_live_restore: false
 
 ###############################################################################
 # Proxy configuration

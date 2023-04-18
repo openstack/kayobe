@@ -26,3 +26,9 @@ docker_registry:
 
 # CA of docker registry
 docker_registry_ca:
+
+# List of Docker registry mirrors.
+docker_registry_mirrors: []
+
+# Enable live-restore on docker daemon
+docker_daemon_live_restore: false

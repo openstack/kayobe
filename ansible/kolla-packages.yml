@@ -1,0 +1,22 @@
+---
+- name: Ensure Kolla Ansible packages are installed
+  hosts: overcloud
+  tags:
+    - kolla-packages
+  vars:
+    # kolla_overcloud_inventory_top_level_group_map looks like:
+    # kolla_overcloud_inventory_top_level_group_map:
+    #  control:
+    #    groups:
+    #      - controllers
+    hosts_in_kolla_inventory: >-
+      {{ kolla_overcloud_inventory_top_level_group_map.values() |
+         map(attribute='groups') | flatten | unique | join(':') }}
+  tasks:
+    - name: Include openstack.kolla.packages role
+      include_role:
+        name: openstack.kolla.packages
+      vars:
+        enable_multipathd: "{{ kolla_enable_multipathd | bool }}"
+      when:
+        - inventory_hostname in query('inventory_hostnames', hosts_in_kolla_inventory)

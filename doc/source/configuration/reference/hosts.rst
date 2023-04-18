@@ -561,6 +561,22 @@ In the following example, firewalld is enabled on controllers. ``public`` and
      - service: http
        zone: public
 
+UFW
+===
+*tags:*
+  | ``firewall``
+
+Configuration of Uncomplicated Firewall (UFW) on Ubuntu hosts is currently not
+supported. Instead, UFW is disabled. Since Yoga, this may be avoided as
+follows:
+
+.. code-block:: yaml
+
+   ufw_enabled: true
+
+Note that despite the name, this will not actively enable UFW. It may do so in
+the future.
+
 .. _configuration-hosts-tuned:
 
 Tuned
@@ -991,22 +1007,6 @@ custom one.
            create: true
            mount: false
 
-Kolla-Ansible bootstrap-servers
-===============================
-
-Kolla Ansible provides some host configuration functionality via the
-``bootstrap-servers`` command, which may be leveraged by Kayobe.
-
-See the :kolla-ansible-doc:`Kolla Ansible documentation
-<reference/deployment-and-bootstrapping/bootstrap-servers.html>`
-for more information on the functions performed by this command, and how to
-configure it.
-
-Note that from the Ussuri release, Kayobe creates a user account for Kolla
-Ansible rather than this being done by Kolla Ansible during
-``bootstrap-servers``. See :ref:`configuration-kolla-ansible-user-creation` for
-details.
-
 Kolla-Ansible Remote Virtual Environment
 ========================================
 *tags:*
@@ -1022,9 +1022,6 @@ Docker Engine
 =============
 *tags:*
   | ``docker``
-
-Docker engine configuration is applied by both Kayobe and Kolla Ansible (during
-bootstrap-servers).
 
 The ``docker_storage_driver`` variable sets the Docker storage driver, and by
 default the ``overlay2`` driver is used. If using the ``devicemapper`` driver,
@@ -1276,3 +1273,65 @@ The following example defines a 1GiB swap file that will be created at
    compute_swap:
      - path: /swapfile
        size_mb: 1024
+
+AppArmor for the libvirt container
+==================================
+*tags:*
+  | ``apparmor-libvirt``
+
+.. note::
+
+   Prior to the Yoga release, this was handled by the ``kolla-ansible
+   bootstrap-servers`` command.
+
+On Ubuntu systems running the ``nova_libvirt`` Kolla container, AppArmor rules
+for libvirt are disabled.
+
+Adding entries to /etc/hosts
+============================
+*tags:*
+  | ``etc-hosts``
+
+.. note::
+
+   Prior to the Yoga release, this was handled by the ``kolla-ansible
+   bootstrap-servers`` command.
+
+Since Yoga, Kayobe adds entries to ``/etc/hosts`` for all hosts in the
+``overcloud`` group.  The entries map the hostname and FQDN of a host to its IP
+address on the internal API network. This may be avoided as follows:
+
+.. code-block:: yaml
+
+   customize_etc_hosts: false
+
+By default, each host gets an entry for every other host in the ``overcloud``
+group by default. The list of hosts that will be added may be customised:
+
+.. code-block:: yaml
+
+   etc_hosts_hosts: "{{ groups['compute'] }}"
+
+It should be noted that this functionality requires facts to be populated for
+all hosts that will be added to any ``/etc/hosts`` file. When using the
+``--limit`` argument, Kayobe will gather facts for all hosts without facts,
+including those outside of the limit. Enabling fact caching for Kayobe may
+reduce the impact of this. This fact gathering process may be avoided as
+follows:
+
+.. code-block:: yaml
+
+   etc_hosts_gather_facts: false
+
+Installing packages required by Kolla Ansible
+=============================================
+*tags:*
+  | ``kolla-packages``
+
+.. note::
+
+   Prior to the Yoga release, this was handled by the ``kolla-ansible
+   bootstrap-servers`` command.
+
+A small number of packages are required to be installed on the hosts for Kolla
+Ansible and the services that it deploys, while some others must be removed.

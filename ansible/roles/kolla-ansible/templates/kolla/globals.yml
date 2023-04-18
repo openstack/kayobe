@@ -73,21 +73,6 @@ docker_namespace: "{{ kolla_docker_namespace }}"
 {% if kolla_docker_registry_username %}
 docker_registry_username: "{{ kolla_docker_registry_username }}"
 {% endif %}
-docker_storage_driver: "{{ docker_storage_driver }}"
-docker_custom_config: {{ kolla_docker_custom_config | to_nice_json | indent(2) }}
-{% if kolla_docker_registry_insecure | bool %}
-docker_registry_insecure: "yes"
-{% endif %}
-
-{% if kolla_http_proxy is not none and kolla_http_proxy | length > 0 %}
-docker_http_proxy: "{{ kolla_http_proxy }}"
-{% endif %}
-{% if kolla_https_proxy is not none and kolla_https_proxy | length > 0 %}
-docker_https_proxy: "{{ kolla_https_proxy }}"
-{% endif %}
-{% if kolla_no_proxy is not none and kolla_no_proxy | length > 0 %}
-docker_no_proxy: "{{ kolla_no_proxy | select | join(',') }}"
-{% endif %}
 
 #docker_configure_for_zun: "no"
 

@@ -1,0 +1,63 @@
+---
+features:
+  - |
+    Improves failure handling in the ``kayobe * host configure`` commands by
+    avoiding use of the ``kolla-ansible bootstrap-servers`` command, and moving
+    all relevant functionality to Kayobe playbooks. This ensures that
+    if a host fails during a host configuration command, other hosts are able
+    to continue to completion. This is useful at scale, where host failures
+    occur more frequently. See `story 2009854
+    <https://storyboard.openstack.org/#!/story/2009854>`__ for details. Refer
+    to the upgrade notes for information about the implications of this change.
+upgrade:
+  - |
+    The ``kayobe * host configure`` commands no longer use the ``kolla-ansible
+    bootstrap-servers`` command, and associated ``baremetal`` role in Kolla
+    Ansible. The functionality provided by the ``baremetal`` role has been
+    extracted into a new ``openstack.kolla`` Ansible collection, and split into
+    separate roles. This allows Kayobe to use it directly, and only the
+    necessary parts.
+
+    This change improves failure handling in these Kayobe commands, and aims to
+    reduce confusion over which ``--limit`` and ``--tags`` arguments to
+    provide.
+
+    This change has implications for configuration of Kayobe, since some
+    variables that were previously in Kolla Ansible are now in Kayobe. The
+    following is an incomplete list of variables that have changed scoped from
+    Kolla Ansible to Kayobe::
+
+    * ``enable_docker_repo``
+    * ``docker_apt_url``
+    * ``docker_apt_repo``
+    * ``docker_apt_key_file``
+    * ``docker_apt_key_id``
+    * ``docker_apt_package``
+    * ``docker_yum_url``
+    * ``docker_yum_baseurl``
+    * ``docker_yum_gpgkey``
+    * ``docker_yum_gpgcheck``
+    * ``docker_yum_package``
+    * ``customize_etc_hosts``
+    * ``docker_storage_driver``
+    * ``docker_custom_option``
+    * ``docker_custom_config``
+    * ``docker_http_proxy``
+    * ``docker_https_proxy``
+    * ``docker_no_proxy``
+    * ``debian_pkg_install``
+    * ``redhat_pkg_install``
+    * ``ubuntu_pkg_removals``
+    * ``redhat_pkg_removals``
+
+    The following Kolla Ansible variables are no longer relevant::
+
+    * ``create_kolla_user``
+    * ``create_kolla_user_sudoers``
+    * ``kolla_user``
+    * ``kolla_group``
+    * ``change_selinux``
+    * ``selinux_state``
+    * ``host_python_version``
+    * ``virtualenv``
+    * ``virtualenv_site_packages``

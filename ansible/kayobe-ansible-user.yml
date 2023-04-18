@@ -70,9 +70,11 @@
     ansible_python_interpreter: /usr/bin/python3
   roles:
     - role: singleplatform-eng.users
+      groups_to_create: "{{ [{'name': 'docker'}] if 'docker' in group_names else [] }}"
       users:
         - username: "{{ kayobe_ansible_user }}"
           name: Kayobe deployment user
+          groups: "{{ ['docker'] if 'docker' in group_names else [] }}"
           append: True
           ssh_key:
             - "{{ lookup('file', ssh_public_key_path) }}"
