@@ -26,6 +26,11 @@ def _net_interface(context, name):
 
 
 @jinja2.contextfilter
+def _net_parent(context, name):
+    return context.get(name + '_parent')
+
+
+@jinja2.contextfilter
 def _net_vlan(context, name):
     return context.get(name + '_vlan')
 
@@ -42,6 +47,7 @@ class FakeTemplar(object):
         self.variables = variables
         self.env = jinja2.Environment()
         self.env.filters['net_interface'] = _net_interface
+        self.env.filters['net_parent'] = _net_parent
         self.env.filters['net_vlan'] = _net_vlan
         self.env.filters['net_select_bridges'] = _net_select_bridges
 

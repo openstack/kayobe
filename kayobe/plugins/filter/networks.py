@@ -106,7 +106,8 @@ def get_ovs_veths(context, names, inventory_hostname):
         # tagged interface may be shared between these networks.
         vlan = net_vlan(context, name, inventory_hostname)
         if vlan:
-            parent_or_device = get_vlan_parent(device, vlan)
+            parent_or_device = get_vlan_parent(
+                context, name, device, vlan, inventory_hostname)
         else:
             parent_or_device = device
         if parent_or_device in bridge_interfaces:
@@ -131,14 +132,21 @@ def get_ovs_veths(context, names, inventory_hostname):
     ]
 
 
-def get_vlan_parent(device, vlan):
+def get_vlan_parent(context, name, device, vlan, inventory_hostname):
     """Return the parent interface of a VLAN subinterface.
 
+    :param context: a Jinja2 Context object.
+    :param name: name of the network.
     :param device: VLAN interface name.
     :param vlan: VLAN ID.
+    :param inventory_hostname: Ansible inventory hostname.
     :returns: parent interface name.
+    :raises: ansible.errors.AnsibleFilterError
     """
-    return re.sub(r'\.{}$'.format(vlan), '', device)
+    parent = net_parent(context, name, inventory_hostname)
+    if not parent:
+        parent = re.sub(r'\.{}$'.format(vlan), '', device)
+    return parent
 
 
 @jinja2.contextfilter
@@ -188,6 +196,11 @@ def net_cidr(context, name, inventory_hostname=None):
 def net_mask(context, name, inventory_hostname=None):
     cidr = net_cidr(context, name, inventory_hostname)
     return str(netaddr.IPNetwork(cidr).netmask) if cidr is not None else None
+
+
+@jinja2.contextfilter
+def net_parent(context, name, inventory_hostname=None):
+    return net_attr(context, name, 'parent', inventory_hostname)
 
 
 @jinja2.contextfilter
@@ -542,10 +555,15 @@ def net_is_vlan(context, name, inventory_hostname=None):
 
 @jinja2.contextfilter
 def net_is_vlan_interface(context, name, inventory_hostname=None):
-    device = get_and_validate_interface(context, name, inventory_hostname)
-    # Use a heuristic to match conventional VLAN names, ending with a
-    # period and a numerical extension to an interface name
-    return re.match(r"^[a-zA-Z0-9_\-]+\.[1-9][\d]{0,3}$", device)
+    parent = net_parent(context, name, inventory_hostname)
+    vlan = net_vlan(context, name, inventory_hostname)
+    if parent and vlan:
+        return True
+    else:
+        device = get_and_validate_interface(context, name, inventory_hostname)
+        # Use a heuristic to match conventional VLAN names, ending with a
+        # period and a numerical extension to an interface name
+        return re.match(r"^[a-zA-Z0-9_\-]+\.[1-9][\d]{0,3}$", device)
 
 
 @jinja2.contextfilter
@@ -597,7 +615,10 @@ def net_configdrive_network_device(context, name, inventory_hostname=None):
     bootproto = net_bootproto(context, name, inventory_hostname)
     mtu = net_mtu(context, name, inventory_hostname)
     vlan = net_vlan(context, name, inventory_hostname)
-    if vlan and '.' in device:
+    parent = net_parent(context, name, inventory_hostname)
+    if vlan and parent:
+        backend = parent
+    elif vlan and '.' in device:
         backend = [device.split('.')[0]]
     else:
         backend = None
@@ -675,6 +696,7 @@ def get_filters():
         'net_fqdn': _make_attr_filter('fqdn'),
         'net_ip': net_ip,
         'net_interface': net_interface,
+        'net_parent': net_parent,
         'net_no_ip': net_no_ip,
         'net_cidr': net_cidr,
         'net_mask': net_mask,

@@ -14,6 +14,9 @@ def _is_dnf():
     info = distro.linux_distribution()
     return info[0].startswith('CentOS') and info[1].startswith('8')
 
+def _is_apt():
+    info = distro.linux_distribution()
+    return info[0].startswith('Ubuntu')
 
 def test_network_ethernet(host):
     interface = host.interface('dummy2')
@@ -85,6 +88,14 @@ def test_network_bridge_no_ip(host):
     interface = host.interface('br1')
     assert interface.exists
     assert not '192.168.40.1' in interface.addresses
+
+
+@pytest.mark.skipif(not _is_apt(),
+                    reason="systemd-networkd VLANs only supported on Ubuntu")
+def test_network_systemd_vlan(host):
+    interface = host.interface('vlan45')
+    assert interface.exists
+    assert '192.168.41.1' in interface.addresses
 
 
 def test_additional_user_account(host):

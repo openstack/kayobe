@@ -343,6 +343,9 @@ The following attributes are supported:
 
 ``interface``
     The name of the network interface attached to the network.
+``parent``
+    The name of the parent interface, when configuring a VLAN interface using
+    ``systemd-networkd`` syntax.
 ``bootproto``
     Boot protocol for the interface. Valid values are ``static`` and ``dhcp``.
     The default is ``static``. When set to ``dhcp``, an external DHCP server
@@ -467,8 +470,9 @@ Configuring VLAN Interfaces
 ---------------------------
 
 A VLAN interface may be configured by setting the ``interface`` attribute of a
-network to the name of the VLAN interface.  The interface name must be of the
-form ``<parent interface>.<VLAN ID>``.
+network to the name of the VLAN interface. The interface name must normally be
+of the form ``<parent interface>.<VLAN ID>`` to ensure compatibility with all
+supported host operating systems.
 
 To configure a network called ``example`` with a VLAN interface with a parent
 interface of ``eth2`` for VLAN ``123``:
@@ -484,6 +488,16 @@ To keep the configuration DRY, reference the network's ``vlan`` attribute:
    :caption: ``inventory/group_vars/<group>/network-interfaces``
 
    example_interface: "eth2.{{ example_vlan }}"
+
+Alternatively, when using Ubuntu as a host operating system, VLAN interfaces
+can be named arbitrarily using syntax supported by ``systemd-networkd``. In
+this case, a ``parent`` attribute must specify the underlying interface:
+
+.. code-block:: yaml
+   :caption: ``inventory/group_vars/<group>/network-interfaces``
+
+   example_interface: "myvlan{{ example_vlan }}"
+   example_parent: "eth2"
 
 Ethernet interfaces, bridges, and bond master interfaces may all be parents to
 a VLAN interface.
