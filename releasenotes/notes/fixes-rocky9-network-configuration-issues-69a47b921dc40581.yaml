@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes various issues when applying network configuration on Rocky 9 hosts.
+    See bugs: `2016970 <https://bugs.launchpad.net/kayobe/+bug/2016970>`_ and
+    `2016971 <https://bugs.launchpad.net/kayobe/+bug/2016971>`_.
