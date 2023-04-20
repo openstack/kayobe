@@ -163,6 +163,7 @@ environment-specific and shared configuration file content:
 * ``kolla/config/bifrost/servers.yml``
 * ``kolla/globals.yml``
 * ``kolla/kolla-build.conf``
+* ``kolla/repos.yml`` or ``kolla/repos.yaml``
 
 Options in the environment-specific files take precedence over those in the
 shared files.
