@@ -711,6 +711,7 @@ which files are supported.
    ``masakari.conf``               Masakari configuration.
    ``masakari/*``                  Extended masakari configuration.
    ``monasca/*``                   Extended Monasca configuration.
+   ``multipath.conf``              Multipathd configuration.
    ``murano.conf``                 Murano configuration.
    ``murano/*``                    Extended murano configuration.
    ``neutron.conf``                Neutron configuration.
