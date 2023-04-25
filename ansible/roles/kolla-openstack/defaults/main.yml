@@ -387,6 +387,15 @@ kolla_extra_masakari:
 kolla_enable_monasca:
 
 ###############################################################################
+# Multipathd configuration.
+
+# Whether to enable Multipathd.
+kolla_enable_multipathd:
+
+# Free form extra configuration to append to multipath.conf.
+kolla_extra_multipathd:
+
+###############################################################################
 # Murano configuration.
 
 # Whether to enable Murano.
