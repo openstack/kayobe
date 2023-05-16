@@ -19,7 +19,7 @@ firewalld_zones: >
 firewalld_default_zone: >-
   {{ controller_firewalld_default_zone
      if inventory_hostname in groups['controllers'] else
-     monitoring_firewalld_default_zone }}"
+     monitoring_firewalld_default_zone }}
 
 # A list of firewall rules to apply. Each item is a dict containing arguments
 # to pass to the firewalld module. Arguments are omitted if not provided, with
@@ -30,4 +30,4 @@ firewalld_default_zone: >-
 firewalld_rules: >
   {{ controller_firewalld_rules
      if inventory_hostname in groups['controllers'] else
-     monitoring_firewalld_rules }}"
+     monitoring_firewalld_rules }}
