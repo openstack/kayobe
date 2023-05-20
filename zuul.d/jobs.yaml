@@ -128,6 +128,8 @@
     name: kayobe-overcloud-rocky9
     parent: kayobe-overcloud-base
     nodeset: kayobe-rocky9
+    # TODO(priteau): Remove once RL9 jobs are passing
+    voting: false
 
 - job:
     name: kayobe-overcloud-ubuntu-jammy
@@ -151,6 +153,8 @@
     name: kayobe-overcloud-tls-rocky9
     parent: kayobe-overcloud-tls-base
     nodeset: kayobe-rocky9
+    # TODO(priteau): Remove once RL9 jobs are passing
+    voting: false
 
 - job:
     name: kayobe-overcloud-upgrade-base
@@ -168,6 +172,8 @@
     name: kayobe-overcloud-upgrade-rocky9
     parent: kayobe-overcloud-upgrade-base
     nodeset: kayobe-rocky9
+    # TODO(priteau): Remove once RL9 jobs are passing
+    voting: false
 
 - job:
     name: kayobe-overcloud-upgrade-ubuntu-jammy
