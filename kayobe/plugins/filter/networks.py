@@ -290,7 +290,11 @@ def net_libvirt_network_name(context, name, inventory_hostname=None):
 
 @jinja2.contextfilter
 def net_bridge_ports(context, name, inventory_hostname=None):
-    return net_attr(context, name, 'bridge_ports', inventory_hostname)
+    ports = net_attr(context, name, 'bridge_ports', inventory_hostname)
+    if ports and not isinstance(ports, list):
+        raise errors.AnsibleFilterError("Bridge ports for network '%s' should"
+                                        " be a list", name)
+    return ports
 
 
 net_bond_mode = _make_attr_filter('bond_mode')

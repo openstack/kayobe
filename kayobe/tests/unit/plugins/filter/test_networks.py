@@ -17,6 +17,7 @@ import unittest
 
 import jinja2
 
+from ansible import errors
 from kayobe.plugins.filter import networks
 
 
@@ -197,3 +198,8 @@ class TestNetworks(BaseNetworksTest):
             }
         ]
         self.assertEqual(expected, veths)
+
+    def test_ensure_bridge_ports_is_list(self):
+        self._update_context({"net3_bridge_ports": "ens3"})
+        self.assertRaises(errors.AnsibleFilterError, networks.net_bridge_ports,
+                          self.context, "net3")
