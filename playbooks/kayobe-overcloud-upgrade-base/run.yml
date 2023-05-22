@@ -81,12 +81,6 @@
             cmd: dev/overcloud-test-baremetal.sh &> {{ logs_dir }}/ansible/overcloud-test-bm-pre-upgrade
             chdir: "{{ previous_kayobe_src_dir }}"
             executable: /bin/bash
-          # FIXME(mgoddard): Bare metal testing is unreliable on Ubuntu - some jobs
-          # see IPMI failures such as the following:
-          # ipmitool chassis bootdev pxe
-          # Error setting Chassis Boot Parameter 5\nError setting Chassis Boot
-          # Parameter 0\n
-          when: ansible_facts.os_family != 'Debian'
 
         # Upgrade Kayobe, and use it to perform an upgrade of the control plane.
 
@@ -114,12 +108,6 @@
             cmd: dev/overcloud-test-baremetal.sh &> {{ logs_dir }}/ansible/overcloud-test-bm-post-upgrade
             chdir: "{{ kayobe_src_dir }}"
             executable: /bin/bash
-          # FIXME(mgoddard): Bare metal testing is unreliable on Ubuntu - some jobs
-          # see IPMI failures such as the following:
-          # ipmitool chassis bootdev pxe
-          # Error setting Chassis Boot Parameter 5\nError setting Chassis Boot
-          # Parameter 0\n
-          when: ansible_facts.os_family != 'Debian'
 
       environment:
         KAYOBE_CONFIG_SOURCE_PATH: "{{ kayobe_config_src_dir }}"
