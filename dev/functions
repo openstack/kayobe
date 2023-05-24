@@ -233,17 +233,22 @@ function upgrade_kayobe_venv {
 
 function is_deploy_image_built_locally {
     ipa_build_images=$(kayobe configuration dump --host controllers[0] --var-name ipa_build_images)
-    [[ $ipa_build_images =~ ^true$ ]]
+    to_bool "$ipa_build_images"
 }
 
 function is_ironic_enabled {
     ironic_enabled=$(kayobe configuration dump --host controllers[0] --var-name kolla_enable_ironic)
-    [[ $ironic_enabled =~ ^true$ ]]
+    to_bool "$ironic_enabled"
 }
 
 function is_overcloud_host_image_built_by_dib {
     overcloud_dib_build_host_images=$(kayobe configuration dump --host controllers[0] --var-name overcloud_dib_build_host_images)
-    [[ $overcloud_dib_build_host_images =~ ^true$ ]]
+    to_bool "$overcloud_dib_build_host_images"
+}
+
+function is_cinder_enabled {
+    flag="$(run_kayobe configuration dump --host controllers[0] --var-name kolla_enable_cinder)"
+    to_bool "$flag"
 }
 
 function environment_setup {
@@ -852,11 +857,6 @@ function to_bool {
     else
         die $LINENO "$1 was not a valid yaml boolean"
     fi
-}
-
-function is_cinder_enabled {
-    flag="$(run_kayobe configuration dump --host controllers[0] --var-name kolla_enable_cinder)"
-    to_bool "$flag"
 }
 
 function configure_iptables {
