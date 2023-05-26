@@ -450,13 +450,12 @@ compute
 [zun-cni-daemon:children]
 compute
 
-# Skydive
-[skydive-analyzer:children]
-skydive
+# Skyline
+[skyline-apiserver:children]
+skyline
 
-[skydive-agent:children]
-compute
-network
+[skyline-console:children]
+skyline
 
 # Tacker
 [tacker-server:children]

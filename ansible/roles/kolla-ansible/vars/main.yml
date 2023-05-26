@@ -224,7 +224,7 @@ kolla_feature_flags:
   - redis
   - sahara
   - senlin
-  - skydive
+  - skyline
   - solum
   - swift
   - swift_recon
