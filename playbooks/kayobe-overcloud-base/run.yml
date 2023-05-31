@@ -30,3 +30,5 @@
         cmd: dev/overcloud-test-baremetal.sh &> {{ logs_dir }}/ansible/overcloud-test-baremetal
         chdir: "{{ kayobe_src_dir }}"
         executable: /bin/bash
+      # FIXME(priteau): Bare metal testing fails on RL9/c9s with Libvirt 9.0.0
+      when: ansible_facts.os_family == 'Debian'
