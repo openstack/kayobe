@@ -11,6 +11,7 @@
     name: "ncclient{{ ncclient_version }}"
     virtualenv: "{{ lookup('env', 'VIRTUAL_ENV') | default(omit, true) }}"
   become: "{{ lookup('env', 'VIRTUAL_ENV') == None }}"
+  check_mode: false
   run_once: true
 
 - name: Ensure Juniper switches are configured
