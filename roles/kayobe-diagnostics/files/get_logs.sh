@@ -33,8 +33,12 @@ copy_logs() {
         rm ${LOG_DIR}/previous_kayobe_configs/kolla/config/ironic/ironic-agent.{kernel,initramfs}
         rm ${LOG_DIR}/previous_kolla_configs/config/ironic/ironic-agent.{kernel,initramfs}
     fi
-    cp -rvnL /var/log/* ${LOG_DIR}/system_logs/
 
+    if [[ -d /opt/kayobe/etc/kolla ]]; then
+        cp -rnL /opt/kayobe/etc/kolla/* ${LOG_DIR}/kolla_build_configs/
+    fi
+
+    cp -rvnL /var/log/* ${LOG_DIR}/system_logs/
 
     if [[ -x "$(command -v journalctl)" ]]; then
         journalctl --no-pager > ${LOG_DIR}/system_logs/syslog.txt

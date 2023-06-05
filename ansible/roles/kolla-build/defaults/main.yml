@@ -4,7 +4,7 @@ kolla_build_config_path:
 
 # Paths to extra kolla configuration files.
 kolla_build_config_paths_default:
-  - "{{ role_path }}/templates/"
+  - "{{ role_path }}/templates"
 
 # Paths to extra kolla configuration files.
 kolla_build_config_paths_extra: []
