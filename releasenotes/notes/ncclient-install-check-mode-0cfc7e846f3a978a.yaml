@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Installs ``ncclient`` dependency for Juniper switch configuration when
+    using Ansible check mode.
