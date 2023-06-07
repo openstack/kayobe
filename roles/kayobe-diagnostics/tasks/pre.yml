@@ -14,6 +14,7 @@
     - "kayobe_configs"
     - "kolla_configs"
     - "kolla_node_configs"
+    - "kolla_build_configs"
     - "system_logs"
     - "kolla"
     - "ansible"
