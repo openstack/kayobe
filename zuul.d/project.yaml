@@ -13,12 +13,16 @@
         - kayobe-tox-molecule
         - kayobe-overcloud-rocky9
         - kayobe-overcloud-centos9s
-        - kayobe-overcloud-ubuntu-jammy
+        # NOTE(mattcrees): Job temporarily disabled until fix is merged, see:
+        # https://review.opendev.org/c/openstack/kolla/+/885857
+        # - kayobe-overcloud-ubuntu-jammy
         - kayobe-overcloud-tls-rocky9
         - kayobe-overcloud-host-configure-rocky9
         - kayobe-overcloud-host-configure-centos9s
         - kayobe-overcloud-host-configure-ubuntu-jammy
-        - kayobe-overcloud-upgrade-ubuntu-focal
+        # NOTE(mattcrees): Job temporarily disabled until fix is merged, see:
+        # https://review.opendev.org/c/openstack/kolla/+/885857
+        # - kayobe-overcloud-upgrade-ubuntu-focal
         - kayobe-seed-rocky9
         - kayobe-seed-ubuntu-jammy
         - kayobe-seed-images-rocky9
@@ -34,11 +38,15 @@
         - kayobe-tox-ansible
         - kayobe-tox-molecule
         - kayobe-overcloud-rocky9
-        - kayobe-overcloud-ubuntu-jammy
+        # NOTE(mattcrees): Job temporarily disabled until fix is merged, see:
+        # https://review.opendev.org/c/openstack/kolla/+/885857
+        # - kayobe-overcloud-ubuntu-jammy
         - kayobe-overcloud-tls-rocky9
         - kayobe-overcloud-host-configure-rocky9
         - kayobe-overcloud-host-configure-ubuntu-jammy
-        - kayobe-overcloud-upgrade-ubuntu-focal
+        # NOTE(mattcrees): Job temporarily disabled until fix is merged, see:
+        # https://review.opendev.org/c/openstack/kolla/+/885857
+        # - kayobe-overcloud-upgrade-ubuntu-focal
         - kayobe-seed-rocky9
         - kayobe-seed-ubuntu-jammy
         - kayobe-seed-upgrade-ubuntu-focal
