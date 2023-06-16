@@ -60,8 +60,8 @@ hosts in the ``monitoring`` group.
    ``bootstrap_user``     Username with which to access the host before
                           ``ansible_user`` is configured.
    ``lvm_groups``         List of LVM volume groups to configure.  See
-                          `mrlesmithjr.manage-lvm role
-                          <https://galaxy.ansible.com/mrlesmithjr/manage-lvm/>`_
+                          `mrlesmithjr.manage_lvm role
+                          <https://galaxy.ansible.com/mrlesmithjr/manage_lvm/>`_
                           for format.
    ``mdadm_arrays``       List of software RAID arrays. See `mrlesmithjr.mdadm
                           role

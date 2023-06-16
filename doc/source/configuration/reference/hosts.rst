@@ -864,8 +864,8 @@ this is mapped to the following variables:
 * ``storage_lvm_groups``
 
 The format of these variables is as defined by the ``lvm_groups`` variable of
-the `mrlesmithjr.manage-lvm
-<https://galaxy.ansible.com/mrlesmithjr/manage-lvm>`__ Ansible role.
+the `mrlesmithjr.manage_lvm
+<https://galaxy.ansible.com/mrlesmithjr/manage_lvm>`__ Ansible role.
 
 LVM for libvirt
 ---------------

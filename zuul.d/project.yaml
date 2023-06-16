@@ -15,8 +15,8 @@
         - kayobe-overcloud-centos9s
         - kayobe-overcloud-rocky8
         - kayobe-overcloud-rocky9
-        - kayobe-overcloud-ubuntu-focal
-        - kayobe-overcloud-ubuntu-jammy
+        # - kayobe-overcloud-ubuntu-focal Note(mattcrees): Job temporarily disabled until fix is merged, see: https://review.opendev.org/c/openstack/kolla/+/885857
+        # - kayobe-overcloud-ubuntu-jammy
         - kayobe-overcloud-host-configure-centos8s
         - kayobe-overcloud-host-configure-centos9s
         - kayobe-overcloud-host-configure-rocky8
@@ -26,7 +26,7 @@
         - kayobe-overcloud-tls-centos8s
         - kayobe-overcloud-tls-rocky9
         - kayobe-overcloud-upgrade-centos8s
-        - kayobe-overcloud-upgrade-ubuntu-focal
+        # - kayobe-overcloud-upgrade-ubuntu-focal Note(mattcrees): Job temporarily disabled until fix is merged, see: https://review.opendev.org/c/openstack/kolla/+/885857
         - kayobe-seed-centos8s
         - kayobe-seed-rocky8
         - kayobe-seed-rocky9
@@ -54,8 +54,8 @@
         - kayobe-overcloud-centos8s
         - kayobe-overcloud-rocky8
         - kayobe-overcloud-rocky9
-        - kayobe-overcloud-ubuntu-focal
-        - kayobe-overcloud-ubuntu-jammy
+        # - kayobe-overcloud-ubuntu-focal Note(mattcrees): Job temporarily disabled until fix is merged, see: https://review.opendev.org/c/openstack/kolla/+/885857
+        # - kayobe-overcloud-ubuntu-jammy
         - kayobe-overcloud-host-configure-centos8s
         - kayobe-overcloud-host-configure-rocky8
         - kayobe-overcloud-host-configure-rocky9
@@ -64,7 +64,7 @@
         - kayobe-overcloud-tls-centos8s
         - kayobe-overcloud-tls-rocky9
         - kayobe-overcloud-upgrade-centos8s
-        - kayobe-overcloud-upgrade-ubuntu-focal
+        # - kayobe-overcloud-upgrade-ubuntu-focal Note(mattcrees): Job temporarily disabled until fix is merged, see: https://review.opendev.org/c/openstack/kolla/+/885857
         - kayobe-seed-centos8s
         - kayobe-seed-rocky8
         - kayobe-seed-rocky9

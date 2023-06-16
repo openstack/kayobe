@@ -70,15 +70,15 @@ compute_luks_devices: []
 ###############################################################################
 # Compute node LVM configuration.
 
-# List of compute volume groups. See mrlesmithjr.manage-lvm role for
+# List of compute volume groups. See mrlesmithjr.manage_lvm role for
 # format.
 compute_lvm_groups: "{{ compute_lvm_groups_default + compute_lvm_groups_extra }}"
 
-# Default list of compute volume groups. See mrlesmithjr.manage-lvm role for
+# Default list of compute volume groups. See mrlesmithjr.manage_lvm role for
 # format.
 compute_lvm_groups_default: "{{ [compute_lvm_group_data] if compute_lvm_group_data_enabled | bool else [] }}"
 
-# Additional list of compute volume groups. See mrlesmithjr.manage-lvm role
+# Additional list of compute volume groups. See mrlesmithjr.manage_lvm role
 # for format.
 compute_lvm_groups_extra: []
 
@@ -89,7 +89,7 @@ compute_lvm_groups_extra: []
 # 'docker_storage_driver' is set to 'devicemapper', or false otherwise.
 compute_lvm_group_data_enabled: "{{ docker_storage_driver == 'devicemapper' }}"
 
-# Compute LVM volume group for data. See mrlesmithjr.manage-lvm role for
+# Compute LVM volume group for data. See mrlesmithjr.manage_lvm role for
 # format.
 compute_lvm_group_data:
   vgname: data
