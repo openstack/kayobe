@@ -13,7 +13,7 @@ roles:
     version: v1.13.1
   - src: mrlesmithjr.chrony
     version: v0.1.4
-  - src: mrlesmithjr.manage-lvm
+  - src: mrlesmithjr.manage_lvm
     version: v0.2.8
   - src: mrlesmithjr.mdadm
     version: v0.1.1

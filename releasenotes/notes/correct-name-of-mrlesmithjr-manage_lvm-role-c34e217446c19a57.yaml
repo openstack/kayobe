@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes download of roles from Ansible Galaxy following the renaming of the
+    ``mrlesmithjr.manage_lvm`` role.
+    `LP#2023502 <https://bugs.launchpad.net/kolla-ansible/+bug/2024163>`__
