@@ -27,7 +27,7 @@
       vars:
         manage_lvm: True
       include_role:
-        name: mrlesmithjr.manage-lvm
+        name: mrlesmithjr.manage_lvm
         apply:
           become: True
       when:
