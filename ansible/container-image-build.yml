@@ -41,9 +41,8 @@
         password: "{{ kolla_docker_registry_password }}"
         reauthorize: yes
       when:
-        # NOTE(wszumski): Switch to truthy filter when min ansible>=2.10.5
-        - kolla_docker_registry_username not in [none, ""]
-        - kolla_docker_registry_password not in [none, ""]
+        - kolla_docker_registry_username is truthy
+        - kolla_docker_registry_password is truthy
 
     - name: Ensure Kolla container images are built
       shell:
