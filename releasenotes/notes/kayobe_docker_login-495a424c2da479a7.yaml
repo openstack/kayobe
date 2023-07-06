@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixed issue of seed containers being unable to use password
+    protected registry by adding docker login function to kayobe
+    deploy-containers role.
