@@ -614,6 +614,15 @@ Workload inspection network (``inspection_net_name``)
 
 These roles are configured in ``${KAYOBE_CONFIG_PATH}/networks.yml``.
 
+.. warning::
+
+    Changing ``external_net_names`` after initial deployment has a potential
+    for creating network loops. Kayobe / Ansible will not clean up
+    any items removed from this variable in the OVS. Any additional interfaces
+    that map to network names from the list will be added to the bridge. Any
+    previous entries that should be removed, must be deleted in OVS manually
+    prior to applying changes via Kayobe in order to avoid creating a loop.
+
 Configuring Network Roles
 -------------------------
 
