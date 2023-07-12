@@ -408,8 +408,13 @@ class PhysicalNetworkConfigure(KayobeAnsibleMixin, VaultMixin, Command):
         self.app.LOG.debug("Configuring a physical network")
         extra_vars = {}
         extra_vars["physical_network_display"] = parsed_args.display
-        if parsed_args.enable_discovery:
-            extra_vars["physical_network_enable_discovery"] = True
+        if parsed_args.disable_discovery:
+            if not parsed_args.interface_limit or not parsed_args.interface_description:
+                user_input = input('Are you sure? This could break everything! [y/N]')
+                if(user_input.lower() == 'y'):
+                    extra_vars["physical_network_disable_discovery"] = True
+                else:
+                    exit()
         if parsed_args.disable_discovery:
             extra_vars["physical_network_disable_discovery"] = True
         if parsed_args.interface_limit:
