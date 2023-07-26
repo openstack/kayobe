@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fixes the regression in configuring additional route options on
+    CentOS / Rocky.
