@@ -17,7 +17,7 @@ roles:
     # There are no versioned releases of this role.
     version: 29871bf3279ef95fc8f7339b9abd13f869980750
   - name: MichaelRigart.interfaces
-    version: v1.14.0
+    version: v1.14.1
   - src: mrlesmithjr.chrony
     version: v0.1.4
   - src: mrlesmithjr.manage_lvm
