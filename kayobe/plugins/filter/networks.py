@@ -268,6 +268,36 @@ def net_mtu(context, name, inventory_hostname=None):
     return mtu
 
 
+@jinja2.pass_context
+def net_bridge_stp(context, name, inventory_hostname=None):
+    """Return the Spanning Tree Protocol (STP) state for a bridge.
+
+    On RL9 if STP is not defined, default it to 'false' to preserve
+    compatibility with network scripts. STP is 'true' in NetworkManager
+    by default, so we set it to 'false' here.
+
+    :param context: Jinja2 Context object.
+    :param name: The name of the network.
+    :param inventory_hostname: Ansible inventory hostname.
+    :returns: A string "true" or "false" representing the STP state.
+    """
+    bridge_stp = net_attr(context, name, 'bridge_stp', inventory_hostname)
+    os_family = context['ansible_facts']['os_family']
+    os_version = context['ansible_facts']['distribution_major_version']
+
+    if os_family == 'RedHat' and os_version == '8':
+        return None
+
+    if bridge_stp is None:
+        if os_family == 'RedHat' and os_version == '9':
+            return 'false'
+        else:
+            return None
+
+    bridge_stp = str(utils.call_bool_filter(context, bridge_stp)).lower()
+    return bridge_stp
+
+
 net_routes = _make_attr_filter('routes')
 net_rules = _make_attr_filter('rules')
 net_physical_network = _make_attr_filter('physical_network')
@@ -425,6 +455,7 @@ def net_bridge_obj(context, name, inventory_hostname=None):
     defroute = net_defroute(context, name, inventory_hostname)
     ethtool_opts = net_ethtool_opts(context, name, inventory_hostname)
     zone = net_zone(context, name, inventory_hostname)
+    stp = net_bridge_stp(context, name, inventory_hostname)
     vip_address = net_vip_address(context, name, inventory_hostname)
     allowed_addresses = [vip_address] if vip_address else None
     _validate_rules(rules)
@@ -444,6 +475,7 @@ def net_bridge_obj(context, name, inventory_hostname=None):
         'zone': zone,
         'allowed_addresses': allowed_addresses,
         'onboot': 'yes',
+        'stp': stp,
     }
     interface = {k: v for k, v in interface.items() if v is not None}
     return interface
@@ -728,6 +760,7 @@ def get_filters():
         'net_defroute': net_defroute,
         'net_ethtool_opts': net_ethtool_opts,
         'net_zone': net_zone,
+        'net_bridge_stp': net_bridge_stp,
         'net_interface_obj': net_interface_obj,
         'net_bridge_obj': net_bridge_obj,
         'net_bond_obj': net_bond_obj,

@@ -359,6 +359,17 @@ The following attributes are supported:
 ``bridge_ports``
     For bridge interfaces, a list of names of network interfaces to add to the
     bridge.
+``bridge_stp``
+    .. note::
+
+       For CentOS Stream 8 and Rocky Linux 8 enabling STP is not supported.
+
+       For Rocky Linux 9, the ``bridge_stp`` attribute is set to false to preserve
+       backwards compatibility with network scripts. This is because the Network
+       Manager sets STP to true by default on bridges.
+
+    Enable or disable the Spanning Tree Protocol (STP) on this bridge. Should be
+    set to a boolean value. The default is not set on Ubuntu systems.
 ``bond_mode``
     For bond interfaces, the bond's mode, e.g. 802.3ad.
 ``bond_ad_select``

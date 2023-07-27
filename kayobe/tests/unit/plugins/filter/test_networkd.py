@@ -65,6 +65,12 @@ class BaseNetworkdTest(unittest.TestCase):
         # Bandit complains about Jinja2 autoescaping without nosec.
         self.env = jinja2.Environment()  # nosec
         self.env.filters['bool'] = to_bool
+        self.variables.update({
+            'ansible_facts': {
+                'os_family': 'Debian',
+                'distribution_major_version': '22'
+            }
+        })
         self.context = self._make_context(self.variables)
 
     def _make_context(self, parent):
@@ -202,7 +208,7 @@ class TestNetworkdNetDevs(BaseNetworkdTest):
         self.assertEqual(expected, devs)
 
     def test_bridge_all_options(self):
-        self._update_context({"net3_mtu": 1400})
+        self._update_context({"net3_mtu": 1400, "net3_bridge_stp": True})
         devs = networkd.networkd_netdevs(self.context, ["net3"])
         expected = {
             "50-kayobe-br0": [
@@ -211,6 +217,9 @@ class TestNetworkdNetDevs(BaseNetworkdTest):
                         {"Name": "br0"},
                         {"Kind": "bridge"},
                         {"MTUBytes": 1400},
+                    ],
+                    "Bridge": [
+                        {"STP": "true"},
                     ]
                 },
             ]
