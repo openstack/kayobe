@@ -56,6 +56,8 @@ def test_network_bridge(host):
     interface = host.interface('br0')
     assert interface.exists
     assert '192.168.36.1' in interface.addresses
+    stp_status = host.file('/sys/class/net/br0/bridge/stp_state').content_string.strip()
+    assert '0' == stp_status
     ports = ['dummy3', 'dummy4']
     sys_ports = host.check_output('ls -1 /sys/class/net/br0/brif')
     assert sys_ports == "\n".join(ports)
@@ -100,6 +102,8 @@ def test_network_bridge_no_ip(host):
     interface = host.interface('br1')
     assert interface.exists
     assert not '192.168.40.1' in interface.addresses
+    stp_status = host.file('/sys/class/net/br1/bridge/stp_state').content_string.strip()
+    assert '1' == stp_status
 
 
 @pytest.mark.skipif(not _is_apt(),

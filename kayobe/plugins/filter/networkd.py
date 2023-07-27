@@ -117,6 +117,7 @@ def _bridge_netdev(context, name, inventory_hostname):
     """
     device = networks.net_interface(context, name, inventory_hostname)
     mtu = networks.net_mtu(context, name, inventory_hostname)
+    stp = networks.net_bridge_stp(context, name, inventory_hostname)
     config = [
         {
             'NetDev': [
@@ -126,6 +127,8 @@ def _bridge_netdev(context, name, inventory_hostname):
             ]
         }
     ]
+    if stp is not None:
+        config[0]['Bridge'] = [{'STP': stp}]
     return _filter_options(config)
 
 
