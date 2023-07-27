@@ -1,0 +1,12 @@
+features:
+  - |
+    The Spanning Tree Protocol (STP) can now be configured on bridge interfaces.
+    Enable or disable STP by setting the ``bridge_stp`` attribute for a network.
+    Note that STP is not set by default on Ubuntu, but it is disabled on Rocky
+    Linux 9 for compatibility with network scripts, as NetworkManager enables
+    STP on all bridges by default.
+upgrade:
+  - |
+    For Rocky Linux 9, Kayobe now disables STP on a bridge by default. This
+    action will cause the bridge interface to restart during the host
+    configuration process.

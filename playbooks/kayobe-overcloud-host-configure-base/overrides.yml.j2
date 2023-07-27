@@ -56,6 +56,7 @@ test_net_eth_vlan_zone: test-zone1
 test_net_bridge_cidr: 192.168.36.0/24
 test_net_bridge_interface: br0
 test_net_bridge_bridge_ports: [dummy3, dummy4]
+test_net_bridge_bridge_stp: false
 test_net_bridge_zone: test-zone2
 
 # br0.43: VLAN subinterface of br0.
@@ -80,6 +81,7 @@ test_net_bond_vlan_zone: public
 test_net_bridge_noip_cidr: 192.168.40.0/24
 test_net_bridge_noip_interface: br1
 test_net_bridge_noip_bridge_ports: [dummy7]
+test_net_bridge_noip_bridge_stp: true
 test_net_bridge_noip_no_ip: true
 
 {% if ansible_os_family == "Debian" %}
