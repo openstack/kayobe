@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Fixes an issue where ``kayobe configuration dump`` would fail when
+    variables are encrypted using Ansible Vault. Encrypted variables are now
+    sanitised in the dump output. `LP#2031390
+    <https://bugs.launchpad.net/kayobe/+bug/2031390>`__
