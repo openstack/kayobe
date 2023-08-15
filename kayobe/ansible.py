@@ -22,6 +22,7 @@ import sys
 import tempfile
 
 import ansible.constants
+from ansible.parsing.yaml.objects import AnsibleVaultEncryptedUnicode
 
 from kayobe import exception
 from kayobe import utils
@@ -297,6 +298,18 @@ def run_playbook(parsed_args, playbook, *args, **kwargs):
     return run_playbooks(parsed_args, [playbook], *args, **kwargs)
 
 
+def _sanitise_hostvar(var):
+    """Sanitise a host variable."""
+    if isinstance(var, AnsibleVaultEncryptedUnicode):
+        return "******"
+    # Recursively sanitise dicts and lists.
+    if isinstance(var, dict):
+        return {k: _sanitise_hostvar(v) for k, v in var.items()}
+    if isinstance(var, list):
+        return [_sanitise_hostvar(v) for v in var]
+    return var
+
+
 def config_dump(parsed_args, host=None, hosts=None, var_name=None,
                 facts=None, extra_vars=None, tags=None, verbose_level=None):
     dump_dir = tempfile.mkdtemp()
@@ -322,7 +335,8 @@ def config_dump(parsed_args, host=None, hosts=None, var_name=None,
             LOG.debug("Found dump file %s", path)
             inventory_hostname, ext = os.path.splitext(path)
             if ext == ".yml":
-                hvars = utils.read_yaml_file(os.path.join(dump_dir, path))
+                dump_file = os.path.join(dump_dir, path)
+                hvars = utils.read_config_dump_yaml_file(dump_file)
                 if host:
                     return hvars
                 else:
@@ -330,7 +344,7 @@ def config_dump(parsed_args, host=None, hosts=None, var_name=None,
             else:
                 LOG.warning("Unexpected extension on config dump file %s",
                             path)
-        return hostvars
+        return {k: _sanitise_hostvar(v) for k, v in hostvars.items()}
     finally:
         shutil.rmtree(dump_dir)
 
