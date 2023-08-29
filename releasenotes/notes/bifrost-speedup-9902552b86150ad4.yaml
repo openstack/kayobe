@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Improves performance of Bifrost operations by preventing unnecessary
+    requests to the Ironic API.
