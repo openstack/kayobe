@@ -16,6 +16,10 @@ kayobe_environment: "{{ lookup('env', 'KAYOBE_ENVIRONMENT') }}"
 # environment path appended if kayobe_environment is set.
 kayobe_env_config_path: "{{ kayobe_config_path ~ ('/environments/' ~ kayobe_environment if kayobe_environment else '') }}"
 
+# Ordered list of paths containing kayobe_env_config_path and all its dependent
+# environments.
+kayobe_env_search_paths: "{{ query('cached', 'kayobe_environments') }}"
+
 ###############################################################################
 # Remote path configuration (seed, seed-hypervisor and overcloud hosts).
 

@@ -84,34 +84,26 @@ def add_args(parser):
                              "specific playbooks. \"all\" skips all playbooks")
 
 
-def _get_kayobe_environment_path(parsed_args):
-    """Return the path to the Kayobe environment or None if not specified."""
-    env_path = None
-    if parsed_args.environment:
-        # Specified via --environment or KAYOBE_ENVIRONMENT.
-        kc_environments = os.path.join(parsed_args.config_path, "environments")
-        env_path = os.path.join(kc_environments, parsed_args.environment)
-    return env_path
-
-
-def _get_inventories_paths(parsed_args, env_path):
+def _get_inventories_paths(parsed_args, env_paths):
     """Return the paths to the Kayobe inventories."""
     default_inventory = utils.get_data_files_path("ansible", "inventory")
     inventories = [default_inventory]
     if parsed_args.inventory:
         inventories.extend(parsed_args.inventory)
-    else:
-        shared_inventory = os.path.join(parsed_args.config_path, "inventory")
-        if env_path:
-            if os.path.exists(shared_inventory):
-                inventories.append(shared_inventory)
-            env_inventory = os.path.join(env_path, "inventory")
-            if os.path.exists(env_inventory):
-                inventories.append(env_inventory)
-        else:
-            # Preserve existing behaviour: don't check if an inventory
-            # directory exists when no environment is specified
+        return inventories
+
+    shared_inventory = os.path.join(parsed_args.config_path, "inventory")
+    if env_paths:
+        if os.path.exists(shared_inventory):
             inventories.append(shared_inventory)
+    else:
+        # Preserve existing behaviour: don't check if an inventory
+        # directory exists when no environment is specified
+        inventories.append(shared_inventory)
+    for env_path in env_paths or []:
+        env_inventory = os.path.join(env_path, "inventory")
+        if os.path.exists(env_inventory):
+            inventories.append(env_inventory)
     return inventories
 
 
@@ -129,15 +121,18 @@ def _validate_args(parsed_args, playbooks):
                   "use.")
         sys.exit(1)
 
-    env_path = _get_kayobe_environment_path(parsed_args)
-    if env_path:
-        result = utils.is_readable_dir(env_path)
-        if not result["result"]:
-            LOG.error("Kayobe environment %s is invalid: %s",
-                      env_path, result["message"])
-            sys.exit(1)
+    environment_finder = utils.EnvironmentFinder(
+        parsed_args.config_path, parsed_args.environment)
+    env_paths = environment_finder.ordered_paths()
+    for env_path in env_paths:
+        if env_path:
+            result = utils.is_readable_dir(env_path)
+            if not result["result"]:
+                LOG.error("Kayobe environment %s is invalid: %s",
+                          env_path, result["message"])
+                sys.exit(1)
 
-    inventories = _get_inventories_paths(parsed_args, env_path)
+    inventories = _get_inventories_paths(parsed_args, env_paths)
     for inventory in inventories:
         result = utils.is_readable_dir(inventory)
         if not result["result"]:
@@ -184,12 +179,14 @@ def build_args(parsed_args, playbooks,
     if list_tasks or (parsed_args.list_tasks and list_tasks is None):
         cmd += ["--list-tasks"]
     cmd += vault.build_args(parsed_args, "--vault-password-file")
-    env_path = _get_kayobe_environment_path(parsed_args)
-    inventories = _get_inventories_paths(parsed_args, env_path)
+    environment_finder = utils.EnvironmentFinder(
+        parsed_args.config_path, parsed_args.environment)
+    env_paths = environment_finder.ordered_paths()
+    inventories = _get_inventories_paths(parsed_args, env_paths)
     for inventory in inventories:
         cmd += ["--inventory", inventory]
     vars_paths = [parsed_args.config_path]
-    if env_path:
+    for env_path in env_paths:
         vars_paths.append(env_path)
     vars_files = _get_vars_files(vars_paths)
     for vars_file in vars_files:
@@ -438,7 +435,8 @@ def prune_galaxy_roles(parsed_args):
 
 def passwords_yml_exists(parsed_args):
     """Return whether passwords.yml exists in the kayobe configuration."""
-    env_path = _get_kayobe_environment_path(parsed_args)
+    env_path = utils.get_kayobe_environment_path(
+        parsed_args.config_path, parsed_args.environment)
     path = env_path if env_path else parsed_args.config_path
     passwords_path = os.path.join(path, 'kolla', 'passwords.yml')
     return utils.is_readable_file(passwords_path)["result"]

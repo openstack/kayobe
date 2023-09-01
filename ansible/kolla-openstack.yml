@@ -170,9 +170,9 @@
       kolla_inspector_swift_auth:
         auth_type: none
         endpoint_override: "http://{% raw %}{{ api_interface_address }}{% endraw %}:{{ inspector_store_port }}"
-      kolla_openstack_custom_config_paths_extra_multi_env:
+      kolla_openstack_custom_config_paths_extra_multi_env_static:
         - "{{ kayobe_config_path }}"
-        - "{{ kayobe_env_config_path }}"
+      kolla_openstack_custom_config_paths_extra_multi_env: "{{ kolla_openstack_custom_config_paths_extra_multi_env_static + kayobe_env_search_paths }}"
       kolla_openstack_custom_config_paths_extra_legacy:
         - "{{ kayobe_env_config_path }}"
       kolla_openstack_custom_config_paths_extra: "{{ kolla_openstack_custom_config_paths_extra_multi_env if kolla_openstack_custom_config_environment_merging_enabled | bool else kolla_openstack_custom_config_paths_extra_legacy }}"
