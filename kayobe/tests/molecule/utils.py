@@ -12,6 +12,8 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import re
+
 import configparser
 from io import StringIO
 
@@ -51,6 +53,21 @@ def test_ini_file(host, path, owner='root', group='root', expected=None):
         for exp_key, exp_value in exp_section.items():
             assert parser.has_option(exp_section_name, exp_key)
             assert parser.get(exp_section_name, exp_key) == exp_value
+
+
+def test_regex_in_file(host, path, owner='root', group='root', regex=None):
+    """Test that a regex exists in file
+
+    Validate that the file exists, has the correct ownership, format and
+    expected contents.
+
+    :param regex to search for in file
+    """
+    test_file(host, path, owner, group)
+
+    matches = re.findall(regex, host.file(path).content_string)
+
+    assert len(matches) > 0
 
 
 def test_directory(host, path, owner='root', group='root'):

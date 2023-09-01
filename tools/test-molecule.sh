@@ -7,6 +7,12 @@ set -e
 
 molecules="$(find ansible/roles/ -name molecule -type d)"
 
+PARENT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# FIXME: doesn't get passed through to linter.
+export ANSIBLE_ACTION_PLUGINS="$PARENT/../kayobe/plugins/action:~/.ansible/plugins/action:/usr/share/ansible/plugins/action"
+export ANSIBLE_FORCE_COLOR=True
+
 failed=0
 ran=0
 for molecule in $molecules; do

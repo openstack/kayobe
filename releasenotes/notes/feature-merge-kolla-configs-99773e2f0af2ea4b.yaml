@@ -1,0 +1,52 @@
+---
+features:
+  - |
+    Adds new functionality to merge Kolla custom service configuration in a
+    Kayobe environment with Kolla configuration in the base configuration
+    layer.
+upgrade:
+  - |
+    Environment-specific Kolla custom service configuration is now merged with
+    Kolla configuration in the base configuration layer.  Config options
+    duplicated in the base layer and the environment will need to be
+    de-deduplicated to avoid the config option showing up multiple times in the
+    generated output (although in general this should not be a problem).
+
+    Set ``kolla_openstack_custom_config_environment_merging_enabled`` to
+    ``false`` to revert back to the previous behavior where only the config in
+    the environment was considered.
+deprecations:
+  - |
+    Deprecates the following variables for removal in the Bobcat release:
+
+    * ``kolla_extra_global``
+    * ``kolla_extra_aodh``
+    * ``kolla_extra_barbican``
+    * ``kolla_extra_blazar``
+    * ``kolla_extra_ceilometer``
+    * ``kolla_extra_cinder``
+    * ``kolla_extra_cloudkitty``
+    * ``kolla_extra_designate``
+    * ``kolla_extra_gnocchi``
+    * ``kolla_extra_grafana``
+    * ``kolla_extra_heat``
+    * ``kolla_extra_ironic``
+    * ``kolla_extra_inspector``
+    * ``kolla_extra_keystone``
+    * ``kolla_extra_magnum``
+    * ``kolla_extra_mariabackup``
+    * ``kolla_extra_mariadb``
+    * ``kolla_extra_manila``
+    * ``kolla_extra_masakari``
+    * ``kolla_extra_murano``
+    * ``kolla_extra_neutron``
+    * ``kolla_extra_neutron_ml2``
+    * ``kolla_extra_nova``
+    * ``kolla_extra_octavia``
+    * ``kolla_extra_placement``
+    * ``kolla_extra_sahara``
+
+    Use of Kolla custom service configuration files in
+    ``etc/kayobe/kolla/config`` and
+    ``etc/kayobe/environments/<environment>/kolla/config`` should be used
+    instead.

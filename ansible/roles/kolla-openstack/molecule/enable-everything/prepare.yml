@@ -26,6 +26,99 @@
         - "{{ kolla_inspector_ipa_kernel_path }}"
         - "{{ kolla_inspector_ipa_ramdisk_path }}"
 
+    - name: Ensure parent directories of configuration files exist
+      file:
+        path: "{{ kolla_extra_config_path }}/{{ item }}"
+        state: directory
+        recurse: yes
+      delegate_to: localhost
+      run_once: true
+      with_items:
+        - neutron
+        - aodh
+        # To check that subdirectories are handled correctly
+        - prometheus/prometheus.yml.d
+        # Example of non-ini files that should be templated but not merged
+        - fluentd/input/
+
+    - name: Ensure extra INI configuration files exist
+      copy:
+        content: |
+          [extra-file-{{ item | basename }}]
+          bar=baz
+        dest: "{{ kolla_extra_config_path }}/{{ item }}"
+      run_once: true
+      delegate_to: localhost
+      loop:
+        - aodh.conf
+        - barbican.conf
+        - blazar.conf
+        - ceilometer.conf
+        - cinder.conf
+        - cloudkitty.conf
+        - designate.conf
+        - glance.conf
+        - global.conf
+        - gnocchi.conf
+        - grafana.ini
+        - heat.conf
+        - ironic.conf
+        - ironic-inspector.conf
+        - keystone.conf
+        - magnum.conf
+        - manila.conf
+        - murano.conf
+        - backup.my.cnf
+        - galera.cnf
+        - masakari.conf
+        - neutron.conf
+        - neutron/ml2_conf.ini
+        - nova.conf
+        - octavia.conf
+        - sahara.conf
+        - placement.conf
+
+    - name: Ensure extra YAML configuration files exist
+      copy:
+        content: |
+          dummy_variable: 123
+        dest: "{{ kolla_extra_config_path }}/{{ item }}"
+      run_once: true
+      delegate_to: localhost
+      loop:
+        - aodh/dummy.yml
+        - opensearch.yml
+        - prometheus/prometheus.yml.d/dummy.yml
+
+    - name: Template extra custom config files
+      # These correspond to globs defined in molecule.yml
+      copy:
+        content: "{{ item.content }}"
+        dest: "{{ kolla_extra_config_path }}/{{ item.dest }}"
+      run_once: true
+      delegate_to: localhost
+      with_items:
+        - dest: aodh/dummy.ini
+          content: |
+            [dummy-section]
+            dummy_variable = 123
+        - dest: fluentd/input/01-test.conf
+          content: |
+            <source>
+              @type tail
+              path /grepme
+              pos_file /var/run/td-agent/rabbit.pos
+              tag infra.rabbit
+              enable_watch_timer false
+              <parse>
+                @type multiline
+                format_firstline /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}/
+                format1 /^(?<Timestamp>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}) \[(?<log_level>\w+)\] (?<Payload>.*)/
+              </parse>
+            </source>
+      loop_control:
+        label: "{{ item.dest }}"
+
     - name: Ensure nova libvirt certificates directory exists
       local_action:
         module: file

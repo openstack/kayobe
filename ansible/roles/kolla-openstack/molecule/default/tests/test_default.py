@@ -27,20 +27,13 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 
 @pytest.mark.parametrize(
     'path',
-    ['fluentd/filter',
-     'fluentd/input',
-     'fluentd/output'])
-def test_service_config_directory(host, path):
-    path = os.path.join('/etc/kolla/config', path)
-    utils.test_directory(host, path)
-
-
-@pytest.mark.parametrize(
-    'path',
     ['aodh',
      'cinder',
      'cloudkitty',
      'designate',
+     'fluentd/filter',
+     'fluentd/input',
+     'fluentd/output',
      'glance',
      'grafana',
      'heat',
