@@ -11,3 +11,4 @@ paramiko # LGPL
 jsonschema<5 # MIT
 wcmatch>=8.2,<=9.0 # MIT
 hvac>=0.10.1
+ansible-cached-lookup<=2.0.0 # MIT
