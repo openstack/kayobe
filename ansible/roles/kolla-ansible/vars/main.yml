@@ -74,6 +74,7 @@ kolla_feature_flags:
   - aodh
   - barbican
   - blazar
+  - caso
   - ceilometer
   - ceilometer_horizon_policy_file
   - ceilometer_ipmi
