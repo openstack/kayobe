@@ -71,6 +71,7 @@
         bash -c '
         export OS_CLOUD=bifrost &&
         export BIFROST_INVENTORY_SOURCE=ironic &&
+        export BIFROST_NODE_NAMES="{{ inventory_hostname }}" &&
         ansible baremetal
         --connection local
         --inventory /etc/bifrost/inventory/
@@ -102,6 +103,7 @@
         bash -c '
         export OS_CLOUD=bifrost &&
         export BIFROST_INVENTORY_SOURCE=ironic &&
+        export BIFROST_NODE_NAMES="{{ inventory_hostname }}" &&
         ansible baremetal
         --connection local
         --inventory /etc/bifrost/inventory/
