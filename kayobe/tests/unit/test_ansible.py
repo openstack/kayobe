@@ -14,6 +14,7 @@
 
 import argparse
 import errno
+import logging
 import os
 import os.path
 import shutil
@@ -91,6 +92,53 @@ class TestCase(unittest.TestCase):
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
         mock_vars.assert_called_once_with(["/etc/kayobe"])
+
+    @mock.patch.object(ansible, "_get_vars_files")
+    @mock.patch.object(utils, "is_readable_dir")
+    @mock.patch.object(utils, "is_readable_file")
+    @mock.patch.object(utils, "run_command")
+    def test_reserved_environment(
+            self, mock_run, mock_readable,
+            mock_readable_file, mock_vars):
+        mock_readable_file.return_value = {"result": True}
+        mock_readable.return_value = {"result": True}
+        mock_vars.return_value = ["/path/to/config/vars-file1.yml",
+                                  "/path/to/config/vars-file2.yaml"]
+        parser = argparse.ArgumentParser()
+        ansible.add_args(parser)
+        vault.add_args(parser)
+        args = [
+            "--environment", "kayobe",
+        ]
+        parsed_args = parser.parse_args(args)
+        with self.assertLogs(level=logging.ERROR) as ctx:
+            self.assertRaises(
+                SystemExit, ansible.run_playbooks, parsed_args,
+                ["playbook1.yml"]
+            )
+            exp = "The environment name 'kayobe' is reserved for internal use."
+            log_found = any(exp in t for t in ctx.output)
+            assert(log_found)
+
+    @mock.patch.object(ansible, "_get_vars_files")
+    @mock.patch.object(utils, "is_readable_dir")
+    @mock.patch.object(utils, "is_readable_file")
+    @mock.patch.object(utils, "run_command")
+    def test_reserved_environment_negative(
+            self, mock_run, mock_readable,
+            mock_readable_file, mock_vars):
+        mock_readable_file.return_value = {"result": True}
+        mock_readable.return_value = {"result": True}
+        mock_vars.return_value = ["/path/to/config/vars-file1.yml",
+                                  "/path/to/config/vars-file2.yaml"]
+        parser = argparse.ArgumentParser()
+        ansible.add_args(parser)
+        vault.add_args(parser)
+        args = [
+            "--environment", "kayobe2",
+        ]
+        parsed_args = parser.parse_args(args)
+        ansible.run_playbooks(parsed_args, ["playbook1.yml", "playbook2.yml"])
 
     @mock.patch.object(utils, "run_command")
     @mock.patch.object(ansible, "_get_vars_files")

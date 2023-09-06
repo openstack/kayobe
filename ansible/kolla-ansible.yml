@@ -91,7 +91,9 @@
         kolla_external_fqdn_cert: "{{ kolla_config_path }}/certificates/haproxy.pem"
         kolla_internal_fqdn_cert: "{{ kolla_config_path }}/certificates/haproxy-internal.pem"
         kolla_ansible_passwords_path: "{{ kayobe_env_config_path }}/kolla/passwords.yml"
-        kolla_overcloud_group_vars_path: "{{ kayobe_env_config_path }}/kolla/inventory/group_vars"
+        kolla_overcloud_inventory_search_paths:
+          - "{{ kayobe_config_path }}"
+          - "{{ kayobe_env_config_path }}"
         kolla_ansible_certificates_path: "{{ kayobe_env_config_path }}/kolla/certificates"
         # NOTE: This differs from the default SELinux mode in kolla ansible,
         # which is permissive. The justification for using this mode is twofold:
