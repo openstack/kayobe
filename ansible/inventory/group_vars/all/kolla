@@ -240,8 +240,8 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_sahara | bool }}"
   - regex: ^senlin
     enabled: "{{ kolla_enable_senlin | bool }}"
-  - regex: ^skydive
-    enabled: "{{ kolla_enable_skydive | bool }}"
+  - regex: ^skyline
+    enabled: "{{ kolla_enable_skyline | bool }}"
   - regex: ^solum
     enabled: "{{ kolla_enable_solum | bool }}"
   - regex: ^swift
@@ -552,7 +552,7 @@ kolla_enable_octavia: "no"
 kolla_enable_openvswitch: "{{ kolla_enable_neutron | bool }}"
 kolla_enable_ovn: "no"
 kolla_enable_ovs_dpdk: "no"
-kolla_enable_opensearch: "{{ kolla_enable_central_logging | bool or kolla_enable_osprofiler | bool or kolla_enable_skydive | bool }}"
+kolla_enable_opensearch: "{{ kolla_enable_central_logging | bool or kolla_enable_osprofiler | bool }}"
 kolla_enable_opensearch_dashboards: "{{ kolla_enable_opensearch | bool }}"
 kolla_enable_osprofiler: "no"
 kolla_enable_placement: "{{ kolla_enable_nova | bool or kolla_enable_zun | bool }}"
@@ -561,7 +561,7 @@ kolla_enable_qdrouterd: "no"
 kolla_enable_redis: "no"
 kolla_enable_sahara: "no"
 kolla_enable_senlin: "no"
-kolla_enable_skydive: "no"
+kolla_enable_skyline: "no"
 kolla_enable_solum: "no"
 kolla_enable_swift: "no"
 kolla_enable_tacker: "no"
