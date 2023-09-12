@@ -24,7 +24,8 @@ ipa_build_dib_host_packages_extra: []
 
 # List of default Diskimage Builder (DIB) elements to use when building IPA
 # images. Default is ["centos", "enable-serial-console",
-# "ironic-python-agent-ramdisk"].
+# "ironic-python-agent-ramdisk"] when os_distribution is "rocky", and
+# ["ubuntu", "enable-serial-console", "ironic-python-agent-ramdisk"] otherwise.
 ipa_build_dib_elements_default:
   # TODO(mattcrees): Use {{ os_distribution }} here when Rocky IPA builds work.
   - "{{ 'centos' if os_distribution == 'rocky' else os_distribution }}"
