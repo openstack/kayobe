@@ -22,7 +22,8 @@
             kolla_node_custom_config_path: "{{ temp_path }}/etc/kolla/config"
             # Purposely does not exist to simulate the case when no group vars
             # are provided
-            kolla_overcloud_group_vars_path: "{{ temp_path }}/etc/kayobe/kolla/inventory/group_vars"
+            kolla_overcloud_inventory_search_paths:
+              - "{{ temp_path }}/etc/kayobe/"
             kolla_ansible_passwords_path: "{{ temp_path }}/passwords.yml"
             # Required config.
             kolla_base_distro: "fake-distro"
@@ -128,27 +129,17 @@
           with_items:
             - seed
             - overcloud
-            - overcloud/group_vars
           register: inventory_stat
 
-        - name: Validate inventory files
-          assert:
-            that:
-              - item.stat.exists
-              - item.stat.size > 0
-            msg: >
-              Inventory file {{ item.item }} was not found.
-          with_items: "{{ inventory_stat.results }}"
-
-        - name: Look for custom overcloud group vars
+        - name: Look for inventory overrides
           find:
-            paths: "{{ temp_path ~ '/etc/kolla/inventory/group_vars' }}"
-          register: kolla_ansible_overcloud_group_vars
+            paths: "{{ temp_path ~ '/etc/kolla/extra-inventories/' }}"
+          register: kolla_ansible_overcloud_inventory_overrides
 
-        - name: Check that no overcloud group vars are set
+        - name: Check that no inventory overrides are configured
           assert:
             that:
-              - kolla_ansible_overcloud_group_vars.matched == 0
+              -  kolla_ansible_overcloud_inventory_overrides.matched == 0
             msg: >
               Overcloud group vars were found when they should not be set.
 

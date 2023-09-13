@@ -50,6 +50,19 @@
           ---
           bar_port: "4567"
 
+    - name: Create directory for extra group vars
+      file:
+        path: "{{ tempfile_result.path ~ '/etc/kayobe/environments/example/kolla/inventory/group_vars' }}"
+        recurse: true
+        state: directory
+
+    - name: Create custom extra group vars
+      copy:
+        dest: "{{ tempfile_result.path ~ '/etc/kayobe/environments/example/kolla/inventory/group_vars/baz_group' }}"
+        content: |
+          ---
+          baz_port: "8910"
+
     - name: Create directory for custom CA certificates
       file:
         path: "{{ tempfile_result.path }}/etc/kayobe/kolla/certificates/ca"
@@ -79,7 +92,9 @@
             kolla_ansible_venv: "{{ temp_path }}/venv"
             kolla_ansible_vault_password: "fake-password"
             kolla_config_path: "{{ temp_path }}/etc/kolla"
-            kolla_overcloud_group_vars_path: "{{ temp_path }}/etc/kayobe/kolla/inventory/group_vars"
+            kolla_overcloud_inventory_search_paths:
+              - "{{ temp_path }}/etc/kayobe/"
+              - "{{ temp_path }}/etc/kayobe/environments/example/"
             kolla_node_custom_config_path: "{{ temp_path }}/etc/kolla/config"
             kolla_ansible_passwords_path: "{{ temp_path }}/passwords.yml"
             # Config.
@@ -417,13 +432,20 @@
             - test-controller
             - test-compute
 
-        - name: Check whether inventory group vars files exist
+        - name: Check whether inventory group vars from base config exist
           stat:
-            path: "{{ temp_path ~ '/etc/kolla/inventory/overcloud/group_vars/' ~ item }}"
+            path: "{{ temp_path ~ '/etc/kolla/extra-inventories/kayobe/group_vars/' ~ item }}"
           with_items:
             - foo_group/all
             - bar_group
           register: group_vars_stat
+
+        - name: Check whether inventory group vars from environment exist
+          stat:
+            path: "{{ temp_path ~ '/etc/kolla/extra-inventories/example/group_vars/' ~ item }}"
+          with_items:
+            - baz_group
+          register: group_vars_environment_stat
 
         - name: Validate inventory group vars files
           assert:
@@ -432,13 +454,19 @@
               - item.stat.size > 0
             msg: >
               Inventory file {{ item.item }} was not found.
-          with_items: "{{ group_vars_stat.results }}"
+          with_items: "{{ group_vars_stat.results + group_vars_environment_stat.results }}"
 
         - name: Read inventory group vars files
           slurp:
             src: "{{ item.stat.path }}"
           with_items: "{{ group_vars_stat.results }}"
           register: group_vars_slurp
+
+        - name: Read inventory environment group vars files
+          slurp:
+            src: "{{ item.stat.path }}"
+          with_items: "{{ group_vars_environment_stat.results }}"
+          register: group_vars_environment_slurp
 
         - name: Validate inventory group vars file contents
           assert:
@@ -457,6 +485,21 @@
               - |
                 ---
                 bar_port: "4567"
+
+        - name: Validate environment inventory group vars file contents
+          assert:
+            that:
+              - group_vars_content is defined
+              - group_vars_content == item.1
+          with_together:
+            - "{{ group_vars_environment_slurp.results }}"
+            - "{{ expected_contents }}"
+          vars:
+            group_vars_content: "{{ item.0.content | b64decode }}"
+            expected_contents:
+              - |
+                ---
+                baz_port: "8910"
 
         - name: Check whether API certificate files exist
           stat:

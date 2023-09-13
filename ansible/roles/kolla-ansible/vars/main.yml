@@ -66,6 +66,10 @@ kolla_seed_inventory_path: "{{ kolla_config_path }}/inventory/seed"
 # Path to the kolla ansible overcloud inventory directory.
 kolla_overcloud_inventory_path: "{{ kolla_config_path }}/inventory/overcloud"
 
+# Path to pass-through inventories. These are layered on top of kayobe
+# generated one.
+kolla_extra_inventories_path: "{{ kolla_config_path }}/extra-inventories"
+
 ###############################################################################
 # Feature configuration.
 

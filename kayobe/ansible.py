@@ -124,6 +124,11 @@ def _validate_args(parsed_args, playbooks):
                   parsed_args.config_path, result["message"])
         sys.exit(1)
 
+    if parsed_args.environment and parsed_args.environment == "kayobe":
+        LOG.error("The environment name 'kayobe' is reserved for internal "
+                  "use.")
+        sys.exit(1)
+
     env_path = _get_kayobe_environment_path(parsed_args)
     if env_path:
         result = utils.is_readable_dir(env_path)
