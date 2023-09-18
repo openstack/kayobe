@@ -189,7 +189,7 @@
             kolla_enable_prometheus: True
             kolla_enable_sahara: True
             kolla_enable_senlin: True
-            kolla_enable_skydive: True
+            kolla_enable_skyline: True
             kolla_enable_solum: True
             kolla_enable_swift: True
             kolla_enable_tacker: True
@@ -310,7 +310,7 @@
               #enable_prometheus: True
               #enable_sahara: True
               #enable_senlin: True
-              #enable_skydive: True
+              #enable_skyline: True
               #enable_solum: True
               #enable_swift: True
               #enable_tacker: True
