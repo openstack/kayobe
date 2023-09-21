@@ -49,7 +49,10 @@ def _get_veth_interface(context, bridge, inventory_hostname):
                                inventory_hostname)
     suffix = utils.get_hostvar(context, 'network_patch_suffix_phy',
                                inventory_hostname)
-    return prefix + bridge + suffix
+
+    # interface names can't be longer than 15 characters
+    char_limit = 15 - len(prefix) - len(suffix)
+    return prefix + bridge[:char_limit] + suffix
 
 
 def _get_veth_peer(context, bridge, inventory_hostname):
@@ -64,7 +67,10 @@ def _get_veth_peer(context, bridge, inventory_hostname):
                                inventory_hostname)
     suffix = utils.get_hostvar(context, 'network_patch_suffix_ovs',
                                inventory_hostname)
-    return prefix + bridge + suffix
+
+    # interface names can't be longer than 15 characters
+    char_limit = 15 - len(prefix) - len(suffix)
+    return prefix + bridge[:char_limit] + suffix
 
 
 def get_ovs_veths(context, names, inventory_hostname):
