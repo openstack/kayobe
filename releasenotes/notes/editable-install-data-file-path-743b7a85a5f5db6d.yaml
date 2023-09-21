@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fixes detection of data file path when using editable installations with a
+    recent pip.
