@@ -154,7 +154,10 @@ class ActionModule(ActionBase):
             # For a bridge, use a veth pair connected to the bridge. Otherwise
             # use the interface directly.
             if is_bridge:
-                external_interface = patch_prefix + interface + patch_suffix
+                # interface names can't be longer than 15 characters
+                char_limit = 15 - len(patch_prefix) - len(patch_suffix)
+                external_interface = patch_prefix + interface[:char_limit] + \
+                    patch_suffix
             else:
                 external_interface = interface
             neutron_external_interfaces.append(external_interface)
