@@ -50,7 +50,9 @@ image build``.
 ``ipa_build_dib_elements_default``
     List of default Diskimage Builder (DIB) elements to use when building IPA
     images. Default is ``["centos", "enable-serial-console",
-    "ironic-python-agent-ramdisk"]``.
+    "ironic-python-agent-ramdisk"]`` when ``os_distribution`` is ``"rocky"``, and
+    ``["ubuntu", "enable-serial-console", "ironic-python-agent-ramdisk"]``
+    otherwise.
 ``ipa_build_dib_elements_extra``
     List of additional Diskimage Builder (DIB) elements to use when building IPA
     images. Default is empty.
@@ -62,6 +64,10 @@ image build``.
     Dictionary of default environment variables to provide to Diskimage Builder
     (DIB) during IPA image build. Default is
     ``{"DIB_RELEASE": "9-stream", "DIB_REPOLOCATION_ironic_python_agent": "{{
+    ipa_build_source_url }}", "DIB_REPOREF_ironic_python_agent": "{{
+    ipa_build_source_version }}", "DIB_REPOREF_requirements": "{{
+    openstack_branch }}"}`` if ``os_distribution`` is ``"rocky"`` else
+    ``{"DIB_RELEASE": "jammy", "DIB_REPOLOCATION_ironic_python_agent": "{{
     ipa_build_source_url }}", "DIB_REPOREF_ironic_python_agent": "{{
     ipa_build_source_version }}", "DIB_REPOREF_requirements": "{{
     openstack_branch }}"}``.
