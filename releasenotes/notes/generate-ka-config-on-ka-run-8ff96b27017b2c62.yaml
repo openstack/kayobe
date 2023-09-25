@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    ``kayobe kolla ansible run`` will now generate Kolla-Ansible configuration
+    before the command is run. You can use ``--skip-tags kolla-openstack`` to
+    skip this for commands that do not require the kolla config.
+upgrade:
+  - |
+    ``kayobe kolla ansible run`` will now generate Kolla-Ansible configuration
+    before the command is run. You can use ``--skip-tags kolla-openstack`` to
+    skip this for commands that do not require the kolla config.
