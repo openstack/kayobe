@@ -6,8 +6,7 @@
     password: "{{ kolla_docker_registry_password }}"
     reauthorize: yes
   when:
-    - kolla_docker_registry_username is truthy
-    - kolla_docker_registry_password is truthy
+    - deploy_containers_registry_attempt_login | bool
 
 - name: Deploy containers (loop)
   include_tasks: deploy.yml
