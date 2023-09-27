@@ -60,3 +60,26 @@ List of Kayobe applied defaults to required docker_container variables:
 .. literalinclude:: ../../../../ansible/roles/deploy-containers/defaults/main.yml
     :language: yaml
 
+
+Docker registry
+===============
+
+Seed containers can be pulled from a docker registry deployed on the seed,
+since the docker registry deployment step precedes the custom container
+deployment step.
+
+It is also possible to deploy a custom containerised docker registry as a
+custom seed container. In this case, basic authentication login attempts can be
+disabled by setting
+
+.. code-block:: yaml
+   :caption: ``kolla.yml``
+
+   deploy_containers_registry_attempt_login: false
+
+Without this setting, the login will fail because the registry has not yet been
+deployed.
+
+More information on deploying a docker registry can be found :ref:`here
+<configuration-docker-registry>`.
+
