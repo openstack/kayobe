@@ -54,7 +54,7 @@ def _detect_install_prefix(path):
 
 def _get_direct_url(dist):
     direct_url = os.path.join(dist._path, 'direct_url.json')
-    if os.path.exists(direct_url):
+    if os.path.isfile(direct_url):
         with open(direct_url, 'r') as f:
             direct_url_content = json.loads(f.readline().strip())
             url = direct_url_content['url']
