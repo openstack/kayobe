@@ -80,8 +80,6 @@
             cmd: dev/overcloud-test-baremetal.sh &> {{ logs_dir }}/ansible/overcloud-test-bm-pre-upgrade
             chdir: "{{ previous_kayobe_src_dir }}"
             executable: /bin/bash
-          # FIXME(priteau): Bare metal testing fails on RL9/c9s with Libvirt 9.0.0
-          when: ansible_facts.os_family == 'Debian'
 
         # Upgrade Kayobe, and use it to perform an upgrade of the control plane.
 
@@ -109,8 +107,6 @@
             cmd: dev/overcloud-test-baremetal.sh &> {{ logs_dir }}/ansible/overcloud-test-bm-post-upgrade
             chdir: "{{ kayobe_src_dir }}"
             executable: /bin/bash
-          # FIXME(priteau): Bare metal testing fails on RL9/c9s with Libvirt 9.0.0
-          when: ansible_facts.os_family == 'Debian'
 
       environment:
         KAYOBE_CONFIG_SOURCE_PATH: "{{ kayobe_config_src_dir }}"
