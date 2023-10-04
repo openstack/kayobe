@@ -162,7 +162,7 @@
       OpenStack release, and upgrades it to the current release.
     pre-run: playbooks/kayobe-overcloud-upgrade-base/pre.yml
     run: playbooks/kayobe-overcloud-upgrade-base/run.yml
-    timeout: 9000
+    timeout: 10800
 
 - job:
     name: kayobe-overcloud-upgrade-rocky9
