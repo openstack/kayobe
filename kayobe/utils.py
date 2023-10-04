@@ -14,6 +14,11 @@
 
 import base64
 import glob
+try:
+    from importlib.metadata import Distribution
+except ImportError:  # for Python<3.8
+    from importlib_metadata import Distribution
+import json
 import logging
 import os
 import shutil
@@ -48,10 +53,30 @@ def _detect_install_prefix(path):
     return prefix_path
 
 
+def _get_direct_url(dist):
+    direct_url = os.path.join(dist._path, 'direct_url.json')
+    if os.path.isfile(direct_url):
+        with open(direct_url, 'r') as f:
+            direct_url_content = json.loads(f.readline().strip())
+            url = direct_url_content['url']
+            prefix = 'file://'
+            if url.startswith(prefix):
+                return url[len(prefix):]
+
+    return None
+
+
 def _get_base_path():
     override = os.environ.get("KAYOBE_DATA_FILES_PATH")
     if override:
         return os.path.join(override)
+
+    kayobe_dist = list(Distribution.discover(name="kayobe"))
+    if kayobe_dist:
+        direct_url = _get_direct_url(kayobe_dist[0])
+        if direct_url:
+            return direct_url
+
     egg_glob = os.path.join(
         sys.prefix, 'lib*', 'python*', '*-packages', 'kayobe.egg-link'
     )
