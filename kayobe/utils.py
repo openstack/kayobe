@@ -16,7 +16,7 @@ import base64
 from collections import defaultdict
 import glob
 import graphlib
-import importlib_metadata
+from importlib.metadata import Distribution
 import json
 import logging
 import os
@@ -70,7 +70,7 @@ def _get_base_path():
     if override:
         return os.path.join(override)
 
-    kayobe_dist = list(importlib_metadata.Distribution.discover(name="kayobe"))
+    kayobe_dist = list(Distribution.discover(name="kayobe"))
     if kayobe_dist:
         direct_url = _get_direct_url(kayobe_dist[0])
         if direct_url:
