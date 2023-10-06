@@ -11,6 +11,9 @@
       fact_caching = jsonfile
       fact_caching_connection = /tmp/kayobe-facts
 
+      # Add timing information to output
+      callbacks_enabled = ansible.posix.profile_tasks
+
       [ssh_connection]
       pipelining = True
       retries = 3
@@ -23,6 +26,9 @@
       gathering = smart
       fact_caching = jsonfile
       fact_caching_connection = /tmp/kolla-ansible-facts
+
+      # Add timing information to output
+      callbacks_enabled = ansible.posix.profile_tasks
 
       [ssh_connection]
       pipelining = True
