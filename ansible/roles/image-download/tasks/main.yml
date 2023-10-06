@@ -17,6 +17,9 @@
             url: "{{ image_download_checksum_url }}"
             return_content: true
           register: expected_checksum
+          until: expected_checksum is successful
+          retries: 3
+          delay: 5
       when:
         - image_download_checksum_url is not none
         - image_download_checksum_url != ""
@@ -34,6 +37,10 @@
         # Always download the image if we have no checksum to compare with.
         force: "{{ expected_checksum is skipped }}"
         backup: true
+      register: result
+      until: result is successful
+      retries: 3
+      delay: 5
   when:
     - image_download_url is not none
     - image_download_url != ""
