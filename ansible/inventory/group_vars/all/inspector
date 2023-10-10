@@ -119,6 +119,18 @@ inspector_rule_deploy_kernel:
       path: "driver_info/deploy_kernel"
       value: "{{ inspector_rule_var_deploy_kernel }}"
 
+# Ironic inspector rule to update deployment kernel from legacy location.
+inspector_rule_legacy_deploy_kernel:
+  description: "Update deploy kernel from legacy"
+  conditions:
+    - field: "node://driver_info.deploy_kernel"
+      op: "eq"
+      value: "{{ inspector_rule_var_legacy_deploy_kernel }}"
+  actions:
+    - action: "set-attribute"
+      path: "driver_info/deploy_kernel"
+      value: "{{ inspector_rule_var_deploy_kernel }}"
+
 # Deployment ramdisk referenced by inspector rule.
 inspector_rule_var_deploy_ramdisk:
 
