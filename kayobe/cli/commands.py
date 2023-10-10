@@ -1087,7 +1087,8 @@ class OvercloudDeprovision(KayobeAnsibleMixin, VaultMixin, Command):
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Deprovisioning overcloud")
-        playbooks = _build_playbook_list("overcloud-deprovision")
+        playbooks = _build_playbook_list("kolla-bifrost-hostvars",
+                                         "overcloud-deprovision")
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
 

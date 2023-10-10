@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Fixes failure to run ``kayobe overcloud deprovision`` after Bifrost is
+    redeployed.
+    `LP#2038889 <https://bugs.launchpad.net/kolla-ansible/+bug/2038889>`__
+
