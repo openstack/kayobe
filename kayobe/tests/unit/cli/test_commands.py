@@ -1185,6 +1185,8 @@ class TestCase(unittest.TestCase):
                 mock.ANY,
                 [
                     utils.get_data_files_path(
+                        "ansible", "kolla-bifrost-hostvars.yml"),
+                    utils.get_data_files_path(
                         "ansible", "overcloud-deprovision.yml"),
                 ],
             ),
