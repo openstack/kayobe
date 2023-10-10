@@ -99,7 +99,7 @@ kolla_bifrost_inspector_port_addition: "{{ inspector_add_ports }}"
 kolla_bifrost_inspector_extra_kernel_options: "{{ inspector_extra_kernel_options }}"
 
 # List of introspection rules for Bifrost's Ironic Inspector service.
-kolla_bifrost_inspector_rules: "{{ inspector_rules }}"
+kolla_bifrost_inspector_rules: "{{ inspector_rules + [inspector_rule_legacy_deploy_kernel] }}"
 
 # Ironic inspector IPMI username to set.
 kolla_bifrost_inspector_ipmi_username: "{{ ipmi_username }}"
@@ -116,6 +116,9 @@ kolla_bifrost_inspector_deploy_kernel: "http://{{ provision_oc_net_name | net_ip
 
 # Ironic inspector deployment ramdisk location.
 kolla_bifrost_inspector_deploy_ramdisk: "http://{{ provision_oc_net_name | net_ip }}:8080/ipa.initramfs"
+
+# Ironic inspector legacy deployment kernel location.
+kolla_bifrost_inspector_legacy_deploy_kernel: "http://{{ provision_oc_net_name | net_ip }}:8080/ipa.vmlinuz"
 
 # Timeout of hardware inspection on overcloud nodes, in seconds. Default is
 # {{ inspector_inspection_timeout }}.

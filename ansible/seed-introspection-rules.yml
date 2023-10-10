@@ -17,3 +17,4 @@
       inspector_rule_var_lldp_switch_port_interface: "{{ kolla_bifrost_inspector_lldp_switch_port_interface }}"
       inspector_rule_var_deploy_kernel: "{{ kolla_bifrost_inspector_deploy_kernel }}"
       inspector_rule_var_deploy_ramdisk: "{{ kolla_bifrost_inspector_deploy_ramdisk }}"
+      inspector_rule_var_legacy_deploy_kernel: "{{ kolla_bifrost_inspector_legacy_deploy_kernel }}"

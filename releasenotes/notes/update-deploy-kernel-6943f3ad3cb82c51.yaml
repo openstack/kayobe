@@ -1,0 +1,20 @@
+---
+upgrade:
+  - |
+    Adds an introspection rule to update the location of the deployment kernel
+    registered in existing Ironic nodes. Nodes discovered on a deployment
+    running the Train release or earlier may still be using the ``ipa.vmlinuz``
+    kernel, which stays unchanged when deployment images get updated. If only
+    default introspection rules are in use, existing nodes may be updated from
+    the Bifrost container with the following command:
+
+    ``OS_CLOUD=bifrost baremetal introspection reprocess $NODE_UUID_OR_NAME``
+
+    If non-default rules are used, reprocessing may revert any customisation
+    done by the operator. In this case, a more cautious approach is to update
+    the deployment kernel location manually:
+
+    ``OS_CLOUD=bifrost baremetal node set --driver-info deploy_kernel=<http://url/to/ipa.kernel> $NODE_UUID_OR_NAME``
+
+    If the ``kolla_bifrost_inspector_rules`` list is customised, the rule
+    ``inspector_rule_legacy_deploy_kernel`` should be added to it.
