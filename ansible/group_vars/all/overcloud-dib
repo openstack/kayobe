@@ -39,7 +39,7 @@ overcloud_dib_os_release: "{{ os_release }}"
 overcloud_dib_elements_default:
   - "{{ overcloud_dib_os_element }}"
   - "cloud-init-datasources"
-  - "{% if overcloud_dib_os_element in ['centos', 'rocky'] %}disable-selinux{% endif %}"
+  - "{% if os_distribution in ['centos', 'rocky'] %}disable-selinux{% endif %}"
   - "enable-serial-console"
   - "vm"
 
