@@ -55,15 +55,10 @@ the configuration drive built by Bifrost during provisioning.
 ``overcloud_dib_os_release``
     DIB image OS release. Default is ``{{ os_release }}``.
 ``overcloud_dib_elements_default``
-    List of default DIB elements. Default is ``["centos",
-    "cloud-init-datasources", "disable-selinux", "enable-serial-console",
-    "vm"]`` when ``overcloud_dib_os_element`` is ``centos``, or
-    ``["rocky-container", "cloud-init-datasources", "disable-selinux",
-    "enable-serial-console", "vm"]`` when overcloud_dib_os_element is ``rocky``
-    or ``["ubuntu", "cloud-init-datasources", "enable-serial-console", "vm"]``
-    when ``overcloud_dib_os_element`` is ``ubuntu``. The ``vm`` element is
-    poorly named, and causes DIB to build a whole disk image rather than a
-    single partition.
+    List of default DIB elements. Default is ``["{{ overcloud_dib_os_element
+    }}", "cloud-init-datasources", "enable-serial-console", "vm"]``. The ``vm``
+    element is poorly named, and causes DIB to build a whole disk image rather
+    than a single partition.
 ``overcloud_dib_elements_extra``
     List of additional DIB elements. Default is none.
 ``overcloud_dib_elements``

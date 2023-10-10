@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    Removes the ``disable-selinux`` element from the default lists of DIB
+    elements. This makes host images more compatible with the default SELinux
+    configuration applied by Kayobe, which is ``permissive`` since the Zed
+    release.

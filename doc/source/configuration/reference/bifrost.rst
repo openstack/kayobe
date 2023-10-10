@@ -64,11 +64,9 @@ the default method of building images with
     *Added in the Train release. Use kolla_bifrost_dib_elements in earlier
     releases.*
 
-    List of default DIB elements. Default is ``["disable-selinux",
-    "enable-serial-console", "vm"]`` when ``os_distribution`` is ``centos`` or
-    ``rocky``, ``["enable-serial-console", "vm"]`` otherwise. The ``vm`` element
-    is poorly named, and causes DIB to build a whole disk image rather than a
-    single partition.
+    List of default DIB elements. Default is ``["enable-serial-console",
+    "vm"]``. The ``vm`` element is poorly named, and causes DIB to build a
+    whole disk image rather than a single partition.
 ``kolla_bifrost_dib_elements_extra``
     *Added in the Train release. Use kolla_bifrost_dib_elements in earlier
     releases.*
