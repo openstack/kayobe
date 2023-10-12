@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Attempts to log in to the kolla docker registry can be skipped by setting
+    ``deploy_containers_registry_attempt_login`` to false.
+
+    This is required for deployments using a non-standard registry
+    deployed on the seed during the deploy-container step, since it takes
+    place after the registry login attempt.

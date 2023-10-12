@@ -11,3 +11,5 @@ deploy_containers_defaults:
   restart_policy: "unless-stopped"
 
 deploy_containers_docker_api_timeout: 120
+
+deploy_containers_registry_attempt_login: "{{ kolla_docker_registry_username is truthy and kolla_docker_registry_password is truthy }}"
