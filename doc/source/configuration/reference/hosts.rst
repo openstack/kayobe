@@ -1065,6 +1065,9 @@ Docker.
 Various options are defined in ``${KAYOBE_CONFIG_PATH}/docker.yml``
 for configuring the ``devicemapper`` storage.
 
+If using an insecure (HTTP) registry, set ``docker_registry_insecure`` to
+``true``.
+
 A private Docker registry may be configured via ``docker_registry``, with a
 Certificate Authority (CA) file configured via ``docker_registry_ca``.
 

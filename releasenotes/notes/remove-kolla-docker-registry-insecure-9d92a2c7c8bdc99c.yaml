@@ -1,0 +1,13 @@
+---
+fixes:
+  - |
+    Removes the ``kolla_docker_registry_insecure`` variable from
+    ``etc/kayobe/kolla.yml`` as it is not used since the 2023.1 (Antelope)
+    release. The replacement ``docker_registry_insecure`` variable has been
+    added to ``etc/kayobe/docker.yml``.
+upgrade:
+  - |
+    Removes the ``kolla_docker_registry_insecure`` variable from
+    ``etc/kayobe/kolla.yml`` as it is not used since the 2023.1 (Antelope)
+    release. The replacement ``docker_registry_insecure`` variable has been
+    added to ``etc/kayobe/docker.yml``.
