@@ -15,7 +15,7 @@
 import copy
 
 from ansible.module_utils.basic import *
-from ansible.module_utils.openstack import *
+from ansible_collections.openstack.cloud.plugins.module_utils.openstack import *
 
 # Store a list of import errors to report to the user.
 IMPORT_ERRORS = []

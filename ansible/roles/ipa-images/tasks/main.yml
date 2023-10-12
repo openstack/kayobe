@@ -62,7 +62,7 @@
 
 - block:
     - name: Gather facts about Ironic Python Agent (IPA) kernel image
-      os_image_info:
+      openstack.cloud.image_info:
         auth_type: "{{ ipa_images_openstack_auth_type }}"
         auth: "{{ ipa_images_openstack_auth }}"
         cacert: "{{ ipa_images_openstack_cacert | default(omit, true) }}"
@@ -71,7 +71,7 @@
       register: ipa_images_kernel
 
     - name: Gather facts about Ironic Python Agent (IPA) ramdisk image
-      os_image_info:
+      openstack.cloud.image_info:
         auth_type: "{{ ipa_images_openstack_auth_type }}"
         auth: "{{ ipa_images_openstack_auth }}"
         cacert: "{{ ipa_images_openstack_cacert | default(omit, true) }}"
@@ -101,7 +101,7 @@
       environment: "{{ ipa_images_openstack_auth_env }}"
 
     - name: Ensure Ironic Python Agent (IPA) images are registered with Glance
-      os_image:
+      openstack.cloud.image:
         auth_type: "{{ ipa_images_openstack_auth_type }}"
         auth: "{{ ipa_images_openstack_auth }}"
         cacert: "{{ ipa_images_openstack_cacert | default(omit, true) }}"
