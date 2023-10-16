@@ -106,6 +106,10 @@
 #
 #seed_containers:
 
+# Whether to attempt a basic authentication login to a registry when
+# deploying seed containers
+#seed_deploy_containers_registry_attempt_login:
+
 ###############################################################################
 # Seed node firewalld configuration.
 
