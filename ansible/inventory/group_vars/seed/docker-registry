@@ -1,0 +1,7 @@
+---
+###############################################################################
+# Seed node docker regsitry configuration.
+
+# Whether to attempt a basic authentication login to a registry when
+# deploying seed containers
+deploy_containers_registry_attempt_login: "{{ seed_deploy_containers_registry_attempt_login }}"
