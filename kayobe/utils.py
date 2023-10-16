@@ -261,7 +261,7 @@ def intersect_limits(args_limit, cli_limit):
         separator = ',&'
     else:
         separator = ':&'
-    limits = [l for l in [args_limit, cli_limit] if l]
+    limits = [limit for limit in [args_limit, cli_limit] if limit]
     return separator.join(limits)
 
 
