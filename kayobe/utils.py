@@ -90,7 +90,7 @@ def _get_base_path():
         return os.path.join(prefix, "share", "kayobe")
 
     # Assume uninstalled
-    return os.path.join(os.path.realpath(__file__), "..")
+    return os.path.join(os.path.dirname(os.path.realpath(__file__)), "..")
 
 
 def galaxy_role_install(role_file, roles_path, force=False):
