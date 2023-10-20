@@ -380,7 +380,7 @@ def _validate_rules(rules):
 
 
 @jinja2.pass_context
-def net_interface_obj(context, name, inventory_hostname=None):
+def net_interface_obj(context, name, inventory_hostname=None, names=None):
     """Return a dict representation of a network interface.
 
     The returned dict is compatible with the interfaces_ether_interfaces
@@ -400,6 +400,27 @@ def net_interface_obj(context, name, inventory_hostname=None):
         netmask = None
     vlan = net_vlan(context, name, inventory_hostname)
     mtu = net_mtu(context, name, inventory_hostname)
+
+    # NOTE(priteau): do not pass MTU for VLAN interfaces on bridges when it is
+    # identical to the parent bridge, to work around a NetworkManager bug.
+    if names is not None and net_is_vlan_interface(context, name,
+                                                   inventory_hostname):
+        # Make a mapping of bridge interfaces and their MTUs
+        bridge_mtus = {}
+        for bridge in net_select_bridges(context, names, inventory_hostname):
+            bridge_interface = net_interface(context, bridge,
+                                             inventory_hostname)
+            bridge_mtus[bridge_interface] = net_mtu(context, bridge,
+                                                    inventory_hostname)
+
+        # Get parent and check for its MTU if it is a bridge
+        parent_or_device = get_vlan_parent(
+            context, name, device, vlan, inventory_hostname)
+        if parent_or_device in bridge_mtus:
+            parent_mtu = bridge_mtus[parent_or_device]
+            if mtu == parent_mtu:
+                mtu = None
+
     routes = net_routes(context, name, inventory_hostname)
     if routes:
         routes = [_route_obj(route) for route in routes]

@@ -25,7 +25,7 @@
     interfaces_ether_interfaces: >
       {{ network_interfaces |
          net_select_ethers |
-         map('net_interface_obj') |
+         map('net_interface_obj', names=network_interfaces) |
          list }}
     interfaces_bridge_interfaces: >
       {{ network_interfaces |
