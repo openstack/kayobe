@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Adds a workaround to avoid NetworkManager setting the MTU of bridge VLAN
+    interfaces to an incorrect value.
+    `LP#2039947 <https://bugs.launchpad.net/kayobe/+bug/2039947>`__
