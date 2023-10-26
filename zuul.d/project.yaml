@@ -3,7 +3,6 @@
     queue: kayobe
     templates:
       - openstack-cover-jobs
-      - openstack-python3-jobs
       - publish-openstack-docs-pti
       - release-notes-jobs-python3
     check:
@@ -29,7 +28,9 @@
         - kayobe-seed-vm-ubuntu-jammy
         - kayobe-infra-vm-rocky9
         - kayobe-infra-vm-ubuntu-jammy
-
+        - openstack-tox-py39
+        - openstack-tox-py310
+        - openstack-tox-py311
     gate:
       jobs:
         - kayobe-tox-ansible-syntax
