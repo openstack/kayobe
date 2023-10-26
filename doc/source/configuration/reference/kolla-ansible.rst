@@ -121,10 +121,6 @@ accessed.
 ``kolla_docker_registry``
     URL of docker registry to use for Kolla images. Default is not set, in
     which case Quay.io will be used.
-``kolla_docker_registry_insecure``
-    Whether docker should be configured to use an insecure registry for Kolla
-    images. Default is false, unless ``docker_registry_enabled`` is true and
-    ``docker_registry_enable_tls`` is false.
 ``kolla_docker_namespace``
     Docker namespace to use for Kolla images. Default is ``kolla``.
 ``kolla_docker_registry_username``
