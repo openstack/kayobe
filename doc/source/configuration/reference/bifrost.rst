@@ -195,6 +195,24 @@ The name of the root disk image to deploy can be configured via the
 Kayobe inventory. This can be used to provision different images across the
 overcloud.
 
+It can be necessary to deploy overcloud hosts with custom settings which can be
+configured during provision by the cloud-init user-data configured via the
+``kolla_bifrost_deploy_image_user_data_content`` option. The defaults is an
+empty string.
+
+.. code-block:: yaml
+   :caption: ``bifrost.yml``
+
+   kolla_bifrost_deploy_image_user_data_content: |
+     users:
+       name: myuser
+       sudo: ALL=(ALL) NOPASSWD:ALL
+       shell: /bin/bash
+       passwd: <HASH_OF_MY_PASSWORD>
+       lock_passwd: false
+
+     timezone: "Europe/Paris"
+
 While only a single disk image can be built with Bifrost, starting from the
 Yoga 12.0.0 release, Kayobe supports building multiple disk images directly
 through Diskimage builder. Consult the :ref:`overcloud host disk image build
