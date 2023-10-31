@@ -94,6 +94,7 @@
     switch_type_to_device_type:
       arista: netmiko_arista_eos
       dellos9: netmiko_dell_force10
+      dellos10: netmiko_dell_os10
       dell-powerconnect: netmiko_dell_powerconnect
       junos: netmiko_juniper
       openvswitch: netmiko_ovs_linux
