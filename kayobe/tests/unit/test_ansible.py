@@ -118,7 +118,7 @@ class TestCase(unittest.TestCase):
             )
             exp = "The environment name 'kayobe' is reserved for internal use."
             log_found = any(exp in t for t in ctx.output)
-            assert(log_found)
+            assert log_found
 
     @mock.patch.object(ansible, "_get_vars_files")
     @mock.patch.object(utils, "is_readable_dir")
