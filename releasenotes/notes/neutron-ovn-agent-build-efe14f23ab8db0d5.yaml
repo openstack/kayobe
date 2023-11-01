@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds support for building the ``neutron-ovn-agent`` image when Neutron and
+    OVN are enabled. `LP#2039558
+    <https://bugs.launchpad.net/kayobe/+bug/2039558>`__
