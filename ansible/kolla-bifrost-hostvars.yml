@@ -19,10 +19,10 @@
       ipv4_interface_mac: "{% raw %}{{ extra.pxe_interface_mac | default }}{% endraw %}"
       ipv4_address: "{{ admin_oc_net_name | net_ip }}"
       ipv4_subnet_mask: "{{ admin_oc_net_name | net_mask }}"
-      # If the admin network does not have a gateway defined, use the
-      # seed as a gateway to allow external access until other networks have
-      # been configured.
-      ipv4_gateway: "{{ admin_oc_net_name | net_gateway or admin_oc_net_name | net_ip(seed_host) }}"
+      # If the admin network does not have a gateway defined and seed SNAT is
+      # enabled, use the seed as a gateway to allow external access until other
+      # networks have been configured. Otherwise, do not set any gateway.
+      ipv4_gateway: "{{ admin_oc_net_name | net_gateway or admin_oc_net_name | net_ip(seed_host) if seed_enable_snat | bool }}"
       ipv4_nameserver: "{{ resolv_nameservers }}"
       network_mtu: "{{ admin_oc_net_name | net_mtu or '1500' }}"
       vlan_id: "{{ '' if admin_oc_net_name == provision_oc_net_name else (admin_oc_net_name | net_vlan) }}"
