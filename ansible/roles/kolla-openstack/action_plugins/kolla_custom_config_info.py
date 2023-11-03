@@ -77,13 +77,27 @@ class ConfigCollector(object):
         result = set(self.files_in_destination) - ignored
         return list(result)
 
-    def _find_matching_rule(self, relative_path):
+    def _find_matching_rule(self, relative_path, sources):
         # First match wins
         for rule in self.rules:
             if not rule.get('enabled', True):
                 continue
             glob_ = rule["glob"]
             if glob.globmatch(relative_path, glob_, flags=glob.GLOBSTAR):
+                requires_merge = (rule["strategy"] in
+                    ["merge_configs", "merge_yaml"])
+                # Fallback to templating when there is only one source. This
+                # allows you to have config files that template to invalid
+                # yaml/ini. This was allowed prior to config merging so
+                # improves backwards compatibility.
+                if requires_merge and len(sources) == 1:
+                    # The rule can be used again to match a different file
+                    # so don't modify in place.
+                    rule = rule.copy()
+                    rule["strategy"] = 'template'
+                    # Strip parameters as they may not be compatible with
+                    # template module.
+                    rule['params'] = {}
                 return rule
 
     def partition_into_actions(self):
@@ -114,7 +128,7 @@ class ConfigCollector(object):
             if not os.path.exists(dirname):
                 missing_directories.add(dirname)
 
-            rule = self._find_matching_rule(relative_path)
+            rule = self._find_matching_rule(relative_path, sources)
 
             if not rule:
                 continue
