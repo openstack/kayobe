@@ -73,9 +73,9 @@ custom seed container. In this case, basic authentication login attempts can be
 disabled by setting
 
 .. code-block:: yaml
-   :caption: ``kolla.yml``
+   :caption: ``seed.yml``
 
-   deploy_containers_registry_attempt_login: false
+   seed_deploy_containers_registry_attempt_login: false
 
 Without this setting, the login will fail because the registry has not yet been
 deployed.
