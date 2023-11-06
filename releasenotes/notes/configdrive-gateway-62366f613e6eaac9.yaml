@@ -1,0 +1,14 @@
+---
+upgrade:
+  - |
+    If the admin network does not have a gateway defined and
+    ``seed_enable_snat`` is ``false``, which is the default, overcloud hosts
+    will not have a default gateway immediately after provisioning anymore. A
+    default gateway on another network can still be applied during the host
+    configuration step.
+fixes:
+  - |
+    Fixes slow fact gathering in some environments by not configuring the seed
+    host as the initial default gateway for overcloud hosts when
+    ``seed_enable_snat`` is ``false``, which is the default.
+    `LP#2039461 <https://bugs.launchpad.net/kolla-ansible/+bug/2039461>`__
