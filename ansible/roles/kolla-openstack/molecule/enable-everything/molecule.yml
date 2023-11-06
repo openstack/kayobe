@@ -10,6 +10,7 @@ lint: |
 platforms:
   - name: centos-stream8
     image: quay.io/centos/centos:stream8
+    network_mode: host
 provisioner:
   name: ansible
   inventory:

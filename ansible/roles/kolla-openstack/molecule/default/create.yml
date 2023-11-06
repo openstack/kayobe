@@ -29,6 +29,7 @@
         build:
           path: "{{ molecule_ephemeral_directory }}"
           dockerfile: "{{ item.item.dockerfile | default(item.invocation.module_args.dest) }}"
+          network: host
         force_source: "{{ item.item.force | default(true) }}"
         force_tag: "{{ item.item.force | default(true) }}"
       with_items: "{{ platforms.results }}"
