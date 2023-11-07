@@ -17,3 +17,7 @@
     mode: 0644
   loop: "{{ apt_keys }}"
   become: true
+  register: result
+  until: result is successful
+  retries: 3
+  delay: 5
