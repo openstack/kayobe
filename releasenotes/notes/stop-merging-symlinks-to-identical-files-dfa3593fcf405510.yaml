@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Stop merging config when a symlink points to the same file. This
+    was a common pattern before the merging of kolla config was introduced
+    and results in duplicated config options.

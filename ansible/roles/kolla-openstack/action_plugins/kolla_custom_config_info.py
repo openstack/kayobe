@@ -119,6 +119,9 @@ class ConfigCollector(object):
             if not rule:
                 continue
 
+            sources = map(os.path.realpath, sources)
+            sources = _dedup(sources)
+
             if rule["strategy"] == 'copy':
                 copy = {
                     "src": sources[-1],
