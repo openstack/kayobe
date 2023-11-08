@@ -199,10 +199,10 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_multipathd | bool }}"
   - regex: ^murano
     enabled: "{{ kolla_enable_murano | bool }}"
-  - regex: neutron-server
+  - regex: "neutron-\\(server\\|metadata-agent\\)"
     enabled: "{{ kolla_enable_neutron | bool }}"
-  - regex: "neutron-\\(dhcp\\|l3\\|metadata\\|linuxbridge\\|openvswitch\\)-agent"
-    enabled: "{{ kolla_enable_neutron | bool }}"
+  - regex: "neutron-\\(dhcp\\|l3\\|linuxbridge\\|openvswitch\\)-agent"
+    enabled: "{{ kolla_enable_neutron | bool and not kolla_enable_ovn | bool}}"
   - regex: neutron-mlnx-agent
     enabled: "{{ kolla_enable_neutron_mlnx | bool }}"
   - regex: neutron-ovn-agent
