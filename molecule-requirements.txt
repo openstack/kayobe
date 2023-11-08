@@ -3,10 +3,10 @@
 # process, which may cause wedges in the gate later.
 
 ansible-lint>=3.0.0,<6.0.0,!=4.3.0 # MIT
-ansible-compat<4 # MIT
+ansible-compat # MIT
 docker # Apache-2.0
-molecule<4.1.0 # MIT
-molecule-docker # MIT
+molecule # MIT
+molecule-plugins[docker] # MIT
 pytest-metadata # MPL
 pytest-molecule # MIT
 pytest-testinfra

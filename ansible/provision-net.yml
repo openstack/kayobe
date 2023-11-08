@@ -27,7 +27,7 @@
       subnets:
         - name: "{{ kolla_ironic_provisioning_network }}"
           cidr: "{{ provision_wl_net_name | net_cidr }}"
-          gateway_ip: "{{ provision_wl_net_name | net_neutron_gateway or provision_wl_net_name | net_gateway }}"
+          gateway_ip: "{{ provision_wl_net_name | net_neutron_gateway or provision_wl_net_name | net_gateway | default(omit, True) }}"
           allocation_pool_start: "{{ provision_wl_net_name | net_neutron_allocation_pool_start }}"
           allocation_pool_end: "{{ provision_wl_net_name | net_neutron_allocation_pool_end }}"
     cleaning_net:
@@ -41,7 +41,7 @@
       subnets:
         - name: "{{ kolla_ironic_cleaning_network }}"
           cidr: "{{ cleaning_net_name | net_cidr }}"
-          gateway_ip: "{{ cleaning_net_name | net_neutron_gateway or cleaning_net_name | net_gateway }}"
+          gateway_ip: "{{ cleaning_net_name | net_neutron_gateway or cleaning_net_name | net_gateway | default(omit, True) }}"
           allocation_pool_start: "{{ cleaning_net_name | net_neutron_allocation_pool_start }}"
           allocation_pool_end: "{{ cleaning_net_name | net_neutron_allocation_pool_end }}"
     network_registrations: "{{ [provision_net] + ([] if cleaning_net_name == provision_wl_net_name else [cleaning_net]) }}"
