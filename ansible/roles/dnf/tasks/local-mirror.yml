@@ -13,19 +13,6 @@
     - "{{ repo_file_prefix }}.repo"
     - "{{ repo_file_prefix }}-extras.repo"
 
-# TODO(bbezak): remove following task in B release
-- name: Remove incorrect uppercase repo files
-  vars:
-    repo_file_prefix: "{{ ansible_facts.distribution }}{% if ansible_facts.distribution == 'CentOS'%}-Stream{% endif %}"
-  file:
-    path: /etc/yum.repos.d/{{ item }}
-    state: absent
-  become: True
-  loop:
-    - "{{ repo_file_prefix }}-AppStream.repo"
-    - "{{ repo_file_prefix }}-BaseOS.repo"
-    - "{{ repo_file_prefix }}-Extras.repo"
-
 - name: Update cache
   dnf:
     name: []
