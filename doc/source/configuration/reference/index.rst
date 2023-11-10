@@ -23,4 +23,5 @@ options.
    docker-registry
    seed-custom-containers
    infra-vms
+   vgpu
    nova-cells

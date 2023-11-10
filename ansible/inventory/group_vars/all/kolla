@@ -362,6 +362,9 @@ kolla_overcloud_inventory_top_level_group_map:
   compute:
     groups:
       - compute
+  compute-vgpu:
+    groups:
+      - compute-vgpu
   monitoring:
     groups:
       - monitoring

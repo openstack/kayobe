@@ -1,0 +1,42 @@
+---
+- name: Configure IOMMU
+  hosts: iommu
+  tags:
+    - iommu
+    - vgpu
+  tasks:
+    - import_role:
+        name: stackhpc.linux.iommu
+  handlers:
+    - name: Register that a reboot is required
+      set_fact:
+        kayobe_needs_reboot: true
+      listen: reboot
+
+- name: Configure NVIDIA VGPUs
+  hosts: vgpu
+  tags:
+    - vgpu
+  tasks:
+    - import_role:
+        name: stackhpc.linux.vgpu
+  handlers:
+    - name: Register that a reboot is required
+      set_fact:
+        kayobe_needs_reboot: true
+      listen: reboot
+
+- name: Reboot when required
+  hosts: iommu:vgpu
+  tags:
+    - reboot
+    - iommu
+    - vgpu
+  tasks:
+    - name: Reboot
+      reboot:
+        reboot_timeout: "{{ vgpu_reboot_timeout }}"
+      become: true
+      when:
+        - kayobe_needs_reboot | default(false) | bool
+        - vgpu_do_reboot | bool

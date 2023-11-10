@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Adds initial support for configuring NVIDIA vGPUs. For more information please see
+    the `new documentation
+    <https://docs.openstack.org/kayobe/latest/configuration/reference/vgpu.yml>`_
+    for this feature.
