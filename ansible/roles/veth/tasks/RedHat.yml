@@ -1,6 +1,0 @@
----
-- include_tasks: network-scripts.yml
-  when: ansible_facts.distribution_major_version | int < 9
-
-- include_tasks: network-manager.yml
-  when: ansible_facts.distribution_major_version | int >= 9
