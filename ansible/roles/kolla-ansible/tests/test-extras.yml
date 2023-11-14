@@ -121,6 +121,7 @@
             kolla_internal_fqdn_cert: "{{ temp_path }}/etc/kolla/certificates/internal.pem"
             kolla_internal_tls_cert: |
               bogus internal certificate
+            kolla_admin_openrc_cacert: "{{ temp_path }}/etc/kolla/certificates/ca/foo.crt"
             kolla_openstack_logging_debug: True
             grafana_local_admin_user_name: "grafana-admin"
             kolla_inspector_dhcp_pool_start: "1.2.3.4"
@@ -240,6 +241,7 @@
               kolla_external_fqdn_cert: "{{ temp_path }}/etc/kolla/certificates/external.pem"
               kolla_enable_tls_internal: True
               kolla_internal_fqdn_cert: "{{ temp_path }}/etc/kolla/certificates/internal.pem"
+              kolla_admin_openrc_cacert: "{{ temp_path }}/etc/kolla/certificates/ca/foo.crt"
               openstack_logging_debug: True
               grafana_admin_username: "grafana-admin"
               ironic_dnsmasq_dhcp_ranges:
