@@ -40,9 +40,6 @@ monitoring
 [prometheus:children]
 monitoring
 
-[kafka:children]
-control
-
 [telegraf:children]
 compute
 control
@@ -67,19 +64,6 @@ control
 
 [outward-rabbitmq:children]
 control
-
-[monasca-agent:children]
-compute
-control
-monitoring
-network
-storage
-
-[monasca:children]
-monitoring
-
-[storm:children]
-monitoring
 
 [keystone:children]
 control
@@ -182,9 +166,6 @@ control
 
 [bifrost:children]
 deployment
-
-[zookeeper:children]
-control
 
 [zun:children]
 control
