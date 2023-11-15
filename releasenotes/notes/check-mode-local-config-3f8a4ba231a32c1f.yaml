@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Fixes an issue where local configuration generation would be skipped when
+    running in check mode. This would lead to Kolla Ansible checking with stale
+    configuration. See `story 2010526
+    <https://storyboard.openstack.org/#!/story/2010526>`__ for details.
