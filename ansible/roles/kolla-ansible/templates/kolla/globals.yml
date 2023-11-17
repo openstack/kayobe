@@ -538,9 +538,9 @@ grafana_admin_username: "{{ grafana_local_admin_user_name }}"
 # Bootstrap-servers - Host Configuration
 #########################################
 
-{% if kolla_selinux_state is not none %}
-selinux_state: {{ kolla_selinux_state }}
-{% endif %}
+# Kayobe performs configuration of SELinux, so there is no need for Kolla
+# Ansible to repeat this.
+change_selinux: false
 
 {% if kolla_enable_host_ntp is not none %}
 enable_host_ntp: {{ kolla_enable_host_ntp | bool }}

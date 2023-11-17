@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Disables configuration of SELinux by Kolla Ansible, which could revert
+    configuration set by Kayobe.

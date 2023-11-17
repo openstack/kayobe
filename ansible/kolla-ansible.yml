@@ -91,13 +91,6 @@
         kolla_ansible_passwords_path: "{{ kayobe_env_config_path }}/kolla/passwords.yml"
         kolla_overcloud_group_vars_path: "{{ kayobe_env_config_path }}/kolla/inventory/group_vars"
         kolla_ansible_certificates_path: "{{ kayobe_env_config_path }}/kolla/certificates"
-        # NOTE: This differs from the default SELinux mode in kolla ansible,
-        # which is permissive. The justification for using this mode is twofold:
-        # 1. it avoids filling up the audit log
-        # 2. it avoids an issue seen when using diskimage-builder in the bifrost
-        # container.
-        # We could look at making the SELinux mode configurable in future.
-        kolla_selinux_state: disabled
         kolla_inspector_dhcp_pool_start: "{{ inspection_net_name | net_inspection_allocation_pool_start }}"
         kolla_inspector_dhcp_pool_end: "{{ inspection_net_name | net_inspection_allocation_pool_end }}"
         kolla_inspector_netmask: "{{ inspection_net_name | net_mask }}"
