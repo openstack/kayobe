@@ -319,6 +319,19 @@ def test_firewalld_rules(host):
             assert expected_line in perm_info
 
 
+@pytest.mark.skipif(not _is_dnf(),
+                    reason="SELinux only supported on CentOS/Rocky")
+def test_selinux(host):
+    selinux = host.check_output("sestatus")
+    selinux = selinux.splitlines()
+    # Remove duplicate whitespace characters in output
+    selinux = [" ".join(x.split()) for x in selinux]
+
+    assert "SELinux status: enabled" in selinux
+    assert "Current mode: permissive" in selinux
+    assert "Mode from config file: permissive" in selinux
+
+
 def test_swap(host):
     swapon = host.check_output("swapon -s")
     swapon = swapon.splitlines()
