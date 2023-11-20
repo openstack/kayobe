@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Deploys ``prometheus-elasticsearch-exporter`` on hosts of the
+    ``opensearch`` group, resolving failures to connect to OpenSearch when the
+    ``elasticsearch`` and ``opensearch`` groups are different.
