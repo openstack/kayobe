@@ -60,7 +60,8 @@ class TestCase(unittest.TestCase):
                 mock.ANY,
                 [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
                 tags="install",
-                ignore_limit=True
+                ignore_limit=True,
+                check=False,
             ),
         ]
         self.assertEqual(expected_calls, mock_run.call_args_list)
@@ -93,7 +94,8 @@ class TestCase(unittest.TestCase):
                 mock.ANY,
                 [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
                 tags=None,
-                ignore_limit=True
+                ignore_limit=True,
+                check=False,
             ),
             mock.call(
                 mock.ANY,
@@ -138,7 +140,8 @@ class TestCase(unittest.TestCase):
                 mock.ANY,
                 [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
                 tags="install",
-                ignore_limit=True
+                ignore_limit=True,
+                check=False,
             ),
         ]
         self.assertEqual(expected_calls, mock_run.call_args_list)
@@ -509,6 +512,7 @@ class TestCase(unittest.TestCase):
                 [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
                 tags="config",
                 ignore_limit=True,
+                check=False,
             ),
             mock.call(
                 mock.ANY,
@@ -569,6 +573,7 @@ class TestCase(unittest.TestCase):
                 [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
                 tags="config",
                 ignore_limit=True,
+                check=False,
             ),
             mock.call(
                 mock.ANY,
@@ -872,11 +877,13 @@ class TestCase(unittest.TestCase):
                 [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
                 tags="config",
                 ignore_limit=True,
+                check=False,
             ),
             mock.call(
                 mock.ANY,
                 [utils.get_data_files_path("ansible", "kolla-bifrost.yml")],
                 ignore_limit=True,
+                check=False,
             ),
             mock.call(
                 mock.ANY,
@@ -920,11 +927,13 @@ class TestCase(unittest.TestCase):
                 [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
                 tags="config",
                 ignore_limit=True,
+                check=False,
             ),
             mock.call(
                 mock.ANY,
                 [utils.get_data_files_path("ansible", "kolla-bifrost.yml")],
                 ignore_limit=True,
+                check=False,
             ),
             mock.call(
                 mock.ANY,
@@ -1177,6 +1186,7 @@ class TestCase(unittest.TestCase):
                 [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
                 tags="config",
                 ignore_limit=True,
+                check=False,
             ),
         ]
         self.assertEqual(expected_calls, mock_run.call_args_list)
@@ -1275,6 +1285,7 @@ class TestCase(unittest.TestCase):
                 [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
                 tags="config",
                 ignore_limit=True,
+                check=False,
             ),
         ]
         self.assertEqual(expected_calls, mock_run.call_args_list)
@@ -1318,6 +1329,7 @@ class TestCase(unittest.TestCase):
                 [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
                 tags="config",
                 ignore_limit=True,
+                check=False,
             ),
             mock.call(
                 mock.ANY,
@@ -1374,6 +1386,7 @@ class TestCase(unittest.TestCase):
                 [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
                 tags="config",
                 ignore_limit=True,
+                check=False,
             ),
             mock.call(
                 mock.ANY,
@@ -1540,6 +1553,7 @@ class TestCase(unittest.TestCase):
                 [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
                 tags="config",
                 ignore_limit=True,
+                check=False,
             ),
         ]
         self.assertEqual(expected_calls, mock_run.call_args_list)
@@ -1571,6 +1585,7 @@ class TestCase(unittest.TestCase):
                 [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
                 tags="config",
                 ignore_limit=True,
+                check=False,
             ),
         ]
         self.assertEqual(expected_calls, mock_run.call_args_list)
@@ -1601,6 +1616,7 @@ class TestCase(unittest.TestCase):
                 [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
                 tags="config",
                 ignore_limit=True,
+                check=False,
             ),
             mock.call(
                 mock.ANY,
@@ -1609,6 +1625,7 @@ class TestCase(unittest.TestCase):
                                               "kolla-openstack.yml"),
                 ],
                 ignore_limit=True,
+                check=False,
             ),
         ]
         self.assertEqual(expected_calls, mock_run.call_args_list)
@@ -1640,6 +1657,7 @@ class TestCase(unittest.TestCase):
                 [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
                 tags="config",
                 ignore_limit=True,
+                check=False,
             ),
             mock.call(
                 mock.ANY,
@@ -1648,6 +1666,7 @@ class TestCase(unittest.TestCase):
                                               "kolla-openstack.yml"),
                 ],
                 ignore_limit=True,
+                check=False,
             ),
         ]
         self.assertEqual(expected_calls, mock_run.call_args_list)
@@ -1701,6 +1720,7 @@ class TestCase(unittest.TestCase):
                 [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
                 ignore_limit=True,
                 tags="config",
+                check=False,
             ),
             mock.call(
                 mock.ANY,
@@ -1709,6 +1729,7 @@ class TestCase(unittest.TestCase):
                                               "kolla-openstack.yml"),
                 ],
                 ignore_limit=True,
+                check=False,
             ),
             mock.call(
                 mock.ANY,
@@ -1766,6 +1787,7 @@ class TestCase(unittest.TestCase):
                 [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
                 ignore_limit=True,
                 tags="config",
+                check=False,
             ),
             mock.call(
                 mock.ANY,
@@ -1774,6 +1796,7 @@ class TestCase(unittest.TestCase):
                                               "kolla-openstack.yml"),
                 ],
                 ignore_limit=True,
+                check=False,
             ),
             mock.call(
                 mock.ANY,
@@ -1819,6 +1842,7 @@ class TestCase(unittest.TestCase):
                 [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
                 ignore_limit=True,
                 tags="config",
+                check=False,
             ),
             mock.call(
                 mock.ANY,
@@ -1827,6 +1851,7 @@ class TestCase(unittest.TestCase):
                                               "kolla-openstack.yml"),
                 ],
                 ignore_limit=True,
+                check=False,
             ),
         ]
         self.assertEqual(expected_calls, mock_run.call_args_list)
@@ -1857,6 +1882,7 @@ class TestCase(unittest.TestCase):
                 [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
                 ignore_limit=True,
                 tags="config",
+                check=False,
             ),
             mock.call(
                 mock.ANY,
@@ -1865,6 +1891,7 @@ class TestCase(unittest.TestCase):
                                               "kolla-openstack.yml"),
                 ],
                 ignore_limit=True,
+                check=False,
             ),
             mock.call(
                 mock.ANY,
@@ -1921,6 +1948,7 @@ class TestCase(unittest.TestCase):
                 [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
                 ignore_limit=True,
                 tags="config",
+                check=False,
             ),
             mock.call(
                 mock.ANY,
@@ -1929,6 +1957,7 @@ class TestCase(unittest.TestCase):
                                               "kolla-openstack.yml"),
                 ],
                 ignore_limit=True,
+                check=False,
             ),
             mock.call(
                 mock.ANY,
@@ -1985,6 +2014,7 @@ class TestCase(unittest.TestCase):
                 [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
                 ignore_limit=True,
                 tags=None,
+                check=False,
             ),
             mock.call(
                 mock.ANY,
@@ -1993,6 +2023,7 @@ class TestCase(unittest.TestCase):
                                               "kolla-openstack.yml"),
                 ],
                 ignore_limit=True,
+                check=False,
             ),
             mock.call(
                 mock.ANY,
