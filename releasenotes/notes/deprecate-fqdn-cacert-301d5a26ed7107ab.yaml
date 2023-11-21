@@ -1,0 +1,13 @@
+---
+deprecates:
+  - |
+    Renames ``kolla_external_fqdn_cacert`` to ``kolla_public_openrc_cacert``
+    and ``kolla_internal_fqdn_cacert`` to ``kolla_admin_openrc_cacert``. This
+    matches the Kolla Ansible variable name and better reflects their purpose.
+    The old variable names are still supported until the end of the deprecation
+    period (2024.2 "D" series release or later).
+fixes:
+  - |
+    Fixes an issue where the Kolla Ansible variable
+    ``kolla_admin_openrc_cacert`` was not set to the value of
+    ``kolla_internal_fqdn_cacert``.

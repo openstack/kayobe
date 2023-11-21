@@ -165,8 +165,8 @@ kolla_enable_tls_external:
 kolla_enable_tls_internal:
 kolla_external_fqdn_cert:
 kolla_internal_fqdn_cert:
-kolla_external_fqdn_cacert:
-kolla_internal_fqdn_cacert:
+kolla_public_openrc_cacert:
+kolla_admin_openrc_cacert:
 
 #############################
 # Ironic options
