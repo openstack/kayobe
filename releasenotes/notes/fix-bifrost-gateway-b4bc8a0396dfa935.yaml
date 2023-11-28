@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes gateway assignment when seed SNAT is disabled. In this circumstance
+    Bifrost was generating ConfigDrive data with the default gateway unset even
+    when one is available on the admin network.
