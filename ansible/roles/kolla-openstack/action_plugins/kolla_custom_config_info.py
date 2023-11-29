@@ -128,13 +128,13 @@ class ConfigCollector(object):
             if not os.path.exists(dirname):
                 missing_directories.add(dirname)
 
+            sources = map(os.path.realpath, sources)
+            sources = _dedup(sources)
+
             rule = self._find_matching_rule(relative_path, sources)
 
             if not rule:
                 continue
-
-            sources = map(os.path.realpath, sources)
-            sources = _dedup(sources)
 
             if rule["strategy"] == 'copy':
                 copy = {
