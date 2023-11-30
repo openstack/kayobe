@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    Adds the following variables to allow more fine-grained placement of
+    services:
+
+    * ``controller_ironic_conductor_group``
+    * ``controller_ironic_inspector_group``
+    * ``controller_loadbalancer_group``
+    * ``controller_network_group``

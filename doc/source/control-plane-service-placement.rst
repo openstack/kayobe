@@ -247,3 +247,37 @@ Next, we must configure kayobe to use this inventory template.
 
 Here we use the ``template`` lookup plugin to render the Jinja2-formatted
 inventory template.
+
+Fine-grained placement
+======================
+
+Kayobe has fairly coarse-grained default groups - ``controller``, ``compute``,
+etc, which work well in the majority of cases. Kolla Ansible allows much
+more fine-grained placement on a per-service basis, e.g.
+``ironic-conductor``. If the operator has taken advantage of this
+fine-grained placement, then it is possible that some of the assumptions
+in Kayobe may be incorrect. This is one downside of the split between
+Kayobe and Kolla Ansible.
+
+For example, Ironic conductor services may have been moved to a subset of the
+top level ``controllers`` group. In this case, we would not want the Ironic
+networks to be mapped to all hosts in the controllers group - only those
+running Ironic conductor services. The same argument can be made if the
+loadbalancer services (HAProxy & keepalived) or Neutron dataplane services
+(e.g. L3 & DHCP agents) have been separated from the top level ``network``
+group.
+
+In these cases, the following variables may be used to tune placement:
+
+``controller_ironic_conductor_group``
+    Ansible inventory group in which Ironic conductor services are deployed.
+    Default is ``controllers``.
+``controller_ironic_inspector_group``
+    Ansible inventory group in which Ironic inspector services are deployed.
+    Default is ``controllers``.
+``controller_loadbalancer_group``
+    Ansible inventory group in which control plane load balancer services are
+    deployed. Default is ``network``.
+``controller_network_group``
+    Ansible inventory group in which network data plane services are deployed.
+    Default is ``network``.

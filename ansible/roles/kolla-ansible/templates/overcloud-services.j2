@@ -213,15 +213,12 @@ ironic
 [ironic-conductor:children]
 ironic
 
-#[ironic-inspector:children]
-#ironic
-
+{% if kolla_ironic_inspector_host %}
 [ironic-inspector]
-# FIXME: Ideally we wouldn't reference controllers in here directly, but only
-# one inspector service should exist, and groups can't be indexed in an
-# inventory (e.g. ironic[0]).
-{% if groups.get('controllers', []) | length > 0 %}
-{{ groups['controllers'][0] }}
+{{ kolla_ironic_inspector_host }}
+{% else %}
+[ironic-inspector:children]
+ironic
 {% endif %}
 
 [ironic-tftp:children]
