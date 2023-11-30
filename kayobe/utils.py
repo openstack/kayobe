@@ -24,6 +24,7 @@ import shutil
 import subprocess
 import sys
 
+from ansible.parsing.yaml.loader import AnsibleLoader
 import yaml
 
 from kayobe import exception
@@ -153,11 +154,28 @@ def read_yaml_file(path):
     try:
         content = read_file(path)
     except IOError as e:
-        print("Failed to open config dump file %s: %s" %
+        print("Failed to open YAML file %s: %s" %
               (path, repr(e)))
         sys.exit(1)
     try:
         return yaml.safe_load(content)
+    except yaml.YAMLError as e:
+        print("Failed to decode YAML file %s: %s" %
+              (path, repr(e)))
+        sys.exit(1)
+
+
+def read_config_dump_yaml_file(path):
+    """Read and decode a configuration dump YAML file."""
+    try:
+        content = read_file(path)
+    except IOError as e:
+        print("Failed to open config dump file %s: %s" %
+              (path, repr(e)))
+        sys.exit(1)
+    try:
+        # AnsibleLoader supports loading vault encrypted variables.
+        return AnsibleLoader(content).get_single_data()
     except yaml.YAMLError as e:
         print("Failed to decode config dump YAML file %s: %s" %
               (path, repr(e)))
