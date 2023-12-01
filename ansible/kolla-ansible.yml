@@ -108,7 +108,6 @@
         kolla_inspector_default_gateway: "{{ inspection_net_name | net_inspection_gateway or inspection_net_name | net_gateway }}"
         kolla_inspector_extra_kernel_options: "{{ inspector_extra_kernel_options }}"
         kolla_libvirt_tls: "{{ compute_libvirt_enable_tls | bool }}"
-        kolla_enable_host_ntp: false
         kolla_globals_paths_static:
           - "{{ kayobe_config_path }}"
         kolla_globals_paths_extra: "{{ kolla_globals_paths_static + kayobe_env_search_paths }}"
