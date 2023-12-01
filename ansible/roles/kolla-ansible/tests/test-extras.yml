@@ -238,8 +238,6 @@
             globals_yml: "{{ lookup('file', temp_path ~ '/etc/kolla/globals.yml') | from_yaml }}"
             expected_variables:
               config_strategy: "COPY_ALWAYS"
-              kolla_user: "fake-user"
-              kolla_group: "fake-group"
               kolla_base_distro: "fake-distro"
               kolla_base_distro_version: "1.23"
               openstack_release: "fake-release"

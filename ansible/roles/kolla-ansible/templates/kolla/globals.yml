@@ -519,31 +519,6 @@ ironic_inspector_kernel_cmdline_extras:
 grafana_admin_username: "{{ grafana_local_admin_user_name }}"
 {% endif %}
 
-#########################################
-# Bootstrap-servers - Host Configuration
-#########################################
-
-{% if kolla_selinux_state is not none %}
-selinux_state: {{ kolla_selinux_state }}
-{% endif %}
-
-# Kayobe performs creation of the Kolla Ansible user account, so there is no
-# need for Kolla Ansible to repeat this.
-create_kolla_user: false
-
-# User account to use for Kolla SSH access.
-kolla_user: "{{ kolla_ansible_user }}"
-
-# Primary group of Kolla SSH user.
-kolla_group: "{{ kolla_ansible_group }}"
-
-{% if kolla_ansible_target_venv %}
-virtualenv: {{ kolla_ansible_target_venv }}
-{% endif %}
-
-# Avoid disabling the firewall on CentOS, since we manage it in Kayobe.
-disable_firewall: "{% raw %}{{ ansible_facts.os_family == 'Debian' }}{% endraw %}"
-
 {% if kolla_extra_globals %}
 #######################
 # Extra configuration
