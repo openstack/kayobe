@@ -145,6 +145,7 @@ kolla_feature_flags:
   - influxdb
   - ironic
   - ironic_neutron_agent
+  - ironic_prometheus_exporter
   - ironic_pxe_uefi
   - iscsid
   - keepalived
@@ -152,6 +153,7 @@ kolla_feature_flags:
   - keystone_federation
   - keystone_horizon_policy_file
   - kuryr
+  - letsencrypt
   - loadbalancer
   - magnum
   - manila
@@ -194,6 +196,7 @@ kolla_feature_flags:
   - nova_ssh
   - octavia
   - octavia_driver_agent
+  - octavia_jobboard
   - opensearch
   - opensearch_dashboards
   - opensearch_dashboards_external
