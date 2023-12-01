@@ -69,11 +69,13 @@
     virtualenv: "{{ kolla_venv }}"
     extra_args: "{% if kolla_upper_constraints_file %}-c {{ kolla_upper_constraints_file }}{% endif %}"
   with_items:
-    # Intall Kolla from source.
+    # Install Kolla from source.
     - name: "{{ kolla_source_path }}"
       install: "{{ kolla_ctl_install_type == 'source' }}"
-    # Intall Kolla from PyPI.
+    # Install Kolla from PyPI.
     - name: "kolla"
       version: "{{ kolla_openstack_release }}"
       install: "{{ kolla_ctl_install_type == 'binary' }}"
+    # Install docker from PyPI since it was dropped from kolla requirements.
+    - name: "docker"
   when: item.install | default(True) | bool
