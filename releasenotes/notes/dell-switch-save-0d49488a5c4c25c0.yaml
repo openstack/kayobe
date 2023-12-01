@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds support for saving configuration to switches when running ``kayobe
+    physical network configure``. Currently only supported on Dell OS9 and OS10
+    devices.

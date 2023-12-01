@@ -12,3 +12,6 @@ dell_switch_config: []
 # dicts. Each dict contains a 'description' item and a 'config' item which
 # should contain a list of per-interface configuration.
 dell_switch_interface_config: {}
+
+# Whether to save the configuration.
+dell_switch_save: false
