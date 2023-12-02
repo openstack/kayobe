@@ -344,6 +344,7 @@
 #kolla_enable_influxdb:
 #kolla_enable_ironic:
 #kolla_enable_ironic_neutron_agent:
+#kolla_enable_ironic_prometheus_exporter:
 #kolla_enable_ironic_pxe_uefi:
 #kolla_enable_iscsid:
 #kolla_enable_keepalived:
@@ -351,6 +352,7 @@
 #kolla_enable_keystone_federation:
 #kolla_enable_keystone_horizon_policy_file:
 #kolla_enable_kuryr:
+#kolla_enable_letsencrypt:
 #kolla_enable_loadbalancer:
 #kolla_enable_magnum:
 #kolla_enable_manila:
@@ -393,6 +395,7 @@
 #kolla_enable_nova_ssh:
 #kolla_enable_octavia:
 #kolla_enable_octavia_driver_agent:
+#kolla_enable_octavia_jobboard:
 #kolla_enable_opensearch:
 #kolla_enable_opensearch_dashboards:
 #kolla_enable_opensearch_dashboards_external:
