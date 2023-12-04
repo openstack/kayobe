@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes a bug where NetworkManager would overwrite resolv.conf when
+    ``resolv_is_managed`` is set to ``True``.
+    `LP#2044537 <https://launchpad.net/bugs/2044537>`__
