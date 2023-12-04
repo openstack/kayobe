@@ -17,6 +17,22 @@
   when: resolv_is_managed | bool
   become: True
 
+- name: Ensure NetworkManager DNS config is present only if required
+  become: true
+  community.general.ini_file:
+    path: /etc/NetworkManager/NetworkManager.conf
+    section: main
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+    state: "{{ 'present' if resolv_is_managed | bool else 'absent'}}"
+  loop:
+    - option: dns
+      value: none
+    - option: rc-manager
+      value: unmanaged
+  when:
+    - ansible_facts.os_family == "RedHat" and ansible_facts.distribution_major_version == "9"
+
 - name: Configure network interfaces (RedHat)
   import_role:
     name: MichaelRigart.interfaces
