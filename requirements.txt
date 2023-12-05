@@ -1,6 +1,8 @@
 pbr>=2.0 # Apache-2.0
 Jinja2>3 # BSD
 ansible>=6,<8.0 # GPLv3
+# NOTE(priteau): Pin due to AnsibleUnsafeText issues with new ansible-core
+ansible-core<2.14.12 # GPLv3
 cliff>=3.1.0 # Apache
 netaddr!=0.7.16,>=0.7.13 # BSD
 PyYAML>=3.10.0 # MIT
