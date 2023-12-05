@@ -54,6 +54,12 @@
             mode: 0700
           become: True
 
+        - name: Ensure Python setuptools is installed
+          package:
+            name: python3-setuptools
+            state: present
+          become: True
+
         - name: Ensure kayobe virtualenv has the latest version of pip installed
           pip:
             name: pip
