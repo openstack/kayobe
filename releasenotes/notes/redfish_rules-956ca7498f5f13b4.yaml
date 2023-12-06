@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    Adds new Redfish rules to Ironic and Bifrost introspection
+    New variables available:
+    * ``inspector_rules_redfish_enabled``
+    * ``inspector_redfish_username``
+    * ``inspector_redfish_password``
+    * ``inspector_rule_var_redfish_verify_ca``
+    * ``inspector_rules_ipmi_enabled``
+    * ``kolla_bifrost_inspector_redfish_username``
+    * ``kolla_bifrost_inspector_redfish_password``

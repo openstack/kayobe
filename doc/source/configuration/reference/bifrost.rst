@@ -264,8 +264,8 @@ The following options configure the Ironic Inspector service in the
     ``{{ ipmi_password }}``, defined in ``${KAYOBE_CONFIG_PATH}/bmc.yml``.
 ``kolla_bifrost_inspector_lldp_switch_port_interface``
     Ironic inspector network interface name on which to check for an LLDP switch
-    port description to use as the node's name. Default is ``{{
-    inspector_lldp_switch_port_interface_default }}``, defined in
+    port description to use as the node's name. Default is
+    ``{{ inspector_lldp_switch_port_interface_default }}``, defined in
     ``${KAYOBE_CONFIG_PATH}/inspector.yml``.
 ``kolla_bifrost_inspector_deploy_kernel``
     Ironic inspector deployment kernel location. Default is ``http://{{
@@ -277,6 +277,14 @@ The following options configure the Ironic Inspector service in the
     Timeout of hardware inspection on overcloud nodes, in seconds. Default is
     ``{{ inspector_inspection_timeout }}``, defined in
     ``${KAYOBE_CONFIG_PATH}/inspector.yml``.
+``kolla_bifrost_inspector_redfish_username``
+    Ironic inspector Redfish username to set via an introspection rule.
+    Defined in ``${KAYOBE_CONFIG_PATH}/bifrost.yml``. Default is
+    ``{{ inspector_redfish_username }}``.
+``kolla_bifrost_inspector_redfish_password``
+    Ironic inspector Redfish username to set via an introspection rule.
+    Defined in ``${KAYOBE_CONFIG_PATH}/bifrost.yml``. Default is
+    ``{{ inspector_redfish_username }}``.
 
 Ironic Python Agent (IPA) configuration
 =======================================
