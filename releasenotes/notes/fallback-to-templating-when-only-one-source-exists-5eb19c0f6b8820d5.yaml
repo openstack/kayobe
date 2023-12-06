@@ -1,7 +1,7 @@
 ---
 fixes:
   - |
-    When merging kolla config, fallback to templating when only one source file
-    exists. This allows you to use config that templates to invalid yaml/ini as
-    long as there isn't an environment override. This improves backwards
-    compatability where it was permitted to use such constructs.
+    When merging Kolla configuration, fallback to templating when only one
+    source file exists. This allows you to use configuration that templates to
+    invalid YAML/INI as long as there is no environment override. This improves
+    backwards compatibility where it was permitted to use such constructs.

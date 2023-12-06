@@ -2,5 +2,5 @@
 features:
   - |
     Adds a new ``kolla_bifrost_deploy_image_user_data_content`` variable used
-    to define the custom user_data content used by the cloud-init for overcloud
+    to define custom ``user_data`` content used by cloud-init for overcloud
     provision.

@@ -46,7 +46,6 @@ deprecations:
     * ``kolla_extra_placement``
     * ``kolla_extra_sahara``
 
-    Use of Kolla custom service configuration files in
-    ``etc/kayobe/kolla/config`` and
+    Kolla custom service configuration files in ``etc/kayobe/kolla/config`` and
     ``etc/kayobe/environments/<environment>/kolla/config`` should be used
     instead.
