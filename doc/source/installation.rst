@@ -160,7 +160,7 @@ Editable source installation
 ----------------------------
 
 From Kayobe 5.0.0 onwards it is possible to create an `editable install
-<https://pip.pypa.io/en/stable/reference/pip_install/#editable-installs>`__
+<https://pip.pypa.io/en/stable/topics/local-project-installs/#editable-installs>`__
 of Kayobe. In an editable install, any changes to the Kayobe source tree will
 immediately be visible when running any Kayobe commands.  To create an editable
 install, add the ``-e`` flag::
