@@ -1,4 +1,12 @@
 ---
+- name: Check if inspection allocation is defined
+  assert:
+    that:
+      - kolla_bifrost_dhcp_pool_start | length > 0
+      - kolla_bifrost_dhcp_pool_end | length > 0
+      - kolla_bifrost_dhcp_pool_mask | length > 0
+    fail_msg: "Inspection allocation pool for provisioning network is not properly defined"
+
 - name: Ensure the Kolla Bifrost configuration directories exist
   file:
     path: "{{ kolla_node_custom_config_path }}/bifrost"
