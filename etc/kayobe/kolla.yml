@@ -299,6 +299,7 @@
 #kolla_enable_gnocchi:
 #kolla_enable_gnocchi_statsd:
 #kolla_enable_grafana:
+#kolla_enable_grafana_external:
 #kolla_enable_hacluster:
 #kolla_enable_haproxy:
 #kolla_enable_haproxy_memcached:
@@ -338,6 +339,7 @@
 #kolla_enable_keystone_federation:
 #kolla_enable_keystone_horizon_policy_file:
 #kolla_enable_kibana:
+#kolla_enable_kibana_external:
 #kolla_enable_kuryr:
 #kolla_enable_loadbalancer:
 #kolla_enable_magnum:
@@ -350,6 +352,8 @@
 #kolla_enable_mariabackup:
 #kolla_enable_mariadb:
 #kolla_enable_masakari:
+#kolla_enable_masakari_hostmonitor:
+#kolla_enable_masakari_instancemonitor:
 #kolla_enable_memcached:
 #kolla_enable_mistral:
 #kolla_enable_monasca:
@@ -392,6 +396,7 @@
 #kolla_enable_placement:
 #kolla_enable_prometheus:
 #kolla_enable_prometheus_alertmanager:
+#kolla_enable_prometheus_alertmanager_external:
 #kolla_enable_prometheus_blackbox_exporter:
 #kolla_enable_prometheus_cadvisor:
 #kolla_enable_prometheus_ceph_mgr_exporter:
@@ -401,6 +406,7 @@
 #kolla_enable_prometheus_haproxy_exporter:
 #kolla_enable_prometheus_libvirt_exporter:
 #kolla_enable_prometheus_memcached_exporter:
+#kolla_enable_prometheus_msteams:
 #kolla_enable_prometheus_mysqld_exporter:
 #kolla_enable_prometheus_node_exporter:
 #kolla_enable_prometheus_openstack_exporter:
