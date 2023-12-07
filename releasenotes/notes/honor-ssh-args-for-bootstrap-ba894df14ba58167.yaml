@@ -2,12 +2,12 @@
 fixes:
   - |
     When determining whether or not a host needs bootstrapping, we attempt to
-    connect to the host using ansible_user, if the login fails, we then assume
-    that the host needs bootstrapping. In previous releases we used a manually
-    crafted ``ssh`` command. This did respect any customisations to the SSH
-    arguments made through ansible configuration.  We now use the raw module so
-    that these customisations are used when connecting to the host. One
-    possible use case is to configure a jump host between the control host and
-    the target hosts. If bootstrapping was needed, hosts will now show as
+    connect to the host using ``ansible_user``, if the login fails, we then
+    assume that the host needs bootstrapping. In previous releases we used a
+    manually crafted ``ssh`` command. This did not respect any customisations
+    to the SSH arguments made through Ansible configuration. We now use the raw
+    module so that these customisations are used when connecting to the host.
+    One possible use case is to configure a jump host between the control host
+    and the target hosts. If bootstrapping was needed, hosts will now show as
     unreachable in the summary stats at the end of the run. This can safely be
     ignored.
