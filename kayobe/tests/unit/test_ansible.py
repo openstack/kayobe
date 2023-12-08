@@ -583,7 +583,7 @@ class TestCase(unittest.TestCase):
                           ansible.run_playbooks, parsed_args, ["command"])
 
     @mock.patch.object(shutil, 'rmtree')
-    @mock.patch.object(utils, 'read_yaml_file')
+    @mock.patch.object(utils, 'read_config_dump_yaml_file')
     @mock.patch.object(os, 'listdir')
     @mock.patch.object(ansible, 'run_playbook')
     @mock.patch.object(tempfile, 'mkdtemp')
@@ -602,6 +602,70 @@ class TestCase(unittest.TestCase):
         expected_result = {
             "host1": {"var1": "value1"},
             "host2": {"var2": "value2"},
+        }
+        self.assertEqual(result, expected_result)
+        dump_config_path = utils.get_data_files_path(
+            "ansible", "dump-config.yml")
+        mock_run.assert_called_once_with(parsed_args,
+                                         dump_config_path,
+                                         extra_vars={
+                                             "dump_path": dump_dir,
+                                         },
+                                         check_output=True, tags=None,
+                                         verbose_level=None, check=False,
+                                         list_tasks=False, diff=False)
+        mock_rmtree.assert_called_once_with(dump_dir)
+        mock_listdir.assert_any_call(dump_dir)
+        mock_read.assert_has_calls([
+            mock.call(os.path.join(dump_dir, "host1.yml")),
+            mock.call(os.path.join(dump_dir, "host2.yml")),
+        ])
+
+    @mock.patch.object(shutil, 'rmtree')
+    @mock.patch.object(utils, 'read_file')
+    @mock.patch.object(os, 'listdir')
+    @mock.patch.object(ansible, 'run_playbook')
+    @mock.patch.object(tempfile, 'mkdtemp')
+    def test_config_dump_vaulted(self, mock_mkdtemp, mock_run, mock_listdir,
+                                 mock_read, mock_rmtree):
+        parser = argparse.ArgumentParser()
+        parsed_args = parser.parse_args([])
+        dump_dir = "/path/to/dump"
+        mock_mkdtemp.return_value = dump_dir
+        mock_listdir.return_value = ["host1.yml", "host2.yml"]
+        config = """---
+key1: !vault |
+  $ANSIBLE_VAULT;1.1;AES256
+  633230623736383232323862393364323037343430393530316636363961626361393133646437
+  643438663261356433656365646138666133383032376532310a63323432306431303437623637
+  346236316161343635636230613838316566383933313338636237616338326439616536316639
+  6334343462333062363334300a3930313762313463613537626531313230303731343365643766
+  666436333037
+key2: value2
+key3:
+  - !vault |
+    $ANSIBLE_VAULT;1.1;AES256
+    633230623736383232323862393364323037343430393530316636363961626361393133646437
+    643438663261356433656365646138666133383032376532310a63323432306431303437623637
+    346236316161343635636230613838316566383933313338636237616338326439616536316639
+    6334343462333062363334300a3930313762313463613537626531313230303731343365643766
+    666436333037
+"""
+        config_nested = """---
+key1:
+  key2: !vault |
+    $ANSIBLE_VAULT;1.1;AES256
+    633230623736383232323862393364323037343430393530316636363961626361393133646437
+    643438663261356433656365646138666133383032376532310a63323432306431303437623637
+    346236316161343635636230613838316566383933313338636237616338326439616536316639
+    6334343462333062363334300a3930313762313463613537626531313230303731343365643766
+    666436333037
+"""
+        mock_read.side_effect = [config, config_nested]
+        result = ansible.config_dump(parsed_args)
+        expected_result = {
+            "host1": {"key1": "******", "key2": "value2", "key3": ["******"]},
+            "host2": {"key1": {"key2": "******"}},
         }
         self.assertEqual(result, expected_result)
         dump_config_path = utils.get_data_files_path(
