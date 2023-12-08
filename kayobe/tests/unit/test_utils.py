@@ -17,6 +17,7 @@ import subprocess
 import unittest
 from unittest import mock
 
+from ansible.parsing.yaml.objects import AnsibleVaultEncryptedUnicode
 import yaml
 
 from kayobe import exception
@@ -124,6 +125,59 @@ key2: value2
     def test_read_yaml_file_not_yaml(self, mock_read):
         mock_read.return_value = "[1{!"
         self.assertRaises(SystemExit, utils.read_yaml_file, "/path/to/file")
+
+    @mock.patch.object(utils, "read_file")
+    def test_read_config_dump_yaml_file(self, mock_read):
+        config = """---
+key1: value1
+key2: value2
+"""
+        mock_read.return_value = config
+        result = utils.read_config_dump_yaml_file("/path/to/file")
+        self.assertEqual(result, {"key1": "value1", "key2": "value2"})
+        mock_read.assert_called_once_with("/path/to/file")
+
+    @mock.patch.object(utils, "read_file")
+    def test_read_config_dump_yaml_file_vaulted(self, mock_read):
+        config = """---
+key1: !vault |
+  $ANSIBLE_VAULT;1.1;AES256
+  633230623736383232323862393364323037343430393530316636363961626361393133646437
+  643438663261356433656365646138666133383032376532310a63323432306431303437623637
+  346236316161343635636230613838316566383933313338636237616338326439616536316639
+  6334343462333062363334300a3930313762313463613537626531313230303731343365643766
+  666436333037
+key2: value2
+key3:
+  - !vault |
+    $ANSIBLE_VAULT;1.1;AES256
+    633230623736383232323862393364323037343430393530316636363961626361393133646437
+    643438663261356433656365646138666133383032376532310a63323432306431303437623637
+    346236316161343635636230613838316566383933313338636237616338326439616536316639
+    6334343462333062363334300a3930313762313463613537626531313230303731343365643766
+    666436333037
+"""
+        mock_read.return_value = config
+        result = utils.read_config_dump_yaml_file("/path/to/file")
+        # Can't read the value without an encryption key, so just check type.
+        self.assertTrue(isinstance(result["key1"],
+                                   AnsibleVaultEncryptedUnicode))
+        self.assertEqual(result["key2"], "value2")
+        self.assertTrue(isinstance(result["key3"][0],
+                                   AnsibleVaultEncryptedUnicode))
+        mock_read.assert_called_once_with("/path/to/file")
+
+    @mock.patch.object(utils, "read_file")
+    def test_read_config_dump_yaml_file_open_failure(self, mock_read):
+        mock_read.side_effect = IOError
+        self.assertRaises(SystemExit, utils.read_config_dump_yaml_file,
+                          "/path/to/file")
+
+    @mock.patch.object(utils, "read_file")
+    def test_read_config_dump_yaml_file_not_yaml(self, mock_read):
+        mock_read.return_value = "[1{!"
+        self.assertRaises(SystemExit, utils.read_config_dump_yaml_file,
+                          "/path/to/file")
 
     @mock.patch.object(subprocess, "check_call")
     def test_run_command(self, mock_call):
