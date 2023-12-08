@@ -291,12 +291,6 @@ kolla_internal_tls_cert:
 kolla_selinux_state:
 
 ###############################################################################
-# NTP
-
-# Whether to enable the NTP daemon.
-kolla_enable_host_ntp:
-
-###############################################################################
 # Docker configuration.
 
 # URL of docker registry
