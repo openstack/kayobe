@@ -1,0 +1,5 @@
+---
+update:
+  - |
+    Updates base CentOS Stream 8 cloud image to
+    CentOS-Stream-GenericCloud-8-latest.x86_64.
