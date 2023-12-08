@@ -14,6 +14,7 @@
 
 import base64
 from collections import defaultdict
+import configparser
 import glob
 import graphlib
 from importlib.metadata import Distribution
@@ -223,11 +224,10 @@ def run_command(cmd, quiet=False, check_output=False, **kwargs):
         cmd_string = " ".join(cmd)
     LOG.debug("Running command: %s", cmd_string)
     if quiet:
-        with open("/dev/null", "w") as devnull:
-            kwargs["stdout"] = devnull
-            kwargs["stderr"] = devnull
-            subprocess.check_call(cmd, **kwargs)
-    elif check_output:
+        kwargs["stderr"] = subprocess.DEVNULL
+        if not check_output:
+            kwargs["stdout"] = subprocess.DEVNULL
+    if check_output:
         return subprocess.check_output(cmd, **kwargs)
     else:
         subprocess.check_call(cmd, **kwargs)
@@ -409,3 +409,55 @@ class EnvironmentFinder(object):
             )
             result.append(full_path)
         return result
+
+
+def _gitreview_is_kayobe_config(gitreview_path):
+    """Return whether a .gitreview file is for kayobe-config."""
+    config = configparser.ConfigParser()
+    config_string = read_file(gitreview_path)
+    config.read_string(config_string)
+    gerrit_project = config.get('gerrit', 'project')
+    if not gerrit_project:
+        return False
+    gerrit_project = os.path.basename(gerrit_project)
+    gerrit_project = os.path.splitext(gerrit_project)[0]
+    if gerrit_project == 'kayobe-config':
+        return True
+
+
+def validate_config_path(config_path):
+    """Validate the Kayobe configuration path.
+
+    Check whether we are executing from inside a Kayobe configuration
+    repository, and if so, assert that matches the Kayobe configuration path
+    defined in CLI args or environment variables.
+
+    Exit 1 if validation fails.
+
+    :param config_path: Kayobe configuration path or None.
+    """
+    assert config_path
+
+    try:
+        cmd = ["git", "rev-parse", "--show-toplevel"]
+        repo_root = run_command(cmd, quiet=True, check_output=True)
+    except (FileNotFoundError, subprocess.CalledProcessError):
+        # FileNotFoundError: git probably not installed.
+        # CalledProcessError: probably not in a git repository.
+        return
+
+    repo_root = repo_root.decode().strip()
+    if config_path:
+        repo_config_path = os.path.join(repo_root, "etc", "kayobe")
+        if repo_config_path == os.path.realpath(config_path):
+            return
+
+    # Paths did not match. Check that repo_root does not look like a Kayobe
+    # configuration repo.
+    gitreview_path = os.path.join(repo_root, ".gitreview")
+    result = is_readable_file(gitreview_path)
+    if result["result"]:
+        if _gitreview_is_kayobe_config(gitreview_path):
+            LOG.error("Executing from within a different Kayobe configuration "
+                      "repository is not allowed")
+            sys.exit(1)

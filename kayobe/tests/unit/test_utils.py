@@ -12,6 +12,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import logging
 import os
 import subprocess
 import unittest
@@ -189,14 +190,12 @@ key3:
         mock_call.assert_called_once_with(["command", "to", "run"])
         self.assertIsNone(output)
 
-    @mock.patch("kayobe.utils.open")
     @mock.patch.object(subprocess, "check_call")
-    def test_run_command_quiet(self, mock_call, mock_open):
-        mock_devnull = mock_open.return_value.__enter__.return_value
+    def test_run_command_quiet(self, mock_call):
         output = utils.run_command(["command", "to", "run"], quiet=True)
         mock_call.assert_called_once_with(["command", "to", "run"],
-                                          stdout=mock_devnull,
-                                          stderr=mock_devnull)
+                                          stdout=subprocess.DEVNULL,
+                                          stderr=subprocess.DEVNULL)
         self.assertIsNone(output)
 
     @mock.patch.object(subprocess, "check_output")
@@ -332,3 +331,122 @@ key3:
         finder = utils.EnvironmentFinder('/etc/kayobe', None)
         self.assertEqual([], finder.ordered())
         self.assertEqual([], finder.ordered_paths())
+
+    @mock.patch.object(utils, "run_command")
+    @mock.patch.object(utils, "is_readable_file")
+    def test_validate_config_path_kayobe(self, mock_readable, mock_run):
+        mock_run.return_value = b"/path/to/config"
+        utils.validate_config_path("/path/to/config/etc/kayobe")
+        mock_run.assert_called_once_with(
+            ["git", "rev-parse", "--show-toplevel"],
+            check_output=True, quiet=True)
+        self.assertFalse(mock_readable.called)
+
+    @mock.patch.object(utils, "run_command")
+    @mock.patch.object(utils, "is_readable_file")
+    def test_validate_config_path_not_a_repo(self, mock_readable, mock_run):
+        mock_run.side_effect = subprocess.CalledProcessError(
+            "not a repo", "command")
+        utils.validate_config_path("/path/to/config/etc/kayobe")
+        mock_run.assert_called_once_with(
+            ["git", "rev-parse", "--show-toplevel"],
+            check_output=True, quiet=True)
+        self.assertFalse(mock_readable.called)
+
+    @mock.patch.object(utils, "run_command")
+    @mock.patch.object(utils, "is_readable_file")
+    def test_validate_config_path_no_git(self, mock_readable, mock_run):
+        mock_run.side_effect = FileNotFoundError("No such file")
+        utils.validate_config_path("/path/to/config/etc/kayobe")
+        mock_run.assert_called_once_with(
+            ["git", "rev-parse", "--show-toplevel"],
+            check_output=True, quiet=True)
+        self.assertFalse(mock_readable.called)
+
+    @mock.patch.object(utils, "run_command")
+    @mock.patch.object(utils, "is_readable_file")
+    @mock.patch.object(utils, "read_file")
+    def test_validate_config_path_gitreview(self, mock_read, mock_readable,
+                                            mock_run):
+        mock_run.return_value = b"/path/to/repo"
+        mock_readable.return_value = {"result": True}
+        mock_read.return_value = """
+[gerrit]
+project=openstack/kayobe-config.git
+"""
+        with self.assertLogs(level=logging.ERROR) as ctx:
+            self.assertRaises(SystemExit,
+                              utils.validate_config_path,
+                              "/path/to/config/etc/kayobe")
+            exp = ("Executing from within a different Kayobe configuration "
+                   "repository is not allowed")
+            assert any(exp in t for t in ctx.output)
+        mock_run.assert_called_once_with(
+            ["git", "rev-parse", "--show-toplevel"],
+            check_output=True, quiet=True)
+        mock_readable.assert_called_once_with("/path/to/repo/.gitreview")
+        mock_read.assert_called_once_with("/path/to/repo/.gitreview")
+
+    @mock.patch.object(utils, "run_command")
+    @mock.patch.object(utils, "is_readable_file")
+    def test_validate_config_path_no_gitreview(self, mock_readable, mock_run):
+        mock_run.return_value = b"/path/to/repo"
+        mock_readable.return_value = {"result": False}
+        utils.validate_config_path("/path/to/config/etc/kayobe")
+        mock_run.assert_called_once_with(
+            ["git", "rev-parse", "--show-toplevel"],
+            check_output=True, quiet=True)
+        mock_readable.assert_called_once_with("/path/to/repo/.gitreview")
+
+    @mock.patch.object(utils, "run_command")
+    @mock.patch.object(utils, "is_readable_file")
+    @mock.patch.object(utils, "read_file")
+    def test_validate_config_path_gitreview_no_gerrit(self, mock_read,
+                                                      mock_readable, mock_run):
+        mock_run.return_value = b"/path/to/repo"
+        mock_readable.return_value = {"result": False}
+        mock_read.return_value = """
+[foo]
+bar=baz
+"""
+        utils.validate_config_path("/path/to/config/etc/kayobe")
+        mock_run.assert_called_once_with(
+            ["git", "rev-parse", "--show-toplevel"],
+            check_output=True, quiet=True)
+        mock_readable.assert_called_once_with("/path/to/repo/.gitreview")
+
+    @mock.patch.object(utils, "run_command")
+    @mock.patch.object(utils, "is_readable_file")
+    @mock.patch.object(utils, "read_file")
+    def test_validate_config_path_gitreview_no_project(self, mock_read,
+                                                       mock_readable,
+                                                       mock_run):
+        mock_run.return_value = b"/path/to/repo"
+        mock_readable.return_value = {"result": False}
+        mock_read.return_value = """
+[gerrit]
+bar=baz
+"""
+        utils.validate_config_path("/path/to/config/etc/kayobe")
+        mock_run.assert_called_once_with(
+            ["git", "rev-parse", "--show-toplevel"],
+            check_output=True, quiet=True)
+        mock_readable.assert_called_once_with("/path/to/repo/.gitreview")
+
+    @mock.patch.object(utils, "run_command")
+    @mock.patch.object(utils, "is_readable_file")
+    @mock.patch.object(utils, "read_file")
+    def test_validate_config_path_gitreview_other_project(self, mock_read,
+                                                          mock_readable,
+                                                          mock_run):
+        mock_run.return_value = b"/path/to/repo"
+        mock_readable.return_value = {"result": False}
+        mock_read.return_value = """
+[gerrit]
+project=baz
+"""
+        utils.validate_config_path("/path/to/config/etc/kayobe")
+        mock_run.assert_called_once_with(
+            ["git", "rev-parse", "--show-toplevel"],
+            check_output=True, quiet=True)
+        mock_readable.assert_called_once_with("/path/to/repo/.gitreview")
