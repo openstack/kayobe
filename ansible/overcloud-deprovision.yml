@@ -29,8 +29,23 @@
     ironic_retries: 6
     ironic_retry_interval: 5
     seed_host: "{{ groups['seed'][0] }}"
+  vars_prompt:
+    - name: confirm_deprovision
+      prompt: |
+        The following hosts will be deprovisioned:
+        {{ play_hosts | join(', ') }}
+        If you want to proceed type: yes
+      default: "no"
+      private: false
   gather_facts: no
   tasks:
+    - name: Fail if deprovision is not confirmed
+      assert:
+        that: confirm_deprovision == 'yes'
+        msg: >
+          Deprovision has not been confirmed. You must either type 'yes' when
+          prompted, or set ``confirm_deprovision=yes``.
+
     - name: Check the ironic node's initial provision state
       command: >
         docker exec bifrost_deploy
