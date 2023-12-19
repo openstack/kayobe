@@ -76,8 +76,8 @@ your environment for use with Vagrant and bring up a Vagrant VM.
 If not using Vagrant, the default development configuration expects the
 presence of a bridge interface on the OpenStack controller host to carry
 control plane traffic.  The bridge should be named ``breth1`` with a single
-port ``eth1``, and an IP address of ``192.168.33.3/24``.  This can be modified
-by editing
+port ``dummy1``, and an IP address of ``192.168.33.3/24``.  This can be
+modified by editing
 ``config/src/kayobe-config/etc/kayobe/inventory/group_vars/controllers/network-interfaces``.
 
 This can be added using the following commands::
@@ -85,9 +85,9 @@ This can be added using the following commands::
     sudo ip l add breth1 type bridge
     sudo ip l set breth1 up
     sudo ip a add 192.168.33.3/24 dev breth1
-    sudo ip l add eth1 type dummy
-    sudo ip l set eth1 up
-    sudo ip l set eth1 master breth1
+    sudo ip l add dummy1 type dummy
+    sudo ip l set dummy1 up
+    sudo ip l set dummy1 master breth1
 
 Configuration
 -------------
@@ -254,9 +254,9 @@ Alternatively, this can be added using the following commands::
     sudo ip l add breth1 type bridge
     sudo ip l set breth1 up
     sudo ip a add 192.168.33.5/24 brd 192.168.33.255 dev breth1
-    sudo ip l add eth1 type dummy
-    sudo ip l set eth1 up
-    sudo ip l set eth1 master breth1
+    sudo ip l add dummy1 type dummy
+    sudo ip l set dummy1 up
+    sudo ip l set dummy1 master breth1
 
 Usage
 -----
