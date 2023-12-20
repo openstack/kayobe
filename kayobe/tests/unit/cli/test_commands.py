@@ -12,6 +12,8 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import glob
+import os
 import unittest
 from unittest import mock
 
@@ -2393,29 +2395,31 @@ class TestHookDispatcher(unittest.TestCase):
 
     maxDiff = None
 
-    @mock.patch('kayobe.cli.commands.os.path')
-    def test_hook_ordering(self, mock_path):
+    @mock.patch.object(os.path, 'realpath')
+    def test_hook_ordering(self, mock_realpath):
         mock_command = mock.MagicMock()
         dispatcher = commands.HookDispatcher(command=mock_command)
         dispatcher._find_hooks = mock.MagicMock()
+        # Include multiple hook directories to show that they don't influence
+        # the order.
         dispatcher._find_hooks.return_value = [
-            "10-hook.yml",
-            "5-hook.yml",
-            "z-test-alphabetical.yml",
-            "10-before-hook.yml",
-            "5-multiple-dashes-in-name.yml",
-            "no-prefix.yml"
+            "config/path/10-hook.yml",
+            "config/path/5-hook.yml",
+            "config/path/z-test-alphabetical.yml",
+            "env/path/10-before-hook.yml",
+            "env/path/5-multiple-dashes-in-name.yml",
+            "env/path/no-prefix.yml"
         ]
         expected_result = [
-            "5-hook.yml",
-            "5-multiple-dashes-in-name.yml",
-            "10-before-hook.yml",
-            "10-hook.yml",
-            "no-prefix.yml",
-            "z-test-alphabetical.yml",
+            "config/path/5-hook.yml",
+            "env/path/5-multiple-dashes-in-name.yml",
+            "env/path/10-before-hook.yml",
+            "config/path/10-hook.yml",
+            "env/path/no-prefix.yml",
+            "config/path/z-test-alphabetical.yml",
         ]
-        mock_path.realpath.side_effect = lambda x: x
-        actual = dispatcher.hooks("config/path", "pre", None)
+        mock_realpath.side_effect = lambda x: x
+        actual = dispatcher.hooks(["config/path", "env/path"], "pre", None)
         self.assertListEqual(actual, expected_result)
 
     @mock.patch('kayobe.cli.commands.os.path')
@@ -2432,7 +2436,7 @@ class TestHookDispatcher(unittest.TestCase):
             "z-test-alphabetical.yml",
         ]
         mock_path.realpath.side_effect = lambda x: x
-        actual = dispatcher.hooks("config/path", "pre", "all")
+        actual = dispatcher.hooks(["config/path"], "pre", "all")
         self.assertListEqual(actual, [])
 
     @mock.patch('kayobe.cli.commands.os.path')
@@ -2456,6 +2460,105 @@ class TestHookDispatcher(unittest.TestCase):
             "z-test-alphabetical.yml",
         ]
         mock_path.realpath.side_effect = lambda x: x
-        actual = dispatcher.hooks("config/path", "pre",
+        actual = dispatcher.hooks(["config/path"], "pre",
                                   "5-multiple-dashes-in-name.yml")
         self.assertListEqual(actual, expected_result)
+
+    @mock.patch.object(glob, 'glob')
+    @mock.patch.object(os.path, 'exists')
+    def test__find_hooks(self, mock_exists, mock_glob):
+        mock_exists.return_value = True
+        mock_command = mock.MagicMock()
+        dispatcher = commands.HookDispatcher(command=mock_command)
+        mock_glob.return_value = [
+            "config/path/hooks/pre.d/1-hook.yml",
+            "config/path/hooks/pre.d/5-hook.yml",
+            "config/path/hooks/pre.d/10-hook.yml",
+        ]
+        expected_result = [
+            "config/path/hooks/pre.d/1-hook.yml",
+            "config/path/hooks/pre.d/10-hook.yml",
+            "config/path/hooks/pre.d/5-hook.yml",
+        ]
+        actual = dispatcher._find_hooks(["config/path"], "pre")
+        # Sort the result - it is not ordered at this stage.
+        actual.sort()
+        self.assertListEqual(actual, expected_result)
+
+    @mock.patch.object(glob, 'glob')
+    @mock.patch.object(os.path, 'exists')
+    def test__find_hooks_with_env(self, mock_exists, mock_glob):
+        mock_exists.return_value = True
+        mock_command = mock.MagicMock()
+        dispatcher = commands.HookDispatcher(command=mock_command)
+        mock_glob.side_effect = [
+            [
+                "config/path/hooks/pre.d/all.yml",
+                "config/path/hooks/pre.d/base-only.yml",
+            ],
+            [
+                "env/path/hooks/pre.d/all.yml",
+                "env/path/hooks/pre.d/env-only.yml",
+            ]
+        ]
+        expected_result = [
+            "config/path/hooks/pre.d/base-only.yml",
+            "env/path/hooks/pre.d/all.yml",
+            "env/path/hooks/pre.d/env-only.yml",
+        ]
+        actual = dispatcher._find_hooks(["config/path", "env/path"], "pre")
+        # Sort the result - it is not ordered at this stage.
+        actual.sort()
+        self.assertListEqual(actual, expected_result)
+
+    @mock.patch.object(glob, 'glob')
+    @mock.patch.object(os.path, 'exists')
+    def test__find_hooks_with_nested_envs(self, mock_exists, mock_glob):
+        mock_exists.return_value = True
+        mock_command = mock.MagicMock()
+        dispatcher = commands.HookDispatcher(command=mock_command)
+        mock_glob.side_effect = [
+            [
+                "config/path/hooks/pre.d/all.yml",
+                "config/path/hooks/pre.d/base-only.yml",
+                "config/path/hooks/pre.d/base-env1.yml",
+                "config/path/hooks/pre.d/base-env2.yml",
+            ],
+            [
+                "env1/path/hooks/pre.d/all.yml",
+                "env1/path/hooks/pre.d/env1-only.yml",
+                "env1/path/hooks/pre.d/base-env1.yml",
+                "env1/path/hooks/pre.d/env1-env2.yml",
+            ],
+            [
+                "env2/path/hooks/pre.d/all.yml",
+                "env2/path/hooks/pre.d/env2-only.yml",
+                "env2/path/hooks/pre.d/base-env2.yml",
+                "env2/path/hooks/pre.d/env1-env2.yml",
+            ]
+        ]
+        expected_result = [
+            "config/path/hooks/pre.d/base-only.yml",
+            "env1/path/hooks/pre.d/base-env1.yml",
+            "env1/path/hooks/pre.d/env1-only.yml",
+            "env2/path/hooks/pre.d/all.yml",
+            "env2/path/hooks/pre.d/base-env2.yml",
+            "env2/path/hooks/pre.d/env1-env2.yml",
+            "env2/path/hooks/pre.d/env2-only.yml",
+        ]
+        actual = dispatcher._find_hooks(["config/path", "env1/path",
+                                         "env2/path"], "pre")
+        # Sort the result - it is not ordered at this stage.
+        actual.sort()
+        self.assertListEqual(actual, expected_result)
+
+    @mock.patch.object(glob, 'glob')
+    @mock.patch.object(os.path, 'exists')
+    def test__find_hooks_non_existent(self, mock_exists, mock_glob):
+        mock_exists.return_value = False
+        mock_command = mock.MagicMock()
+        dispatcher = commands.HookDispatcher(command=mock_command)
+        expected_result = []
+        actual = dispatcher._find_hooks(["config/path"], "pre")
+        self.assertListEqual(actual, expected_result)
+        mock_glob.assert_not_called()

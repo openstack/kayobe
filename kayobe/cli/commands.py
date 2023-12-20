@@ -153,6 +153,7 @@ class KollaAnsibleMixin(object):
 
 
 def _split_hook_sequence_number(hook):
+    hook = os.path.basename(hook)
     parts = hook.split("-", 1)
     if len(parts) < 2:
         return (DEFAULT_SEQUENCE_NUMBER, hook)
@@ -181,22 +182,38 @@ class HookDispatcher(CommandHook):
     def get_parser(self, prog_name):
         pass
 
-    def _find_hooks(self, config_path, target):
+    def _find_hooks(self, env_paths, target):
         name = self.name
-        path = os.path.join(config_path, "hooks", name, "%s.d" % target)
-        self.logger.debug("Discovering hooks in: %s" % path)
-        if not os.path.exists:
-            return []
-        hooks = glob.glob(os.path.join(path, "*.yml"))
+        # Map from hook directory path to a set of hook basenames in that path.
+        hooks: {str: {str}} = {}
+        for env_path in env_paths:
+            path = os.path.join(env_path, "hooks", name, "%s.d" % target)
+            self.logger.debug("Discovering hooks in: %s" % path)
+            if not os.path.exists(path):
+                continue
+
+            hook_paths = glob.glob(os.path.join(path, "*.yml"))
+            hook_basenames = {os.path.basename(hook) for hook in hook_paths}
+
+            # Override any earlier hooks with the same basename.
+            for other_hooks in hooks.values():
+                other_hooks -= hook_basenames
+
+            hooks[path] = hook_basenames
+
+        # Return a flat list of hook paths (including directory).
+        hooks = [os.path.join(path, basename)
+                 for path, basenames in hooks.items()
+                 for basename in basenames]
         self.logger.debug("Discovered the following hooks: %s" % hooks)
         return hooks
 
-    def hooks(self, config_path, target, filter):
+    def hooks(self, env_paths, target, filter):
         hooks_out = []
         if filter == "all":
             self.logger.debug("Skipping all hooks")
             return hooks_out
-        hooks_in = self._find_hooks(config_path, target)
+        hooks_in = self._find_hooks(env_paths, target)
         # Hooks can be prefixed with a sequence number to adjust running order,
         # e.g 10-my-custom-playbook.yml. Sort by sequence number.
         hooks_in = sorted(hooks_in, key=_split_hook_sequence_number)
@@ -210,8 +227,12 @@ class HookDispatcher(CommandHook):
         return hooks_out
 
     def run_hooks(self, parsed_args, target):
-        config_path = parsed_args.config_path
-        hooks = self.hooks(config_path, target, parsed_args.skip_hooks)
+        env_paths = [parsed_args.config_path]
+        environment_finder = utils.EnvironmentFinder(
+            parsed_args.config_path, parsed_args.environment)
+        env_paths.extend(environment_finder.ordered_paths())
+
+        hooks = self.hooks(env_paths, target, parsed_args.skip_hooks)
         if hooks:
             self.logger.debug("Running hooks: %s" % hooks)
             self.command.run_kayobe_playbooks(parsed_args, hooks)
