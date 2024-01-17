@@ -44,7 +44,7 @@ ipa_build_dib_elements: >
 ipa_build_dib_env_default:
   # TODO(mgoddard): Use {{ os_release }} here when we use os_distribution
   # above.
-  DIB_RELEASE: "8-stream"
+  DIB_RELEASE: "9-stream"
   DIB_REPOLOCATION_ironic_python_agent: "{{ ipa_build_source_url }}"
   DIB_REPOREF_ironic_python_agent: "{{ ipa_build_source_version }}"
   DIB_REPOREF_requirements: "{{ openstack_branch }}"

@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    Ironic Python Agent images are now built using CentOS Stream 9 by default.
+fixes:
+  - |
+    Fixes issues with TLS and eventlet affecting Ironic Python Agent. IPA
+    images should be rebuilt for affected deployments.
