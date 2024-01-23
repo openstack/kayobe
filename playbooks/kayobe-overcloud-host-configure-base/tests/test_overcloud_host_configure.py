@@ -144,10 +144,10 @@ def test_cloud_init_is_disabled(host):
     assert host.file("/etc/cloud/cloud-init.disabled").exists
 
 
-def test_docker_storage_driver_is_devicemapper(host):
+def test_docker_storage_driver_is_overlay2(host):
     with host.sudo("stack"):
         info = host.check_output("docker info")
-    assert "devicemapper" in info
+    assert "overlay2" in info
 
 
 @pytest.mark.parametrize('user', ['kolla', 'stack'])

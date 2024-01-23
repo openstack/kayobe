@@ -1,7 +1,4 @@
 ---
-docker_storage_driver: overlay2
-docker_storage_volume_group:
-docker_storage_volume_thinpool:
 docker_registry_mirrors: []
 docker_daemon_debug: false
 docker_daemon_mtu: 1500

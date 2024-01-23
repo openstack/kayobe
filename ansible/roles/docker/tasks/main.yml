@@ -2,4 +2,18 @@
 - import_role:
     name: openstack.kolla.docker
   vars:
-    docker_custom_config: "{{ lookup('template', 'daemon.json.j2') | to_nice_json | indent(2) }}"
+    docker_custom_config: >-
+      {%- set options = {} -%}
+      {%- if docker_daemon_debug | bool -%}
+      {%- set _ = options.update({"debug": docker_daemon_debug | bool}) -%}
+      {%- endif -%}
+      {%- if docker_registry_mirrors | length > 0 -%}
+      {%- set _ = options.update({"registry-mirrors": docker_registry_mirrors}) -%}
+      {%- endif -%}
+      {%- if docker_daemon_mtu -%}
+      {%- set _ = options.update({"mtu": docker_daemon_mtu}) -%}
+      {%- endif -%}
+      {%- if docker_daemon_live_restore | bool -%}
+      {%- set _ = options.update({"live-restore": docker_daemon_live_restore | bool}) -%}
+      {%- endif -%}
+      {{ options }}

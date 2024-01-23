@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    Support for the ``devicemapper`` Docker storage driver is removed
+    following its removal from Docker Engine 25.0. Operators using
+    ``devicemapper`` should migrate to a supported storage driver before
+    updating Docker to 25.0 or later.

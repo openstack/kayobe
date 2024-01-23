@@ -22,7 +22,6 @@
 - import_playbook: "luks.yml"
 - import_playbook: "lvm.yml"
 - import_playbook: "swap.yml"
-- import_playbook: "docker-devicemapper.yml"
 - import_playbook: "kolla-ansible-user.yml"
 - import_playbook: "kolla-pip.yml"
 - import_playbook: "kolla-target-venv.yml"

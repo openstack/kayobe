@@ -107,7 +107,7 @@ controller_luks_devices:
   - name: loopback-crypt
     device: /dev/md0
 
-# Create an LVM volume group for Docker volumes and devicemapper.
+# Create an LVM volume group for Docker volumes.
 controller_lvm_groups:
   - "{% raw %}{{ controller_lvm_group_data }}{% endraw %}"
 
@@ -121,9 +121,6 @@ controller_sysctl_parameters:
 
 # Disable cloud-init.
 disable_cloud_init: true
-
-# Use devicemapper storage driver.
-docker_storage_driver: devicemapper
 
 # Set Honolulu time.
 timezone: Pacific/Honolulu

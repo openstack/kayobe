@@ -92,7 +92,7 @@
       - ^zuul.d/.*
     vars:
       # Name of the release to upgrade from for upgrade jobs.
-      previous_release: 2023.1
+      previous_release: 2023.2
       logs_dir: "/tmp/logs"
       ansible_collection_kolla_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/ansible-collection-kolla'].src_dir }}"
       kayobe_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/kayobe'].src_dir }}"

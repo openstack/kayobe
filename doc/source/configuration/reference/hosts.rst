@@ -904,24 +904,17 @@ LVM for Docker
    In Train and earlier releases of Kayobe, the ``data`` volume group was
    always enabled by default.
 
-If the ``devicemapper`` Docker storage driver is in use, the default LVM
-configuration is optimised for it.  The ``devicemapper`` driver requires a thin
-provisioned LVM volume. A second logical volume is used for storing Docker
-volume data, mounted at ``/var/lib/docker/volumes``. Both logical volumes are
-created from a single ``data`` volume group.
+A logical volume for storing Docker volume data, mounted at ``/var/lib/docker/volumes``
+can optionally be created. The logical volume is created in volume group called data.
 
 This configuration is enabled by the following variables, which default to
-``true`` if the ``devicemapper`` driver is in use or ``false`` otherwise:
+``false``:
 
 * ``compute_lvm_group_data_enabled``
 * ``controller_lvm_group_data_enabled``
 * ``seed_lvm_group_data_enabled``
 * ``infra_vm_lvm_group_data_enabled``
 * ``storage_lvm_group_data_enabled``
-
-These variables can be set to ``true`` to enable the data volume group if the
-``devicemapper`` driver is not in use. This may be useful where the
-``docker-volumes`` logical volume is required.
 
 To use this configuration, a list of disks must be configured via the following
 variables:
@@ -952,18 +945,17 @@ variables, with a default value of 75% (of the volume group's capacity):
 * ``monitoring_lvm_group_data_lv_docker_volumes_size``
 * ``storage_lvm_group_data_lv_docker_volumes_size``
 
-If using a Docker storage driver other than ``devicemapper``, the remaining 25%
-of the volume group can be used for Docker volume data. In this case, the LVM
-volume's size can be increased to 100%:
+You can control the amount of storage assigned to the docker volumes LV by
+using the following variable.
 
 .. code-block:: yaml
    :caption: ``controllers.yml``
 
    controller_lvm_group_data_lv_docker_volumes_size: 100%
 
-If using a Docker storage driver other than ``devicemapper``, it is possible to
-avoid using LVM entirely, thus avoiding the requirement for multiple disks. In
-this case, set the appropriate ``<host>_lvm_groups`` variable to an empty list:
+It is possible to avoid using LVM entirely, thus avoiding the requirement for
+multiple disks. In this case, set the appropriate ``<host>_lvm_groups``
+variable to an empty list:
 
 .. code-block:: yaml
    :caption: ``storage.yml``
@@ -1058,12 +1050,8 @@ Docker Engine
   | ``docker``
 
 The ``docker_storage_driver`` variable sets the Docker storage driver, and by
-default the ``overlay2`` driver is used. If using the ``devicemapper`` driver,
-see :ref:`configuration-hosts-lvm` for information about configuring LVM for
-Docker.
-
-Various options are defined in ``${KAYOBE_CONFIG_PATH}/docker.yml``
-for configuring the ``devicemapper`` storage.
+default the ``overlay2`` driver is used. See :ref:`configuration-hosts-lvm` for
+information about configuring LVM for Docker.
 
 If using an insecure (HTTP) registry, set ``docker_registry_insecure`` to
 ``true``.
