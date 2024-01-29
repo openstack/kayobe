@@ -28,8 +28,14 @@ import json
 from ansible.module_utils.basic import AnsibleModule
 
 def _has_mounts(device):
-    if device["mountpoint"]:
-        return True
+    try:
+        if device["mountpoint"]:
+            return True
+    # If unmounted, the JSON output contains "mountpoints": [null] so we handle
+    # the KeyError here.
+    except KeyError:
+        if device["mountpoints"][0]:
+            return True
     for child in device.get("children", []):
         if _has_mounts(child):
             return True
