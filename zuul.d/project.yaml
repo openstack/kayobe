@@ -17,12 +17,12 @@
         - kayobe-overcloud-rocky9
         - kayobe-overcloud-ubuntu-focal
         - kayobe-overcloud-ubuntu-jammy
-        #- kayobe-overcloud-host-configure-centos8s
-        #- kayobe-overcloud-host-configure-centos9s
-        #- kayobe-overcloud-host-configure-rocky8
-        #- kayobe-overcloud-host-configure-rocky9
-        #- kayobe-overcloud-host-configure-ubuntu-focal
-        #- kayobe-overcloud-host-configure-ubuntu-jammy
+        - kayobe-overcloud-host-configure-centos8s
+        - kayobe-overcloud-host-configure-centos9s
+        - kayobe-overcloud-host-configure-rocky8
+        - kayobe-overcloud-host-configure-rocky9
+        - kayobe-overcloud-host-configure-ubuntu-focal
+        - kayobe-overcloud-host-configure-ubuntu-jammy
         - kayobe-overcloud-tls-centos8s
         - kayobe-overcloud-tls-rocky9
         - kayobe-seed-centos8s
@@ -52,11 +52,11 @@
         - kayobe-overcloud-rocky9
         - kayobe-overcloud-ubuntu-focal
         - kayobe-overcloud-ubuntu-jammy
-        #- kayobe-overcloud-host-configure-centos8s
-        #- kayobe-overcloud-host-configure-rocky8
-        #- kayobe-overcloud-host-configure-rocky9
-        #- kayobe-overcloud-host-configure-ubuntu-focal
-        #- kayobe-overcloud-host-configure-ubuntu-jammy
+        - kayobe-overcloud-host-configure-centos8s
+        - kayobe-overcloud-host-configure-rocky8
+        - kayobe-overcloud-host-configure-rocky9
+        - kayobe-overcloud-host-configure-ubuntu-focal
+        - kayobe-overcloud-host-configure-ubuntu-jammy
         - kayobe-overcloud-tls-centos8s
         - kayobe-overcloud-tls-rocky9
         - kayobe-seed-centos8s

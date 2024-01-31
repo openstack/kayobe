@@ -1,0 +1,8 @@
+---
+# Pin Docker package to latest 24.x release before devicemapper was removed
+{% if ansible_facts.distribution_release == "jammy" %}
+docker_apt_package: "docker-ce=5:24.0.8-1~ubuntu.22.04~jammy"
+{% else %}
+docker_apt_package: "docker-ce=5:24.0.8-1~ubuntu.20.04~focal"
+{% endif %}
+docker_yum_package: "docker-ce-24*"

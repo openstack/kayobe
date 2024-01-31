@@ -25,6 +25,11 @@
         src: overrides.yml.j2
         dest: "{{ kayobe_config_src_dir }}/etc/kayobe/zzz-overrides.yml"
 
+    - name: Ensure kolla-ansible globals.yml override config file exists
+      template:
+        src: globals.yml.j2
+        dest: "{{ kayobe_config_src_dir }}/etc/kayobe/kolla/globals.yml"
+
     # NOTE(mgoddard): Create two loopback devices backed by files. These will
     # be added to a software RAID volume, then added to an LVM volume group.
     - name: Ensure a docker storage backing file exists
