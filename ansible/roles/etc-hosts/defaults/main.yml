@@ -3,4 +3,4 @@
 customize_etc_hosts: true
 
 # List of hosts to add to /etc/hosts.
-etc_hosts_hosts: "{{ ansible_play_hosts_all }}"
+etc_hosts_hosts: "{{ groups['overcloud'] }}"
