@@ -1,0 +1,8 @@
+---
+deprecations:
+  - |
+    Support for the ``devicemapper`` Docker storage driver is deprecated
+    following its removal from Docker Engine 25.0. Support will be fully
+    removed in the Caracal 16.0.0 release. Operators using ``devicemapper``
+    should ensure that a compatible version of Docker Engine is installed (i.e.
+    release 24.x or below).
