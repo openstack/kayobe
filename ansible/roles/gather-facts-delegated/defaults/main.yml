@@ -1,8 +1,8 @@
 ---
-gather_facts_delegated_limit_hosts: "{{ ansible_play_hosts_all }}"
-gather_facts_delegated_batch_index: "{{ gather_facts_delegated_limit_hosts.index(inventory_hostname) }}"
-gather_facts_delegated_batch_size: "{{ gather_facts_delegated_limit_hosts | length }}"
+gather_facts_delegated_limit_hosts: "{{ groups['overcloud'] }}"
+gather_facts_delegated_batch_index: "{{ ansible_play_batch.index(inventory_hostname) }}"
+gather_facts_delegated_batch_count: "{{ ansible_play_batch | length }}"
 # Use a python list slice to divide the group up.
 # Syntax: [<start index>:<end index>:<step size>]
 gather_facts_delegated_delegate_hosts: >-
-  {{ gather_facts_delegated_limit_hosts[gather_facts_delegated_batch_index | int::gather_facts_delegated_batch_size | int] }}
+  {{ gather_facts_delegated_limit_hosts[gather_facts_delegated_batch_index | int::gather_facts_delegated_batch_count | int] }}

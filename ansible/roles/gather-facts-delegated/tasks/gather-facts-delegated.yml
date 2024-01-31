@@ -1,0 +1,12 @@
+---
+- name: Gather facts for delegated host
+  any_errors_fatal: true
+  setup:
+    filter: "{{ kayobe_ansible_setup_filter }}"
+    gather_subset: "{{ kayobe_ansible_setup_gather_subset }}"
+  delegate_facts: True
+  delegate_to: "{{ delegated_host }}"
+  # NOTE: Without this, the host's ansible_host variable will not be respected
+  # when using delegate_to.
+  vars:
+    ansible_host: "{{ hostvars[delegated_host].ansible_host | default(delegated_host) }}"

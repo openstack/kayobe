@@ -1,10 +1,10 @@
 ---
 - name: Gather facts for all hosts (if using --limit)
-  setup:
-    filter: "{{ kayobe_ansible_setup_filter }}"
-    gather_subset: "{{ kayobe_ansible_setup_gather_subset }}"
-  delegate_facts: True
-  delegate_to: "{{ item }}"
-  with_items: "{{ gather_facts_delegated_delegate_hosts }}"
+  include_tasks: gather-facts-delegated.yml
+  vars:
+    delegated_host: "{{ gather_facts_delegated_delegate_hosts[item | int] }}"
+  # Loop over the index into each host's batch, so tasks are not all included serially.
+  with_sequence: start=0 end="{{ gather_facts_delegated_delegate_hosts | length | int - 1 }}"
   when:
-    - not hostvars[item].ansible_facts
+    - item | int < gather_facts_delegated_delegate_hosts | length
+    - not hostvars[gather_facts_delegated_delegate_hosts[item | int]].ansible_facts
