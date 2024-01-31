@@ -5,6 +5,18 @@
     - docker
     - docker-devicemapper
   tasks:
+    - name: Warn about deprecation of devicemapper Docker storage driver
+      fail:
+        msg: >
+          Support for using the devicemapper Docker storage driver is
+          deprecated in Kayobe and will be removed in the Caracal 16.0.0
+          release. To keep using devicemapper in the current release, ensure
+          that the version of Docker Engine installed is below 25.0.0.
+      # NOTE(priteau): We want this to print a nice big red warning and not to
+      # fail the run.
+      ignore_errors: yes
+      when: docker_storage_driver == 'devicemapper'
+
     - name: Check for existing Docker configuration using devicemapper
       block:
       - name: Query Docker daemon for storage driver
