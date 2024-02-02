@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Adds a new variable ``kolla_build_neutron_ovs`` which gives users to have
+    option to build OVS container images while the system is using OVN.
+    This is useful when an user wants to build all container images at the
+    same time.
