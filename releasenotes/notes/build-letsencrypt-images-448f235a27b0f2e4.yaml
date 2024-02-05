@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    ``letsencrypt`` and ``haproxy-ssh`` images are now built when
+    ``kolla_enable_letsencrypt`` is set to ``true``.

@@ -163,6 +163,8 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_hacluster | bool }}"
   - regex: ^haproxy$
     enabled: "{{ kolla_enable_haproxy | bool }}"
+  - regex: ^haproxy-ssh$
+    enabled: "{{ kolla_enable_letsencrypt }}"
   - regex: ^heat
     enabled: "{{ kolla_enable_heat | bool }}"
   - regex: ^horizon
@@ -183,6 +185,8 @@ overcloud_container_image_regex_map:
     enabled: True
   - regex: ^kuryr
     enabled: "{{ kolla_enable_kuryr | bool }}"
+  - regex: ^letsencrypt
+    enabled: "{{ kolla_enable_letsencrypt }}"
   - regex: ^magnum
     enabled: "{{ kolla_enable_magnum | bool }}"
   - regex: ^manila
