@@ -181,7 +181,9 @@ Deprovisioning The Cloud
 .. note::
 
    This step will power down the overcloud hosts and delete their nodes'
-   instance state from the seed's ironic service.
+   instance state from the seed's ironic service. This command will print a
+   list of hosts which will be deprovisioned, you must type ``yes`` to confirm.
+   To automatically confirm, pass the variable ``-e confirm_deprovision=yes``.
 
 To deprovision the overcloud::
 

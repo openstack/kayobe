@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    ``kayobe overcloud deprovision`` now requires confirmation before any hosts
+    are deprovisioned. Automatic confirmation can still be achieved by setting
+    ``confirm_deprovision`` to ``yes``.
+upgrade:
+  - |
+    ``kayobe overcloud deprovision`` now requires confirmation before any hosts
+    are deprovisioned. Automatic confirmation can still be achieved by setting
+    ``confirm_deprovision`` to ``yes``.
