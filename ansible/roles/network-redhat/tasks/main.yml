@@ -32,6 +32,15 @@
       value: unmanaged
   when:
     - ansible_facts.os_family == "RedHat" and ansible_facts.distribution_major_version == "9"
+  register: dns_config_task
+
+- name: Reload NetworkManager with DNS config
+  become: true
+  systemd:
+    name: NetworkManager
+    state: reloaded
+    daemon_reload: yes
+  when: dns_config_task is changed
 
 - name: Configure network interfaces (RedHat)
   import_role:
