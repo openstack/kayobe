@@ -1,0 +1,28 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "List of Apt auth configurations",
+    "type": "array",
+    "items": {
+        "description": "Apt auth configuration",
+        "type": "object",
+        "required": ["machine", "login", "password", "filename"],
+        "properties": {
+            "machine": {
+                "type": "string",
+		"minLength": 1
+            },
+            "login": {
+                "type": "string",
+		"minLength": 1
+            },
+            "password": {
+                "type": "string",
+		"minLength": 1
+            },
+            "filename": {
+                "type": "string",
+		"minLength": 1
+            }
+        }
+    }
+}

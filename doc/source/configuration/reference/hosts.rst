@@ -444,6 +444,39 @@ that is signed by the key.
        components: all
        signed_by: example-key.asc
 
+Apt auth configuration
+----------------------
+
+Some repositories may require authentication using HTTP basic auth. Apt
+supports specifying credentials in URLs in ``sources.list`` files, but these
+files must be world-readable. A more secure setup involves writing credentials
+to `auth.conf
+<https://manpages.ubuntu.com/manpages/jammy/man5/apt_auth.conf.5.html>`__
+files which can have more restrictive permissions.
+
+Auth configuration is defined by the ``apt_auth`` variable. The format is a
+list, with each item mapping to a dict/map with the following items:
+
+* ``machine``: ``machine`` entry in the auth file
+* ``login``: ``machine`` entry in the auth file
+* ``password``: ``machine`` entry in the auth file
+* ``filename``: Name of a file in ``/etc/apt/auth.conf.d`` in which to store
+  the auth configuration. The extension should be ``.conf``.
+
+The default value of ``apt_auth`` is an empty list.
+
+In the following example, credentials are provided for package repositories at
+apt.example.com.
+
+.. code-block:: yaml
+   :caption: ``apt.yml``
+
+   apt_auth:
+     - machine: apt.example.com
+       login: my-username
+       password: my-password
+       filename: example.conf
+
 Development tools
 =================
 *tags:*
