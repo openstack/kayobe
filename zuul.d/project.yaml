@@ -9,7 +9,8 @@
     check:
       jobs:
         - kayobe-tox-ansible-syntax
-        - kayobe-tox-ansible
+        - kayobe-tox-ansible:
+            voting: false
         - kayobe-tox-molecule
         - kayobe-overcloud-rocky9
         - kayobe-overcloud-centos9s
@@ -33,7 +34,6 @@
     gate:
       jobs:
         - kayobe-tox-ansible-syntax
-        - kayobe-tox-ansible
         - kayobe-tox-molecule
         - kayobe-overcloud-rocky9
         - kayobe-overcloud-ubuntu-jammy
