@@ -5,7 +5,7 @@
 # Name of the current OpenStack release. Default is "yoga".
 #openstack_release:
 
-# Name of the current OpenStack branch. Default is "stable/yoga".
+# Name of the current OpenStack branch. Default is "unmaintained/yoga".
 #openstack_branch:
 
 ###############################################################################

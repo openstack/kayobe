@@ -59,19 +59,11 @@
     required-projects:
       # Include kayobe to ensure other projects can use this job.
       - name: openstack/ansible-collection-kolla
-        # TODO(mgoddard): Remove when kayobe stable/yoga exists.
-        override-checkout: stable/yoga
       - name: openstack/kayobe
       - name: openstack/kayobe-config-dev
       - name: openstack/kolla
-        # TODO(mgoddard): Remove when kayobe stable/yoga exists.
-        override-checkout: stable/yoga
       - name: openstack/kolla-ansible
-        # TODO(mgoddard): Remove when kayobe stable/yoga exists.
-        override-checkout: stable/yoga
       - name: openstack/requirements
-        # TODO(mgoddard): Remove when kayobe stable/yoga exists.
-        override-checkout: stable/yoga
       - name: openstack/tenks
     irrelevant-files:
       - ^.*\.rst$

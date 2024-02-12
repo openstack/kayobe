@@ -5,9 +5,9 @@
 # Name of the current OpenStack release. Default is "yoga".
 openstack_release: "yoga"
 
-# Name of the current OpenStack branch. Default is "stable/yoga".
+# Name of the current OpenStack branch. Default is "unmaintained/yoga".
 openstack_branch: >-
-  {% if openstack_release != 'master' %}stable/{% endif %}{{ openstack_release | lower }}
+  {% if openstack_release != 'master' %}unmaintained/{% endif %}{{ openstack_release | lower }}
 
 ###############################################################################
 # OpenStack authentication configuration.

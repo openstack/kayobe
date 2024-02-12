@@ -6,6 +6,7 @@ ansible-lint>=3.0.0,<6.0.0,!=4.3.0 # MIT
 docker # Apache-2.0
 molecule<3.5.0 # MIT
 molecule-docker # MIT
+pytest<8 # MIT
 pytest-metadata<2 # MPL
 pytest-molecule # MIT
 pytest-testinfra
