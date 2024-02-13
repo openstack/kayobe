@@ -1327,7 +1327,7 @@ class OvercloudServiceConfigurationValidate(KayobeAnsibleMixin,
         group = parser.add_argument_group("Service Configuration Validate")
         group.add_argument("--output-dir", required=True,
                            help="the directory to store the results of running"
-                                "the config validator (required)")
+                                " the config validator (required)")
         return parser
 
     def take_action(self, parsed_args):
