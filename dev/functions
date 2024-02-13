@@ -74,7 +74,7 @@ function config_defaults {
       if [[ "${BRANCH}" == "" ]]; then
         SERIES="master"
       else
-        SERIES="$(echo ${BRANCH} | sed 's|stable/||')"
+        SERIES="$(echo ${BRANCH} | sed -E 's,(stable|unmaintained)/,,')"
       fi
 
       # Upper constraints to use when installing Python packages.
