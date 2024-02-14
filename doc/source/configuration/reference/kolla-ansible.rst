@@ -737,6 +737,7 @@ which files are supported.
    ``placement.conf``              Placement configuration.
    ``placement/*``                 Extended Placement configuration.
    ``prometheus/*``                Prometheus configuration.
+   ``rabbitmq/*``                  RabbitMQ configuration.
    ``sahara.conf``                 Sahara configuration.
    ``sahara/*``                    Extended sahara configuration.
    ``storm/*``                     Extended Storm configuration.
