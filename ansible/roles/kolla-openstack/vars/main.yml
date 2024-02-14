@@ -202,6 +202,11 @@ kolla_openstack_custom_config:
     dest: "{{ kolla_node_custom_config_path }}/prometheus"
     patterns: "*"
     enabled: "{{ kolla_enable_prometheus }}"
+  # RabbitMQ.
+  - src: "{{ kolla_extra_config_path }}/rabbitmq"
+    dest: "{{ kolla_node_custom_config_path }}/rabbitmq"
+    patterns: "*"
+    enabled: "{{ kolla_enable_rabbitmq }}"
   # Sahara.
   - src: "{{ kolla_extra_config_path }}/sahara"
     dest: "{{ kolla_node_custom_config_path }}/sahara"
