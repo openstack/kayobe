@@ -266,7 +266,7 @@ kolla_openstack_custom_config_rules_default:
   - glob: "**/multipath.conf"
     strategy: template
     priority: 1000
-  - glob: "**/rabbitmq*.conf"
+  - glob: "rabbitmq/**/*"
     strategy: template
     priority: 1000
   - glob: "**/*wsgi*.conf"

@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Added fix for the custom RabbitMQ configuration. Fixed incorrect path and
+    glob, so now you can template also all other configuration files such as
+    ``advanced.config``, ``definitions.json``, ``enabled_plugins``, and
+    ``erl_inetrc`` together with ``rabbitmq.conf`` and ``rabbitmq-env.conf``.
