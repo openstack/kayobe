@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Adds support for auth configuration for Apt respositories and proxies using
+    ``auth.conf`` files.

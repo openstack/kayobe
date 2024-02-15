@@ -1,0 +1,32 @@
+---
+- name: Validate Apt auth config
+  ansible.utils.validate:
+    criteria: "{{ lookup('ansible.builtin.file', 'auth_schema.json') }}"
+    data: "{{ apt_auth }}"
+
+- name: Ensure the Apt auth.conf.d directory exists
+  ansible.builtin.file:
+    path: "/etc/apt/auth.conf.d"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  become: true
+
+- name: Configure Apt auth files
+  ansible.builtin.template:
+    src: "auth.conf.j2"
+    dest: "/etc/apt/auth.conf.d/{{ auth.filename }}"
+    owner: root
+    group: root
+    mode: 0600
+  become: true
+  # apt_auth contains sensitive data, so iterate over indices to avoid exposing
+  # them in Ansible output.
+  loop: "{{ apt_auth | map(attribute='filename') }}"
+  loop_control:
+    index_var: auth_index
+  vars:
+    auth: "{{ apt_auth[auth_index] }}"
+  notify:
+    - Update apt cache
