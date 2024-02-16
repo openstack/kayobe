@@ -373,6 +373,11 @@ class KollaAnsibleRun(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Running Kolla Ansible command")
+
+        # First prepare configuration.
+        self.generate_kolla_ansible_config(parsed_args)
+
+        # Run the kolla-ansible command.
         self.run_kolla_ansible(parsed_args, parsed_args.command,
                                parsed_args.kolla_inventory_filename)
 

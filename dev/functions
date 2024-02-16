@@ -436,7 +436,8 @@ function overcloud_deploy {
         run_kayobe kolla ansible run certificates \
           --kolla-extra kolla_certificates_dir=${KAYOBE_CONFIG_PATH}/kolla/certificates \
           --kolla-extra ansible_user=$USER \
-          --kolla-extra ansible_python_interpreter=/usr/bin/python3
+          --kolla-extra ansible_python_interpreter=/usr/bin/python3 \
+          --skip-tags kolla-openstack
         unset ANSIBLE_CACHE_PLUGIN
 
         # Add CA cert to trust store.
