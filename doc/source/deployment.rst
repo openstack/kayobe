@@ -533,6 +533,12 @@ image name regular expressions::
 
     (kayobe) $ kayobe overcloud container image build ironic- nova-api
 
+When your environment uses OVN, OVS images will not be built. If you want to
+build all Neutron images at the same time, extra variable ``kolla_build_neutron_ovs``
+needs to be set to ``true``::
+
+    (kayobe) $ kayobe overcloud container image build -e kolla_build_neutron_ovs=true
+
 In order to push images to a registry after they are built, add the ``--push``
 argument.
 
