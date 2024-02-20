@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an issue with overcloud service destroy where it failed to remove the
+    inspection store docker volume. See `LP#2050092
+    <https://bugs.launchpad.net/kayobe/+bug/2050092>`__.
