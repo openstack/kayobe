@@ -147,6 +147,7 @@ provisioner:
           [extra-sahara.conf]
           foo=bar
         kolla_enable_swift: true
+        kolla_enable_telegraf: true
   lint:
     name: ansible-lint
 scenario:

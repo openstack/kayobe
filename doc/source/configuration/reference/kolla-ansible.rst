@@ -749,6 +749,7 @@ which files are supported.
    ``sahara.conf``                 Sahara configuration.
    ``sahara/*``                    Extended sahara configuration.
    ``swift/*``                     Extended swift configuration.
+   ``telegraf/*``                  Extended Telegraf configuration.
    =============================== =======================================================
 
 Configuring an OpenStack Component
