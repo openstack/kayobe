@@ -1,6 +1,7 @@
 ---
 - import_playbook: "ssh-known-host.yml"
 - import_playbook: "kayobe-ansible-user.yml"
+- import_playbook: "logging.yml"
 - import_playbook: "proxy.yml"
 - import_playbook: "apt.yml"
 - import_playbook: "dnf.yml"

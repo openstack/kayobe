@@ -1,0 +1,51 @@
+---
+- name: Ensure Logging configuration is applied
+  hosts: seed-hypervisor:seed:overcloud:infra-vms
+  gather_facts: false
+  vars:
+    # NOTE(wszumski): Kayobe target env does not yet exist.
+    ansible_python_interpreter: /usr/bin/python3
+  tags:
+    - logging
+  tasks:
+    - name: Create /var/log/journal
+      become: true
+      file:
+        path: /var/log/journal
+        owner: "root"
+        group: "root"
+        mode: 0755
+        state: directory
+      notify: Flush journal to disk
+      when: journald_storage == "persistent"
+
+    - name: Ensure journald drop in directory exists
+      file:
+        path: "/etc/systemd/journald.conf.d/"
+        owner: "root"
+        group: "root"
+        mode: 0770
+        state: directory
+      become: true
+
+    - name: Ensure journald.conf overrides are set
+      copy:
+        content: |
+           [Journal]
+           Storage={{ journald_storage }}
+        dest: /etc/systemd/journald.conf.d/kayobe.conf
+        owner: root
+        group: root
+        mode: 0660
+      become: true
+      notify: Restart journald
+
+  handlers:
+    - name: Restart journald
+      service:
+        name: systemd-journald
+        state: restarted
+      become: true
+    - name: Flush journal to disk
+      become: true
+      command: journalctl --flush

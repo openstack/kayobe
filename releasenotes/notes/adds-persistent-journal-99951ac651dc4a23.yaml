@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Configures journald to use a persistent storage by default. This allows you
+    to keep journald logs across reboots and is controlled by the
+    ``journald_storage`` variable. See :kayobe-doc:`Kayobe documentation
+    <configuration/reference/hosts#logging>` for more details.

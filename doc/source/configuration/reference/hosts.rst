@@ -1393,3 +1393,25 @@ Installing packages required by Kolla Ansible
 
 A small number of packages are required to be installed on the hosts for Kolla
 Ansible and the services that it deploys, while some others must be removed.
+
+Logging
+=======
+*tags:*
+  | ``logging``
+
+Kayobe will configure persistent logging for nodes in the following ansible groups:
+
+- seed-hypervisor
+- seed
+- overcloud
+- infra-vms
+
+This means that the systemd journal will be written to local storage (instead
+of to memory) and will allow you to view the journal from previous boots. The
+storage limit defaults to 10% of the filesystem with a 4GiB hard limit (when
+using journald defaults). See `journald documentation
+<https://www.freedesktop.org/software/systemd/man/latest/journald.conf.html#SystemMaxUse=>`__
+for more details.
+
+Should you wish to disable this feature, you can set ``journald_storage`` to
+``volatile``.
