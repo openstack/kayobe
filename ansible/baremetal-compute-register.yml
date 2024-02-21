@@ -1,0 +1,78 @@
+---
+
+- name: Register baremetal compute nodes
+  hosts: controllers[0]
+  vars:
+    venv: "{{ virtualenv_path }}/openstack-cli"
+  tasks:
+    - name: Set up openstack cli virtualenv
+      pip:
+        virtualenv: "{{ venv }}"
+        name:
+          - python-openstackclient
+          - python-ironicclient
+        state: latest
+        virtualenv_command: "python3.{{ ansible_facts.python.version.minor }} -m venv"
+        extra_args: "{% if pip_upper_constraints_file %}-c {{ pip_upper_constraints_file }}{% endif %}"
+
+- name: Ensure baremetal compute nodes are registered in ironic
+  hosts: baremetal-compute
+  gather_facts: false
+  tags:
+    - baremetal
+  vars:
+    venv: "{{ virtualenv_path }}/openstack-cli"
+    controller_host: "{{ groups['controllers'][0] }}"
+  tasks:
+    - name: Check Ironic variables are defined
+      ansible.builtin.assert:
+        that:
+          - ironic_driver is defined
+          - ironic_driver_info is defined
+          - ironic_properties is defined
+          - ironic_resource_class is defined
+        fail_msg: One or more Ironic variables are undefined.
+
+    - block:
+      - name: Show baremetal node
+        ansible.builtin.command:
+          cmd: "{{ venv }}/bin/openstack baremetal node show {{ inventory_hostname }}"
+        register: node_show
+        failed_when:
+          - '"HTTP 404" not in node_show.stderr'
+          - node_show.rc != 0
+        changed_when: false
+
+      # NOTE: The openstack.cloud.baremetal_node module cannot be used in this
+      # script due to requiring a MAC address pre-defined, instead, this should
+      # be discovered by inpsection following this script.
+      #
+      # NOTE: IPMI address must be passed with Redfish address to ensure existing
+      # Ironic nodes match with new nodes during inspection.
+      - name: Create baremetal nodes
+        ansible.builtin.shell:
+          cmd: |
+            {{ venv }}/bin/openstack baremetal node create \
+            --name {{ inventory_hostname }} \
+            --driver {{ ironic_driver }} \
+            {% for key, value in ironic_driver_info.items() %}
+            --driver-info {{ key }}={{ value }} \
+            {% endfor %}
+            {% for key, value in ironic_properties.items() %}
+            --property {{ key }}={{ value }} \
+            {% endfor %}
+            --resource-class {{ ironic_resource_class }}
+        when:
+          - node_show.rc != 0
+
+      - name: Manage baremetal nodes
+        ansible.builtin.command:
+          cmd: "{{ venv }}/bin/openstack baremetal node manage {{ inventory_hostname }} --wait"
+        when:
+          - node_show.rc != 0
+      delegate_to: "{{ controller_host }}"
+      vars:
+        # NOTE: Without this, the controller's ansible_host variable will not
+        # be respected when using delegate_to.
+        ansible_host: "{{ hostvars[controller_host].ansible_host | default(controller_host) }}"
+      environment: "{{ openstack_auth_env }}"

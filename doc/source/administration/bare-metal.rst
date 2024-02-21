@@ -13,6 +13,62 @@ By default these commands wait for the state transition to complete for each
 node. This behavior can be changed by overriding the variable
 ``baremetal_compute_wait`` via ``-e baremetal_compute_wait=False``
 
+Register
+--------
+
+This is an experimental workflow and acts as an alternative to enrolling nodes
+through inspection where nodes can be registered in Ironic via kayobe given these
+nodes are defined in the Kayobe inventory, an example hosts file for group r1 is below:
+
+.. code-block:: ini
+
+    [r1]
+    hv100 ipmi_address=1.2.3.4
+    ...
+
+    [baremetal-compute:children]
+    r1
+
+You should also define a group_vars file for this group containing the Ironic
+vars, this could be in ``etc/kayobe/inventory/group_vars/r1/ironic_vars`` or
+in the environment you are using.
+
+.. code-block:: yaml
+
+    ironic_driver: redfish
+
+    ironic_driver_info:
+        redfish_system_id: "{{ ironic_redfish_system_id }}"
+        redfish_address: "{{ ironic_redfish_address }}"
+        redfish_username: "{{ ironic_redfish_username }}"
+        redfish_password: "{{ ironic_redfish_password }}"
+        redfish_verify_ca: "{{ ironic_redfish_verify_ca }}"
+        ipmi_address: "{{ ipmi_address }}"
+
+    ironic_properties:
+        capabilities: "{{ ironic_capabilities }}"
+
+    ironic_resource_class: "example_resouce_class"
+    ironic_redfish_system_id: "/redfish/v1/Systems/System.Embedded.1"
+    ironic_redfish_verify_ca: "{{ inspector_rule_var_redfish_verify_ca }}"
+    ironic_redfish_address: "{{ ipmi_address }}"
+    ironic_redfish_username: "{{ inspector_redfish_username }}"
+    ironic_redfish_password: "{{ inspector_redfish_password }}"
+    ironic_capabilities: "boot_option:local,boot_mode:uefi"
+
+It's essential that the Ironic username and password match the BMC username
+and password for your nodes, if the username and password combination is
+not the same for the entire group you will need to adjust your configuration
+accordingly. The IPMI address should also match the BMC address for your node.
+
+Once this has been completed you can begin enrolling the Ironic nodes::
+
+    (kayobe) $ kayobe baremetal compute register
+
+Inspector is not used to discover nodes and no node inspection will take place on
+enrollment, nodes will automatically be placed into ``manageable`` state. To inspect,
+you should use ``kayobe baremetal compute inspect`` following enrollment.
+
 Manage
 ------
 

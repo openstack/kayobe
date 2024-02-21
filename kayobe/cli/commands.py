@@ -1858,6 +1858,14 @@ class NetworkConnectivityCheck(KayobeAnsibleMixin, VaultMixin, Command):
         playbooks = _build_playbook_list("network-connectivity")
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
+class BaremetalComputeRegister(KayobeAnsibleMixin, VaultMixin, Command):
+    """Register baremetal compute nodes in Ironic."""
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Register baremetal compute nodes in Ironic.")
+        playbooks = _build_playbook_list("baremetal-compute-register")
+        self.run_kayobe_playbooks(parsed_args, playbooks)
+
 
 class BaremetalComputeInspect(KayobeAnsibleMixin, VaultMixin, Command):
     """Perform hardware inspection on baremetal compute nodes."""

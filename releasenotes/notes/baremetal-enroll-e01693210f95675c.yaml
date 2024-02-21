@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    This patch adds experimental functionallity to enroll baremetal nodes
+    into Ironic using Kayobe via a new playbook 'baremetal-compute-register.yml'
+    and adds 'kayobe baremetal compute register' into the Kayobe CLI.
