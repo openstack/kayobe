@@ -31,7 +31,6 @@
             - name: Check for the presence of locally built Ironic Python Agent (IPA) images
               stat:
                 path: "{{ image_cache_path }}/{{ ipa_image_name }}/{{ item }}"
-                get_md5: False
                 get_checksum: False
                 mime: False
               with_items: "{{ ipa_images }}"
@@ -52,7 +51,6 @@
           local_action:
             module: stat
             path: "{{ hostvars.localhost.image_cache_path }}"
-            get_md5: False
             get_checksum: False
             mime: False
           register: image_cache_stat

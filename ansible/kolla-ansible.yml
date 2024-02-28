@@ -33,7 +33,6 @@
           stat:
             path: "{{ kolla_config_path ~ '/.environment' }}"
             get_checksum: False
-            get_md5: False
             mime: False
           register: kolla_environment_file
 

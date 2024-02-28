@@ -98,7 +98,6 @@
       stat:
         path: "{{ seed_vm_configdrive_path }}"
         get_checksum: False
-        get_md5: False
         mime: False
       register: stat_result
 

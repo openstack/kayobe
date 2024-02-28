@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    Updates the maximum supported version of Ansible from 8.x (ansible-core
+    2.15) to 9.x (ansible-core 2.16). The minimum supported version is updated
+    from 7.x to 8.x. This is true for both Kayobe and Kolla Ansible.
