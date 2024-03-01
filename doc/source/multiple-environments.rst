@@ -29,15 +29,19 @@ configuration.
 Supporting multiple environments is done through a
 ``$KAYOBE_CONFIG_PATH/environments`` directory, under which each directory
 represents a different environment.  Each environment contains its own Ansible
-inventory, extra variable files, and Kolla configuration. The following layout
-shows two environments called ``staging`` and ``production`` within a single
-Kayobe configuration.
+inventory, extra variable files, hooks, and Kolla configuration. The following
+layout shows two environments called ``staging`` and ``production`` within a
+single Kayobe configuration.
 
 .. code-block:: text
 
    $KAYOBE_CONFIG_PATH/
    └── environments/
        ├── production/
+       │   ├── hooks/
+       │   │   └── overcloud-service-deploy/
+       │   │       └── pre.d/
+       │   │           └── 1-prep-stuff.yml
        │   ├── inventory/
        │   │   ├── groups
        │   │   ├── group_vars/
@@ -349,17 +353,45 @@ For example, symbolic links can be used to share common variable definitions.
 It is advised to avoid sharing credentials between environments by making each
 Kolla ``passwords.yml`` file unique.
 
-Custom Ansible Playbooks and Hooks
-----------------------------------
+Custom Ansible Playbooks
+------------------------
 
-The following files and directories are currently shared across all
-environments:
+:doc:`Custom Ansible playbooks <custom-ansible-playbooks>`, roles and
+requirements file under ``$KAYOBE_CONFIG_PATH/ansible`` are currently shared
+across all environments.
 
-* Ansible playbooks, roles and requirements file under
-  ``$KAYOBE_CONFIG_PATH/ansible``
-* Ansible configuration at ``$KAYOBE_CONFIG_PATH/ansible.cfg`` and
-  ``$KAYOBE_CONFIG_PATH/kolla/ansible.cfg``
-* Hooks under ``$KAYOBE_CONFIG_PATH/hooks``
+Hooks
+-----
+
+Prior to the Caracal 16.0.0 release, :ref:`hooks <custom-playbooks-hooks>` were
+shared across all environments.  Since Caracal it is possible to define hooks
+on a per-environment basis. Hooks are collected from all environments and the
+base configuration. Where multiple hooks exist with the same name, the
+environment's hook takes precedence and *replaces* the other hooks. Execution
+order follows the normal rules, regardless of where each hook is defined.
+
+For example, the base configuration defines the following hooks:
+
+* ``$KAYOBE_CONFIG_PATH/hooks/overcloud-service-deploy/pre.d/1-base.yml``
+* ``$KAYOBE_CONFIG_PATH/hooks/overcloud-service-deploy/pre.d/2-both.yml``
+
+The environment defines the following hooks:
+
+* ``$KAYOBE_CONFIG_PATH/environments/env/hooks/overcloud-service-deploy/pre.d/2-both.yml``
+* ``$KAYOBE_CONFIG_PATH/environments/env/hooks/overcloud-service-deploy/pre.d/3-env.yml``
+
+The following hooks will execute in the order shown:
+
+* ``$KAYOBE_CONFIG_PATH/hooks/overcloud-service-deploy/pre.d/1-base.yml``
+* ``$KAYOBE_CONFIG_PATH/environments/env/hooks/overcloud-service-deploy/pre.d/2-both.yml``
+* ``$KAYOBE_CONFIG_PATH/environments/env/hooks/overcloud-service-deploy/pre.d/3-env.yml``
+
+Ansible Configuration
+---------------------
+
+Ansible configuration at ``$KAYOBE_CONFIG_PATH/ansible.cfg`` or
+``$KAYOBE_CONFIG_PATH/kolla/ansible.cfg`` is currently shared across all
+environments.
 
 Dynamic Variable Definitions
 ----------------------------
