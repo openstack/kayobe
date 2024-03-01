@@ -5,7 +5,7 @@
 # Authentication configuration.
 
 # For Mellanox switches, this defines a 'provider' argument to the
-# mellanox-switch role.
+# stackhpc.network.mellanox_switch role.
 switch_mellanox_provider:
   host: "{{ ansible_host|default(inventory_hostname) }}"
   username: "{{ ansible_user }}"

@@ -12,7 +12,7 @@
   vars:
     venv: "{{ virtualenv_path }}/openstacksdk"
   roles:
-    - role: stackhpc.os_openstacksdk
+    - role: stackhpc.openstack.os_openstacksdk
       os_openstacksdk_venv: "{{ venv }}"
       os_openstacksdk_install_epel: "{{ dnf_install_epel }}"
       os_openstacksdk_upper_constraints_file: "{{ openstacksdk_upper_constraints_file }}"

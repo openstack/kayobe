@@ -63,7 +63,7 @@
         - config-validation
 
     - import_role:
-        name: stackhpc.os-networks
+        name: stackhpc.openstack.os_networks
       vars:
         os_openstacksdk_install_epel: "{{ dnf_install_epel }}"
         os_openstacksdk_state: "latest"

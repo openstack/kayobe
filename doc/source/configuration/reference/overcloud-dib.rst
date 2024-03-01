@@ -44,11 +44,11 @@ the configuration drive built by Bifrost during provisioning.
     List of additional host packages to install. Default is an empty list.
 ``overcloud_dib_host_images``
     List of overcloud host disk images to build. Each element is a dict
-    defining an image in a format accepted by the `stackhpc.os-images
-    <https://galaxy.ansible.com/stackhpc/os-images>`__ role. Default is to
-    build an image named ``deployment_image`` configured with the
-    ``overcloud_dib_*`` variables defined below: ``{"name": "deployment_image",
-    "elements": "{{ overcloud_dib_elements }}", "env": "{{
+    defining an image in a format accepted by the `stackhpc.openstack.os_images
+    <https://galaxy.ansible.com/ui/repo/published/stackhpc/openstack/content/role/os_images/>`__
+    role. Default is to build an image named ``deployment_image`` configured
+    with the ``overcloud_dib_*`` variables defined below: ``{"name":
+    "deployment_image", "elements": "{{ overcloud_dib_elements }}", "env": "{{
     overcloud_dib_env_vars }}", "packages": "{{ overcloud_dib_packages }}"}``.
 ``overcloud_dib_os_element``
     DIB base OS element. Default is ``{{ 'rocky-container' if os_distribution == 'rocky' else os_distribution }}``.
@@ -80,13 +80,15 @@ the configuration drive built by Bifrost during provisioning.
     List of DIB packages to install. Default is to install no extra packages.
 ``overcloud_dib_git_elements_default``
     List of default git repositories containing Diskimage Builder (DIB)
-    elements. See stackhpc.os-images role for usage. Default is empty.
+    elements. See stackhpc.openstack.os_images role for usage.
+    Default is empty.
 ``overcloud_dib_git_elements_extra``
     List of additional git repositories containing Diskimage Builder (DIB)
-    elements. See stackhpc.os-images role for usage. Default is empty.
+    elements. See stackhpc.openstack.os_imagesimages role for usage.
+    Default is empty.
 ``overcloud_dib_git_elements``
     List of git repositories containing Diskimage Builder (DIB) elements. See
-    stackhpc.os-images role for usage. Default is a combination of
+    stackhpc.openstack.os_images role for usage. Default is a combination of
     ``overcloud_dib_git_elements_default`` and
     ``overcloud_dib_git_elements_extra``.
 ``overcloud_dib_upper_constraints_file``
@@ -211,10 +213,11 @@ Example: Building multiple images
 It can be necessary to build multiple images to support the various types of
 hardware present in a deployment or the different functions performed by
 overcloud hosts. This can be configured with the ``overcloud_dib_host_images``
-variable, using a format accepted by the `stackhpc.os-images
-<https://galaxy.ansible.com/stackhpc/os-images>`__ role. Note that image names
-should not include the file extension.  For example, to build a second image
-with a development user account and the ``biosdevname`` package:
+variable, using a format accepted by the `stackhpc.openstack.os_images
+<https://galaxy.ansible.com/ui/repo/published/stackhpc/openstack/content/role/os_images/>`__
+role. Note that image names should not include the file extension. For example,
+to build a second image with a development user account and the ``biosdevname``
+package:
 
 .. code-block:: yaml
    :caption: ``dib.yml``

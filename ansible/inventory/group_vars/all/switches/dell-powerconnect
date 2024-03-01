@@ -5,7 +5,7 @@
 # Authentication configuration.
 
 # For DellOS switches, this defines a 'provider' argument to the
-# dell_powerconnect_switch role.
+# stackhpc.network.dell_powerconnect_switch role.
 switch_dell_powerconnect_provider:
   host: "{{ ansible_host|default(inventory_hostname) }}"
   username: "{{ ansible_user }}"

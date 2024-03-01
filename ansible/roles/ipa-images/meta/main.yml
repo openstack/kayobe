@@ -1,8 +1,8 @@
 ---
 dependencies:
-  - role: stackhpc.os_openstacksdk
+  - role: stackhpc.openstack.os_openstacksdk
     os_openstacksdk_venv: "{{ ipa_images_venv }}"
     os_openstacksdk_upper_constraints_file: "{{ openstacksdk_upper_constraints_file }}"
-  - role: stackhpc.os-openstackclient
+  - role: stackhpc.openstack.os_openstackclient
     os_openstackclient_venv: "{{ ipa_images_venv }}"
     os_openstackclient_upper_constraints_file: "{{ ipa_images_upper_constraints_file }}"

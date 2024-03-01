@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    Bumps ``stackhpc.linux`` collection to 1.2.0 to include new roles. Adds
+    ``stackhpc.network`` and ``stackhpc.openstack`` collections to
+    requirements. Refactors invocation of the roles moved into collections
+    mentioned above, and updates the documentation - role names and outdated
+    Ansible Galaxy documentation links.
