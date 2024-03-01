@@ -92,7 +92,6 @@
       - ^zuul.d/.*
     vars:
       # Name of the release to upgrade from for upgrade jobs.
-      previous_release: 2023.2
       logs_dir: "/tmp/logs"
       ansible_collection_kolla_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/ansible-collection-kolla'].src_dir }}"
       kayobe_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/kayobe'].src_dir }}"
@@ -104,6 +103,8 @@
       requirements_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/requirements'].src_dir }}"
       tenks_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/tenks'].src_dir }}"
       is_upgrade: "{{ 'upgrade' in zuul.job }}"
+      is_slurp: "{{ 'slurp' in zuul.job }}"
+      previous_release: "{{ '2023.1' if is_slurp else '2023.2' }}"
       tls_enabled: false
       ironic_boot_mode: "bios"
 
@@ -171,6 +172,16 @@
 
 - job:
     name: kayobe-overcloud-upgrade-ubuntu-jammy
+    parent: kayobe-overcloud-upgrade-base
+    nodeset: kayobe-ubuntu-jammy
+
+- job:
+    name: kayobe-overcloud-upgrade-slurp-rocky9
+    parent: kayobe-overcloud-upgrade-base
+    nodeset: kayobe-rocky9
+
+- job:
+    name: kayobe-overcloud-upgrade-slurp-ubuntu-jammy
     parent: kayobe-overcloud-upgrade-base
     nodeset: kayobe-ubuntu-jammy
 
@@ -276,6 +287,16 @@
 
 - job:
     name: kayobe-seed-upgrade-ubuntu-jammy
+    parent: kayobe-seed-upgrade-base
+    nodeset: kayobe-ubuntu-jammy
+
+- job:
+    name: kayobe-seed-upgrade-slurp-rocky9
+    parent: kayobe-seed-upgrade-base
+    nodeset: kayobe-rocky9
+
+- job:
+    name: kayobe-seed-upgrade-slurp-ubuntu-jammy
     parent: kayobe-seed-upgrade-base
     nodeset: kayobe-ubuntu-jammy
 
