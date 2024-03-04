@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes issue building container images when docker registry contained a
+    port.  See `LP#2054715 <https://bugs.launchpad.net/kayobe/+bug/2054715>`__
+    for more details.

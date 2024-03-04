@@ -221,7 +221,6 @@
       Base job for testing seed image builds.
 
       Configures the primary VM as a seed.
-    voting: false
     vars:
       build_images: true
 

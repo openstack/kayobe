@@ -67,7 +67,9 @@
     version: "{{ item.version | default(omit) }}"
     state: "{{ item.state | default('present') }}"
     virtualenv: "{{ kolla_venv }}"
-    extra_args: "{% if kolla_upper_constraints_file %}-c {{ kolla_upper_constraints_file }}{% endif %}"
+    extra_args: "{{ item.extra_args | default(default_extra_args) }}"
+  vars:
+    default_extra_args: "{% if kolla_upper_constraints_file %}-c {{ kolla_upper_constraints_file }}{% endif %}"
   with_items:
     # Install Kolla from source.
     - name: "{{ kolla_source_path }}"
@@ -77,5 +79,10 @@
       version: "{{ kolla_openstack_release }}"
       install: "{{ kolla_ctl_install_type == 'binary' }}"
     # Install docker from PyPI since it was dropped from kolla requirements.
-    - name: "docker"
+    # Skip 7.0.0 due to: https://github.com/docker/docker-py/issues/3195
+    - name: "docker!=7.0.0,<8"
+      # NOTE(wszumski): Workaround for ERROR: ResolutionImpossible when using upper constraints.
+      # This can be removed once a newer version of docker is released and the version in upper
+      # constraints has been bumped (>7.0.0).
+      extra_args: "{{ omit }}"
   when: item.install | default(True) | bool
