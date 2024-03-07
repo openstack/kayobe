@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds the command ``kayobe baremetal introspection data save`` to save the
+    hardware introspection data gathered by ``kayobe baremetal compute
+    inspect``.

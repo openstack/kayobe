@@ -1,0 +1,68 @@
+---
+- name: Ensure dependencies are installed
+  hosts: controllers[0]
+  gather_facts: true
+  vars:
+    venv: "{{ virtualenv_path }}/openstack-cli"
+  pre_tasks:
+    - name: Set up openstack cli virtualenv
+      pip:
+        virtualenv: "{{ venv }}"
+        virtualenv_command: python3 -m venv
+        name:
+          - python-openstackclient
+          - python-ironic-inspector-client
+        state: latest
+        extra_args: "{% if pip_upper_constraints_file %}-c {{ pip_upper_constraints_file }}{% endif %}"
+
+- name: Ensure the baremetal compute nodes' hardware introspection data is saved
+  hosts: baremetal-compute
+  gather_facts: False
+  vars:
+    venv: "{{ virtualenv_path }}/openstack-cli"
+    controller_host: "{{ groups['controllers'][0] }}"
+    output_dir: "{{ lookup('env', 'PWD') }}/baremetal-compute-introspection-data"
+    output_format: json
+  tasks:
+    - name: Query baremetal compute nodes' hardware introspection data
+      command: >
+        {{ venv }}/bin/openstack baremetal introspection data save {{ inventory_hostname }}
+      register: save_result
+      changed_when: False
+      # Ignore errors, log a message later.
+      failed_when: False
+      delegate_to: "{{ controller_host }}"
+      environment: "{{ openstack_auth_env }}"
+      vars:
+        # NOTE: Without this, the controller's ansible_host variable will not
+        # be respected when using delegate_to.
+        ansible_host: "{{ hostvars[controller_host].ansible_host | default(controller_host) }}"
+
+    - name: Ensure introspection data output directory exists
+      local_action:
+        module: file
+        path: "{{ output_dir }}"
+        state: directory
+
+    - name: Ensure introspection data is saved locally
+      local_action:
+        module: copy
+        content: "{{ introspection_data_map[output_format | lower] }}"
+        dest: "{{ output_dir }}/{{ inventory_hostname }}.{{ output_format | lower }}"
+      when: save_result.rc == 0
+      vars:
+        introspection_data: "{{ save_result.stdout_lines | join('\n') | from_json }}"
+        introspection_data_json: "{{ introspection_data | to_nice_json(indent=4) }}"
+        introspection_data_yaml: "{{ introspection_data | to_nice_yaml }}"
+        introspection_data_map:
+          json: "{{ introspection_data_json }}"
+          yaml: "{{ introspection_data_yaml }}"
+
+    - name: Log when introspection data could not be queried
+      debug:
+        msg: >
+          Could not query hardware introspection data for
+          {{ inventory_hostname }}.
+          Stdout: {{ save_result.stdout }}.
+          Stderr: {{ save_result.stderr }}.
+      when: save_result.rc != 0
