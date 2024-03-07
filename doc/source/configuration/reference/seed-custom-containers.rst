@@ -20,10 +20,27 @@ For example, to deploy a squid container image:
        image: "stackhpc/squid:3.5.20-1"
        pre: "{{ kayobe_env_config_path }}/containers/squid/pre.yml"
        post: "{{ kayobe_env_config_path }}/containers/squid/post.yml"
+       pre_destroy: "{{ kayobe_env_config_path }}/containers/squid/pre_destroy.yml"
+       post_destroy: "{{ kayobe_env_config_path }}/containers/squid/post_destroy.yml"
 
-Please notice the *optional* pre and post Ansible task files - those need to
-be created in ``kayobe-config`` path and will be run before and after
-particular container deployment.
+Please notice the *optional* pre, post, pre_destroy, and post_destroy Ansible task
+files - those need to be created in ``kayobe-config`` path. The table below describes
+when they will run:
+
+.. list-table:: Container hooks
+   :widths: 25 75
+   :header-rows: 1
+
+   * - Hook
+     - Trigger point
+   * - pre
+     - Before container deployment
+   * - post
+     - After container deployment
+   * - pre_destroy
+     - Before container is destroyed
+   * - post_destroy
+     - After container is destroyed
 
 Possible options for container deployment:
 

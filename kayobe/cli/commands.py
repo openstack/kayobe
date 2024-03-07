@@ -730,7 +730,8 @@ class SeedServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         self.app.LOG.debug("Deploying seed services")
         playbooks = _build_playbook_list(
             "seed-deploy-containers")
-        self.run_kayobe_playbooks(parsed_args, playbooks)
+        extra_vars = {"kayobe_action": "deploy"}
+        self.run_kayobe_playbooks(parsed_args, playbooks, extra_vars=extra_vars)
         self.generate_kolla_ansible_config(parsed_args, service_config=False,
                                            bifrost_config=True)
 
@@ -739,8 +740,44 @@ class SeedServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
             "seed-credentials",
             "seed-introspection-rules",
             "dell-switch-bmp")
-        self.run_kayobe_playbooks(parsed_args, playbooks)
+        self.run_kayobe_playbooks(parsed_args, playbooks, extra_vars=extra_vars)
 
+class SeedServiceDestroy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
+                        Command):
+    """Destroy the seed services.
+
+    * Destroys user defined containers
+    * Destroys kolla deployed containers
+    * Destroys docker registry
+    """
+
+    def take_action(self, parsed_args):
+        if not parsed_args.yes_i_really_really_mean_it:
+            self.app.LOG.error("This will permanently destroy all services "
+                               "and data. Specify "
+                               "--yes-i-really-really-mean-it to confirm that "
+                               "you understand this.")
+            sys.exit(1)
+        self.app.LOG.debug("Destroying seed services")
+        self.generate_kolla_ansible_config(parsed_args, service_config=False,
+                                           bifrost_config=False)
+        extra_args = ["--yes-i-really-really-mean-it"]
+        self.run_kolla_ansible_seed(parsed_args, "destroy", extra_args=extra_args)
+
+        extra_vars = {"kayobe_action": "destroy"}
+        playbooks = _build_playbook_list(
+            "seed-deploy-containers",
+            "docker-registry")
+        self.run_kayobe_playbooks(parsed_args, playbooks, extra_vars=extra_vars)
+
+    def get_parser(self, prog_name):
+        parser = super(SeedServiceDestroy, self).get_parser(prog_name)
+        group = parser.add_argument_group("Services")
+        group.add_argument("--yes-i-really-really-mean-it",
+                           action='store_true',
+                           help="confirm that you understand that this will "
+                                "permanently destroy all services and data.")
+        return parser
 
 class SeedServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
                          Command):
@@ -762,7 +799,8 @@ class SeedServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         self.app.LOG.debug("Upgrading seed services")
         playbooks = _build_playbook_list(
             "seed-deploy-containers")
-        self.run_kayobe_playbooks(parsed_args, playbooks)
+        extra_vars = {"kayobe_action": "deploy"}
+        self.run_kayobe_playbooks(parsed_args, playbooks, extra_vars=extra_vars)
         self.generate_kolla_ansible_config(parsed_args, service_config=False,
                                            bifrost_config=True)
 

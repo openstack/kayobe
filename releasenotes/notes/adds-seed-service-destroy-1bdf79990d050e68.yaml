@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds the command ``kayobe seed service destroy``. This can be used to clean
+    up all services on the seed host. Caution is advised when using this command
+    as it will delete all of the data on the seed.
