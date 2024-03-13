@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes the bug where /etc/hosts was not populated correctly when running
+    Kayobe using a host limit.
+    `LP#2051714 <https://launchpad.net/bugs/2051714>`__
