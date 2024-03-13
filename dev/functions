@@ -515,7 +515,13 @@ function overcloud_upgrade {
     echo "Upgrading a kayobe development environment. This consists of a "
     echo "single node OpenStack control plane."
 
-    migrate_rabbitmq_queues
+    # NOTE(mattcrees): As om_enable_rabbitmq_quorum_queues now defaults to true
+    # from Bobcat, we need to perform a migration to durable queues during
+    # SLURP upgrades from Antelope to Caracal.
+    # TODO(mattcrees): Remove in Dalmatian.
+    if [[ $IS_SLURP == "True" ]]; then
+        migrate_rabbitmq_queues
+    fi
 
     echo "Upgrading Kayobe"
     upgrade_kayobe_venv
