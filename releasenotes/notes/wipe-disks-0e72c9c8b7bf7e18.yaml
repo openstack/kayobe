@@ -3,5 +3,5 @@ fixes:
   - |
     Fixes the ``wipe-disks`` role which was failing on supported host operating
     systems due to a change in the output format of ``lsblk -J`` in
-    ``util-linux`` version ``2.37``. LP#2051859
-    <https://bugs.launchpad.net/kayobe/+bug/2051859>__
+    ``util-linux`` version ``2.37``. `LP#2051859
+    <https://bugs.launchpad.net/kayobe/+bug/2051859>`__
