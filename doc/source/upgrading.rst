@@ -97,6 +97,10 @@ As described in :ref:`installation`, Kayobe can be installed via the released
 Python packages on PyPI, or from source. Installation from a Python package is
 supported from Kayobe 5.0.0 onwards.
 
+Kayobe supports skip-level (SLURP) upgrades, see the `Kolla Ansible docs
+<https://docs.openstack.org/kolla-ansible/latest/user/operating-kolla.html#preparation-the-real-deal>`__
+for details.
+
 Upgrading from PyPI
 -------------------
 
