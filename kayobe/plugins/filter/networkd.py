@@ -81,6 +81,12 @@ def _ms_to_s(n):
     return n
 
 
+def _format_vlan_qos_map(qos_map):
+    if qos_map is None:
+        return None
+    return ' '.join(f"{e['from']}-{e['to']}" for e in qos_map)
+
+
 def _vlan_netdev(context, name, inventory_hostname):
     """Return a networkd NetDev configuration for a VLAN interface.
 
@@ -91,6 +97,12 @@ def _vlan_netdev(context, name, inventory_hostname):
     device = networks.net_interface(context, name, inventory_hostname)
     mtu = networks.net_mtu(context, name, inventory_hostname)
     vlan = networks.net_vlan(context, name, inventory_hostname)
+    ingress_qos_map = networks.net_ingress_qos_map(
+        context, name, inventory_hostname
+    )
+    egress_qos_map = networks.net_egress_qos_map(
+        context, name, inventory_hostname
+    )
     config = [
         {
             'NetDev': [
@@ -102,6 +114,8 @@ def _vlan_netdev(context, name, inventory_hostname):
         {
             'VLAN': [
                 {'Id': vlan},
+                {'IngressQOSMaps': _format_vlan_qos_map(ingress_qos_map)},
+                {'EgressQOSMaps': _format_vlan_qos_map(egress_qos_map)},
             ]
         }
     ]

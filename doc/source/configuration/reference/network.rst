@@ -621,6 +621,9 @@ The following attributes are supported:
 
        ``ingress_qos_map`` is only supported with
        ``network_engine: nmstate`` on VLAN interfaces.
+       ``network_engine: default`` on Debian-family distributions
+       (which uses systemd-networkd). It is not currently supported
+       with the ``default`` engine on RedHat-family distributions.
 
     VLAN ingress QoS map configuration. This maps VLAN header Priority Code
     Point (PCP) to Linux internal packet priority for incoming packets.
@@ -631,6 +634,9 @@ The following attributes are supported:
 
        ``egress_qos_map`` is only supported with
        ``network_engine: nmstate`` on VLAN interfaces.
+       ``network_engine: default`` on Debian-family distributions
+       (which uses systemd-networkd). It is not currently supported
+       with the ``default`` engine on RedHat-family distributions.
 
     VLAN egress QoS map configuration. This maps Linux internal packet
     priority to VLAN header Priority Code Point (PCP) for outgoing packets.

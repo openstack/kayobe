@@ -279,6 +279,16 @@ def net_vlan(context, name, inventory_hostname=None):
 
 
 @jinja2.pass_context
+def net_ingress_qos_map(context, name, inventory_hostname=None):
+    return net_attr(context, name, 'ingress_qos_map', inventory_hostname)
+
+
+@jinja2.pass_context
+def net_egress_qos_map(context, name, inventory_hostname=None):
+    return net_attr(context, name, 'egress_qos_map', inventory_hostname)
+
+
+@jinja2.pass_context
 def net_mtu(context, name, inventory_hostname=None):
     mtu = net_attr(context, name, 'mtu', inventory_hostname)
     if mtu is not None:
