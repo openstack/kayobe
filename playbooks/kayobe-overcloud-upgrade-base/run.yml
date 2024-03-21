@@ -84,6 +84,26 @@
 
         # Upgrade Kayobe, and use it to perform an upgrade of the control plane.
 
+        - name: Ensure RabbitMQ is upgraded prior to a SLURP upgrade
+          shell:
+            cmd: dev/rabbitmq-pre-slurp-upgrade.sh &> {{ logs_dir }}/ansible/rabbitmq-pre-slurp-upgrade
+            chdir: "{{ previous_kayobe_src_dir }}"
+            executable: /bin/bash
+          when: is_slurp
+          environment:
+            KAYOBE_CONFIG_SOURCE_PATH: "{{ previous_kayobe_config_src_dir }}"
+            KAYOBE_SOURCE_PATH: "{{ previous_kayobe_src_dir }}"
+
+        - name: Ensure RabbitMQ queues are migrated
+          shell:
+            cmd: dev/rabbitmq-migrate-queues.sh ironic,keystone,neutron,nova &> {{ logs_dir }}/ansible/rabbitmq-migrate-queues
+            chdir: "{{ previous_kayobe_src_dir }}"
+            executable: /bin/bash
+          when: is_slurp
+          environment:
+            KAYOBE_CONFIG_SOURCE_PATH: "{{ previous_kayobe_config_src_dir }}"
+            KAYOBE_SOURCE_PATH: "{{ previous_kayobe_src_dir }}"
+
         - name: Ensure overcloud is upgraded
           shell:
             cmd: "{{ kayobe_src_dir }}/dev/overcloud-upgrade.sh &> {{ logs_dir }}/ansible/overcloud-upgrade"
