@@ -85,7 +85,7 @@
       pip:
         name: python-openstackclient
         state: latest
-        extra_args: "{% if pip_upper_constraints_file %}-c {{ pip_upper_constraints_file }}{% endif %}"
+        extra_args: "{% if openstacksdk_upper_constraints_file %}-c {{ openstacksdk_upper_constraints_file }}{% endif %}"
         virtualenv: "{{ venv }}"
       when: network_registrations | rejectattr('shared') | list | length > 0
 
