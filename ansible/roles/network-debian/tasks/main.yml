@@ -30,7 +30,7 @@
 
 - name: Configure systemd-networkd
   import_role:
-    name: stackhpc.systemd_networkd
+    name: stackhpc.linux.systemd_networkd
   vars:
     systemd_networkd_link: "{{ network_interfaces | networkd_links }}"
     systemd_networkd_netdev: "{{ network_interfaces | networkd_netdevs }}"

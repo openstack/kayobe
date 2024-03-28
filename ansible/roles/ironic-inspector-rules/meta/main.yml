@@ -1,5 +1,5 @@
 ---
 dependencies:
-  - role: stackhpc.os_openstacksdk
+  - role: stackhpc.openstack.os_openstacksdk
     os_openstacksdk_venv: "{{ ironic_inspector_venv }}"
     os_openstacksdk_upper_constraints_file: "{{ openstacksdk_upper_constraints_file }}"

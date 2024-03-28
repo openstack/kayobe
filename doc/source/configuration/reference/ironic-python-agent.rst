@@ -80,18 +80,18 @@ image build``.
     ``ipa_build_dib_env_default`` and ``ipa_build_dib_env_extra``.
 ``ipa_build_dib_git_elements_default``
     List of default git repositories containing Diskimage Builder (DIB)
-    elements. See `stackhpc.os-images
-    <https://galaxy.ansible.com/stackhpc/os-images>`__ role for usage. Default
-    is one item for IPA builder.
+    elements. See `stackhpc.openstack.os_images
+    <https://galaxy.ansible.com/ui/repo/published/stackhpc/openstack/content/role/os_images/>`__
+    role for usage. Default is one item for IPA builder.
 ``ipa_build_dib_git_elements_extra``
     List of additional git repositories containing Diskimage Builder (DIB)
-    elements. See `stackhpc.os-images
-    <https://galaxy.ansible.com/stackhpc/os-images>`__ role for usage. Default
-    is none.
+    elements. See `stackhpc.openstack.os_images
+    <https://galaxy.ansible.com/ui/repo/published/stackhpc/openstack/content/role/os_images/>`__
+    role for usage. Default is none.
 ``ipa_build_dib_git_elements``
     List of git repositories containing Diskimage Builder (DIB) elements. See
-    `stackhpc.os-images <https://galaxy.ansible.com/stackhpc/os-images>`__ role
-    for usage. Default is combination of ``ipa_build_dib_git_elements_default``
+    `stackhpc.openstack.os_images <https://galaxy.ansible.com/ui/repo/published/stackhpc/openstack/content/role/os_images/>`__
+    role for usage. Default is combination of ``ipa_build_dib_git_elements_default``
     and ``ipa_build_dib_git_elements_extra``.
 ``ipa_build_dib_packages``
     List of DIB packages to install. Default is none.

@@ -3,7 +3,7 @@
   # Only required to run on a single host.
   hosts: controllers[0]
   roles:
-    - role: stackhpc.os-networks
+    - role: stackhpc.openstack.os_networks
       os_openstacksdk_install_epel: "{{ dnf_install_epel }}"
       os_openstacksdk_upper_constraints_file: "{{ openstacksdk_upper_constraints_file }}"
       os_networks_venv: "{{ virtualenv_path }}/openstacksdk"

@@ -250,7 +250,7 @@ Dell PowerConnect
 -----------------
 
 Configuration for these devices is applied using the
-``stackhpc.dell-powerconnect-switch`` Ansible role.  The role uses the
+``stackhpc.network.dell_powerconnect_switch`` Ansible role.  The role uses the
 ``expect`` Ansible module to automate interaction with the switch CLI via SSH.
 
 ``switch_type`` should be set to ``dell-powerconnect``.
@@ -299,8 +299,8 @@ Mellanox MLNX OS
 ----------------
 
 Configuration for these devices is applied using the
-``stackhpc.mellanox-switch`` Ansible role.  The role uses the ``expect``
-Ansible module to automate interaction with the switch CLI via SSH.
+``stackhpc.network.mellanox_switch`` Ansible role.  The role uses the
+``expect`` Ansible module to automate interaction with the switch CLI via SSH.
 
 ``switch_type`` should be set to ``mellanox``.
 

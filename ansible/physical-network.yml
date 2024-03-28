@@ -130,7 +130,7 @@
   roles:
     - role: ssh-known-host
 
-    - role: stackhpc.dell-powerconnect-switch
+    - role: stackhpc.network.dell_powerconnect_switch
       dell_powerconnect_switch_type: "{{ switch_type }}"
       dell_powerconnect_switch_provider: "{{ switch_dell_powerconnect_provider }}"
       dell_powerconnect_switch_config: "{{ switch_config }}"
@@ -155,7 +155,7 @@
   roles:
     - role: ssh-known-host
 
-    - role: stackhpc.mellanox-switch
+    - role: stackhpc.network.mellanox_switch
       mellanox_switch_type: "{{ switch_type }}"
       mellanox_switch_provider: "{{ switch_mellanox_provider }}"
       mellanox_switch_config: "{{ switch_config }}"

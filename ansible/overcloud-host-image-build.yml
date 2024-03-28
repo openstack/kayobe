@@ -20,7 +20,7 @@
 
         - name: Ensure overcloud host disk images are built
           include_role:
-            name: stackhpc.os-images
+            name: stackhpc.openstack.os_images
           vars:
             os_images_package_dependencies_extra: "{{ overcloud_dib_host_packages_extra | select | list }}"
             os_images_venv: "{{ virtualenv_path }}/overcloud-host-image-dib"

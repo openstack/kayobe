@@ -15,7 +15,7 @@
 """
 This module provides Ansible filters that generate configuration for
 systemd-networkd NetDevs, links and networks. The results are compatible with
-the stackhpc.ansible_role_systemd_networkd role.
+the stackhpc.linux.systemd_networkd role.
 
 Systemd-networkd uses INI-style configuration files, with the provision for
 multiple sections with the same name, and multiple options with the same name
@@ -504,7 +504,7 @@ def networkd_netdevs(context, names, inventory_hostname=None):
     """Return a dict representation of networkd NetDev configuration.
 
     The format is compatible with the systemd_networkd_netdev variable in the
-    stackhpc.ansible_role_systemd_networkd role.
+    stackhpc.linux.systemd_networkd role.
 
     :param context: a Jinja2 Context object.
     :param names: List of names of networks.
@@ -554,7 +554,7 @@ def networkd_links(context, names, inventory_hostname=None):
     """Return a dict representation of networkd link configuration.
 
     The format is compatible with the systemd_networkd_link variable in the
-    stackhpc.ansible_role_systemd_networkd role.
+    stackhpc.linux.systemd_networkd role.
 
     :param context: a Jinja2 Context object.
     :param names: List of names of networks.
@@ -570,7 +570,7 @@ def networkd_networks(context, names, inventory_hostname=None):
     """Return a dict representation of networkd network configuration.
 
     The format is compatible with the systemd_networkd_network variable in the
-    stackhpc.ansible_role_systemd_networkd role.
+    stackhpc.linux.systemd_networkd role.
 
     :param context: a Jinja2 Context object.
     :param names: List of names of networks.
