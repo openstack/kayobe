@@ -36,6 +36,7 @@
       - junos
       - mellanox
       - nclu
+      - nvue
       - openvswitch
   tasks:
     - name: Fail if both interface name and description limits are specified
@@ -202,3 +203,14 @@
     - role: nclu-switch
       nclu_switch_config: "{{ switch_config }}"
       nclu_switch_interface_config: "{{ switch_interface_config }}"
+
+- name: Ensure Cumulus physical switches are configured with NVUE
+  hosts: switches_of_type_nvue:&switches_in_display_mode_False
+  gather_facts: no
+  roles:
+    - role: ssh-known-host
+
+    - role: nvue-switch
+      nvue_switch_config: "{{ switch_config }}"
+      nvue_switch_interface_config: "{{ switch_interface_config }}"
+      nvue_switch_save: "{{ switch_config_save }}"

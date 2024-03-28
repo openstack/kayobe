@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Adds support for configuring Cumulus switches using the `NVIDIA User
+    Experience command line utility (NVUE)
+    <https://docs.nvidia.com/networking-ethernet-software/cumulus-linux/System-Configuration/NVIDIA-User-Experience-NVUE/>`__.
+    This is integrated with the ``kayobe physical network configure`` command.

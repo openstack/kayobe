@@ -17,6 +17,8 @@ The following switch operating systems are currently supported:
 * Arista EOS
 * Cumulus Linux (via `Network Command Line Utility (NCLU)
   <https://docs.nvidia.com/networking-ethernet-software/cumulus-linux-44/System-Configuration/Network-Command-Line-Utility-NCLU/>`__)
+* Cumulus Linux (via `NVIDIA User Experience command line utility (NVUE)
+  <https://docs.nvidia.com/networking-ethernet-software/cumulus-linux/System-Configuration/NVIDIA-User-Experience-NVUE/>`__)
 * Dell OS 6
 * Dell OS 9
 * Dell OS 10
@@ -211,11 +213,20 @@ Configuration for these devices is applied using the ``nclu`` Ansible module.
 
 ``switch_type`` should be set to ``nclu``.
 
+Cumulus Linux (with NVUE)
+-------------------------
+
+Configuration for these devices is applied using the ``nvidia.nvue.command``
+Ansible module.
+
+``switch_type`` should be set to ``nvue``.
+
 SSH configuration
 ^^^^^^^^^^^^^^^^^
 
-As with any non-switch host in the inventory, the ``nclu`` module relies on the
-default connection parameters used by Ansible:
+As with any non-switch host in the inventory, the ``nclu`` and
+``nvidia.nvue.command`` modules rely on the default connection parameters used
+by Ansible:
 
 * ``ansible_host`` is the hostname or IP address.  Optional.
 

@@ -1,0 +1,12 @@
+#jinja2: trim_blocks: True,lstrip_blocks: True
+{% for line in nvue_switch_config %}
+{{ line }}
+{% endfor %}
+{% for interface, config in nvue_switch_interface_config.items() %}
+{% for line in config.config %}
+set interface {{ interface }} {{ line }}
+{% endfor %}
+{% if config.description is defined %}
+set interface {{ interface }} description {{ config.description }}
+{% endif %}
+{% endfor %}
