@@ -1869,6 +1869,41 @@ class BaremetalComputeInspect(KayobeAnsibleMixin, VaultMixin, Command):
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
 
+class BaremetalComputeIntrospectionDataSave(KayobeAnsibleMixin, VaultMixin, Command):
+    """Save hardware introspection data for the baremetal compute nodes.
+
+    Save hardware introspection data from the overcloud's ironic inspector
+    service to the Ansible control host.
+    """
+
+    def get_parser(self, prog_name):
+        parser = super(BaremetalComputeIntrospectionDataSave, self).get_parser(
+            prog_name)
+        group = parser.add_argument_group("Introspection data")
+        # Defaults for these are applied in the playbook.
+        group.add_argument("--output-dir", type=str,
+                           help="Path to directory in which to save "
+                                "introspection data. Default: "
+                                "$PWD/baremetal-compute-introspection-data")
+        group.add_argument("--output-format", type=str,
+                           help="Format in which to save output data. One of "
+                                "JSON or YAML. Default: JSON",
+                           choices=["JSON", "YAML"])
+        return parser
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Saving introspection data")
+        extra_vars = {}
+        if parsed_args.output_dir:
+            extra_vars['output_dir'] = parsed_args.output_dir
+        if parsed_args.output_format:
+            extra_vars['output_format'] = parsed_args.output_format
+        playbooks = _build_playbook_list(
+            "baremetal-compute-introspection-data-save")
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  extra_vars=extra_vars)
+
+
 class BaremetalComputeManage(KayobeAnsibleMixin, VaultMixin, Command):
     """Put baremetal compute nodes into the manageable provision state."""
 

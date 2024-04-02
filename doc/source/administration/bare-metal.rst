@@ -43,6 +43,18 @@ compute nodes::
 
     (kayobe) $ kayobe baremetal compute inspect
 
+Saving Hardware Introspection Data
+----------------------------------
+
+Introspection data will be stored in the nginx service within the
+``inspection_store`` container. This data may be saved to the control host::
+
+    (kayobe) $ kayobe baremetal compute introspection data save
+
+``--output-dir`` may be used to specify the directory in which introspection
+data files will be saved. ``--output-format`` may be used to set the format of
+the files.
+
 Rename
 ------
 
