@@ -72,6 +72,12 @@ inspector_ipmi_username: "{{ ipmi_username }}"
 # Ironic inspector IPMI password to set.
 inspector_ipmi_password: "{{ ipmi_password }}"
 
+# Ironic inspector Redfish username to set.
+inspector_redfish_username: "{{ ipmi_username }}"
+
+# Ironic inspector Redfish password to set.
+inspector_redfish_password: "{{ ipmi_password }}"
+
 # Ironic inspector default network interface name on which to check for an LLDP
 # switch port description to use as the node's name.
 inspector_lldp_switch_port_interface_default: eth0
@@ -83,11 +89,26 @@ inspector_lldp_switch_port_interface_map: {}
 ###############################################################################
 # Ironic inspector introspection rules configuration.
 
+# Enable IPMI rules:
+inspector_rules_ipmi_enabled: True
+
 # IPMI username referenced by inspector rule.
 inspector_rule_var_ipmi_username:
 
 # IPMI password referenced by inspector rule.
 inspector_rule_var_ipmi_password:
+
+# Enable Redfish rules
+inspector_rules_redfish_enabled: False
+
+# Redfish username referenced by inspector rule.
+inspector_rule_var_redfish_username:
+
+# Redfish password referenced by inspector rule.
+inspector_rule_var_redfish_password:
+
+# Redfish CA setting.
+inspector_rule_var_redfish_verify_ca: True
 
 # Ironic inspector rule to set IPMI credentials.
 inspector_rule_ipmi_credentials:
@@ -304,9 +325,47 @@ inspector_rule_save_data:
       path: "extra/introspection_data"
       value: "{data}"
 
+# Redfish rules
+# Ironic inspector rule to set Redfish credentials.
+inspector_rule_redfish_credentials:
+  description: "Set Redfish driver_info if no credentials"
+  conditions:
+    - field: "node://driver_info.redfish_username"
+      op: "is-empty"
+    - field: "node://driver_info.redfish_password"
+      op: "is-empty"
+  actions:
+    - action: "set-attribute"
+      path: "driver_info/redfish_username"
+      value: "{{ inspector_rule_var_redfish_username }}"
+    - action: "set-attribute"
+      path: "driver_info/redfish_password"
+      value: "{{ inspector_rule_var_redfish_password }}"
+
+# Ironic inspector rule to set Redfish address.
+inspector_rule_redfish_address:
+  description: "Set Redfish address"
+  conditions:
+    - field: "node://driver_info.redfish_address"
+      op: "is-empty"
+  actions:
+    - action: "set-attribute"
+      path: "driver_info/redfish_address"
+      value: "{data[inventory][bmc_address]}"
+
+# Ironic inspector rule to set Redfish certificate authority.
+inspector_rule_redfish_verify_ca:
+  description: "Set Redfish Verify CA"
+  conditions:
+    - field: "node://driver_info.redfish_verify_ca"
+      op: "is-empty"
+  actions:
+    - action: "set-attribute"
+      path: "driver_info/redfish_verify_ca"
+      value: "{{ inspector_rule_var_redfish_verify_ca }}"
+
 # List of default ironic inspector rules.
 inspector_rules_default:
-  - "{{ inspector_rule_ipmi_credentials }}"
   - "{{ inspector_rule_deploy_kernel }}"
   - "{{ inspector_rule_deploy_ramdisk }}"
   - "{{ inspector_rule_root_hint_init }}"
@@ -318,11 +377,19 @@ inspector_rules_default:
   - "{{ inspector_rule_save_system_vendor_serial_number }}"
   - "{{ inspector_rule_save_system_vendor_product_name }}"
 
+inspector_rules_ipmi:
+  - "{{ inspector_rule_ipmi_credentials }}"
+
+inspector_rules_redfish:
+  - "{{ inspector_rule_redfish_credentials }}"
+  - "{{ inspector_rule_redfish_address }}"
+  - "{{ inspector_rule_redfish_verify_ca }}"
+
 # List of additional ironic inspector rules.
 inspector_rules_extra: []
 
 # List of all ironic inspector rules.
-inspector_rules: "{{ inspector_rules_default + inspector_rules_extra }}"
+inspector_rules: "{{ inspector_rules_default + inspector_rules_extra + (inspector_rules_ipmi if inspector_rules_ipmi_enabled | bool else []) + (inspector_rules_redfish if inspector_rules_redfish_enabled | bool else []) }}"
 
 ###############################################################################
 # Dell switch LLDP workaround configuration.
