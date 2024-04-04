@@ -113,8 +113,7 @@ Backup
 It should be safe to keep services running during the backup, but for maximum
 safety they may optionally be stopped::
 
-    docker exec -it bifrost_deploy \
-    systemctl stop ironic-api ironic-conductor ironic-inspector
+    docker exec -it bifrost_deploy systemctl stop ironic ironic-inspector
 
 Then, to perform the backup::
 
@@ -123,8 +122,7 @@ Then, to perform the backup::
 
 If the services were stopped prior to the backup, start them again::
 
-    docker exec -it bifrost_deploy \
-    systemctl start ironic-api ironic-conductor ironic-inspector
+    docker exec -it bifrost_deploy systemctl start ironic ironic-inspector
 
 Restore
 ^^^^^^^
@@ -132,8 +130,7 @@ Restore
 Prior to restoring the database, the Ironic and Ironic Inspector services
 should be stopped::
 
-    docker exec -it bifrost_deploy \
-    systemctl stop ironic-api ironic-conductor ironic-inspector
+    docker exec -it bifrost_deploy systemctl stop ironic ironic-inspector
 
 The database may then safely be restored::
 
@@ -142,8 +139,7 @@ The database may then safely be restored::
 
 Finally, start the Ironic and Ironic Inspector services again::
 
-    docker exec -it bifrost_deploy \
-    systemctl start ironic-api ironic-conductor ironic-inspector
+    docker exec -it bifrost_deploy systemctl start ironic ironic-inspector
 
 Running Commands
 ================
