@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an issue where Dell OS6 and Dell OS9 switch configuration was not
+    applied correctly. `LP#2061102
+    <https://bugs.launchpad.net/kayobe/+bug/2061102>`__.
