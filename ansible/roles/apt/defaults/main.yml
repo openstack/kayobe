@@ -20,7 +20,7 @@ apt_proxy_https: "{{ apt_proxy_http }}"
 apt_config: []
 
 # Directory containing GPG keyrings for apt repos.
-apt_keys_path: "/usr/local/share/keyrings"
+apt_keys_path: "/etc/apt/keyrings"
 
 # List of apt keys. Each item is a dict containing the following keys:
 # * url: URL of key
