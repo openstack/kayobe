@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fixes default Ubuntu Apt keyrings location to the recommended
+    ``/etc/apt/keyrings``.
