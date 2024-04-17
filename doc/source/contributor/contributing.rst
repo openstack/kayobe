@@ -87,6 +87,9 @@ is the same place as for bugs.
 A more lightweight task tracking is done via etherpad - `Whiteboard
 <https://etherpad.openstack.org/p/KollaWhiteBoard>`__.
 
+To see an overview of in-progress patches, sorted into useful sections, you can
+view the `Kayobe Review Dashboard <https://review.opendev.org/dashboard/?title=Kayobe+Review+Dashboard&foreach=%28project%3Aopenstack%2Fkayobe+OR+project%3Aopenstack%2Fkayobe%2Dconfig+OR+project%3Aopenstack%2Fkayobe%2Dconfig%2Ddev%29+status%3Aopen+NOT+label%3ACode%2DReview%3C%3D%2D2+NOT+label%3AWorkflow%3C%3D%2D1&High+priority+changes=label%3AReview%2DPriority%3D2&Priority+changes=label%3AReview%2DPriority%3D1&Feature+freeze=label%3AReview%2DPriority%3D%2D1&Stable+branch+backports=branch%3A%5Estable%2F.%2A+status%3Aopen+NOT+label%3AReview%2DPriority%3D%2D1&Small+things+%28%3C25+LOC%2C+limit+25%29+on+master+branch=delta%3A%3C%3D25+limit%3A25+NOT+label%3ACode%2DReview%2D1+label%3AVerified%3E%3D1%2Czuul+NOT+label%3AReview%2DPriority%3D%2D1+branch%3Amaster&Needs+Final+Approval+%28to+land+on+master+branch%29=NOT+label%3AWorkflow%3E%3D1+NOT+label%3AWorkflow%3C%3D%2D1+NOT+owner%3Aself+label%3ACode%2DReview%3E%3D2+label%3AVerified%3E%3D1%2Czuul+NOT+label%3AReview%2DPriority%3D%2D1+branch%3Amaster&Needs+revisit+%28You+were+a+reviewer+but+haven%27t+voted+in+the+current+revision%29=reviewer%3Aself+limit%3A50&Newer+%28%3C1wk%29+Open+Patches+%28limit+25%29+on+master+branch=%2Dage%3A1week+limit%3A25+NOT+label%3AWorkflow%3E%3D1+label%3AVerified%3E%3D1%2Czuul+NOT+label%3ACode%2DReview%3E%3D2+NOT+label%3AReview%2DPriority%3D%2D1+branch%3Amaster&Older+%28%3E1wk%29+Open+Patches+Passing+Zuul+Tests+%28limit+50%29+on+master+branch=age%3A1week+limit%3A50+NOT+label%3AWorkflow%3E%3D1+NOT+label%3ACode%2DReview%3C%3D%2D1+NOT+label%3ACode%2DReview%3E%3D1+label%3AVerified%3E%3D1%2Czuul+NOT+label%3AReview%2DPriority%3D%2D1+branch%3Amaster>`__.
+
 Reporting a Bug
 ~~~~~~~~~~~~~~~
 
