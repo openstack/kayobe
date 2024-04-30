@@ -1,0 +1,22 @@
+---
+fixes:
+  - |
+    The Ansible search paths, when running Kayobe internal playbooks, have been
+    modified so that collections, roles and plugins internal to the Kayobe
+    installation have precedence over those installed in Kayobe configuration.
+    This improves the usability as it is now possible to install a newer
+    version of an extension without affecting internal Kayobe playbooks.
+    `LP#2056473 <https://launchpad.net/bugs/2056473>`__
+upgrade:
+  - |
+    Ansible plugins, roles, and collections (collectively known as extensions)
+    installed in Kayobe configuration no longer have precedence over internal
+    Kayobe variants of the same extension. You can revert back to the previous
+    behaviour by manually exporting the relevant Ansible variables, e.g
+    ``ANSIBLE_COLLECTIONS_PATH``. It is not anticipated that this will affect
+    many users as it is still possible to supplement Kayobe with additional
+    plugins.
+  - |
+    System folders and home directories are no longer searched when looking for
+    Ansible extensions. It is recommended to install your collections using
+    ``$KAYOBE_CONFIG_PATH/ansible/requirements.yml``.
