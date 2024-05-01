@@ -144,7 +144,7 @@ function is_yum {
 function install_dependencies {
     echo "Installing package dependencies for kayobe"
     if is_dnf; then
-        sudo dnf -y install gcc git vim python3-pyyaml libffi-devel
+        sudo dnf -y install gcc git vim python3-devel python3-pyyaml libffi-devel
     elif is_yum; then
         echo "CentOS 7 is no longer supported"
         exit 1
