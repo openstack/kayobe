@@ -160,6 +160,8 @@ kolla_openstack_custom_config_include_globs_default:
     glob: sahara/**
   - enabled: '{{ kolla_enable_swift | bool }}'
     glob: swift/**
+  - enabled: '{{ kolla_enable_telegraf | bool }}'
+    glob: telegraf/**
 
 # Extra items to add to kolla_openstack_custom_config_include_globs_default
 # to produce kolla_openstack_custom_config_include_globs.
@@ -270,6 +272,10 @@ kolla_openstack_custom_config_rules_default:
     strategy: template
     priority: 1000
   - glob: "**/*wsgi*.conf"
+    strategy: template
+    priority: 1000
+  # NOTE(wszumksi): Telegraf uses toml for its configuration files
+  - glob: telegraf/**
     strategy: template
     priority: 1000
   # INI files
@@ -830,3 +836,9 @@ kolla_extra_sahara:
 
 # Whether to enable swift.
 kolla_enable_swift: false
+
+###############################################################################
+# Telegraf configuration.
+
+# Whether to enable telegraf
+kolla_enable_telegraf: true

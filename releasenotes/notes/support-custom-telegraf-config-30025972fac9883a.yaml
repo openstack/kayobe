@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Custom telegraf configuration is now supported. See :kayobe-doc:`Kayobe documentation on
+    configuring kolla-ansible services <configuration/reference/kolla-ansible.html>`.
