@@ -39,17 +39,15 @@ def test_network_ethernet_vlan(host):
     assert interface.exists
     assert '192.168.35.1' in interface.addresses
     assert host.file('/sys/class/net/dummy2.42/lower_dummy2').exists
-    # FIXME(bbezak): remove following IF after ansible-role-interfaces
-    # receive support for custom routes in NetworkManager
-    if not ('centos' in host.system_info.distribution.lower() or
-            'rocky' in host.system_info.distribution.lower()):
-       routes = host.check_output(
-           '/sbin/ip route show dev dummy2.42 table kayobe-test-route-table')
-       assert '192.168.40.0/24 via 192.168.35.254' in routes
-       rules = host.check_output(
-           '/sbin/ip rule show table kayobe-test-route-table')
-       expected = 'from 192.168.35.0/24 lookup kayobe-test-route-table'
-       assert expected in rules
+    routes = host.check_output(
+        '/sbin/ip route show dev dummy2.42 table kayobe-test-route-table')
+    assert '192.168.40.0/24 via 192.168.35.254' in routes
+    rules = host.check_output(
+        '/sbin/ip rule show table kayobe-test-route-table')
+    expected_from = 'from 192.168.35.0/24 lookup kayobe-test-route-table'
+    expected_to = 'to 192.168.35.0/24 lookup kayobe-test-route-table'
+    assert expected_from in rules
+    assert expected_to in rules
 
 
 def test_network_bridge(host):

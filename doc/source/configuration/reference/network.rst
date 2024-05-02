@@ -271,32 +271,16 @@ Configuring IP Routing Policy Rules
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 IP routing policy rules may be configured by setting the ``rules`` attribute
-for a network to a list of rules. The format of each rule currently differs
-between CentOS/Rocky and Ubuntu.
+for a network to a list of rules. Two formats are supported for defining rules:
+string format and dict format. String format rules are only supported on
+CentOS Stream and Rocky Linux systems.
 
-CentOS/Rocky
-""""""""""""
+Dict format rules
+"""""""""""""""""
 
-The format of a rule is the string which would be appended to ``ip rule
-<add|del>`` to create or delete the rule.
-
-To configure a network called ``example`` with an IP routing policy rule to
-handle traffic from the subnet ``10.1.0.0/24`` using the routing table
-``exampleroutetable``:
-
-.. code-block:: yaml
-   :caption: ``networks.yml``
-
-   example_rules:
-     - from 10.1.0.0/24 table exampleroutetable
-
-These rules will be configured on all hosts to which the network is mapped.
-
-Ubuntu
-""""""
-
-The format of a rule is a dictionary with optional items ``from``, ``to``,
-``priority``, and ``table``.
+The dict format of a rule is a dictionary with optional items ``from``, ``to``,
+``priority``, and ``table``. ``table`` should be the name of a route table
+defined in ``network_route_tables``.
 
 To configure a network called ``example`` with an IP routing policy rule to
 handle traffic from the subnet ``10.1.0.0/24`` using the routing table
@@ -308,6 +292,26 @@ handle traffic from the subnet ``10.1.0.0/24`` using the routing table
    example_rules:
      - from: 10.1.0.0/24
        table: exampleroutetable
+
+These rules will be configured on all hosts to which the network is mapped.
+
+String format rules (CentOS Stream/Rocky Linux only)
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+The string format of a rule is the string which would be appended to ``ip rule
+<add|del>`` to create or delete the rule. Note that when using NetworkManager
+(the default since Zed and in Yoga when using Rocky Linux 9) the table must be
+specified by ID.
+
+To configure a network called ``example`` with an IP routing policy rule to
+handle traffic from the subnet ``10.1.0.0/24`` using the routing table with ID
+1:
+
+.. code-block:: yaml
+   :caption: ``networks.yml``
+
+   example_rules:
+     - from 10.1.0.0/24 table 1
 
 These rules will be configured on all hosts to which the network is mapped.
 

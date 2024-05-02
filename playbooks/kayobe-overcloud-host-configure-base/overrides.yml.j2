@@ -45,9 +45,13 @@ test_net_eth_vlan_routes:
     table: kayobe-test-route-table
 test_net_eth_vlan_rules:
 {% if ansible_facts.os_family == 'RedHat' %}
-  - from 192.168.35.0/24 table kayobe-test-route-table
+  - from 192.168.35.0/24 table 2
+  - to: 192.168.35.0/24
+    table: kayobe-test-route-table
 {% else %}
   - from: 192.168.35.0/24
+    table: kayobe-test-route-table
+  - to: 192.168.35.0/24
     table: kayobe-test-route-table
 {% endif %}
 test_net_eth_vlan_zone: test-zone1

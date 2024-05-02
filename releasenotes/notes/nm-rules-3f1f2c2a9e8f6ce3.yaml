@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    Adds support for specifying IP policy-based routing rules using the
+    dict-based format on CentOS Stream and Rocky Linux systems. The
+    string-based format is still supported on these systems.
+other:
+  - |
+    Kayobe networking documentation for IP rules on CentOS Stream/Rocky Linux
+    systems has been updated to reflect that routing tables must be specified
+    by ID rather than by name.
