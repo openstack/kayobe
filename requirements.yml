@@ -2,7 +2,7 @@
 collections:
   - name: https://opendev.org/openstack/ansible-collection-kolla
     type: git
-    version: stable/zed
+    version: unmaintained/zed
   - name: dellemc.os10
     version: 1.1.1
 
