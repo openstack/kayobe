@@ -41,3 +41,11 @@
         cmd: dev/overcloud-test-baremetal.sh &> {{ logs_dir }}/ansible/overcloud-test-baremetal
         chdir: "{{ kayobe_src_dir }}"
         executable: /bin/bash
+
+    - name: Register dummy baremetal compute nodes
+      shell:
+        cmd: >
+          source {{ kayobe_src_dir }}/dev/environment-setup.sh &&
+          source "${KOLLA_CONFIG_PATH:-/etc/kolla}/admin-openrc.sh" &&
+          kayobe baremetal compute register &> {{ logs_dir }}/ansible/baremetal-compute-register
+        executable: /bin/bash

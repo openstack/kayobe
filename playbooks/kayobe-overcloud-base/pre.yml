@@ -32,6 +32,16 @@
         replace: 'default_boot_mode: "uefi"'
       when: ironic_boot_mode == 'uefi'
 
+    - name: Ensure baremetal inventory exists
+      template:
+        src: baremetal.j2
+        dest: "{{ kayobe_config_src_dir }}/etc/kayobe/inventory/baremetal"
+
+    - name: Ensure baremetal-compute group_vars exists
+      template:
+        src: baremetal-compute.j2
+        dest: "{{ kayobe_config_src_dir }}/etc/kayobe/inventory/group_vars/baremetal-compute"
+
     - name: Ensure kayobe is installed
       shell:
         cmd: dev/install.sh &> {{ logs_dir }}/ansible/install
