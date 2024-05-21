@@ -1,8 +1,9 @@
 ---
 features:
   - |
-    Adds new Redfish rules to Ironic and Bifrost introspection
-    New variables available:
+    Adds new Redfish rules to Ironic and Bifrost introspection. The following
+    variables are added:
+
     * ``inspector_rules_redfish_enabled``
     * ``inspector_redfish_username``
     * ``inspector_redfish_password``
