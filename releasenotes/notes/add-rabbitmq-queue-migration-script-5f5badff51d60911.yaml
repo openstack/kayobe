@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Adds a new dev script ``dev/rabbitmq-migrate-queues.sh`` that will enable
+    quorum queues and migrate RabbitMQ to use these.
