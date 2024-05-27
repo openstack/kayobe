@@ -31,6 +31,22 @@
     seed_host: "{{ groups['seed'][0] }}"
   gather_facts: no
   tasks:
+    - name: Get PXE MAC address
+      command: >
+        docker exec bifrost_deploy
+        bash -c '
+        export OS_CLOUD=bifrost &&
+        export OS_BAREMETAL_API_VERSION=1.34 &&
+        export BIFROST_INVENTORY_SOURCE=ironic &&
+        export BIFROST_NODE_NAMES="{{ inventory_hostname }}" &&
+        openstack baremetal port list --node {{ inventory_hostname }} --fields address -f value'
+      register: pxe_result
+      delegate_to: "{{ seed_host }}"
+      vars:
+        # NOTE: Without this, the seed's ansible_host variable will not be
+        # respected when using delegate_to.
+        ansible_host: "{{ hostvars[seed_host].ansible_host | default(seed_host) }}"
+
     - name: Check the ironic node's initial provision state
       command: >
         docker exec bifrost_deploy
@@ -141,3 +157,26 @@
         - wait_available | bool
         - initial_provision_state != 'available'
         - final_provision_state != 'available'
+
+    - name: Delete host_vars file
+      become: yes
+      ansible.builtin.file:
+        path: /etc/kolla/bifrost/inventory/host_vars/{{ inventory_hostname }}
+        state: absent
+      delegate_to: "{{ seed_host }}"
+      vars:
+        # NOTE: Without this, the seed's ansible_host variable will not be
+        # respected when using delegate_to.
+        ansible_host: "{{ hostvars[seed_host].ansible_host | default(seed_host) }}"
+
+    - name: Delete ironic-mac-addr.conf
+      command: >
+        docker exec bifrost_deploy
+        bash -c '
+        rm -f /etc/dnsmasq.d/bifrost.dhcp-hosts.d/ironic-{{ item }}.conf'
+      loop: "{{ pxe_result.stdout_lines }}"
+      delegate_to: "{{ seed_host }}"
+      vars:
+        # NOTE: Without this, the seed's ansible_host variable will not be
+        # respected when using delegate_to.
+        ansible_host: "{{ hostvars[seed_host].ansible_host | default(seed_host) }}"

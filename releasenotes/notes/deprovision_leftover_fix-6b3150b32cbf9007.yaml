@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fixes issue of ironic files being left behind after node deprovision which
+    prevents it from being enrolled and provisioned again.
