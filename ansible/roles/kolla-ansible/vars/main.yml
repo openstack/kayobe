@@ -107,7 +107,7 @@ kolla_feature_flags:
   - external_api_firewalld
   - external_mariadb_load_balancer
   - fluentd
-  - freezer
+  - fluentd_systemd
   - glance
   - glance_horizon_policy_file
   - glance_image_cache
@@ -124,29 +124,23 @@ kolla_feature_flags:
   - horizon_blazar
   - horizon_cloudkitty
   - horizon_designate
-  - horizon_freezer
+  - horizon_fwaas
   - horizon_heat
   - horizon_ironic
   - horizon_magnum
   - horizon_manila
   - horizon_masakari
   - horizon_mistral
-  - horizon_murano
   - horizon_neutron_vpnaas
   - horizon_octavia
-  - horizon_sahara
-  - horizon_senlin
-  - horizon_solum
   - horizon_tacker
   - horizon_trove
-  - horizon_vitrage
   - horizon_watcher
   - horizon_zun
   - influxdb
   - ironic
   - ironic_neutron_agent
   - ironic_prometheus_exporter
-  - ironic_pxe_uefi
   - iscsid
   - keepalived
   - keystone
@@ -170,11 +164,11 @@ kolla_feature_flags:
   - memcached
   - mistral
   - multipathd
-  - murano
   - neutron
   - neutron_agent_ha
   - neutron_bgp_dragent
   - neutron_dvr
+  - neutron_fwaas
   - neutron_horizon_policy_file
   - neutron_infoblox_ipam_agent
   - neutron_metering
@@ -186,6 +180,7 @@ kolla_feature_flags:
   - neutron_segments
   - neutron_sfc
   - neutron_sriov
+  - neutron_taas
   - neutron_trunk
   - neutron_vpnaas
   - nova
@@ -203,7 +198,6 @@ kolla_feature_flags:
   - openstack_core
   - openvswitch
   - osprofiler
-  - outward_rabbitmq
   - ovn
   - ovs_dpdk
   - placement
@@ -229,10 +223,7 @@ kolla_feature_flags:
   - proxysql
   - rabbitmq
   - redis
-  - sahara
-  - senlin
   - skyline
-  - solum
   - swift
   - swift_recon
   - swift_s3api
@@ -241,7 +232,5 @@ kolla_feature_flags:
   - trove
   - trove_singletenant
   - venus
-  - vitrage
-  - vitrage_prometheus_datasource
   - watcher
   - zun
