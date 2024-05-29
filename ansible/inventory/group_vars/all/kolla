@@ -151,8 +151,6 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_etcd | bool }}"
   - regex: ^fluentd
     enabled: "{{ kolla_enable_fluentd | bool }}"
-  - regex: freezer
-    enabled: "{{ kolla_enable_freezer | bool }}"
   - regex: ^glance
     enabled: "{{ kolla_enable_glance | bool }}"
   - regex: ^gnocchi
@@ -531,7 +529,6 @@ kolla_enable_cyborg: "no"
 kolla_enable_designate: "no"
 kolla_enable_etcd: "no"
 kolla_enable_fluentd: "yes"
-kolla_enable_freezer: "no"
 kolla_enable_gnocchi: "no"
 kolla_enable_grafana: "no"
 kolla_enable_hacluster: "no"

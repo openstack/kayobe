@@ -158,7 +158,6 @@
             kolla_enable_cloudkitty: True
             kolla_enable_designate: True
             kolla_enable_etcd: True
-            kolla_enable_freezer: True
             kolla_enable_gnocchi: True
             kolla_enable_grafana: True
             kolla_enable_haproxy: True
@@ -278,7 +277,6 @@
               #enable_cloudkitty: True
               #enable_designate: True
               #enable_etcd: True
-              #enable_freezer: True
               #enable_gnocchi: True
               #enable_grafana: True
               #enable_haproxy: True
