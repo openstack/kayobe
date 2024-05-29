@@ -67,7 +67,6 @@
         - keystone.conf
         - magnum.conf
         - manila.conf
-        - murano.conf
         - backup.my.cnf
         - galera.cnf
         - masakari.conf
@@ -75,7 +74,6 @@
         - neutron/ml2_conf.ini
         - nova.conf
         - octavia.conf
-        - sahara.conf
         - placement.conf
 
     - name: Ensure extra YAML configuration files exist

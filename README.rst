@@ -46,8 +46,6 @@ Features
   <https://docs.openstack.org/nova/latest/>`_
 * Containerised workloads on bare metal using `OpenStack magnum
   <https://docs.openstack.org/magnum/latest/>`_
-* Big data on bare metal using `OpenStack sahara
-  <https://docs.openstack.org/sahara/latest/>`_
 * Control plane monitoring using `Prometheus <https://prometheus.io/>`__ and
   `Grafana <https://grafana.com/>`__.
 * Log aggregation using `OpenSearch <https://opensearch.org/docs/latest/>`__

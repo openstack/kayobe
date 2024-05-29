@@ -43,13 +43,11 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
      'manila.conf',
      'masakari.conf',
      'multipath.conf',
-     'murano.conf',
      'neutron/ml2_conf.ini',
      'neutron.conf',
      'nova.conf',
      'octavia.conf',
      'placement.conf',
-     'sahara.conf',
      'backup.my.cnf'])
 def test_service_ini_file(host, path):
     # TODO(mgoddard): Check more of config file contents.
@@ -77,13 +75,11 @@ def test_service_ini_file(host, path):
      'magnum.conf',
      'manila.conf',
      'masakari.conf',
-     'murano.conf',
      'neutron/ml2_conf.ini',
      'neutron.conf',
      'nova.conf',
      'octavia.conf',
      'placement.conf',
-     'sahara.conf',
      'backup.my.cnf'])
 def test_service_ini_file_extra_confs(host, path):
     # Tests config added via extra config files

@@ -733,8 +733,6 @@ which files are supported.
    ``masakari.conf``               Masakari configuration.
    ``masakari/*``                  Extended masakari configuration.
    ``multipath.conf``              Multipathd configuration.
-   ``murano.conf``                 Murano configuration.
-   ``murano/*``                    Extended murano configuration.
    ``neutron.conf``                Neutron configuration.
    ``neutron/ml2_conf.ini``        Neutron ML2 configuration.
    ``neutron/*``                   Extended neutron configuration.
@@ -746,8 +744,6 @@ which files are supported.
    ``placement.conf``              Placement configuration.
    ``placement/*``                 Extended Placement configuration.
    ``prometheus/*``                Prometheus configuration.
-   ``sahara.conf``                 Sahara configuration.
-   ``sahara/*``                    Extended sahara configuration.
    ``swift/*``                     Extended swift configuration.
    ``telegraf/*``                  Extended Telegraf configuration.
    =============================== =======================================================

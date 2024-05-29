@@ -114,10 +114,6 @@ provisioner:
         kolla_extra_multipathd: |
           [extra-multipath.conf]
           foo=bar
-        kolla_enable_murano: true
-        kolla_extra_murano: |
-          [extra-murano.conf]
-          foo=bar
         kolla_enable_neutron: true
         kolla_extra_neutron: |
           [extra-neutron.conf]
@@ -142,10 +138,6 @@ provisioner:
           [extra-placement.conf]
           foo=bar
         kolla_enable_prometheus: true
-        kolla_enable_sahara: true
-        kolla_extra_sahara: |
-          [extra-sahara.conf]
-          foo=bar
         kolla_enable_swift: true
         kolla_enable_telegraf: true
   lint:

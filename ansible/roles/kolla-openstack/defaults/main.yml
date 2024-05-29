@@ -126,10 +126,6 @@ kolla_openstack_custom_config_include_globs_default:
     glob: multipath.conf
   - enabled: '{{ kolla_enable_multipathd | bool }}'
     glob: multipath/**
-  - enabled: '{{ kolla_enable_murano | bool }}'
-    glob: murano.conf
-  - enabled: '{{ kolla_enable_murano | bool }}'
-    glob: murano/**
   - enabled: '{{ kolla_enable_neutron | bool }}'
     glob: neutron.conf
   - enabled: '{{ kolla_enable_neutron | bool }}'
@@ -154,10 +150,6 @@ kolla_openstack_custom_config_include_globs_default:
     glob: placement/**
   - enabled: '{{ kolla_enable_prometheus | bool }}'
     glob: prometheus/**
-  - enabled: '{{ kolla_enable_sahara | bool }}'
-    glob: sahara.conf
-  - enabled: '{{ kolla_enable_sahara | bool }}'
-    glob: sahara/**
   - enabled: '{{ kolla_enable_swift | bool }}'
     glob: swift/**
   - enabled: '{{ kolla_enable_telegraf | bool }}'
@@ -712,16 +704,6 @@ kolla_enable_multipathd: false
 kolla_extra_multipathd:
 
 ###############################################################################
-# Murano configuration.
-
-# Whether to enable Murano.
-kolla_enable_murano: false
-
-# Deprecated:
-# Free form extra configuration to append to murano.conf.
-kolla_extra_murano:
-
-###############################################################################
 # Neutron configuration.
 
 # Whether to enable Neutron.
@@ -820,16 +802,6 @@ kolla_extra_placement:
 
 # Whether to enable Prometheus.
 kolla_enable_prometheus: false
-
-###############################################################################
-# Sahara configuration.
-
-# Whether to enable sahara.
-kolla_enable_sahara: false
-
-# Deprecated:
-# Free form extra configuration to append to sahara.conf.
-kolla_extra_sahara:
 
 ###############################################################################
 # Swift configuration.

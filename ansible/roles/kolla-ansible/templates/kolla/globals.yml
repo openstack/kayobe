@@ -394,11 +394,6 @@ libvirt_enable_sasl: {{ kolla_libvirt_enable_sasl | bool }}
 #nova_msi_url: "https://www.cloudbase.it/downloads/HyperVNovaCompute_Beta.msi"
 
 #############################
-# Horizon - Dashboard Options
-#############################
-#horizon_backend_database: "{% raw %}{{ enable_murano | bool }}{% endraw %}"
-
-#############################
 # Ironic options
 #############################
 {% if kolla_inspector_dhcp_pool_start and kolla_inspector_dhcp_pool_end %}

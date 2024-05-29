@@ -30,7 +30,6 @@
   vars:
     rabbitmq_containers:
       - rabbitmq
-      - outward_rabbitmq
   tasks:
     - name: Check whether rabbitmq container is running
       command: docker inspect -f {{ '{{.Id}}' }} {{ item }}
