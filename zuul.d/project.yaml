@@ -37,6 +37,8 @@
         - openstack-tox-py39
         - openstack-tox-py310
         - openstack-tox-py311
+        - openstack-tox-py312:
+            voting: false
     gate:
       jobs:
         - kayobe-tox-ansible-syntax
