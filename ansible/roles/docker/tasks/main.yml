@@ -11,7 +11,7 @@
       {%- set _ = options.update({"registry-mirrors": docker_registry_mirrors}) -%}
       {%- endif -%}
       {%- if docker_daemon_mtu -%}
-      {%- set _ = options.update({"mtu": docker_daemon_mtu}) -%}
+      {%- set _ = options.update({"mtu": docker_daemon_mtu | int}) -%}
       {%- endif -%}
       {%- if docker_daemon_live_restore | bool -%}
       {%- set _ = options.update({"live-restore": docker_daemon_live_restore | bool}) -%}
