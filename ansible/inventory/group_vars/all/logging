@@ -1,0 +1,9 @@
+---
+###############################################################################
+# Logging configuration
+
+# Journald storage. One of: volatile, persistent, auto, or none. Defaults to
+# `persistent`.
+journald_storage: persistent
+
+###############################################################################
