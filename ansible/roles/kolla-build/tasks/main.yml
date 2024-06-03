@@ -8,7 +8,6 @@
   delegate_to: localhost
   stat:
     path: "{{ item }}"
-    get_md5: false
     get_checksum: false
     mime: false
   with_items: "{{ repos_yaml_sources }}"
