@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes bugs with the ``kolla_enable_letsencrypt`` variable which were
+    causing overcloud container image build to fail, or to include
+    ``letsencrypt`` images when disabled.
