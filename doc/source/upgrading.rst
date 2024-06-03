@@ -10,9 +10,8 @@ Rocky Linux 9
 =============
 
 The Zed release introduced support for Rocky Linux 9 as a host operating
-system. Rocky Linux 9 support will also be added to Yoga in a future release.
-CentOS Stream 8 users upgrading from Yoga should wait for Rocky Linux 9 support
-to become available before upgrading to Zed.
+system. Rocky Linux 9 support is also available in Yoga. CentOS Stream 8 users
+on Yoga should migrate to Rocky Linux 9 before upgrading to Zed.
 
 Preparation
 ===========
