@@ -32,7 +32,7 @@ typically execute roles in `ansible/roles/
 <https://opendev.org/openstack/kayobe/src/branch/master/ansible/roles>`__.
 Global variable defaults are defined in group variable files in
 `ansible/inventory/group_vars/all/
-<https://opendev.org/openstack/kayobe/src/branch/master/ansible/group_vars/>`__
+<https://opendev.org/openstack/kayobe/src/branch/master/ansible/inventory/group_vars/all/>`__
 and these typically map to commented out variables in the configuration files
 in `etc/kayobe/*.yml
 <https://opendev.org/openstack/kayobe/src/branch/master/etc/kayobe/>`__.
