@@ -18,15 +18,13 @@ therefore users need to build them by themselves.
 
 .. note::
 
-   CentOS Stream 8 is no longer supported as a host OS. The Yoga release will
-   in future support both CentOS Stream 8 and 9, and provides a route for
-   migration.
+   CentOS Stream 8 is no longer supported as a host OS. The Yoga release
+   supports both CentOS Stream 8 and 9, and provides a route for migration.
 
 .. note::
 
-   Rocky Linux 8 is no longer supported as a host OS. The Yoga release will
-   in future support both Rocky Linux 8 and 9, and provides a route for
-   migration.
+   Rocky Linux 8 is no longer supported as a host OS. The Yoga release supports
+   both Rocky Linux 8 and 9, and provides a route for migration.
 
 Supported container images
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
