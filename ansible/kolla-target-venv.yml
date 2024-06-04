@@ -5,6 +5,11 @@
 - name: Ensure a virtualenv exists for kolla-ansible
   hosts: seed:overcloud
   gather_facts: False
+  max_fail_percentage: >-
+    {{ kolla_target_venv_max_fail_percentage |
+       default(host_configure_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   vars:
     # kolla_overcloud_inventory_top_level_group_map looks like:
     # kolla_overcloud_inventory_top_level_group_map:

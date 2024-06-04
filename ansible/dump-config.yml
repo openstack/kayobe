@@ -8,6 +8,10 @@
 - name: Dump configuration from one or more hosts
   hosts: "{{ dump_hosts }}"
   gather_facts: "{{ dump_facts }}"
+  max_fail_percentage: >-
+    {{ dump_config_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - dump-config
   vars:

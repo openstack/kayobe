@@ -3,6 +3,10 @@
 
 - name: Ensure the overcloud nodes are provisioned
   hosts: overcloud
+  max_fail_percentage: >-
+    {{ overcloud_provision_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - provision
   vars:

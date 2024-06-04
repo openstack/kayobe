@@ -4,6 +4,10 @@
 - name: Ensure the Bifrost overcloud inventory is populated
   hosts: overcloud
   gather_facts: no
+  max_fail_percentage: >-
+    {{ kolla_bifrost_hostvars_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - kolla-bifrost-hostvars
   become: true

@@ -1,6 +1,11 @@
 ---
 - name: Ensure DNF repos are configured
   hosts: seed-hypervisor:seed:overcloud:infra-vms
+  max_fail_percentage: >-
+    {{ dnf_max_fail_percentage |
+       default(host_configure_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   vars:
     ansible_python_interpreter: /usr/bin/python3
   tags:

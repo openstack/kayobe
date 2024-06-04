@@ -18,6 +18,11 @@
 - name: Ensure baremetal compute nodes are registered in ironic
   hosts: baremetal-compute
   gather_facts: false
+  max_fail_percentage: >-
+    {{ baremetal_compute_register_max_fail_percentage |
+       default(baremetal_compute_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - baremetal
   vars:

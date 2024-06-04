@@ -20,6 +20,11 @@
 - name: Ensure baremetal compute nodes are available in ironic
   hosts: baremetal-compute
   gather_facts: False
+  max_fail_percentage: >-
+    {{ baremetal_compute_provide_max_fail_percentage |
+       default(baremetal_compute_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   vars:
     venv: "{{ virtualenv_path }}/openstacksdk"
     ansible_python_interpreter: "{{ venv }}/bin/python"

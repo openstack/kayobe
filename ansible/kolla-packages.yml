@@ -1,6 +1,11 @@
 ---
 - name: Ensure Kolla Ansible packages are installed
   hosts: overcloud
+  max_fail_percentage: >-
+    {{ kolla_packages_max_fail_percentage |
+       default(host_configure_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - kolla-packages
   vars:

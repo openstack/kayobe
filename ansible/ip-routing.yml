@@ -3,6 +3,11 @@
 
 - name: Ensure IP routing is enabled
   hosts: seed-hypervisor:seed
+  max_fail_percentage: >-
+    {{ ip_routing_max_fail_percentage |
+       default(host_configure_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - ip-routing
   roles:

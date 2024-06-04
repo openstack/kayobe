@@ -5,6 +5,11 @@
 - name: Ensure a virtualenv exists for kayobe
   hosts: seed:seed-hypervisor:overcloud:infra-vms
   gather_facts: False
+  max_fail_percentage: >-
+    {{ kayobe_target_venv_max_fail_percentage |
+       default(host_configure_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - kayobe-target-venv
   tasks:

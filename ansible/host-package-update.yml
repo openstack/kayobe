@@ -1,6 +1,10 @@
 ---
 - name: Update host packages
   hosts: seed-hypervisor:seed:overcloud:infra-vms
+  max_fail_percentage: >-
+    {{ host_package_update_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   vars:
     # Optionally set this to a list of packages to update. Default behaviour is
     # to update all packages.

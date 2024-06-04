@@ -1,6 +1,10 @@
 ---
 - name: Save overcloud service configuration
   hosts: overcloud
+  max_fail_percentage: >-
+    {{ overcloud_service_config_save_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - service-config-save
   vars:

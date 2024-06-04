@@ -2,6 +2,11 @@
 - name: Ensure the Kolla Ansible user account exists
   hosts: seed:overcloud
   gather_facts: false
+  max_fail_percentage: >-
+    {{ kolla_ansible_user_max_fail_percentage |
+       default(host_configure_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - kolla-ansible
     - kolla-ansible-user

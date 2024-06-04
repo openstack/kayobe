@@ -1,6 +1,11 @@
 ---
 - name: Ensure the libvirt daemon is configured
   hosts: compute
+  max_fail_percentage: >-
+    {{ compute_libvirt_host_max_fail_percentage |
+       default(host_configure_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - libvirt-host
   tasks:

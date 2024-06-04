@@ -4,6 +4,11 @@
 - name: Ensure baremetal compute nodes are PXE booted
   hosts: baremetal-compute
   gather_facts: no
+  max_fail_percentage: >-
+    {{ compute_node_discovery_max_fail_percentage |
+       default(baremetal_compute_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   vars:
     controller_host: "{{ groups['controllers'][0] }}"
   tasks:

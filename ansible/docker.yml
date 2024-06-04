@@ -1,6 +1,11 @@
 ---
 - name: Ensure docker is configured
   hosts: docker
+  max_fail_percentage: >-
+    {{ docker_max_fail_percentage |
+       default(host_configure_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - docker
   tasks:

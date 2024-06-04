@@ -1,6 +1,11 @@
 ---
 - name: Ensure LVM configuration is applied
   hosts: seed-hypervisor:seed:overcloud:infra-vms
+  max_fail_percentage: >-
+    {{ lvm_max_fail_percentage |
+       default(host_configure_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   tags:
     - lvm
     - upgrade-check

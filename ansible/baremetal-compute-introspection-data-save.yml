@@ -18,6 +18,11 @@
 - name: Ensure the baremetal compute nodes' hardware introspection data is saved
   hosts: baremetal-compute
   gather_facts: False
+  max_fail_percentage: >-
+    {{ baremetal_compute_introspection_data_save_max_fail_percentage |
+       default(baremetal_compute_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   vars:
     venv: "{{ virtualenv_path }}/openstack-cli"
     controller_host: "{{ groups['controllers'][0] }}"

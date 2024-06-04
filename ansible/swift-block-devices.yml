@@ -1,6 +1,10 @@
 ---
 - name: Ensure Swift block devices are prepared
   hosts: "{{ swift_hosts }}"
+  max_fail_percentage: >-
+    {{ swift_block_devices_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
   vars:
     swift_hosts: storage
   tags:
