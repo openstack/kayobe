@@ -22,10 +22,17 @@
             group: stack
             remote_src: true
 
-        - name: Ensure base container image is built
+        - name: Ensure seed container images are built
           shell:
             cmd: >
               source {{ kayobe_src_dir }}/dev/environment-setup.sh &&
-              kayobe seed container image build ^base &> {{ logs_dir }}/ansible/container-image-build
+              kayobe seed container image build {{ seed_container_image_regex | default('') }} &> {{ logs_dir }}/ansible/seed-container-image-build
             executable: /bin/bash
-      when: build_images
+
+        - name: Ensure overcloud container images are built
+          shell:
+            cmd: >
+              source {{ kayobe_src_dir }}/dev/environment-setup.sh &&
+              kayobe overcloud container image build {{ overcloud_container_image_regex | default('') }} &> {{ logs_dir }}/ansible/overcloud-container-image-build
+            executable: /bin/bash
+      when: build_images | bool
