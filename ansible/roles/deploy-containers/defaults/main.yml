@@ -1,4 +1,7 @@
 ---
+# Action to perform: One of: "deploy", "destroy".
+deploy_containers_action: "deploy"
+
 deploy_containers_defaults:
   comparisons:
     image: strict

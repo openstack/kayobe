@@ -1,0 +1,15 @@
+---
+
+- name: "[{{ container_name }}] Include tasks file for pre destroy task(s)"
+  include_tasks: "{{ container_config.pre_destroy }}"
+  when: container_config.pre_destroy is defined
+
+- name: "[{{ container_name }}] Delete container"
+  docker_container:
+    name: "{{ container_name }}"
+    state: absent
+  become: true
+
+- name: "[{{ container_name }}] Include tasks file for post destroy task(s)"
+  include_tasks: "{{ container_config.post_destroy }}"
+  when: container_config.post_destroy is defined

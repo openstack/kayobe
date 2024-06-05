@@ -13,6 +13,29 @@ To deprovision the seed VM::
 
     (kayobe) $ kayobe seed vm deprovision
 
+Destroying all services on the seed
+===================================
+
+.. warning::
+
+   This step will destroy all containers, container images, and volumes that were deployed by
+   Kayobe and Kolla. To destroy volumes and images associated with
+   :ref:`custom containers <configuration-seed-custom-containers>`, you must configure the
+   ``post_destroy`` and ``pre_destroy`` hooks to do the clean up manually as Kayobe will not
+   automatically clean these up. It is generally only advised to run this command when
+   you have no important data on the system.
+
+To destroy the seed services::
+
+    (kayobe) $ kayobe seed service destroy --yes-i-really-really-mean-it
+
+This can optionally be used with a tag::
+
+    (kayobe) $ kayobe seed service destroy --yes-i-really-really-mean-it -kt none -t docker-registry
+
+Care must be taken to set both kayobe and kolla tags to avoid accidentally
+destroying other services.
+
 Updating Packages
 =================
 

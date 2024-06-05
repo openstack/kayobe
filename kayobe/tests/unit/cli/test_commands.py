@@ -810,6 +810,7 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [utils.get_data_files_path("ansible", "seed-deploy-containers.yml")],  # noqa
+                extra_vars={'kayobe_action': 'deploy'}
             ),
             mock.call(
                 mock.ANY,
@@ -834,6 +835,7 @@ class TestCase(unittest.TestCase):
                     utils.get_data_files_path(
                         "ansible", "dell-switch-bmp.yml"),
                 ],
+                extra_vars={'kayobe_action': 'deploy'}
             ),
         ]
         self.assertListEqual(expected_calls, mock_run.call_args_list)
@@ -862,6 +864,7 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 [utils.get_data_files_path("ansible", "seed-deploy-containers.yml")],  # noqa
+                extra_vars={'kayobe_action': 'deploy'}
             ),
             mock.call(
                 mock.ANY,

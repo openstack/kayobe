@@ -3,5 +3,7 @@
   hosts: seed
   tags:
     - seed-deploy-containers
+  vars:
+    deploy_containers_action: "{{ kayobe_action }}"
   roles:
     - role: deploy-containers
