@@ -55,6 +55,10 @@ Testing
 
 Test the code and fix at a minimum all critical issues.
 
+Remember to use the ``check experimental`` review comment on a Gerrit change to
+trigger jobs in the experimental pipeline, which provide increased test
+coverage.
+
 Synchronise with Kolla Ansible feature flags
 --------------------------------------------
 
