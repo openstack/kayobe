@@ -41,3 +41,9 @@
     systemd_networkd_cleanup: true
     systemd_networkd_cleanup_patterns:
       - "{{ networkd_prefix }}*"
+
+- name: Ensure udev is triggered on links changes
+  become: true
+  command: "udevadm trigger --verbose --subsystem-match=net --action=add"
+  changed_when: false
+  when: network_interfaces | networkd_links | length

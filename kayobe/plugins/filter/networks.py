@@ -275,6 +275,11 @@ def net_mtu(context, name, inventory_hostname=None):
 
 
 @jinja2.pass_context
+def net_macaddress(context, name, inventory_hostname=None):
+    return net_attr(context, name, 'macaddress', inventory_hostname)
+
+
+@jinja2.pass_context
 def net_bridge_stp(context, name, inventory_hostname=None):
     """Return the Spanning Tree Protocol (STP) state for a bridge.
 
@@ -394,6 +399,7 @@ def net_interface_obj(context, name, inventory_hostname=None, names=None):
         netmask = None
     vlan = net_vlan(context, name, inventory_hostname)
     mtu = net_mtu(context, name, inventory_hostname)
+    macaddress = net_macaddress(context, name, inventory_hostname)
 
     # NOTE(priteau): do not pass MTU for VLAN interfaces on bridges when it is
     # identical to the parent bridge, to work around a NetworkManager bug.
@@ -433,6 +439,7 @@ def net_interface_obj(context, name, inventory_hostname=None, names=None):
         'gateway': gateway,
         'vlan': vlan,
         'mtu': mtu,
+        'macaddress': macaddress,
         'route': routes,
         'rules': rules,
         'bootproto': bootproto or 'static',
@@ -789,6 +796,7 @@ def get_filters():
         'net_neutron_gateway': net_neutron_gateway,
         'net_vlan': net_vlan,
         'net_mtu': net_mtu,
+        'net_macaddress': net_macaddress,
         'net_routes': net_routes,
         'net_rules': net_rules,
         'net_physical_network': net_physical_network,

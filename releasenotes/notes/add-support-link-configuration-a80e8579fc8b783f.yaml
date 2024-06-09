@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Added initial support for systemd-networkd link configuration, now you can
+    configure and rename the name of a network interface if you know the MAC
+    address of the interface.

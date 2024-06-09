@@ -479,6 +479,35 @@ def _veth_peer_network(context, veth, inventory_hostname):
     return _filter_options(config)
 
 
+def _ether_link(context, name, inventory_hostname):
+    """Return a networkd link configuration for a ether.
+
+    :param context: a Jinja2 Context object.
+    :param name: name of the network.
+    :param inventory_hostname: Ansible inventory hostname.
+    """
+    config = []
+
+    device = networks.net_interface(context, name, inventory_hostname)
+    macaddress = networks.net_macaddress(context, name, inventory_hostname)
+
+    if macaddress is not None:
+        config = [
+            {
+                'Match': [
+                    {'PermanentMACAddress': macaddress},
+                ],
+            },
+            {
+                'Link': [
+                    {'Name': device},
+                ],
+            }
+        ]
+
+    return _filter_options(config)
+
+
 def _add_to_result(result, prefix, device, config):
     """Add configuration for an interface to a filter result.
 
@@ -561,8 +590,20 @@ def networkd_links(context, names, inventory_hostname=None):
     :param inventory_hostname: Ansible inventory hostname.
     :returns: a dict representation of networkd link configuration.
     """
-    # NOTE(mgoddard): We do not currently support link configuration.
-    return {}
+    # Prefix for configuration file names.
+    prefix = utils.get_hostvar(context, "networkd_prefix", inventory_hostname)
+
+    result = {}
+
+    # only ethers
+    for name in networks.net_select_ethers(context, names, inventory_hostname):
+        device = networks.get_and_validate_interface(context, name,
+                                                     inventory_hostname)
+        ether_link = _ether_link(context, name, inventory_hostname)
+        if ether_link:
+            _add_to_result(result, prefix, device, ether_link)
+
+    return result
 
 
 @jinja2.pass_context

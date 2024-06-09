@@ -33,6 +33,7 @@ class BaseNetworkdTest(unittest.TestCase):
         "net1_interface": "eth0",
         "net1_cidr": "1.2.3.0/24",
         "net1_ips": {"test-host": "1.2.3.4"},
+        "net1_macaddress": "aa:bb:cc:dd:ee:ff",
         # net2: VLAN on eth0.2 with VLAN 2 on interface eth0.
         "net2_interface": "eth0.2",
         "net2_vlan": 2,
@@ -351,8 +352,26 @@ class TestNetworkdNetDevs(BaseNetworkdTest):
 class TestNetworkdLinks(BaseNetworkdTest):
 
     def test_empty(self):
-        links = networkd.networkd_links(self.context, ['net1'])
+        links = networkd.networkd_links(self.context, ['net2'])
         self.assertEqual({}, links)
+
+    def test_link_name(self):
+        links = networkd.networkd_links(self.context, ['net1'])
+        expected = {
+            "50-kayobe-eth0": [
+                {
+                    "Match": [
+                        {"PermanentMACAddress": "aa:bb:cc:dd:ee:ff"}
+                    ]
+                },
+                {
+                    "Link": [
+                        {"Name": "eth0"},
+                    ]
+                },
+            ]
+        }
+        self.assertEqual(expected, links)
 
 
 class TestNetworkdNetworks(BaseNetworkdTest):

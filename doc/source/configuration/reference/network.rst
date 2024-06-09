@@ -429,6 +429,34 @@ To configure a network called ``example`` with an Ethernet interface on
 
    example_interface: eth0
 
+Advanced: Configuring (Renaming) Ethernet Interfaces System Name
+----------------------------------------------------------------
+
+The name of the Ethernet interface may be explicitly configured by binding
+known MAC address of the specific interface to its name by setting the
+``macaddress`` attribute for a network.
+
+.. warning::
+
+    Supported only on Ubuntu/Debian operating systems.
+
+To configure a network called ``example`` with known MAC address
+``aa:bb:cc:dd:ee:ff`` and rename it from a system name (might be ``eth0``,
+``ens3``, or any other name) to the ``lan0`` (new name):
+
+.. code-block:: yaml
+   :caption: ``inventory/group_vars/<group>/network-interfaces``
+
+   example_interface: lan0
+   example_macaddress: "aa:bb:cc:dd:ee:ff"
+
+.. warning::
+
+    The network interface must be down before changing its name. See
+    `issue <https://github.com/systemd/systemd/issues/26601>`__ in the systemd
+    project. So the configured node reboot might be required right after the
+    ``seed host configure`` or ``overcloud host configure`` Kayobe commands.
+
 .. _configuring-bridge-interfaces:
 
 Configuring Bridge Interfaces
