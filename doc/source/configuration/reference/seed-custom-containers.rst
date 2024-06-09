@@ -74,7 +74,7 @@ module page.
 
 List of Kayobe applied defaults to required docker_container variables:
 
-.. literalinclude:: ../../../../ansible/roles/deploy-containers/defaults/main.yml
+.. literalinclude:: ../../../../ansible/roles/manage-containers/defaults/main.yml
     :language: yaml
 
 

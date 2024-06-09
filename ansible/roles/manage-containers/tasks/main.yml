@@ -1,0 +1,2 @@
+---
+- include_tasks: "{{ manage_containers_action }}.yml"

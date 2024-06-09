@@ -1,2 +1,0 @@
----
-- include_tasks: "{{ deploy_containers_action }}.yml"

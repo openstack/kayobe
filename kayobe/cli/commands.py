@@ -729,7 +729,7 @@ class SeedServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     def take_action(self, parsed_args):
         self.app.LOG.debug("Deploying seed services")
         playbooks = _build_playbook_list(
-            "seed-deploy-containers")
+            "seed-manage-containers")
         extra_vars = {"kayobe_action": "deploy"}
         self.run_kayobe_playbooks(parsed_args, playbooks, extra_vars=extra_vars)
         self.generate_kolla_ansible_config(parsed_args, service_config=False,
@@ -766,7 +766,7 @@ class SeedServiceDestroy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 
         extra_vars = {"kayobe_action": "destroy"}
         playbooks = _build_playbook_list(
-            "seed-deploy-containers",
+            "seed-manage-containers",
             "docker-registry")
         self.run_kayobe_playbooks(parsed_args, playbooks, extra_vars=extra_vars)
 
@@ -798,7 +798,7 @@ class SeedServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     def take_action(self, parsed_args):
         self.app.LOG.debug("Upgrading seed services")
         playbooks = _build_playbook_list(
-            "seed-deploy-containers")
+            "seed-manage-containers")
         extra_vars = {"kayobe_action": "deploy"}
         self.run_kayobe_playbooks(parsed_args, playbooks, extra_vars=extra_vars)
         self.generate_kolla_ansible_config(parsed_args, service_config=False,
@@ -1532,7 +1532,7 @@ class OvercloudServiceDeployContainers(KollaAnsibleMixin, KayobeAnsibleMixin,
             self.run_kolla_ansible_overcloud(parsed_args, "prechecks")
 
         # Perform the kolla-ansible deployment.
-        self.run_kolla_ansible_overcloud(parsed_args, "deploy-containers")
+        self.run_kolla_ansible_overcloud(parsed_args, "manage-containers")
 
         # Deploy kayobe extra services.
         playbooks = _build_playbook_list("overcloud-extras")
