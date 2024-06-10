@@ -76,6 +76,12 @@ infra_vm_wait_connection_ssh_extra_args: '-o StrictHostKeyChecking=no'
 # OS family. Needed for config drive generation.
 infra_vm_os_family: "{{ 'RedHat' if os_distribution in ['centos', 'rocky'] else 'Debian' }}"
 
+# Boot firmware. Possible values are 'bios' or 'efi'. Default is 'bios'.
+infra_vm_boot_firmware: "bios"
+
+# Machine type. Libvirt default configuration is used.
+infra_vm_machine:
+
 ###############################################################################
 # Infrastructure VM node configuration.
 
