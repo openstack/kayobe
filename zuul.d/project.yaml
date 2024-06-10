@@ -31,7 +31,9 @@
         - kayobe-seed-upgrade-slurp-rocky9
         - kayobe-seed-upgrade-slurp-ubuntu-jammy
         - kayobe-seed-vm-rocky9
+        - kayobe-seed-vm-rocky9-efi
         - kayobe-seed-vm-ubuntu-jammy
+        - kayobe-seed-vm-ubuntu-jammy-efi
         - kayobe-infra-vm-rocky9
         - kayobe-infra-vm-ubuntu-jammy
         - openstack-tox-py39

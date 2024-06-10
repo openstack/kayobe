@@ -346,6 +346,31 @@
     nodeset: kayobe-ubuntu-jammy
 
 - job:
+    name: kayobe-seed-vm-efi-base
+    parent: kayobe-seed-vm-base
+    description: |
+      Base job for testing seed VM provisioning with EFI and q35
+    vars:
+      seed_vm_boot_firmware: efi
+      seed_vm_machine: q35
+
+- job:
+    name: kayobe-seed-vm-centos9s-efi
+    parent: kayobe-seed-vm-efi-base
+    nodeset: kayobe-centos9s
+    voting: false
+
+- job:
+    name: kayobe-seed-vm-rocky9-efi
+    parent: kayobe-seed-vm-efi-base
+    nodeset: kayobe-rocky9
+
+- job:
+    name: kayobe-seed-vm-ubuntu-jammy-efi
+    parent: kayobe-seed-vm-efi-base
+    nodeset: kayobe-ubuntu-jammy
+
+- job:
     name: kayobe-infra-vm-base
     parent: kayobe-base
     description: |

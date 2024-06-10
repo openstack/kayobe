@@ -85,6 +85,8 @@
     libvirt_vm_image_cache_path: "{{ image_cache_path }}"
     libvirt_vms:
       - name: "{{ vm_name }}"
+        boot_firmware: "{{ vm_hostvars.infra_vm_boot_firmware | default }}"
+        machine: "{{ vm_hostvars.infra_vm_machine | default }}"
         memory_mb: "{{ vm_hostvars.infra_vm_memory_mb }}"
         vcpus: "{{ vm_hostvars.infra_vm_vcpus }}"
         volumes: "{{ vm_hostvars.infra_vm_volumes + [vm_configdrive_volume] }}"
