@@ -40,8 +40,8 @@ roles:
     version: 1.0.0
   - src: stackhpc.libvirt-host
     version: v1.12.1
-  - src: stackhpc.libvirt-vm
-    version: v1.14.2
+  - name: stackhpc.libvirt-vm
+    version: v1.16.1
   - src: stackhpc.luks
     version: 0.4.2
   - src: stackhpc.os-ironic-state
