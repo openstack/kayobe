@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Adds support for specifying ``boot_firmware`` and ``machine`` variables to
+    seed and infra VMs. This can be used to launch VMs in UEFI boot mode with
+    Q35 machine type.
+  - |
+    Bumps stackhpc.libvirt-vm Ansible role to ``v1.16.1``.

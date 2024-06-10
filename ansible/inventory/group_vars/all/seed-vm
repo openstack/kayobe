@@ -65,3 +65,9 @@ seed_vm_data_format: qcow2
 
 # List of network interfaces to attach to the seed VM.
 seed_vm_interfaces: "{{ network_interfaces | sort | map('net_libvirt_vm_network') | list }}"
+
+# Boot firmware. Possible values are 'bios' or 'efi'. Default is 'bios'.
+seed_vm_boot_firmware: "bios"
+
+# Machine type. Libvirt default configuration is used.
+seed_vm_machine:

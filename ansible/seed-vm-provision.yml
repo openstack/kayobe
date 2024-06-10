@@ -116,12 +116,13 @@
       libvirt_vm_image_cache_path: "{{ image_cache_path }}"
       libvirt_vms:
         - name: "{{ hostvars[seed_host].seed_vm_name }}"
+          boot_firmware: "{{ hostvars[seed_host].seed_vm_boot_firmware | default }}"
+          machine: "{{ hostvars[seed_host].seed_vm_machine | default }}"
           memory_mb: "{{ hostvars[seed_host].seed_vm_memory_mb }}"
           vcpus: "{{ hostvars[seed_host].seed_vm_vcpus }}"
           volumes: "{{ hostvars[seed_host].seed_vm_volumes + [seed_vm_configdrive_volume] }}"
           interfaces: "{{ hostvars[seed_host].seed_vm_interfaces }}"
           console_log_enabled: true
-
   tasks:
     - name: Wait for SSH access to the seed VM
       local_action:

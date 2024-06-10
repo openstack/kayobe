@@ -8,9 +8,14 @@
       seed_vm_configdrive_volume:
         name: "{{ hostvars[seed_host].seed_vm_name }}-configdrive"
         pool: "{{ hostvars[seed_host].seed_vm_pool }}"
-      libvirt_vm_name: "{{ hostvars[seed_host].seed_vm_name }}"
-      libvirt_vm_memory_mb: "{{ hostvars[seed_host].seed_vm_memory_mb }}"
-      libvirt_vm_vcpus: "{{ hostvars[seed_host].seed_vm_vcpus }}"
-      libvirt_vm_volumes: "{{ hostvars[seed_host].seed_vm_volumes + [seed_vm_configdrive_volume] }}"
-      libvirt_vm_state: "absent"
+      libvirt_vms:
+        - name: "{{ hostvars[seed_host].seed_vm_name }}"
+          boot_firmware: "{{ hostvars[seed_host].seed_vm_boot_firmware | default }}"
+          machine: "{{ hostvars[seed_host].seed_vm_machine | default }}"
+          memory_mb: "{{ hostvars[seed_host].seed_vm_memory_mb }}"
+          vcpus: "{{ hostvars[seed_host].seed_vm_vcpus }}"
+          volumes: "{{ hostvars[seed_host].seed_vm_volumes + [seed_vm_configdrive_volume] }}"
+          interfaces: "{{ hostvars[seed_host].seed_vm_interfaces }}"
+          console_log_enabled: true
+          state: absent
       become: True
