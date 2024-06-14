@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    Adds support for managing the Ansible control host configuration. This is
+    provided by the new ``kayobe control host configure`` command, and uses the
+    existing host configuration features in Kayobe.
+
+    Also provided is a ``kayobe control host command run`` command for running
+    commands on the Ansible control host, and a ``kayobe control host package
+    update`` command for updating its OS packages.

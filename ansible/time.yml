@@ -1,6 +1,6 @@
 ---
 - name: Ensure timezone is configured
-  hosts: seed-hypervisor:seed:overcloud:infra-vms
+  hosts: seed-hypervisor:seed:overcloud:infra-vms:ansible-control
   max_fail_percentage: >-
     {{ time_max_fail_percentage |
        default(host_configure_max_fail_percentage) |

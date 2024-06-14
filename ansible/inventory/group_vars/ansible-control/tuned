@@ -1,0 +1,7 @@
+---
+###############################################################################
+# Ansible control host tuned configuration.
+
+# Builtin tuned profile to use. Format is same as that used by giovtorres.tuned
+# role.
+tuned_active_builtin_profile: "{{ ansible_control_tuned_active_builtin_profile }}"

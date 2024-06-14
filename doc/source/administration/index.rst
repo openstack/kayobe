@@ -9,6 +9,7 @@ administrative tasks.
    :maxdepth: 2
 
    general
+   ansible-control
    seed
    infra-vms
    overcloud

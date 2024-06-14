@@ -1,6 +1,6 @@
 ---
 - name: Run a command
-  hosts: seed-hypervisor:seed:overcloud:infra-vms
+  hosts: seed-hypervisor:seed:overcloud:infra-vms:ansible-control
   gather_facts: False
   max_fail_percentage: >-
     {{ host_command_run_max_fail_percentage |

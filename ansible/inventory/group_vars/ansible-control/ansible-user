@@ -1,0 +1,7 @@
+---
+# User with which to access the Ansible control host via SSH.
+ansible_user: "{{ kayobe_ansible_user }}"
+
+# User with which to access the Ansible control host before the
+# kayobe_ansible_user account has been created.
+bootstrap_user: "{{ ansible_control_bootstrap_user }}"

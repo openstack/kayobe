@@ -320,6 +320,16 @@ function control_host_upgrade {
     echo "Upgraded control host after $i attempts"
 }
 
+function ansible_control_host_configure {
+    # Deploy an Ansible control host.
+    environment_setup
+
+    control_host_bootstrap
+
+    echo "Configuring the Ansible control host"
+    run_kayobe control host configure
+}
+
 function seed_hypervisor_deploy {
     # Deploy a seed hypervisor.
     environment_setup

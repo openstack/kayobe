@@ -310,6 +310,106 @@ class ControlHostBootstrap(KayobeAnsibleMixin, KollaAnsibleMixin, VaultMixin,
             self.run_kayobe_playbooks(parsed_args, playbooks)
 
 
+class ControlHostConfigure(KayobeAnsibleMixin, VaultMixin, Command):
+    """Configure the Ansible control host OS and services.
+
+    * Allocate IP addresses for all configured networks.
+    * Add the host to SSH known hosts.
+    * Configure a user account for use by kayobe for SSH access.
+    * Configure proxy settings.
+    * Configure package repos.
+    * Configure a PyPI mirror.
+    * Optionally, create a virtualenv for remote target hosts.
+    * Optionally, wipe unmounted disk partitions (--wipe-disks).
+    * Configure user accounts, group associations, and authorised SSH keys.
+    * Configure SELinux.
+    * Configure the host's network interfaces.
+    * Configure a firewall.
+    * Configure tuned profile.
+    * Set sysctl parameters.
+    * Configure timezone and ntp.
+    * Optionally, configure software RAID arrays.
+    * Optionally, configure encryption.
+    * Configure LVM volumes.
+    * Configure swap.
+    * Optionally, configure a container engine.
+    """
+
+    def get_parser(self, prog_name):
+        parser = super(ControlHostConfigure, self).get_parser(prog_name)
+        group = parser.add_argument_group("Host Configuration")
+        group.add_argument("--wipe-disks", action='store_true',
+                           help="wipe partition and LVM data from all disks "
+                                "that are not mounted. Warning: this can "
+                                "result in the loss of data")
+        return parser
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Configuring Ansible control host OS")
+
+        # Allocate IP addresses.
+        playbooks = _build_playbook_list("ip-allocation")
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  limit="ansible-control")
+
+        # Kayobe playbooks.
+        kwargs = {}
+        if parsed_args.wipe_disks:
+            kwargs["extra_vars"] = {"wipe_disks": True}
+        playbooks = _build_playbook_list("control-host-configure")
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  limit="ansible-control", **kwargs)
+
+
+class ControlHostCommandRun(KayobeAnsibleMixin, VaultMixin, Command):
+    """Run command on the Ansible control host."""
+
+    def get_parser(self, prog_name):
+        parser = super(ControlHostCommandRun, self).get_parser(prog_name)
+        group = parser.add_argument_group("Host Command Run")
+        group.add_argument("--command", required=True,
+                           help="Command to run (required).")
+        group.add_argument("--show-output", action='store_true',
+                           help="Show command output")
+        return parser
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Run command on Ansible control host")
+        extra_vars = {
+            "host_command_to_run": utils.escape_jinja(parsed_args.command),
+            "show_output": parsed_args.show_output}
+        playbooks = _build_playbook_list("host-command-run")
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  limit="ansible-control",
+                                  extra_vars=extra_vars)
+
+
+class ControlHostPackageUpdate(KayobeAnsibleMixin, VaultMixin, Command):
+    """Update packages on the Ansible control host."""
+
+    def get_parser(self, prog_name):
+        parser = super(ControlHostPackageUpdate, self).get_parser(prog_name)
+        group = parser.add_argument_group("Host Package Updates")
+        group.add_argument("--packages", required=True,
+                           help="List of packages to update. Use '*' to "
+                                "update all packages.")
+        group.add_argument("--security", action='store_true',
+                           help="Only install updates that have been marked "
+                                "security related.")
+        return parser
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Updating Ansible control host packages")
+        extra_vars = {
+            "host_package_update_packages": parsed_args.packages,
+            "host_package_update_security": parsed_args.security,
+        }
+        playbooks = _build_playbook_list("host-package-update")
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  limit="ansible-control",
+                                  extra_vars=extra_vars)
+
+
 class ControlHostUpgrade(KayobeAnsibleMixin, VaultMixin, Command):
     """Upgrade the Kayobe control environment.
 

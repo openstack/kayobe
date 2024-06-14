@@ -880,6 +880,19 @@ Kayobe's playbook group variables define some sensible defaults for this
 variable for hosts in the top level standard groups.  These defaults are set
 using the network roles typically required by the group.
 
+Ansible Control Host
+--------------------
+
+By default, the Ansible control host is attached to the following network:
+
+* overcloud admin network
+
+This list may be extended by setting
+``ansible_control_extra_network_interfaces`` to a list of names of additional
+networks to attach.  Alternatively, the list may be completely overridden by
+setting ``ansible_control_network_interfaces``.  These variables are found in
+``${KAYOBE_CONFIG_PATH}/ansible-control.yml``.
+
 Seed
 ----
 

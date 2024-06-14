@@ -1,0 +1,5 @@
+---
+###############################################################################
+# Ansible control host container engine configuration.
+
+container_engine_enabled: "{{ ansible_control_container_engine_enabled }}"

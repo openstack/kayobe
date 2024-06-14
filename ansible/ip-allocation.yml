@@ -1,6 +1,6 @@
 ---
 - name: Ensure IP addresses are allocated
-  hosts: seed-hypervisor:seed:overcloud:infra-vms
+  hosts: seed-hypervisor:seed:overcloud:infra-vms:ansible-control
   max_fail_percentage: >-
     {{ ip_allocation_max_fail_percentage |
        default(host_configure_max_fail_percentage) |

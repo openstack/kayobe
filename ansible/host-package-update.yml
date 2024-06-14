@@ -1,6 +1,6 @@
 ---
 - name: Update host packages
-  hosts: seed-hypervisor:seed:overcloud:infra-vms
+  hosts: seed-hypervisor:seed:overcloud:infra-vms:ansible-control
   max_fail_percentage: >-
     {{ host_package_update_max_fail_percentage |
        default(kayobe_max_fail_percentage) |

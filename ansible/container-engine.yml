@@ -19,7 +19,7 @@
         docker_http_proxy: "{{ kolla_http_proxy }}"
         docker_https_proxy: "{{ kolla_https_proxy }}"
         docker_no_proxy: "{{ kolla_no_proxy | select | join(',') }}"
-      when: container_engine == "docker"
+      when: container_engine_enabled | default(true) | bool and container_engine == "docker"
 
 - name: Ensure podman is configured
   hosts: container-engine
@@ -34,4 +34,4 @@
   tasks:
     - include_role:
         name: openstack.kolla.podman
-      when: container_engine == "podman"
+      when: container_engine_enabled | default(true) | bool and container_engine == "podman"

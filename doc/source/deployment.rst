@@ -29,6 +29,35 @@ To bootstrap the Ansible control host::
 
     (kayobe) $ kayobe control host bootstrap
 
+Since the Gazpacho 20.0.0 release it is possible to manage the Ansible control
+host's configuration in the same way as other hosts. If using this feature, the
+Ansible control host should be added to the Kayobe inventory in the
+``ansible-control`` group. Typically this host will be ``localhost``, although
+it is also possible to manage an Ansible control host remotely. For example:
+
+.. code-block:: ini
+   :caption: ``${KAYOBE_CONFIG_PATH}/inventory/groups``
+
+   [ansible-control]
+   localhost
+
+To configure the Ansible control host OS::
+
+    (kayobe) $ kayobe control host configure
+
+.. note::
+
+   If the Ansible control host uses disks that have been in use in a previous
+   installation, it may be necessary to wipe partition and LVM data from those
+   disks.  To wipe all disks that are not mounted during host configuration::
+
+       (kayobe) $ kayobe control host configure --wipe-disks
+
+.. seealso::
+
+   Information on configuration of hosts is available :ref:`here
+   <configuration-hosts>`.
+
 .. _physical-network:
 
 Physical Network

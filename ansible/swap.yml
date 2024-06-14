@@ -1,6 +1,6 @@
 ---
 - name: Configure swap
-  hosts: seed-hypervisor:seed:overcloud:infra-vms
+  hosts: seed-hypervisor:seed:overcloud:infra-vms:ansible-control
   become: true
   max_fail_percentage: >-
     {{ swap_max_fail_percentage |

@@ -8,7 +8,7 @@
 # also closed and removed from crypttab.
 
 - name: Ensure that all unmounted block devices are wiped
-  hosts: seed-hypervisor:seed:overcloud:infra-vms
+  hosts: seed-hypervisor:seed:overcloud:infra-vms:ansible-control
   max_fail_percentage: >-
     {{ wipe_disks_max_fail_percentage |
        default(host_configure_max_fail_percentage) |

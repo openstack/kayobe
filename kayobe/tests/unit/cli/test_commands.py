@@ -117,6 +117,113 @@ class TestCase(unittest.TestCase):
         ]
         self.assertListEqual(expected_calls, mock_kolla_run.call_args_list)
 
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_control_host_configure(self, mock_run):
+        command = commands.ControlHostConfigure(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [utils.get_data_files_path("ansible", "ip-allocation.yml")],
+                limit="ansible-control",
+            ),
+            mock.call(
+                mock.ANY,
+                [
+                    utils.get_data_files_path(
+                        "ansible", "control-host-configure.yml"),
+                ],
+                limit="ansible-control",
+            ),
+        ]
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_control_host_configure_wipe_disks(self, mock_run):
+        command = commands.ControlHostConfigure(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args(["--wipe-disks"])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [utils.get_data_files_path("ansible", "ip-allocation.yml")],
+                limit="ansible-control",
+            ),
+            mock.call(
+                mock.ANY,
+                [
+                    utils.get_data_files_path(
+                        "ansible", "control-host-configure.yml"),
+                ],
+                limit="ansible-control",
+                extra_vars={"wipe_disks": True},
+            ),
+        ]
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_control_host_command_run(self, mock_run):
+        command = commands.ControlHostCommandRun(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args(["--command", "ls -a",
+                                         "--show-output"])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    utils.get_data_files_path("ansible",
+                                              "host-command-run.yml"),
+                ],
+                limit="ansible-control",
+                extra_vars={
+                    "host_command_to_run": utils.escape_jinja("ls -a"),
+                    "show_output": True}
+            ),
+        ]
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
+    def test_control_host_package_update_all(self, mock_run):
+        command = commands.ControlHostPackageUpdate(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args(["--packages", "*"])
+
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [
+                    utils.get_data_files_path(
+                        "ansible", "host-package-update.yml"),
+                ],
+                limit="ansible-control",
+                extra_vars={
+                    "host_package_update_packages": "*",
+                    "host_package_update_security": False,
+                },
+            ),
+        ]
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
+
     @mock.patch.object(ansible, "install_galaxy_roles", autospec=True)
     @mock.patch.object(ansible, "install_galaxy_collections", autospec=True)
     @mock.patch.object(ansible, "prune_galaxy_roles", autospec=True)

@@ -1,0 +1,6 @@
+---
+###############################################################################
+# Network interface attachments.
+
+# List of networks to which these nodes are attached.
+network_interfaces: "{{ ansible_control_network_interfaces | unique | list }}"

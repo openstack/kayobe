@@ -7,7 +7,7 @@
 # bootstrap process if the account is inaccessible.
 
 - name: Determine whether user bootstrapping is required
-  hosts: seed-hypervisor:seed:overcloud:infra-vms
+  hosts: seed-hypervisor:seed:overcloud:infra-vms:ansible-control
   gather_facts: false
   max_fail_percentage: >-
     {{ kayobe_ansible_user_max_fail_percentage |
@@ -37,7 +37,7 @@
       when: ssh_result.unreachable | default(false)
 
 - name: Ensure Python is installed
-  hosts: seed-hypervisor:seed:overcloud:infra-vms
+  hosts: seed-hypervisor:seed:overcloud:infra-vms:ansible-control
   gather_facts: no
   max_fail_percentage: >-
     {{ kayobe_ansible_user_max_fail_percentage |
@@ -103,7 +103,7 @@
       become: True
 
 - name: Verify that the Kayobe Ansible user account is accessible
-  hosts: seed-hypervisor:seed:overcloud:infra-vms
+  hosts: seed-hypervisor:seed:overcloud:infra-vms:ansible-control
   gather_facts: false
   max_fail_percentage: >-
     {{ kayobe_ansible_user_max_fail_percentage |

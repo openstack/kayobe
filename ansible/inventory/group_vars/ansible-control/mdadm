@@ -1,0 +1,6 @@
+---
+###############################################################################
+# Ansible control host software RAID configuration.
+
+# List of software RAID arrays. See mrlesmithjr.mdadm role for format.
+mdadm_arrays: "{{ ansible_control_mdadm_arrays }}"

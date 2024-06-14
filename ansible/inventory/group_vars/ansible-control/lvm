@@ -1,0 +1,6 @@
+---
+###############################################################################
+# Ansible control host LVM configuration.
+
+# List of LVM volume groups.
+lvm_groups: "{{ ansible_control_lvm_groups }}"

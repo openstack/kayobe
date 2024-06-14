@@ -7,6 +7,7 @@ Host Configuration
 This section covers configuration of hosts. It does not cover configuration or
 deployment of containers. Hosts that are configured by Kayobe include:
 
+* Ansible control host (``kayobe control host configure``)
 * Seed hypervisor (``kayobe seed hypervisor host configure``)
 * Seed (``kayobe seed host configure``)
 * Infra VMs (``kayobe infra vm host configure``)
@@ -26,6 +27,7 @@ Some host configuration options are set via global variables, and others have a
 variable for each type of host. The latter variables are included in the
 following files under ``${KAYOBE_CONFIG_PATH}``:
 
+* ``ansible-control.yml``
 * ``seed-hypervisor.yml``
 * ``seed.yml``
 * ``compute.yml``
@@ -83,6 +85,7 @@ user. In cloud images, there is often a user named after the OS distro, e.g.
 variable, except for CentOS which uses ``cloud-user``, but may be set via the
 following variables:
 
+* ``ansible_control_bootstrap_user``
 * ``seed_hypervisor_bootstrap_user``
 * ``seed_bootstrap_user``
 * ``infra_vm_bootstrap_user``
@@ -181,6 +184,7 @@ that used by the ``users`` variable of the `singleplatform-eng.users
 <https://galaxy.ansible.com/singleplatform-eng/users>`__ role.  The following
 variables can be used to set the users for specific types of hosts:
 
+* ``ansible_control_users``
 * ``seed_hypervisor_users``
 * ``seed_users``
 * ``infra_vm_users``
@@ -585,6 +589,7 @@ Ubuntu systems.
 
 The following variables can be used to set whether to enable firewalld:
 
+* ``ansible_control_firewalld_enabled``
 * ``seed_hypervisor_firewalld_enabled``
 * ``seed_firewalld_enabled``
 * ``infra_vm_firewalld_enabled``
@@ -596,6 +601,7 @@ The following variables can be used to set whether to enable firewalld:
 When firewalld is enabled, the following variables can be used to configure a
 list of zones to create. Each item is a dict containing a ``zone`` item:
 
+* ``ansible_control_firewalld_zones``
 * ``seed_hypervisor_firewalld_zones``
 * ``seed_firewalld_zones``
 * ``infra_vm_firewalld_zones``
@@ -607,6 +613,7 @@ list of zones to create. Each item is a dict containing a ``zone`` item:
 The following variables can be used to set a default zone. The default is
 unset, in which case the default zone will not be changed:
 
+* ``ansible_control_firewalld_default_zone``
 * ``seed_hypervisor_firewalld_default_zone``
 * ``seed_firewalld_default_zone``
 * ``infra_vm_firewalld_default_zone``
@@ -621,6 +628,7 @@ are omitted if not provided, with the following exceptions: ``offline``
 (default ``true``), ``permanent`` (default ``true``), ``state`` (default
 ``enabled``):
 
+* ``ansible_control_firewalld_rules``
 * ``seed_hypervisor_firewalld_rules``
 * ``seed_firewalld_rules``
 * ``infra_vm_firewalld_rules``
@@ -693,6 +701,7 @@ Tuned
 Built-in ``tuned`` profiles can be applied to hosts. The following variables
 can be used to set a ``tuned`` profile to specific types of hosts:
 
+* ``ansible_control_tuned_active_builtin_profile``
 * ``seed_hypervisor_tuned_active_builtin_profile``
 * ``seed_tuned_active_builtin_profile``
 * ``compute_tuned_active_builtin_profile``
@@ -704,6 +713,7 @@ can be used to set a ``tuned`` profile to specific types of hosts:
 By default, Kayobe applies a ``tuned`` profile matching the role of each host
 in the system:
 
+* Ansible control host: ``throughput-performance``
 * seed hypervisor: ``virtual-host``
 * seed: ``virtual-guest``
 * infrastructure VM: ``virtual-guest``
@@ -729,6 +739,7 @@ Arbitrary ``sysctl`` configuration can be applied to hosts. The variable format
 is a dict/map, mapping parameter names to their required values. The following
 variables can be used to set ``sysctl`` configuration specific types of hosts:
 
+* ``ansible_control_sysctl_parameters``
 * ``seed_hypervisor_sysctl_parameters``
 * ``seed_sysctl_parameters``
 * ``infra_vm_sysctl_parameters``
@@ -828,6 +839,8 @@ Kayobe will configure `Chrony <https://chrony.tuxfamily.org/>`__ on all hosts in
     seed
     seed-hypervisor
     overcloud
+    infra-vms
+    ansible-control
 
 This provides a flexible way to opt in or out of having kayobe manage
 the NTP service.
@@ -870,6 +883,7 @@ arrays they want to manage with Kayobe.
 Software RAID arrays may be configured via the ``mdadm_arrays`` variable. For
 convenience, this is mapped to the following variables:
 
+* ``ansible_control_mdadm_arrays``
 * ``seed_hypervisor_mdadm_arrays``
 * ``seed_mdadm_arrays``
 * ``infra_vm_mdadm_arrays``
@@ -906,6 +920,7 @@ Encryption
 Encrypted block devices may be configured via the ``luks_devices`` variable. For
 convenience, this is mapped to the following variables:
 
+* ``ansible_control_luks_devices``
 * ``seed_hypervisor_luks_devices``
 * ``seed_luks_devices``
 * ``infra_vm_luks_devices``
@@ -943,6 +958,7 @@ Logical Volume Manager (LVM) physical volumes, volume groups, and logical
 volumes may be configured via the ``lvm_groups`` variable. For convenience,
 this is mapped to the following variables:
 
+* ``ansible_control_lvm_groups``
 * ``seed_hypervisor_lvm_groups``
 * ``seed_lvm_groups``
 * ``infra_vm_lvm_groups``
@@ -980,6 +996,7 @@ can optionally be created. The logical volume is created in volume group called 
 This configuration is enabled by the following variables, which default to
 ``false``:
 
+* ``ansible_control_lvm_group_data_enabled``
 * ``compute_lvm_group_data_enabled``
 * ``controller_lvm_group_data_enabled``
 * ``seed_lvm_group_data_enabled``
@@ -989,6 +1006,7 @@ This configuration is enabled by the following variables, which default to
 To use this configuration, a list of disks must be configured via the following
 variables:
 
+* ``ansible_control_lvm_group_data_disks``
 * ``seed_lvm_group_data_disks``
 * ``infra_vm_lvm_group_data_disks``
 * ``compute_lvm_group_data_disks``
@@ -1008,6 +1026,7 @@ For example, to configure two of the seed's disks for use by LVM:
 The Docker volumes LVM volume is assigned a size given by the following
 variables, with a default value of 75% (of the volume group's capacity):
 
+* ``ansible_control_lvm_group_data_lv_docker_volumes_size``
 * ``seed_lvm_group_data_lv_docker_volumes_size``
 * ``infra_vm_lvm_group_data_lv_docker_volumes_size``
 * ``compute_lvm_group_data_lv_docker_volumes_size``
@@ -1038,6 +1057,7 @@ Custom LVM
 To define additional logical logical volumes in the default ``data`` volume
 group, modify one of the following variables:
 
+* ``ansible_control_lvm_group_data_lvs``
 * ``seed_lvm_group_data_lvs``
 * ``infra_vm_lvm_group_data_lvs``
 * ``compute_lvm_group_data_lvs``
@@ -1063,6 +1083,7 @@ include the LVM volume for Docker volume data:
 It is possible to define additional LVM volume groups via the following
 variables:
 
+* ``ansible_control_lvm_groups_extra``
 * ``seed_lvm_groups_extra``
 * ``infra_vm_lvm_groups_extra``
 * ``compute_lvm_groups_extra``
@@ -1133,6 +1154,25 @@ example, to use podman:
    :caption: ``container-engine.yml``
 
    container_engine: podman
+
+The container engine is deployed on hosts in the ``container-engine`` group. By
+default this includes the following groups:
+
+.. code-block:: ini
+
+   [container-engine:children]
+   # Hosts in this group will have Docker/Podman installed.
+   seed
+   controllers
+   network
+   monitoring
+   storage
+   compute
+   ansible-control
+
+Note that deployment of a container engine is disabled by default on the
+Ansible control host. This can be changed by setting
+``ansible_control_container_engine_enabled`` to ``true``.
 
 Podman
 ------
@@ -1360,6 +1400,7 @@ Swap
 Swap files and devices may be configured via the ``swap`` variable. For
 convenience, this is mapped to the following variables:
 
+* ``ansible_control_swap``
 * ``seed_swap``
 * ``seed_hypervisor_swap``
 * ``infra_vm_swap``
