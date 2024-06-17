@@ -2,6 +2,9 @@
 # Action to perform: One of: "deploy", "destroy".
 manage_containers_action: "deploy"
 
+#TODO(mattcrees): remove deploy_containers_defaults in Hibiscus cycle
+manage_containers_defaults: "{{ deploy_containers_defaults }}"
+
 deploy_containers_defaults:
   comparisons:
     image: strict
@@ -13,6 +16,13 @@ deploy_containers_defaults:
   privileged: False
   restart_policy: "unless-stopped"
 
-deploy_containers_docker_api_timeout: 120
+manage_custom_containers: []
 
-deploy_containers_registry_attempt_login: "{{ kolla_docker_registry_username is truthy and kolla_docker_registry_password is truthy }}"
+#TODO(mattcrees): remove deploy_containers_docker_api_timeout in Hibiscus cycle.
+manage_containers_docker_api_timeout: "{{ deploy_containers_docker_api_timeout | default(120) }}"
+
+manage_containers_registry:
+manage_containers_registry_username:
+manage_containers_registry_password:
+
+manage_containers_registry_attempt_login: "{{ manage_containers_registry_username is truthy and manage_containers_registry_password is truthy }}"

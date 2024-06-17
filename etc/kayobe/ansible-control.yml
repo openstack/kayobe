@@ -91,6 +91,24 @@
 #ansible_control_users:
 
 ###############################################################################
+# Ansible control host additional containers configuration
+
+# Dict of containers to deploy.
+# Example:
+# seed_containers:
+#   squid:
+#     image: "docker.io/stackhpc/squid"
+#     pre: "{{ kayobe_env_config_path }}/containers/squid/pre.yml"
+#     post: "{{ kayobe_env_config_path }}/containers/squid/post.yml"
+#     tag: "3.5.20-1"
+#
+#ansible_control_containers:
+
+# Whether to attempt a basic authentication login to a registry when
+# deploying containers.
+#ansible_control_manage_containers_registry_attempt_login:
+
+###############################################################################
 # Ansible control host firewalld configuration.
 
 # Whether to install and enable firewalld.

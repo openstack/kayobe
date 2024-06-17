@@ -1,0 +1,17 @@
+---
+- name: "Ensure defined container images are {{ kayobe_action | default('deploy') }}ed"
+  hosts: "{{ manage_containers_target_hosts | default('seed') }}"
+  tags:
+    # Kept for backward compatibility.
+    # TODO(mattcrees): Will be removed in the Hibiscus release.
+    - seed-deploy-containers
+    - seed-manage-containers
+    - manage-containers
+  tasks:
+    - import_role:
+        name: manage-containers
+      vars:
+        manage_containers_registry: "{{ kolla_docker_registry }}"
+        manage_containers_registry_username: "{{ kolla_docker_registry_username }}"
+        manage_containers_registry_password: "{{ kolla_docker_registry_password }}"
+        manage_containers_action: "{{ kayobe_action | default('deploy') }}"

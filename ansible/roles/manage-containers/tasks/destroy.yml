@@ -4,4 +4,4 @@
   vars:
     container_name: "{{ item.key }}"
     container_config: "{{ item.value }}"
-  with_dict: "{{ seed_containers }}"
+  with_dict: "{{ manage_custom_containers }}"

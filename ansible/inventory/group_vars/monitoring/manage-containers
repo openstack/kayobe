@@ -1,0 +1,10 @@
+---
+###############################################################################
+# Monitoring node custom containers configuration.
+
+# Dict of containers to deploy.
+manage_custom_containers: "{{ monitoring_containers }}"
+
+# Whether to attempt a basic authentication login to a registry when
+# deploying monitoring node containers
+manage_containers_registry_attempt_login: "{{ monitoring_manage_containers_registry_attempt_login }}"

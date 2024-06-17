@@ -127,6 +127,23 @@
 #storage_users:
 
 ###############################################################################
+# Storage node additional containers configuration
+
+# Dict of containers to deploy.
+# Example:
+# storage_containers:
+#   squid:
+#     image: "stackhpc/squid:3.5.20-1"
+#     pre: "{{ kayobe_env_config_path }}/containers/squid/pre.yml"
+#     post: "{{ kayobe_env_config_path }}/containers/squid/post.yml"
+#
+#storage_containers:
+
+# Whether to attempt a basic authentication login to a registry when
+# deploying storage containers
+#storage_manage_containers_registry_attempt_login:
+
+###############################################################################
 # Storage node firewalld configuration.
 
 # Whether to install and enable firewalld.

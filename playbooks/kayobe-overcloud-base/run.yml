@@ -4,6 +4,7 @@
     KAYOBE_CONFIG_SOURCE_PATH: "{{ kayobe_config_src_dir }}"
     KAYOBE_OVERCLOUD_GENERATE_CERTIFICATES: "{{ tls_enabled | ternary(1, 0) }}"
     KAYOBE_VAULT_PASSWORD: 'test-password'
+    KAYOBE_DEPLOY_CUSTOM_CONTAINER: "{{ deploy_custom_container | default(false) | ternary(1, 0) }}"
     # TODO(mgoddard): Remove this when libvirt on host is used by default.
     TENKS_CONFIG_PATH: "dev/tenks-deploy-config-compute{% if tls_enabled %}-libvirt-on-host{% endif %}.yml"
   tasks:
@@ -11,6 +12,12 @@
       shell:
         cmd: "{{ kayobe_src_dir }}/dev/overcloud-deploy.sh &> {{ logs_dir }}/ansible/overcloud-deploy"
         executable: /bin/bash
+
+    - name: Check that hello-world custom container was deployed
+      shell:
+        cmd: "sudo {{ container_engine | default('docker') }} ps -a | grep hello-world"
+        executable: /bin/bash
+      when: deploy_custom_container | default(false)
 
     # Check that passwords are Vault encrypted.
     - name: View passwords.yml using Ansible Vault

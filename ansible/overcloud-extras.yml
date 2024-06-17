@@ -8,4 +8,5 @@
 # action: One of deploy, destroy, pull, reconfigure, upgrade
 
 - import_playbook: docker-registry.yml
+- import_playbook: manage-containers.yml
 - import_playbook: opensm.yml

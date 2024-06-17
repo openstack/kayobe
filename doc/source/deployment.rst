@@ -229,7 +229,7 @@ After this command has completed the seed services will be active.
    information about configuring Bifrost.
    :ref:`configuration-bifrost-overcloud-root-image` provides information on
    configuring the root disk image build process. See :ref:`here
-   <configuration-seed-custom-containers>` for information about deploying
+   <configuration-custom-containers>` for information about deploying
    additional, custom services (containers) on a seed node.
 
 Building Deployment Images
@@ -376,6 +376,11 @@ service deployment necessary.
 To trigger the hooks::
 
     (kayobe) $ kayobe infra vm service deploy
+
+.. seealso::
+
+   See :ref:`here <configuration-custom-containers>` for information about
+   deploying additional, custom services (containers) on infrastructure VMs.
 
 Example
 ^^^^^^^
@@ -723,6 +728,9 @@ services running in Docker containers.
 
    Information on configuration of Kolla Ansible is available :ref:`here
    <configuration-kolla-ansible>`.
+
+   See :ref:`here <configuration-custom-containers>` for information about
+   deploying additional, custom services (containers) on overcloud hosts.
 
 Interacting with the Control Plane
 ----------------------------------

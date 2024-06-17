@@ -168,6 +168,23 @@
 #infra_vm_users:
 
 ###############################################################################
+# Infrastructure VM node additional containers configuration
+
+# Dict of containers to deploy.
+# Example:
+# infra_vm_containers:
+#   squid:
+#     image: "stackhpc/squid:3.5.20-1"
+#     pre: "{{ kayobe_env_config_path }}/containers/squid/pre.yml"
+#     post: "{{ kayobe_env_config_path }}/containers/squid/post.yml"
+#
+#infra_vm_containers:
+
+# Whether to attempt a basic authentication login to a registry when
+# deploying controller containers
+#infra_vm_manage_containers_registry_attempt_login:
+
+###############################################################################
 # Infrastructure VM node firewalld configuration.
 
 # Whether to install and enable firewalld.

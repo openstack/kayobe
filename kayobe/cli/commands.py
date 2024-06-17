@@ -466,14 +466,48 @@ class ControlHostServiceDeploy(KayobeAnsibleMixin, VaultMixin, Command):
     """Deploy the Ansible control host services."""
 
     def take_action(self, parsed_args):
-        self.app.LOG.debug("Running no-op control host service deploy")
+        self.app.LOG.debug("Deploying Ansible control host services")
+        playbooks = _build_playbook_list("manage-containers")
+        extra_vars = {
+            "kayobe_action": "deploy",
+            "manage_containers_target_hosts": "ansible-control",
+        }
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  limit="ansible-control",
+                                  extra_vars=extra_vars)
 
 
 class ControlHostServiceDestroy(KayobeAnsibleMixin, VaultMixin, Command):
     """Destroy the Ansible control host services."""
 
     def take_action(self, parsed_args):
-        self.app.LOG.debug("Running no-op control host service destroy")
+        if not parsed_args.yes_i_really_really_mean_it:
+            self.app.LOG.error("This will permanently destroy all services "
+                               "and data. Specify "
+                               "--yes-i-really-really-mean-it to confirm that "
+                               "you understand this.")
+            sys.exit(1)
+        self.app.LOG.debug("Destroying Ansible control host services")
+
+        extra_vars = {
+            "kayobe_action": "destroy",
+            "manage_containers_target_hosts": "ansible-control",
+        }
+        playbooks = _build_playbook_list(
+            "manage-containers",
+            "docker-registry")
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  limit="ansible-control",
+                                  extra_vars=extra_vars)
+
+    def get_parser(self, prog_name):
+        parser = super(ControlHostServiceDestroy, self).get_parser(prog_name)
+        group = parser.add_argument_group("Services")
+        group.add_argument("--yes-i-really-really-mean-it",
+                           action='store_true',
+                           help="confirm that you understand that this will "
+                                "permanently destroy all services and data.")
+        return parser
 
 
 class ConfigurationDump(KayobeAnsibleMixin, VaultMixin, Command):
@@ -883,11 +917,12 @@ class SeedServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Deploying seed services")
-        self.handle_kolla_tags_limits_deprecation(parsed_args)
-        playbooks = _build_playbook_list(
-            "seed-manage-containers")
-        extra_vars = {"kayobe_action": "deploy"}
-        self.run_kayobe_playbooks(parsed_args, playbooks,
+        playbooks = _build_playbook_list("manage-containers")
+        extra_vars = {
+            "kayobe_action": "deploy",
+            "manage_containers_target_hosts": "seed",
+        }
+        self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed",
                                   extra_vars=extra_vars)
         self.generate_kolla_ansible_config(parsed_args, service_config=False,
                                            bifrost_config=True)
@@ -925,11 +960,14 @@ class SeedServiceDestroy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         self.run_kolla_ansible_seed(parsed_args, "destroy",
                                     extra_args=extra_args)
 
-        extra_vars = {"kayobe_action": "destroy"}
+        extra_vars = {
+            "kayobe_action": "destroy",
+            "manage_containers_target_hosts": "seed",
+        }
         playbooks = _build_playbook_list(
-            "seed-manage-containers",
+            "manage-containers",
             "docker-registry")
-        self.run_kayobe_playbooks(parsed_args, playbooks,
+        self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed",
                                   extra_vars=extra_vars)
 
     def get_parser(self, prog_name):
@@ -960,11 +998,12 @@ class SeedServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Upgrading seed services")
-        self.handle_kolla_tags_limits_deprecation(parsed_args)
-        playbooks = _build_playbook_list(
-            "seed-manage-containers")
-        extra_vars = {"kayobe_action": "deploy"}
-        self.run_kayobe_playbooks(parsed_args, playbooks,
+        playbooks = _build_playbook_list("manage-containers")
+        extra_vars = {
+            "kayobe_action": "deploy",
+            "manage_containers_target_hosts": "seed",
+        }
+        self.run_kayobe_playbooks(parsed_args, playbooks, limit="seed",
                                   extra_vars=extra_vars)
         self.generate_kolla_ansible_config(parsed_args, service_config=False,
                                            bifrost_config=True)
@@ -1219,19 +1258,52 @@ class InfraVMServiceDeploy(KayobeAnsibleMixin, VaultMixin,
     """Run hooks for infra VM services."""
 
     def take_action(self, parsed_args):
-        self.app.LOG.debug("Running no-op Infra VM service deploy")
+        self.app.LOG.debug("Running Infra VM service deploy")
+        playbooks = _build_playbook_list("manage-containers")
+        extra_vars = {
+            "kayobe_action": "deploy",
+            "manage_containers_target_hosts": "infra-vms",
+        }
+        self.run_kayobe_playbooks(parsed_args, playbooks, limit="infra-vms",
+                                  extra_vars=extra_vars)
 
 
-class InfraVMServiceDestroy(KayobeAnsibleMixin, VaultMixin,
-                            Command):
+class InfraVMServiceDestroy(KayobeAnsibleMixin,
+                            VaultMixin, Command):
     """Destroy the infra VM services.
 
     Permanently destroy the infra VM containers, container images, and
     container volumes.
     """
 
+    def get_parser(self, prog_name):
+        parser = super(InfraVMServiceDestroy, self).get_parser(prog_name)
+        group = parser.add_argument_group("Services")
+        group.add_argument("--yes-i-really-really-mean-it",
+                           action='store_true',
+                           help="confirm that you understand that this will "
+                                "permanently destroy all services and data.")
+        return parser
+
     def take_action(self, parsed_args):
-        self.app.LOG.debug("Running no-op Infra VM service destroy")
+        if not parsed_args.yes_i_really_really_mean_it:
+            self.app.LOG.error("This will permanently destroy all services "
+                               "and data. Specify "
+                               "--yes-i-really-really-mean-it to confirm that "
+                               "you understand this.")
+            sys.exit(1)
+
+        self.app.LOG.debug("Destroying infra VM services")
+
+        extra_vars = {
+            "kayobe_action": "destroy",
+            "manage_containers_target_hosts": "infra-vms",
+        }
+        playbooks = _build_playbook_list(
+            "manage-containers",
+            "docker-registry")
+        self.run_kayobe_playbooks(parsed_args, playbooks, limit="infra-vms",
+                                  extra_vars=extra_vars)
 
 
 class OvercloudInventoryDiscover(KayobeAnsibleMixin, VaultMixin, Command):
@@ -1712,7 +1784,10 @@ class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 
         # Deploy kayobe extra services.
         playbooks = _build_playbook_list("overcloud-extras")
-        extra_vars = {"kayobe_action": "deploy"}
+        extra_vars = {
+            "kayobe_action": "deploy",
+            "manage_containers_target_hosts": "overcloud",
+        }
         self.run_kayobe_playbooks(parsed_args, playbooks,
                                   extra_vars=extra_vars, limit="overcloud")
 
@@ -1771,7 +1846,10 @@ class OvercloudServiceDeployContainers(KollaAnsibleMixin, KayobeAnsibleMixin,
 
         # Deploy kayobe extra services.
         playbooks = _build_playbook_list("overcloud-extras")
-        extra_vars = {"kayobe_action": "deploy"}
+        extra_vars = {
+            "kayobe_action": "deploy",
+            "manage_containers_target_hosts": "overcloud",
+        }
         self.run_kayobe_playbooks(parsed_args, playbooks,
                                   extra_vars=extra_vars, limit="overcloud")
 
@@ -1868,7 +1946,10 @@ class OvercloudServiceReconfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
 
         # Reconfigure kayobe extra services.
         playbooks = _build_playbook_list("overcloud-extras")
-        extra_vars = {"kayobe_action": "reconfigure"}
+        extra_vars = {
+            "kayobe_action": "reconfigure",
+            "manage_containers_target_hosts": "overcloud",
+        }
         self.run_kayobe_playbooks(parsed_args, playbooks,
                                   extra_vars=extra_vars, limit="overcloud")
 
@@ -1923,7 +2004,10 @@ class OvercloudServiceStop(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 
         # Stop kayobe extra services.
         playbooks = _build_playbook_list("overcloud-extras")
-        extra_vars = {"kayobe_action": "stop"}
+        extra_vars = {
+            "kayobe_action": "stop",
+            "manage_containers_target_hosts": "overcloud",
+        }
         self.run_kayobe_playbooks(parsed_args, playbooks,
                                   extra_vars=extra_vars, limit="overcloud")
 
@@ -1975,7 +2059,10 @@ class OvercloudServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin,
 
         # Upgrade kayobe extra services.
         playbooks = _build_playbook_list("overcloud-extras")
-        extra_vars = {"kayobe_action": "upgrade"}
+        extra_vars = {
+            "kayobe_action": "upgrade",
+            "manage_containers_target_hosts": "overcloud",
+        }
         self.run_kayobe_playbooks(parsed_args, playbooks,
                                   extra_vars=extra_vars, limit="overcloud")
 
@@ -2026,7 +2113,10 @@ class OvercloudServiceDestroy(KollaAnsibleMixin, KayobeAnsibleMixin,
 
         # Destroy kayobe extra services.
         playbooks = _build_playbook_list("overcloud-extras")
-        extra_vars = {"kayobe_action": "destroy"}
+        extra_vars = {
+            "kayobe_action": "destroy",
+            "manage_containers_target_hosts": "overcloud",
+        }
         self.run_kayobe_playbooks(parsed_args, playbooks,
                                   extra_vars=extra_vars, limit="overcloud")
 
@@ -2048,7 +2138,10 @@ class OvercloudContainerImagePull(KayobeAnsibleMixin, KollaAnsibleMixin,
 
         # Pull container images for kayobe extra services.
         playbooks = _build_playbook_list("overcloud-extras")
-        extra_vars = {"kayobe_action": "pull"}
+        extra_vars = {
+            "kayobe_action": "pull",
+            "manage_containers_target_hosts": "overcloud",
+        }
         self.run_kayobe_playbooks(parsed_args, playbooks,
                                   extra_vars=extra_vars, limit="overcloud")
 

@@ -21,7 +21,7 @@ options.
    overcloud-dib
    ironic-python-agent
    docker-registry
-   seed-custom-containers
+   custom-containers
    infra-vms
    vgpu
    nova-cells

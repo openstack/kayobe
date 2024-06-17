@@ -1,0 +1,10 @@
+---
+###############################################################################
+# Storage node custom containers configuration.
+
+# Dict of containers to deploy.
+manage_custom_containers: "{{ storage_containers }}"
+
+# Whether to attempt a basic authentication login to a registry when
+# deploying storage node containers
+manage_containers_registry_attempt_login: "{{ storage_manage_containers_registry_attempt_login }}"

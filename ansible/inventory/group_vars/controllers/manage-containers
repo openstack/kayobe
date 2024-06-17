@@ -1,0 +1,10 @@
+---
+###############################################################################
+# Controller node custom containers configuration.
+
+# Dict of containers to deploy.
+manage_custom_containers: "{{ controller_containers }}"
+
+# Whether to attempt a basic authentication login to a registry when
+# deploying controller node containers
+manage_containers_registry_attempt_login: "{{ controller_manage_containers_registry_attempt_login }}"

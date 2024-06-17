@@ -65,3 +65,9 @@ kolla_base_distro: "{% raw %}{{ 'rocky' if os_distribution == 'centos' else os_d
 
 # Support overriding container_engine
 container_engine: "{{ container_engine }}"
+
+# Deploy a hello-world container.
+controller_containers:
+  hello-world:
+    image: docker.io/library/hello-world
+    tag: latest

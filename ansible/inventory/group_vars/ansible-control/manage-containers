@@ -1,0 +1,10 @@
+---
+###############################################################################
+# Ansible control host custom containers configuration.
+
+# Dict of containers to deploy.
+manage_custom_containers: "{{ ansible_control_containers }}"
+
+# Whether to attempt a basic authentication login to a registry when
+# deploying Ansible control host containers
+manage_containers_registry_attempt_login: "{{ ansible_control_manage_containers_registry_attempt_login }}"
