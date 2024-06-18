@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Adds support for using different interface than Bifrost PXE one for
+    admin interface during ``overcloud provision``.
+    This can be enabled by setting ``kolla_bifrost_use_introspection_mac``
+    to ``true`` or setting ``kolla_bifrost_ipv4_interface_mac`` in
+    respective host ``host_vars``.

@@ -35,7 +35,7 @@ class BaseNetworksTest(unittest.TestCase):
         "net2_vlan": 2,
         # net3: bridge on br0 with ports eth0 and eth1.
         "net3_interface": "br0",
-        "net3_bridge_ports": [],
+        "net3_bridge_ports": ['eth0', 'eth1'],
         # net4: VLAN on br0.4 with VLAN 4 on bridge br0.
         "net4_interface": "br0.4",
         "net4_vlan": 4,
@@ -203,3 +203,20 @@ class TestNetworks(BaseNetworksTest):
         self._update_context({"net3_bridge_ports": "ens3"})
         self.assertRaises(errors.AnsibleFilterError, networks.net_bridge_ports,
                           self.context, "net3")
+
+    def test_physical_interface_bond(self):
+        self._update_context({"net6_interface": "bond0", "net6_bond_slaves": ["eth3", "eth4"]})
+        interface = networks.net_physical_interface(self.context, "net6")
+        expected = ['eth3', 'eth4']
+        self.assertEqual(expected, interface)
+
+    def test_physical_interface_bridge(self):
+        interface = networks.net_physical_interface(self.context, "net3")
+        expected = ['eth0', 'eth1']
+        self.assertEqual(expected, interface)
+
+    def test_physical_interface_direct(self):
+        interface = networks.net_physical_interface(self.context, "net1")
+        expected = ['eth0']
+        self.assertEqual(expected, interface)
+

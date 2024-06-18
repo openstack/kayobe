@@ -748,6 +748,19 @@ def net_ovs_veths(context, names, inventory_hostname=None):
         for veth in veths
     ]
 
+@jinja2.pass_context
+def net_physical_interface(context, name, inventory_hostname=None):
+    """Return a list of bridge ports, bond slaves or a direct interface name
+
+    Depending on the interface type - return a list of child interfaces or
+    (if it's not a bridge/bond) direct interface name.
+    """
+    if _net_interface_type(context, name, inventory_hostname) == 'bridge':
+        return net_bridge_ports(context, name, inventory_hostname)
+    elif  _net_interface_type(context, name, inventory_hostname) == 'bond':
+        return net_bond_slaves(context, name, inventory_hostname)
+    else:
+        return [net_attr(context, name, 'interface', inventory_hostname)]
 
 def get_filters():
     return {
@@ -799,4 +812,5 @@ def get_filters():
         'net_libvirt_network': net_libvirt_network,
         'net_libvirt_vm_network': net_libvirt_vm_network,
         'net_ovs_veths': net_ovs_veths,
+        'net_physical_interface': net_physical_interface,
     }

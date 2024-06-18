@@ -20,7 +20,7 @@
       addressing_mode: static
       deploy_image_filename: "{{ kolla_bifrost_deploy_image_filename }}"
       deploy_image_rootfs: "{{ kolla_bifrost_deploy_image_rootfs | default(omit, true) }}"
-      ipv4_interface_mac: "{% raw %}{{ extra.pxe_interface_mac | default }}{% endraw %}"
+      ipv4_interface_mac: "{% if kolla_bifrost_ipv4_interface_mac is defined %}{{ kolla_bifrost_ipv4_interface_mac }}{% else %}{% raw %}{{ extra.pxe_interface_mac | default }}{% endraw %}{% endif %}"
       ipv4_address: "{{ admin_oc_net_name | net_ip }}"
       ipv4_subnet_mask: "{{ admin_oc_net_name | net_mask }}"
       # If the admin network does not have a gateway defined and seed SNAT is
@@ -47,6 +47,36 @@
             # This file should only exist within the bifrost_deploy container.
             force: True
           run_once: true
+
+        - block:
+            - name: Query overcloud nodes' hardware introspection data
+              command: >
+                docker exec bifrost_deploy
+                bash -c '
+                env BIFROST_INVENTORY_SOURCE=ironic BIFROST_NODE_NAMES="{{ inventory_hostname }}" OS_CLOUD=bifrost
+                ansible baremetal
+                --connection local
+                --inventory /etc/bifrost/inventory/
+                -e @/etc/bifrost/bifrost.yml
+                -e @/etc/bifrost/dib.yml
+                --limit {{ inventory_hostname }}
+                -m shell
+                -a "env OS_CLOUD=bifrost baremetal introspection data save {% raw %}{{ inventory_hostname }}{% endraw %}"'
+              register: save_result
+              changed_when: False
+              # Ignore errors, log a message later.
+              delegate_to: "{{ seed_host }}"
+              vars:
+                # NOTE: Without this, the seed's ansible_host variable will not be
+                # respected when using delegate_to.
+                ansible_host: "{{ hostvars[seed_host].ansible_host | default(seed_host) }}"
+
+            - name: Set interface MAC from Ironic introspection data
+              vars:
+                introspection_data: "{{ save_result.stdout_lines[1:] | join('\n') | from_json }}"
+              set_fact:
+                kolla_bifrost_ipv4_interface_mac: "{{ introspection_data.all_interfaces[admin_oc_net_name | net_physical_interface | first].mac }}"
+          when: kolla_bifrost_use_introspection_mac | bool
 
         - name: Ensure the Bifrost host variable files exist
           copy:

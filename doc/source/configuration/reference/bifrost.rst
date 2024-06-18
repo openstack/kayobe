@@ -34,6 +34,31 @@ For example, to install Bifrost from a custom git repository:
    kolla_bifrost_source_url: https://git.example.com/bifrost
    kolla_bifrost_source_version: downstream
 
+Bifrost interface configuration
+===============================
+
+Following option allows to configure ipv4 interface MAC for the provisioned
+server in cases where the default (PXE interface MAC) is not a suitable
+solution for admin network (e.g. separate interfaces for provisioning and
+admin):
+
+.. code-block:: yaml
+   :caption: ``bifrost.yml``
+
+   kolla_bifrost_use_introspection_mac: true
+
+It will cause the ``overloud provision`` command to query Bifrost's
+Introspection data for MAC address of the interface that is bound to admin
+network. Limitation of that option is that Kayobe will use the first
+physical NIC if the interface is bond or bridge.
+
+Alternatively you can set following in host_vars of a specific host:
+
+.. code-block:: yaml
+   :caption: ``host_vars``
+
+   kolla_bifrost_ipv4_interface_mac: "<mac_address_goes_here>"
+
 .. _configuration-bifrost-overcloud-root-image:
 
 Overcloud root disk image configuration

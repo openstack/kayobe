@@ -157,3 +157,7 @@ kolla_bifrost_ipa_ramdisk_checksum_algorithm: "{{ inspector_ipa_ramdisk_checksum
 
 # Server inventory for Bifrost.
 kolla_bifrost_servers: {}
+
+###############################################################################
+# Node provisioning configuration
+kolla_bifrost_use_introspection_mac: false
