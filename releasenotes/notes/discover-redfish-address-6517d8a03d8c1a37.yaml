@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds a new ``redfish_address`` variable and extends the ``kayobe overcloud
+    inventory discover`` command to discover the address from the Bifrost node
+    inventory.

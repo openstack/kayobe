@@ -46,9 +46,10 @@
                 and host not in ignore_hosts %}
           {% set hostvars=ironic_inventory._meta.hostvars[host] %}
           {% set ipmi_address=hostvars.driver_info.ipmi_address | default %}
+          {% set redfish_address=hostvars.driver_info.redfish_address | default %}
           {% set system_vendor=hostvars.extra.system_vendor | default %}
           {% set bmc_type=system_vendor | bmc_type_from_system_vendor %}
-          {{ host }} ipmi_address={{ ipmi_address }} bmc_type={{ bmc_type }}
+          {{ host }} {% if redfish_address %}redfish_address={{ redfish_address }} {% elif ipmi_address %}ipmi_address={{ ipmi_address }} {% endif %}bmc_type={{ bmc_type }}
           {% endif %}
           {% endfor %}
 

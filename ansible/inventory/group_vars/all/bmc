@@ -13,3 +13,6 @@ ipmi_username:
 
 # Password to use to access a host's BMC via IPMI.
 ipmi_password:
+
+# Address to use to access a host's BMC via Redfish.
+redfish_address:
