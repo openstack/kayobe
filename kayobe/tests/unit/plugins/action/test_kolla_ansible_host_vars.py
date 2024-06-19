@@ -41,6 +41,11 @@ def _net_select_bridges(context, names):
             if (_net_interface(context, name) or "").startswith("br")]
 
 
+@jinja2.pass_context
+def _net_physical_network(context, name):
+    return context.get(name + '_physical_network')
+
+
 class FakeTemplar(object):
 
     def __init__(self, variables):
@@ -50,6 +55,7 @@ class FakeTemplar(object):
         self.env.filters['net_parent'] = _net_parent
         self.env.filters['net_vlan'] = _net_vlan
         self.env.filters['net_select_bridges'] = _net_select_bridges
+        self.env.filters['net_physical_network'] = _net_physical_network
 
     def template(self, string):
         template = self.env.from_string(string)
@@ -268,6 +274,26 @@ class TestCase(unittest.TestCase):
         }
         self.assertEqual(expected, result)
 
+    def test_run_external_networks_one_with_physnet(self):
+        variables = copy.deepcopy(self.variables)
+        variables["foo_physical_network"] = "custom1"
+        module = self._create_module(variables)
+        external_networks = [{
+            "network": "foo",
+            "required": False,
+        }]
+        result = module._run([], external_networks)
+        expected = {
+            "changed": False,
+            "ansible_facts": {
+                "kolla_neutron_bridge_names": "eth0-ovs",
+                "kolla_neutron_external_interfaces": "eth0",
+                "kolla_neutron_physical_networks": "custom1",
+            },
+            "_ansible_facts_cacheable": False,
+        }
+        self.assertEqual(expected, result)
+
     def test_run_external_networks_two(self):
         module = self._create_module()
         external_networks = [{
@@ -285,6 +311,50 @@ class TestCase(unittest.TestCase):
                 "kolla_neutron_external_interfaces": "eth0,eth1",
             },
             "_ansible_facts_cacheable": False,
+        }
+        self.assertEqual(expected, result)
+
+    def test_run_external_networks_two_with_physnet(self):
+        variables = copy.deepcopy(self.variables)
+        variables["foo_physical_network"] = "custom1"
+        variables["bar_physical_network"] = "custom2"
+        module = self._create_module(variables)
+        external_networks = [{
+            "network": "foo",
+            "required": False,
+        }, {
+            "network": "bar",
+            "required": False,
+        }]
+        result = module._run([], external_networks)
+        expected = {
+            "changed": False,
+            "ansible_facts": {
+                "kolla_neutron_bridge_names": "eth0-ovs,eth1-ovs",
+                "kolla_neutron_external_interfaces": "eth0,eth1",
+                "kolla_neutron_physical_networks": "custom1,custom2",
+            },
+            "_ansible_facts_cacheable": False,
+        }
+        self.assertEqual(expected, result)
+
+    def test_run_external_networks_two_with_one_physnet(self):
+        variables = copy.deepcopy(self.variables)
+        variables["foo_physical_network"] = "custom1"
+        module = self._create_module(variables)
+        external_networks = [{
+            "network": "foo",
+            "required": False,
+        }, {
+            "network": "bar",
+            "required": False,
+        }]
+        result = module._run([], external_networks)
+        expected = {
+            "changed": False,
+            "failed": True,
+            "msg": ("Some external networks have a 'physical_network' "
+                    "attribute defined but the following do not: bar"),
         }
         self.assertEqual(expected, result)
 
@@ -307,6 +377,54 @@ class TestCase(unittest.TestCase):
                 "kolla_neutron_external_interfaces": "eth0",
             },
             "_ansible_facts_cacheable": False,
+        }
+        self.assertEqual(expected, result)
+
+    def test_run_external_networks_two_same_interface_with_physnet(self):
+        variables = copy.deepcopy(self.variables)
+        variables["bar_interface"] = "eth0"
+        variables["foo_physical_network"] = "custom1"
+        module = self._create_module(variables)
+        external_networks = [{
+            "network": "foo",
+            "required": False,
+        }, {
+            "network": "bar",
+            "required": False,
+        }]
+        result = module._run([], external_networks)
+        expected = {
+            "changed": False,
+            "ansible_facts": {
+                "kolla_neutron_bridge_names": "eth0-ovs",
+                "kolla_neutron_external_interfaces": "eth0",
+                "kolla_neutron_physical_networks": "custom1",
+            },
+            "_ansible_facts_cacheable": False,
+        }
+        self.assertEqual(expected, result)
+
+    def test_run_external_networks_two_same_interface_with_different_physnets(
+            self):
+        variables = copy.deepcopy(self.variables)
+        variables["bar_interface"] = "eth0"
+        variables["foo_physical_network"] = "custom1"
+        variables["bar_physical_network"] = "custom2"
+        module = self._create_module(variables)
+        external_networks = [{
+            "network": "foo",
+            "required": False,
+        }, {
+            "network": "bar",
+            "required": False,
+        }]
+        result = module._run([], external_networks)
+        expected = {
+            "changed": False,
+            "failed": True,
+            "msg": ("Inconsistent 'physical_network' attributes for external "
+                    "networks foo, bar using interface eth0: custom1, "
+                    "custom2"),
         }
         self.assertEqual(expected, result)
 

@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    Adds support for customising Neutron physical network names using the
+    ``physical_network`` network attribute.
+upgrade:
+  - |
+    The ``physical_network`` attribute must now be applied consistently
+    to all external networks in Kayobe configuration. If any external
+    network has the attribute, then all others must also.

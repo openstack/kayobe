@@ -63,20 +63,27 @@ class ActionModule(ActionBase):
             except ConfigError as e:
                 errors.append(str(e))
 
-        # Build a list of external network interfaces.
-        external_interfaces = []
+        # Build a dict mapping external network interfaces to a list of Kayobe
+        # network names that they provide connectivity for.
+        external_interfaces = {}
         for network in external_networks:
             try:
                 iface = self._get_external_interface(network["network"],
                                                      network["required"])
-                if iface and iface not in external_interfaces:
-                    external_interfaces.append(iface)
+                if iface:
+                    iface_networks = external_interfaces.get(iface, [])
+                    if network["network"] not in iface_networks:
+                        iface_networks.append(network["network"])
+                    external_interfaces[iface] = iface_networks
             except ConfigError as e:
                 errors.append(str(e))
 
         if external_interfaces:
-            facts.update(self._get_external_interface_facts(
-                external_interfaces))
+            try:
+                facts.update(self._get_external_interface_facts(
+                    external_interfaces))
+            except ConfigError as e:
+                errors.append(str(e))
 
         result['changed'] = False
         if errors:
@@ -141,11 +148,13 @@ class ActionModule(ActionBase):
     def _get_external_interface_facts(self, external_interfaces):
         neutron_bridge_names = []
         neutron_external_interfaces = []
+        neutron_physical_networks = []
+        missing_physical_networks = []
         bridge_suffix = self._templar.template(
             "{{ network_bridge_suffix_ovs }}")
         patch_prefix = self._templar.template("{{ network_patch_prefix }}")
         patch_suffix = self._templar.template("{{ network_patch_suffix_ovs }}")
-        for interface in external_interfaces:
+        for interface, iface_networks in external_interfaces.items():
             is_bridge = ("{{ '%s' in (network_interfaces |"
                          "net_select_bridges |"
                          "map('net_interface')) }}" % interface)
@@ -161,8 +170,38 @@ class ActionModule(ActionBase):
             else:
                 external_interface = interface
             neutron_external_interfaces.append(external_interface)
-        return {
+            # One external network interface may be referenced by multiple
+            # external networks. Check if they have a physical_network
+            # attribute set, and if so, whether they are consistent.
+            iface_physical_networks = []
+            for iface_network in iface_networks:
+                physical_network = self._templar.template(
+                    "{{ '%s' | net_physical_network }}" % iface_network)
+                if (physical_network and
+                        physical_network not in iface_physical_networks):
+                    iface_physical_networks.append(physical_network)
+            if iface_physical_networks:
+                if len(iface_physical_networks) > 1:
+                    raise ConfigError(
+                        "Inconsistent 'physical_network' attributes for "
+                        "external networks %s using interface %s: %s" %
+                        (", ".join(iface_networks), interface,
+                         ", ".join(iface_physical_networks)))
+                neutron_physical_networks += iface_physical_networks
+            else:
+                missing_physical_networks += iface_networks
+        facts = {
             "kolla_neutron_bridge_names": ",".join(neutron_bridge_names),
             "kolla_neutron_external_interfaces": ",".join(
                 neutron_external_interfaces),
         }
+        if neutron_physical_networks:
+            if missing_physical_networks:
+                raise ConfigError(
+                    "Some external networks have a 'physical_network' "
+                    "attribute defined but the following do not: %s" %
+                    ", ".join(missing_physical_networks))
+
+            facts["kolla_neutron_physical_networks"] = ",".join(
+                neutron_physical_networks)
+        return facts

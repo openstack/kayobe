@@ -79,7 +79,9 @@ supported:
     ``table`` is the routing table ID.
 ``physical_network``
     Name of the physical network on which this network exists. This aligns with
-    the physical network concept in neutron.
+    the physical network concept in neutron. This may be used to customise the
+    Neutron physical network name used for an external network. This attribute
+    should be set for all external networks or none.
 ``libvirt_network_name``
     A name to give to a Libvirt network representing this network on the seed
     hypervisor.
@@ -334,6 +336,34 @@ To configure a network called ``example`` with a default route and a
        table: exampleroutetable
      - cidr: 10.1.0.0/24
        table: exampleroutetable
+
+Configuring Custom Neutron Physical Network Names
+-------------------------------------------------
+
+By default, Kolla Ansible uses Neutron physical network names starting with
+``physnet1`` through to ``physnetN`` for each external network interface on a
+host.
+
+Sometimes we may want to customise the physical network names used. This may be
+to allow for not all hosts having access to all physical networks, or to use
+more descriptive names.
+
+For example, in an environment with a separate physical network for Ironic
+provisioning, controllers might have access to two physical networks, while
+compute nodes have access to one. We could have a situation where the
+controllers and computes use inconsistent physical network names. To avoid
+this, we can add ``physical_network`` attributes to these networks. In the
+following example, the Ironic provisioning network is ``provision_wl``, and the
+external network is ``external``.
+
+.. code-block:: yaml
+   :caption: ``$KAYOBE_CONFIG_PATH/networks.yml``
+
+   provision_wl_physical_network: physnet1
+   external_physical_network: physnet2
+
+This ensures that compute nodes treat ``external`` as ``physnet2``, even though
+it is the only physical network to which they are attached.
 
 .. _configuration-network-per-host:
 

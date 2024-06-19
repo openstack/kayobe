@@ -479,6 +479,7 @@ defined for a host, it is ignored.
          - "kolla_external_vip_interface"
          - "kolla_neutron_external_interfaces"
          - "kolla_neutron_bridge_names"
+         - "kolla_neutron_physical_networks"
 
     It is possible to extend this list via
     ``kolla_overcloud_inventory_pass_through_host_vars_extra``.
@@ -504,6 +505,7 @@ defined for a host, it is ignored.
          kolla_tunnel_interface: "tunnel_interface"
          kolla_neutron_external_interfaces: "neutron_external_interface"
          kolla_neutron_bridge_names: "neutron_bridge_name"
+         kolla_neutron_physical_networks: "neutron_physical_networks"
 
     It is possible to extend this dict via
     ``kolla_overcloud_inventory_pass_through_host_vars_map_extra``.

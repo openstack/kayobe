@@ -16,6 +16,7 @@
         kolla_dns_interface: "eth5"
         kolla_neutron_external_interfaces: "eth6,eth7"
         kolla_neutron_bridge_names: "br0,br1"
+        kolla_neutron_physical_networks: "physnet1,physnet2"
         kolla_provision_interface: "eth8"
         kolla_inspector_dnsmasq_interface: "eth9"
         kolla_tunnel_interface: "eth10"
@@ -32,6 +33,7 @@
         kolla_storage_interface: "eth3"
         kolla_neutron_external_interfaces: "eth4,eth5"
         kolla_neutron_bridge_names: "br0,br1"
+        kolla_neutron_physical_networks: "physnet2,physnet3"
         kolla_tunnel_interface: "eth6"
 
 - name: Test kolla-ansible-host-vars role extras
@@ -68,6 +70,7 @@
               - "kolla_external_vip_interface"
               - "kolla_neutron_external_interfaces"
               - "kolla_neutron_bridge_names"
+              - "kolla_neutron_physical_networks"
             kolla_ansible_pass_through_host_vars_map:
               kolla_network_interface: "network_interface"
               kolla_api_interface: "api_interface"
@@ -81,6 +84,7 @@
               kolla_tunnel_interface: "tunnel_interface"
               kolla_neutron_external_interfaces: "neutron_external_interface"
               kolla_neutron_bridge_names: "neutron_bridge_name"
+              kolla_neutron_physical_networks: "neutron_physical_networks"
             kolla_ansible_inventory_path: "{{ temp_path }}"
 
         - name: Check whether inventory host vars files exist
@@ -125,6 +129,7 @@
                 kolla_external_vip_interface: "eth1"
                 neutron_external_interface: "eth6,eth7"
                 neutron_bridge_name: "br0,br1"
+                neutron_physical_networks: "physnet1,physnet2"
               test-compute: |
                 ---
                 ansible_host: "1.2.3.6"
@@ -134,6 +139,7 @@
                 tunnel_interface: "eth6"
                 neutron_external_interface: "eth4,eth5"
                 neutron_bridge_name: "br0,br1"
+                neutron_physical_networks: "physnet2,physnet3"
 
       always:
         - name: Ensure the temporary directory is removed
