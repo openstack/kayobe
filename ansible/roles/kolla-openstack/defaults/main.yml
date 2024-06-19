@@ -617,6 +617,11 @@ kolla_inspector_ipa_kernel_path:
 # Mutually exclusive with kolla_inspector_ipa_ramdisk_upstream_url.
 kolla_inspector_ipa_ramdisk_path:
 
+# Host from which to fetch Ironic Python Agent (IPA) kernel and ramdisk images
+# for Ironic Inspector.  Only used when kolla_inspector_ipa_kernel_path or
+# kolla_inspector_ipa_ramdisk_path is set.
+kolla_inspector_ipa_host:
+
 # Whether to enable the Swift introspection data store.
 kolla_inspector_enable_swift:
 

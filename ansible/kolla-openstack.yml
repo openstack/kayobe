@@ -46,37 +46,6 @@
               when: not item.stat.exists
           tags:
             - config-validation
-
-        - name: Check whether the image cache directory exists
-          local_action:
-            module: stat
-            path: "{{ hostvars.localhost.image_cache_path }}"
-            get_checksum: False
-            mime: False
-          register: image_cache_stat
-
-        - name: Ensure the image cache directory exists
-          local_action:
-            module: file
-            path: "{{ hostvars.localhost.image_cache_path }}"
-            state: directory
-            owner: "{{ lookup('env', 'USER') }}"
-            group: "{{ lookup('env', 'USER') }}"
-          become: True
-          when: >-
-            not image_cache_stat.stat.exists or
-            not image_cache_stat.stat.writeable
-
-        - name: Ensure Ironic Python Agent images are copied onto the local machine
-          fetch:
-            src: "{{ image_cache_path }}/{{ ipa_image_name }}/{{ item.src }}"
-            dest: "{{ hostvars.localhost.image_cache_path }}/{{ ipa_image_name }}/{{ item.dest }}"
-            flat: True
-          with_items:
-            - src: "{{ ipa_images[0] }}"
-              dest: "{{ ipa_images_kernel_name }}"
-            - src: "{{ ipa_images[1] }}"
-              dest: "{{ ipa_images_ramdisk_name }}"
       when:
         - kolla_enable_ironic | bool
         - ipa_build_images | bool
@@ -149,9 +118,11 @@
 
             - name: Set facts containing IPA kernel and ramdisk paths
               set_fact:
-                kolla_inspector_ipa_kernel_path: "{{ image_cache_path }}/{{ ipa_image_name }}/{{ ipa_images_kernel_name }}"
-                kolla_inspector_ipa_ramdisk_path: "{{ image_cache_path }}/{{ ipa_image_name }}/{{ ipa_images_ramdisk_name }}"
+                kolla_inspector_ipa_kernel_path: "{{ hostvars[inspector_ipa_host].image_cache_path }}/{{ ipa_image_name }}/{{ ipa_images_kernel_name }}"
+                kolla_inspector_ipa_ramdisk_path: "{{ hostvars[inspector_ipa_host].image_cache_path }}/{{ ipa_image_name }}/{{ ipa_images_ramdisk_name }}"
               when: ipa_build_images | bool
+              vars:
+                inspector_ipa_host: "{{ groups['controllers_with_ironic_enabled_True'][0] }}"
           when: kolla_enable_ironic | bool
       tags:
         - config
@@ -169,6 +140,7 @@
       kolla_inspector_swift_auth:
         auth_type: none
         endpoint_override: "http://{% raw %}{{ api_interface_address }}{% endraw %}:{{ inspector_store_port }}"
+      kolla_inspector_ipa_host: "{{ groups['controllers_with_ironic_enabled_True'][0] }}"
       kolla_openstack_custom_config_paths_extra_multi_env_static:
         - "{{ kayobe_config_path }}"
       kolla_openstack_custom_config_paths_extra_multi_env: "{{ kolla_openstack_custom_config_paths_extra_multi_env_static + kayobe_env_search_paths }}"

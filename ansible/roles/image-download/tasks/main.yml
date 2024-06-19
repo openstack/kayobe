@@ -9,8 +9,7 @@
         - name: Fail if the checksum algorithm is not set
           fail:
             msg: "Checksum algorithm for image {{ image_download_url }} not set"
-          when: image_download_checksum_algorithm is none or
-                image_download_checksum_algorithm == ""
+          when: image_download_checksum_algorithm is falsy
 
         - name: Get the expected checksum
           uri:
@@ -21,8 +20,7 @@
           retries: 3
           delay: 5
       when:
-        - image_download_checksum_url is not none
-        - image_download_checksum_url != ""
+        - image_download_checksum_url is truthy
 
     - name: Ensure the image is downloaded
       vars:
@@ -42,14 +40,28 @@
       retries: 3
       delay: 5
   when:
-    - image_download_url is not none
-    - image_download_url != ""
+    - image_download_url is truthy
 
-- name: Ensure the local image is copied
-  copy:
-    src: "{{ image_download_path }}"
-    dest: "{{ image_download_dest }}"
-    mode: 0640
-  when:
-    - image_download_path is not none
-    - image_download_path != ""
+- when: image_download_path is truthy
+  block:
+    - name: Ensure the local image is copied
+      copy:
+        src: "{{ image_download_path }}"
+        dest: "{{ image_download_dest }}"
+        mode: 0640
+      when:
+        - image_download_host is falsy
+
+    - name: Ensure the remote image is fetched
+      fetch:
+        src: "{{ image_download_path }}"
+        dest: "{{ image_download_dest }}"
+        mode: 0640
+        flat: true
+      when:
+        - image_download_host is truthy
+      delegate_to: "{{ image_download_host | default('localhost', true) }}"
+      vars:
+        # NOTE: Without this, the hosts's ansible_host variable will not be
+        # respected when using delegate_to.
+        ansible_host: "{{ hostvars[image_download_host].ansible_host | default(image_download_host) }}"
