@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Fixes an issue when using overcloud Ironic with a shared Ansible control
+    host. The use of a shared cache directory could lead to a failure to
+    download Ironic Python Agent (IPA) images. `LP#2069845
+    <https://bugs.launchpad.net/kayobe/+bug/2069845>`__
