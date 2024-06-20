@@ -231,6 +231,12 @@ Continuing Development
 Search for TODOs in the codebases describing tasks to be performed during the
 next release cycle.
 
+Dates for each milestone in the new cycle can be found in :kolla-doc:`Kolla
+project's documentation <contributor/release-management.html#milestones>`. The
+first action that needs to be taken is to
+:kolla-doc:`switch Kayobe back to using the master version of its dependencies <contributor/release-management.html#r-23-development-begins>`
+(R-23).
+
 Stable Releases
 ===============
 
