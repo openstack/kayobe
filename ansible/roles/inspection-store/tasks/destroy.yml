@@ -1,13 +1,15 @@
 ---
 - name: Ensure inspection store container is stopped
-  docker_container:
+  kayobe_container:
     name: "{{ item.value.container_name }}"
     state: "absent"
   with_dict: "{{ inspection_store_services }}"
+  become: "{{ container_engine == 'podman' }}"
 
-- name: Check whether inspection store volumes are present
-  command: docker volume inspect {{ volume }}
-  changed_when: False
+- name: Ensure inspection store volumes are absent
+  kayobe_container_volume:
+    name: "{{ volume }}"
+    state: absent
   with_subelements:
     - "{{ inspection_store_services }}"
     - volumes
@@ -17,13 +19,4 @@
     - "'no such volume' not in volume_result.stderr | lower"
   vars:
     volume: "{{ item.1.split(':')[0] }}"
-  register: volume_result
-
-- name: Ensure inspection store volumes are absent
-  command: docker volume rm {{ volume }}
-  with_items: "{{ volume_result.results }}"
-  when:
-    - item is not skipped
-    - item.rc == 0
-  vars:
-    volume: "{{ item.item.1.split(':')[0] }}"
+  become: "{{ container_engine == 'podman' }}"

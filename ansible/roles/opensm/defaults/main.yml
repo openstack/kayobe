@@ -26,7 +26,7 @@ opensm_services:
 # Docker
 ####################
 opensm_namespace: "jumanjiman"
-opensm_image: "{{ docker_registry ~ '/' if docker_registry | default else '' }}{{ opensm_namespace }}/opensm"
+opensm_image: "{{ docker_registry ~ '/' if docker_registry | default else 'docker.io/' }}{{ opensm_namespace }}/opensm"
 opensm_tag: "latest"
 opensm_image_full: "{{ opensm_image }}:{{ opensm_tag }}"
 

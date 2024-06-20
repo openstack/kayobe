@@ -89,9 +89,16 @@ The seed host runs various services required for a standalone Ironic
 deployment. These all run in a single ``bifrost_deploy`` container.
 
 It can often be helpful to execute a shell in the bifrost container for
-diagnosing operational issues::
+diagnosing operational issues:
 
-    $ docker exec -it bifrost_deploy bash
+.. note::
+
+   Examples show the commands when using Docker as the container engine. If
+   using Podman, simply change ``docker`` for ``sudo podman`` in the command.
+
+.. code-block:: console
+
+   $ docker exec -it bifrost_deploy bash
 
 Services are run via Systemd::
 
@@ -133,8 +140,13 @@ the seed.
 Backup
 ^^^^^^
 
+.. note::
+
+    Examples show the commands when using Docker as the container engine. If using
+    Podman, simply change ``docker`` for ``sudo podman`` in the command.
+
 It should be safe to keep services running during the backup, but for maximum
-safety they may optionally be stopped::
+safety they may optionally be stopped:
 
     docker exec -it bifrost_deploy systemctl stop ironic ironic-inspector
 
@@ -149,6 +161,11 @@ If the services were stopped prior to the backup, start them again::
 
 Restore
 ^^^^^^^
+
+.. note::
+
+   Examples show the commands when using Docker as the container engine. If using
+   Podman, simply change ``docker`` for ``sudo podman`` in the command.
 
 Prior to restoring the database, the Ironic and Ironic Inspector services
 should be stopped::

@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
 
+CONTAINER_ENGINE="docker"
 
-sudo docker exec openvswitch_vswitchd ovs-vsctl "$@"
+if sudo podman inspect openvswitch_vswitchd >/dev/null 2>&1; then
+    CONTAINER_ENGINE="podman"
+fi
+
+sudo ${CONTAINER_ENGINE} exec openvswitch_vswitchd ovs-vsctl "$@"

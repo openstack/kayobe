@@ -121,4 +121,16 @@
       become: "{{ virtualenv is not defined }}"
       vars:
         docker_upper_constraints_file: "{{ pip_upper_constraints_file }}"
-      when: "'docker' in group_names"
+      when:
+        - "'container-engine' in group_names"
+        - container_engine == 'docker'
+
+    - name: Ensure kayobe virtualenv has podman SDK installed
+      import_role:
+         name: openstack.kolla.podman_sdk
+      vars:
+        virtualenv: "{{ virtualenv }}"
+        podman_sdk_upper_constraints_file: "{{ pip_upper_constraints_file }}"
+      when:
+        - "'container-engine' in group_names"
+        - container_engine == 'podman'

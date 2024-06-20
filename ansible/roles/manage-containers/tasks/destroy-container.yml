@@ -5,7 +5,7 @@
   when: container_config.pre_destroy is defined
 
 - name: "[{{ container_name }}] Delete container"
-  docker_container:
+  kayobe_container:
     name: "{{ container_name }}"
     state: absent
   become: true

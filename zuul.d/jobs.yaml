@@ -106,6 +106,7 @@
       is_slurp: "{{ 'slurp' in zuul.job }}"
       previous_release: "{{ '2024.1' if is_slurp else '2024.1' }}"
       tls_enabled: false
+      container_engine: 'docker'
       ironic_boot_mode: "bios"
 
 - job:
@@ -131,9 +132,23 @@
     nodeset: kayobe-rocky9
 
 - job:
+    name: kayobe-overcloud-rocky9-podman
+    parent: kayobe-overcloud-base
+    nodeset: kayobe-rocky9
+    vars:
+      container_engine: podman
+
+- job:
     name: kayobe-overcloud-ubuntu-noble
     parent: kayobe-overcloud-base
     nodeset: kayobe-ubuntu-noble
+
+- job:
+    name: kayobe-overcloud-ubuntu-noble-podman
+    parent: kayobe-overcloud-base
+    nodeset: kayobe-ubuntu-noble
+    vars:
+      container_engine: podman
 
 - job:
     name: kayobe-overcloud-tls-base
@@ -210,9 +225,23 @@
     nodeset: kayobe-rocky9
 
 - job:
+    name: kayobe-seed-rocky9-podman
+    parent: kayobe-seed-base
+    nodeset: kayobe-rocky9
+    vars:
+      container_engine: podman
+
+- job:
     name: kayobe-seed-ubuntu-noble
     parent: kayobe-seed-base
     nodeset: kayobe-ubuntu-noble
+
+- job:
+    name: kayobe-seed-ubuntu-noble-podman
+    parent: kayobe-seed-base
+    nodeset: kayobe-ubuntu-noble
+    vars:
+      container_engine: podman
 
 - job:
     name: kayobe-seed-images-base
@@ -244,11 +273,25 @@
 # This job builds default overcloud images but skips the build of bifrost seed
 # images which are currently timing out on Ubuntu Jammy.
 - job:
+    name: kayobe-seed-images-rocky9-podman
+    parent: kayobe-seed-images-base
+    nodeset: kayobe-rocky9
+    vars:
+      container_engine: podman
+
+- job:
     name: kayobe-seed-images-ubuntu-noble
     parent: kayobe-seed-images-base
     nodeset: kayobe-ubuntu-noble
     vars:
       seed_container_image_regex: "^base"
+
+- job:
+    name: kayobe-seed-images-ubuntu-noble-podman
+    parent: kayobe-seed-images-base
+    nodeset: kayobe-ubuntu-noble
+    vars:
+      container_engine: podman
 
 - job:
     name: kayobe-overcloud-host-configure-base

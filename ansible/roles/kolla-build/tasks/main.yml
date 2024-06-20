@@ -38,13 +38,14 @@
     mode: "0644"
 
 - name: Run multiarch/qemu-user-static image to support cross-arch build
-  community.general.docker_container:
+  kayobe_container:
     command: "--reset -p yes"
     cleanup: true
     detach: false
-    image: "multiarch/qemu-user-static:7.2.0-1"
+    image: "docker.io/multiarch/qemu-user-static:7.2.0-1"
     name: "qemu_user_static"
     privileged: true
     state: "started"
     network_mode: "host"
+  become: "{{ container_engine == 'podman' }}"
   when: ansible_facts.architecture != kolla_base_arch

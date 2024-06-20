@@ -57,8 +57,9 @@ overcloud_dib_elements: "{{ overcloud_dib_elements_default | select | list + ove
 overcloud_dib_env_vars_default:
   DIB_BOOTLOADER_DEFAULT_CMDLINE: "nofb nomodeset gfxpayload=text net.ifnames=1"
   DIB_CLOUD_INIT_DATASOURCES: "ConfigDrive"
-  DIB_CONTAINERFILE_RUNTIME: "docker"
+  DIB_CONTAINERFILE_RUNTIME: "{{ container_engine }}"
   DIB_CONTAINERFILE_NETWORK_DRIVER: "host"
+  DIB_CONTAINERFILE_RUNTIME_ROOT: "{{ '1' if container_engine == 'podman' else '0' }}"
   DIB_RELEASE: "{{ overcloud_dib_os_release }}"
 
 # DIB additional environment variables. Default is none.

@@ -1,16 +1,17 @@
 ---
 - name: "[{{ container_name }}] Ensure we have latest image"
-  docker_image:
+  kayobe_container_image:
     name: "{{ container_config.image }}"
     tag: "{{ container_config.tag | default(omit) }}"
     source: pull
+  become: "{{ container_engine == 'podman' }}"
 
 - name: "[{{ container_name }}] Include tasks file for pre task(s)"
   include_tasks: "{{ container_config.pre }}"
   when: container_config.pre is defined
 
 - name: "[{{ container_name }}] Start container"
-  docker_container:
+  kayobe_container:
     capabilities: "{{ container_config.capabilities | default(omit) }}"
     command: "{{ container_config.command | default(omit) }}"
     comparisons: "{{ container_config.comparisons | default(deploy_containers_defaults.comparisons) }}"
@@ -31,7 +32,7 @@
     ulimits: "{{ container_config.ulimits | default(omit) }}"
     user: "{{ container_config.user | default(omit) }}"
     volumes: "{{ container_config.volumes | default(omit) }}"
-  become: true
+  become: "{{ container_engine == 'podman' }}"
 
 - name: "[{{ container_name }}] Include tasks file for post task(s)"
   include_tasks: "{{ container_config.post }}"

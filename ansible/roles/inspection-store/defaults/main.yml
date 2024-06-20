@@ -29,9 +29,8 @@ inspection_store_config_path: "/etc/inspection-store"
 ####################
 # Inspection Store
 ####################
-# NOTE: Namespace 'library' causes image task to always be changed and
-# container to never update to new images.
-inspection_store_namespace: ""
+inspection_store_namespace: "library"
+inspection_store: docker.io
 inspection_store_image: "{{ inspection_store ~ '/' if inspection_store | default else '' }}{{ inspection_store_namespace ~ '/' if inspection_store_namespace else '' }}nginx"
 inspection_store_tag: "stable"
 inspection_store_image_full: "{{ inspection_store_image }}:{{ inspection_store_tag }}"

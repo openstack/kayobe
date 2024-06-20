@@ -34,8 +34,8 @@
         group: "{{ ansible_facts.user_gid }}"
       become: True
 
-    - name: Login to docker registry
-      docker_login:
+    - name: Login to container registry
+      kayobe_container_login:
         registry_url: "{{ kolla_docker_registry or omit }}"
         username: "{{ kolla_docker_registry_username }}"
         password: "{{ kolla_docker_registry_password }}"
@@ -43,6 +43,7 @@
       when:
         - kolla_docker_registry_username is truthy
         - kolla_docker_registry_password is truthy
+      become: "{{ container_engine == 'podman' }}"
 
     - name: Ensure Kolla container images are built
       shell:
@@ -51,6 +52,7 @@
           . {{ kolla_venv }}/bin/activate &&
           kolla-build
           --config-dir {{ kolla_build_config_path }}
+          --engine {{ container_engine }}
           {% if kolla_docker_registry is not none %}--registry {{ kolla_docker_registry }}{% endif %}
           {% if push_images | bool %}--push{% endif %}
           {% if nocache | bool %}--nocache{% endif %}
@@ -59,3 +61,4 @@
         executable: /bin/bash
       with_items: "{{ container_image_sets }}"
       when: item.regexes != ''
+      become: "{{ container_engine == 'podman' }}"

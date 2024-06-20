@@ -70,11 +70,11 @@
     - import_role:
         name: singleplatform-eng.users
       vars:
-        groups_to_create: "{{ [{'name': 'docker'}] if 'docker' in group_names else [] }}"
+        groups_to_create: "{{ [{'name': 'docker'}] if 'container-engine' in group_names and container_engine == 'docker' else [] }}"
         users:
           - username: "{{ kayobe_ansible_user }}"
             name: Kayobe deployment user
-            groups: "{{ ['docker'] if 'docker' in group_names else [] }}"
+            groups: "{{ ['docker'] if 'container-engine' in group_names and container_engine == 'docker' else [] }}"
             append: True
             ssh_key:
               - "{{ lookup('file', ssh_public_key_path) }}"

@@ -73,11 +73,14 @@ kolla_base_distro_version_default_map: {
 # Default is kolla_base_distro_version_default_map[kolla_base_distro].
 kolla_base_distro_version: "{{ kolla_base_distro_version_default_map[kolla_base_distro] }}"
 
+# Kolla docker container engine. Default is '{{ container_engine }}'.
+kolla_container_engine: "{{ container_engine }}"
+
 # Docker namespace to use for Kolla images.
 kolla_docker_namespace: "openstack.kolla"
 
 # Url of docker registry to use for Kolla images.
-kolla_docker_registry: "{{ docker_registry }}"
+kolla_docker_registry: "{{ podman_registry if container_engine == 'podman' else docker_registry }}"
 
 # Username to use to access a docker registry.
 kolla_docker_registry_username:
@@ -291,6 +294,7 @@ kolla_seed_inventory_pass_through_host_vars_default:
   - "ansible_ssh_private_key_file"
   - "kolla_api_interface"
   - "kolla_bifrost_network_interface"
+  - "container_engine"
 
 # List of names of additional host variables to pass through from kayobe hosts
 # to the kolla-ansible seed host, if set. See also
@@ -311,6 +315,7 @@ kolla_seed_inventory_pass_through_host_vars: >-
 kolla_seed_inventory_pass_through_host_vars_map_default:
   kolla_api_interface: "api_interface"
   kolla_bifrost_network_interface: "bifrost_network_interface"
+  container_engine: "kolla_container_engine"
 
 # Dict mapping names of extra variables in
 # kolla_seed_inventory_pass_through_host_vars to the variable to use in
@@ -386,6 +391,7 @@ kolla_overcloud_inventory_kolla_top_level_groups:
 kolla_overcloud_inventory_pass_through_host_vars_default:
   - "ansible_host"
   - "ansible_port"
+  - "container_engine"
   - "ansible_ssh_private_key_file"
   - "kolla_network_interface"
   - "kolla_api_interface"
@@ -432,6 +438,7 @@ kolla_overcloud_inventory_pass_through_host_vars_map_default:
   kolla_neutron_external_interfaces: "neutron_external_interface"
   kolla_neutron_bridge_names: "neutron_bridge_name"
   kolla_neutron_physical_networks: "neutron_physical_networks"
+  container_engine: "kolla_container_engine"
 
 # Dict mapping names of additional variables in
 # kolla_overcloud_inventory_pass_through_host_vars to the variable to use in

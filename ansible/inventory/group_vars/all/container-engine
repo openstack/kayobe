@@ -1,0 +1,76 @@
+---
+###############################################################################
+# Container engine configuration
+
+# Configures the container engine. Default is 'docker'.
+container_engine: docker
+
+# Path to container volumes. Default is '{{ podman_volumes_path }}' if
+# 'container_engine' is set to podman, otherwise '{{ docker_volumes_path }}'.
+container_engine_volumes_path: "{{ podman_volumes_path if container_engine == 'podman' else docker_volumes_path }}"
+
+###############################################################################
+# Docker configuration.
+
+# Name of the docker storage driver. Default is 'overlay2'.
+docker_storage_driver: overlay2
+
+# Name of the docker storage LVM volume group.
+docker_storage_volume_group: data
+
+# Name of the docker storage data LVM volume.
+docker_storage_volume_thinpool: docker-thinpool
+
+# Size of the docker storage data LVM volume (see lvol module size argument).
+docker_storage_volume_thinpool_size: 20%VG
+
+# Name of the docker storage metadata LVM volume.
+docker_storage_volume_thinpool_meta: docker-thinpoolmeta
+
+# Size of the docker storage metadata LVM volume (see lvol module size
+# argument).
+docker_storage_volume_thinpool_meta_size: 1%VG
+
+# URL of docker registry
+docker_registry:
+
+# Whether docker should be configured to use an insecure registry.
+# Default is false, unless docker_registry_enabled is true and
+# docker_registry_enable_tls is false.
+docker_registry_insecure: "{{ docker_registry_enabled | bool and not docker_registry_enable_tls | bool }}"
+
+# CA of docker registry
+docker_registry_ca:
+
+# List of Docker registry mirrors.
+docker_registry_mirrors: []
+
+# Enable live-restore on docker daemon
+docker_daemon_live_restore: false
+
+# Path to docker runtime directory. Default is "", which means to use the
+# default location: '/var/lib/docker'.
+docker_runtime_directory: ""
+
+# Path to docker volumes. Default is '{{ docker_runtime_directory |
+# default('/var/lib/docker', true) ~ '/volumes' }}"'.
+docker_volumes_path: "{{ docker_runtime_directory | default('/var/lib/docker', true) ~ '/volumes' }}"
+
+###############################################################################
+# Podman configuration.
+
+# URL of podman container registry
+podman_registry:
+
+# Whether podman should be configured to use an insecure registry.
+# Default is false, unless docker_registry_enabled is true and
+# docker_registry_enable_tls is false.
+podman_registry_insecure: "{{ docker_registry_enabled | bool and not docker_registry_enable_tls | bool }}"
+
+# Path to podman runtime directory. Default is None, which means to use the
+# default location: '/var/lib/containers/storage'.
+podman_runtime_directory:
+
+# Path to podman volumes. Default is '{{ podman_runtime_directory |
+# default('/var/lib/containers/storage', true) ~ '/volumes' }}"'.
+podman_volumes_path: "{{ podman_runtime_directory | default('/var/lib/containers/storage', true) ~ '/volumes' }}"

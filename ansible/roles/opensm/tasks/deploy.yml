@@ -1,6 +1,6 @@
 ---
 - name: Ensure OpenSM container is running
-  docker_container:
+  kayobe_container:
     image: "{{ item.value.image }}"
     name: "{{ item.value.container_name }}"
     network_mode: "host"
@@ -11,4 +11,5 @@
     state: started
     volumes: "{{ item.value.volumes }}"
   with_dict: "{{ opensm_services }}"
+  become: "{{ container_engine == 'podman' }}"
   when: item.value.enabled | bool

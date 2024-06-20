@@ -106,16 +106,16 @@ specify the path to the password store.
 Using the registry
 ==================
 
-Enabling the registry does not automatically set the configuration for Docker
-engine to use it. This should be done via the :ref:`docker_registry variable
-<configuration-hosts-docker>`.
+Enabling the registry does not automatically set the configuration for the
+container engine to use it. This should be done via the :ref:`docker_registry
+or podman_registry variables <configuration-hosts-container-engine>`.
 
 TLS
 ---
 
 If the registry is using a privately signed TLS certificate, it is necessary to
 :ref:`configure Docker engine with the CA certificate
-<configuration-hosts-docker>`.
+<configuration-hosts-container-engine>`.
 
 If TLS is enabled, Docker engine should be configured to use HTTPS to
 communicate with it:

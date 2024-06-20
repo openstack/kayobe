@@ -27,15 +27,21 @@
             apply:
               become: True
           vars:
-            groups_to_create:
+            groups_to_create: "{{ groups_to_create_template | from_yaml }}"
+            groups_to_create_template: |-
+              {% if container_engine == 'docker' %}
               - name: docker
+              {% endif %}
               - name: "{{ kolla_ansible_group }}"
               - name: sudo
-            users:
+            users: "{{ users_template | from_yaml }}"
+            users_template: |-
               - username: "{{ kolla_ansible_user }}"
                 group: "{{ kolla_ansible_group }}"
                 groups:
+                {% if container_engine == 'docker' %}
                   - docker
+                {% endif %}
                   - sudo
                 append: True
                 ssh_key:

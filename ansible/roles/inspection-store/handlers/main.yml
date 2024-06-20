@@ -1,6 +1,6 @@
 ---
 - name: Restart inspection store container
-  docker_container:
+  kayobe_container:
     name: "{{ item.value.container_name }}"
     state: started
     restart: True
@@ -10,10 +10,12 @@
     image: "{{ item.value.image }}"
   with_dict: "{{ inspection_store_services }}"
   when: item.value.enabled
+  become: "{{ container_engine == 'podman' }}"
 
 - name: Ensure inspection store data directory exists
   command: >
-    docker exec {{ inspection_store_services.inspection_store.container_name }}
+    {{ container_engine }} exec {{ inspection_store_services.inspection_store.container_name }}
     bash -c "mkdir -p /data/ironic-inspector &&
              chown nginx:nginx /data/ironic-inspector"
   when: inspection_store_services.inspection_store.enabled
+  become: "{{ container_engine == 'podman' }}"

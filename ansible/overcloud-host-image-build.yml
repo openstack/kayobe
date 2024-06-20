@@ -37,7 +37,7 @@
         - name: Copy overcloud host disk images into /httpboot
           copy:
             src: "{{ image_cache_path }}/{{ image.name }}/{{ image.name }}.{{ image.type | default('qcow2') }}"
-            dest: "/var/lib/docker/volumes/bifrost_httpboot/_data/{{ image.name }}.{{ image.type | default('qcow2') }}"
+            dest: "{{ container_engine_volumes_path }}/bifrost_httpboot/_data/{{ image.name }}.{{ image.type | default('qcow2') }}"
             remote_src: True
           with_items: "{{ overcloud_dib_host_images }}"
           loop_control:

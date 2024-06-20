@@ -1,29 +1,20 @@
 ---
 - name: Ensure OpenSM container is stopped
-  docker_container:
+  kayobe_container:
     name: "{{ item.value.container_name }}"
     state: "absent"
   with_dict: "{{ opensm_services }}"
+  become: "{{ container_engine == 'podman' }}"
 
-- name: Check whether OpenSM volumes are present
-  command: docker volume inspect {{ volume }}
+- name: Check whether OpenSM volumes are absent
+  kayobe_container_volume:
+    name: "{{ volume }}"
+    state: absent
   changed_when: False
   with_subelements:
     - "{{ opensm_services }}"
     - volumes
   when: "'/' not in volume"
-  failed_when:
-    - volume_result.rc != 0
-    - "'no such volume' not in volume_result.stderr | lower"
   vars:
     volume: "{{ item.1.split(':')[0] }}"
-  register: volume_result
-
-- name: Ensure OpenSM volumes are absent
-  command: docker volume rm {{ volume }}
-  with_items: "{{ volume_result.results }}"
-  when:
-    - item is not skipped
-    - item.rc == 0
-  vars:
-    volume: "{{ item.item.1.split(':')[0] }}"
+  become: "{{ container_engine == 'podman' }}"

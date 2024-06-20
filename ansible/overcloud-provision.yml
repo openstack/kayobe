@@ -42,7 +42,7 @@
   tasks:
     - name: Check the ironic node's initial provision state
       command: >
-        docker exec bifrost_deploy
+        {{ container_engine }} exec bifrost_deploy
         bash -c '
         export OS_CLOUD=bifrost &&
         export OS_BAREMETAL_API_VERSION=1.34 &&
@@ -63,6 +63,7 @@
         # NOTE: Without this, the seed's ansible_host variable will not be
         # respected when using delegate_to.
         ansible_host: "{{ hostvars[seed_host].ansible_host | default(seed_host) }}"
+      become: "{{ container_engine == 'podman' }}"
 
     - name: Set a fact containing the ironic node's initial provision state
       set_fact:
@@ -78,7 +79,7 @@
 
     - name: Ensure the ironic node is manageable
       command: >
-        docker exec bifrost_deploy
+        {{ container_engine }} exec bifrost_deploy
         bash -c '
         export OS_CLOUD=bifrost &&
         export BIFROST_INVENTORY_SOURCE=ironic &&
@@ -101,10 +102,11 @@
         # NOTE: Without this, the seed's ansible_host variable will not be
         # respected when using delegate_to.
         ansible_host: "{{ hostvars[seed_host].ansible_host | default(seed_host) }}"
+      become: "{{ container_engine == 'podman' }}"
 
     - name: Ensure the ironic node is available
       command: >
-        docker exec bifrost_deploy
+        {{ container_engine }} exec bifrost_deploy
         bash -c '
         export OS_CLOUD=bifrost &&
         export BIFROST_INVENTORY_SOURCE=ironic &&
@@ -136,6 +138,7 @@
         # NOTE: Without this, the seed's ansible_host variable will not be
         # respected when using delegate_to.
         ansible_host: "{{ hostvars[seed_host].ansible_host | default(seed_host) }}"
+      become: "{{ container_engine == 'podman' }}"
 
     - name: Set a fact containing the bifrost host list
       set_fact:
@@ -146,7 +149,7 @@
 
     - name: Ensure the ironic nodes are provisioned
       command: >
-        docker exec bifrost_deploy
+        {{ container_engine }} exec bifrost_deploy
         bash -c '
         export OS_CLOUD=bifrost &&
         export BIFROST_INVENTORY_SOURCE=ironic &&
@@ -165,10 +168,11 @@
       # We execute this only once, allowing the Bifrost Ansible to handle
       # multiple nodes.
       run_once: True
+      become: "{{ container_engine == 'podman' }}"
 
     - name: Wait for the ironic node to become active
       command: >
-        docker exec bifrost_deploy
+        {{ container_engine }} exec bifrost_deploy
         bash -c '
         export OS_CLOUD=bifrost &&
         export OS_BAREMETAL_API_VERSION=1.34 &&
@@ -196,6 +200,7 @@
         # NOTE: Without this, the seed's ansible_host variable will not be
         # respected when using delegate_to.
         ansible_host: "{{ hostvars[seed_host].ansible_host | default(seed_host) }}"
+      become: "{{ container_engine == 'podman' }}"
 
     - name: Set a fact containing the final provision state
       set_fact:

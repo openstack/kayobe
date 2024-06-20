@@ -126,6 +126,11 @@ The disk image is built during the deployment of seed services. It is worth
 noting that currently, the image will not be rebuilt if it already exists. To
 force rebuilding the image, it is necessary to remove the file. On the seed:
 
+.. note::
+
+    Example shows the commands when using Docker as the container engine. If using
+    Podman, simply change ``docker`` for ``sudo podman`` in the command.
+
 .. code-block:: console
 
    docker exec bifrost_deploy rm /httpboot/deployment_image.qcow2

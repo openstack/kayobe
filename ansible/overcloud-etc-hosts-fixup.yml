@@ -40,21 +40,23 @@
       - rabbitmq
   tasks:
     - name: Check whether rabbitmq container is running
-      command: docker inspect -f {{ '{{.Id}}' }} {{ item }}
+      command: "{{ container_engine }} inspect -f {{ '{{.Id}}' }} {{ item }}"
       changed_when: False
       failed_when: False
       with_items: "{{ rabbitmq_containers }}"
       register: ps_result
+      become: "{{ container_engine == 'podman' }}"
 
     - name: Copy /etc/hosts into rabbitmq containers
-      command: docker cp /etc/hosts {{ item.item }}:/tmp/hosts
+      command: "{{ container_engine }} cp /etc/hosts {{ item.item }}:/tmp/hosts"
       with_items: "{{ ps_result.results }}"
       when: item.rc == 0
       changed_when: false
+      become: "{{ container_engine == 'podman' }}"
 
     - name: Ensure rabbitmq containers' /etc/hosts does not contain incorrect IPs
       command: >
-        docker exec -u root {{ item.item }}
+        {{ container_engine }} exec -u root {{ item.item }}
         bash -c
          'if ! diff -q /tmp/hosts /etc/hosts >/dev/null; then
            cp /tmp/hosts /etc/hosts &&
@@ -65,9 +67,11 @@
       with_items: "{{ ps_result.results }}"
       when: item.rc == 0
       register: sed_result
+      become: "{{ container_engine == 'podman' }}"
 
     - name: Check that RabbitMQ client works
-      command: docker exec {{ item.item }} rabbitmqctl status
+      command: "{{ container_engine }} exec {{ item.item }} rabbitmqctl status"
       with_items: "{{ ps_result.results }}"
       when: item.rc == 0
       changed_when: false
+      become: "{{ container_engine == 'podman' }}"

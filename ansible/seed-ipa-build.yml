@@ -45,11 +45,12 @@
 
         - name: Copy Ironic Python Agent images into /httpboot
           command: >
-            docker exec bifrost_deploy
+            {{ container_engine }} exec bifrost_deploy
             bash -c 'ansible -vvvv target
             -i /bifrost/playbooks/inventory/target
             -m copy
             -a "src=/etc/bifrost/{{ item }} dest=/httpboot/{{ item }}"
             -e "ansible_python_interpreter=/var/lib/kolla/venv/bin/python"'
           with_items: "{{ ipa_images }}"
+          become: "{{ container_engine == 'podman' }}"
       when: ipa_build_images | bool
