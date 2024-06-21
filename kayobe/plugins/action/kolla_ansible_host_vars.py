@@ -95,10 +95,6 @@ class ActionModule(ActionBase):
             # Get the network interface for this network.
             iface = ("{{ '%s' | net_interface }}" % net_name)
             iface = self._templar.template(iface)
-            if iface:
-                # Ansible fact names replace dashes with underscores.
-                # FIXME(mgoddard): Is this still required?
-                iface = iface.replace('-', '_')
             if required and not iface:
                 msg = ("Required network '%s' (%s) does not have an interface "
                        "configured for this host" % (net_name, description))
