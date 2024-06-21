@@ -136,26 +136,6 @@ class TestCase(unittest.TestCase):
         }
         self.assertEqual(expected, result)
 
-    def test__run_one_with_dashes(self):
-        variables = copy.deepcopy(self.variables)
-        variables["foo_interface"] = "eth-0"
-        module = self._create_module(variables)
-        interfaces = [{
-            "var_name": "kolla_foo_interface",
-            "network": "foo",
-            "description": "Foo network",
-            "required": False,
-        }]
-        result = module._run(interfaces, [])
-        expected = {
-            "changed": False,
-            "ansible_facts": {
-                "kolla_foo_interface": "eth_0",
-            },
-            "_ansible_facts_cacheable": False,
-        }
-        self.assertEqual(expected, result)
-
     def test__run_interface_not_mapped(self):
         module = self._create_module()
         interfaces = [{
