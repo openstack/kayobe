@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    ``eos_config`` does not support the ``provider`` parameter since Ansible 7.
+    Users are required to update their configuration according to `Arista EOS
+    documentation
+    <https://docs.openstack.org/kayobe/latest/configuration/reference/physical-network.html#arista-eos>`_.
