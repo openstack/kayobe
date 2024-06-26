@@ -1,0 +1,17 @@
+---
+features:
+  - |
+    Adds the internal VIP to the NOPROXY/noproxy environment variables.
+security:
+  - |
+    When running API requests from a host configured with kayobe, traffic
+    destined for the internal VIP is sent via the default proxy. This can be a
+    security issue if not using TLS as the proxy will be able to intercept the
+    traffic. If using an untrusted proxy, with TLS disabled on the internal
+    VIP, it is recommended that you run ``kayobe overcloud host configure -t
+    proxy``, ``kayobe seed hypervisor host configure -t proxy``, ``kayobe seed
+    host configure -t proxy``, and ``kayobe infra vm host configure -t proxy``,
+    to add the internal VIP to the no proxy configuration. This is considered a
+    minor issue as traffic between containers will not use the proxy by
+    default.
+    `LP#2087556 <https://launchpad.net/bugs/2087556>`__
