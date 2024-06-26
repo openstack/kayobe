@@ -19,3 +19,4 @@ no_proxy:
   - "127.0.0.1"
   - "localhost"
   - "{{ ('http://' ~ docker_registry) | urlsplit('hostname') if docker_registry else '' }}"
+  - "{{ kolla_internal_vip_address }}"
