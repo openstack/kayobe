@@ -809,7 +809,7 @@ class TestCase(unittest.TestCase):
         expected_calls = [
             mock.call(
                 mock.ANY,
-                [utils.get_data_files_path("ansible", "seed-deploy-containers.yml")],  # noqa
+                [utils.get_data_files_path("ansible", "seed-manage-containers.yml")],  # noqa
                 extra_vars={'kayobe_action': 'deploy'}
             ),
             mock.call(
@@ -863,7 +863,7 @@ class TestCase(unittest.TestCase):
         expected_calls = [
             mock.call(
                 mock.ANY,
-                [utils.get_data_files_path("ansible", "seed-deploy-containers.yml")],  # noqa
+                [utils.get_data_files_path("ansible", "seed-manage-containers.yml")],  # noqa
                 extra_vars={'kayobe_action': 'deploy'}
             ),
             mock.call(
@@ -1708,7 +1708,7 @@ class TestCase(unittest.TestCase):
             ),
             mock.call(
                 mock.ANY,
-                "deploy-containers",
+                "manage-containers",
             ),
         ]
         self.assertListEqual(expected_calls, mock_kolla_run.call_args_list)

@@ -1,9 +1,0 @@
----
-- name: Ensure defined container images are deployed on seed node
-  hosts: seed
-  tags:
-    - seed-deploy-containers
-  vars:
-    deploy_containers_action: "{{ kayobe_action }}"
-  roles:
-    - role: deploy-containers
