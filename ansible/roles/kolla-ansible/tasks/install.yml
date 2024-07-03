@@ -2,27 +2,57 @@
 - name: Include OS family-specific variables
   include_vars: "{{ ansible_facts.os_family }}.yml"
 
-- name: Ensure EPEL repo is installed
-  package:
-    name: epel-release
-    state: present
-  become: True
+- name: Gather the package facts
+  ansible.builtin.package_facts:
+    manager: auto
+
+- block:
+    - name: Assert that epel-release package is installed if not using privilege escalation
+      assert:
+        that: "'epel-release' in ansible_facts.packages.keys()"
+        fail_msg: >-
+          The following packages are missing from your system: epel-release and
+          privilege escalation is disabled. Please get your system administator
+          to install these packages or enable kolla_ansible_control_host_become.
+      when:
+        - not kolla_ansible_control_host_become | bool
+
+    - name: Ensure EPEL repo is installed
+      package:
+        name: epel-release
+        state: present
+      become: True
+      when: "'epel-release' not in ansible_facts.packages.keys()"
   vars:
     ansible_python_interpreter: /usr/bin/python3
   when:
     - ansible_facts.os_family == 'RedHat'
     - kolla_ansible_install_epel | bool
 
-- name: Ensure required packages are installed
-  package:
-    # NOTE(mgoddard): select non-empty packages.
-    name: "{{ kolla_ansible_package_dependencies | select | list }}"
-    state: present
-    cache_valid_time: "{{ apt_cache_valid_time if ansible_facts.os_family == 'Debian' else omit }}"
-    update_cache: "{{ True if ansible_facts.os_family == 'Debian' else omit }}"
+- block:
+    - name: Assert that all packages are installed if not using privilege escalation
+      assert:
+        that: missing_packages is falsy
+        fail_msg: >-
+          The following packages are missing from your system:
+          {{ missing_packages | join(', ') }} and privilege escalation is disabled. Please get
+          your system administator to install these packages or enable
+          kolla_ansible_control_host_become.
+      when: not kolla_ansible_control_host_become | bool
+
+    - name: Ensure required packages are installed
+      package:
+        name: "{{ packages }}"
+        state: present
+        cache_valid_time: "{{ apt_cache_valid_time if ansible_facts.os_family == 'Debian' else omit }}"
+        update_cache: "{{ True if ansible_facts.os_family == 'Debian' else omit }}"
+      become: True
+      when: missing_packages is truthy
   vars:
+    # NOTE(mgoddard): select non-empty packages.
     ansible_python_interpreter: /usr/bin/python3
-  become: True
+    packages: "{{ kolla_ansible_package_dependencies | select | list }}"
+    missing_packages: "{{ packages | difference(ansible_facts.packages.keys()) }}"
 
 - name: Ensure source code checkout parent directory exists
   file:
@@ -30,7 +60,7 @@
     state: directory
     owner: "{{ ansible_facts.user_uid }}"
     group: "{{ ansible_facts.user_gid }}"
-  become: True
+  become: "{{ kolla_ansible_control_host_become | bool }}"
   when: kolla_ansible_ctl_install_type == 'source'
 
 - name: Ensure Kolla Ansible source code checkout exists
@@ -44,7 +74,7 @@
   file:
     path: "{{ kolla_ansible_venv }}"
     state: absent
-  become: True
+  become: "{{ kolla_ansible_control_host_become | bool }}"
   when:
     - kolla_ansible_venv is not none
     - (kolla_ansible_venv ~ '/bin/python') | realpath != kolla_ansible_venv_python | realpath
@@ -55,7 +85,7 @@
     state: directory
     owner: "{{ ansible_facts.user_uid }}"
     group: "{{ ansible_facts.user_gid }}"
-  become: True
+  become: "{{ kolla_ansible_control_host_become | bool }}"
   when: kolla_ansible_venv is not none
 
 - name: Ensure the latest version of pip is installed

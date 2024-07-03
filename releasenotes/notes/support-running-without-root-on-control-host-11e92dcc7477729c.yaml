@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Allows running without root privileges, provided that all Kayobe package
+    dependencies are installed and all configured paths are writable for the
+    current user, e.g. Python virtualenvs and output directories. To use
+    this feature set ``kayobe_control_host_become`` to ``false`` in
+    ``$KAYOBE_CONFIG_PATH/globals.yml``.

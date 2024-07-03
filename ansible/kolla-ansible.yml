@@ -86,6 +86,7 @@
     - import_role:
         name: kolla-ansible
       vars:
+        kolla_ansible_control_host_become: "{{ kayobe_control_host_become | bool }}"
         kolla_ansible_install_epel: "{{ dnf_install_epel }}"
         kolla_external_fqdn_cert: "{{ kolla_config_path }}/certificates/haproxy.pem"
         kolla_internal_fqdn_cert: "{{ kolla_config_path }}/certificates/haproxy-internal.pem"

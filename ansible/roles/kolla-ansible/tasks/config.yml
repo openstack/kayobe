@@ -33,7 +33,7 @@
     owner: "{{ ansible_facts.user_uid }}"
     group: "{{ ansible_facts.user_gid }}"
     mode: 0750
-  become: True
+  become: "{{ kolla_ansible_control_host_become | bool }}"
   with_items:
     - "{{ kolla_config_path }}"
     - "{{ kolla_seed_inventory_path }}"

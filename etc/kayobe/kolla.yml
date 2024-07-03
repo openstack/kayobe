@@ -267,6 +267,10 @@
 # Primary group of Kolla SSH user. Default is 'kolla'.
 #kolla_ansible_group:
 
+# Whether to use privilege escalation for operations on the control host.
+# Default is {{ kayobe_control_host_become }}.
+#kolla_ansible_control_host_become:
+
 # Whether to use privilege escalation for all operations performed via Kolla
 # Ansible. Default is 'false'.
 #kolla_ansible_become:

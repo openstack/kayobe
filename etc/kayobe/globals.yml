@@ -68,6 +68,11 @@
 # equivalent to a value of 100.
 #kayobe_max_fail_percentage:
 
+# Whether or not we should try and escalate privileges on the control host.
+# This allows us to install packages and create arbitrary directories that our
+# user would not normally have permission to create. Default is true.
+#kayobe_control_host_become:
+
 ###############################################################################
 # Dummy variable to allow Ansible to accept this file.
 workaround_ansible_issue_8743: yes

@@ -77,6 +77,9 @@ kolla_ansible_group: kolla
 # Ansible.
 kolla_ansible_become: false
 
+# Whether to use privilege escalation for operations on the control host.
+kolla_ansible_control_host_become: true
+
 ###############################################################################
 # Kolla-ansible inventory configuration.
 
