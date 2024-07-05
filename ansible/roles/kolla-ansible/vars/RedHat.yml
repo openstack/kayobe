@@ -5,6 +5,7 @@ kolla_ansible_package_dependencies:
   - git
   - libffi-devel
   - openssl-devel
-  - python3-devel
-  - python3-pip
+  - python3.12
+  - python3.12-devel
+  - python3.12-pyyaml
   - rsync

@@ -36,6 +36,15 @@
     version: "{{ kolla_ansible_source_version }}"
   when: kolla_ansible_ctl_install_type == 'source'
 
+- name: Remove virtualenv if python version is stale
+  file:
+    path: "{{ kolla_ansible_venv }}"
+    state: absent
+  become: True
+  when:
+    - kolla_ansible_venv is not none
+    - (kolla_ansible_venv ~ '/bin/python') | realpath != kolla_ansible_venv_python | realpath
+
 - name: Ensure virtualenv parent directory exists
   file:
     path: "{{ kolla_ansible_venv | dirname }}"
@@ -97,7 +106,6 @@
         {% endif %}
       - "{{ kolla_ansible_venv_ansible_core }}"
       - "{{ kolla_ansible_venv_ansible }}"
-      - selinux
   pip:
     name: "{{ (kolla_ansible_packages + kolla_ansible_venv_extra_requirements) | select | list }}"
     state: latest
