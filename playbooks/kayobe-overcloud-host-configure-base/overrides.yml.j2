@@ -149,6 +149,12 @@ apt_repositories:
   - url:  http://packages.treasuredata.com/4/ubuntu/jammy/
     components: contrib
     signed_by: td-agent.asc
+apt_preferences:
+  - content: |
+      Package: fake-package
+      Pin: origin fake.repo.url
+      Pin-Priority: 1
+    filename: 99fakepackage
 apt_disable_sources_list: true
 apt_auth:
   - machine: https://apt.example.com

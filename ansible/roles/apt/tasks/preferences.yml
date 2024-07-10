@@ -1,0 +1,12 @@
+---
+- name: Ensure Apt preferences are configured
+  copy:
+    content: "{{ item.content }}"
+    dest: "/etc/apt/preferences.d/{{ item.filename }}"
+    owner: root
+    group: root
+    mode: 0664
+  loop: "{{ apt_preferences }}"
+  loop_control:
+    label: "{{ item.filename }}"
+  become: true
