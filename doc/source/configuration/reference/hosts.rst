@@ -376,6 +376,7 @@ items:
   ``apt_keys_path`` (optional, default is unset)
 * ``architecture``: whitespace-separated list of architectures that will be used
   (optional, default is unset)
+* ``trusted``: boolean value (optional, default is unset)
 
 The default of ``apt_repositories`` is an empty list.
 
