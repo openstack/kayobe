@@ -1,0 +1,12 @@
+---
+fixes:
+  - |
+    Switches to using ``ansible-core`` based kolla-ansible install.  This is a
+    workaround for `LP#2072979
+    <https://bugs.launchpad.net/kayobe/+bug/2072979>`__, but also results in a
+    lighter weight install.
+  - |
+    Switches to using a newer version of the docker community collection to
+    workaround issues using the docker ansible modules with certain
+    combinations of python libraries. See `LP#2072979
+    <https://bugs.launchpad.net/kayobe/+bug/2072979>`__.

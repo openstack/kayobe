@@ -108,6 +108,13 @@
 - name: Ensure Ansible collections are installed
   command:
     cmd: >-
-      ansible-galaxy collection install
+      ansible-galaxy collection install --force
       -r {{ kolla_ansible_requirements_yml }}
+      {% if not kolla_ansible_venv_ansible %}-r {{ kolla_ansible_core_requirements_yml }}{% endif %}
       -p {{ kolla_ansible_venv }}/share/kolla-ansible/ansible/collections/
+  environment:
+    # NOTE(wszumski): Ignore collections shipped with ansible, so that we can install
+    # newer versions.
+    ANSIBLE_COLLECTIONS_SCAN_SYS_PATH: "False"
+    # NOTE(wszumski): Don't use path configured for kayobe
+    ANSIBLE_COLLECTIONS_PATH:

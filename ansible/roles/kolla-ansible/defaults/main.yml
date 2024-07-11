@@ -23,12 +23,16 @@ kolla_ansible_venv_extra_requirements: []
 
 # Pip requirement specifier for the ansible package. NOTE: This limits the
 # version of ansible used by kolla-ansible to avoid new releases from breaking
-# tested code. Changes to this limit should be tested.
-kolla_ansible_venv_ansible: 'ansible>=8,<10.0'
+# tested code. Changes to this limit should be tested. It is possible to only
+# install ansible-core by setting kolla_ansible_venv_ansible to None.
+kolla_ansible_venv_ansible:
 kolla_ansible_venv_ansible_core: 'ansible-core>=2.15,<2.17'
 
 # Path to a requirements.yml file for Ansible collections.
 kolla_ansible_requirements_yml: "{{ kolla_ansible_venv }}/share/kolla-ansible/requirements.yml"
+
+# Path to a an additional requirements.yml file for Ansible collections when using ansible-core.
+kolla_ansible_core_requirements_yml: "{{ kolla_ansible_venv }}/share/kolla-ansible/requirements-core.yml"
 
 # Virtualenv directory where Kolla-ansible's ansible modules will execute
 # remotely on the target nodes. If None, no virtualenv will be used.

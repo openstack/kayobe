@@ -48,11 +48,13 @@ class TestCase(unittest.TestCase):
         mock_read.return_value = {"collections": []}
         utils.galaxy_collection_install("/path/to/collection/file",
                                         "/path/to/collections")
+        env = {'ANSIBLE_COLLECTIONS_SCAN_SYS_PATH': 'False'} | os.environ
         mock_run.assert_called_once_with(["ansible-galaxy", "collection",
                                           "install", "--collections-path",
                                           "/path/to/collections",
                                           "--requirements-file",
-                                          "/path/to/collection/file"])
+                                          "/path/to/collection/file"],
+                                          env=env)
 
     @mock.patch.object(utils, "run_command")
     @mock.patch.object(utils, "read_yaml_file")
@@ -77,11 +79,13 @@ class TestCase(unittest.TestCase):
         mock_read.return_value = {"roles": []}
         utils.galaxy_collection_install("/path/to/collection/file",
                                         "/path/to/collections")
+        env = {'ANSIBLE_COLLECTIONS_SCAN_SYS_PATH': 'False'} | os.environ
         mock_run.assert_called_once_with(["ansible-galaxy", "collection",
                                           "install", "--collections-path",
                                           "/path/to/collections",
                                           "--requirements-file",
-                                          "/path/to/collection/file"])
+                                          "/path/to/collection/file"],
+                                          env=env)
 
     @mock.patch.object(utils, "run_command")
     @mock.patch.object(utils, "read_yaml_file")

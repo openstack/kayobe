@@ -118,10 +118,16 @@ def galaxy_collection_install(requirements_file, collections_path,
     cmd = ["ansible-galaxy", "collection", "install"]
     cmd += ["--collections-path", collections_path]
     cmd += ["--requirements-file", requirements_file]
+    env_defaults = {
+        # NOTE(wszumski): Allow overriding of ansible builtin collections in
+        # kayobe requirements.yml.
+        "ANSIBLE_COLLECTIONS_SCAN_SYS_PATH": "False",
+    }
+    env = env_defaults | os.environ
     if force:
         cmd += ["--force"]
     try:
-        run_command(cmd)
+        run_command(cmd, env=env)
     except subprocess.CalledProcessError as e:
         LOG.error("Failed to install Ansible collections from %s via Ansible "
                   "Galaxy: returncode %d", requirements_file, e.returncode)
