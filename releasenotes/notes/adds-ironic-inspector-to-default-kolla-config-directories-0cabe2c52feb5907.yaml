@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Ironic Inspector configuration can now be customised by placing config
+    overrides in the ``$KAYOBE_CONFIG_PATH/kolla/config/ironic-inspector`` or
+    ``$KAYOBE_CONFIG_PATH/environments/<environment>/kolla/config/ironic-inspector``
+    directories. This can be used to a define a ``known_devices.yaml`` file
+    which is used to configure the ``accelerators`` plugin in Ironic Inspector.

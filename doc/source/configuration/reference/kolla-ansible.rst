@@ -722,6 +722,7 @@ which files are supported.
    ``horizon/*``                   Extended horizon configuration.
    ``influx*``                     InfluxDB configuration.
    ``ironic-inspector.conf``       Ironic inspector configuration.
+   ``ironic-inspector/*``          Extended Ironic inspector configuration
    ``ironic.conf``                 Ironic configuration.
    ``ironic/*``                    Extended ironic configuration.
    ``keepalived/*``                Extended keepalived configuration.
