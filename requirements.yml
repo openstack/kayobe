@@ -8,7 +8,7 @@ collections:
   - name: openstack.cloud
     version: '<3'
   - name: stackhpc.linux
-    version: 1.2.1
+    version: 1.2.3
   - name: stackhpc.network
     version: 1.0.0
   - name: stackhpc.openstack
