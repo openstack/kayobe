@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes a bug where systemd-networkd was not permanently enabled when the
+    unit was already in state ``runtime-enabled``.
+    `LP#2073100 <https://launchpad.net/bugs/2073100>`__
