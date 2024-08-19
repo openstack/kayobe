@@ -1,0 +1,5 @@
+---
+# Whether to skip scanning SSH keys for switches. In some cases scanning SSH
+# keys may fail e.g. due to unsupported key exchange algorithms on older
+# devices.  Default is false.
+switch_skip_keyscan: false
