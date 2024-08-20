@@ -205,7 +205,8 @@ class TestNetworks(BaseNetworksTest):
                           self.context, "net3")
 
     def test_physical_interface_bond(self):
-        self._update_context({"net6_interface": "bond0", "net6_bond_slaves": ["eth3", "eth4"]})
+        self._update_context({"net6_interface": "bond0",
+                              "net6_bond_slaves": ["eth3", "eth4"]})
         interface = networks.net_physical_interface(self.context, "net6")
         expected = ['eth3', 'eth4']
         self.assertEqual(expected, interface)
@@ -219,4 +220,3 @@ class TestNetworks(BaseNetworksTest):
         interface = networks.net_physical_interface(self.context, "net1")
         expected = ['eth0']
         self.assertEqual(expected, interface)
-
