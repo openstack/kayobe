@@ -30,6 +30,7 @@
         - kayobe-seed-vm-ubuntu-jammy-efi
         - kayobe-infra-vm-rocky9
         - kayobe-infra-vm-ubuntu-jammy
+        - openstack-tox-pep8
         - openstack-tox-py39
         - openstack-tox-py310
         - openstack-tox-py311

@@ -162,11 +162,9 @@ key3:
         mock_read.return_value = config
         result = utils.read_config_dump_yaml_file("/path/to/file")
         # Can't read the value without an encryption key, so just check type.
-        self.assertTrue(isinstance(result["key1"],
-                                   AnsibleVaultEncryptedUnicode))
+        self.assertIsInstance(result["key1"], AnsibleVaultEncryptedUnicode)
         self.assertEqual(result["key2"], "value2")
-        self.assertTrue(isinstance(result["key3"][0],
-                                   AnsibleVaultEncryptedUnicode))
+        self.assertIsInstance(result["key3"][0], AnsibleVaultEncryptedUnicode)
         mock_read.assert_called_once_with("/path/to/file")
 
     @mock.patch.object(utils, "read_file")
