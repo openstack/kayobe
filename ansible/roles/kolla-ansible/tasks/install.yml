@@ -7,6 +7,8 @@
     name: epel-release
     state: present
   become: True
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   when:
     - ansible_facts.os_family == 'RedHat'
     - kolla_ansible_install_epel | bool
@@ -18,6 +20,8 @@
     state: present
     cache_valid_time: "{{ apt_cache_valid_time if ansible_facts.os_family == 'Debian' else omit }}"
     update_cache: "{{ True if ansible_facts.os_family == 'Debian' else omit }}"
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   become: True
 
 - name: Ensure source code checkout parent directory exists

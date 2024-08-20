@@ -1,0 +1,11 @@
+---
+upgrade:
+  - |
+    Python 3.9.x is no longer supported on the control host. On Rocky Linux 9,
+    please recreate your virtualenv with ``python3.12``.
+  - |
+    Updates the maximum supported version of Ansible from 9.x (ansible-core
+    2.16) to 10.x (ansible-core 2.17). The minimum supported version is updated
+    from 8.x to 9.x. On Rocky Linux 9, you will need to recreate your Kayobe
+    virtualenv using ``python3.12`` as support for ``python3.9`` has been
+    dropped.

@@ -8,6 +8,9 @@
       - release-notes-jobs-python3
     check:
       jobs:
+        - openstack-tox-py39:
+            #NOTE(wszumski): We have dropped python3.9 support, so disable this job.
+            files: THIS-JOB-IS-DISABLED
         - kayobe-tox-ansible-syntax
         - kayobe-tox-ansible
         - kayobe-tox-molecule
@@ -33,6 +36,9 @@
         - kayobe-infra-vm-ubuntu-noble
     gate:
       jobs:
+        - openstack-tox-py39:
+            #NOTE(wszumski): We have dropped python3.9 support, so disable this job.
+            files: THIS-JOB-IS-DISABLED
         - kayobe-tox-ansible-syntax
         - kayobe-tox-ansible
         - kayobe-tox-molecule

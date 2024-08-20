@@ -17,6 +17,8 @@
     policy: "{{ selinux_policy }}"
     state: "{{ selinux_state }}"
   register: selinux_result
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   become: True
   when: stat_result.stat.exists
 

@@ -141,10 +141,18 @@ function is_yum {
     fi
 }
 
+function get_python {
+  if is_dnf; then
+      echo python3.12
+  else
+      echo python3
+  fi
+}
+
 function install_dependencies {
     echo "Installing package dependencies for kayobe"
     if is_dnf; then
-        sudo dnf -y install gcc git vim python3-devel python3-pyyaml libffi-devel
+        sudo dnf -y install gcc git vim python3-devel python3-pyyaml libffi-devel python3.12-devel python3.12 python3.12-pyyaml
     elif is_yum; then
         echo "CentOS 7 is no longer supported"
         exit 1
@@ -166,7 +174,7 @@ function install_venv {
     fi
     if [[ ! -f "${venv_path}/bin/activate" ]]; then
         echo "Creating virtual environment in ${venv_path}"
-        python3 -m venv "${venv_path}"
+        $(get_python) -m venv "${venv_path}"
         # NOTE: Virtualenv's activate and deactivate scripts reference an
         # unbound variable.
         set +u
@@ -192,7 +200,9 @@ function install_venv_system_site_packages {
     fi
     if [[ ! -f "${venv_path}/bin/activate" ]]; then
         echo "Creating virtual environment in ${venv_path}"
-        python3 -m venv --system-site-packages "${venv_path}"
+        # NOTE(wszumski): tenks doesn't currently support not using the system python
+        # interpreter with: "Failed to detect selinux python bindings"
+        /usr/bin/python3 -m venv --system-site-packages "${venv_path}"
         # NOTE: Virtualenv's activate and deactivate scripts reference an
         # unbound variable.
         set +u
@@ -218,7 +228,9 @@ function install_kayobe_dev_venv {
 
 function upgrade_kayobe_venv {
     echo "Upgrading kayobe virtual environment in ${KAYOBE_VENV_PATH}"
-    python3 -m venv "${KAYOBE_VENV_PATH}"
+    # NOTE(wszumski): We need to recreate the old virtualenv to switch to python3.12
+    rm -rf "${KAYOBE_VENV_PATH}"
+    $(get_python) -m venv "${KAYOBE_VENV_PATH}"
     # NOTE: Virtualenv's activate and deactivate scripts reference an
     # unbound variable.
     set +u

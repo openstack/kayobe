@@ -14,6 +14,8 @@ source "${PARENT}/functions"
 
 function main {
     config_init
+    # NOTE(wszusmki): Dependencies such as python can change across versions
+    install_dependencies
     overcloud_upgrade
 }
 
