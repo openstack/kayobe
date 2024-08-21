@@ -1,0 +1,7 @@
+fixes:
+  - |
+    Fixes an issue where networking failed to come up after kayobe
+    ``overcloud host provision`` as cloud-init wasn't installed. Add
+    ``cloud-init`` element to ``overcloud_dib_elements_default`` so it's no
+    longer missing.
+    Expected behavior was that ``cloud-init-datasource`` had it as dependency.

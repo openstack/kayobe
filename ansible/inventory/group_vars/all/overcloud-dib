@@ -34,9 +34,10 @@ overcloud_dib_os_element: "{{ 'rocky-container' if os_distribution == 'rocky' el
 overcloud_dib_os_release: "{{ os_release }}"
 
 # List of default DIB elements. Default is ["{{ overcloud_dib_os_element }}",
-# "cloud-init-datasources", "enable-serial-console", "vm"].
+# "cloud-init", "cloud-init-datasources", "enable-serial-console", "vm"].
 overcloud_dib_elements_default:
   - "{{ overcloud_dib_os_element }}"
+  - "cloud-init"
   - "cloud-init-datasources"
   - "enable-serial-console"
   - "vm"
