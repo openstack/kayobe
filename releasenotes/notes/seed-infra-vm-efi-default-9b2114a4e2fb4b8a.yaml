@@ -1,0 +1,10 @@
+---
+upgrade:
+  - |
+    Changes the default boot firmware for seed and infra VMs to ``efi``. Set
+    ``infra_vm_boot_firmware`` and ``seed_vm_boot_firmware`` to ``bios`` to
+    retain existing behaviour.
+fixes:
+  - |
+    Fixes compatibility with Rocky Linux 9.4 GenericCloud images by switching
+    to ``efi`` boot firmware.

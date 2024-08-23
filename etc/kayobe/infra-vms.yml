@@ -58,7 +58,7 @@
 # OS family. Needed for config drive generation.
 #infra_vm_os_family:
 
-# Boot firmware. Possible values are 'bios' or 'efi'. Default is 'bios'.
+# Boot firmware. Possible values are 'bios' or 'efi'. Default is 'efi'.
 #infra_vm_boot_firmware:
 
 # Machine type. Libvirt default configuration is used.

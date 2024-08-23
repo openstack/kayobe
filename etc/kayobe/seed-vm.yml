@@ -61,7 +61,7 @@
 #
 #seed_vm_interfaces:
 
-# Boot firmware. Possible values are 'bios' or 'efi'. Default is 'bios'.
+# Boot firmware. Possible values are 'bios' or 'efi'. Default is 'efi'.
 #seed_vm_boot_firmware:
 
 # Machine type. Libvirt default configuration is used.
