@@ -731,7 +731,8 @@ class SeedServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         playbooks = _build_playbook_list(
             "seed-manage-containers")
         extra_vars = {"kayobe_action": "deploy"}
-        self.run_kayobe_playbooks(parsed_args, playbooks, extra_vars=extra_vars)
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  extra_vars=extra_vars)
         self.generate_kolla_ansible_config(parsed_args, service_config=False,
                                            bifrost_config=True)
 
@@ -740,10 +741,12 @@ class SeedServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
             "seed-credentials",
             "seed-introspection-rules",
             "dell-switch-bmp")
-        self.run_kayobe_playbooks(parsed_args, playbooks, extra_vars=extra_vars)
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  extra_vars=extra_vars)
+
 
 class SeedServiceDestroy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
-                        Command):
+                         Command):
     """Destroy the seed services.
 
     * Destroys user defined containers
@@ -762,13 +765,15 @@ class SeedServiceDestroy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         self.generate_kolla_ansible_config(parsed_args, service_config=False,
                                            bifrost_config=False)
         extra_args = ["--yes-i-really-really-mean-it"]
-        self.run_kolla_ansible_seed(parsed_args, "destroy", extra_args=extra_args)
+        self.run_kolla_ansible_seed(parsed_args, "destroy",
+                                    extra_args=extra_args)
 
         extra_vars = {"kayobe_action": "destroy"}
         playbooks = _build_playbook_list(
             "seed-manage-containers",
             "docker-registry")
-        self.run_kayobe_playbooks(parsed_args, playbooks, extra_vars=extra_vars)
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  extra_vars=extra_vars)
 
     def get_parser(self, prog_name):
         parser = super(SeedServiceDestroy, self).get_parser(prog_name)
@@ -778,6 +783,7 @@ class SeedServiceDestroy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
                            help="confirm that you understand that this will "
                                 "permanently destroy all services and data.")
         return parser
+
 
 class SeedServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
                          Command):
@@ -800,7 +806,8 @@ class SeedServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         playbooks = _build_playbook_list(
             "seed-manage-containers")
         extra_vars = {"kayobe_action": "deploy"}
-        self.run_kayobe_playbooks(parsed_args, playbooks, extra_vars=extra_vars)
+        self.run_kayobe_playbooks(parsed_args, playbooks,
+                                  extra_vars=extra_vars)
         self.generate_kolla_ansible_config(parsed_args, service_config=False,
                                            bifrost_config=True)
 
@@ -1896,6 +1903,7 @@ class NetworkConnectivityCheck(KayobeAnsibleMixin, VaultMixin, Command):
         playbooks = _build_playbook_list("network-connectivity")
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
+
 class BaremetalComputeRegister(KayobeAnsibleMixin, VaultMixin, Command):
     """Register baremetal compute nodes in Ironic."""
 
@@ -1915,7 +1923,8 @@ class BaremetalComputeInspect(KayobeAnsibleMixin, VaultMixin, Command):
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
 
-class BaremetalComputeIntrospectionDataSave(KayobeAnsibleMixin, VaultMixin, Command):
+class BaremetalComputeIntrospectionDataSave(KayobeAnsibleMixin, VaultMixin,
+                                            Command):
     """Save hardware introspection data for the baremetal compute nodes.
 
     Save hardware introspection data from the overcloud's ironic inspector

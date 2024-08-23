@@ -54,7 +54,7 @@ class TestCase(unittest.TestCase):
                                           "/path/to/collections",
                                           "--requirements-file",
                                           "/path/to/collection/file"],
-                                          env=env)
+                                         env=env)
 
     @mock.patch.object(utils, "run_command")
     @mock.patch.object(utils, "read_yaml_file")
@@ -85,7 +85,7 @@ class TestCase(unittest.TestCase):
                                           "/path/to/collections",
                                           "--requirements-file",
                                           "/path/to/collection/file"],
-                                          env=env)
+                                         env=env)
 
     @mock.patch.object(utils, "run_command")
     @mock.patch.object(utils, "read_yaml_file")
