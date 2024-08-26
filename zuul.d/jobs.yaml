@@ -101,6 +101,9 @@
     pre-run: playbooks/kayobe-overcloud-base/pre.yml
     run: playbooks/kayobe-overcloud-base/run.yml
     timeout: 7200
+    required-projects:
+      - name: openstack/tenks
+        override-checkout: stable/2.0
 
 - job:
     name: kayobe-overcloud-centos8s
@@ -167,6 +170,9 @@
     pre-run: playbooks/kayobe-overcloud-upgrade-base/pre.yml
     run: playbooks/kayobe-overcloud-upgrade-base/run.yml
     timeout: 9000
+    required-projects:
+      - name: openstack/tenks
+        override-checkout: stable/2.0
 
 - job:
     name: kayobe-overcloud-upgrade-centos8s
