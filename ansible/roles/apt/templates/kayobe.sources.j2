@@ -11,5 +11,8 @@ Signed-by: {{ apt_keys_path }}/{{ repo.signed_by }}
 {% if repo.architecture is defined %}
 Architecture: {{ repo.architecture }}
 {% endif %}
+{% if repo.trusted is defined %}
+Trusted: {{ repo.trusted | bool }}
+{% endif %}
 
 {% endfor %}
