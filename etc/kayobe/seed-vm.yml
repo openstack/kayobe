@@ -61,6 +61,12 @@
 #
 #seed_vm_interfaces:
 
+# Boot firmware. Possible values are 'bios' or 'efi'. Default is 'bios'.
+#seed_vm_boot_firmware:
+
+# Machine type. Libvirt default configuration is used.
+#seed_vm_machine:
+
 ###############################################################################
 # Dummy variable to allow Ansible to accept this file.
 workaround_ansible_issue_8743: yes

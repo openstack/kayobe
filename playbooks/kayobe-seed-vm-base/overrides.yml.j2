@@ -33,6 +33,13 @@ seed_vm_memory_mb: "{{ 1 * 1024 }}"
 seed_bootstrap_user: cirros
 seed_vm_root_image: /opt/cache/files/cirros-0.5.3-x86_64-disk.img
 
+{% if seed_vm_boot_firmware is defined %}
+seed_vm_boot_firmware: "{{ seed_vm_boot_firmware }}"
+{% endif %}
+{% if seed_vm_machine is defined %}
+seed_vm_machine: "{{ seed_vm_machine }}"
+{% endif %}
+
 # Cirros doesn't load cdom drivers by default.
 seed_vm_configdrive_device: disk
 
