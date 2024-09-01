@@ -160,11 +160,6 @@
     timeout: 9000
 
 - job:
-    name: kayobe-overcloud-upgrade-centos8s
-    parent: kayobe-overcloud-upgrade-base
-    nodeset: kayobe-centos8s
-
-- job:
     name: kayobe-overcloud-upgrade-ubuntu-focal
     parent: kayobe-overcloud-upgrade-base
     nodeset: kayobe-ubuntu-focal
@@ -263,11 +258,6 @@
     pre-run: playbooks/kayobe-seed-upgrade-base/pre.yml
     run: playbooks/kayobe-seed-upgrade-base/run.yml
     timeout: 5400
-
-- job:
-    name: kayobe-seed-upgrade-centos8s
-    parent: kayobe-seed-upgrade-base
-    nodeset: kayobe-centos8s
 
 - job:
     name: kayobe-seed-upgrade-ubuntu-focal
