@@ -106,11 +106,6 @@
         override-checkout: stable/2.0
 
 - job:
-    name: kayobe-overcloud-centos8s
-    parent: kayobe-overcloud-base
-    nodeset: kayobe-centos8s
-
-- job:
     name: kayobe-overcloud-centos9s
     parent: kayobe-overcloud-base
     nodeset: kayobe-centos9s
@@ -144,11 +139,6 @@
       ironic_boot_mode: "uefi"
 
 - job:
-    name: kayobe-overcloud-tls-centos8s
-    parent: kayobe-overcloud-tls-base
-    nodeset: kayobe-centos8s
-
-- job:
     name: kayobe-overcloud-tls-centos9s
     parent: kayobe-overcloud-tls-base
     nodeset: kayobe-centos9s
@@ -175,11 +165,6 @@
         override-checkout: stable/2.0
 
 - job:
-    name: kayobe-overcloud-upgrade-centos8s
-    parent: kayobe-overcloud-upgrade-base
-    nodeset: kayobe-centos8s
-
-- job:
     name: kayobe-overcloud-upgrade-ubuntu-focal
     parent: kayobe-overcloud-upgrade-base
     nodeset: kayobe-ubuntu-focal
@@ -196,11 +181,6 @@
     timeout: 5400
     vars:
       build_images: false
-
-- job:
-    name: kayobe-seed-centos8s
-    parent: kayobe-seed-base
-    nodeset: kayobe-centos8s
 
 - job:
     name: kayobe-seed-centos9s
@@ -241,11 +221,6 @@
       build_images: true
 
 - job:
-    name: kayobe-seed-images-centos8s
-    parent: kayobe-seed-images-base
-    nodeset: kayobe-centos8s
-
-- job:
     name: kayobe-seed-images-centos9s
     parent: kayobe-seed-images-base
     nodeset: kayobe-centos9s
@@ -281,11 +256,6 @@
     pre-run: playbooks/kayobe-overcloud-host-configure-base/pre.yml
     run: playbooks/kayobe-overcloud-host-configure-base/run.yml
     timeout: 7200
-
-- job:
-    name: kayobe-overcloud-host-configure-centos8s
-    parent: kayobe-overcloud-host-configure-base
-    nodeset: kayobe-centos8s
 
 - job:
     name: kayobe-overcloud-host-configure-centos9s
@@ -326,11 +296,6 @@
     timeout: 5400
 
 - job:
-    name: kayobe-seed-upgrade-centos8s
-    parent: kayobe-seed-upgrade-base
-    nodeset: kayobe-centos8s
-
-- job:
     name: kayobe-seed-upgrade-ubuntu-focal
     parent: kayobe-seed-upgrade-base
     nodeset: kayobe-ubuntu-focal
@@ -346,11 +311,6 @@
     pre-run: playbooks/kayobe-seed-vm-base/pre.yml
     run: playbooks/kayobe-seed-vm-base/run.yml
     timeout: 5400
-
-- job:
-    name: kayobe-seed-vm-centos8s
-    parent: kayobe-seed-vm-base
-    nodeset: kayobe-centos8s
 
 - job:
     name: kayobe-seed-vm-centos9s
@@ -389,11 +349,6 @@
     pre-run: playbooks/kayobe-infra-vm-base/pre.yml
     run: playbooks/kayobe-infra-vm-base/run.yml
     timeout: 5400
-
-- job:
-    name: kayobe-infra-vm-centos8s
-    parent: kayobe-infra-vm-base
-    nodeset: kayobe-centos8s
 
 - job:
     name: kayobe-infra-vm-centos9s

@@ -9,7 +9,7 @@ Supported Operating Systems
 
 Kayobe supports the following host Operating Systems (OS):
 
-* CentOS Stream 8 (since Wallaby 10.0.0 release)
+* CentOS Stream 8 (untested since EOL of CentOS Stream 8)
 * Rocky Linux 8 (since Yoga 12.0.0 release)
 * Rocky Linux 9 (since Yoga 12.8.0 release)
 * Ubuntu Focal 20.04 (since Wallaby 10.0.0 release)
