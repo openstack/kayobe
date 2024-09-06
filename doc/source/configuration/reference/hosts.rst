@@ -351,6 +351,7 @@ For example, the following configuration tells Apt to use 2 attempts when
 downloading packages:
 
 .. code-block:: yaml
+   :caption: ``apt.yml``
 
    apt_config:
      - content: |
@@ -444,6 +445,37 @@ that is signed by the key.
        suites: jammy
        components: all
        signed_by: example-key.asc
+
+Apt preferences
+---------------
+
+Arbitrary global preferences options for Apt may be defined via the
+``apt_preferences`` variable in ``etc/kayobe/apt.yml``. The format is a list,
+with each item mapping to a dict/map with the following items:
+
+* ``content``: free-form preferences file content
+* ``filename``: name of a file in ``/etc/apt/preferences.d/`` in which to
+  write the configuration
+
+The default of ``apt_preferences`` is an empty list.
+
+For example, the following configuration tells Apt to only pin a specific
+package from a custom repo, while preventing installing any other packages from
+there:
+
+.. code-block:: yaml
+   :caption: ``apt.yml``
+
+   apt_preferences:
+     - content: |
+         Package: *
+         Pin: origin your.custom.repo
+         Pin-Priority: 1
+
+         Package: specific-package
+         Pin: origin your.custom.repo
+         Pin-Priority: 500
+       filename: 99-pin-custom-repo
 
 Apt auth configuration
 ----------------------

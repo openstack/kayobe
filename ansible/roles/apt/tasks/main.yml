@@ -7,4 +7,6 @@
 
 - import_tasks: repos.yml
 
+- import_tasks: preferences.yml
+
 - import_tasks: auth.yml

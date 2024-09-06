@@ -211,6 +211,15 @@ def test_apt_config(host):
 
 
 @pytest.mark.skipif(not _is_apt(), reason="Apt only supported on Ubuntu")
+def test_apt_preferences(host):
+    apt_preferences = host.file("/etc/apt/preferences.d/99fakepackage")
+    assert apt_preferences.exists
+    assert apt_preferences.content_string == ("Package: fake-package\n"
+                                              "Pin: origin fake.repo.url\n"
+                                              "Pin-Priority: 1\n")
+
+
+@pytest.mark.skipif(not _is_apt(), reason="Apt only supported on Ubuntu")
 def test_apt_custom_package_repository_is_available(host):
     with host.sudo():
         host.check_output("apt -y install td-agent")
