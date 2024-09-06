@@ -1,0 +1,7 @@
+---
+- name: Ensure Cumulus switches are configured with NVUE
+  nvidia.nvue.command:
+    assume_yes: true
+    atomic: true
+    save: "{{ nvue_switch_save | bool }}"
+    template: "{{ lookup('template', 'nvue-config.j2') }}"

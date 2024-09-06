@@ -1,0 +1,11 @@
+---
+# List of configuration lines to apply to the switch.
+nvue_switch_config: []
+
+# Interface configuration. Dict mapping switch interface names to configuration
+# dicts. Each dict contains a 'description' item and a 'config' item which
+# should contain a list of per-interface configuration.
+nvue_switch_interface_config: {}
+
+# Whether to save the NVUE configuration to disk.
+nvue_switch_save: false
