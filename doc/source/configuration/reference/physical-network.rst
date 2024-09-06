@@ -195,16 +195,13 @@ modules.
 
 ``switch_type`` should be set to ``arista``.
 
-Provider
-^^^^^^^^
-
 * ``ansible_host`` is the hostname or IP address.  Optional.
-
 * ``ansible_user`` is the SSH username.
-
 * ``ansible_ssh_pass`` is the SSH password.
-
-* ``switch_auth_pass`` is the 'enable' password.
+* ``ansible_connection`` should be ``ansible.netcommon.network_cli``.
+* ``ansible_network_os`` should be ``arista.eos.eos``.
+* ``ansible_become`` should be ``true``.
+* ``ansible_become_method`` should be ``enable``.
 
 Cumulus Linux (with NCLU)
 -------------------------

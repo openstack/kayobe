@@ -1,6 +1,4 @@
 ---
 - name: Ensure Arista switches are configured
-  local_action:
-    module: eos_config
-    provider: "{{ arista_switch_provider }}"
+  eos_config:
     src: arista-config.j2
