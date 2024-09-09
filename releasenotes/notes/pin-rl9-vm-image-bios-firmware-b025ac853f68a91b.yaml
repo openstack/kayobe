@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Changes the default cloud image for seed and infra VMs to use Rocky Linux
+    9.3 when using ``bios`` boot mode, to fix boot failures with newer cloud
+    images. When deploying new VMs, it is recommended to set
+    ``infra_vm_boot_firmware`` and ``seed_vm_boot_firmware`` to ``efi``.
