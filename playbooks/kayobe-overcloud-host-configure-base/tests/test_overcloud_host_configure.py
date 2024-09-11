@@ -5,7 +5,6 @@
 
 import ipaddress
 import os
-import time
 
 import distro
 import pytest
@@ -54,17 +53,18 @@ def test_network_bridge(host):
     interface = host.interface('br0')
     assert interface.exists
     assert '192.168.36.1' in interface.addresses
-    stp_status = host.file('/sys/class/net/br0/bridge/stp_state').content_string.strip()
+    state_file = "/sys/class/net/br0/bridge/stp_state"
+    stp_status = host.file(state_file).content_string.strip()
     assert '0' == stp_status
     ports = ['dummy3', 'dummy4']
     sys_ports = host.check_output('ls -1 /sys/class/net/br0/brif')
     assert sys_ports == "\n".join(ports)
     for port in ports:
-       interface = host.interface(port)
-       assert interface.exists
-       v4_addresses = [a for a in interface.addresses
-                       if ipaddress.ip_address(a).version == '4']
-       assert not v4_addresses
+        interface = host.interface(port)
+        assert interface.exists
+        v4_addresses = [a for a in interface.addresses
+                        if ipaddress.ip_address(a).version == '4']
+        assert not v4_addresses
 
 
 def test_network_bridge_vlan(host):
@@ -84,9 +84,9 @@ def test_network_bond(host):
     slaves = set(['dummy5', 'dummy6'])
     assert sys_slaves == slaves
     for slave in slaves:
-       interface = host.interface(slave)
-       assert interface.exists
-       assert not interface.addresses
+        interface = host.interface(slave)
+        assert interface.exists
+        assert not interface.addresses
 
 
 def test_network_bond_vlan(host):
@@ -99,8 +99,9 @@ def test_network_bond_vlan(host):
 def test_network_bridge_no_ip(host):
     interface = host.interface('br1')
     assert interface.exists
-    assert not '192.168.40.1' in interface.addresses
-    stp_status = host.file('/sys/class/net/br1/bridge/stp_state').content_string.strip()
+    assert '192.168.40.1' not in interface.addresses
+    state_file = "/sys/class/net/br1/bridge/stp_state"
+    stp_status = host.file(state_file).content_string.strip()
     assert '1' == stp_status
 
 
@@ -113,13 +114,13 @@ def test_network_systemd_vlan(host):
 
 
 def test_additional_user_account(host):
-      user = host.user("kayobe-test-user")
-      assert user.name == "kayobe-test-user"
-      assert user.group == "kayobe-test-user"
-      assert set(user.groups) == {"kayobe-test-user", "stack"}
-      assert user.gecos == "Kayobe test user"
-      with host.sudo():
-          assert user.password == 'kayobe-test-user-password'
+    user = host.user("kayobe-test-user")
+    assert user.name == "kayobe-test-user"
+    assert user.group == "kayobe-test-user"
+    assert set(user.groups) == {"kayobe-test-user", "stack"}
+    assert user.gecos == "Kayobe test user"
+    with host.sudo():
+        assert user.password == 'kayobe-test-user-password'
 
 
 def test_software_RAID(host):
@@ -238,7 +239,8 @@ def test_apt_auth(host):
 
 
 @pytest.mark.parametrize('repo', ["appstream", "baseos", "extras", "epel"])
-@pytest.mark.skipif(not _is_dnf_mirror(), reason="DNF OpenDev mirror only for CentOS 8")
+@pytest.mark.skipif(not _is_dnf_mirror(),
+                    reason="DNF OpenDev mirror only for CentOS 8")
 def test_dnf_local_package_mirrors(host, repo):
     # Depends on SITE_MIRROR_FQDN environment variable.
     assert os.getenv('SITE_MIRROR_FQDN')
@@ -265,7 +267,7 @@ def test_dnf_automatic(host):
 
 
 @pytest.mark.skipif(not _is_dnf(),
-                    reason="tuned profile setting only supported on CentOS/Rocky")
+                    reason="tuned profiles only supported on CentOS/Rocky")
 def test_tuned_profile_is_active(host):
     tuned_output = host.check_output("tuned-adm active")
     assert "throughput-performance" in tuned_output
