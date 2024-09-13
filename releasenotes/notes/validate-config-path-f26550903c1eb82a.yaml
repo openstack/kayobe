@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Adds validation to protect against executing Kayobe from within a different
+    Kayobe configuration repository than the one referred to by environment
+    variables (e.g. ``KAYOBE_CONFIG_PATH``) or CLI arguments (e.g.
+    ``--config-path``).

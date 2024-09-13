@@ -237,7 +237,15 @@ class HookDispatcher(CommandHook):
             self.logger.debug("Running hooks: %s" % hooks)
             self.command.run_kayobe_playbooks(parsed_args, hooks)
 
+    def _preflight_checks(self, parsed_args):
+        # NOTE(mgoddard): Currently all commands use KayobeAnsibleMixin, so
+        # should have a config_path attribute, but better to be defensive.
+        config_path = getattr(parsed_args, "config_path", None)
+        if config_path:
+            utils.validate_config_path(config_path)
+
     def before(self, parsed_args):
+        self._preflight_checks(parsed_args)
         self.run_hooks(parsed_args, "pre")
         return parsed_args
 
