@@ -117,6 +117,7 @@
        default(100) }}
   roles:
     - role: ssh-known-host
+      when: not switch_skip_keyscan | bool
 
     - role: arista-switch
       arista_switch_type: "{{ switch_type }}"
@@ -133,6 +134,7 @@
        default(100) }}
   roles:
     - role: ssh-known-host
+      when: not switch_skip_keyscan | bool
 
     - role: dell-switch
       dell_switch_type: "{{ switch_type }}"
@@ -150,6 +152,7 @@
        default(100) }}
   roles:
     - role: ssh-known-host
+      when: not switch_skip_keyscan | bool
 
     - role: stackhpc.network.dell_powerconnect_switch
       dell_powerconnect_switch_type: "{{ switch_type }}"
@@ -166,6 +169,7 @@
        default(100) }}
   roles:
     - role: ssh-known-host
+      when: not switch_skip_keyscan | bool
 
     - role: junos-switch
       junos_switch_type: "{{ switch_type }}"
@@ -183,6 +187,7 @@
        default(100) }}
   roles:
     - role: ssh-known-host
+      when: not switch_skip_keyscan | bool
 
     - role: stackhpc.network.mellanox_switch
       mellanox_switch_type: "{{ switch_type }}"
@@ -199,6 +204,7 @@
        default(100) }}
   roles:
     - role: ssh-known-host
+      when: not switch_skip_keyscan | bool
 
     - role: nclu-switch
       nclu_switch_config: "{{ switch_config }}"
@@ -209,6 +215,7 @@
   gather_facts: no
   roles:
     - role: ssh-known-host
+      when: not switch_skip_keyscan | bool
 
     - role: nvue-switch
       nvue_switch_config: "{{ switch_config }}"

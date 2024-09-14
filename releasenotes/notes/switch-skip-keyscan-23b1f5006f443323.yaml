@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds support for skipping SSH keyscan when configuring switches using
+    ``kayobe physical network configure`` using a ``switch_skip_keyscan``
+    variable.

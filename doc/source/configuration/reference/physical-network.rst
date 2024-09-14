@@ -181,6 +181,15 @@ example:
        description: compute0
        config: "{{ switch_interface_config_compute }}"
 
+Support for Older Devices
+=========================
+
+Some network devices may use SSH key exchange algorithms that are no longer
+supported by the Ansible control host. This will cause ``ssh-keyscan`` to fail,
+preventing Kayobe from configuring the devices. To work around this, set
+``switch_skip_keyscan`` to ``true`` for the affected devices. The SSH known
+hosts file on the Ansible control host will need to be populated manually.
+
 .. _physical-network-device-specific:
 
 Device-specific Configuration Variables
