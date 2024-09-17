@@ -6,6 +6,7 @@
     image_download_checksum_algorithm: "{{ item.checksum_algorithm }}"
     image_download_path: "{{ item.path }}"
     image_download_dest: "{{ item.dest }}"
+    image_download_host: "{{ kolla_inspector_ipa_host }}"
   include_role:
     name: image-download
   with_items:
