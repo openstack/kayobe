@@ -30,7 +30,7 @@
 #seed_vm_root_format:
 
 # Base image for the seed VM root volume. Default is
-# "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img"
+# "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
 # when os_distribution is "ubuntu",
 # https://dl.rockylinux.org/pub/rocky/9/images/x86_64/Rocky-9-GenericCloud.latest.x86_64.qcow2
 # when os_distribution is "rocky",

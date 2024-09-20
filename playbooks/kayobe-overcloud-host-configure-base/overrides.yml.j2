@@ -138,15 +138,15 @@ apt_keys:
   - url: https://packages.treasuredata.com/GPG-KEY-td-agent
     filename: td-agent.asc
 apt_repositories:
-  # Ubuntu jammy repositories.
+  # Ubuntu noble repositories.
   - url: "http://{{ zuul_site_mirror_fqdn }}/ubuntu/"
-    suites: jammy jammy-updates
-    components: main restricted universe multiverse
+    suites: noble noble-updates
+    components: main universe
   - url: "http://{{ zuul_site_mirror_fqdn }}/ubuntu/"
-    suites: jammy-security
-    components: main restricted universe multiverse
+    suites: noble-security
+    components: main universe
   # Treasuredata repository.
-  - url:  http://packages.treasuredata.com/4/ubuntu/jammy/
+  - url:  http://packages.treasuredata.com/5/ubuntu/noble/
     components: contrib
     signed_by: td-agent.asc
 apt_preferences:

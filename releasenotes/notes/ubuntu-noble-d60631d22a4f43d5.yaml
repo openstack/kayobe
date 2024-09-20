@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds support for Ubuntu Noble Numbat (24.04) LTS as a host and container
+    Operating System for seed, seed hypervisor and overcloud hosts.
+    Default Ubuntu version has been changed to Ubuntu Noble (24.04) LTS.
