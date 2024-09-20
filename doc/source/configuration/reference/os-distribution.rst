@@ -16,9 +16,9 @@ or ``rocky`` or ``ubuntu``, and defaults to ``rocky``.
 The ``os_release`` variable in ``etc/kayobe/globals.yml`` can be used to set
 the release of the OS. When ``os_distribution`` is set to ``centos`` it may be
 set to ``9-stream``, and this is its default value. When ``os_distribution`` is
-set to ``ubuntu`` it may be set to ``jammy``, and this is its default value.
-When ``os_distribution`` is set to ``rocky`` it may be set to ``9``, and this
-is its default value.
+set to ``ubuntu`` it may be set to ``jammy`` or ``noble``, and ``jammy`` is its
+default value. When ``os_distribution`` is set to ``rocky`` it may be set to
+``9``, and this is its default value.
 
 These variables are used to set various defaults, including:
 

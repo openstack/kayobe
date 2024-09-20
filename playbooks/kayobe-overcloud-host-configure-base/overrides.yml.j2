@@ -137,6 +137,7 @@ apt_config:
 apt_keys:
   - url: https://packages.treasuredata.com/GPG-KEY-td-agent
     filename: td-agent.asc
+{% if ansible_facts.distribution_major_version == "22" %}
 apt_repositories:
   # Ubuntu jammy repositories.
   - url: "http://{{ zuul_site_mirror_fqdn }}/ubuntu/"
@@ -149,6 +150,20 @@ apt_repositories:
   - url:  http://packages.treasuredata.com/4/ubuntu/jammy/
     components: contrib
     signed_by: td-agent.asc
+{% else %}
+apt_repositories:
+  # Ubuntu noble repositories.
+  - url: "http://{{ zuul_site_mirror_fqdn }}/ubuntu/"
+    suites: noble noble-updates
+    components: main universe
+  - url: "http://{{ zuul_site_mirror_fqdn }}/ubuntu/"
+    suites: noble-security
+    components: main universe
+  # Treasuredata repository.
+  - url:  http://packages.treasuredata.com/5/ubuntu/noble/
+    components: contrib
+    signed_by: td-agent.asc
+{% endif %}
 apt_disable_sources_list: true
 apt_auth:
   - machine: https://apt.example.com
