@@ -251,6 +251,18 @@ function is_cinder_enabled {
     to_bool "$flag"
 }
 
+function is_octavia_enabled {
+    octavia_enabled=$(kayobe configuration dump --host localhost --var-name kolla_enable_octavia)
+    to_bool "$octavia_enabled"
+}
+
+function are_octavia_certificates_present {
+    [[ -f ${KAYOBE_CONFIG_PATH}/kolla/config/octavia/client_ca.cert.pem &&
+       -f ${KAYOBE_CONFIG_PATH}/kolla/config/octavia/client.cert-and-key.pem &&
+       -f ${KAYOBE_CONFIG_PATH}/kolla/config/octavia/server_ca.cert.pem &&
+       -f ${KAYOBE_CONFIG_PATH}/kolla/config/octavia/server_ca.key.pem ]]
+}
+
 function environment_setup {
     # NOTE: Virtualenv's activate script references an unbound variable.
     set +u
@@ -481,6 +493,12 @@ function overcloud_deploy {
     fi
 
     if [[ ${KAYOBE_OVERCLOUD_SERVICE_DEPLOY} = 1 ]]; then
+        if is_octavia_enabled && ! are_octavia_certificates_present; then
+            echo "Generating Octavia certificates"
+            run_kayobe kolla ansible run octavia-certificates
+            mkdir -p ${KAYOBE_CONFIG_PATH}/kolla/config/octavia
+            cp ${KOLLA_CONFIG_PATH:-/etc/kolla}/config/octavia/*.pem ${KAYOBE_CONFIG_PATH}/kolla/config/octavia/
+        fi
         echo "Deploying containerised overcloud services"
         run_kayobe overcloud service deploy
     fi
