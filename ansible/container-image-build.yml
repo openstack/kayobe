@@ -10,6 +10,7 @@
     # default set of images.
     container_image_regexes: ""
     kolla_build_log_path: "/var/log/kolla-build.log"
+    platform: "{{ 'linux/arm64' if kolla_base_arch == 'aarch64' else 'linux/amd64' }}"
   tasks:
     - name: Set the container image sets to build if images regexes specified
       set_fact:
@@ -53,6 +54,7 @@
           {% if kolla_docker_registry is not none %}--registry {{ kolla_docker_registry }}{% endif %}
           {% if push_images | bool %}--push{% endif %}
           {% if nocache | bool %}--nocache{% endif %}
+          {% if kolla_base_arch != ansible_facts.architecture %}--platform {{ platform }}{% endif %}
           {{ item.regexes }} 2>&1 | tee --append {{ kolla_build_log_path }}
         executable: /bin/bash
       with_items: "{{ container_image_sets }}"

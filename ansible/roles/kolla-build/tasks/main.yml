@@ -36,3 +36,15 @@
     src: template-override.j2.j2
     dest: "{{ kolla_build_config_path }}/template-override.j2"
     mode: "0644"
+
+- name: Run multiarch/qemu-user-static image to support cross-arch build
+  community.general.docker_container:
+    command: "--reset -p yes"
+    cleanup: true
+    detach: false
+    image: "multiarch/qemu-user-static:7.2.0-1"
+    name: "qemu_user_static"
+    privileged: true
+    state: "started"
+    network_mode: "host"
+  when: ansible_facts.architecture != kolla_base_arch

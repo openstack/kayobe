@@ -72,6 +72,9 @@ The following variables are global, affecting all container images. They are
 used to generate the Kolla configuration file, ``kolla-build.conf``, and also
 affect :ref:`Kolla Ansible configuration <configuration-kolla-ansible-global>`.
 
+``kolla_base_arch``
+    Kolla base container image architecture. Options are ``x86_64``,
+    ``aarch64``. Default is ``{{ ansible_facts.architecture }}``.
 ``kolla_base_distro``
     Kolla base container image distribution. Options are ``centos``,
     ``debian``, ``rocky`` or ``ubuntu``. Default is ``{{ os_distribution }}``.
