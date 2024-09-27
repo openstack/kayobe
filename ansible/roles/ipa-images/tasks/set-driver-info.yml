@@ -20,12 +20,19 @@
   set_fact:
     ipa_images_ramdisk_uuid: "{{ ipa_images_glance.results[1].images[0].id }}"
 
+- name: Change system scope to all for Ironic operations
+  set_fact:
+    ipa_images_ironic_openstack_auth_env: "{{ ipa_images_openstack_auth_env |
+    combine ({ 'OS_PROJECT_NAME': omit }) |
+    combine ({ 'OS_PROJECT_DOMAIN_NAME': omit }) |
+    combine ({ 'OS_SYSTEM_SCOPE': 'all' }) }}"
+
 - name: Get a list of ironic nodes
   command: |
     {{ ipa_images_venv }}/bin/openstack baremetal node list --fields name uuid driver_info -f json
   register: ipa_images_ironic_node_list
   changed_when: False
-  environment: "{{ ipa_images_openstack_auth_env }}"
+  environment: "{{ ipa_images_ironic_openstack_auth_env }}"
 
 - name: Make sure openstack nodes are in baremetal-compute group
   add_host:
@@ -59,4 +66,4 @@
   when:
     item["Driver Info"].deploy_kernel != ipa_images_kernel_uuid or
     item["Driver Info"].deploy_ramdisk != ipa_images_ramdisk_uuid
-  environment: "{{ ipa_images_openstack_auth_env }}"
+  environment: "{{ ipa_images_ironic_openstack_auth_env }}"
