@@ -15,7 +15,9 @@
       callbacks_enabled = ansible.posix.profile_tasks
 
       [ssh_connection]
-      pipelining = True
+      # NOTE(wszusmki): Disable pipelining due to:
+      # https://github.com/ansible/ansible/issues/81777
+      pipelining = False
       retries = 3
     ansible_cfg_kolla: |
       [defaults]
@@ -31,7 +33,9 @@
       callbacks_enabled = ansible.posix.profile_tasks
 
       [ssh_connection]
-      pipelining = True
+      # NOTE(wszusmki): Disable pipelining due to:
+      # https://github.com/ansible/ansible/issues/81777
+      pipelining = False
       retries = 3
   roles:
     - role: kayobe-diagnostics
