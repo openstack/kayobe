@@ -1,0 +1,13 @@
+---
+features:
+  - |
+    The `kolla_base_arch` variable has been introduced, allowing users
+    to specify the architecture for base container images. This supports
+    cross-architecture builds, enabling the building of images for
+    architectures different from the host machine (e.g., building
+    `aarch64` images on an `x86_64` machine).
+
+    By default, `kolla_base_arch` is set to the detected architecture
+    (`{{ ansible_facts.architecture }}`). However, when `kolla_base_arch`
+    differs from the host architecture, the `multiarch/qemu-user-static`
+    image is used to facilitate cross-arch builds.

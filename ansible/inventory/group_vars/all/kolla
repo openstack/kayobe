@@ -52,6 +52,10 @@ kolla_node_custom_config_path: "{{ kolla_config_path }}/config"
 ###############################################################################
 # Kolla configuration.
 
+# Kolla base container image architecture. Options are "x86_64", "aarch64".
+# Default is "{{ ansible_facts.architecture }}"
+kolla_base_arch: "{{ ansible_facts.architecture }}"
+
 # Kolla base container image distribution. Options are "centos", "debian",
 # "rocky", "ubuntu". Default is {{ os_distribution }}.
 kolla_base_distro: "{{ os_distribution }}"
