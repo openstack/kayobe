@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Updates the group and mode set on the ``/var/log/journal`` directory to
+    match default ownership and permissions used by ``systemd-journald``.
+    `LP#2083494 <https://launchpad.net/bugs/2083494>`__
