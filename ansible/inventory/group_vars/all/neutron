@@ -10,13 +10,13 @@ kolla_neutron_ml2_mechanism_drivers:
 kolla_neutron_ml2_type_drivers:
   - flat
   - vlan
-  - vxlan
+  - "{{ 'geneve' if kolla_enable_ovn | bool else 'vxlan' }}"
 
 # List of Neutron ML2 tenant network types to use.
 kolla_neutron_ml2_tenant_network_types:
   - flat
   - vlan
-  - vxlan
+  - "{{ 'geneve' if kolla_enable_ovn | bool else 'vxlan' }}"
 
 # List of Neutron ML2 network VLAN ranges to use. Each item should be a dict
 # containing the following items:
