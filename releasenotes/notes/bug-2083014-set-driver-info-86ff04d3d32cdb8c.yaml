@@ -1,7 +1,7 @@
 ---
 fixes:
   - |
-    Fixes an issue where task 'ensure ironic nodes use the new Ironic
+    Fixes an issue where task 'Ensure ironic nodes use the new Ironic
     Python Agent (IPA) images` fails with 'dict object' has no
     attribute 'deploy_kernel'.
-    <https://bugs.launchpad.net/kayobe/+bug/2083014>`__.
+    `LP#2083014 <https://bugs.launchpad.net/kayobe/+bug/2083014>`__
