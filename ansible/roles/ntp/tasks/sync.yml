@@ -1,0 +1,17 @@
+---
+- name: Force time synchronisation
+  become: True
+  block:
+    - name: Configure burst
+      command: chronyc 'burst 4/4'
+
+    - name: Step the clock
+      command: chronyc makestep
+
+    - name: Wait before hardware clock synchronisation
+      pause:
+        seconds: 5
+
+    - name: Force hardware clock synchronisation
+      command: hwclock --systohc
+  when: ntp_force_sync | bool
