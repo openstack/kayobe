@@ -65,6 +65,8 @@
       dell-powerconnect: netmiko_dell_powerconnect
       junos: netmiko_juniper
       openvswitch: netmiko_ovs_linux
+      nclu: netmiko_cumulus
+      nvue: netmiko_cumulus_nvue
     ipa_image_name: "ipa"
   pre_tasks:
     - block:
