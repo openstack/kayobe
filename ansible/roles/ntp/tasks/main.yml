@@ -10,3 +10,7 @@
 - name: Deploy service
   include_tasks: deploy.yml
   when: '"deploy" in ntp_actions'
+
+- name: Synchronise time
+  include_tasks: sync.yml
+  when: '"sync" in ntp_actions'
