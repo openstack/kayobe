@@ -836,7 +836,7 @@ Network Time Protocol (NTP) may be configured via variables in
 configured via ``chrony_ntp_servers``, and by default the ``pool.ntp.org``
 servers are used.
 
-Internally, kayobe uses the the `mrlesmithjr.chrony
+Internally, kayobe uses the `mrlesmithjr.chrony
 <https://galaxy.ansible.com/mrlesmithjr/chrony>`__ Ansible role. Rather than
 maintain a mapping between the ``kayobe`` and ``mrlesmithjr.chrony`` worlds, all
 variables are simply passed through. This means you can use all variables that
