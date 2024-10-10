@@ -1,0 +1,9 @@
+---
+upgrade:
+  - |
+    Bumps the ``stackhpc.linux`` collection to 1.3.0. Note this version `uses
+    systemd to activate virtual functions
+    <https://github.com/stackhpc/ansible-collection-linux/pull/34>`__. This
+    change is restricted to the ``stackhpc.linux.sriov`` role, which is not
+    used by Kayobe. If a custom playbook uses this role, you can retain
+    existing behaviour by setting ``sriov_numvfs_driver`` to ``udev``.
