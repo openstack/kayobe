@@ -494,34 +494,10 @@ function overcloud_deploy {
     echo "Control plane deployment complete"
 }
 
-function migrate_rabbitmq_queues {
-    echo "Migrating to RabbitMQ HA queues"
-
-    environment_setup
-
-    kayobe overcloud service configuration generate --node-config-dir /etc/kolla
-
-    kayobe kolla ansible run "stop --yes-i-really-really-mean-it" -kt ironic,keystone,neutron,nova
-
-    kayobe overcloud service upgrade -kt rabbitmq --skip-prechecks
-
-    kayobe kolla ansible run rabbitmq-reset-state
-
-    kayobe kolla ansible run deploy -kt ironic,keystone,neutron,nova
-}
-
 function overcloud_upgrade {
     # Upgrade a kayobe control plane.
     echo "Upgrading a kayobe development environment. This consists of a "
     echo "single node OpenStack control plane."
-
-    # NOTE(mattcrees): As om_enable_rabbitmq_quorum_queues now defaults to true
-    # from Bobcat, we need to perform a migration to durable queues during
-    # SLURP upgrades from Antelope to Caracal.
-    # TODO(mattcrees): Remove in Dalmatian.
-    if [[ $IS_SLURP == "True" ]]; then
-        migrate_rabbitmq_queues
-    fi
 
     echo "Upgrading Kayobe"
     upgrade_kayobe_venv
