@@ -131,9 +131,9 @@
     nodeset: kayobe-rocky9
 
 - job:
-    name: kayobe-overcloud-ubuntu-jammy
+    name: kayobe-overcloud-ubuntu-noble
     parent: kayobe-overcloud-base
-    nodeset: kayobe-ubuntu-jammy
+    nodeset: kayobe-ubuntu-noble
 
 - job:
     name: kayobe-overcloud-tls-base
@@ -210,9 +210,9 @@
     nodeset: kayobe-rocky9
 
 - job:
-    name: kayobe-seed-ubuntu-jammy
+    name: kayobe-seed-ubuntu-noble
     parent: kayobe-seed-base
-    nodeset: kayobe-ubuntu-jammy
+    nodeset: kayobe-ubuntu-noble
 
 - job:
     name: kayobe-seed-images-base
@@ -244,9 +244,9 @@
 # This job builds default overcloud images but skips the build of bifrost seed
 # images which are currently timing out on Ubuntu Jammy.
 - job:
-    name: kayobe-seed-images-ubuntu-jammy
+    name: kayobe-seed-images-ubuntu-noble
     parent: kayobe-seed-images-base
-    nodeset: kayobe-ubuntu-jammy
+    nodeset: kayobe-ubuntu-noble
     vars:
       seed_container_image_regex: "^base"
 
@@ -273,9 +273,9 @@
     nodeset: kayobe-rocky9
 
 - job:
-    name: kayobe-overcloud-host-configure-ubuntu-jammy
+    name: kayobe-overcloud-host-configure-ubuntu-noble
     parent: kayobe-overcloud-host-configure-base
-    nodeset: kayobe-ubuntu-jammy
+    nodeset: kayobe-ubuntu-noble
 
 - job:
     name: kayobe-seed-upgrade-base
@@ -333,9 +333,9 @@
     nodeset: kayobe-rocky9
 
 - job:
-    name: kayobe-seed-vm-ubuntu-jammy
+    name: kayobe-seed-vm-ubuntu-noble
     parent: kayobe-seed-vm-base
-    nodeset: kayobe-ubuntu-jammy
+    nodeset: kayobe-ubuntu-noble
 
 - job:
     name: kayobe-seed-vm-efi-base
@@ -358,9 +358,9 @@
     nodeset: kayobe-rocky9
 
 - job:
-    name: kayobe-seed-vm-ubuntu-jammy-efi
+    name: kayobe-seed-vm-ubuntu-noble-efi
     parent: kayobe-seed-vm-efi-base
-    nodeset: kayobe-ubuntu-jammy
+    nodeset: kayobe-ubuntu-noble
 
 - job:
     name: kayobe-infra-vm-base
@@ -386,6 +386,6 @@
     nodeset: kayobe-rocky9
 
 - job:
-    name: kayobe-infra-vm-ubuntu-jammy
+    name: kayobe-infra-vm-ubuntu-noble
     parent: kayobe-infra-vm-base
-    nodeset: kayobe-ubuntu-jammy
+    nodeset: kayobe-ubuntu-noble

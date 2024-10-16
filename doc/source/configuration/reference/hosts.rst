@@ -369,7 +369,7 @@ items:
 * ``types``: whitespace-separated list of repository types, e.g. ``deb`` or
   ``deb-src`` (optional, default is ``deb``)
 * ``url``: URL of the repository
-* ``suites``: whitespace-separated list of suites, e.g. ``jammy`` (optional,
+* ``suites``: whitespace-separated list of suites, e.g. ``noble`` (optional,
   default is ``ansible_facts.distribution_release``)
 * ``components``: whitespace-separated list of components, e.g. ``main``
   (optional, default is ``main``)
@@ -389,10 +389,10 @@ For example, the following configuration defines a single Apt repository:
    apt_repositories:
      - types: deb
        url: https://example.com/repo
-       suites: jammy
+       suites: noble
        components: all
 
-In the following example, the Ubuntu Jammy 22.04 repositories are consumed from
+In the following example, the Ubuntu Noble 24.04 repositories are consumed from
 a local package mirror. The ``apt_disable_sources_list`` variable is set to
 ``true``, which disables all repositories in ``/etc/apt/sources.list``,
 including the default Ubuntu ones.
@@ -402,10 +402,10 @@ including the default Ubuntu ones.
 
    apt_repositories:
      - url: http://mirror.example.com/ubuntu/
-       suites: jammy jammy-updates
+       suites: noble noble-updates
        components: main restricted universe multiverse
      - url: http://mirror.example.com/ubuntu/
-       suites: jammy-security
+       suites: noble-security
        components: main restricted universe multiverse
 
    apt_disable_sources_list: true
@@ -442,7 +442,7 @@ that is signed by the key.
    apt_repositories:
      - types: deb
        url: https://example.com/repo
-       suites: jammy
+       suites: noble
        components: all
        signed_by: example-key.asc
 
@@ -484,7 +484,7 @@ Some repositories may require authentication using HTTP basic auth. Apt
 supports specifying credentials in URLs in ``sources.list`` files, but these
 files must be world-readable. A more secure setup involves writing credentials
 to `auth.conf
-<https://manpages.ubuntu.com/manpages/jammy/man5/apt_auth.conf.5.html>`__
+<https://manpages.ubuntu.com/manpages/noble/man5/apt_auth.conf.5.html>`__
 files which can have more restrictive permissions.
 
 Auth configuration is defined by the ``apt_auth`` variable. The format is a
