@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    Updates the default Neutron ML2 type drivers and tenant network types to
+    use ``geneve`` instead of ``vxlan`` when OVN is enabled. This affects the
+    ``kolla_neutron_ml2_type_drivers`` and
+    ``kolla_neutron_ml2_tenant_network_types`` variables.
