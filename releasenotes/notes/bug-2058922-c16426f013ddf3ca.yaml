@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fixes IPA and host image build failures when Git was not installed on the
+    build host. `LP#2058922 <https://launchpad.net/bugs/2058922>`__
