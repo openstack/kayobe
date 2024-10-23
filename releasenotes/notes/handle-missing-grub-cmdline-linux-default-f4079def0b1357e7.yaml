@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes generation of kernel parameters when the GRUB_CMDLINE_LINUX_DEFAULT
+    variable is absent from ``/etc/default/grub``.
+    `LP#2083874 <https://bugs.launchpad.net/kayobe/+bug/2083874>`__.
