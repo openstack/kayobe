@@ -174,7 +174,7 @@ Hooks allow you to automatically execute custom playbooks at certain points duri
 the execution of a kayobe command. The point at which a hook is run is referred to
 as a ``target``. Please see the :ref:`list of available targets<Hook Targets>`.
 
-Hooks are created by symlinking an existing playbook into the the relevant directory under
+Hooks are created by symlinking an existing playbook into the relevant directory under
 ``$KAYOBE_CONFIG_PATH/hooks``. Kayobe will search the hooks directory for sub-directories
 matching ``<command>.<target>.d``, where ``command`` is the name of a kayobe command
 with any spaces replaced with dashes, and ``target`` is one of the supported targets for

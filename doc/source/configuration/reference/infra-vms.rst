@@ -11,7 +11,7 @@ environment or are dependencies of the control plane.
 Configuration
 =============
 
-To deploy an infrastructure VM, add a new host to the the ``infra-vms`` group
+To deploy an infrastructure VM, add a new host to the ``infra-vms`` group
 in the inventory:
 
 .. code-block:: ini
