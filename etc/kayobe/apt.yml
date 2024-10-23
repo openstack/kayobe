@@ -50,8 +50,6 @@
 # * machine: 'machine' entry in the auth file
 # * login: 'login' entry in the auth file
 # * password: 'password' entry in the auth file
-# * filename: Name of a file in which to store the auth configuration. The
-#   extension should be '.conf'.
 # * filename: Name of a file in /etc/apt/auth.conf.d in which to store
 #   the auth configuration. The extension should be ``.conf``.
 # Default is an empty list.
