@@ -18,8 +18,8 @@
       file:
         path: /var/log/journal
         owner: "root"
-        group: "root"
-        mode: 0755
+        group: "systemd-journal"
+        mode: 02755
         state: directory
       notify: Flush journal to disk
       when: journald_storage == "persistent"
