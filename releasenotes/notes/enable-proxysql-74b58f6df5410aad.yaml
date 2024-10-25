@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Enables ProxySQL by default. ProxySQL can be disabled by setting the
+    ``kolla_enable_proxysql`` variable to ``false``.
