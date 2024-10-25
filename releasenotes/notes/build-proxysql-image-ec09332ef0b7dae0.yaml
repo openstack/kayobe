@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    The ``proxysql`` image is now built when ``kolla_enable_proxysql`` is set
+    to ``true``.

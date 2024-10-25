@@ -231,6 +231,8 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_placement | bool }}"
   - regex: ^prometheus
     enabled: "{{ kolla_enable_prometheus | bool }}"
+  - regex: ^proxysql
+    enabled: "{{ kolla_enable_proxysql | bool }}"
   - regex: ^qdrouterd
     enabled: "{{ kolla_enable_qdrouterd | bool }}"
   - regex: ^rabbitmq
@@ -514,6 +516,7 @@ kolla_enable_mariadb: "yes"
 kolla_enable_memcached: "yes"
 kolla_enable_neutron: "{{ kolla_enable_openstack_core | bool }}"
 kolla_enable_nova: "{{ kolla_enable_openstack_core | bool }}"
+kolla_enable_proxysql: "no"
 kolla_enable_rabbitmq: "yes"
 
 # OpenStack services can be enabled or disabled with these options
