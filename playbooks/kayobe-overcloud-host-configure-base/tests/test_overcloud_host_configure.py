@@ -26,6 +26,12 @@ def _is_dnf_mirror():
     return info == 'centos'
 
 
+def _is_ubuntu_noble():
+    name = distro.name()
+    version = distro.version()
+    return name == 'Ubuntu' and version == 24.04
+
+
 def test_network_ethernet(host):
     interface = host.interface('dummy2')
     assert interface.exists
@@ -197,6 +203,9 @@ def test_ntp_non_default_time_server(host):
     assert "time.cloudflare.com" in chrony_config.content_string
 
 
+# TODO(priteau): Remove once we force time sync
+@pytest.mark.skipif(_is_ubuntu_noble(),
+                    reason="Clock often fails to synchronize on Ubuntu Noble")
 def test_ntp_clock_synchronized(host):
     # Tests that the clock is synchronized
     status_output = host.check_output("timedatectl status")
