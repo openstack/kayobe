@@ -144,7 +144,7 @@ def build_args(parsed_args, command, inventory_filename, extra_vars=None,
         cmd += ["-" + "v" * verbose_level]
     if parsed_args.kolla_playbook:
         cmd += ["--playbook", parsed_args.kolla_playbook]
-    cmd += vault.build_args(parsed_args, "--key")
+    cmd += vault.build_args(parsed_args, "--vault-password-file")
     inventories = _get_inventory_paths(parsed_args, inventory_filename)
     for inventory in inventories:
         cmd += ["--inventory", inventory]
