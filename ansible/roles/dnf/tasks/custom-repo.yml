@@ -26,6 +26,8 @@
     username: "{{ item.value.username | default(omit) }}"
     state: "{{ item.value.state | default(omit)}}"
   with_dict: "{{ dnf_custom_repos }}"
+  loop_control:
+    label: "{{ item.key }}"
   register: register_dnf_command
   retries: 3
   delay: 10

@@ -1,0 +1,11 @@
+---
+security:
+  - |
+    Avoid leaking DNF repository username/password credentials in the Kayobe
+    output by adding loop control to print only the repository key.
+    `LP#2087938 <https://launchpad.net/bugs/2087938>`__
+fixes:
+  - |
+    Avoid leaking DNF repository username/password credentials in the Kayobe
+    output by adding loop control to print only the repository key.
+    `LP#2087938 <https://launchpad.net/bugs/2087938>`__
