@@ -49,3 +49,10 @@
           source "${KOLLA_CONFIG_PATH:-/etc/kolla}/admin-openrc.sh" &&
           kayobe baremetal compute register &> {{ logs_dir }}/ansible/baremetal-compute-register
         executable: /bin/bash
+
+    - name: Perform database backup
+      shell:
+        cmd: >
+          source {{ kayobe_src_dir }}/dev/environment-setup.sh &&
+          kayobe overcloud database backup &> {{ logs_dir }}/ansible/database-backup
+        executable: /bin/bash
