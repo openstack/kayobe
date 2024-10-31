@@ -1450,7 +1450,7 @@ class TestCase(unittest.TestCase):
         expected_calls = [
             mock.call(
                 mock.ANY,
-                "mariadb_backup",
+                "mariadb-backup",
                 extra_args=[]
             ),
         ]
@@ -1482,7 +1482,7 @@ class TestCase(unittest.TestCase):
         expected_calls = [
             mock.call(
                 mock.ANY,
-                "mariadb_backup",
+                "mariadb-backup",
                 extra_args=["--incremental"]
             ),
         ]
@@ -1522,7 +1522,7 @@ class TestCase(unittest.TestCase):
         expected_calls = [
             mock.call(
                 mock.ANY,
-                "mariadb_recovery",
+                "mariadb-recovery",
                 extra_vars={}
             ),
         ]
@@ -1563,7 +1563,7 @@ class TestCase(unittest.TestCase):
         expected_calls = [
             mock.call(
                 mock.ANY,
-                "mariadb_recovery",
+                "mariadb-recovery",
                 extra_vars={
                     "mariadb_recover_inventory_name": "foo"
                 }
