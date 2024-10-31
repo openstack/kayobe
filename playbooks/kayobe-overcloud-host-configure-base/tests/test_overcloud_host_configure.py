@@ -29,7 +29,7 @@ def _is_dnf_mirror():
 def _is_ubuntu_noble():
     name = distro.name()
     version = distro.version()
-    return name == 'Ubuntu' and version == 24.04
+    return name == 'Ubuntu' and version == '24.04'
 
 
 def test_network_ethernet(host):
