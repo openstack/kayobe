@@ -162,7 +162,7 @@
 # Node provisioning configuration
 # Whether to use Ironic introspection data for admin interface MAC address
 # Default is false.
-kolla_bifrost_use_introspection_mac:
+#kolla_bifrost_use_introspection_mac:
 
 ###############################################################################
 # Dummy variable to allow Ansible to accept this file.
