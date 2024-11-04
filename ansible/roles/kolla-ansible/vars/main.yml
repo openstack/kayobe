@@ -87,12 +87,12 @@ kolla_feature_flags:
   - ceph_rgw
   - ceph_rgw_loadbalancer
   - cinder
-  - cinder_backend_hnas_nfs
   - cinder_backend_iscsi
   - cinder_backend_lvm
   - cinder_backend_nfs
   - cinder_backend_pure_fc
   - cinder_backend_pure_iscsi
+  - cinder_backend_pure_nvme_tcp
   - cinder_backend_pure_roce
   - cinder_backend_quobyte
   - cinder_backup
@@ -213,11 +213,11 @@ kolla_feature_flags:
   - prometheus_haproxy_exporter
   - prometheus_libvirt_exporter
   - prometheus_memcached_exporter
-  - prometheus_msteams
   - prometheus_mysqld_exporter
   - prometheus_node_exporter
   - prometheus_openstack_exporter
   - prometheus_openstack_exporter_external
+  - prometheus_proxysql_exporter
   - prometheus_rabbitmq_exporter
   - prometheus_server
   - proxysql
