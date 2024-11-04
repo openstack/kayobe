@@ -1321,7 +1321,7 @@ class OvercloudDatabaseBackup(KollaAnsibleMixin, KayobeAnsibleMixin,
         extra_args = []
         if parsed_args.incremental:
             extra_args.append('--incremental')
-        self.run_kolla_ansible_overcloud(parsed_args, "mariadb_backup",
+        self.run_kolla_ansible_overcloud(parsed_args, "mariadb-backup",
                                          extra_args=extra_args)
 
 
@@ -1349,7 +1349,7 @@ class OvercloudDatabaseRecover(KollaAnsibleMixin, KayobeAnsibleMixin,
         if parsed_args.force_recovery_host:
             extra_vars['mariadb_recover_inventory_name'] = (
                 parsed_args.force_recovery_host)
-        self.run_kolla_ansible_overcloud(parsed_args, "mariadb_recovery",
+        self.run_kolla_ansible_overcloud(parsed_args, "mariadb-recovery",
                                          extra_vars=extra_vars)
 
 
