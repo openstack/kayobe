@@ -39,6 +39,9 @@ kolla_enable_ironic: true
 kolla_enable_heat: false
 kolla_enable_horizon: false
 
+# Enable Mariabackup for testing database backups
+kolla_enable_mariabackup: true
+
 {% if tls_enabled %}
 kolla_enable_nova_libvirt_container: false
 compute_libvirt_enable_tls: true
