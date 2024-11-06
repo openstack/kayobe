@@ -12,8 +12,8 @@ import pytest
 
 
 def _is_apt():
-    info = distro.linux_distribution()
-    return info[0].startswith('Ubuntu')
+    info = distro.id()
+    return info == 'ubuntu'
 
 
 def _is_dnf():
