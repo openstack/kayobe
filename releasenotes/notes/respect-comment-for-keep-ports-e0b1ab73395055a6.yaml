@@ -1,0 +1,11 @@
+---
+upgrade:
+  - |
+    If you have customized ``inspector_keep_ports``, ensure it is set to one of:
+    ``all``, ``present``, ``added``.
+fixes:
+  - |
+    ``inspector_keep_ports`` can be set to one of: ``all``, ``present``,
+    ``added``. The previous behavior was to set this to ``present`` if the
+    variable was changed to any non-None value. This respects the behavior
+    indicated in the comments.
