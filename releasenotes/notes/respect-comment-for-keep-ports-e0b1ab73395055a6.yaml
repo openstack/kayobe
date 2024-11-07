@@ -1,11 +1,17 @@
 ---
 upgrade:
   - |
-    If you have customized ``inspector_keep_ports``, ensure it is set to one of:
-    ``all``, ``present``, ``added``.
+    If you have customized ``inspector_keep_ports``, ensure it is set to one
+    of: ``all``, ``present``, or ``added``. Prior to this release, setting
+    ``inspector_keep_ports`` to any truthy value would result in the
+    ``keep_ports`` Ironic Inspector configuration option being set to
+    ``present``. As the default value of ``inspector_keep_ports`` is ``added``,
+    we are effectively changing the default value of ``keep_ports`` from
+    ``present`` to ``added``. If you are relying on the previous behaviour
+    you should set ``ironic_keep_ports`` to ``present``.
 fixes:
   - |
     ``inspector_keep_ports`` can be set to one of: ``all``, ``present``,
     ``added``. The previous behavior was to set this to ``present`` if the
-    variable was changed to any non-None value. This respects the behavior
+    variable was changed to any truthy value. This respects the behavior
     indicated in the comments.
