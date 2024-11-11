@@ -10,6 +10,11 @@
     testinfra_venv: ~/testinfra-venv
     test_path: "{{ kayobe_src_dir }}/playbooks/kayobe-overcloud-host-configure-base/tests/"
   tasks:
+    - name: Prevent NetworkManager from managing default interface
+      command: 'nmcli dev set {{ ansible_facts.default_ipv4.interface }} managed no'
+      become: true
+      when: ansible_facts.os_family == 'RedHat'
+
     - name: Ensure overcloud is deployed
       shell:
         cmd: "{{ kayobe_src_dir }}/dev/overcloud-deploy.sh &> {{ logs_dir }}/ansible/overcloud-deploy"
@@ -29,3 +34,8 @@
       command: "{{ testinfra_venv }}/bin/py.test {{ test_path }} --html={{ logs_dir }}/test-results.html --self-contained-html"
       environment:
         SITE_MIRROR_FQDN: "{{ zuul_site_mirror_fqdn }}"
+
+    - name: Test bouncing interfaces
+      shell:
+        cmd: "{{ kayobe_src_dir }}/dev/overcloud-test-bounce-interface.sh controllers br1 &> {{ logs_dir }}/ansible/overcloud-test-bounce-interface"
+        executable: /bin/bash
