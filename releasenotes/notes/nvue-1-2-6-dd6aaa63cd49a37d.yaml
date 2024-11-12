@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    Bumps the ``nvidia.nvue`` collection to 1.2.6.
