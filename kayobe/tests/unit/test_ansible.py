@@ -54,39 +54,78 @@ class TestCase(unittest.TestCase):
             "playbook1.yml",
             "playbook2.yml",
         ]
-        home = os.path.expanduser("~")
+
         expected_env = {
             "KAYOBE_CONFIG_PATH": "/etc/kayobe",
             "ANSIBLE_ROLES_PATH": ":".join([
                 "/etc/kayobe/ansible/roles",
                 utils.get_data_files_path("ansible", "roles"),
-                home + "/.ansible/roles",
-                "/usr/share/ansible/roles",
-                "/etc/ansible/roles",
             ]),
             "ANSIBLE_COLLECTIONS_PATH": ":".join([
                 "/etc/kayobe/ansible/collections",
                 utils.get_data_files_path("ansible", "collections"),
-                home + "/.ansible/collections",
-                "/usr/share/ansible/collections",
             ]),
             "ANSIBLE_ACTION_PLUGINS": ":".join([
                 "/etc/kayobe/ansible/action_plugins",
                 utils.get_data_files_path("ansible", "action_plugins"),
-                home + "/.ansible/plugins/action",
-                "/usr/share/ansible/plugins/action",
             ]),
             "ANSIBLE_FILTER_PLUGINS": ":".join([
                 "/etc/kayobe/ansible/filter_plugins",
                 utils.get_data_files_path("ansible", "filter_plugins"),
-                home + "/.ansible/plugins/filter",
-                "/usr/share/ansible/plugins/filter",
             ]),
             "ANSIBLE_TEST_PLUGINS": ":".join([
                 "/etc/kayobe/ansible/test_plugins",
                 utils.get_data_files_path("ansible", "test_plugins"),
-                home + "/.ansible/plugins/test",
-                "/usr/share/ansible/plugins/test",
+            ]),
+        }
+        mock_run.assert_called_once_with(expected_cmd, check_output=False,
+                                         quiet=False, env=expected_env)
+        mock_vars.assert_called_once_with(["/etc/kayobe"])
+
+    @mock.patch.object(utils, "run_command")
+    @mock.patch.object(ansible, "_get_vars_files")
+    @mock.patch.object(ansible, "_validate_args")
+    def test_run_playbooks_internal(self, mock_validate, mock_vars, mock_run):
+        mock_vars.return_value = ["/etc/kayobe/vars-file1.yml",
+                                  "/etc/kayobe/vars-file2.yaml"]
+        parser = argparse.ArgumentParser()
+        ansible.add_args(parser)
+        vault.add_args(parser)
+        parsed_args = parser.parse_args([])
+        pb1 = utils.get_data_files_path("ansible", "playbook1.yml")
+        pb2 = utils.get_data_files_path("ansible", "playbook2.yml")
+        ansible.run_playbooks(parsed_args, [pb1, pb2])
+        expected_cmd = [
+            "ansible-playbook",
+            "--inventory", utils.get_data_files_path("ansible", "inventory"),
+            "--inventory", "/etc/kayobe/inventory",
+            "-e", "@/etc/kayobe/vars-file1.yml",
+            "-e", "@/etc/kayobe/vars-file2.yaml",
+            f"{pb1}",
+            f"{pb2}",
+        ]
+
+        expected_env = {
+            "KAYOBE_CONFIG_PATH": "/etc/kayobe",
+            "ANSIBLE_ROLES_PATH": ":".join([
+                utils.get_data_files_path("ansible", "roles"),
+                "/etc/kayobe/ansible/roles",
+            ]),
+            "ANSIBLE_COLLECTIONS_PATH": ":".join([
+                utils.get_data_files_path("ansible", "collections"),
+                "/etc/kayobe/ansible/collections",
+            ]),
+            "ANSIBLE_ACTION_PLUGINS": ":".join([
+                utils.get_data_files_path("ansible", "action_plugins"),
+                "/etc/kayobe/ansible/action_plugins",
+            ]),
+            "ANSIBLE_FILTER_PLUGINS": ":".join([
+                utils.get_data_files_path("ansible", "filter_plugins"),
+                "/etc/kayobe/ansible/filter_plugins",
+            ]),
+            "ANSIBLE_TEST_PLUGINS": ":".join([
+                utils.get_data_files_path("ansible", "test_plugins"),
+                "/etc/kayobe/ansible/test_plugins",
             ]),
         }
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
@@ -182,40 +221,29 @@ class TestCase(unittest.TestCase):
             "playbook1.yml",
             "playbook2.yml",
         ]
-        home = os.path.expanduser("~")
+
         expected_env = {
             "KAYOBE_CONFIG_PATH": "/path/to/config",
             "KAYOBE_ENVIRONMENT": "test-env",
             "ANSIBLE_ROLES_PATH": ":".join([
                 "/path/to/config/ansible/roles",
                 utils.get_data_files_path("ansible", "roles"),
-                home + "/.ansible/roles",
-                "/usr/share/ansible/roles",
-                "/etc/ansible/roles",
             ]),
             "ANSIBLE_COLLECTIONS_PATH": ":".join([
                 "/path/to/config/ansible/collections",
                 utils.get_data_files_path("ansible", "collections"),
-                home + "/.ansible/collections",
-                "/usr/share/ansible/collections",
             ]),
             "ANSIBLE_ACTION_PLUGINS": ":".join([
                 "/path/to/config/ansible/action_plugins",
                 utils.get_data_files_path("ansible", "action_plugins"),
-                home + "/.ansible/plugins/action",
-                "/usr/share/ansible/plugins/action",
             ]),
             "ANSIBLE_FILTER_PLUGINS": ":".join([
                 "/path/to/config/ansible/filter_plugins",
                 utils.get_data_files_path("ansible", "filter_plugins"),
-                home + "/.ansible/plugins/filter",
-                "/usr/share/ansible/plugins/filter",
             ]),
             "ANSIBLE_TEST_PLUGINS": ":".join([
                 "/path/to/config/ansible/test_plugins",
                 utils.get_data_files_path("ansible", "test_plugins"),
-                home + "/.ansible/plugins/test",
-                "/usr/share/ansible/plugins/test",
             ]),
         }
         mock_run.assert_called_once_with(expected_cmd, check_output=False,

@@ -21,7 +21,6 @@ import subprocess
 import sys
 import tempfile
 
-import ansible.constants
 from ansible.parsing.yaml.objects import AnsibleVaultEncryptedUnicode
 
 from kayobe import exception
@@ -220,7 +219,7 @@ def build_args(parsed_args, playbooks,
     return cmd
 
 
-def _get_environment(parsed_args):
+def _get_environment(parsed_args, external_playbook=False):
     """Return an environment dict for executing an Ansible playbook."""
     env = os.environ.copy()
     vault.update_environment(parsed_args, env)
@@ -240,34 +239,69 @@ def _get_environment(parsed_args):
     # Update various role, collection and plugin paths to include the Kayobe
     # roles, collections and plugins. This allows custom playbooks to use these
     # resources.
-    roles_paths = [
-        os.path.join(parsed_args.config_path, "ansible", "roles"),
-        utils.get_data_files_path("ansible", "roles"),
-    ] + ansible.constants.DEFAULT_ROLES_PATH
+    if external_playbook:
+        roles_paths = [
+            os.path.join(parsed_args.config_path, "ansible", "roles"),
+            utils.get_data_files_path("ansible", "roles"),
+        ]
+    else:
+        roles_paths = [
+            utils.get_data_files_path("ansible", "roles"),
+            os.path.join(parsed_args.config_path, "ansible", "roles"),
+        ]
+
     env.setdefault("ANSIBLE_ROLES_PATH", ":".join(roles_paths))
 
-    collections_paths = [
-        os.path.join(parsed_args.config_path, "ansible", "collections"),
-        utils.get_data_files_path("ansible", "collections"),
-    ] + ansible.constants.COLLECTIONS_PATHS
+    if external_playbook:
+        collections_paths = [
+            os.path.join(parsed_args.config_path, "ansible", "collections"),
+            utils.get_data_files_path("ansible", "collections"),
+        ]
+    else:
+        collections_paths = [
+            utils.get_data_files_path("ansible", "collections"),
+            os.path.join(parsed_args.config_path, "ansible", "collections"),
+        ]
+
     env.setdefault("ANSIBLE_COLLECTIONS_PATH", ":".join(collections_paths))
 
-    action_plugins = [
-        os.path.join(parsed_args.config_path, "ansible", "action_plugins"),
-        utils.get_data_files_path("ansible", "action_plugins"),
-    ] + ansible.constants.DEFAULT_ACTION_PLUGIN_PATH
+    if external_playbook:
+        action_plugins = [
+            os.path.join(parsed_args.config_path, "ansible", "action_plugins"),
+            utils.get_data_files_path("ansible", "action_plugins"),
+        ]
+    else:
+        action_plugins = [
+            utils.get_data_files_path("ansible", "action_plugins"),
+            os.path.join(parsed_args.config_path, "ansible", "action_plugins"),
+        ]
+
     env.setdefault("ANSIBLE_ACTION_PLUGINS", ":".join(action_plugins))
 
-    filter_plugins = [
-        os.path.join(parsed_args.config_path, "ansible", "filter_plugins"),
-        utils.get_data_files_path("ansible", "filter_plugins"),
-    ] + ansible.constants.DEFAULT_FILTER_PLUGIN_PATH
+    if external_playbook:
+        filter_plugins = [
+            os.path.join(parsed_args.config_path, "ansible", "filter_plugins"),
+            utils.get_data_files_path("ansible", "filter_plugins"),
+        ]
+    else:
+        filter_plugins = [
+            utils.get_data_files_path("ansible", "filter_plugins"),
+            os.path.join(parsed_args.config_path, "ansible", "filter_plugins"),
+        ]
+
     env.setdefault("ANSIBLE_FILTER_PLUGINS", ":".join(filter_plugins))
 
-    test_plugins = [
-        os.path.join(parsed_args.config_path, "ansible", "test_plugins"),
-        utils.get_data_files_path("ansible", "test_plugins"),
-    ] + ansible.constants.DEFAULT_TEST_PLUGIN_PATH
+    if external_playbook:
+        test_plugins = [
+            os.path.join(parsed_args.config_path, "ansible", "test_plugins"),
+            utils.get_data_files_path("ansible", "test_plugins"),
+        ]
+    else:
+        test_plugins = [
+            utils.get_data_files_path("ansible", "test_plugins"),
+            os.path.join(parsed_args.config_path, "ansible", "test_plugins"),
+        ]
+
     env.setdefault("ANSIBLE_TEST_PLUGINS", ":".join(test_plugins))
 
     return env
@@ -284,7 +318,12 @@ def run_playbooks(parsed_args, playbooks,
                      verbose_level=verbose_level, check=check,
                      ignore_limit=ignore_limit, list_tasks=list_tasks,
                      diff=diff)
-    env = _get_environment(parsed_args)
+    first_playbook = os.path.realpath(playbooks[0])
+    external_playbook = False
+    if not first_playbook.startswith(os.path.realpath(
+            utils.get_data_files_path("ansible"))):
+        external_playbook = True
+    env = _get_environment(parsed_args, external_playbook)
     try:
         utils.run_command(cmd, check_output=check_output, quiet=quiet, env=env)
     except subprocess.CalledProcessError as e:
