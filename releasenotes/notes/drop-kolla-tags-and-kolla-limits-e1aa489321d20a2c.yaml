@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    Removed the deprecated options ``--kolla-tags`` and ``kolla-limit`` from
+    all commands.
