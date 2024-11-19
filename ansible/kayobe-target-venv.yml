@@ -26,7 +26,9 @@
         filter: "{{ kayobe_ansible_setup_filter }}"
         gather_subset: "{{ kayobe_ansible_setup_gather_subset }}"
       when:
-        - ansible_facts is undefined or ansible_facts is falsy
+        #TODO(mattcrees): Enable this check once this bug is fixed:
+        # https://bugs.launchpad.net/kayobe/+bug/2144548
+        # - ansible_facts is undefined or ansible_facts is falsy
         - kayobe_virtualenv is defined
       register: gather_facts_result
       # Before any facts are gathered, ansible doesn't know about

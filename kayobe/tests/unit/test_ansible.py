@@ -222,7 +222,7 @@ class TestCase(unittest.TestCase):
             "--check",
             "--diff",
             "--limit", "group1:host",
-            "--tags", "tag1,tag2",
+            "--tags", "tag1,tag2,kayobe-generate-config",
             "playbook1.yml",
             "playbook2.yml",
         ]
@@ -300,7 +300,7 @@ class TestCase(unittest.TestCase):
             "--diff",
             "--limit", "group1:host1",
             "--skip-tags", "tag3,tag4",
-            "--tags", "tag1,tag2",
+            "--tags", "tag1,tag2,kayobe-generate-config",
             "playbook1.yml",
             "playbook2.yml",
         ]
@@ -450,7 +450,7 @@ class TestCase(unittest.TestCase):
             "--check",
             "--diff",
             "--limit", "group1:host1:&group2:host2",
-            "--tags", "tag1,tag2,tag3,tag4",
+            "--tags", "tag1,tag2,tag3,tag4,kayobe-generate-config",
             "playbook1.yml",
             "playbook2.yml",
         ]

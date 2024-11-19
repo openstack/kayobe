@@ -450,7 +450,13 @@ To upgrade the containerised control plane services::
 
     (kayobe) $ kayobe overcloud service upgrade
 
-It is possible to specify tags for Kayobe and/or kolla-ansible to restrict the
+It is possible to specify tags for Kayobe and kolla-ansible to restrict the
 scope of the upgrade::
 
-    (kayobe) $ kayobe overcloud service upgrade --tags config --kolla-tags keystone
+    (kayobe) $ kayobe overcloud service upgrade --tags keystone
+
+.. note::
+
+    Using tags is not tested in either Kayobe or Kolla-Ansible CI, and as such
+    should only be used if you know what you're doing. Proceed with caution.
+

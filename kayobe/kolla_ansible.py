@@ -54,16 +54,20 @@ def add_args(parser):
                              "Kolla Ansible" %
                              (CONFIG_PATH_ENV, DEFAULT_CONFIG_PATH),
                         action='append')
+    # TODO(mattcrees): Remove kl, kt, and kolla-skip-tags in 2026.2.
     parser.add_argument("-kl", "--kolla-limit", metavar="SUBSET",
-                        help="further limit selected hosts to an additional "
+                        help="[DEPRECATED: Please use -l or --limit instead] "
+                             "further limit selected hosts to an additional "
                              "pattern")
     parser.add_argument("-kp", "--kolla-playbook", metavar="PLAYBOOK",
                         help="path to Ansible playbook file")
     parser.add_argument("--kolla-skip-tags", metavar="TAGS",
-                        help="only run plays and tasks whose tags do not "
-                             "match these values in Kolla Ansible")
+                        help="[DEPRECATED: Please use -skip-tags instead] "
+                             "only run plays and tasks whose tags "
+                             "do not match these values in Kolla Ansible")
     parser.add_argument("-kt", "--kolla-tags", metavar="TAGS",
-                        help="only run plays and tasks tagged with these "
+                        help="[DEPRECATED: Please use -t or --tags instead] "
+                             "only run plays and tasks tagged with these "
                              "values in Kolla Ansible")
     parser.add_argument("--kolla-venv", metavar="VENV", default=default_venv,
                         help="path to virtualenv where Kolla Ansible is "
@@ -162,13 +166,17 @@ def build_args(parsed_args, command, inventory_filename, extra_vars=None,
             # Quote and escape variables originating within the python CLI.
             extra_var_value = utils.quote_and_escape(extra_var_value)
             cmd += ["-e", "%s=%s" % (extra_var_name, extra_var_value)]
-    if parsed_args.kolla_limit or limit:
-        limit_arg = utils.intersect_limits(parsed_args.kolla_limit, limit)
+    if parsed_args.limit or parsed_args.kolla_limit or limit:
+        limit_arg = utils.intersect_limits(parsed_args.limit, limit)
+        limit_arg = utils.intersect_limits(parsed_args.kolla_limit, limit_arg)
         cmd += ["--limit", utils.quote_and_escape(limit_arg)]
-    if parsed_args.kolla_skip_tags:
-        cmd += ["--skip-tags", parsed_args.kolla_skip_tags]
-    if parsed_args.kolla_tags or tags:
-        all_tags = [t for t in [parsed_args.kolla_tags, tags] if t]
+    if parsed_args.skip_tags or parsed_args.kolla_skip_tags:
+        all_tags = [t for t in [parsed_args.skip_tags,
+                                parsed_args.kolla_skip_tags] if t]
+        cmd += ["--skip-tags", ",".join(all_tags)]
+    if parsed_args.tags or parsed_args.kolla_tags or tags:
+        all_tags = [t for t in [parsed_args.tags, parsed_args.kolla_tags,
+                                tags] if t]
         cmd += ["--tags", ",".join(all_tags)]
     if parsed_args.list_tasks:
         cmd += ["--list-tasks"]

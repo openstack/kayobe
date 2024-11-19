@@ -63,12 +63,11 @@ Limiting Hosts
 
 Sometimes it may be necessary to limit execution of kayobe or kolla-ansible
 plays to a subset of the hosts.  The ``--limit <SUBSET>`` argument allows the
-kayobe ansible hosts to be limited.  The ``--kolla-limit <SUBSET>`` argument
-allows the kolla-ansible hosts to be limited.  These two options may be
-combined in a single command.  In both cases, the argument provided should be
+kayobe and kolla-ansible hosts to be limited.  The argument provided should be
 an `Ansible host pattern
 <http://docs.ansible.com/ansible/latest/intro_patterns.html>`_, and will
-ultimately be passed to ``ansible-playbook`` as a ``--limit`` argument.
+ultimately be passed to ``ansible-playbook`` for both kayobe and kolla-ansible
+as a ``--limit`` argument.
 
 .. _usage-tags:
 
@@ -77,12 +76,15 @@ Tags
 
 `Ansible tags <http://docs.ansible.com/ansible/latest/playbooks_tags.html>`_
 provide a useful mechanism for executing a subset of the plays or tasks in a
-playbook.  The ``--tags <TAGS>`` argument allows execution of kayobe ansible
-playbooks to be limited to matching plays and tasks.  The ``--kolla-tags
-<TAGS>`` argument allows execution of kolla-ansible ansible playbooks to be
-limited to matching plays and tasks.  The ``--skip-tags <TAGS>`` and
-``--kolla-skip-tags <TAGS>`` arguments allow for avoiding execution of matching
-plays and tasks.
+playbook.  The ``--tags <TAGS>`` argument allows execution of kayobe and
+kolla-ansible playbooks to be limited to matching plays and tasks.  The
+``--skip-tags <TAGS>`` argument allows for avoiding execution of matching plays
+and tasks.
+
+.. note::
+
+    Using tags is not tested in either Kayobe or Kolla-Ansible CI, and as such
+    should only be used if you know what you're doing. Proceed with caution.
 
 Check and diff mode
 -------------------

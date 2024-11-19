@@ -31,10 +31,7 @@ To destroy the seed services::
 
 This can optionally be used with a tag::
 
-    (kayobe) $ kayobe seed service destroy --yes-i-really-really-mean-it -kt none -t docker-registry
-
-Care must be taken to set both kayobe and kolla tags to avoid accidentally
-destroying other services.
+    (kayobe) $ kayobe seed service destroy --yes-i-really-really-mean-it -t docker-registry
 
 Updating Packages
 =================
@@ -49,7 +46,7 @@ necessary to update these prior to running a package update. To do this, update
 the configuration in ``${KAYOBE_CONFIG_PATH}/dnf.yml`` and run the following
 command::
 
-    (kayobe) $ kayobe seed host configure --tags dnf --kolla-tags none
+    (kayobe) $ kayobe seed host configure --tags dnf
 
 Package Update
 --------------

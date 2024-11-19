@@ -14,6 +14,7 @@
 
 import glob
 import json
+import logging
 import os
 import re
 import sys
@@ -29,6 +30,8 @@ from kayobe import vault
 
 # This is set to an arbitrary large number to simplify the sorting logic
 DEFAULT_SEQUENCE_NUMBER = sys.maxsize
+
+LOG = logging.getLogger(__name__)
 
 
 def _build_playbook_list(*playbooks):
@@ -114,6 +117,31 @@ class KayobeAnsibleMixin(object):
             playbooks = _build_playbook_list("kolla-bifrost")
             self.run_kayobe_playbooks(parsed_args, playbooks,
                                       ignore_limit=True, check=False)
+
+    def handle_kolla_tags_limits_deprecation(self, parsed_args):
+        if (parsed_args.kolla_limit or parsed_args.kolla_tags or
+                parsed_args.kolla_skip_tags):
+            self.app.LOG.warning("The use of --kolla-tags, --kolla-limit, and "
+                                 "--kolla-skip-tags is deprecated. Please "
+                                 "switch to just using --tags, --limit, or "
+                                 "--skip-tags, these are now passed into "
+                                 "kolla-ansible too. Kolla tags/limit will be "
+                                 "removed in the next release.")
+        if parsed_args.limit and parsed_args.kolla_limit:
+            self.app.LOG.error("You can no longer use both --limit and "
+                               "--kolla-limit at the same time. Please switch "
+                               "to just using --limit")
+            sys.exit(1)
+        if parsed_args.tags and parsed_args.kolla_tags:
+            self.app.LOG.error("You can no longer use both --tags and "
+                               "--kolla-tags at the same time. Please switch "
+                               "to just using --tags")
+            sys.exit(1)
+        if parsed_args.skip_tags and parsed_args.kolla_skip_tags:
+            self.app.LOG.error("You can no longer use both --skip-tags and "
+                               "--kolla-skip-tags at the same time. Please "
+                               "switch to just using --skip-tags")
+            sys.exit(1)
 
 
 class KollaAnsibleMixin(object):
@@ -277,6 +305,7 @@ class ControlHostBootstrap(KayobeAnsibleMixin, KollaAnsibleMixin, VaultMixin,
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Bootstrapping Kayobe Ansible control host")
+        self.handle_kolla_tags_limits_deprecation(parsed_args)
         ansible.install_galaxy_roles(parsed_args)
         ansible.install_galaxy_collections(parsed_args)
         playbooks = _build_playbook_list("bootstrap")
@@ -503,6 +532,8 @@ class KollaAnsibleRun(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     def take_action(self, parsed_args):
         self.app.LOG.debug("Running Kolla Ansible command")
 
+        self.handle_kolla_tags_limits_deprecation(parsed_args)
+
         # First prepare configuration.
         self.generate_kolla_ansible_config(parsed_args)
 
@@ -683,6 +714,7 @@ class SeedVMProvision(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Provisioning seed VM")
+        self.handle_kolla_tags_limits_deprecation(parsed_args)
         self.run_kayobe_playbook(parsed_args,
                                  _get_playbook_path("ip-allocation"),
                                  limit="seed")
@@ -701,6 +733,7 @@ class SeedVMDeprovision(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Deprovisioning seed VM")
+        self.handle_kolla_tags_limits_deprecation(parsed_args)
         self.run_kayobe_playbook(parsed_args,
                                  _get_playbook_path("seed-vm-deprovision"))
 
@@ -836,6 +869,7 @@ class SeedServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Deploying seed services")
+        self.handle_kolla_tags_limits_deprecation(parsed_args)
         playbooks = _build_playbook_list(
             "seed-manage-containers")
         extra_vars = {"kayobe_action": "deploy"}
@@ -870,6 +904,7 @@ class SeedServiceDestroy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
                                "you understand this.")
             sys.exit(1)
         self.app.LOG.debug("Destroying seed services")
+        self.handle_kolla_tags_limits_deprecation(parsed_args)
         self.generate_kolla_ansible_config(parsed_args, service_config=False,
                                            bifrost_config=False)
         extra_args = ["--yes-i-really-really-mean-it"]
@@ -911,6 +946,7 @@ class SeedServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Upgrading seed services")
+        self.handle_kolla_tags_limits_deprecation(parsed_args)
         playbooks = _build_playbook_list(
             "seed-manage-containers")
         extra_vars = {"kayobe_action": "deploy"}
@@ -1278,6 +1314,8 @@ class OvercloudFactsGather(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     def take_action(self, parsed_args):
         self.app.LOG.debug("Gathering overcloud host facts")
 
+        self.handle_kolla_tags_limits_deprecation(parsed_args)
+
         # Gather facts for Kayobe.
         playbooks = _build_playbook_list("overcloud-facts-gather")
         self.run_kayobe_playbooks(parsed_args, playbooks)
@@ -1415,6 +1453,8 @@ class OvercloudDatabaseBackup(KollaAnsibleMixin, KayobeAnsibleMixin,
     def take_action(self, parsed_args):
         self.app.LOG.debug("Performing overcloud database backup")
 
+        self.handle_kolla_tags_limits_deprecation(parsed_args)
+
         # First prepare configuration.
         self.generate_kolla_ansible_config(parsed_args, service_config=False)
 
@@ -1442,6 +1482,8 @@ class OvercloudDatabaseRecover(KollaAnsibleMixin, KayobeAnsibleMixin,
     def take_action(self, parsed_args):
         self.app.LOG.debug("Performing overcloud database recovery")
         extra_vars = {}
+
+        self.handle_kolla_tags_limits_deprecation(parsed_args)
 
         # First prepare configuration.
         self.generate_kolla_ansible_config(parsed_args, service_config=True)
@@ -1480,6 +1522,8 @@ class OvercloudServiceConfigurationGenerate(KayobeAnsibleMixin,
     def take_action(self, parsed_args):
         self.app.LOG.debug("Generating overcloud service configuration")
 
+        self.handle_kolla_tags_limits_deprecation(parsed_args)
+
         # First prepare configuration.
         self.generate_kolla_ansible_config(parsed_args)
 
@@ -1511,6 +1555,7 @@ class OvercloudServiceConfigurationValidate(KayobeAnsibleMixin,
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Validating overcloud service configuration")
+        self.handle_kolla_tags_limits_deprecation(parsed_args)
         extra_vars = {}
         if parsed_args.output_dir:
             extra_vars[
@@ -1575,8 +1620,8 @@ class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     * Configure and deploy kayobe extra services.
     * Generate openrc files for the admin user.
 
-    This can be used in conjunction with the --tags and --kolla-tags arguments
-    to deploy specific services.
+    This can be used in conjunction with the --tags argument to deploy specific
+    services.
     """
 
     def get_parser(self, prog_name):
@@ -1588,6 +1633,8 @@ class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Deploying overcloud services")
+
+        self.handle_kolla_tags_limits_deprecation(parsed_args)
 
         # First prepare configuration.
         self.generate_kolla_ansible_config(parsed_args)
@@ -1624,8 +1671,8 @@ class OvercloudServiceDeployContainers(KollaAnsibleMixin, KayobeAnsibleMixin,
     * Perform a kolla-ansible deployment of the overcloud service containers.
     * Configure and deploy kayobe extra services.
 
-    This can be used in conjunction with the --tags and --kolla-tags arguments
-    to deploy specific services.
+    This can be used in conjunction with the --tags argument to deploy specific
+    services.
     """
 
     def get_parser(self, prog_name):
@@ -1638,6 +1685,8 @@ class OvercloudServiceDeployContainers(KollaAnsibleMixin, KayobeAnsibleMixin,
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Deploying overcloud services (containers only)")
+
+        self.handle_kolla_tags_limits_deprecation(parsed_args)
 
         # First prepare configuration.
         self.generate_kolla_ansible_config(parsed_args)
@@ -1665,12 +1714,14 @@ class OvercloudServicePrechecks(KollaAnsibleMixin, KayobeAnsibleMixin,
     * Perform kolla-ansible prechecks to verify the system state for
       deployment.
 
-    This can be used in conjunction with the --tags and --kolla-tags arguments
-    to check specific services.
+    This can be used in conjunction with the --tags argument to check specific
+    services.
     """
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Running overcloud prechecks")
+
+        self.handle_kolla_tags_limits_deprecation(parsed_args)
 
         # First prepare configuration.
         self.generate_kolla_ansible_config(parsed_args)
@@ -1699,8 +1750,8 @@ class OvercloudServiceReconfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
     * Configure and deploy kayobe extra services.
     * Generate openrc files for the admin user.
 
-    This can be used in conjunction with the --tags and --kolla-tags arguments
-    to reconfigure specific services.
+    This can be used in conjunction with the --tags argument to reconfigure
+    specific services.
     """
 
     def get_parser(self, prog_name):
@@ -1712,6 +1763,8 @@ class OvercloudServiceReconfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Reconfiguring overcloud services")
+
+        self.handle_kolla_tags_limits_deprecation(parsed_args)
 
         # First prepare configuration.
         self.generate_kolla_ansible_config(parsed_args)
@@ -1746,8 +1799,8 @@ class OvercloudServiceStop(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
     * Perform a kolla-ansible stop of the overcloud services.
     * Stop kayobe extra services.
 
-    This can be used in conjunction with the --tags and --kolla-tags arguments
-    to stop specific services.
+    This can be used in conjunction with the --tags argument to stop specific
+    services.
     """
 
     def get_parser(self, prog_name):
@@ -1767,6 +1820,8 @@ class OvercloudServiceStop(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
             sys.exit(1)
 
         self.app.LOG.debug("Stopping overcloud services")
+
+        self.handle_kolla_tags_limits_deprecation(parsed_args)
 
         # First prepare configuration.
         self.generate_kolla_ansible_config(parsed_args)
@@ -1795,8 +1850,8 @@ class OvercloudServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin,
     * Configure and upgrade kayobe extra services.
     * Regenerate openrc files for the admin user.
 
-    This can be used in conjunction with the --tags and --kolla-tags arguments
-    to upgrade specific services.
+    This can be used in conjunction with the --tags argument to upgrade
+    specific services.
     """
 
     def get_parser(self, prog_name):
@@ -1808,6 +1863,8 @@ class OvercloudServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin,
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Upgrading overcloud services")
+
+        self.handle_kolla_tags_limits_deprecation(parsed_args)
 
         # First prepare configuration.
         self.generate_kolla_ansible_config(parsed_args, install=True)
@@ -1860,6 +1917,8 @@ class OvercloudServiceDestroy(KollaAnsibleMixin, KayobeAnsibleMixin,
 
         self.app.LOG.debug("Destroying overcloud services")
 
+        self.handle_kolla_tags_limits_deprecation(parsed_args)
+
         # First prepare configuration.
         self.generate_kolla_ansible_config(parsed_args)
 
@@ -1881,6 +1940,8 @@ class OvercloudContainerImagePull(KayobeAnsibleMixin, KollaAnsibleMixin,
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Pulling overcloud container images")
+
+        self.handle_kolla_tags_limits_deprecation(parsed_args)
 
         # First prepare configuration.
         self.generate_kolla_ansible_config(parsed_args, service_config=False)

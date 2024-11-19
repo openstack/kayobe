@@ -61,8 +61,8 @@ class TestCase(unittest.TestCase):
             "--kolla-config-path", "/path/to/config",
             "-ke", "ev_name1=ev_value1",
             "-ki", "/path/to/inventory",
-            "-kl", "host1:host2",
-            "-kt", "tag1,tag2",
+            "-l", "host1:host2",
+            "-t", "tag1,tag2",
             "-kp", "/path/to/playbook",
         ]
         parsed_args = parser.parse_args(args)
@@ -100,9 +100,9 @@ class TestCase(unittest.TestCase):
             "--kolla-config-path", "/path/to/config",
             "--kolla-extra-vars", "ev_name1=ev_value1",
             "--kolla-inventory", "/path/to/inventory",
-            "--kolla-limit", "host1:host2",
-            "--kolla-skip-tags", "tag3,tag4",
-            "--kolla-tags", "tag1,tag2",
+            "--limit", "host1:host2",
+            "--skip-tags", "tag3,tag4",
+            "--tags", "tag1,tag2",
             "--kolla-playbook", "/path/to/playbook",
         ]
         parsed_args = parser.parse_args(args)
@@ -194,7 +194,7 @@ class TestCase(unittest.TestCase):
         vault.add_args(parser)
         args = [
             "--kolla-extra-vars", "ev_name1=ev_value1",
-            "--kolla-tags", "tag1,tag2",
+            "--tags", "tag1,tag2",
         ]
         parsed_args = parser.parse_args(args)
         kwargs = {

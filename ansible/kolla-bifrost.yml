@@ -3,6 +3,7 @@
   hosts: localhost
   tags:
     - kolla-bifrost
+    - bifrost
   roles:
     - role: kolla-bifrost
 

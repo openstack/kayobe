@@ -9,6 +9,7 @@
   tags:
     - kolla-ansible
     - config-validation
+    - kayobe-generate-config
   tasks:
     - name: Validate serial console configuration
       block:
@@ -26,6 +27,7 @@
   hosts: localhost
   tags:
     - kolla-ansible
+    - kayobe-generate-config
   gather_facts: false
   pre_tasks:
     - block:
@@ -113,6 +115,7 @@
     - config
     - config-validation
     - kolla-ansible
+    - kayobe-generate-config
   gather_facts: False
   tasks:
     - name: Set Kolla Ansible host variables
@@ -142,6 +145,7 @@
     - config
     - config-validation
     - kolla-ansible
+    - kayobe-generate-config
   gather_facts: False
   tasks:
     - name: Set Kolla Ansible host variables
