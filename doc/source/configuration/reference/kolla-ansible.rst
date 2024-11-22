@@ -412,6 +412,50 @@ to enable debug logging for Nova services:
    ---
    nova_logging_debug: true
 
+Inventory Passthrough
+---------------------
+
+By default, only hosts that are in the groups listed in
+``kolla_overcloud_inventory_top_level_group_map`` will be included in the
+generated Kolla Ansible inventory. The variable
+``kolla_overcloud_inventory_pass_through_enabled`` is dynamically determined
+based on whether ``inventory_hostname`` is in any of the groups mapped in
+``kolla_overcloud_inventory_top_level_group_map``.
+
+To exclude hosts from the Kolla Ansible inventory, simply do not map their
+groups in ``kolla_overcloud_inventory_top_level_group_map``. When a group is
+excluded from the mapping, the following variables are not required for hosts
+in that group:
+
+- ``kolla_internal_vip_address``
+- ``kolla_internal_fqdn``
+- ``kolla_network_interface``
+- ``kolla_api_interface``
+
+These variables are only required when hosts are included in the Kolla Ansible
+inventory.
+
+Example: exclude a group from Kolla Ansible inventory
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To exclude a dedicated storage group from the Kolla Ansible inventory, do not
+include it in ``kolla_overcloud_inventory_top_level_group_map``:
+
+.. code-block:: yaml
+   :caption: ``$KAYOBE_CONFIG_PATH/kolla.yml``
+
+   kolla_overcloud_inventory_top_level_group_map:
+     control:
+       groups:
+         - controllers
+     network:
+       groups:
+         - network
+     compute:
+       groups:
+         - compute
+     # external-storage group is not mapped - hosts will not be in Kolla inventory
+
 Host variables
 --------------
 

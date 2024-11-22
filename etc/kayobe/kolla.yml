@@ -184,6 +184,11 @@
 # concatenation of the top level, component, and service inventories.
 #kolla_overcloud_inventory_custom:
 
+# Flag indicating whether host will be included in the generated kolla
+# inventory.  True if inventory_hostname is in any of the groups defined in
+# kolla_overcloud_inventory_top_level_group_map, false otherwise.
+#kolla_overcloud_inventory_pass_through_enabled:
+
 # Dict mapping from kolla-ansible groups to kayobe groups and variables. Each
 # item is a dict with the following items:
 # * groups: A list of kayobe ansible groups to map to this kolla-ansible group.
