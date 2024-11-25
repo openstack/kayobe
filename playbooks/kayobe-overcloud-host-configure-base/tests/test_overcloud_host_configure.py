@@ -153,13 +153,13 @@ def test_docker_storage_driver_is_devicemapper(host):
 @pytest.mark.parametrize('user', ['kolla', 'stack'])
 def test_docker_image_download(host, user):
     with host.sudo(user):
-        host.check_output("docker pull alpine")
+        host.check_output("docker pull quay.io/podman/hello")
 
 
 @pytest.mark.parametrize('user', ['kolla', 'stack'])
 def test_docker_container_run(host, user):
     with host.sudo(user):
-        host.check_output("docker run --rm alpine /bin/true")
+        host.check_output("docker run --rm quay.io/podman/hello")
 
 
 def test_timezone(host):
