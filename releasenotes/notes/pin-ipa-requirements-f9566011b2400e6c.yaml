@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Pin requirements for IPA image build to ensure that the ``ironic-lib``
+    version matches ``ironic-python-agent``.
+    LP#2089263 <https://bugs.launchpad.net/kayobe/+bug/2089263>`__
