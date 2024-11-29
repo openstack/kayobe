@@ -62,15 +62,14 @@ image build``.
     ``ipa_build_dib_elements_extra``.
 ``ipa_build_dib_env_default``
     Dictionary of default environment variables to provide to Diskimage Builder
-    (DIB) during IPA image build. Default is
-    ``{"DIB_RELEASE": "9-stream", "DIB_REPOLOCATION_ironic_python_agent": "{{
-    ipa_build_source_url }}", "DIB_REPOREF_ironic_python_agent": "{{
-    ipa_build_source_version }}", "DIB_REPOREF_requirements": "{{
-    openstack_branch }}"}`` if ``os_distribution`` is ``"rocky"`` else
-    ``{"DIB_RELEASE": "jammy", "DIB_REPOLOCATION_ironic_python_agent": "{{
-    ipa_build_source_url }}", "DIB_REPOREF_ironic_python_agent": "{{
-    ipa_build_source_version }}", "DIB_REPOREF_requirements": "{{
-    openstack_branch }}"}``.
+    (DIB) during IPA image build. Default is ``{"DIB_RELEASE": "9-stream",
+    "DIB_REPOLOCATION_ironic_python_agent": "{{ ipa_build_source_url }}",
+    "DIB_REPOREF_ironic_python_agent": "{{ ipa_build_source_version }}",
+    "DIB_REPOREF_requirements": "{{ ipa_build_source_version }}"}`` if
+    ``os_distribution`` is ``"rocky"`` else ``{"DIB_RELEASE": "{{ os_release
+    }}", "DIB_REPOLOCATION_ironic_python_agent": "{{ ipa_build_source_url }}",
+    "DIB_REPOREF_ironic_python_agent": "{{ ipa_build_source_version }}",
+    "DIB_REPOREF_requirements": "{{ ipa_build_source_version }}"}``.
 ``ipa_build_dib_env_extra``
     Dictionary of additional environment variables to provide to Diskimage
     Builder (DIB) during IPA image build. Default is empty.

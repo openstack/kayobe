@@ -50,6 +50,7 @@ ipa_build_dib_env_default:
   DIB_RELEASE: "{{ '9-stream' if os_distribution == 'rocky' else os_release }}"
   DIB_REPOLOCATION_ironic_python_agent: "{{ ipa_build_source_url }}"
   DIB_REPOREF_ironic_python_agent: "{{ ipa_build_source_version }}"
+  DIB_REPOREF_requirements: "{{ ipa_build_source_version }}"
 
 # Dictionary of additional environment variables to provide to Diskimage
 # Builder (DIB) during IPA image build.
