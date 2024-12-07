@@ -5,9 +5,9 @@
 # Name of the current OpenStack release. Default is "2023.1".
 openstack_release: "2023.1"
 
-# Name of the current OpenStack branch. Default is "stable/2023.1".
+# Name of the current OpenStack branch. Default is "unmaintained/2023.1".
 openstack_branch: >-
-  {% if openstack_release != 'master' %}stable/{% endif %}{{ openstack_release | lower }}
+  {% if openstack_release != 'master' %}unmaintained/{% endif %}{{ openstack_release | lower }}
 
 ###############################################################################
 # OpenStack authentication configuration.
