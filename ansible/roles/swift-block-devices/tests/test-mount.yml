@@ -10,7 +10,7 @@
       register: tempfile
 
     - name: Allocate a fake device file
-      command: fallocate -l 32M {{ tempfile.path }}
+      command: fallocate -l 350M {{ tempfile.path }}
 
     - name: Find a free loopback device
       command: losetup -f
