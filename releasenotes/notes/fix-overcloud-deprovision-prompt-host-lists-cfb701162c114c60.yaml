@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes a bug where non-overcloud hosts would show up in the confirmation
+    prompt for `kayobe overcloud deprovision`
+    `LP#2091703 <https://bugs.launchpad.net/kayobe/+bug/2091621>`__
