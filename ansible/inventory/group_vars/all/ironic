@@ -94,6 +94,9 @@ kolla_ironic_default_vendor_interface:
 # Name of the Neutron network to use for cleaning.
 kolla_ironic_cleaning_network: "{{ kolla_ironic_provisioning_network if cleaning_net_name == provision_wl_net_name else 'cleaning-net' }}"
 
+# Name of the Neutron network to use for inspection.
+kolla_ironic_inspection_network: "{{ kolla_ironic_provisioning_network if inspection_net_name == provision_wl_net_name else 'inspection-net' }}"
+
 # Name of the Neutron network to use for provisioning.
 kolla_ironic_provisioning_network: 'provision-net'
 

@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds support for ``kolla_ironic_inspection_network`` which will be created
+    in Neutron for Ironic Inspection purposes (defaults to using provisioning
+    network for backwards compatibility)..
