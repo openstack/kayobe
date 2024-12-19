@@ -13,8 +13,7 @@
             files: THIS-JOB-IS-DISABLED
         - kayobe-tox-ansible-syntax
         - kayobe-tox-ansible
-        - kayobe-tox-molecule:
-            voting: false
+        - kayobe-tox-molecule
         - kayobe-overcloud-rocky9
         - kayobe-overcloud-centos9s
         - kayobe-overcloud-ubuntu-noble
@@ -42,7 +41,7 @@
             files: THIS-JOB-IS-DISABLED
         - kayobe-tox-ansible-syntax
         - kayobe-tox-ansible
-        #- kayobe-tox-molecule
+        - kayobe-tox-molecule
         - kayobe-overcloud-rocky9
         - kayobe-overcloud-ubuntu-noble
         - kayobe-overcloud-tls-rocky9

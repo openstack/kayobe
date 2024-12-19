@@ -19,3 +19,7 @@ scenario:
   name: default
 verifier:
   name: testinfra
+  options:
+    # Disable pytest-ansible which conflicts with argument --ansible-inventory
+    # https://github.com/pytest-dev/pytest-testinfra/issues/58
+    p: "no:pytest-ansible"

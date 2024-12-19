@@ -7,7 +7,7 @@ ansible-compat # MIT
 docker # Apache-2.0
 molecule # MIT
 molecule-plugins[docker] # MIT
+pytest-ansible # MIT
 pytest-metadata # MPL
-pytest-molecule # MIT
 pytest-testinfra
 yamllint # GPLv3
