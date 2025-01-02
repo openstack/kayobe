@@ -80,7 +80,7 @@ def add_args(parser):
                         help="only print names of tasks, don't run them, "
                              "note this has no affect on kolla-ansible.")
     parser.add_argument("-sh", "--skip-hooks", action="store", default=None,
-                        help="disables hooks. Specify a pattern to skip"
+                        help="disables hooks. Specify a pattern to skip "
                              "specific playbooks. \"all\" skips all playbooks")
 
 
