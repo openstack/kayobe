@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    Stops automatically removing the ``inspection_store`` and ``opensm``
+    containers when they become disabled in Kayobe configuration. Manual
+    container removal is now necessary, except in the case of a full service
+    destroy.
