@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Deploying and destroying infrastructure VMs is now significantly faster
+    as only the required variables are passed to the relevant tasks as opposed
+    to the entire collection of hostvars for each VM.
