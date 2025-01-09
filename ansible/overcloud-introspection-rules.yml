@@ -5,9 +5,9 @@
   tags:
     - introspection-rules
   tasks:
-    - name: Create controllers group with ironic enabled
+    - name: Create controllers group with ironic inspector enabled
       group_by:
-        key: "controllers_for_introspection_rules_{{ kolla_enable_ironic | bool }}"
+        key: "controllers_for_introspection_rules_{{ kolla_enable_ironic_inspector | bool }}"
       changed_when: false
 
 - name: Ensure introspection rules are registered in Ironic Inspector

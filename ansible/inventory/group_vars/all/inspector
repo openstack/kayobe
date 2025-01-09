@@ -413,7 +413,7 @@ inspector_dell_switch_lldp_workaround_group:
 # data which may be useful in environments without Swift.
 
 # Whether the inspection data store is enabled.
-inspector_store_enabled: "{{ kolla_enable_ironic | bool and not kolla_enable_swift | bool }}"
+inspector_store_enabled: "{{ kolla_enable_ironic_inspector | bool and not kolla_enable_swift | bool }}"
 
 # Port on which the inspection data store should listen.
 inspector_store_port: 8080

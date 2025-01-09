@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    Adds the kolla feature flag: ``kolla_enable_ironic_inspector``. This
+    defaults to ``true`` if you have enabled Ironic as Kayobe makes extensive
+    use of introspection rules.  Please note that whilst ironic inspector is
+    deprecated, some features, such as introspection rules are not currently
+    implemented in the replacement implementation built-in to Ironic.  See
+    :ironic-doc:`Ironic documentation <admin/inspection/migration.html>` for
+    more details.

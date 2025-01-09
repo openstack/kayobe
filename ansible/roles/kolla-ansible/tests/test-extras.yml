@@ -165,6 +165,7 @@
             kolla_enable_horizon: True
             kolla_enable_influxdb: True
             kolla_enable_ironic: True
+            kolla_enable_ironic_inspector: True
             kolla_enable_ironic_neutron_agent: True
             kolla_enable_kuryr: True
             kolla_enable_magnum: True

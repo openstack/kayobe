@@ -255,4 +255,5 @@ openstackdocs_auto_name = False
 
 openstackdocs_projects = [
     'kayobe',
+    'ironic',
 ]

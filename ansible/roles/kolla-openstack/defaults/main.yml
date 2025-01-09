@@ -92,9 +92,9 @@ kolla_openstack_custom_config_include_globs_default:
     glob: horizon/**
   - enabled: '{{ kolla_enable_influxdb | bool }}'
     glob: influx*
-  - enabled: '{{ kolla_enable_ironic | bool }}'
+  - enabled: '{{ kolla_enable_ironic_inspector | bool }}'
     glob: ironic-inspector.conf
-  - enabled: '{{ kolla_enable_ironic | bool }}'
+  - enabled: '{{ kolla_enable_ironic_inspector | bool }}'
     glob: ironic-inspector/**
   - enabled: '{{ kolla_enable_ironic | bool }}'
     glob: ironic.conf
@@ -563,6 +563,9 @@ kolla_extra_ironic:
 
 ###############################################################################
 # Ironic inspector configuration.
+
+# Whether to enable Ironic inspector.
+kolla_enable_ironic_inspector: "{{ kolla_enable_ironic | bool }}"
 
 # Comma-separated list of inspector processing plugins.
 kolla_inspector_processing_hooks:
