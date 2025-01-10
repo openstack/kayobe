@@ -37,7 +37,7 @@
     - name: confirm_deprovision
       prompt: |
         The following hosts will be deprovisioned:
-        {{ play_hosts | join(', ') }}
+        {{ play_hosts | intersect(groups['overcloud'] | default([])) | join(', ') }}
         If you want to proceed type: yes
       default: "no"
       private: false
