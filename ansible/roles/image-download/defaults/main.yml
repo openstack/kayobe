@@ -21,3 +21,23 @@ image_download_dest:
 # Host from which to fetch the image.
 # Only used when image_download_path is set.
 image_download_host: "{{ inventory_hostname }}"
+
+# Username for Digest, Basic or WSSE authentication. Default is unset, in which
+# case the parameter is omitted.
+image_download_url_username:
+
+# Password for Digest, Basic or WSSE authentication. Default is unset, in which
+# case the parameter is omitted.
+image_download_url_password:
+
+# Force sending the Basic authentication header upon initial request. Useful if
+# the remote endpoint does not respond with HTTP 401 to the initial
+# unauthenticated request. Must be a boolean. Default is unset, in which case
+# the parameter is omitted.
+image_download_force_basic_auth:
+
+# List of header names that will not be sent on subsequent redirected requests.
+# Set to ['Authorization'] if being redirected from an authenticated endpoint
+# to an unauthenticated endpoint. Default is unset, in which case the parameter
+# is omitted.
+image_download_unredirected_headers:
