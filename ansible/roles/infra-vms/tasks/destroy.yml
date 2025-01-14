@@ -6,12 +6,12 @@
   vars:
     infra_vm_configdrive_volume:
       name: "{{ vm_name }}-configdrive"
-      pool: "{{ hostvars[vm_hostvars.infra_vm_hypervisor].infra_vm_pool }}"
+      pool: "{{ vm_pool }}"
     libvirt_vms:
       - name: "{{ vm_name }}"
-        boot_firmware: "{{ vm_hostvars.infra_vm_boot_firmware | default }}"
-        memory_mb: "{{ vm_hostvars.infra_vm_memory_mb }}"
-        vcpus: "{{ vm_hostvars.infra_vm_vcpus }}"
-        volumes: "{{ vm_hostvars.infra_vm_volumes + [infra_vm_configdrive_volume] }}"
+        boot_firmware: "{{ vm_boot_firmware | default }}"
+        memory_mb: "{{ vm_memory_mb }}"
+        vcpus: "{{ vm_vcpus }}"
+        volumes: "{{ vm_volumes + [infra_vm_configdrive_volume] }}"
         state: "absent"
   become: True

@@ -10,8 +10,21 @@
 - name: "{{ infra_vm_action | capitalize }} infra VMs (loop)"
   include_tasks: "{{ infra_vm_action }}.yml"
   vars:
-    vm_name: "{{ vm_hostvars.infra_vm_name }}"
-    vm_hostvars: "{{ hostvars[vm_item] }}"
+    vm_name: "{{ hostvars[vm_item].infra_vm_name }}"
+    vm_os_family: "{{ hostvars[vm_item].infra_vm_os_family }}"
+    vm_resolv_domain: "{{ hostvars[vm_item].resolv_domain }}"
+    vm_resolv_search: "{{ hostvars[vm_item].resolv_search }}"
+    vm_resolv_nameservers: "{{ hostvars[vm_item].resolv_nameservers }}"
+    vm_network_device_list: "{{ hostvars[vm_item].network_interfaces |
+              map('net_configdrive_network_device', hostvars[vm_item].inventory_hostname) |
+                        list }}"
+    vm_volumes: "{{ hostvars[vm_item].infra_vm_volumes }}"
+    vm_pool: "{{ hostvars[vm_item].infra_vm_pool }}"
+    vm_boot_firmware: "{{ hostvars[vm_item].infra_vm_boot_firmware }}"
+    vm_machine: "{{ hostvars[vm_item].infra_vm_machine }}"
+    vm_memory_mb: "{{ hostvars[vm_item].infra_vm_memory_mb }}"
+    vm_vcpus: "{{ hostvars[vm_item].infra_vm_vcpus }}"
+    vm_interfaces: "{{ hostvars[vm_item].infra_vm_interfaces }}"
   loop: "{{ infra_vm_vms }}"
   when: (infra_vm_action == "deploy" and vm_name not in all_vms.list_vms) or infra_vm_action == "destroy"
   loop_control:
