@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an issue where slave interfaces would not be brought back up when
+    bouncing the master interface.
+    `LP#2072340 <https://bugs.launchpad.net/kayobe/+bug/2072340>`_.
