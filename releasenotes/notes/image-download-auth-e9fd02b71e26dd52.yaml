@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    Adds variables to configure authentication parameters in the
+    ``image-download`` role, which is used to download IPA images. The new
+    variables are ``image_download_url_username``,
+    ``image_download_url_password``, ``image_download_force_basic_auth`` and
+    ``image_download_unredirected_headers``. See documentation of the `get_url
+    <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/get_url_module.html>`__
+    and `uri
+    <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/uri_module.html>`__
+    Ansible modules for more details on how to use these variables.

@@ -15,6 +15,10 @@
           uri:
             url: "{{ image_download_checksum_url }}"
             return_content: true
+            url_username: "{{ image_download_url_username or omit }}"
+            url_password: "{{ image_download_url_password or omit }}"
+            force_basic_auth: "{{ image_download_force_basic_auth or omit }}"
+            unredirected_headers: "{{ image_download_unredirected_headers or omit }}"
           register: expected_checksum
           until: expected_checksum is successful
           retries: 3
@@ -35,6 +39,10 @@
         # Always download the image if we have no checksum to compare with.
         force: "{{ expected_checksum is skipped }}"
         backup: true
+        url_username: "{{ image_download_url_username or omit }}"
+        url_password: "{{ image_download_url_password or omit }}"
+        force_basic_auth: "{{ image_download_force_basic_auth or omit }}"
+        unredirected_headers: "{{ image_download_unredirected_headers or omit }}"
       register: result
       until: result is successful
       retries: 3
