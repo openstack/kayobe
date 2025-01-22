@@ -1,5 +1,5 @@
 ---
 kayobe_galaxy_requirements_src_dir:
-kayobe_galaxy_requirements_branch: "{{ zuul.branch }}"
+kayobe_galaxy_requirements_branch:
 kayobe_galaxy_requirements_src_path: "requirements.yml"
 kayobe_galaxy_requirements_dest_path: "{{ kayobe_galaxy_requirements_src_dir }}/{{ kayobe_galaxy_requirements_src_path }}"
