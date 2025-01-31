@@ -16,6 +16,11 @@
     - name: Wait before hardware clock synchronisation
       command: "chronyc waitsync {{ chrony_waitsync_max_tries }} {{ chrony_waitsync_max_correction }}"
 
+    - name: Ensure hwclock is installed
+      package:
+        name: "{{ 'util-linux-extra' if ansible_facts.distribution_major_version == '24' else 'util-linux' }}"
+        state: present
+
     - name: Force hardware clock synchronisation
       command: hwclock --systohc
   when: ntp_force_sync | bool
