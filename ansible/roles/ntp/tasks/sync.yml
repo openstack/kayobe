@@ -12,6 +12,11 @@
       pause:
         seconds: 5
 
+    - name: Ensure hwclock is installed
+      package:
+        name: "{{ 'util-linux' if ansible_facts.os_family == 'RedHat' else 'util-linux-extra' }}"
+        state: present
+
     - name: Force hardware clock synchronisation
       command: hwclock --systohc
   when: ntp_force_sync | bool
