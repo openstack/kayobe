@@ -1,11 +1,11 @@
 ---
 - name: Pulling inspection store container image
-  docker_image:
+  kayobe_container_image:
     name: "{{ item.value.image }}"
-    repository: "{{ item.value.image }}"
     source: pull
     state: present
   with_dict: "{{ inspection_store_services }}"
   when:
     - item.value.enabled
     - inspection_store_action != 'destroy'
+  become: "{{ container_engine == 'podman' }}"

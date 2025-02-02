@@ -1,0 +1,37 @@
+---
+- name: Ensure docker is configured
+  hosts: container-engine
+  max_fail_percentage: >-
+    {{ container_engine_max_fail_percentage |
+       default(docker_max_fail_percentage) |
+       default(host_configure_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
+  tags:
+    - docker
+    - container-engine
+  tasks:
+    - include_role:
+        name: docker
+      vars:
+        docker_daemon_mtu: "{{ public_net_name | net_mtu | default }}"
+        docker_configure_for_zun: "{{ kolla_enable_zun | bool }}"
+        docker_http_proxy: "{{ kolla_http_proxy }}"
+        docker_https_proxy: "{{ kolla_https_proxy }}"
+        docker_no_proxy: "{{ kolla_no_proxy | select | join(',') }}"
+      when: container_engine == "docker"
+
+- name: Ensure podman is configured
+  hosts: container-engine
+  max_fail_percentage: >-
+    {{ container_engine_max_fail_percentage |
+       default(host_configure_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
+  tags:
+    - podman
+    - container-engine
+  tasks:
+    - include_role:
+        name: openstack.kolla.podman
+      when: container_engine == "podman"

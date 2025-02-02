@@ -85,7 +85,8 @@ affect :ref:`Kolla Ansible configuration <configuration-kolla-ansible-global>`.
     Docker namespace to use for Kolla images. Default is ``kolla``.
 ``kolla_docker_registry``
     URL of docker registry to use for Kolla images. Default is to use the value
-    of ``docker_registry`` variable (see :ref:`configuration-hosts-docker`).
+    of ``docker_registry`` or ``podman_registry``, depending on the value of
+    ``container_engine`` (see :ref:`configuration-hosts-container-engine`).
 ``kolla_docker_registry_username``
     Username to use to access a docker registry. Default is not set, in which
     case the registry will be used without authentication.

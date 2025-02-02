@@ -1108,12 +1108,48 @@ Kolla-Ansible Remote Virtual Environment
 See :ref:`configuration-kolla-ansible-venv` for information about remote Python
 virtual environments for Kolla Ansible.
 
-.. _configuration-hosts-docker:
+.. _configuration-hosts-container-engine:
 
-Docker Engine
-=============
+Container Engine
+================
 *tags:*
   | ``docker``
+  | ``podman``
+
+Kayobe supports the following container engines:
+
+- Podman
+- Docker
+
+The container engine can be configured by setting ``container_engine`` in
+``container-engine.yml``. The default container engine is ``docker``. For
+example, to use podman:
+
+.. code-block:: yaml
+   :caption: ``container-engine.yml``
+
+   container_engine: podman
+
+Podman
+------
+
+The ``openstack.kolla.podman`` role is used to configure Podman. Please refer
+to the `role defaults
+<https://github.com/openstack/ansible-collection-kolla/blob/master/roles/podman/defaults/main.yml>`__
+for a list of configuration options (making sure to switch to correct branch).
+These may be overridden via variables in the Ansible inventory or by using
+extra vars, For example, in ``container-engine.yml``:
+
+.. code-block:: yaml
+   :caption: ``container-engine.yml``
+
+   podman_storage_driver: overlay
+
+A private image registry may be configured via ``podman_registry``. If using an
+insecure (HTTP) registry, set ``podman_registry_insecure`` to ``true``.
+
+Docker
+------
 
 The ``docker_storage_driver`` variable sets the Docker storage driver, and by
 default the ``overlay2`` driver is used. See :ref:`configuration-hosts-lvm` for

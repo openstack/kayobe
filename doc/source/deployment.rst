@@ -265,13 +265,20 @@ Use this user to access the seed::
 
     $ ssh <kayobe ansible user>@<seed VM IP>
 
-To see the active Docker containers::
+To see the active containers:
 
-    $ docker ps
+.. note::
+
+   Examples show the commands when using Docker as the container engine. If
+   using Podman, simply change ``docker`` for ``sudo podman`` in the command.
+
+.. code-block:: console
+
+   $ docker ps
 
 Leave the seed VM and return to the shell on the Ansible control host::
 
-    $ exit
+   $ exit
 
 .. _deployment-infrastructure-vms:
 
@@ -406,7 +413,14 @@ will be the factory default and can be performed by powering them on.
 On completion of the discovery process, the overcloud nodes should be
 registered with the ironic service running in the seed host's
 ``bifrost_deploy`` container.  The node inventory can be viewed by executing
-the following on the seed::
+the following on the seed:
+
+.. note::
+
+    Example shows the commands when using Docker as the container engine. If using
+    Podman, simply change ``docker`` for ``sudo podman`` in the command.
+
+.. code-block:: console
 
     $ docker exec -it bifrost_deploy bash
     (bifrost_deploy) $ export OS_CLOUD=bifrost
@@ -480,7 +494,14 @@ Provisioning
    nodes without names from being accessed via SSH after provisioning. To avoid
    this issue, ensure that all Ironic nodes in the Bifrost inventory are named.
    This may be achieved via :ref:`autodiscovery <deployment-discovery>`, or
-   manually, e.g. from the seed::
+   manually, e.g. from the seed:
+
+    .. note::
+
+        Example shows the commands when using Docker as the container engine. If using
+        Podman, simply change ``docker`` for ``sudo podman`` in the command.
+
+    .. code-block:: console
 
        $ docker exec -it bifrost_deploy bash
        (bifrost_deploy) $ export OS_CLOUD=bifrost

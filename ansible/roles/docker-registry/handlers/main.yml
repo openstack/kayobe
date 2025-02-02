@@ -1,6 +1,6 @@
 ---
 - name: Restart docker-registry container
-  docker_container:
+  kayobe_container:
     name: "{{ item.value.container_name }}"
     state: started
     restart: True
@@ -10,3 +10,4 @@
     image: "{{ item.value.image }}"
   with_dict: "{{ docker_registry_services }}"
   when: item.value.enabled
+  become: "{{ container_engine == 'podman' }}"

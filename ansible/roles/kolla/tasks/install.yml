@@ -85,4 +85,7 @@
       # This can be removed once a newer version of docker is released and the version in upper
       # constraints has been bumped (>7.0.0).
       extra_args: "{{ omit }}"
+      install: "{{ container_engine == 'docker' }}"
+    - name: "podman"
+      install: "{{ container_engine == 'podman' }}"
   when: item.install | default(True) | bool

@@ -1,6 +1,6 @@
 ---
 - name: Ensure inspection store container is running
-  docker_container:
+  kayobe_container:
     image: "{{ item.value.image }}"
     name: "{{ item.value.container_name }}"
     ports: "{{ item.value.ports | default(omit) }}"
@@ -14,4 +14,5 @@
   with_dict: "{{ inspection_store_services }}"
   notify:
     - Ensure inspection store data directory exists
+  become: "{{ container_engine == 'podman' }}"
   when: item.value.enabled | bool

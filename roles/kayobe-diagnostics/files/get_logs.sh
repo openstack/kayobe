@@ -11,8 +11,37 @@
 
 set +o errexit
 
+copy_container_engine_logs() {
+    container_engine=$1
+
+    # container_engine related information
+    ($container_engine info && $container_engine images && $container_engine ps -a) > ${LOG_DIR}/system_logs/${container_engine}-info.txt
+
+    for container in $($container_engine ps -a --format "{{.Names}}"); do
+        #NOTE(wszumski): Podman does not support --tail all like docker
+        $container_engine logs --tail -1 ${container} &> ${LOG_DIR}/${container_engine}_logs/${container}.txt
+    done
+}
+
+copy_bifrost_logs() {
+    container_engine=$1
+    for service in dnsmasq ironic-api ironic-conductor ironic-inspector mariadb nginx rabbitmq-server; do
+        mkdir -p ${LOG_DIR}/kolla/$service
+        $container_engine exec bifrost_deploy \
+            systemctl status $service -l -n 10000 > ${LOG_DIR}/kolla/$service/${service}-systemd-status.txt
+        $container_engine exec bifrost_deploy \
+            journalctl -u $service --no-pager > ${LOG_DIR}/kolla/$service/${service}-journal.txt
+    done
+    $container_engine exec -it bifrost_deploy \
+        journalctl --no-pager > ${LOG_DIR}/kolla/bifrost-journal.log
+    for d in dnsmasq.conf ironic ironic-inspector nginx/nginx.conf; do
+        $container_engine cp bifrost_deploy:/etc/$d ${LOG_DIR}/kolla_node_configs/bifrost/
+    done
+    $container_engine cp bifrost_deploy:/var/log/mariadb/mariadb.log ${LOG_DIR}/kolla/mariadb/
+}
+
 copy_logs() {
-    cp -rnL /var/lib/docker/volumes/kolla_logs/_data/* ${LOG_DIR}/kolla/
+    cp -rnL /var/log/kolla/* ${LOG_DIR}/kolla/
     if [[ -d ${CONFIG_DIR} ]]; then
         cp -rnL ${CONFIG_DIR}/etc/kayobe/* ${LOG_DIR}/kayobe_configs
         cp -rnL ${CONFIG_DIR}/etc/kolla/* ${LOG_DIR}/kolla_configs
@@ -43,6 +72,7 @@ copy_logs() {
     if [[ -x "$(command -v journalctl)" ]]; then
         journalctl --no-pager > ${LOG_DIR}/system_logs/syslog.txt
         journalctl --no-pager -u docker.service > ${LOG_DIR}/system_logs/docker.log
+        journalctl --no-pager -u podman.service > ${LOG_DIR}/system_logs/podman.log
         journalctl --no-pager -u vbmcd.service > ${LOG_DIR}/system_logs/vbmcd.log
         journalctl --no-pager -u NetworkManager.service > ${LOG_DIR}/system_logs/NetworkManager.log
     else
@@ -97,28 +127,16 @@ copy_logs() {
     # available entropy
     cat /proc/sys/kernel/random/entropy_avail > ${LOG_DIR}/system_logs/entropy_avail.txt
 
-    # docker related information
-    (docker info && docker images && docker ps -a) > ${LOG_DIR}/system_logs/docker-info.txt
-
-    for container in $(docker ps -a --format "{{.Names}}"); do
-        docker logs --tail all ${container} &> ${LOG_DIR}/docker_logs/${container}.txt
-    done
+    copy_container_engine_logs docker
+    copy_container_engine_logs podman
 
     # Bifrost: grab config files and logs from the container.
     if [[ $(docker ps -q -f name=bifrost_deploy) ]]; then
-        for service in dnsmasq ironic-api ironic-conductor ironic-inspector mariadb nginx rabbitmq-server; do
-            mkdir -p ${LOG_DIR}/kolla/$service
-            docker exec bifrost_deploy \
-                systemctl status $service -l -n 10000 > ${LOG_DIR}/kolla/$service/${service}-systemd-status.txt
-            docker exec bifrost_deploy \
-                journalctl -u $service --no-pager > ${LOG_DIR}/kolla/$service/${service}-journal.txt
-        done
-        docker exec -it bifrost_deploy \
-            journalctl --no-pager > ${LOG_DIR}/kolla/bifrost-journal.log
-        for d in dnsmasq.conf ironic ironic-inspector nginx/nginx.conf; do
-            docker cp bifrost_deploy:/etc/$d ${LOG_DIR}/kolla_node_configs/bifrost/
-        done
-        docker cp bifrost_deploy:/var/log/mariadb/mariadb.log ${LOG_DIR}/kolla/mariadb/
+        copy_bifrost_logs docker
+    fi
+
+    if [[ $(podman ps -q -f name=bifrost_deploy) ]]; then
+        copy_bifrost_logs podman
     fi
 
     # IPA build logs
@@ -137,7 +155,7 @@ copy_logs() {
     # logs.openstack.org clicking results in the browser shows the
     # files, rather than trying to send it to another app or make you
     # download it, etc.
-    for f in $(find ${LOG_DIR}/{system_logs,kolla,docker_logs} -name "*.log"); do
+    for f in $(find ${LOG_DIR}/{system_logs,kolla,docker_logs,podman_logs} -name "*.log"); do
         mv $f ${f/.log/.txt}
     done
 

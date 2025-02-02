@@ -26,7 +26,7 @@
         loop_var: service_name
 
     - name: Ensure Swift rings exist
-      docker_container:
+      kayobe_container:
         cleanup: true
         command: >-
           python3 {{ swift_container_build_path }}/swift-ring-builder.py
@@ -40,6 +40,7 @@
         volumes:
           - "{{ swift_ring_build_path }}/:{{ swift_container_build_path }}/"
       with_items: "{{ swift_service_names }}"
+      become: "{{ container_engine == 'podman' }}"
 
     - name: Ensure Swift ring files are copied
       fetch:

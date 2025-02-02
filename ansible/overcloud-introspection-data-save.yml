@@ -15,7 +15,7 @@
   tasks:
     - name: Query overcloud nodes' hardware introspection data
       command: >
-        docker exec bifrost_deploy
+        {{ container_engine }} exec bifrost_deploy
         bash -c '
         env BIFROST_INVENTORY_SOURCE=ironic BIFROST_NODE_NAMES="{{ inventory_hostname }}" OS_CLOUD=bifrost
         ansible baremetal
@@ -35,6 +35,7 @@
         # NOTE: Without this, the seed's ansible_host variable will not be
         # respected when using delegate_to.
         ansible_host: "{{ hostvars[seed_host].ansible_host | default(seed_host) }}"
+      become: "{{ container_engine == 'podman' }}"
 
     - name: Ensure introspection data output directory exists
       local_action:

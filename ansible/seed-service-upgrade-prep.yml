@@ -7,7 +7,7 @@
     - block:
         - name: Find IPA deployment images
           find:
-            path: /var/lib/docker/volumes/bifrost_httpboot/_data
+            path: "{{ container_engine_volumes_path }}/bifrost_httpboot/_data"
             patterns:
               # Specify filenames individually to avoid movind previously moved
               # images.
@@ -40,9 +40,10 @@
     # the return code, since 2 means that the DB is not compatible
     - name: Perform ironic online data migrations
       command: >
-        docker exec bifrost_deploy
+        {{ container_engine }} exec bifrost_deploy
         bash -c '
         if [[ -f /etc/ironic/ironic.conf ]]; then
             ironic-dbsync online_data_migrations
         fi'
       changed_when: true
+      become: "{{ container_engine == 'podman' }}"

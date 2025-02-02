@@ -82,10 +82,8 @@ docker_registry_basic_auth_htpasswd_path:
 ####################
 # Docker
 ####################
-# NOTE: Namespace 'library' causes image task to always be changed and
-# container to never update to new images.
-docker_registry_namespace: ""
-docker_registry_image: "{{ docker_registry_namespace ~ '/' if docker_registry_namespace else '' }}registry"
+docker_registry_namespace: "library"
+docker_registry_image: "docker.io/{{ docker_registry_namespace ~ '/' if docker_registry_namespace else '' }}registry"
 docker_registry_tag: "latest"
 docker_registry_image_full: "{{ docker_registry_image }}:{{ docker_registry_tag }}"
 

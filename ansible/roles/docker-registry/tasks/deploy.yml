@@ -2,7 +2,7 @@
 - import_tasks: config.yml
 
 - name: Ensure Docker registry container is running
-  docker_container:
+  kayobe_container:
     env: "{{ item.value.env }}"
     image: "{{ item.value.image }}"
     name: "{{ item.value.container_name }}"
@@ -15,3 +15,4 @@
     state: "{{ item.value.enabled | ternary('started', 'absent') }}"
     volumes: "{{ item.value.volumes | select | list }}"
   with_dict: "{{ docker_registry_services }}"
+  become: "{{ container_engine == 'podman' }}"

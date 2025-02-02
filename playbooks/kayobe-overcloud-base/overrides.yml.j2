@@ -56,3 +56,6 @@ kolla_ironic_pxe_append_params_extra:
 # NOTE(bbezak): Kolla does not build CentOS Stream 9 container images.
 # Using Rocky Linux 9 images on CentOS Stream 9 in CI.
 kolla_base_distro: "{% raw %}{{ 'rocky' if os_distribution == 'centos' else os_distribution }}{% endraw %}"
+
+# Support overriding container_engine
+container_engine: "{{ container_engine }}"

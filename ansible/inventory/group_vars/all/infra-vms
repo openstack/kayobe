@@ -149,9 +149,16 @@ infra_vm_lvm_group_data:
 infra_vm_lvm_group_data_disks:
   - changeme
 
-# List of LVM logical volumes for the data volume group.
-infra_vm_lvm_group_data_lvs:
+# List of LVM logical volumes for the data volume group when using docker.
+infra_vm_lvm_group_data_docker_lvs:
   - "{{ infra_vm_lvm_group_data_lv_docker_volumes }}"
+
+# List of LVM logical volumes for the data volume group when using podman.
+infra_vm_lvm_group_data_podman_lvs:
+  - "{{ infra_vm_lvm_group_data_lv_podman_volumes }}"
+
+# List of LVM logical volumes for the data volume group.
+infra_vm_lvm_group_data_lvs: "{{ infra_vm_lvm_group_data_podman_lvs if container_engine == 'podman' else infra_vm_lvm_group_data_docker_lvs }}"
 
 # Docker volumes LVM backing volume.
 infra_vm_lvm_group_data_lv_docker_volumes:
@@ -160,13 +167,27 @@ infra_vm_lvm_group_data_lv_docker_volumes:
   create: True
   filesystem: "{{ infra_vm_lvm_group_data_lv_docker_volumes_fs }}"
   mount: True
-  mntp: /var/lib/docker/volumes
+  mntp: "{{ docker_volumes_path }}"
+
+infra_vm_lvm_group_data_lv_podman_volumes:
+  lvname: podman-volumes
+  size: "{{ infra_vm_lvm_group_data_lv_podman_volumes_size }}"
+  create: True
+  filesystem: "{{ infra_vm_lvm_group_data_lv_podman_volumes_fs }}"
+  mount: True
+  mntp: "{{ podman_volumes_path }}"
 
 # Size of docker volumes LVM backing volume.
 infra_vm_lvm_group_data_lv_docker_volumes_size: 75%VG
 
 # Filesystem for docker volumes LVM backing volume. ext4 allows for shrinking.
 infra_vm_lvm_group_data_lv_docker_volumes_fs: ext4
+
+# Size of podman volumes LVM backing volume.
+infra_vm_lvm_group_data_lv_podman_volumes_size: 75%VG
+
+# Filesystem for podman volumes LVM backing volume. ext4 allows for shrinking.
+infra_vm_lvm_group_data_lv_podman_volumes_fs: ext4
 
 ###############################################################################
 # Infrastructure VM node sysctl configuration.
