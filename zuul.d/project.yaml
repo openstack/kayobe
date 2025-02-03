@@ -25,6 +25,7 @@
         - kayobe-overcloud-host-configure-ubuntu-noble
         - kayobe-overcloud-upgrade-rocky9
         - kayobe-overcloud-upgrade-ubuntu-noble
+        - kayobe-overcloud-upgrade-slurp-rocky9
         - kayobe-seed-rocky9
         - kayobe-seed-rocky9-podman
         - kayobe-seed-ubuntu-noble
@@ -34,6 +35,7 @@
         - kayobe-seed-images-rocky9-podman
         - kayobe-seed-upgrade-rocky9
         - kayobe-seed-upgrade-ubuntu-noble
+        - kayobe-seed-upgrade-slurp-rocky9
         - kayobe-seed-vm-rocky9
         - kayobe-seed-vm-rocky9-efi
         - kayobe-seed-vm-ubuntu-noble
@@ -57,11 +59,13 @@
         - kayobe-overcloud-host-configure-ubuntu-noble
         - kayobe-overcloud-upgrade-rocky9
         - kayobe-overcloud-upgrade-ubuntu-noble
+        - kayobe-overcloud-upgrade-slurp-rocky9
         - kayobe-seed-rocky9
         - kayobe-seed-rocky9-podman
         - kayobe-seed-ubuntu-noble
         - kayobe-seed-upgrade-rocky9
         - kayobe-seed-upgrade-ubuntu-noble
+        - kayobe-seed-upgrade-slurp-rocky9
         - kayobe-seed-vm-rocky9
         - kayobe-seed-vm-ubuntu-noble
         - kayobe-infra-vm-rocky9
