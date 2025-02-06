@@ -190,6 +190,9 @@ chrony_ntp_servers:
       - option: maxsources
         val: 2
 
+# Force system clock synchronisation
+ntp_force_sync: True
+
 # Enable firewalld
 controller_firewalld_enabled: true
 controller_firewalld_zones:

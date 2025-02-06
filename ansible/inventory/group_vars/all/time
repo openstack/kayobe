@@ -38,3 +38,17 @@ chrony_ntp_servers:
 
 # Synchronise hardware clock with system time. Default is true.
 chrony_rtcsync_enabled: true
+
+# Force synchronisation from NTP sources. This methods may jump the clock by
+# large values which can cause issues with some software. Disabled by default.
+ntp_force_sync: false
+
+# Maximum number of tries used by the `chronyc waitsync` command. Only used
+# when ntp_force_sync is true. Default is 60 which waits for a maximum of 10
+# minutes (60 times 10 seconds).
+chrony_waitsync_max_tries: 60
+
+# Maximum correction used by the `chronyc waitsync` command. Only used when
+# ntp_force_sync is true. Default is 0.01 which waits for the remaining
+# correction to be less than 10 milliseconds.
+chrony_waitsync_max_correction: 0.01
