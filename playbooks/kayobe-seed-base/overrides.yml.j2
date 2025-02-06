@@ -17,6 +17,9 @@ kolla_ansible_requirements_yml: "/tmp/kolla-ansible-requirements.yml"
 kolla_openstack_logging_debug: True
 pip_upper_constraints_file: "/tmp/upper-constraints.txt"
 
+# Force system clock synchronisation
+ntp_force_sync: True
+
 # Use the CI infra's PyPI mirror.
 pip_local_mirror: true
 pip_index_url: "http://{{ zuul_site_mirror_fqdn }}/pypi/simple"
