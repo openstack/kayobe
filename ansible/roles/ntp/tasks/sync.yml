@@ -1,4 +1,9 @@
 ---
+# NOTE(priteau): We need to run handlers to restart chronyd before forcing
+# clock synchronisation, or the system clock could appear as not synchronised
+# during CI jobs because the tests run too quickly after the chronyd restart.
+- meta: flush_handlers
+
 - name: Force time synchronisation
   become: True
   block:
@@ -9,8 +14,7 @@
       command: chronyc makestep
 
     - name: Wait before hardware clock synchronisation
-      pause:
-        seconds: 5
+      command: "chronyc waitsync {{ chrony_waitsync_max_tries }} {{ chrony_waitsync_max_correction }}"
 
     - name: Force hardware clock synchronisation
       command: hwclock --systohc
