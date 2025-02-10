@@ -49,10 +49,10 @@ image build``.
     list.
 ``ipa_build_dib_elements_default``
     List of default Diskimage Builder (DIB) elements to use when building IPA
-    images. Default is ``["centos", "enable-serial-console",
+    images. Default is ``["centos", "dynamic-login", "enable-serial-console",
     "ironic-python-agent-ramdisk"]`` when ``os_distribution`` is ``"rocky"``, and
-    ``["ubuntu", "enable-serial-console", "ironic-python-agent-ramdisk"]``
-    otherwise.
+    ``["ubuntu", "dynamic-login", "enable-serial-console",
+    "ironic-python-agent-ramdisk"]`` otherwise.
 ``ipa_build_dib_elements_extra``
     List of additional Diskimage Builder (DIB) elements to use when building IPA
     images. Default is empty.
@@ -133,6 +133,48 @@ be useful for inspecting hardware with Mellanox InfiniBand NICs.
    ipa_build_dib_elements_extra:
      - "mellanox"
 
+Example: Dynamically allowing access to the IPA environment
+-----------------------------------------------------------
+
+When debugging a failed deployment, it can sometimes be necessary to allow
+access to the image dynamically.
+
+The :diskimage-builder-doc:`dynamic-login element
+<elements/dynamic-login/README>` can be used to authorize SSH keys by appending
+them to the kernel arguments. This element is included by default in IPA images
+since the Epoxy 18.0.0 release. On previous releases, it can be added with:
+
+.. code-block:: yaml
+   :caption: ``ipa.yml``
+
+   ipa_build_dib_elements_extra:
+     - "dynamic-login"
+
+Bifrost can be configured to use ``dynamic-login`` with the
+``kolla_bifrost_extra_kernel_options`` variable:
+
+.. code-block:: yaml
+   :caption: ``bifrost.yml``
+
+   kolla_bifrost_extra_kernel_options:
+     - sshkey="ssh-rsa BBA1..."
+
+The updated configuration is applied with ``kayobe seed service deploy``.
+
+Overcloud Ironic can be configured with the
+``kolla_ironic_pxe_append_params_extra`` variable:
+
+.. code-block:: yaml
+   :caption: ``ironic.yml``
+
+   kolla_ironic_pxe_append_params_extra:
+     - sshkey="ssh-rsa BBA1..."
+
+The updated configuration is applied with ``kayobe overcloud service deploy``.
+
+Further information on troubleshooting IPA can be found
+:ironic-python-agent-doc:`here <admin/troubleshooting>`.
+
 Example: Configuring a development user account
 -----------------------------------------------
 
@@ -158,10 +200,6 @@ and password for an account that has passwordless sudo:
      DIB_DEV_USER_USERNAME: "devuser"
      DIB_DEV_USER_PASSWORD: "correct horse battery staple"
      DIB_DEV_USER_PWDLESS_SUDO: "yes"
-
-Alternatively, the :diskimage-builder-doc:`dynamic-login element
-<elements/dynamic-login/README>` can be used to authorize SSH keys by appending
-them to the kernel arguments.
 
 Further information on troubleshooting IPA can be found
 :ironic-python-agent-doc:`here <admin/troubleshooting>`.

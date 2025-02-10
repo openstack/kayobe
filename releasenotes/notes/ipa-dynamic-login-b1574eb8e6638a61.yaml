@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds ``dynamic-login`` to the default list of DIB elements included in
+    Ironic Python Agent (IPA) images. This element can dynamically configure
+    credentials at boot time, which is especially useful for troubleshooting.
