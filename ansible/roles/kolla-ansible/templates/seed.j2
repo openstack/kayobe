@@ -15,4 +15,6 @@ ansible_python_interpreter={{ kolla_ansible_target_venv }}/bin/python
 seed
 
 [bifrost:children]
+{% if kolla_enable_bifrost | bool %}
 seed
+{% endif %}

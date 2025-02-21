@@ -17,3 +17,5 @@
       kolla_bifrost_config_paths_static:
         - "{{ kayobe_config_path }}"
       kolla_bifrost_config_paths_extra: "{{ kolla_bifrost_config_paths_static + kayobe_env_search_paths }}"
+      kolla_bifrost_config_files:
+      when: kolla_enable_bifrost | bool
