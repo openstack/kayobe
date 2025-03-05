@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Bumps the MichaelRigart.interfaces role to v1.15.3 to fix an issue where
+    NetworkManager was not restarted before bouncing network interfaces.
+    `LP#2100792 <https://bugs.launchpad.net/kayobe/+bug/2100792>`__
