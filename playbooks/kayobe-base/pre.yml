@@ -114,6 +114,16 @@
             line: "export KAYOBE_EXTRA_ARGS=-vvv"
             regexp: "^#export KAYOBE_EXTRA_ARGS=$"
 
+        - name: Ensure ansible.cfg exists for previous Kayobe
+          copy:
+            content: "{{ ansible_cfg }}"
+            dest: "{{ previous_kayobe_config_src_dir }}/etc/kayobe/ansible.cfg"
+
+        - name: Ensure ansible.cfg exists for previous Kolla Ansible
+          copy:
+            content: "{{ ansible_cfg_kolla }}"
+            dest: "{{ previous_kayobe_config_src_dir }}/etc/kayobe/kolla/ansible.cfg"
+
         - name: Update kayobe requirements.yml
           include_role:
             name: kayobe-galaxy-requirements
