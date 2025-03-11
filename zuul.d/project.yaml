@@ -25,9 +25,7 @@
         - kayobe-overcloud-host-configure-ubuntu-noble
         - kayobe-overcloud-upgrade-rocky9
         - kayobe-overcloud-upgrade-ubuntu-noble
-        # TODO(priteau): Fix and enable before release
-        - kayobe-overcloud-upgrade-slurp-rocky9:
-            voting: false
+        - kayobe-overcloud-upgrade-slurp-rocky9
         - kayobe-seed-rocky9
         - kayobe-seed-rocky9-podman
         - kayobe-seed-ubuntu-noble
@@ -61,6 +59,7 @@
         - kayobe-overcloud-host-configure-ubuntu-noble
         - kayobe-overcloud-upgrade-rocky9
         - kayobe-overcloud-upgrade-ubuntu-noble
+        - kayobe-overcloud-upgrade-slurp-rocky9
         - kayobe-seed-rocky9
         - kayobe-seed-rocky9-podman
         - kayobe-seed-ubuntu-noble
