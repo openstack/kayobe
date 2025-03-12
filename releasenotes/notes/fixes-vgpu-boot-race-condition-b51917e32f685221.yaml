@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Fixes an issue on boot where vgpu devices would fail to start due to a race
+    condition in the startup logic. See
+    `LP#2102153 <https://bugs.launchpad.net/kayobe/+bug/2102153>`__ for more
+    details.
