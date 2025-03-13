@@ -17,7 +17,6 @@ control host:
 
 - CentOS Stream 9 (since Zed 13.0.0 release)
 - Rocky Linux 9 (since Zed 13.0.0 release)
-- Ubuntu Jammy 22.04 (since Zed 13.0.0 release)
 - Ubuntu Noble 24.04 (since Dalmatian 17.0.0 release)
 
 See the :doc:`support matrix <support-matrix>` for details of supported

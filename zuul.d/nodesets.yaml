@@ -12,12 +12,6 @@
         label: rockylinux-9
 
 - nodeset:
-    name: kayobe-ubuntu-jammy
-    nodes:
-      - name: primary
-        label: ubuntu-jammy
-
-- nodeset:
     name: kayobe-ubuntu-noble
     nodes:
       - name: primary

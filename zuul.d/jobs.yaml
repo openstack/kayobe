@@ -270,8 +270,6 @@
       overcloud_container_image_regex: "^base"
       seed_container_image_regex: "^base"
 
-# This job builds default overcloud images but skips the build of bifrost seed
-# images which are currently timing out on Ubuntu Jammy.
 - job:
     name: kayobe-seed-images-rocky9-podman
     parent: kayobe-seed-images-base

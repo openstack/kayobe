@@ -53,8 +53,8 @@ kayobe_ansible_user: "stack"
 os_distribution: "rocky"
 
 # OS release. Valid options are "9-stream" when os_distribution is "centos", or
-# "9" when os_distribution is "rocky", or "jammy" and "noble" (with "noble"
-# being the default) when os_distribution is "ubuntu".
+# "9" when os_distribution is "rocky", or "noble" when os_distribution is
+# "ubuntu".
 os_release: >-
   {{ '9-stream' if os_distribution == 'centos'
   else '9' if os_distribution == 'rocky'
