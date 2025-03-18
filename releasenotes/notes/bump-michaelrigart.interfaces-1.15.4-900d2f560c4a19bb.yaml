@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Bumps the MichaelRigart.interfaces role to v1.15.4 to fix compatibility
+    with CentOS Stream 9 due to changes in the ``iproute`` package.
