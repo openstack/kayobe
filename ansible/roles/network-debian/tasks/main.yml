@@ -18,7 +18,9 @@
   package:
     name:
       - libnetplan0
+      - libnetplan1
       - netplan.io
+      - netplan-generator
     state: absent
   notify:
     - Remove netplan systemd-networkd configuration
