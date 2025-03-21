@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fix a bug where netplan packages are not fully removed resulting generated
+    network configurations are not getting applied with ``host configure``
+    commands. 'LP#2103794 <https://bugs.launchpad.net/kayobe/+bug/2103794>'__
