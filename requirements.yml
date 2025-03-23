@@ -29,7 +29,7 @@ roles:
   - src: MichaelRigart.interfaces
     version: v1.15.4
   - src: mrlesmithjr.chrony
-    version: v0.1.4
+    version: v0.1.6
   - src: mrlesmithjr.manage_lvm
     version: v0.2.8
   - src: mrlesmithjr.mdadm
