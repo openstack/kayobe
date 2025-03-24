@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    Updates the ``mrlesmithjr.chrony`` role to v0.1.6.
