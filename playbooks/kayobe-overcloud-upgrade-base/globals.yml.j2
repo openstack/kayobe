@@ -14,3 +14,9 @@ openstack_service_rpc_workers: "1"
 
 # Reduce size of libvirt logs when OpenStack debug logging is enabled
 nova_libvirt_logging_debug: False
+
+# Disable new RabbitMQ features until support is backported to 2024.1.
+# TODO(mattcrees): Remove these when we can properly perform the queue
+# migtations.
+om_enable_queue_manager: false
+om_enable_rabbitmq_transient_quorum_queue: false
