@@ -26,7 +26,7 @@ kolla_ansible_venv_extra_requirements: []
 # tested code. Changes to this limit should be tested. It is possible to only
 # install ansible-core by setting kolla_ansible_venv_ansible to None.
 kolla_ansible_venv_ansible:
-kolla_ansible_venv_ansible_core: 'ansible-core>=2.16,<2.18'
+kolla_ansible_venv_ansible_core: 'ansible-core>=2.17,<2.19'
 
 # Path to a requirements.yml file for Ansible collections.
 kolla_ansible_requirements_yml: "{{ kolla_ansible_venv }}/share/kolla-ansible/requirements.yml"
