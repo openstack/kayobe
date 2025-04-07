@@ -18,6 +18,17 @@
         state: latest
         extra_args: "{% if pip_upper_constraints_file %}-c {{ pip_upper_constraints_file }}{% endif %}"
 
+    # NOTE(mattcrees): This works around an issue with oslo.utils 7.1.0 when
+    # installed under python 3.12, where the "openstack baremetal" commands are
+    # not detetced.
+    - name: Set up openstack cli virtualenv - override packages
+      pip:
+        virtualenv: "{{ venv }}"
+        name:
+          - oslo.utils==8.2.0
+        state: latest
+        virtualenv_command: "python3.{{ ansible_facts.python.version.minor }} -m venv"
+
     - block:
        - name: Fail if allocation pool start not defined
          fail:
