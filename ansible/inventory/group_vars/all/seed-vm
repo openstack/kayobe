@@ -42,7 +42,9 @@ seed_vm_root_format: qcow2
 
 # Base image for the seed VM root volume. Default is
 # "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img"
-# when os_distribution is "ubuntu",
+# when os_distribution is "ubuntu" and distribution_major_version is '22',
+# "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
+# when os_distribution is "ubuntu" and distribution_major_version is not '22',
 # "https://dl.rockylinux.org/pub/rocky/9/images/x86_64/Rocky-9-GenericCloud.latest.x86_64.qcow2"
 # when os_distribution is "rocky" and seed_vm_boot_firmware is "efi",
 # "https://dl.rockylinux.org/vault/rocky/9.3/images/x86_64/Rocky-9-GenericCloud.latest.x86_64.qcow2"
@@ -52,7 +54,11 @@ seed_vm_root_format: qcow2
 # otherwise.
 seed_vm_root_image: >-
   {%- if os_distribution == 'ubuntu' %}
+  {%- if  ansible_facts.distribution_major_version == '22' %}
   https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img
+  {%- else -%}
+  https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img
+  {%- endif %}
   {%- elif os_distribution == 'rocky' %}
   {%- if seed_vm_boot_firmware == 'efi' %}
   https://dl.rockylinux.org/pub/rocky/9/images/x86_64/Rocky-9-GenericCloud.latest.x86_64.qcow2

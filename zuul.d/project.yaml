@@ -13,10 +13,12 @@
         - kayobe-overcloud-rocky9
         - kayobe-overcloud-centos9s
         - kayobe-overcloud-ubuntu-jammy
+        - kayobe-overcloud-ubuntu-noble
         - kayobe-overcloud-tls-rocky9
         - kayobe-overcloud-host-configure-rocky9
         - kayobe-overcloud-host-configure-centos9s
         - kayobe-overcloud-host-configure-ubuntu-jammy
+        - kayobe-overcloud-host-configure-ubuntu-noble
         - kayobe-overcloud-upgrade-rocky9
         - kayobe-overcloud-upgrade-ubuntu-jammy
         - kayobe-overcloud-upgrade-slurp-rocky9:
@@ -25,6 +27,7 @@
             voting: false
         - kayobe-seed-rocky9
         - kayobe-seed-ubuntu-jammy
+        - kayobe-seed-ubuntu-noble
         - kayobe-seed-images-rocky9
         - kayobe-seed-upgrade-rocky9
         - kayobe-seed-upgrade-ubuntu-jammy
@@ -34,8 +37,11 @@
         - kayobe-seed-vm-rocky9-efi
         - kayobe-seed-vm-ubuntu-jammy
         - kayobe-seed-vm-ubuntu-jammy-efi
+        - kayobe-seed-vm-ubuntu-noble
+        - kayobe-seed-vm-ubuntu-noble-efi
         - kayobe-infra-vm-rocky9
         - kayobe-infra-vm-ubuntu-jammy
+        - kayobe-infra-vm-ubuntu-noble
         - openstack-tox-pep8
         - openstack-tox-py39
         - openstack-tox-py310
@@ -47,23 +53,29 @@
         - kayobe-tox-molecule
         - kayobe-overcloud-rocky9
         - kayobe-overcloud-ubuntu-jammy
+        - kayobe-overcloud-ubuntu-noble
         - kayobe-overcloud-tls-rocky9
         - kayobe-overcloud-host-configure-rocky9
         - kayobe-overcloud-host-configure-ubuntu-jammy
+        - kayobe-overcloud-host-configure-ubuntu-noble
         - kayobe-overcloud-upgrade-rocky9
         - kayobe-overcloud-upgrade-ubuntu-jammy
         - kayobe-seed-rocky9
         - kayobe-seed-ubuntu-jammy
+        - kayobe-seed-ubuntu-noble
         - kayobe-seed-upgrade-rocky9
         - kayobe-seed-upgrade-ubuntu-jammy
         - kayobe-seed-upgrade-slurp-rocky9
         - kayobe-seed-upgrade-slurp-ubuntu-jammy
         - kayobe-seed-vm-rocky9
         - kayobe-seed-vm-ubuntu-jammy
+        - kayobe-seed-vm-ubuntu-noble
         - kayobe-infra-vm-rocky9
         - kayobe-infra-vm-ubuntu-jammy
+        - kayobe-infra-vm-ubuntu-noble
 
     experimental:
       jobs:
         - kayobe-seed-images-centos9s
         - kayobe-seed-images-ubuntu-jammy
+        - kayobe-seed-images-ubuntu-noble

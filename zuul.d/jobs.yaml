@@ -144,6 +144,11 @@
     nodeset: kayobe-ubuntu-jammy
 
 - job:
+    name: kayobe-overcloud-ubuntu-noble
+    parent: kayobe-overcloud-base
+    nodeset: kayobe-ubuntu-noble
+
+- job:
     name: kayobe-overcloud-tls-base
     parent: kayobe-overcloud-base
     vars:
@@ -223,6 +228,11 @@
     nodeset: kayobe-ubuntu-jammy
 
 - job:
+    name: kayobe-seed-ubuntu-noble
+    parent: kayobe-seed-base
+    nodeset: kayobe-ubuntu-noble
+
+- job:
     name: kayobe-seed-images-base
     parent: kayobe-seed-base
     description: |
@@ -259,6 +269,13 @@
       seed_container_image_regex: "^base"
 
 - job:
+    name: kayobe-seed-images-ubuntu-noble
+    parent: kayobe-seed-images-base
+    nodeset: kayobe-ubuntu-noble
+    vars:
+      seed_container_image_regex: "^base"
+
+- job:
     name: kayobe-overcloud-host-configure-base
     parent: kayobe-overcloud-base
     description: |
@@ -284,6 +301,11 @@
     name: kayobe-overcloud-host-configure-ubuntu-jammy
     parent: kayobe-overcloud-host-configure-base
     nodeset: kayobe-ubuntu-jammy
+
+- job:
+    name: kayobe-overcloud-host-configure-ubuntu-noble
+    parent: kayobe-overcloud-host-configure-base
+    nodeset: kayobe-ubuntu-noble
 
 - job:
     name: kayobe-seed-upgrade-base
@@ -346,6 +368,11 @@
     nodeset: kayobe-ubuntu-jammy
 
 - job:
+    name: kayobe-seed-vm-ubuntu-noble
+    parent: kayobe-seed-vm-base
+    nodeset: kayobe-ubuntu-noble
+
+- job:
     name: kayobe-seed-vm-efi-base
     parent: kayobe-seed-vm-base
     description: |
@@ -369,6 +396,11 @@
     name: kayobe-seed-vm-ubuntu-jammy-efi
     parent: kayobe-seed-vm-efi-base
     nodeset: kayobe-ubuntu-jammy
+
+- job:
+    name: kayobe-seed-vm-ubuntu-noble-efi
+    parent: kayobe-seed-vm-efi-base
+    nodeset: kayobe-ubuntu-noble
 
 - job:
     name: kayobe-infra-vm-base
@@ -397,3 +429,8 @@
     name: kayobe-infra-vm-ubuntu-jammy
     parent: kayobe-infra-vm-base
     nodeset: kayobe-ubuntu-jammy
+
+- job:
+    name: kayobe-infra-vm-ubuntu-noble
+    parent: kayobe-infra-vm-base
+    nodeset: kayobe-ubuntu-noble

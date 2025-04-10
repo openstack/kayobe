@@ -11,6 +11,7 @@ Kayobe supports the following host Operating Systems (OS):
 
 * Rocky Linux 9 (since Zed 13.0.0 release)
 * Ubuntu Jammy 22.04 (since Zed 13.0.0 release)
+* Ubuntu Noble 24.04 (since Caracal 16.7.0 release)
 
 In addition to that CentOS Stream 9 host OS is functional, but not officially
 supported. Kolla does not publish CentOS Stream 9 images to Docker Hub/Quay.io,

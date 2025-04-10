@@ -49,8 +49,8 @@
 #os_distribution:
 
 # OS release. Valid options are "9-stream" when os_distribution is "centos", or
-# "9" when os_distribution is "rocky", or "jammy" when os_distribution is
-# "ubuntu".
+# "9" when os_distribution is "rocky", or "jammy" and "noble" (with "jammy"
+# being the default) when os_distribution is "ubuntu".
 #os_release:
 
 ###############################################################################
