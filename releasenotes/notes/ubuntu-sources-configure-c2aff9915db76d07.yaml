@@ -1,0 +1,11 @@
+---
+fixes:
+  - |
+    Adds a ``name`` field to elements of ``apt_repositories``, which specifies
+    the name of the repository file (without the ``.sources`` suffix). The
+    default value of this field is ``kayobe`` and it may be omitted. The user
+    can override the default by providing a different name, such as ``ubuntu``,
+    and new repository data. This way, the default file,
+    ``/etc/apt/source.list.d/ubuntu.sources``, will be overwritten by the
+    provided repository configuration.
+    `LP#2107280 <https://bugs.launchpad.net/kayobe/+bug/2107280>`__

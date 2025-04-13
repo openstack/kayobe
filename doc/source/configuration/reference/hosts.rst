@@ -366,6 +366,8 @@ Kayobe supports configuration of custom Apt repositories via the
 The format is a list, with each item mapping to a dict/map with the following
 items:
 
+* ``name``: the ``<name>.sources`` filename part. Optional. Default is
+  ``kayobe`` and the default filename is ``kayobe.sources``.
 * ``types``: whitespace-separated list of repository types, e.g. ``deb`` or
   ``deb-src`` (optional, default is ``deb``)
 * ``url``: URL of the repository

@@ -13,11 +13,14 @@
 - name: Configure apt repositories
   template:
     src: "kayobe.sources.j2"
-    dest: "/etc/apt/sources.list.d/kayobe.sources"
+    dest: "/etc/apt/sources.list.d/{{ reponame }}.sources"
     owner: root
     group: root
     mode: 0644
   become: true
+  loop: "{{ apt_repositories }}"
+  vars:
+    reponame: "{{ item.name | default('kayobe') }}"
   notify:
     - Update apt cache
 
