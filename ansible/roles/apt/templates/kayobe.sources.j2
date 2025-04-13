@@ -1,12 +1,13 @@
 # {{ ansible_managed }}
 
 {% for repo in apt_repositories %}
+{% if reponame == repo.name | default('kayobe') %}
 Types: {{ repo.types | default('deb') }}
 URIs: {{ repo.url }}
 Suites: {{ repo.suites | default(ansible_facts.distribution_release) }}
 Components: {{ repo.components | default('main') }}
 {% if repo.signed_by is defined %}
-Signed-by: {{ apt_keys_path }}/{{ repo.signed_by }}
+Signed-by: {% if not repo.signed_by.startswith('/') %}{{ apt_keys_path }}/{% endif %}{{ repo.signed_by }}
 {% endif %}
 {% if repo.architecture is defined %}
 Architecture: {{ repo.architecture }}
@@ -15,4 +16,5 @@ Architecture: {{ repo.architecture }}
 Trusted: {{ repo.trusted | bool }}
 {% endif %}
 
+{% endif %}
 {% endfor %}
