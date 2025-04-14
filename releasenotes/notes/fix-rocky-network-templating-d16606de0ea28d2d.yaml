@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Bumps MichaelRigart.interfaces to fix an issue where ``kayobe overcloud
+    host configure`` would fail to template during the networking tasks on
+    Rocky hosts, with the error ``Could not load "ipaddr"``.
+    `LP#2107335 <https://bugs.launchpad.net/kayobe/+bug/2107335>`__
