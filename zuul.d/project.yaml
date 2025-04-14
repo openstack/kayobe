@@ -21,9 +21,14 @@
         - kayobe-overcloud-tls-rocky9
         - kayobe-overcloud-host-configure-rocky9
         - kayobe-overcloud-host-configure-ubuntu-noble
-        - kayobe-overcloud-upgrade-rocky9
-        - kayobe-overcloud-upgrade-ubuntu-noble
-        - kayobe-overcloud-upgrade-slurp-rocky9
+        # TODO(priteau): make this voting again when RabbitMQ migration issues
+        # are resolved.
+        - kayobe-overcloud-upgrade-rocky9:
+            voting: false
+        - kayobe-overcloud-upgrade-ubuntu-noble:
+            voting: false
+        - kayobe-overcloud-upgrade-slurp-rocky9:
+            voting: false
         - kayobe-seed-rocky9
         - kayobe-seed-rocky9-podman
         - kayobe-seed-ubuntu-noble
@@ -54,9 +59,6 @@
         - kayobe-overcloud-tls-rocky9
         - kayobe-overcloud-host-configure-rocky9
         - kayobe-overcloud-host-configure-ubuntu-noble
-        - kayobe-overcloud-upgrade-rocky9
-        - kayobe-overcloud-upgrade-ubuntu-noble
-        - kayobe-overcloud-upgrade-slurp-rocky9
         - kayobe-seed-rocky9
         - kayobe-seed-rocky9-podman
         - kayobe-seed-ubuntu-noble
