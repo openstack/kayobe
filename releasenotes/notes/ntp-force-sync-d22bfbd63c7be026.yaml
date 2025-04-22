@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Supports forcing time synchronisation after configuring ``chrony`` if
+    ``ntp_force_sync`` is changed to ``True``.

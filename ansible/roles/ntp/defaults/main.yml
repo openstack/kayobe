@@ -1,5 +1,8 @@
 ---
-ntp_actions: ["validate", "prepare", "deploy"]
+ntp_actions: ["validate", "prepare", "deploy", "sync"]
+
+# Do not jump clock by default
+ntp_force_sync: False
 
 ntp_service_disable_list:
   - ntp.service
