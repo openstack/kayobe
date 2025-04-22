@@ -3,4 +3,4 @@
 pip_upper_constraints_file: "https://releases.openstack.org/constraints/upper/{{ openstack_release }}"
 
 # Upper constraints file for installation of openstacksdk.
-openstacksdk_upper_constraints_file: "https://releases.openstack.org/constraints/upper/{{ openstack_release }}"
+openstacksdk_upper_constraints_file: "{{ pip_upper_constraints_file }}"
