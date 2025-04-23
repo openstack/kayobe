@@ -24,6 +24,7 @@
         - kayobe-overcloud-upgrade-rocky9
         - kayobe-overcloud-upgrade-ubuntu-noble
         - kayobe-overcloud-upgrade-slurp-rocky9
+        - kayobe-overcloud-upgrade-slurp-ubuntu-noble
         - kayobe-seed-rocky9
         - kayobe-seed-rocky9-podman
         - kayobe-seed-ubuntu-noble
@@ -57,6 +58,7 @@
         - kayobe-overcloud-upgrade-rocky9
         - kayobe-overcloud-upgrade-ubuntu-noble
         - kayobe-overcloud-upgrade-slurp-rocky9
+        - kayobe-overcloud-upgrade-slurp-ubuntu-noble
         - kayobe-seed-rocky9
         - kayobe-seed-rocky9-podman
         - kayobe-seed-ubuntu-noble
