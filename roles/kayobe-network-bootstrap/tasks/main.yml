@@ -9,7 +9,7 @@
 - name: Ensure all-in-one network bridge interface exists
   vars:
     bridge_cidr: "{{ bridge_ip }}/{{ bridge_prefix }}"
-    bridge_broadcast: "{{ bridge_cidr | ipaddr('broadcast') }}"
+    bridge_broadcast: "{{ bridge_cidr | ansible.utils.ipaddr('broadcast') }}"
   command: "{{ item }}"
   become: true
   with_items:
