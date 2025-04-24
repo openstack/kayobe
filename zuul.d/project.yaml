@@ -28,8 +28,7 @@
         - kayobe-seed-rocky9
         - kayobe-seed-rocky9-podman
         - kayobe-seed-ubuntu-noble
-        - kayobe-seed-ubuntu-noble-podman:
-            voting: false
+        - kayobe-seed-ubuntu-noble-podman
         - kayobe-seed-images-rocky9
         - kayobe-seed-upgrade-rocky9
         - kayobe-seed-upgrade-ubuntu-noble
@@ -62,6 +61,7 @@
         - kayobe-seed-rocky9
         - kayobe-seed-rocky9-podman
         - kayobe-seed-ubuntu-noble
+        - kayobe-seed-ubuntu-noble-podman
         - kayobe-seed-upgrade-rocky9
         - kayobe-seed-upgrade-ubuntu-noble
         - kayobe-seed-upgrade-slurp-rocky9
