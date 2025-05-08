@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Using ``--list-tasks`` flag is now supported in commands that use
+    ``kolla-ansible`` such as ``kayobe overcloud service deploy --list-tasks``.
+    This will now show the name of tasks and any tags associated with them.
