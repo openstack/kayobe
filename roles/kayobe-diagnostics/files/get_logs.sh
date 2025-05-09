@@ -25,7 +25,7 @@ copy_container_engine_logs() {
 
 copy_bifrost_logs() {
     container_engine=$1
-    for service in dnsmasq ironic-api ironic-conductor ironic-inspector mariadb nginx rabbitmq-server; do
+    for service in dnsmasq ironic ironic-inspector mariadb nginx; do
         mkdir -p ${LOG_DIR}/kolla/$service
         $container_engine exec bifrost_deploy \
             systemctl status $service -l -n 10000 > ${LOG_DIR}/kolla/$service/${service}-systemd-status.txt
