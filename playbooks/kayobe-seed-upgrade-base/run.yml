@@ -38,12 +38,13 @@
         - etc/kayobe/kolla/passwords.yml
         - etc/kayobe/kolla/config/bifrost/dib.yml
 
-    # NOTE(mgoddard): Use the name zz-overrides.yml to ensure this takes
-    # precedence over the standard config files.
+    # NOTE(mgoddard): Use the name zz-20-overrides.yml to ensure this takes
+    # precedence over the standard config files, but can control order with the
+    # priority (number after zz).
     - name: Ensure kayobe-config override config file exists
       template:
         src: overrides.yml.j2
-        dest: "{{ kayobe_config_src_dir }}/etc/kayobe/zz-overrides.yml"
+        dest: "{{ kayobe_config_src_dir }}/etc/kayobe/zz-20-overrides.yml"
 
     - name: Ensure kolla-ansible globals.yml override config file exists
       template:

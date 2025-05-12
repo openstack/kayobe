@@ -909,6 +909,14 @@ function to_bool {
     fi
 }
 
+function is_absolute_path {
+    path="$1"
+    case "$path" in
+    /*) true ;;
+    *) false ;;
+    esac
+}
+
 function configure_iptables {
     # NOTE(wszumski): adapted from the ironic devstack plugin, see:
     # https://github.com/openstack/ironic/blob/36e87dc5b472d79470b783fbba9ce396e3cbb96e/devstack/lib/ironic#L2132

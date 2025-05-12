@@ -1,7 +1,17 @@
 ---
-- name: Install dbus for debian system
-  apt:
-    name: dbus
+- block:
+    - name: Install dbus for debian system
+      apt:
+        name: dbus
+
+    - name: Install packages needed for unprivileged mode
+      apt:
+        name: "{{ item }}"
+      loop:
+        - libssl-dev
+        - python3-pip
+        - vim
+      when: not kayobe_control_host_become | bool
   when:
     - ansible_facts.os_family == 'Debian'
   become: true
@@ -17,5 +27,14 @@
 
     - name: Enable the EPEL repository
       command: dnf config-manager --disable epel
+
+    - name: Install packages needed for unprivileged mode
+      package:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - openssl-devel
+      when: not kayobe_control_host_become | bool
+
   when: ansible_facts.os_family == 'RedHat'
   become: true

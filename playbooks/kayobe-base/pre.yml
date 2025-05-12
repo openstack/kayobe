@@ -88,6 +88,49 @@
         kayobe_galaxy_requirements_src_dir: "{{ kolla_ansible_src_dir }}"
         kayobe_galaxy_requirements_dest_path: "/tmp/kolla-ansible-requirements.yml"
 
+    # NOTE(wszumski): I explored running as an unprivileged user, but it looked like
+    # a world of pain, so I've gone for this simpler approach (for now).
+    - block:
+        - name: Ensure inventory host_vars directories exist
+          file:
+            state: directory
+            path: "{{ item }}"
+          loop:
+            - "{{ kayobe_config_src_dir }}/etc/kayobe/inventory/host_vars/"
+            - "{{ kayobe_config_src_dir }}/etc/kayobe/kolla/inventory/host_vars/"
+
+        - name: Configure the become checker for localhost (kayobe)
+          # NOTE(wszumski): This will cause all uses of become to fail when running
+          # kayobe playbooks against localhost. This should not happen since we
+          # have disabled escalation of privileges with kayobe_control_host_become.
+          # If you hit this error you will need to change your task to respect
+          # that variable.
+          copy:
+            content: |
+              ansible_become_exe: "{{ kayobe_src_dir }}/dev/kayobe-control-host-become-sudo-checker"
+            dest: "{{ kayobe_config_src_dir }}/etc/kayobe/inventory/host_vars/localhost"
+
+        - name: Configure the become checker for localhost (kolla)
+          # NOTE(wszumski): This will cause all uses of become to fail when running
+          # kolla playbooks against localhost. This should not happen since we
+          # have disabled escalation of privileges with kayobe_control_host_become.
+          # If you hit this error you will need to change kolla-ansible to not use
+          # become unless necessary.
+          copy:
+            content: |
+              ansible_become_exe: "{{ kayobe_src_dir }}/dev/kolla-control-host-become-sudo-checker"
+            dest: "{{ kayobe_config_src_dir }}/etc/kayobe/kolla/inventory/host_vars/localhost"
+
+      when: not kayobe_control_host_become | bool
+
+    # NOTE(wszumski): Use the name zz-10-overrides.yml to ensure this takes
+    # precedence over the standard config files, but can control order with the
+    # priority (number after zz).
+    - name: Ensure kayobe-config override config file exists
+      template:
+        src: overrides.yml.j2
+        dest: "{{ kayobe_config_src_dir }}/etc/kayobe/zz-10-overrides.yml"
+
     - block:
         - name: Ensure previous kayobe directory exists
           file:
