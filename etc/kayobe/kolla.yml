@@ -291,6 +291,7 @@
 #kolla_enable_ceph_rgw_loadbalancer:
 #kolla_enable_cinder:
 #kolla_enable_cinder_backend_iscsi:
+#kolla_enable_cinder_backend_lightbits:
 #kolla_enable_cinder_backend_lvm:
 #kolla_enable_cinder_backend_nfs:
 #kolla_enable_cinder_backend_pure_fc:
@@ -338,10 +339,12 @@
 #kolla_enable_horizon_octavia:
 #kolla_enable_horizon_tacker:
 #kolla_enable_horizon_trove:
+#kolla_enable_horizon_venus:
 #kolla_enable_horizon_watcher:
 #kolla_enable_horizon_zun:
 #kolla_enable_influxdb:
 #kolla_enable_ironic:
+#kolla_enable_ironic_dnsmasq:
 #kolla_enable_ironic_inspector:
 #kolla_enable_ironic_neutron_agent:
 #kolla_enable_ironic_prometheus_exporter:
@@ -357,6 +360,7 @@
 #kolla_enable_manila:
 #kolla_enable_manila_backend_cephfs_native:
 #kolla_enable_manila_backend_cephfs_nfs:
+#kolla_enable_manila_backend_flashblade:
 #kolla_enable_manila_backend_generic:
 #kolla_enable_manila_backend_glusterfs_nfs:
 #kolla_enable_manila_backend_hnas:
@@ -403,6 +407,7 @@
 #kolla_enable_openvswitch:
 #kolla_enable_osprofiler:
 #kolla_enable_ovn:
+#kolla_enable_ovn_sb_db_relay:
 #kolla_enable_ovs_dpdk:
 #kolla_enable_placement:
 #kolla_enable_prometheus:
@@ -428,9 +433,6 @@
 #kolla_enable_rabbitmq:
 #kolla_enable_redis:
 #kolla_enable_skyline:
-#kolla_enable_swift:
-#kolla_enable_swift_recon:
-#kolla_enable_swift_s3api:
 #kolla_enable_tacker:
 #kolla_enable_telegraf:
 #kolla_enable_trove:

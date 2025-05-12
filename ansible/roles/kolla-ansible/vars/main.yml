@@ -88,6 +88,7 @@ kolla_feature_flags:
   - ceph_rgw_loadbalancer
   - cinder
   - cinder_backend_iscsi
+  - cinder_backend_lightbits
   - cinder_backend_lvm
   - cinder_backend_nfs
   - cinder_backend_pure_fc
@@ -135,10 +136,12 @@ kolla_feature_flags:
   - horizon_octavia
   - horizon_tacker
   - horizon_trove
+  - horizon_venus
   - horizon_watcher
   - horizon_zun
   - influxdb
   - ironic
+  - ironic_dnsmasq
   - ironic_inspector
   - ironic_neutron_agent
   - ironic_prometheus_exporter
@@ -154,6 +157,7 @@ kolla_feature_flags:
   - manila
   - manila_backend_cephfs_native
   - manila_backend_cephfs_nfs
+  - manila_backend_flashblade
   - manila_backend_generic
   - manila_backend_glusterfs_nfs
   - manila_backend_hnas
@@ -200,6 +204,7 @@ kolla_feature_flags:
   - openvswitch
   - osprofiler
   - ovn
+  - ovn_sb_db_relay
   - ovs_dpdk
   - placement
   - prometheus
@@ -225,9 +230,6 @@ kolla_feature_flags:
   - rabbitmq
   - redis
   - skyline
-  - swift
-  - swift_recon
-  - swift_s3api
   - tacker
   - telegraf
   - trove
