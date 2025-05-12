@@ -71,11 +71,19 @@
     required-projects:
       # Include kayobe to ensure other projects can use this job.
       - name: openstack/ansible-collection-kolla
+        # TODO(priteau): Remove when kayobe stable/2025.1 exists.
+        override-checkout: stable/2025.1
       - name: openstack/kayobe
       - name: openstack/kayobe-config-dev
       - name: openstack/kolla
+        # TODO(priteau): Remove when kayobe stable/2025.1 exists.
+        override-checkout: stable/2025.1
       - name: openstack/kolla-ansible
+        # TODO(priteau): Remove when kayobe stable/2025.1 exists.
+        override-checkout: stable/2025.1
       - name: openstack/requirements
+        # TODO(priteau): Remove when kayobe stable/2025.1 exists.
+        override-checkout: stable/2025.1
       - name: openstack/tenks
     irrelevant-files:
       - ^\..+
