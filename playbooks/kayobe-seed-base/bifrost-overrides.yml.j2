@@ -1,7 +1,10 @@
 ---
-# Don't build an IPA deployment image.
+# Don't build an IPA deployment image, instead download upstream images.
 create_ipa_image: false
-download_ipa: false
+download_ipa: true
 
-# Don't build a disk image. It takes time and can be unreliable.
-create_image_via_dib: false
+# Use a CirrOS image
+use_cirros: true
+custom_deploy_image_upstream_url: https://download.cirros-cloud.net/0.5.3/cirros-0.5.3-x86_64-disk.img
+custom_deploy_image_checksum_url: https://download.cirros-cloud.net/0.5.3/MD5SUMS
+custom_deploy_image_checksum_algorithm: md5

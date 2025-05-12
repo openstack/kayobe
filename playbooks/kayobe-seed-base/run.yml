@@ -10,6 +10,36 @@
         cmd: "{{ kayobe_src_dir }}/dev/seed-deploy.sh &> {{ logs_dir }}/ansible/seed-deploy"
         executable: /bin/bash
 
+    - name: Ensure test Tenks cluster is deployed
+      shell:
+        # Pass absolute source directory, since otherwise the `chdir` will
+        # cause this to fail.
+        cmd: dev/tenks-deploy-overcloud.sh '{{ tenks_src_dir }}' &> {{ logs_dir }}/ansible/tenks-deploy-overcloud
+        chdir: "{{ kayobe_src_dir }}"
+        executable: /bin/bash
+
+    - name: Perform overcloud inventory discovery
+      shell:
+        cmd: (source dev/environment-setup.sh && kayobe overcloud inventory discover) &> {{ logs_dir }}/ansible/overcloud-inventory-discover
+        chdir: "{{ kayobe_src_dir }}"
+        executable: /bin/bash
+
+    - name: Perform overcloud hardware inspection
+      shell:
+        cmd: (source dev/environment-setup.sh && kayobe overcloud hardware inspect) &> {{ logs_dir }}/ansible/overcloud-hardware-inspect
+        chdir: "{{ kayobe_src_dir }}"
+        executable: /bin/bash
+
+    - name: Perform overcloud provisioning
+      shell:
+        cmd: (source dev/environment-setup.sh && kayobe overcloud provision) &> {{ logs_dir }}/ansible/overcloud-provision
+        chdir: "{{ kayobe_src_dir }}"
+        executable: /bin/bash
+
+    - name: Test network connectivity to the overcloud host
+      shell:
+        cmd: ping -c1 -W1 192.168.33.3 &> {{ logs_dir }}/ansible/overcloud-test
+
     - block:
         # NOTE(mgoddard): The stack user cannot read the kolla source code, which
         # lives in the zuul user's home directory. Copy it to a readable location.
