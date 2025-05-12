@@ -33,19 +33,21 @@
     ironic_retries: 6
     ironic_retry_interval: 5
     seed_host: "{{ groups['seed'][0] }}"
-  vars_prompt:
-    - name: confirm_deprovision
-      prompt: |
-        The following hosts will be deprovisioned:
-        {{ play_hosts | intersect(groups['overcloud'] | default([])) | join(', ') }}
-        If you want to proceed type: yes
-      default: "no"
-      private: false
+    confirm_deprovision: False
   gather_facts: no
   tasks:
+    - name: Prompt to confirm deprovision
+      ansible.builtin.pause:
+        prompt: >
+          The following hosts will be deprovisioned:
+          {{ play_hosts | join(', ') }}
+          If you want to proceed type: yes
+      register: pause_prompt
+      when: not confirm_deprovision
+
     - name: Fail if deprovision is not confirmed
       assert:
-        that: confirm_deprovision == 'yes'
+        that: confirm_deprovision | bool or pause_prompt.user_input == 'yes'
         msg: >
           Deprovision has not been confirmed. You must either type 'yes' when
           prompted, or set ``confirm_deprovision=yes``.

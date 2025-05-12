@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Updates ``overcloud-deprovision.yml`` to use ``ansible.builtin.pause`` when
+    prompting to confirm deprovisioning. This is the recommended workaround to
+    `Ansible issue 84515 <https://github.com/ansible/ansible/issues/84515>`__.
