@@ -170,6 +170,8 @@ def build_args(parsed_args, command, inventory_filename, extra_vars=None,
     if parsed_args.kolla_tags or tags:
         all_tags = [t for t in [parsed_args.kolla_tags, tags] if t]
         cmd += ["--tags", ",".join(all_tags)]
+    if parsed_args.list_tasks:
+        cmd += ["--list-tasks"]
     if extra_args:
         cmd += extra_args
     return cmd
