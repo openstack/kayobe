@@ -11,9 +11,10 @@ export OS_ENDPOINT_TYPE=publicURL
 export OS_MANILA_ENDPOINT_TYPE=publicURL
 {% elif "export OS_MISTRAL_ENDPOINT_TYPE" in line %}
 export OS_MISTRAL_ENDPOINT_TYPE=publicURL
-{% elif "export OS_CACERT" in line and kolla_public_openrc_cacert is not none %}
-export OS_CACERT={{ kolla_public_openrc_cacert }}
 {% else %}
 {{ line }}
 {% endif %}
 {% endfor %}
+{% if kolla_public_openrc_cacert is not none %}
+export OS_CACERT={{ kolla_public_openrc_cacert }}
+{% endif %}
