@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes ``public-openrc.sh`` missing the ``OS_CACERT`` variable when absent
+    from ``admin-openrc.sh``.
+    `LP#2110549 <https://bugs.launchpad.net/kayobe/+bug/2110549>`__
