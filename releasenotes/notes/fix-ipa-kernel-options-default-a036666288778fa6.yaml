@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fixes ``ipa_kernel_options_default`` when ``ipa_collect_lldp`` is set to
+    false. `LP#2110505 <https://bugs.launchpad.net/kayobe/+bug/2110505>`__
