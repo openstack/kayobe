@@ -26,6 +26,7 @@ openstack_auth:
   username: "{{ lookup('env', 'OS_USERNAME') }}"
   password: "{{ lookup('env', 'OS_PASSWORD') }}"
   auth_url: "{{ lookup('env', 'OS_AUTH_URL') }}"
+  system_scope: "{{ lookup('env', 'OS_SYSTEM_SCOPE') }}"
 
 # Overcloud CA certificate path.
 openstack_cacert: "{{ lookup('env', 'OS_CACERT') }}"
@@ -46,6 +47,7 @@ openstack_auth_env:
   OS_INTERFACE: "{{ lookup('env', 'OS_INTERFACE') }}"
   OS_IDENTITY_API_VERSION: "{{ lookup('env', 'OS_IDENTITY_API_VERSION') }}"
   OS_CACERT: "{{ lookup('env', 'OS_CACERT') }}"
+  OS_SYSTEM_SCOPE: "{{ lookup('env', 'OS_SYSTEM_SCOPE') }}"
 
 # List of parameters required in openstack_auth when openstack_auth_type is
 # password.
