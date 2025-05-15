@@ -14,6 +14,9 @@
       # Add timing information to output
       callbacks_enabled = ansible.posix.profile_tasks
 
+      # Improve readability of ansible output.
+      stdout_callback = yaml
+
       [ssh_connection]
       # NOTE(wszusmki): Disable pipelining due to:
       # https://github.com/ansible/ansible/issues/81777
@@ -31,6 +34,9 @@
 
       # Add timing information to output
       callbacks_enabled = ansible.posix.profile_tasks
+
+      # Improve readability of ansible output.
+      stdout_callback = yaml
 
       [ssh_connection]
       # NOTE(wszusmki): Disable pipelining due to:
