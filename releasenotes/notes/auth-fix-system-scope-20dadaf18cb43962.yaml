@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Ensure the ``OS_SYSTEM_SCOPE`` environment variable is present in
+    ``openstack_auth`` to prevent authentication issues occurring in
+    baremetal-compute playbooks.
+    `LP#2111103 <https://bugs.launchpad.net/kayobe/+bug/2111103>`__
