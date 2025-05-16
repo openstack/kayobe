@@ -496,6 +496,10 @@ kolla_ansible_group: kolla
 # Ansible.
 kolla_ansible_become: false
 
+# Whether to use privilege escalation for operations on the control host.
+# Default is {{ kayobe_control_host_become }}.
+kolla_ansible_control_host_become: "{{ kayobe_control_host_become | bool }}"
+
 # Whether to create a user account, configure passwordless sudo and authorise
 # an SSH key for Kolla Ansible. Default is 'true'.
 kolla_ansible_create_user: true

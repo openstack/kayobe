@@ -1,5 +1,7 @@
 ---
 # List of package dependencies to install.
+# NOTE(wszusmki): meta packages are not supported in this list since we cannot
+# determine if they are installed via ansible facts.
 bootstrap_package_dependencies:
   - git
-  - vim
+  - vim-enhanced

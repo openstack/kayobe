@@ -83,3 +83,19 @@ which can be used to improve visibility into changes that would be made on
 target systems. The Kayobe CLI supports the ``--check`` argument, and since
 11.0.0, the ``--diff`` argument. Note that these modes are not always
 guaranteed to work, when some tasks are dependent on earlier ones.
+
+Avoiding privilege escalation on the control host
+-------------------------------------------------
+
+.. note::
+
+    This means that kayobe will not be able to install OS packages or use paths
+    that are not writable for your user.
+
+It is possible to avoid privilege escalation on the control host. To use this feature set
+the following config option:
+
+.. code-block:: yaml
+   :caption: ``$KAYOBE_CONFIG_PATH/globals.yml``
+
+   kayobe_control_host_become: false

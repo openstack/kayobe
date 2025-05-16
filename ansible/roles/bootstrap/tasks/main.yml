@@ -1,14 +1,49 @@
 ---
+- block:
+    - name: Testing privilege escalation
+      raw: "true"
+      become: true
+      failed_when: false
+      changed_when: false
+      register: privilege_escalation_result
+
+    - name: Assert that we can escalate privileges
+      assert:
+        that:
+          - privilege_escalation_result is success
+          - '"password is required" not in privilege_escalation_result.stderr'
+        fail_msg: >-
+          Could not escalate privileges. You can either: set kayobe_control_host_become: true,
+          set ansible_become_password, or set up passwordless sudo.
+  when: kayobe_control_host_become | bool
+
 - name: Include OS family-specific variables
   include_vars: "{{ ansible_facts.os_family }}.yml"
 
-- name: Ensure required packages are installed
-  package:
-    name: "{{ bootstrap_package_dependencies }}"
-    state: present
-    cache_valid_time: "{{ apt_cache_valid_time if ansible_facts.os_family == 'Debian' else omit }}"
-    update_cache: "{{ True if ansible_facts.os_family == 'Debian' else omit }}"
-  become: True
+- name: Gather the package facts
+  ansible.builtin.package_facts:
+    manager: auto
+
+- block:
+    - name: Assert that all packages are installed if not using privilege escalation
+      assert:
+        that: missing_packages is falsy
+        fail_msg: >-
+          The following packages are missing from your system: {{ missing_packages | join(', ') }} and
+          privilege escalation is disabled. Please get your system administator to install these packages
+          or enable kayobe_control_host_become.
+      when: not kayobe_control_host_become | bool
+
+    - name: Ensure required packages are installed
+      package:
+        name: "{{ bootstrap_package_dependencies }}"
+        state: present
+        cache_valid_time: "{{ apt_cache_valid_time if ansible_facts.os_family == 'Debian' else omit }}"
+        update_cache: "{{ True if ansible_facts.os_family == 'Debian' else omit }}"
+      become: True
+      when: missing_packages is truthy
+  vars:
+    missing_packages: "{{ bootstrap_package_dependencies | difference(ansible_facts.packages.keys()) }}"
 
 - name: Check whether an SSH key exists
   stat:
