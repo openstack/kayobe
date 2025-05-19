@@ -60,7 +60,7 @@
         export OS_BAREMETAL_API_VERSION=1.34 &&
         export BIFROST_INVENTORY_SOURCE=ironic &&
         export BIFROST_NODE_NAMES="{{ inventory_hostname }}" &&
-        openstack baremetal port list --node {{ inventory_hostname }} --fields address -f value'
+        baremetal port list --node {{ inventory_hostname }} --fields address -f value'
       register: pxe_result
       delegate_to: "{{ seed_host }}"
       become: "{{ container_engine == 'podman' }}"
