@@ -28,13 +28,13 @@
         virtualenv: "{{ testinfra_venv }}"
         virtualenv_command: "{{ cmd }}"
 
-    # NOTE(mgoddard): Use the name zzz-overrides.yml to ensure this takes
-    # precedence over the standard config files and zz-overrides.yml from
+    # NOTE(mgoddard): Use the name zz-30-overrides.yml to ensure this takes
+    # precedence over the standard config files and zz-20-overrides.yml from
     # kayobe-overcloud-base.
     - name: Ensure kayobe-config override config file exists
       template:
         src: overrides.yml.j2
-        dest: "{{ kayobe_config_src_dir }}/etc/kayobe/zzz-overrides.yml"
+        dest: "{{ kayobe_config_src_dir }}/etc/kayobe/zz-30-overrides.yml"
 
     # NOTE(mgoddard): Create two loopback devices backed by files. These will
     # be added to a software RAID volume, then added to an LVM volume group.

@@ -1,4 +1,32 @@
 ---
+- hosts: primary
+  environment:
+    KAYOBE_CONFIG_SOURCE_PATH: "{{ kayobe_config_src_dir }}"
+  tasks:
+    # Checks become validator was correctly configured in pre.yml.
+    - block:
+        - name: Create a playbook to test become validator was configured
+          copy:
+            content: |
+              ---
+              - hosts: localhost
+                tasks:
+                  - name: Testing become fails
+                    command: "true"
+                    become: true
+                    register: result
+                    failed_when: '"CONTROL_HOST_BECOME_VIOLATION" not in result.module_stderr'
+            dest: /tmp/test-control-host-become.yml
+
+        - name: Check that that kayobe become validator was correctly configured
+          shell:
+            cmd: "{{ kayobe_src_dir }}/dev/playbook-run.sh /tmp/test-control-host-become.yml &> {{ logs_dir }}/ansible/kayobe-test-control-host-become"
+            executable: /bin/bash
+          failed_when: false
+          register: become_check_result
+
+      when: not kayobe_control_host_become | bool
+
 - hosts: all
   roles:
     - role: kayobe-diagnostics
@@ -7,3 +35,11 @@
       kayobe_diagnostics_config_dir: "{{ kayobe_config_src_dir }}"
       kayobe_diagnostics_previous_config_dir: "{{ previous_kayobe_config_src_dir }}"
       kayobe_diagnostics_executor_log_dir: "{{ zuul.executor.log_root }}/{{ inventory_hostname }}"
+
+- hosts: primary
+  tasks:
+    # Fail after logs have been posted
+    - name: Fail run if "Check that that kayobe become validator was correctly configured" failed
+      assert:
+        that: become_check_result.rc == 0
+      when: become_check_result is not skipped

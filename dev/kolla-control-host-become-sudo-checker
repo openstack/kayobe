@@ -1,0 +1,15 @@
+#!/bin/bash
+
+IFS='' read -r -d '' ERR_MSG <<"EOF"
+This task tried to use become, but kolla_ansible_control_host_become is set to false.
+
+The task will need to be changed in kolla-ansible to support running as an
+unprivileged user.
+
+Hint: You may need to write any files to a user controlled directory.
+ErrorCode: CONTROL_HOST_BECOME_VIOLATION
+EOF
+
+
+>&2 echo "$ERR_MSG"
+exit 1

@@ -1,0 +1,22 @@
+#!/bin/bash
+
+IFS='' read -r -d '' ERR_MSG <<"EOF"
+This task tried to use become, but kayobe_control_host_become is set to false. Please change become: true, to become: "{{ kayobe_control_host_become | bool }}", e.g:
+
+- name: Run a command
+  command: echo hi
+  become: true
+
+Should be:
+
+- name: Run a command
+  command: echo hi
+  become: "{{ kayobe_control_host_become | bool }}"
+
+Hint: You may need to write any files to a user controlled directory.
+ErrorCode: CONTROL_HOST_BECOME_VIOLATION
+EOF
+
+
+>&2 echo "$ERR_MSG"
+exit 1
