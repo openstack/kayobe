@@ -85,7 +85,7 @@
       vars:
         # Use the system python interpreter since the virtualenv might not
         # exist.
-        ansible_python_interpreter: /usr/bin/python3
+        ansible_python_interpreter: "{{ ansible_facts.python.executable }}"
       when: virtualenv is defined
 
     # If we gathered facts earlier it would have been with a different Python

@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Fixes incorrect handling of ``ansible_python_interpreter`` when using
+    ``ansible-collection-kolla``. Kayobe now aligns its behavior with
+    ``kolla-ansible`` to ensure the correct interpreter is used.
+    `LP#2111594 <https://bugs.launchpad.net/kayobe/+bug/2111594>`__

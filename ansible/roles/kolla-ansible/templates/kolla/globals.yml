@@ -505,6 +505,14 @@ ironic_inspector_kernel_cmdline_extras:
 grafana_admin_username: "{{ grafana_local_admin_user_name }}"
 {% endif %}
 
+###########################
+# Target python environment
+###########################
+{% if kolla_ansible_target_venv is not none %}
+# Execute ansible modules on the remote target hosts using a virtualenv.
+virtualenv: "{{ kolla_ansible_target_venv }}"
+{% endif %}
+
 {% if kolla_extra_globals %}
 #######################
 # Extra configuration
