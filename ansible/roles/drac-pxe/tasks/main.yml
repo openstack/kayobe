@@ -114,7 +114,7 @@
 
     - name: Set a fact containing the UEFI PXE interface
       set_fact:
-        current_pxe_interface: "{{ result.stdout_lines[-1].partition('=')[2]}] }}"
+        current_pxe_interface: "{{ result.stdout_lines[-1].partition('=')[2] }}"
         required_pxe_interface: "{{ 'NIC.Integrated.1-' ~ drac_pxe_interface ~ '-1' }}"
 
     - name: Fail if there are pending UEFI PXE interface changes
