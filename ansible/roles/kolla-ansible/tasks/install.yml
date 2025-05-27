@@ -159,4 +159,4 @@
     # newer versions.
     ANSIBLE_COLLECTIONS_SCAN_SYS_PATH: "False"
     # NOTE(wszumski): Don't use path configured for kayobe
-    ANSIBLE_COLLECTIONS_PATH:
+    ANSIBLE_COLLECTIONS_PATH: ''

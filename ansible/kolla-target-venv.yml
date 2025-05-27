@@ -57,7 +57,7 @@
             virtualenv: "{{ kolla_ansible_target_venv }}"
             extra_args: "{% if kolla_upper_constraints_file %}-c {{ kolla_upper_constraints_file }}{% endif %}"
           become: True
-          when: "{{ container_engine == 'docker' }}"
+          when: container_engine == 'docker'
 
         - name: Ensure kolla-ansible virtualenv has podman SDK installed
           pip:
@@ -66,7 +66,7 @@
             virtualenv: "{{ kolla_ansible_target_venv }}"
             extra_args: "{% if kolla_upper_constraints_file %}-c {{ kolla_upper_constraints_file }}{% endif %}"
           become: True
-          when: "{{ container_engine == 'podman' }}"
+          when: container_engine == 'podman'
 
         - name: Ensure kolla-ansible virtualenv has SELinux bindings installed
           pip:

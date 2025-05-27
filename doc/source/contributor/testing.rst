@@ -75,10 +75,10 @@ Environments
 
 The following tox environments are provided:
 
-alint
-    Run Ansible linter.
 ansible
     Run Ansible tests for some ansible roles using Ansible playbooks.
+ansible-lint
+    Run Ansible linter.
 ansible-syntax
     Run a syntax check for all Ansible files.
 docs

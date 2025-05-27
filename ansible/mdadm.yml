@@ -9,7 +9,7 @@
   tags:
     - mdadm
   roles:
-    - name: mrlesmithjr.mdadm
+    - role: mrlesmithjr.mdadm
       become: True
       when:
         - mdadm_arrays is defined

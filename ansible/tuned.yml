@@ -9,7 +9,7 @@
   tags:
     - tuned
   roles:
-    - name: giovtorres.tuned
+    - role: giovtorres.tuned
       become: true
       when:
         - tuned_active_builtin_profile != ""

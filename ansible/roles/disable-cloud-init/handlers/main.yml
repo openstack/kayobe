@@ -1,5 +1,5 @@
 ---
-- name: reload systemd daemon
+- name: Reload systemd daemon
   systemd:
     name: cloud-init
     daemon_reload: yes

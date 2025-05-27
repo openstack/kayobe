@@ -176,7 +176,6 @@ neutron_tenant_network_types: {{ kolla_neutron_ml2_tenant_network_types | join('
 #    ulimits:
 
 
-
 #############
 # TLS options
 #############

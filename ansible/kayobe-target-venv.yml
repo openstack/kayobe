@@ -15,7 +15,7 @@
   tasks:
     - name: Set a fact about the kayobe target virtualenv
       set_fact:
-        virtualenv: "{{ ansible_python_interpreter | dirname | dirname }}"
+        kayobe_virtualenv: "{{ ansible_python_interpreter | dirname | dirname }}"
       when:
         - ansible_python_interpreter is defined
         - not ansible_python_interpreter.startswith('/bin')
@@ -47,12 +47,12 @@
             mode: 0755
           # Check whether the virtualenv directory is a subdirectory of the
           # global virtualenv directory.
-          when: virtualenv.startswith(virtualenv_path)
+          when: kayobe_virtualenv.startswith(virtualenv_path)
           become: True
 
         - name: Ensure kayobe virtualenv directory exists
           file:
-            path: "{{ virtualenv }}"
+            path: "{{ kayobe_virtualenv }}"
             state: directory
             owner: "{{ ansible_facts.user_uid }}"
             group: "{{ ansible_facts.user_gid }}"
@@ -69,7 +69,7 @@
           pip:
             name: pip
             state: latest
-            virtualenv: "{{ virtualenv }}"
+            virtualenv: "{{ kayobe_virtualenv }}"
             # Site packages are required for using the dnf module, which is not
             # available via PyPI.
             virtualenv_site_packages: True
@@ -79,14 +79,14 @@
           pip:
             name: selinux
             state: latest
-            virtualenv: "{{ virtualenv }}"
+            virtualenv: "{{ kayobe_virtualenv }}"
           when:
             - ansible_facts.os_family == 'RedHat'
       vars:
         # Use the system python interpreter since the virtualenv might not
         # exist.
         ansible_python_interpreter: "{{ ansible_facts.python.executable }}"
-      when: virtualenv is defined
+      when: kayobe_virtualenv is defined
 
     # If we gathered facts earlier it would have been with a different Python
     # interpreter. For gathering modes that may use a fact cache, gather facts
@@ -96,7 +96,7 @@
         filter: "{{ kayobe_ansible_setup_filter }}"
         gather_subset: "{{ kayobe_ansible_setup_gather_subset }}"
       when:
-        - virtualenv is defined
+        - kayobe_virtualenv is defined
         - gather_facts is not skipped
         - lookup('config', 'DEFAULT_GATHERING') != 'implicit'
 
@@ -110,15 +110,15 @@
             name: "{{ packages | select | list }}"
             state: present
           become: True
-      when: virtualenv is not defined
+      when: kayobe_virtualenv is not defined
 
     - name: Ensure kolla-ansible virtualenv has docker SDK for python installed
       pip:
         name: docker
         state: latest
-        virtualenv: "{{ virtualenv | default(omit) }}"
+        virtualenv: "{{ kayobe_virtualenv | default(omit) }}"
         extra_args: "{% if docker_upper_constraints_file %}-c {{ docker_upper_constraints_file }}{% endif %}"
-      become: "{{ virtualenv is not defined }}"
+      become: "{{ kayobe_virtualenv is not defined }}"
       vars:
         docker_upper_constraints_file: "{{ pip_upper_constraints_file }}"
       when:
@@ -127,9 +127,9 @@
 
     - name: Ensure kayobe virtualenv has podman SDK installed
       import_role:
-         name: openstack.kolla.podman_sdk
+        name: openstack.kolla.podman_sdk
       vars:
-        virtualenv: "{{ virtualenv }}"
+        virtualenv: "{{ kayobe_virtualenv }}"
         podman_sdk_upper_constraints_file: "{{ pip_upper_constraints_file }}"
       when:
         - "'container-engine' in group_names"

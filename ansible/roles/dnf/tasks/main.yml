@@ -4,7 +4,7 @@
     path: /etc/dnf/dnf.conf
     section: "main"
     option: "{{ item.key }}"
-    value:  "{{ item.value }}"
+    value: "{{ item.value }}"
   loop: "{{ query('dict', dnf_config) }}"
   become: true
 

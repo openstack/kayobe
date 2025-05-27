@@ -5,5 +5,5 @@
     state: touch
     mode: "u=rw,g=r,o=r"
   notify:
-    - reload systemd daemon
+    - Reload systemd daemon
   become: True

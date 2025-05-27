@@ -1,7 +1,7 @@
 ---
 - import_tasks: prerequisites.yml
 
-- name: list all VMs on hypervisor
+- name: List all VMs on hypervisor
   virt:
     command: list_vms
   register: all_vms

@@ -11,7 +11,7 @@
   tags:
     - apt
   tasks:
-    - name: include apt role
+    - name: Include apt role
       include_role:
         name: apt
       when: ansible_facts.os_family == 'Debian'

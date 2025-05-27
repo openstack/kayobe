@@ -24,7 +24,7 @@
     - block:
         - name: Test the swift-block-devices role
           include_role:
-            name:  ../../swift-block-devices
+            name: ../../swift-block-devices
           vars:
             swift_block_devices:
               - device: "{{ loopback.stdout }}"

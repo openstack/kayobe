@@ -58,6 +58,7 @@ ansible/*.retry
 ansible/roles/*/tests/*.retry
 
 # Ansible Galaxy roles & collections
+.ansible
 ansible/roles/*\.*/
 ansible/collections/
 

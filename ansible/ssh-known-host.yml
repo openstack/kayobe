@@ -11,4 +11,3 @@
     - ssh-known-host
   roles:
     - role: ssh-known-host
-

@@ -1,3 +1,4 @@
+---
 - name: Configure HTTP(S) proxy settings
   hosts: seed-hypervisor:seed:overcloud:infra-vms
   max_fail_percentage: >-

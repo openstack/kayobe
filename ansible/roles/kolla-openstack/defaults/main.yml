@@ -138,7 +138,7 @@ kolla_openstack_custom_config_include_globs_default:
     glob: nova/**
   - enabled: '{{ kolla_enable_nova | bool }}'
     glob: nova_compute/**
-  - enabled: '{{ kolla_enable_octavia | bool  }}'
+  - enabled: '{{ kolla_enable_octavia | bool }}'
     glob: octavia.conf
   - enabled: '{{ kolla_enable_octavia | bool }}'
     glob: octavia/**

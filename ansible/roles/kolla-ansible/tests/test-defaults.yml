@@ -137,7 +137,7 @@
         - name: Check that no inventory overrides are configured
           assert:
             that:
-              -  kolla_ansible_overcloud_inventory_overrides.matched == 0
+              - kolla_ansible_overcloud_inventory_overrides.matched == 0
             msg: >
               Overcloud group vars were found when they should not be set.
 

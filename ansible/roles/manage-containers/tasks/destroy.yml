@@ -1,3 +1,4 @@
+---
 - name: Destroy containers (loop)
   include_tasks: destroy-container.yml
   vars:

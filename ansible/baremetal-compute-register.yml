@@ -39,42 +39,42 @@
         fail_msg: One or more Ironic variables are undefined.
 
     - block:
-      - name: Show baremetal node
-        ansible.builtin.command:
-          cmd: "{{ venv }}/bin/openstack baremetal node show {{ inventory_hostname }}"
-        register: node_show
-        failed_when:
-          - '"HTTP 404" not in node_show.stderr'
-          - node_show.rc != 0
-        changed_when: false
+        - name: Show baremetal node
+          ansible.builtin.command:
+            cmd: "{{ venv }}/bin/openstack baremetal node show {{ inventory_hostname }}"
+          register: node_show
+          failed_when:
+            - '"HTTP 404" not in node_show.stderr'
+            - node_show.rc != 0
+          changed_when: false
 
-      # NOTE: The openstack.cloud.baremetal_node module cannot be used in this
-      # script due to requiring a MAC address pre-defined, instead, this should
-      # be discovered by inpsection following this script.
-      #
-      # NOTE: IPMI address must be passed with Redfish address to ensure existing
-      # Ironic nodes match with new nodes during inspection.
-      - name: Create baremetal nodes
-        ansible.builtin.shell:
-          cmd: |
-            {{ venv }}/bin/openstack baremetal node create \
-            --name {{ inventory_hostname }} \
-            --driver {{ ironic_driver }} \
-            {% for key, value in ironic_driver_info.items() %}
-            --driver-info {{ key }}={{ value }} \
-            {% endfor %}
-            {% for key, value in ironic_properties.items() %}
-            --property {{ key }}={{ value }} \
-            {% endfor %}
-            --resource-class {{ ironic_resource_class }}
-        when:
-          - node_show.rc != 0
+        # NOTE: The openstack.cloud.baremetal_node module cannot be used in this
+        # script due to requiring a MAC address pre-defined, instead, this should
+        # be discovered by inpsection following this script.
+        #
+        # NOTE: IPMI address must be passed with Redfish address to ensure existing
+        # Ironic nodes match with new nodes during inspection.
+        - name: Create baremetal nodes
+          ansible.builtin.shell:
+            cmd: |
+              {{ venv }}/bin/openstack baremetal node create \
+              --name {{ inventory_hostname }} \
+              --driver {{ ironic_driver }} \
+              {% for key, value in ironic_driver_info.items() %}
+              --driver-info {{ key }}={{ value }} \
+              {% endfor %}
+              {% for key, value in ironic_properties.items() %}
+              --property {{ key }}={{ value }} \
+              {% endfor %}
+              --resource-class {{ ironic_resource_class }}
+          when:
+            - node_show.rc != 0
 
-      - name: Manage baremetal nodes
-        ansible.builtin.command:
-          cmd: "{{ venv }}/bin/openstack baremetal node manage {{ inventory_hostname }} --wait"
-        when:
-          - node_show.rc != 0
+        - name: Manage baremetal nodes
+          ansible.builtin.command:
+            cmd: "{{ venv }}/bin/openstack baremetal node manage {{ inventory_hostname }} --wait"
+          when:
+            - node_show.rc != 0
       delegate_to: "{{ controller_host }}"
       vars:
         # NOTE: Without this, the controller's ansible_host variable will not
