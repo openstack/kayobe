@@ -105,7 +105,7 @@
       tenks_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/tenks'].src_dir }}"
       is_upgrade: "{{ 'upgrade' in zuul.job }}"
       is_slurp: "{{ 'slurp' in zuul.job }}"
-      previous_release: "{{ '2024.1' if is_slurp else '2024.2' }}"
+      previous_release: "{{ '2025.1' if is_slurp else '2025.1' }}"
       tls_enabled: false
       container_engine: 'docker'
       ironic_boot_mode: "bios"
