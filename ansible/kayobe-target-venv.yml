@@ -21,14 +21,21 @@
         - not ansible_python_interpreter.startswith('/bin')
         - not ansible_python_interpreter.startswith('/usr/bin')
 
-    - block:
-        - name: Gather facts
-          setup:
-            filter: "{{ kayobe_ansible_setup_filter }}"
-            gather_subset: "{{ kayobe_ansible_setup_gather_subset }}"
-          when: not ansible_facts
-          register: gather_facts
+    - name: Gather facts
+      setup:
+        filter: "{{ kayobe_ansible_setup_filter }}"
+        gather_subset: "{{ kayobe_ansible_setup_gather_subset }}"
+      when:
+        - ansible_facts is undefined or not ansible_facts
+        - kayobe_virtualenv is defined
+      register: gather_facts
+      # Before any facts are gathered, ansible doesn't know about
+      # python virtualenv.
+      # Use default python3 to be safe for this task.
+      vars:
+        ansible_python_interpreter: /usr/bin/python3
 
+    - block:
         - name: Ensure the Python venv package is installed on Debian family systems
           package:
             name: python3-venv
