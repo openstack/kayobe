@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    The ``openstacksdk_upper_constraints_file`` variable now defaults to the
+    value of ``pip_upper_constraints_file``. Set
+    ``openstacksdk_upper_constraints_file`` to
+    ``"https://releases.openstack.org/constraints/upper/{{ openstack_release
+    }}"`` if you want to retain existing behaviour.
