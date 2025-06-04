@@ -23,9 +23,9 @@
 - name: Change system scope to all for Ironic operations
   set_fact:
     ipa_images_ironic_openstack_auth_env: "{{ ipa_images_openstack_auth_env |
-    combine ({ 'OS_PROJECT_NAME': omit }) |
-    combine ({ 'OS_PROJECT_DOMAIN_NAME': omit }) |
-    combine ({ 'OS_SYSTEM_SCOPE': 'all' }) }}"
+    combine({'OS_PROJECT_NAME': omit}) |
+    combine({'OS_PROJECT_DOMAIN_NAME': omit}) |
+    combine({'OS_SYSTEM_SCOPE': 'all'}) }}"
 
 - name: Get a list of ironic nodes
   command: |

@@ -17,7 +17,7 @@
   local_action:
     module: command ssh-keyscan {{ item }}
   with_items:
-    - "{{ ansible_host|default(inventory_hostname) }}"
+    - "{{ ansible_host | default(inventory_hostname) }}"
   register: keyscan_result
   changed_when: False
 
