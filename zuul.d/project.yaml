@@ -12,14 +12,10 @@
         - kayobe-tox-ansible-syntax
         - kayobe-tox-ansible
         - kayobe-tox-molecule
-        - kayobe-overcloud-rocky9
-        - kayobe-overcloud-rocky9-podman
         - kayobe-overcloud-ubuntu-noble
         - kayobe-overcloud-ubuntu-noble-podman
-        - kayobe-overcloud-tls-rocky9
         - kayobe-overcloud-host-configure-rocky9
         - kayobe-overcloud-host-configure-ubuntu-noble
-        - kayobe-overcloud-upgrade-rocky9
         - kayobe-overcloud-upgrade-ubuntu-noble
         - kayobe-seed-rocky9
         - kayobe-seed-rocky9-podman
@@ -39,14 +35,10 @@
         - kayobe-tox-ansible-syntax
         - kayobe-tox-ansible
         - kayobe-tox-molecule
-        - kayobe-overcloud-rocky9
-        - kayobe-overcloud-rocky9-podman
         - kayobe-overcloud-ubuntu-noble
         - kayobe-overcloud-ubuntu-noble-podman
-        - kayobe-overcloud-tls-rocky9
         - kayobe-overcloud-host-configure-rocky9
         - kayobe-overcloud-host-configure-ubuntu-noble
-        - kayobe-overcloud-upgrade-rocky9
         - kayobe-overcloud-upgrade-ubuntu-noble
         - kayobe-seed-rocky9
         - kayobe-seed-rocky9-podman
@@ -63,6 +55,10 @@
       jobs:
         - kayobe-overcloud-centos9s
         - kayobe-overcloud-host-configure-centos9s
+        - kayobe-overcloud-rocky9
+        - kayobe-overcloud-rocky9-podman
+        - kayobe-overcloud-tls-rocky9
+        - kayobe-overcloud-upgrade-rocky9
         - kayobe-seed-images-centos9s
         - kayobe-seed-images-rocky9-podman
         - kayobe-seed-images-ubuntu-noble
