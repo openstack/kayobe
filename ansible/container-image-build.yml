@@ -53,7 +53,7 @@
           kolla-build
           --config-dir {{ kolla_build_config_path }}
           --engine {{ container_engine }}
-          {% if kolla_docker_registry is not none %}--registry {{ kolla_docker_registry }}{% endif %}
+          {% if kolla_docker_registry %}--registry {{ kolla_docker_registry }}{% endif %}
           {% if push_images | bool %}--push{% endif %}
           {% if nocache | bool %}--nocache{% endif %}
           {% if kolla_base_arch != ansible_facts.architecture %}--platform {{ platform }}{% endif %}
