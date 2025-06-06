@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fixes an issue building images with a regex when no image registry is set
+    `LP#2112646 <https://bugs.launchpad.net/kayobe/+bug/2112646>`__
