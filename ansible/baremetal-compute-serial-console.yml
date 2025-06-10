@@ -38,7 +38,7 @@
           set_fact:
             baremetal_nodes: >-
               {{ query('inventory_hostnames', console_compute_node_limit |
-              default('baremetal-compute') ) | unique }}
+              default('baremetal-compute')) | unique }}
 
         - name: Reserve TCP ports for ironic serial consoles
           include_role:
@@ -110,7 +110,7 @@
       vars:
         matching_nodes: >-
           {{ (nodes.stdout | from_json) | selectattr('Name', 'defined') |
-          selectattr('Name', 'equalto', inventory_hostname ) | list }}
+          selectattr('Name', 'equalto', inventory_hostname) | list }}
         node: "{{ matching_nodes | first }}"
       when:
         - cmd == "enable"
@@ -130,7 +130,7 @@
       vars:
         matching_nodes: >-
           {{ (nodes.stdout | from_json) | selectattr('Name', 'defined') |
-          selectattr('Name', 'equalto', inventory_hostname ) | list }}
+          selectattr('Name', 'equalto', inventory_hostname) | list }}
         node: "{{ matching_nodes | first }}"
       when:
         - cmd == "disable"

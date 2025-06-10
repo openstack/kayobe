@@ -28,7 +28,6 @@ skip_list:
   - command-instead-of-module
   - command-instead-of-shell
   - deprecated-local-action
-  - jinja[spacing]
   - key-order[task]
   - name[play]
   - risky-file-permissions
