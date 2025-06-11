@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    Updates the default cloud image for CentOS Stream 9 deployments to use
+    ``CentOS-Stream-GenericCloud-9-latest.x86_64.qcow2``.
