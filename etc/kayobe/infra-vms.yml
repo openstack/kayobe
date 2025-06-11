@@ -40,7 +40,7 @@
 # "https://dl.rockylinux.org/vault/rocky/9.3/images/x86_64/Rocky-9-GenericCloud.latest.x86_64.qcow2"
 # when os_distribution is "rocky" and seed_vm_boot_firmware is not "efi"
 # (default is "bios"), or
-# "https://cloud.centos.org/centos/9-stream/x86_64/images/CentOS-Stream-GenericCloud-9-20221206.0.x86_64.qcow2"
+# "https://cloud.centos.org/centos/9-stream/x86_64/images/CentOS-Stream-GenericCloud-9-latest.x86_64.qcow2"
 # otherwise.
 #infra_vm_root_image:
 
