@@ -320,3 +320,9 @@ kolla_https_proxy:
 # List of domains, hostnames, IP addresses and networks for which no proxy is
 # used.
 kolla_no_proxy:
+
+###############################################################################
+# Bifrost configuration
+
+# Whether to install Bifrost. Default is true.
+kolla_enable_bifrost: true

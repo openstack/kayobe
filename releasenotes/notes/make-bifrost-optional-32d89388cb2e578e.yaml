@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Add `kolla_enable_bifrost` to make deploying Bifrost optional. It
+    defaults to `true` maintaining the current behavior.

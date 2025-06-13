@@ -15,4 +15,6 @@ virtualenv={{ kolla_ansible_target_venv }}
 seed
 
 [bifrost:children]
+{% if kolla_enable_bifrost | bool %}
 seed
+{% endif %}
