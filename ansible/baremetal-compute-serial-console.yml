@@ -36,9 +36,7 @@
 
         - name: Get list of nodes that we should configure serial consoles on
           set_fact:
-            baremetal_nodes: >-
-              {{ query('inventory_hostnames', console_compute_node_limit |
-              default('baremetal-compute')) | unique }}
+            baremetal_nodes: "{{ query('inventory_hostnames', console_compute_node_limit | default('baremetal-compute')) | unique }}"  # noqa jinja[invalid]
 
         - name: Reserve TCP ports for ironic serial consoles
           include_role:

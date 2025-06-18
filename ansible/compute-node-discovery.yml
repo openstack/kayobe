@@ -51,7 +51,7 @@
         # be respected when using delegate_to.
         ansible_host: "{{ hostvars[controller_host].ansible_host | default(controller_host) }}"
 
-    - name: Pause to prevent overwhelming BMCs
+    - name: Pause again to prevent overwhelming BMCs
       pause:
         seconds: 5
 

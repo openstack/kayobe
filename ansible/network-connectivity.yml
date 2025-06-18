@@ -14,7 +14,7 @@
     # (20 bytes) headers.
     icmp_overhead_bytes: 28
   tasks:
-    - name: Display next action
+    - name: "Display next action: external IP address check"
       debug:
         msg: >
           Checking whether hosts have access to an external IP address,
@@ -25,7 +25,7 @@
       command: ping -c1 {{ nc_external_ip }}
       changed_when: False
 
-    - name: Display next action
+    - name: "Display next action: external hostname check"
       debug:
         msg: >
           Checking whether hosts have access to an external hostname,
@@ -36,7 +36,7 @@
       command: ping -c1 {{ nc_external_hostname }}
       changed_when: False
 
-    - name: Display next action
+    - name: "Display next action: gateway check"
       debug:
         msg: >
           Checking whether hosts have access to any configured gateways.
@@ -57,7 +57,7 @@
     # network and try to ping it. Set the packet size according to the
     # network's MTU.
 
-    - name: Display next action
+    - name: "Display next action: host connectivity check"
       debug:
         msg: >
           Checking whether hosts have access to other hosts on the same

@@ -21,7 +21,7 @@
         - not ansible_python_interpreter.startswith('/bin')
         - not ansible_python_interpreter.startswith('/usr/bin')
 
-    - name: Gather facts
+    - name: Gather facts with system Python interpreter
       setup:
         filter: "{{ kayobe_ansible_setup_filter }}"
         gather_subset: "{{ kayobe_ansible_setup_gather_subset }}"
@@ -98,7 +98,7 @@
     # If we gathered facts earlier it would have been with a different Python
     # interpreter. For gathering modes that may use a fact cache, gather facts
     # again using the interpreter from the virtual environment.
-    - name: Gather facts
+    - name: Gather facts with virtualenv Python interpreter
       setup:
         filter: "{{ kayobe_ansible_setup_filter }}"
         gather_subset: "{{ kayobe_ansible_setup_gather_subset }}"
