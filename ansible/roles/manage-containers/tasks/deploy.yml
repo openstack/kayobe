@@ -10,7 +10,7 @@
   become: "{{ container_engine == 'podman' }}"
 
 - name: Deploy containers (loop)
-  include_tasks: deploy.yml
+  include_tasks: deploy-container.yml
   vars:
     container_name: "{{ item.key }}"
     container_config: "{{ item.value }}"

@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fixes an infinite loop when deploying seed containers.
+    `LP#2114845 <https://bugs.launchpad.net/kayobe/+bug/2114845>`__
