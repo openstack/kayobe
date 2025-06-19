@@ -115,9 +115,10 @@ seed_users: "{{ users_default }}"
 # Example:
 # seed_containers:
 #   squid:
-#     image: "stackhpc/squid:3.5.20-1"
+#     image: "docker.io/stackhpc/squid"
 #     pre: "{{ kayobe_env_config_path }}/containers/squid/pre.yml"
 #     post: "{{ kayobe_env_config_path }}/containers/squid/post.yml"
+#     tag: "3.5.20-1"
 #
 seed_containers: {}
 
