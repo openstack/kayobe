@@ -17,11 +17,12 @@ For example, to deploy a squid container image:
 
    seed_containers:
      squid:
-       image: "stackhpc/squid:3.5.20-1"
+       image: "docker.io/stackhpc/squid"
        pre: "{{ kayobe_env_config_path }}/containers/squid/pre.yml"
        post: "{{ kayobe_env_config_path }}/containers/squid/post.yml"
        pre_destroy: "{{ kayobe_env_config_path }}/containers/squid/pre_destroy.yml"
        post_destroy: "{{ kayobe_env_config_path }}/containers/squid/post_destroy.yml"
+       tag: "3.5.20-1"
 
 Please notice the *optional* pre, post, pre_destroy, and post_destroy Ansible task
 files - those need to be created in ``kayobe-config`` path. The table below describes
