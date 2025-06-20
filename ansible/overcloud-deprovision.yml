@@ -43,6 +43,8 @@
           {{ play_hosts | join(', ') }}
           If you want to proceed type: yes
       register: pause_prompt
+      delegate_to: localhost
+      run_once: true
       when: not confirm_deprovision
 
     - name: Fail if deprovision is not confirmed
@@ -51,6 +53,8 @@
         msg: >
           Deprovision has not been confirmed. You must either type 'yes' when
           prompted, or set ``confirm_deprovision=yes``.
+      delegate_to: localhost
+      run_once: true
 
     - name: Get PXE MAC address
       command: >

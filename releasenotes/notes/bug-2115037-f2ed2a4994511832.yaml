@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Fixes the user prompt for deprovisioning multiple overcloud hosts at once.
+    Previously, the prompt would only confirm deprovisioning for one host. It
+    will now correctly apply to all hosts that have been targeted.
+    `LP#2115037 <https://bugs.launchpad.net/kayobe/+bug/2115037>`__
