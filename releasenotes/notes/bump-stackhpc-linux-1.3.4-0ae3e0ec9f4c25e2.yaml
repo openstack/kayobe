@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fixes failure to activate SR-IOV on GPU devices by bumping the
+    ``stackhpc.linux`` collection to v1.3.4.
