@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    Bumps the ``dellemc.os10`` collection to version 1.2.7. This resolves an
+    issue with applying some configuration blocks.
+    `LP#2115121 <https://bugs.launchpad.net/kayobe/+bug/2115121>`__
