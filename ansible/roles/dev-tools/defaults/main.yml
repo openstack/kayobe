@@ -15,4 +15,4 @@ dev_tools_packages_system:
   - acl
 
 # List of packages to install.
-dev_tools_packages: "{{ dev_tools_packages_default + dev_tools_packages_extra + dev_tools_packages_system }}"
+dev_tools_packages: "{{ (dev_tools_packages_default + dev_tools_packages_extra + dev_tools_packages_system) | select | list }}"
