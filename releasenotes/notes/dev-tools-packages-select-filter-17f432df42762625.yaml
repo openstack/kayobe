@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Fixes support for empty strings in the ``dev-tools`` package lists. This
+    allows using expressions such as ``{{ 'foo' if os_distribution == 'rocky'
+    else '' }}``.
+    `LP#2115000 <https://bugs.launchpad.net/kayobe/+bug/2115000>`__
