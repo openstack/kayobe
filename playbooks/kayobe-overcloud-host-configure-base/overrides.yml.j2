@@ -231,3 +231,7 @@ compute_libvirt_sasl_password: "{% raw %}{{ lookup('password', '/tmp/libvirt-sas
 dnf_use_local_mirror: true
 controller_fail2ban_enabled: true
 {% endif %}
+
+# Add a custom entry to /etc/hosts.
+custom_etc_hosts_entries:
+  foo.example.com: 127.0.0.88

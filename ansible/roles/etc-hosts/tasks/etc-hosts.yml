@@ -31,6 +31,9 @@
         {{ hostvars[host].internal_net_name | net_ip(inventory_hostname=host) }} {{ hostnames | unique | join(' ') }}
         {% endif %}
         {% endfor %}
+        {% for item in custom_etc_hosts_entries | dict2items %}
+        {{ item.value }} {{ item.key }}
+        {% endfor %}
   become: True
   when:
     # Skip hosts that do not have a valid internal network interface.
