@@ -518,7 +518,7 @@ Development tools
   | ``dev-tools``
 
 Development tools (additional OS packages) can be configured to be installed
-on hosts. By default Ddvelopment tools are installed on all
+on hosts. By default development tools are installed on all
 ``seed-hypervisor``, ``seed``, ``overcloud`` and ``infra-vms`` hosts.
 
 The following variables can be used to set which packages to install:
