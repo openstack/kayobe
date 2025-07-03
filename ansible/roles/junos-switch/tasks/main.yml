@@ -15,9 +15,7 @@
   run_once: true
 
 - name: Ensure Juniper switches are configured
-  local_action:
-    module: junos_config
-    provider: "{{ junos_switch_provider }}"
+  junos_config:
     src: "{{ junos_switch_src }}"
     src_format: "{{ junos_switch_config_format }}"
   vars:
