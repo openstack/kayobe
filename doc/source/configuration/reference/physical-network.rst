@@ -293,24 +293,14 @@ module.
 configuration.  The variable is passed as the ``src_format`` argument to the
 ``junos_config`` module.  The default value is ``text``.
 
-Provider
-^^^^^^^^
-
 * ``ansible_host`` is the hostname or IP address.  Optional.
-
 * ``ansible_user`` is the SSH username.
-
 * ``ansible_ssh_pass`` is the SSH password.  Mutually exclusive with
   ``ansible_ssh_private_key_file``.
-
 * ``ansible_ssh_private_key_file`` is the SSH private key file.  Mutually
   exclusive with ``ansible_ssh_pass``.
-
-* ``switch_junos_timeout`` may be set to a timeout in seconds for communicating
-  with the device.
-
-Alternatively, set ``switch_junos_provider`` to the value to be passed as the
-``provider`` argument to the ``junos_config`` module.
+* ``ansible_connection`` should be ``ansible.netcommon.netconf``.
+* ``ansible_network_os`` should be ``junipernetworks.junos.junos``.
 
 Mellanox MLNX OS
 ----------------
