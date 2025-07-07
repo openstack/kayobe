@@ -27,7 +27,7 @@
         gather_subset: "{{ kayobe_ansible_setup_gather_subset }}"
       when:
         - ansible_facts is undefined or not ansible_facts
-        - kayobe_virtualenv is defined
+        - virtualenv is defined
       register: gather_facts
       # Before any facts are gathered, ansible doesn't know about
       # python virtualenv.
