@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The ``neutron-bgp-dragent`` container will now be built by default when
+    ``kolla_enable_neutron_bgp_dragent`` is true.
