@@ -63,10 +63,3 @@ seed_containers:
   node_exporter:
     image: "quay.io/prometheus/node-exporter"
     tag: "latest"
-
-{% if ansible_os_family == "Debian" %}
-# TODO(priteau): Required for running some containers on Ubuntu + Podman.
-# Remove once installed by ansible-collection-kolla.
-dev_tools_packages_extra:
-  - "catatonit"
-{% endif %}
