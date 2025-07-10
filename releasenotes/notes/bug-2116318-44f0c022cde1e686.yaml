@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes duplicate ``OS_CACERT`` lines in ``public-openrc.sh`` when both admin
+    and public cacert variables are set.
+    `LP#2116318 <https://bugs.launchpad.net/kayobe/+bug/2116318>`__
