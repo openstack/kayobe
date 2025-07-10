@@ -2,27 +2,8 @@
 # Switch configuration.
 
 ###############################################################################
-# Authentication configuration.
-
-# For Juniper switches, this defines a 'provider' argument to the junos_*
-# modules.
-switch_junos_provider:
-  host: "{{ ansible_host|default(inventory_hostname) }}"
-  username: "{{ ansible_user }}"
-  password: "{{ ansible_ssh_pass|default(omit) }}"
-  ssh_keyfile: "{{ ansible_ssh_private_key_file|default(omit) }}"
-  timeout: "{{ switch_junos_timeout }}"
-
-###############################################################################
 # Configuration format.
 
 # Format of configuration in junos_switch_config and
 # junos_switch_interface_config. May be one of 'set', 'text' or 'json'.
 switch_junos_config_format: text
-
-###############################################################################
-# Timeout.
-
-# Timeout in seconds for communicating with the network device either for
-# connecting or sending commands.
-switch_junos_timeout: 10
