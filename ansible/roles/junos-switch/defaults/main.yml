@@ -1,7 +1,4 @@
 ---
-# Authentication provider information.
-junos_switch_provider:
-
 # Format of configuration in junos_switch_config and
 # junos_switch_interface_config. May be one of 'set', 'text' or 'json'.
 junos_switch_config_format: text

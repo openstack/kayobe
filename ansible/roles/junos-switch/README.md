@@ -1,10 +1,10 @@
 JunOS Switch
 ============
 
-This role configures Juniper switches using the `junos` Ansible modules.  It
-provides a fairly minimal abstraction of the configuration interface provided
-by the `junos` modules, allowing for application of arbitrary switch
-configuration options.
+This role configures Juniper switches using the `junipernetworks.junos` Ansible
+collection. It provides a fairly minimal abstraction of the configuration
+interface provided by the collection, allowing for application of arbitrary
+switch configuration options.
 
 Requirements
 ------------
@@ -13,12 +13,6 @@ The switches should be configured to allow access to NETCONF via SSH.
 
 Role Variables
 --------------
-
-`junos_switch_delegate_to` is the host on which to execute the `junos` Ansible
-modules.
-
-`junos_switch_provider` is authentication provider information passed as the
-`provider` argument to the `junos` modules.
 
 `junos_switch_config_format` is the format of configuration in
 `junos_switch_config` and `junos_switch_interface_config`. May be one of `set`,
@@ -53,11 +47,6 @@ passwords.  It applies global configuration for LLDP, and enables two
       gather_facts: no
       roles:
         - role: junos-switch
-          junos_switch_delegate_to: localhost
-          junos_switch_provider:
-            host: "{{ switch_host }}"
-            username: "{{ switch_user }}"
-            password: "{{ switch_password }}"
           junos_switch_config:
             - "protocols {"
             - "    lldp {"
