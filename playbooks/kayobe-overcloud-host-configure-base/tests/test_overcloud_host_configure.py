@@ -229,8 +229,8 @@ def test_apt_preferences(host):
 @pytest.mark.skipif(not _is_apt(), reason="Apt only supported on Ubuntu")
 def test_apt_custom_package_repository_is_available(host):
     with host.sudo():
-        host.check_output("apt -y install td-agent")
-    assert host.package("td-agent").is_installed
+        host.check_output("apt -y install fluent-package")
+    assert host.package("fluent-package").is_installed
 
 
 @pytest.mark.skipif(not _is_apt(), reason="Apt only supported on Ubuntu")
@@ -246,7 +246,7 @@ def test_apt_auth(host):
 
 @pytest.mark.parametrize('repo', ["appstream", "baseos", "extras", "epel"])
 @pytest.mark.skipif(not _is_dnf_mirror(),
-                    reason="DNF OpenDev mirror only for CentOS 8")
+                    reason="DNF OpenDev mirror only for CentOS Stream 9")
 def test_dnf_local_package_mirrors(host, repo):
     # Depends on SITE_MIRROR_FQDN environment variable.
     assert os.getenv('SITE_MIRROR_FQDN')
@@ -261,8 +261,8 @@ def test_dnf_local_package_mirrors(host, repo):
 @pytest.mark.skipif(not _is_dnf(), reason="DNF only supported on CentOS/Rocky")
 def test_dnf_custom_package_repository_is_available(host):
     with host.sudo():
-        host.check_output("dnf -y install td-agent")
-    assert host.package("td-agent").is_installed
+        host.check_output("dnf -y install fluent-package")
+    assert host.package("fluent-package").is_installed
 
 
 @pytest.mark.skipif(not _is_dnf(), reason="DNF only supported on CentOS/Rocky")
