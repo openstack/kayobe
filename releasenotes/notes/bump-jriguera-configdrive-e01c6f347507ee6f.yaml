@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Fixes an issue where incorrect network-data.json would
+    be generated when interfaces without IP addresses are
+    attached to infrastructure VMs.
+    `LP#2118403 <https://bugs.launchpad.net/kayobe/+bug/2118403>`__
