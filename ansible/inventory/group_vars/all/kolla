@@ -64,7 +64,7 @@ kolla_base_distro: "{{ os_distribution }}"
 # Defines default versions for each distribution.
 kolla_base_distro_version_default_map: {
   "centos": "stream9",
-  "debian": "bullseye",
+  "debian": "bookworm",
   "rocky": "9",
   "ubuntu": "noble",
 }
