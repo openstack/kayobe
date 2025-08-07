@@ -3,14 +3,14 @@ name=Extra Packages for Enterprise Linux $releasever - $basearch
 baseurl=http://{{ dnf_epel_mirror_host }}/{{ dnf_epel_mirror_directory }}/$releasever/Everything/$basearch
 enabled=1
 gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-{{ ansible_facts.distribution_major_version }}
 fastestmirror=0
 
 [epel-debuginfo]
 name=Extra Packages for Enterprise Linux $releasever - $basearch - Debug
 baseurl=http://{{ dnf_epel_mirror_host }}/{{ dnf_epel_mirror_directory }}/$releasever/Everything/$basearch/debug
 enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-{{ ansible_facts.distribution_major_version }}
 gpgcheck=1
 fastestmirror=0
 
@@ -18,6 +18,6 @@ fastestmirror=0
 name=Extra Packages for Enterprise Linux $releasever - $basearch - Source
 baseurl=http://{{ dnf_epel_mirror_host }}/{{ dnf_epel_mirror_directory }}/$releasever/Everything/SRPMS
 enabled=0
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-{{ ansible_facts.distribution_major_version }}
 gpgcheck=1
 fastestmirror=0
