@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes wrong name of ``gpgkey`` used for EPEL repositories when
+    ``dnf_use_local_mirror`` is enabled.
+    `LP#2119921 <https://bugs.launchpad.net/kayobe/+bug/2119921>`__
