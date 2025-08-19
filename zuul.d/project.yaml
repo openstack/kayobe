@@ -26,7 +26,6 @@
         - kayobe-seed-rocky9
         - kayobe-seed-ubuntu-jammy
         - kayobe-seed-ubuntu-noble
-        - kayobe-seed-images-rocky9
         - kayobe-seed-upgrade-slurp-rocky9
         - kayobe-seed-upgrade-slurp-ubuntu-jammy
         - kayobe-seed-vm-rocky9
@@ -69,5 +68,6 @@
     experimental:
       jobs:
         - kayobe-seed-images-centos9s
+        - kayobe-seed-images-rocky9
         - kayobe-seed-images-ubuntu-jammy
         - kayobe-seed-images-ubuntu-noble
