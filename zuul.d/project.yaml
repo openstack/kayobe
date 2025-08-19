@@ -29,7 +29,6 @@
         - kayobe-seed-rocky9-podman
         - kayobe-seed-ubuntu-noble
         - kayobe-seed-ubuntu-noble-podman
-        - kayobe-seed-images-rocky9
         - kayobe-seed-upgrade-rocky9
         - kayobe-seed-upgrade-ubuntu-noble
         - kayobe-seed-upgrade-slurp-rocky9
@@ -76,6 +75,7 @@
         - kayobe-overcloud-centos9s
         - kayobe-overcloud-host-configure-centos9s
         - kayobe-seed-images-centos9s
+        - kayobe-seed-images-rocky9
         - kayobe-seed-images-rocky9-podman
         - kayobe-seed-images-ubuntu-noble
         - kayobe-seed-images-ubuntu-noble-podman
