@@ -25,7 +25,6 @@
         - kayobe-overcloud-upgrade-ubuntu-jammy
         - kayobe-seed-rocky9
         - kayobe-seed-ubuntu-noble
-        - kayobe-seed-images-rocky9
         - kayobe-seed-upgrade-rocky9
         - kayobe-seed-upgrade-ubuntu-jammy
         - kayobe-seed-vm-rocky9
@@ -61,4 +60,5 @@
     experimental:
       jobs:
         - kayobe-seed-images-centos9s
+        - kayobe-seed-images-rocky9
         - kayobe-seed-images-ubuntu-noble
