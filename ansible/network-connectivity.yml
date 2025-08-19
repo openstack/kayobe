@@ -68,9 +68,12 @@
       command: >
         ping {{ remote_ip }} -c1 -M do {% if mtu %} -s {{ mtu | int - icmp_overhead_bytes }}{% endif %}
       with_items: "{{ network_interfaces }}"
+      loop_control:
+        label: "{{ remote_host }} on {{ item }}"
       when:
-        - item | net_ip
         - remote_hosts | length > 0
+        - remote_ip | length > 0
+        - item | net_ip
       changed_when: False
       vars:
         # Select other hosts targeted by this play which have this network
@@ -83,6 +86,10 @@
              rejectattr('inventory_hostname', 'equalto', inventory_hostname) |
              map(attribute='inventory_hostname') |
              list }}
-        remote_host: "{{ remote_hosts | random }}"
-        remote_ip: "{{ item | net_ip(remote_host) }}"
+        # NOTE(wszumski): Needed to fix random choice for the run otherwise the
+        # when check: remote_ip | length > 0, would pass, but remote_ip was ''
+        # in the command.  Assumption was that this was being evaluated once
+        # for the when clause and then again for the command. Bug?
+        remote_host: "{{ remote_hosts | random(seed=ansible_facts.date_time.iso8601) }}"
+        remote_ip: "{{ lookup('cached', 'vars', item ~ '_ips')[remote_host] | default('', true) }}"
         mtu: "{{ item | net_mtu }}"
