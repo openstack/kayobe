@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes network connectivity check when a subset of hosts have the ``no_ip``
+    property set via group or host variables.
+    `LP#2120918 <https://bugs.launchpad.net/kayobe/+bug/2120918>`__
