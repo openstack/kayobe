@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Adds the ``selinux_update_kernel_param`` variable which controls whether
+    the selinux kernel command line option is updated.

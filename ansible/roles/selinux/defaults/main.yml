@@ -11,3 +11,8 @@ selinux_do_reboot: false
 # Number of seconds to wait for hosts to become accessible via SSH after being
 # rebooted.
 selinux_reboot_timeout:
+
+# Whether or not to update the selinux kernel parameter. Can be useful if you
+# have selinux=<some value> set on the kernel command line. Default is to use
+# the module default.
+selinux_update_kernel_param: "{{ omit }}"

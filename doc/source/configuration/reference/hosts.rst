@@ -560,6 +560,9 @@ the SELinux configuration. The timeout for waiting for systems to reboot is
 ``selinux_reboot_timeout``. Alternatively, the reboot may be avoided by setting
 ``selinux_do_reboot`` to ``false``.
 
+The ``selinux_update_kernel_param`` variable can be used to change the selinux
+state set on the kernel command line; it takes a boolean value.
+
 Network Configuration
 =====================
 *tags:*

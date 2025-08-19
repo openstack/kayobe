@@ -16,6 +16,7 @@
   selinux:
     policy: "{{ selinux_policy }}"
     state: "{{ selinux_state }}"
+    update_kernel_param: "{{ selinux_update_kernel_param }}"
   register: selinux_result
   vars:
     ansible_python_interpreter: /usr/bin/python3
