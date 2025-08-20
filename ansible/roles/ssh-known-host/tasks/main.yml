@@ -13,9 +13,11 @@
       vm provision' and 'kayobe overcloud inventory discover'.
   when: not ansible_host | default(inventory_hostname)
 
+# NOTE(priteau): Exclude comments from ssh-keyscan output because they break
+# known_hosts on centos/rocky 10.
 - name: Scan for SSH keys
   local_action:
-    module: command ssh-keyscan {{ item }}
+    module: shell ssh-keyscan {{ item }} | grep -v '^#'
   with_items:
     - "{{ ansible_host | default(inventory_hostname) }}"
   register: keyscan_result
