@@ -32,14 +32,11 @@
         - kayobe-seed-upgrade-rocky9
         - kayobe-seed-upgrade-ubuntu-noble
         - kayobe-seed-upgrade-slurp-rocky9
-        - kayobe-seed-vm-rocky9:
-            voting: false
-        - kayobe-seed-vm-rocky9-efi:
-            voting: false
+        - kayobe-seed-vm-rocky9
+        - kayobe-seed-vm-rocky9-efi
         - kayobe-seed-vm-ubuntu-noble
         - kayobe-seed-vm-ubuntu-noble-efi
-        - kayobe-infra-vm-rocky9:
-            voting: false
+        - kayobe-infra-vm-rocky9
         - kayobe-infra-vm-ubuntu-noble
     gate:
       jobs:
@@ -67,7 +64,9 @@
         - kayobe-seed-upgrade-rocky9
         - kayobe-seed-upgrade-ubuntu-noble
         - kayobe-seed-upgrade-slurp-rocky9
+        - kayobe-seed-vm-rocky9
         - kayobe-seed-vm-ubuntu-noble
+        - kayobe-infra-vm-rocky9
         - kayobe-infra-vm-ubuntu-noble
 
     experimental:
