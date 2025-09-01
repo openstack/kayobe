@@ -33,9 +33,7 @@
         - kayobe-seed-upgrade-ubuntu-noble
         - kayobe-seed-upgrade-slurp-rocky9
         - kayobe-seed-vm-rocky9
-        - kayobe-seed-vm-rocky9-efi
         - kayobe-seed-vm-ubuntu-noble
-        - kayobe-seed-vm-ubuntu-noble-efi
         - kayobe-infra-vm-rocky9
         - kayobe-infra-vm-ubuntu-noble
     gate:
@@ -78,3 +76,6 @@
         - kayobe-seed-images-rocky9-podman
         - kayobe-seed-images-ubuntu-noble
         - kayobe-seed-images-ubuntu-noble-podman
+        - kayobe-seed-vm-centos9s-q35
+        - kayobe-seed-vm-rocky9-q35
+        - kayobe-seed-vm-ubuntu-noble-q35
