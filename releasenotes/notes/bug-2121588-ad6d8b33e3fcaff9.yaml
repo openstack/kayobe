@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes CentOS Stream 9 seed and infra VMs not booting by switching to an
+    EFI-compatible image.
+    `LP#2121588 <https://bugs.launchpad.net/kayobe/+bug/2121588>`__
