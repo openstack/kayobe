@@ -395,6 +395,29 @@
       kayobe_control_host_become: false
 
 - job:
+    name: kayobe-seed-vm-centos9s-cloud-image
+    parent: kayobe-seed-vm-base
+    nodeset: kayobe-centos9s
+    voting: false
+    vars:
+      seed_vm_use_cirros: false
+
+- job:
+    name: kayobe-seed-vm-rocky9-cloud-image
+    parent: kayobe-seed-vm-base
+    nodeset: kayobe-rocky9
+    vars:
+      seed_vm_use_cirros: false
+
+- job:
+    name: kayobe-seed-vm-ubuntu-noble-cloud-image
+    parent: kayobe-seed-vm-base
+    nodeset: kayobe-ubuntu-noble
+    voting: false
+    vars:
+      seed_vm_use_cirros: false
+
+- job:
     name: kayobe-seed-vm-q35-base
     parent: kayobe-seed-vm-base
     description: |

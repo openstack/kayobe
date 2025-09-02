@@ -34,9 +34,11 @@ seed_vm_vcpus: 1
 # Reduce the memory footprint of the seed VM.
 seed_vm_memory_mb: "{{ 1 * 1024 }}"
 
-# Use cirros rather than CentOS for the VM.
+{% if seed_vm_use_cirros | default(true) %}
+# Use cirros rather than distribution cloud image for the VM.
 seed_bootstrap_user: cirros
 seed_vm_root_image: /opt/cache/files/cirros-0.5.3-x86_64-disk.img
+{% endif %}
 
 {% if seed_vm_boot_firmware is defined %}
 seed_vm_boot_firmware: "{{ seed_vm_boot_firmware }}"

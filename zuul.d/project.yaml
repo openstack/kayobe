@@ -76,6 +76,9 @@
         - kayobe-seed-images-rocky9-podman
         - kayobe-seed-images-ubuntu-noble
         - kayobe-seed-images-ubuntu-noble-podman
+        - kayobe-seed-vm-centos9s-cloud-image
         - kayobe-seed-vm-centos9s-q35
+        - kayobe-seed-vm-rocky9-cloud-image
         - kayobe-seed-vm-rocky9-q35
+        - kayobe-seed-vm-ubuntu-noble-cloud-image
         - kayobe-seed-vm-ubuntu-noble-q35
