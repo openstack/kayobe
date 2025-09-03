@@ -1,0 +1,12 @@
+---
+upgrade:
+  - |
+    Removes the Bifrost introspection rule that was updating the deploy kernel
+    location from the legacy ``ipa.vmlinuz`` path to the new ``ipa.kernel``
+    path. If this migration has not yet been applied, update the deployment
+    kernel location manually with:
+
+    ``OS_CLOUD=bifrost baremetal node set --driver-info deploy_kernel=<http://url/to/ipa.kernel> $NODE_UUID_OR_NAME``
+
+    This is only relevant for deployments with nodes discovered with the
+    OpenStack Train release or earlier.
