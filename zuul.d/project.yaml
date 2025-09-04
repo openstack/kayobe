@@ -57,6 +57,9 @@
 
     experimental:
       jobs:
+        - kayobe-infra-vm-centos9s-cloud-image
+        - kayobe-infra-vm-rocky9-cloud-image
+        - kayobe-infra-vm-ubuntu-noble-cloud-image
         - kayobe-seed-images-centos9s
         - kayobe-seed-images-rocky9
         - kayobe-seed-images-ubuntu-noble
