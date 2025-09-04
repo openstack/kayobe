@@ -44,6 +44,9 @@
 
     experimental:
       jobs:
+        - kayobe-infra-vm-centos9s-cloud-image
+        - kayobe-infra-vm-rocky9-cloud-image
+        - kayobe-infra-vm-ubuntu-noble-cloud-image
         - kayobe-overcloud-centos9s
         - kayobe-overcloud-host-configure-centos9s
         - kayobe-overcloud-rocky9

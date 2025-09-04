@@ -464,3 +464,26 @@
     name: kayobe-infra-vm-ubuntu-noble
     parent: kayobe-infra-vm-base
     nodeset: kayobe-ubuntu-noble
+
+- job:
+    name: kayobe-infra-vm-centos9s-cloud-image
+    parent: kayobe-infra-vm-base
+    nodeset: kayobe-centos9s
+    voting: false
+    vars:
+      infra_vm_use_cirros: false
+
+- job:
+    name: kayobe-infra-vm-rocky9-cloud-image
+    parent: kayobe-infra-vm-base
+    nodeset: kayobe-rocky9
+    vars:
+      infra_vm_use_cirros: false
+
+- job:
+    name: kayobe-infra-vm-ubuntu-noble-cloud-image
+    parent: kayobe-infra-vm-base
+    nodeset: kayobe-ubuntu-noble
+    voting: false
+    vars:
+      infra_vm_use_cirros: false
