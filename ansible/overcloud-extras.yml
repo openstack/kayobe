@@ -8,5 +8,4 @@
 # action: One of deploy, destroy, pull, reconfigure, upgrade
 
 - import_playbook: docker-registry.yml
-- import_playbook: inspection-store.yml
 - import_playbook: opensm.yml

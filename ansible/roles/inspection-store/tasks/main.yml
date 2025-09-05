@@ -1,2 +1,0 @@
----
-- include_tasks: "{{ inspection_store_action }}.yml"
