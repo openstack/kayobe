@@ -120,13 +120,13 @@
           - var_name: "kolla_bifrost_network_interface"
             description: "Bifrost provisioning network"
             network: "{{ provision_oc_net_name }}"
-            required: True
+            required: "{{ kolla_enable_bifrost | bool }}"
           # Strictly api_interface is not required but kolla-ansible currently
           # references it in prechecks.
           - var_name: "kolla_api_interface"
             description: "Bifrost provisioning network"
             network: "{{ provision_oc_net_name }}"
-            required: True
+            required: "{{ kolla_enable_bifrost | bool }}"
 
     - import_role:
         name: kolla-ansible-host-vars
