@@ -61,8 +61,10 @@
     user: "{{ ansible_facts.user_id }}"
     key: "{{ lookup('file', bootstrap_ssh_private_key_path ~ '.pub') }}"
 
+# NOTE(priteau): Exclude comments from ssh-keyscan output because they break
+# known_hosts on centos/rocky 10.
 - name: Scan for SSH keys
-  command: ssh-keyscan {{ item }}
+  shell: ssh-keyscan {{ item }} | grep -v '^#'
   with_items:
     - localhost
     - 127.0.0.1
