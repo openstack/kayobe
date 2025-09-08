@@ -89,8 +89,8 @@ kolla_bifrost_extra_kernel_options: []
 ###############################################################################
 # Ironic Inspector configuration.
 
-# List of of inspector processing plugins.
-kolla_bifrost_inspector_processing_hooks: "{{ inspector_processing_hooks }}"
+# List of of inspector plugins.
+kolla_bifrost_inspector_hooks: "{{ inspector_hooks }}"
 
 # Which MAC addresses to add as ports during introspection. One of 'all',
 # 'active' or 'pxe'.

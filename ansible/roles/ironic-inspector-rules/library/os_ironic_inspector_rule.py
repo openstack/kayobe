@@ -53,6 +53,10 @@ options:
     description:
       - List of actions to be taken when the conditions are met.
     required: true
+  sensitive:
+    description:
+      - Whether to mark the rule as sensitive in Ironic
+    required: false
 """
 
 EXAMPLES = """
@@ -74,13 +78,13 @@ os_ironic_inspector_rule:
 
 def _get_client(module, cloud):
     """Return an Ironic inspector client."""
-    return cloud.baremetal_introspection
+    return cloud.baremetal
 
 
 def _ensure_rule_present(module, client):
     """Ensure that an inspector rule is present."""
     if module.params['uuid']:
-        response = client.get('/rules/{}'.format(module.params['uuid']))
+        response = client.get('/inspection_rules/{}'.format(module.params['uuid']), headers={'X-OpenStack-Ironic-API-Version': '1.96'})
         if not response.ok:
             if response.status_code != 404:
                 module.fail_json(msg="Failed retrieving Inspector rule %s: %s"
@@ -88,7 +92,7 @@ def _ensure_rule_present(module, client):
         else:
             rule = response.json()
             # Check whether the rule differs from the request.
-            keys = ('conditions', 'actions', 'description')
+            keys = ('conditions', 'actions', 'description', 'sensitive')
             for key in keys:
                 expected = module.params[key]
                 if key == 'conditions':
@@ -96,9 +100,10 @@ def _ensure_rule_present(module, client):
                     # conditions that may not be in the requested rule. Apply
                     # defaults to allow the comparison to succeed.
                     expected = copy.deepcopy(expected)
+                if key == 'actions':
+                    expected = copy.deepcopy(expected)
                     for condition in expected:
-                        condition.setdefault('invert', False)
-                        condition.setdefault('multiple', 'any')
+                        condition.setdefault('loop', [])
                 if rule[key] != expected:
                     break
             else:
@@ -111,9 +116,10 @@ def _ensure_rule_present(module, client):
         "conditions": module.params['conditions'],
         "actions": module.params['actions'],
         "description": module.params['description'],
+        "sensitive": module.params['sensitive'],
         "uuid": module.params['uuid'],
     }
-    response = client.post("/rules", json=rule)
+    response = client.post("/inspection_rules", json=rule, headers={'X-OpenStack-Ironic-API-Version': '1.96'})
     if not response.ok:
         module.fail_json(msg="Failed creating Inspector rule %s: %s"
                          % (module.params['uuid'], response.text))
@@ -124,7 +130,7 @@ def _ensure_rule_absent(module, client):
     """Ensure that an inspector rule is absent."""
     if not module.params['uuid']:
         module.fail_json(msg="UUID is required to ensure rules are absent")
-    response = client.delete("/rules/{}".format(module.params['uuid']))
+    response = client.delete("/inspection_rules/{}".format(module.params['uuid']), headers={'X-OpenStack-Ironic-API-Version': '1.96'})
     if not response.ok:
         # If the rule does not exist, no problem and no change.
         if response.status_code == 404:
@@ -140,6 +146,7 @@ def main():
         actions=dict(type='list', required=True),
         description=dict(required=False),
         uuid=dict(required=False),
+        sensitive=dict(type='bool', required=False, default=False),
         state=dict(required=False, default='present',
                    choices=['present', 'absent']),
     )

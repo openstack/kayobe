@@ -153,7 +153,7 @@ overcloud_container_image_regex_map:
   - regex: ^designate
     enabled: "{{ kolla_enable_designate | bool }}"
   - regex: ^dnsmasq
-    enabled: "{{ kolla_enable_ironic | bool }}"
+    enabled: "{{ kolla_enable_ironic_dnsmasq | bool }}"
   - regex: ^etcd
     enabled: "{{ kolla_enable_etcd | bool }}"
   - regex: ^fluentd
@@ -548,6 +548,8 @@ kolla_enable_heat: "{{ kolla_enable_openstack_core | bool }}"
 kolla_enable_horizon: "{{ kolla_enable_openstack_core | bool }}"
 kolla_enable_influxdb: "{{ kolla_enable_cloudkitty | bool }}"
 kolla_enable_ironic: "no"
+kolla_enable_ironic_dnsmasq: "{{ kolla_enable_ironic | bool and kolla_inspector_enable_discovery | bool }}"
+kolla_enable_ironic_pxe_filter: "{{ kolla_enable_ironic | bool and kolla_inspector_enable_discovery | bool }}"
 kolla_enable_ironic_neutron_agent: "{{ kolla_enable_neutron | bool and kolla_enable_ironic | bool }}"
 kolla_enable_iscsid: "{{ kolla_enable_cinder | bool and kolla_enable_cinder_backend_iscsi | bool }}"
 kolla_enable_kuryr: "no"
@@ -695,3 +697,7 @@ kolla_https_proxy: "{{ https_proxy }}"
 # List of domains, hostnames, IP addresses and networks for which no proxy is
 # used. Default value is "{{ no_proxy }}".
 kolla_no_proxy: "{{ no_proxy }}"
+
+##############################################################################
+# Inspector configuration
+kolla_inspector_enable_discovery: "{{ inspector_enable_discovery | bool }}"

@@ -8,9 +8,12 @@
     cacert: "{{ ironic_inspector_cacert | default(omit, true) }}"
     cloud: "{{ ironic_inspector_cloud | default(omit, true) }}"
     interface: "{{ ironic_inspector_interface | default(omit, true) }}"
-    conditions: "{{ item.conditions }}"
-    actions: "{{ item.actions }}"
-    description: "{{ item.description | default(omit) }}"
-    uuid: "{{ item.uuid | default(item.description | to_uuid) | default(omit) }}"
+    conditions: "{{ ironic_inspector_rules[item].conditions }}"
+    actions: "{{ ironic_inspector_rules[item].actions }}"
+    description: "{{ ironic_inspector_rules[item].description | default(omit) }}"
+    uuid: "{{ ironic_inspector_rules[item].uuid | default(ironic_inspector_rules[item].description | to_uuid) | default(omit) }}"
+    sensitive: "{{ ironic_inspector_rules[item].sensitive | default(omit) }}"
     state: present
-  with_items: "{{ ironic_inspector_rules }}"
+  loop_control:
+    label: "{{ ironic_inspector_rules[item].description }}"
+  with_items: "{{ range(0, ironic_inspector_rules | length) | list }}"
