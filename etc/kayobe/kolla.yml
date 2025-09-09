@@ -350,7 +350,6 @@
 #kolla_enable_influxdb:
 #kolla_enable_ironic:
 #kolla_enable_ironic_dnsmasq:
-#kolla_enable_ironic_inspector:
 #kolla_enable_ironic_neutron_agent:
 #kolla_enable_ironic_prometheus_exporter:
 #kolla_enable_iscsid:

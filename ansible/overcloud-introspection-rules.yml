@@ -5,9 +5,9 @@
   tags:
     - introspection-rules
   tasks:
-    - name: Create controllers group with ironic inspector enabled
+    - name: Create controllers group with ironic enabled
       group_by:
-        key: "controllers_for_introspection_rules_{{ kolla_enable_ironic_inspector | bool }}"
+        key: "controllers_for_introspection_rules_{{ kolla_enable_ironic | bool }}"
       changed_when: false
 
 - name: Ensure introspection rules are registered in Ironic Inspector
@@ -55,23 +55,3 @@
       changed_when: False
       register: ipa_ramdisk_id
       environment: "{{ openstack_auth_env }}"
-
-  roles:
-    - role: ironic-inspector-rules
-      os_openstacksdk_install_epel: "{{ dnf_install_epel }}"
-      os_openstacksdk_state: "latest"
-      ironic_inspector_venv: "{{ venv }}"
-      ironic_inspector_upper_constraints_file: "{{ openstacksdk_upper_constraints_file }}"
-      ironic_inspector_auth_type: "{{ openstack_auth_type }}"
-      ironic_inspector_auth: "{{ openstack_auth }}"
-      ironic_inspector_cacert: "{{ openstack_cacert }}"
-      ironic_inspector_interface: "{{ openstack_interface }}"
-      ironic_inspector_rules: "{{ inspector_rules }}"
-      # These variables may be referenced in the introspection rules.
-      inspector_rule_var_ipmi_username: "{{ inspector_ipmi_username }}"
-      inspector_rule_var_ipmi_password: "{{ inspector_ipmi_password }}"
-      inspector_rule_var_redfish_username: "{{ inspector_redfish_username }}"
-      inspector_rule_var_redfish_password: "{{ inspector_redfish_password }}"
-      inspector_rule_var_lldp_switch_port_interface: "{{ inspector_lldp_switch_port_interface_default }}"
-      inspector_rule_var_deploy_kernel: "{{ ipa_kernel_id.stdout }}"
-      inspector_rule_var_deploy_ramdisk: "{{ ipa_ramdisk_id.stdout }}"

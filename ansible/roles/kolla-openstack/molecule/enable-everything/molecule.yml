@@ -80,9 +80,6 @@ provisioner:
         kolla_extra_ironic: |
           [extra-ironic.conf]
           foo=bar
-        kolla_extra_inspector: |
-          [extra-ironic-inspector.conf]
-          foo=bar
         kolla_inspector_ipa_kernel_path: ${MOLECULE_TEMP_PATH:-/tmp/molecule}/ironic-agent.kernel
         kolla_inspector_ipa_ramdisk_path: ${MOLECULE_TEMP_PATH:-/tmp/molecule}/ironic-agent.initramfs
         kolla_enable_keepalived: true

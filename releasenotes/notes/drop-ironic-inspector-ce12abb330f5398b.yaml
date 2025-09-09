@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    Support for deploying ironic-inspector has been dropped.

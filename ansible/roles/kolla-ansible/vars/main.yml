@@ -142,7 +142,6 @@ kolla_feature_flags:
   - influxdb
   - ironic
   - ironic_dnsmasq
-  - ironic_inspector
   - ironic_neutron_agent
   - ironic_prometheus_exporter
   - iscsid

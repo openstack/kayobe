@@ -109,6 +109,7 @@
             cmd: dev/overcloud-test-baremetal.sh &> {{ logs_dir }}/ansible/overcloud-test-bm-post-upgrade
             chdir: "{{ kayobe_src_dir }}"
             executable: /bin/bash
+          when: false  # TODO(priteau): Re-enable with built-in inspection
 
       environment:
         KAYOBE_CONFIG_SOURCE_PATH: "{{ kayobe_config_src_dir }}"

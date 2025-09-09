@@ -198,13 +198,8 @@ ironic
 [ironic-conductor:children]
 ironic
 
-{% if kolla_ironic_inspector_host %}
-[ironic-inspector]
-{{ kolla_ironic_inspector_host }}
-{% else %}
-[ironic-inspector:children]
+[ironic-dnsmasq:children]
 ironic
-{% endif %}
 
 [ironic-tftp:children]
 ironic
