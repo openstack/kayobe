@@ -1,6 +1,6 @@
 ---
 - project:
-    queue: kayobe
+    queue: kolla
     templates:
       - ansible-role-jobs
       - openstack-cover-jobs
