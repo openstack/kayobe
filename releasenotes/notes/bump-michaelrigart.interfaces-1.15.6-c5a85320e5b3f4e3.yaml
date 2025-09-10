@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Bumps the MichaelRigart.interfaces role to v1.15.6 to fix compatibility
+    with CentOS Stream 10 and Rocky Linux 10.
