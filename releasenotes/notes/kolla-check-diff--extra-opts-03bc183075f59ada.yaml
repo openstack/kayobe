@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes ``--check`` and ``--diff`` CLI arguments not being passed into
+    Kolla Ansible commands.
+    `LP#2123834 <https://bugs.launchpad.net/kayobe/+bug/2123834>`__

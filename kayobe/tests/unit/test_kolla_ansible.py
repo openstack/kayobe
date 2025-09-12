@@ -77,9 +77,10 @@ class TestCase(unittest.TestCase):
             "-e", "ev_name1=ev_value1",
             "--limit", "'host1:host2'",
             "--tags", "tag1,tag2",
+            "--check", "--diff"
         ]
         expected_cmd = " ".join(expected_cmd)
-        expected_env = {"EXTRA_OPTS": " --check --diff"}
+        expected_env = {}
         mock_run.assert_called_once_with(expected_cmd, shell=True, quiet=False,
                                          env=expected_env)
 
@@ -119,10 +120,10 @@ class TestCase(unittest.TestCase):
             "--limit", "'host1:host2'",
             "--skip-tags", "tag3,tag4",
             "--tags", "tag1,tag2",
+            "--check", "--diff"
         ]
         expected_cmd = " ".join(expected_cmd)
-        expected_env = {"EXTRA_OPTS": " --check --diff",
-                        "KAYOBE_VAULT_PASSWORD": "test-pass"}
+        expected_env = {"KAYOBE_VAULT_PASSWORD": "test-pass"}
         expected_calls = [
             mock.call(["which", "kayobe-vault-password-helper"],
                       check_output=True, universal_newlines=True),
