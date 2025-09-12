@@ -170,6 +170,10 @@ def build_args(parsed_args, command, inventory_filename, extra_vars=None,
     if parsed_args.kolla_tags or tags:
         all_tags = [t for t in [parsed_args.kolla_tags, tags] if t]
         cmd += ["--tags", ",".join(all_tags)]
+    if parsed_args.check:
+        cmd += ["--check"]
+    if parsed_args.diff:
+        cmd += ["--diff"]
     if extra_args:
         cmd += extra_args
     return cmd
@@ -189,14 +193,6 @@ def _get_environment(parsed_args):
         ansible_cfg_path = os.path.join(parsed_args.config_path, "ansible.cfg")
         if utils.is_readable_file(ansible_cfg_path)["result"]:
             env.setdefault("ANSIBLE_CONFIG", ansible_cfg_path)
-    # kolla-ansible allows passing additional arguments to ansible-playbook via
-    # EXTRA_OPTS.
-    if parsed_args.check or parsed_args.diff:
-        extra_opts = env.setdefault("EXTRA_OPTS", "")
-        if parsed_args.check and "--check" not in extra_opts:
-            env["EXTRA_OPTS"] += " --check"
-        if parsed_args.diff and "--diff" not in extra_opts:
-            env["EXTRA_OPTS"] += " --diff"
     return env
 
 
