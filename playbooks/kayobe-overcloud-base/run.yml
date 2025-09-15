@@ -36,6 +36,12 @@
         chdir: "{{ kayobe_src_dir }}"
         executable: /bin/bash
 
+    - name: Test inspection of the baremetal machines
+      shell:
+        cmd: dev/overcloud-test-inspect.sh &> {{ logs_dir }}/ansible/overcloud-test-inspect
+        chdir: "{{ kayobe_src_dir }}"
+        executable: /bin/bash
+
     - name: Perform testing of the baremetal machines
       shell:
         cmd: dev/overcloud-test-baremetal.sh &> {{ logs_dir }}/ansible/overcloud-test-baremetal
