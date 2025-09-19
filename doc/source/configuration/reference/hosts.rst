@@ -79,8 +79,9 @@ is ``stack``.
 Typically, the image used to provision these hosts will not include this user
 account, so Kayobe performs a bootstrapping step to create it, as a different
 user. In cloud images, there is often a user named after the OS distro, e.g.
-``centos``, ``rocky`` or ``ubuntu``. This user defaults to the
-``os_distribution`` variable, but may be set via the following variables:
+``rocky`` or ``ubuntu``. This user defaults to the ``os_distribution``
+variable, except for CentOS which uses ``cloud-user``, but may be set via the
+following variables:
 
 * ``seed_hypervisor_bootstrap_user``
 * ``seed_bootstrap_user``

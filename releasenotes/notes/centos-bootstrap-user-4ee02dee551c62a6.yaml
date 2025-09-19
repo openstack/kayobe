@@ -1,0 +1,10 @@
+---
+upgrade:
+  - |
+    The default bootstrap user has been changed to ``cloud-user`` if
+    ``os_distribution`` is set to ``centos``. Set ``*_bootstrap_user``
+    variables to ``centos`` to retain existing behaviour.
+fixes:
+  - |
+    The default bootstrap user has been changed to ``cloud-user`` if
+    ``os_distribution`` is set to ``centos``, to match official cloud images.
