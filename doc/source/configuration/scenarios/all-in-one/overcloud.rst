@@ -219,11 +219,11 @@ or ``rocky`` if using Rocky Linux..
    os_distribution: "ubuntu"
 
 Kayobe uses a bootstrap user to create a ``stack`` user account. By default,
-this user is ``centos`` on CentOS, ``rocky`` on Rocky and ``ubuntu`` on Ubuntu,
-in line with the default user in the official cloud images. If you are using
-a different bootstrap user, set the ``controller_bootstrap_user`` variable in
-``etc/kayobe/controllers.yml``. For example, to set it to ``cloud-user`` (as
-seen in MAAS):
+this user is ``cloud-user`` on CentOS, ``rocky`` on Rocky and ``ubuntu`` on
+Ubuntu, in line with the default user in the official cloud images. If you are
+using a different bootstrap user, set the ``controller_bootstrap_user``
+variable in ``etc/kayobe/controllers.yml``. For example, to set it to
+``cloud-user`` (as seen in MAAS):
 
 .. code-block:: yaml
    :caption: ``etc/kayobe/controllers.yml``

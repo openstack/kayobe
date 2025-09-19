@@ -99,8 +99,9 @@ infra_vm_machine:
 # Infrastructure VM node configuration.
 
 # User with which to access the infrastructure vm via SSH during bootstrap, in
-# order to setup the Kayobe user account. Default is {{ os_distribution }}.
-infra_vm_bootstrap_user: "{{ os_distribution }}"
+# order to setup the Kayobe user account. Default is 'cloud-user' if
+# os_distribution is set to centos, otherwise 'os_distribution'.
+infra_vm_bootstrap_user: "{{ 'cloud-user' if os_distribution == 'centos' else os_distribution }}"
 
 ###############################################################################
 # Infrastructure VM network interface configuration.
