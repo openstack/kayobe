@@ -131,4 +131,4 @@
         state: started
         # NOTE: Ensure we exceed the 5 minute DHCP timeout of the eth0
         # interface if necessary.
-        timeout: 360
+        timeout: "{{ seed_vm_provision_timeout | default(360) | int }}"
