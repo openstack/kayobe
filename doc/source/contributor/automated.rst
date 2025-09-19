@@ -309,8 +309,8 @@ It is now possible to discover, inspect and provision the controller VM::
     kayobe overcloud hardware inspect
     kayobe overcloud provision
 
-The controller VM is now accessible via SSH as the bootstrap user (``centos``
-or ``ubuntu``) at ``192.168.33.3``.
+The controller VM is now accessible via SSH as the bootstrap user
+(``cloud-user``, ``rocky`` or ``ubuntu``) at ``192.168.33.3``.
 
 The machines and networking created by Tenks can be cleaned up via
 ``dev/tenks-teardown-overcloud.sh``::
