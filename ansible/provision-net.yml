@@ -5,17 +5,32 @@
   tags:
     - provision-net
     - cleaning-net
+    - inspection-net
   tasks:
     - name: Create controllers group with ironic enabled
       group_by:
         key: "controllers_for_provision_net_{{ kolla_enable_ironic | bool }}"
       changed_when: false
 
-- name: Ensure provisioning and cleaning networks and subnets are registered in neutron
+- name: Ensure inspection, provisioning and cleaning networks and subnets are registered in neutron
   # Only required to run on a single host.
   hosts: controllers_for_provision_net_True[0]
   vars:
     venv: "{{ virtualenv_path }}/openstacksdk"
+    inspection_net:
+      name: "{{ kolla_ironic_inspection_network }}"
+      mtu: "{{ inspection_net_name | net_mtu | default(omit, True) }}"
+      provider_network_type: "{% if inspection_net_name | net_vlan %}vlan{% else %}flat{% endif %}"
+      provider_physical_network: "{{ inspection_net_name | net_physical_network | default('physnet1', True) }}"
+      provider_segmentation_id: "{{ inspection_net_name | net_vlan }}"
+      # Flat networks need to be shared to allow instances to use them.
+      shared: "{{ (inspection_net_name | net_vlan) is none }}"
+      subnets:
+        - name: "{{ kolla_ironic_inspection_network }}"
+          cidr: "{{ inspection_net_name | net_cidr }}"
+          gateway_ip: "{{ inspection_net_name | net_neutron_gateway or provision_wl_net_name | net_gateway | default(omit, True) }}"
+          allocation_pool_start: "{{ inspection_net_name | net_neutron_allocation_pool_start }}"
+          allocation_pool_end: "{{ inspection_net_name | net_neutron_allocation_pool_end }}"
     provision_net:
       name: "{{ kolla_ironic_provisioning_network }}"
       mtu: "{{ provision_wl_net_name | net_mtu | default(omit, True) }}"
@@ -48,6 +63,7 @@
   tags:
     - provision-net
     - cleaning-net
+    - inspection-net
   tasks:
     - name: Validate OpenStack password authentication parameters
       fail:

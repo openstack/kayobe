@@ -94,6 +94,9 @@
 # Name of the Neutron network to use for cleaning.
 #kolla_ironic_cleaning_network:
 
+# Name of the Neutron network to use for inspection.
+#kolla_ironic_inspection_network:
+
 # Name of the Neutron network to use for provisioning.
 #kolla_ironic_provisioning_network:
 
