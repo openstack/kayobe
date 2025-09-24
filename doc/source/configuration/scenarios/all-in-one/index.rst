@@ -30,7 +30,7 @@ It also requires a single host running a :ref:`supported operating system
 * at least one network interface that has Internet access
 
 You will need access to a user account with passwordless sudo. The default user
-in a cloud image (e.g. ``centos`` or ``rocky`` or ``ubuntu``) is typically
+in a cloud image (e.g. ``cloud-user`` or ``rocky`` or ``ubuntu``) is typically
 sufficient. This user will be used to run Kayobe commands. It will also be used
 by Kayobe to bootstrap other user accounts.
 
