@@ -91,5 +91,5 @@
         # in the command.  Assumption was that this was being evaluated once
         # for the when clause and then again for the command. Bug?
         remote_host: "{{ remote_hosts | random(seed=ansible_facts.date_time.iso8601) }}"
-        remote_ip: "{{ lookup('cached', 'vars', item ~ '_ips')[remote_host] | default('', true) }}"
+        remote_ip: "{{ lookup('cached', 'vars', item ~ '_ips', default={})[remote_host] | default('', true) }}"
         mtu: "{{ item | net_mtu }}"
