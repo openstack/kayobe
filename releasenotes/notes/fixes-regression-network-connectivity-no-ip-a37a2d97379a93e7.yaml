@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fixes a regression in network connectivity check when using the ``no_ip``
+    attribute. `LP#2125560 <https://bugs.launchpad.net/kayobe/+bug/2125560>`__
