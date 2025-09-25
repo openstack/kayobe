@@ -119,11 +119,11 @@
     params:
       content: |
         {%- for path in item.sources -%}
-        {{ lookup('template', path) }}
+        {{ lookup('file', path) }}
         {%- endfor -%}
       dest: "{{ item.dest }}"
       mode: 0640
-  copy: "{{ params | combine(item.params) }}"
+  template_content: "{{ params | combine(item.params) }}"
   with_items: "{{ kolla_custom_config_info.concat }}"
 
 - name: Ensure unnecessary extra configuration files are absent

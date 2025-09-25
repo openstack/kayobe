@@ -21,7 +21,14 @@ import subprocess
 import sys
 import tempfile
 
-from ansible.parsing.yaml.objects import AnsibleVaultEncryptedUnicode
+# TODO(dougszu): Backwards compatibility for Ansible 11. This exception
+# handler can be removed in the G cycle.
+try:
+    from ansible.parsing.vault import EncryptedString
+except ImportError:
+    # Ansible 11
+    from ansible.parsing.yaml.objects import AnsibleVaultEncryptedUnicode
+    EncryptedString = AnsibleVaultEncryptedUnicode
 
 from kayobe import exception
 from kayobe import utils
@@ -222,6 +229,9 @@ def _get_environment(parsed_args, external_playbook=False):
     """Return an environment dict for executing an Ansible playbook."""
     env = os.environ.copy()
     vault.update_environment(parsed_args, env)
+    # TODO(wszusmki): Kayobe still uses broken conditions. Work on fixing these
+    # and remove when that work is complete.
+    env.setdefault("ANSIBLE_ALLOW_BROKEN_CONDITIONALS", "true")
     # If the configuration path has been specified via --config-path, ensure
     # the environment variable is set, so that it can be referenced by
     # playbooks.
@@ -340,7 +350,7 @@ def run_playbook(parsed_args, playbook, *args, **kwargs):
 
 def _sanitise_hostvar(var):
     """Sanitise a host variable."""
-    if isinstance(var, AnsibleVaultEncryptedUnicode):
+    if isinstance(var, EncryptedString):
         return "******"
     # Recursively sanitise dicts and lists.
     if isinstance(var, dict):

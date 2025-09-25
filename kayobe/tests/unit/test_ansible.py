@@ -28,6 +28,9 @@ from kayobe import exception
 from kayobe import utils
 from kayobe import vault
 
+from ansible.parsing.vault import VaultSecret
+from ansible.parsing.vault import VaultSecretsContext
+
 
 @mock.patch.dict(os.environ, clear=True)
 class TestCase(unittest.TestCase):
@@ -56,6 +59,7 @@ class TestCase(unittest.TestCase):
         ]
 
         expected_env = {
+            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "KAYOBE_CONFIG_PATH": "/etc/kayobe",
             "ANSIBLE_ROLES_PATH": ":".join([
                 "/etc/kayobe/ansible/roles",
@@ -106,6 +110,7 @@ class TestCase(unittest.TestCase):
         ]
 
         expected_env = {
+            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "KAYOBE_CONFIG_PATH": "/etc/kayobe",
             "ANSIBLE_ROLES_PATH": ":".join([
                 utils.get_data_files_path("ansible", "roles"),
@@ -223,6 +228,7 @@ class TestCase(unittest.TestCase):
         ]
 
         expected_env = {
+            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "KAYOBE_CONFIG_PATH": "/path/to/config",
             "KAYOBE_ENVIRONMENT": "test-env",
             "ANSIBLE_ROLES_PATH": ":".join([
@@ -299,6 +305,7 @@ class TestCase(unittest.TestCase):
             "playbook2.yml",
         ]
         expected_env = {
+            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "KAYOBE_CONFIG_PATH": "/path/to/config",
             "KAYOBE_ENVIRONMENT": "test-env",
             "KAYOBE_VAULT_PASSWORD": "test-pass",
@@ -342,6 +349,7 @@ class TestCase(unittest.TestCase):
             "playbook1.yml",
         ]
         expected_env = {
+            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "KAYOBE_CONFIG_PATH": "/etc/kayobe",
             "ANSIBLE_ROLES_PATH": mock.ANY,
             "ANSIBLE_COLLECTIONS_PATH": mock.ANY,
@@ -379,6 +387,7 @@ class TestCase(unittest.TestCase):
             "playbook1.yml",
         ]
         expected_env = {
+            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "KAYOBE_CONFIG_PATH": "/etc/kayobe",
             "KAYOBE_VAULT_PASSWORD": "test-pass",
             "ANSIBLE_ROLES_PATH": mock.ANY,
@@ -446,6 +455,7 @@ class TestCase(unittest.TestCase):
             "playbook2.yml",
         ]
         expected_env = {
+            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "KAYOBE_CONFIG_PATH": "/etc/kayobe",
             "ANSIBLE_ROLES_PATH": mock.ANY,
             "ANSIBLE_COLLECTIONS_PATH": mock.ANY,
@@ -483,6 +493,7 @@ class TestCase(unittest.TestCase):
             "playbook2.yml",
         ]
         expected_env = {
+            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "KAYOBE_CONFIG_PATH": "/etc/kayobe",
             "ANSIBLE_ROLES_PATH": mock.ANY,
             "ANSIBLE_COLLECTIONS_PATH": mock.ANY,
@@ -520,6 +531,7 @@ class TestCase(unittest.TestCase):
             "playbook2.yml",
         ]
         expected_env = {
+            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "KAYOBE_CONFIG_PATH": "/etc/kayobe",
             "ANSIBLE_ROLES_PATH": mock.ANY,
             "ANSIBLE_COLLECTIONS_PATH": mock.ANY,
@@ -553,6 +565,7 @@ class TestCase(unittest.TestCase):
         expected_env = {
             "ANSIBLE_CONFIG": "/etc/kayobe/ansible.cfg",
             "KAYOBE_CONFIG_PATH": "/etc/kayobe",
+            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "ANSIBLE_ROLES_PATH": mock.ANY,
             "ANSIBLE_COLLECTIONS_PATH": mock.ANY,
             "ANSIBLE_ACTION_PLUGINS": mock.ANY,
@@ -585,6 +598,7 @@ class TestCase(unittest.TestCase):
             "playbook1.yml",
         ]
         expected_env = {
+            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "ANSIBLE_CONFIG": "/path/to/ansible.cfg",
             "KAYOBE_CONFIG_PATH": "/etc/kayobe",
             "ANSIBLE_ROLES_PATH": mock.ANY,
@@ -656,6 +670,10 @@ class TestCase(unittest.TestCase):
     @mock.patch.object(tempfile, 'mkdtemp')
     def test_config_dump_vaulted(self, mock_mkdtemp, mock_run, mock_listdir,
                                  mock_read, mock_rmtree):
+
+        secret = VaultSecret(b'test-pass')
+        VaultSecretsContext.initialize(
+            VaultSecretsContext(secrets=[('default', secret)]))
         parser = argparse.ArgumentParser()
         parsed_args = parser.parse_args([])
         dump_dir = "/path/to/dump"
@@ -663,31 +681,31 @@ class TestCase(unittest.TestCase):
         mock_listdir.return_value = ["host1.yml", "host2.yml"]
         config = """---
 key1: !vault |
-  $ANSIBLE_VAULT;1.1;AES256
-  633230623736383232323862393364323037343430393530316636363961626361393133646437
-  643438663261356433656365646138666133383032376532310a63323432306431303437623637
-  346236316161343635636230613838316566383933313338636237616338326439616536316639
-  6334343462333062363334300a3930313762313463613537626531313230303731343365643766
-  666436333037
+    $ANSIBLE_VAULT;1.1;AES256
+    65393836643335346138373665636564643436353231623838636261373565633731303835653139
+    6335343464383063373734636161323236636431316532650a333366333366396262353635313531
+    64666236636262326662323931313065376533333961356239363637333363623464666636616233
+    6130373664393533350a663266613165646565346433313536313461653236303563643262323936
+    6262
 key2: value2
 key3:
   - !vault |
     $ANSIBLE_VAULT;1.1;AES256
-    633230623736383232323862393364323037343430393530316636363961626361393133646437
-    643438663261356433656365646138666133383032376532310a63323432306431303437623637
-    346236316161343635636230613838316566383933313338636237616338326439616536316639
-    6334343462333062363334300a3930313762313463613537626531313230303731343365643766
-    666436333037
+    65393836643335346138373665636564643436353231623838636261373565633731303835653139
+    6335343464383063373734636161323236636431316532650a333366333366396262353635313531
+    64666236636262326662323931313065376533333961356239363637333363623464666636616233
+    6130373664393533350a663266613165646565346433313536313461653236303563643262323936
+    6262
 """
         config_nested = """---
 key1:
   key2: !vault |
     $ANSIBLE_VAULT;1.1;AES256
-    633230623736383232323862393364323037343430393530316636363961626361393133646437
-    643438663261356433656365646138666133383032376532310a63323432306431303437623637
-    346236316161343635636230613838316566383933313338636237616338326439616536316639
-    6334343462333062363334300a3930313762313463613537626531313230303731343365643766
-    666436333037
+    65393836643335346138373665636564643436353231623838636261373565633731303835653139
+    6335343464383063373734636161323236636431316532650a333366333366396262353635313531
+    64666236636262326662323931313065376533333961356239363637333363623464666636616233
+    6130373664393533350a663266613165646565346433313536313461653236303563643262323936
+    6262
 """
         mock_read.side_effect = [config, config_nested]
         result = ansible.config_dump(parsed_args)
@@ -951,6 +969,7 @@ key1:
             "playbook2.yml",
         ]
         expected_env = {
+            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "KAYOBE_CONFIG_PATH": "/etc/kayobe",
             "ANSIBLE_ROLES_PATH": mock.ANY,
             "ANSIBLE_COLLECTIONS_PATH": mock.ANY,
@@ -994,6 +1013,7 @@ key1:
             "playbook2.yml",
         ]
         expected_env = {
+            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "KAYOBE_CONFIG_PATH": "/etc/kayobe",
             "KAYOBE_ENVIRONMENT": "test-env",
             "ANSIBLE_ROLES_PATH": mock.ANY,
@@ -1036,6 +1056,7 @@ key1:
             "playbook2.yml",
         ]
         expected_env = {
+            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "KAYOBE_CONFIG_PATH": "/etc/kayobe",
             "KAYOBE_ENVIRONMENT": "test-env",
             "ANSIBLE_ROLES_PATH": mock.ANY,
@@ -1079,6 +1100,7 @@ key1:
             "playbook2.yml",
         ]
         expected_env = {
+            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "KAYOBE_CONFIG_PATH": "/etc/kayobe",
             "KAYOBE_ENVIRONMENT": "test-env",
             "ANSIBLE_ROLES_PATH": mock.ANY,
@@ -1127,6 +1149,7 @@ key1:
             "playbook2.yml",
         ]
         expected_env = {
+            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "KAYOBE_CONFIG_PATH": "/etc/kayobe",
             "KAYOBE_ENVIRONMENT": "test-env",
             "ANSIBLE_ROLES_PATH": mock.ANY,
@@ -1207,6 +1230,7 @@ key1:
             "playbook2.yml",
         ]
         expected_env = {
+            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "KAYOBE_CONFIG_PATH": "/etc/kayobe",
             "KAYOBE_ENVIRONMENT": "test-env",
             "ANSIBLE_ROLES_PATH": mock.ANY,

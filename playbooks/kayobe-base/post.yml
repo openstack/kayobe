@@ -11,11 +11,15 @@
               ---
               - hosts: localhost
                 tasks:
-                  - name: Testing become fails
-                    command: "true"
-                    become: true
-                    register: result
-                    failed_when: '"CONTROL_HOST_BECOME_VIOLATION" not in result.module_stderr'
+                  - block:
+                    - name: Testing become fails
+                      command: "true"
+                      become: true
+                      register: result
+                    rescue:
+                      - name: Check for become failure
+                        fail:
+                        when: '"CONTROL_HOST_BECOME_VIOLATION" not in result.msg'
             dest: /tmp/test-control-host-become.yml
 
         - name: Check that that kayobe become validator was correctly configured

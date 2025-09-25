@@ -1,0 +1,6 @@
+---
+ upgrade:
+   - |
+     Updates the maximum supported version of Ansible from 12 (ansible-core
+     2.18) to 13 (ansible-core 2.19). The minimum supported version is updated
+     from 10.x to 11.x. This is true for both Kayobe and Kolla Ansible.
