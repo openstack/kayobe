@@ -146,7 +146,7 @@ Backup
     Podman, simply change ``docker`` for ``sudo podman`` in the command.
 
 It should be safe to keep services running during the backup, but for maximum
-safety they may optionally be stopped:
+safety they may optionally be stopped::
 
     docker exec -it bifrost_deploy systemctl stop ironic ironic-inspector
 
