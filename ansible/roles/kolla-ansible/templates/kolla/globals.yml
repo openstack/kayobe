@@ -399,6 +399,9 @@ ironic_dnsmasq_dhcp_ranges:
 {% if kolla_inspector_dns_servers %}
     dns_servers: "{{ kolla_inspector_dns_servers | join(',') }}"
 {% endif %}
+{% if kolla_ironic_ntp_server is defined and kolla_ironic_ntp_server is not none and kolla_ironic_ntp_server | length > 0 %}
+    ntp_server: "{{ kolla_ironic_ntp_server }}"
+{% endif %}
 {% endif %}
 {% if kolla_inspector_extra_kernel_options %}
 ironic_kernel_cmdline_extras:
