@@ -272,8 +272,6 @@ def test_dnf_automatic(host):
     assert host.service("dnf-automatic.timer").is_running
 
 
-@pytest.mark.skipif(not _is_dnf(),
-                    reason="tuned profiles only supported on CentOS/Rocky")
 def test_tuned_profile_is_active(host):
     tuned_output = host.check_output("tuned-adm active")
     assert "throughput-performance" in tuned_output

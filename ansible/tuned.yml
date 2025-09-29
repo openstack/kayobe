@@ -13,4 +13,3 @@
       become: true
       when:
         - tuned_active_builtin_profile != ""
-        - ansible_facts.os_family == 'RedHat'

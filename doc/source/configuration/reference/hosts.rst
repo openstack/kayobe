@@ -690,8 +690,6 @@ Tuned
 *tags:*
   | ``tuned``
 
-.. note:: Tuned configuration only supports CentOS/Rocky systems for now.
-
 Built-in ``tuned`` profiles can be applied to hosts. The following variables
 can be used to set a ``tuned`` profile to specific types of hosts:
 
