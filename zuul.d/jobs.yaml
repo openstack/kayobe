@@ -323,9 +323,20 @@
     voting: false
 
 - job:
+    name: kayobe-overcloud-host-configure-centos10s
+    parent: kayobe-overcloud-host-configure-base
+    nodeset: kayobe-centos10s
+    voting: false
+
+- job:
     name: kayobe-overcloud-host-configure-rocky9
     parent: kayobe-overcloud-host-configure-base
     nodeset: kayobe-rocky9
+
+- job:
+    name: kayobe-overcloud-host-configure-rocky10
+    parent: kayobe-overcloud-host-configure-base
+    nodeset: kayobe-rocky10
 
 - job:
     name: kayobe-overcloud-host-configure-ubuntu-noble

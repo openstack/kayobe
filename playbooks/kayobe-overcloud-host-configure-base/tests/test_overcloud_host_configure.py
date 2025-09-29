@@ -20,9 +20,11 @@ def _is_dnf():
     return info in ['centos', 'rocky']
 
 
+# NOTE: There are OpenDev mirrors only for centos-stream/9-stream and epel/9.
 def _is_dnf_mirror():
     info = distro.id()
-    return info == 'centos'
+    version = distro.version()
+    return info == 'centos' and version == '9'
 
 
 def _is_ubuntu_noble():
