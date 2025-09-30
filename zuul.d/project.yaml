@@ -12,46 +12,54 @@
         - kayobe-tox-ansible-syntax
         - kayobe-tox-ansible
         - kayobe-tox-molecule
+        - kayobe-infra-vm-rocky10
+        - kayobe-infra-vm-rocky9
+        - kayobe-infra-vm-ubuntu-noble
+        - kayobe-overcloud-host-configure-rocky10
+        - kayobe-overcloud-host-configure-rocky9
+        - kayobe-overcloud-host-configure-ubuntu-noble
         - kayobe-overcloud-ubuntu-noble
         - kayobe-overcloud-ubuntu-noble-podman
-        - kayobe-overcloud-host-configure-rocky9
-        - kayobe-overcloud-host-configure-rocky10
-        - kayobe-overcloud-host-configure-ubuntu-noble
         - kayobe-overcloud-upgrade-ubuntu-noble
         - kayobe-seed-ubuntu-noble
         - kayobe-seed-ubuntu-noble-podman
         - kayobe-seed-upgrade-ubuntu-noble
+        - kayobe-seed-vm-rocky10
         - kayobe-seed-vm-rocky9
         - kayobe-seed-vm-ubuntu-noble
-        - kayobe-infra-vm-rocky9
-        - kayobe-infra-vm-ubuntu-noble
     gate:
       jobs:
         - kayobe-tox-ansible-syntax
         - kayobe-tox-ansible
         - kayobe-tox-molecule
+        - kayobe-infra-vm-rocky10
+        - kayobe-infra-vm-rocky9
+        - kayobe-infra-vm-ubuntu-noble
+        - kayobe-overcloud-host-configure-rocky10
+        - kayobe-overcloud-host-configure-rocky9
+        - kayobe-overcloud-host-configure-ubuntu-noble
         - kayobe-overcloud-ubuntu-noble
         - kayobe-overcloud-ubuntu-noble-podman
-        - kayobe-overcloud-host-configure-rocky9
-        - kayobe-overcloud-host-configure-rocky10
-        - kayobe-overcloud-host-configure-ubuntu-noble
         - kayobe-overcloud-upgrade-ubuntu-noble
         - kayobe-seed-ubuntu-noble
         - kayobe-seed-ubuntu-noble-podman
         - kayobe-seed-upgrade-ubuntu-noble
+        - kayobe-seed-vm-rocky10
         - kayobe-seed-vm-rocky9
         - kayobe-seed-vm-ubuntu-noble
-        - kayobe-infra-vm-rocky9
-        - kayobe-infra-vm-ubuntu-noble
 
     experimental:
       jobs:
+        - kayobe-infra-vm-centos10s
+        - kayobe-infra-vm-centos10s-cloud-image
+        - kayobe-infra-vm-centos9s
         - kayobe-infra-vm-centos9s-cloud-image
+        - kayobe-infra-vm-rocky10-cloud-image
         - kayobe-infra-vm-rocky9-cloud-image
         - kayobe-infra-vm-ubuntu-noble-cloud-image
         - kayobe-overcloud-centos9s
-        - kayobe-overcloud-host-configure-centos9s
         - kayobe-overcloud-host-configure-centos10s
+        - kayobe-overcloud-host-configure-centos9s
         - kayobe-overcloud-rocky9
         - kayobe-overcloud-rocky9-podman
         - kayobe-overcloud-tls-rocky9
@@ -64,8 +72,14 @@
         - kayobe-seed-rocky9
         - kayobe-seed-rocky9-podman
         - kayobe-seed-upgrade-rocky9
+        - kayobe-seed-vm-centos10s
+        - kayobe-seed-vm-centos10s-cloud-image
+        - kayobe-seed-vm-centos10s-q35
+        - kayobe-seed-vm-centos9s
         - kayobe-seed-vm-centos9s-cloud-image
         - kayobe-seed-vm-centos9s-q35
+        - kayobe-seed-vm-rocky10-cloud-image
+        - kayobe-seed-vm-rocky10-q35
         - kayobe-seed-vm-rocky9-cloud-image
         - kayobe-seed-vm-rocky9-q35
         - kayobe-seed-vm-ubuntu-noble-cloud-image

@@ -38,6 +38,14 @@ seed_vm_memory_mb: "{{ 1 * 1024 }}"
 # Use cirros rather than distribution cloud image for the VM.
 seed_bootstrap_user: cirros
 seed_vm_root_image: /opt/cache/files/cirros-0.5.3-x86_64-disk.img
+
+# Cirros doesn't load cdom drivers by default.
+seed_vm_configdrive_device: disk
+
+# Cirros is Debian family, but doesn't support path globs in
+# /etc/network/interfaces.
+configdrive_os_family: Debian
+configdrive_debian_network_interfaces_supports_glob: false
 {% else %}
 seed_vm_provision_timeout: 600
 {% endif %}
@@ -48,14 +56,6 @@ seed_vm_boot_firmware: "{{ seed_vm_boot_firmware }}"
 {% if seed_vm_machine is defined %}
 seed_vm_machine: "{{ seed_vm_machine }}"
 {% endif %}
-
-# Cirros doesn't load cdom drivers by default.
-seed_vm_configdrive_device: disk
-
-# Cirros is Debian family, but doesn't support path globs in
-# /etc/network/interfaces.
-configdrive_os_family: Debian
-configdrive_debian_network_interfaces_supports_glob: false
 
 # NOTE(mgoddard): CentOS 8 removes interfaces from their bridge during ifdown,
 # and removes the bridge if there are no interfaces left. When Kayobe bounces

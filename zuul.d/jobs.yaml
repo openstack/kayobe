@@ -386,9 +386,20 @@
     voting: false
 
 - job:
+    name: kayobe-seed-vm-centos10s
+    parent: kayobe-seed-vm-base
+    nodeset: kayobe-centos10s
+    voting: false
+
+- job:
     name: kayobe-seed-vm-rocky9
     parent: kayobe-seed-vm-base
     nodeset: kayobe-rocky9
+
+- job:
+    name: kayobe-seed-vm-rocky10
+    parent: kayobe-seed-vm-base
+    nodeset: kayobe-rocky10
 
 - job:
     name: kayobe-seed-vm-ubuntu-noble
@@ -406,9 +417,24 @@
       seed_vm_use_cirros: false
 
 - job:
+    name: kayobe-seed-vm-centos10s-cloud-image
+    parent: kayobe-seed-vm-base
+    nodeset: kayobe-centos10s
+    voting: false
+    vars:
+      seed_vm_use_cirros: false
+
+- job:
     name: kayobe-seed-vm-rocky9-cloud-image
     parent: kayobe-seed-vm-base
     nodeset: kayobe-rocky9
+    vars:
+      seed_vm_use_cirros: false
+
+- job:
+    name: kayobe-seed-vm-rocky10-cloud-image
+    parent: kayobe-seed-vm-base
+    nodeset: kayobe-rocky10
     vars:
       seed_vm_use_cirros: false
 
@@ -435,9 +461,22 @@
     voting: false
 
 - job:
+    name: kayobe-seed-vm-centos10s-q35
+    parent: kayobe-seed-vm-q35-base
+    nodeset: kayobe-centos10s
+    voting: false
+
+- job:
     name: kayobe-seed-vm-rocky9-q35
     parent: kayobe-seed-vm-q35-base
     nodeset: kayobe-rocky9
+    vars:
+      kayobe_control_host_become: false
+
+- job:
+    name: kayobe-seed-vm-rocky10-q35
+    parent: kayobe-seed-vm-q35-base
+    nodeset: kayobe-rocky10
     vars:
       kayobe_control_host_become: false
 
@@ -465,9 +504,22 @@
     voting: false
 
 - job:
+    name: kayobe-infra-vm-centos10s
+    parent: kayobe-infra-vm-base
+    nodeset: kayobe-centos10s
+    voting: false
+
+- job:
     name: kayobe-infra-vm-rocky9
     parent: kayobe-infra-vm-base
     nodeset: kayobe-rocky9
+    vars:
+      kayobe_control_host_become: false
+
+- job:
+    name: kayobe-infra-vm-rocky10
+    parent: kayobe-infra-vm-base
+    nodeset: kayobe-rocky10
     vars:
       kayobe_control_host_become: false
 
@@ -485,9 +537,24 @@
       infra_vm_use_cirros: false
 
 - job:
+    name: kayobe-infra-vm-centos10s-cloud-image
+    parent: kayobe-infra-vm-base
+    nodeset: kayobe-centos10s
+    voting: false
+    vars:
+      infra_vm_use_cirros: false
+
+- job:
     name: kayobe-infra-vm-rocky9-cloud-image
     parent: kayobe-infra-vm-base
     nodeset: kayobe-rocky9
+    vars:
+      infra_vm_use_cirros: false
+
+- job:
+    name: kayobe-infra-vm-rocky10-cloud-image
+    parent: kayobe-infra-vm-base
+    nodeset: kayobe-rocky10
     vars:
       infra_vm_use_cirros: false
 
