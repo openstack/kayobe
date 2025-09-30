@@ -42,19 +42,30 @@ infra_vm_root_format: qcow2
 
 # Base image for the infra VM root volume. Default is
 # "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
-# when os_distribution is "ubuntu", or
-# https://dl.rockylinux.org/pub/rocky/9/images/x86_64/Rocky-9-GenericCloud.latest.x86_64.qcow2
-# when os_distribution is "rocky",
-# or
+# when os_distribution is "ubuntu",
+# "https://dl.rockylinux.org/pub/rocky/9/images/x86_64/Rocky-9-GenericCloud.latest.x86_64.qcow2"
+# when os_distribution is "rocky" and os_release is "9",
+# "https://dl.rockylinux.org/pub/rocky/10/images/x86_64/Rocky-10-GenericCloud-Base.latest.x86_64.qcow2"
+# when os_distribution is "rocky" and os_release is "10",
 # "https://cloud.centos.org/centos/9-stream/x86_64/images/CentOS-Stream-GenericCloud-x86_64-9-latest.x86_64.qcow2"
+# when os_distribution is "centos" and os_release is "9-stream", or
+# "https://cloud.centos.org/centos/10-stream/x86_64/images/CentOS-Stream-GenericCloud-x86_64-10-latest.x86_64.qcow2"
 # otherwise.
 infra_vm_root_image: >-
   {%- if os_distribution == 'ubuntu' %}
   https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img
   {%- elif os_distribution == 'rocky' %}
+  {%- if os_release == '9' %}
   https://dl.rockylinux.org/pub/rocky/9/images/x86_64/Rocky-9-GenericCloud.latest.x86_64.qcow2
   {%- else -%}
+  https://dl.rockylinux.org/pub/rocky/10/images/x86_64/Rocky-10-GenericCloud-Base.latest.x86_64.qcow2
+  {%- endif %}
+  {%- else -%}
+  {%- if os_release == '9-stream' %}
   https://cloud.centos.org/centos/9-stream/x86_64/images/CentOS-Stream-GenericCloud-x86_64-9-latest.x86_64.qcow2
+  {%- else -%}
+  https://cloud.centos.org/centos/10-stream/x86_64/images/CentOS-Stream-GenericCloud-x86_64-10-latest.x86_64.qcow2
+  {%- endif %}
   {%- endif %}
 
 # Capacity of the infra VM data volume.

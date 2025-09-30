@@ -25,7 +25,7 @@ roles:
     version: 1.1.1
   - src: jriguera.configdrive
     # There are no versioned releases of this role.
-    version: 313c9b0ff8cd8009471380ccd71b27b440ac6704
+    version: 71ddface5540ee0ff9e35bcc4334c766ed5d5d3f
   - src: MichaelRigart.interfaces
     version: v1.15.6
   - src: mrlesmithjr.chrony

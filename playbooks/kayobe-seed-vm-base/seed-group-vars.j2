@@ -1,8 +1,8 @@
 ---
-{% if seed_vm_use_cirros | default(true) or ansible_os_family != "Debian" %}
+{% if seed_vm_use_cirros | default(true) or ansible_os_family == 'RedHat' and ansible_distribution_major_version == '9' %}
 aio_interface: eth0
 {% else %}
-# Required for Ubuntu cloud images
+# Required for official cloud images (CentOS Stream 10, Rocky Linux 10, Ubuntu)
 aio_interface: ens2
 {% endif %}
 
