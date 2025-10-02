@@ -19,10 +19,12 @@
         - kayobe-infra-vm-ubuntu-noble
         - kayobe-overcloud-host-configure-rocky10
         - kayobe-overcloud-host-configure-rocky9
-        - kayobe-overcloud-host-configure-rocky10
         - kayobe-overcloud-host-configure-ubuntu-noble
+        - kayobe-overcloud-rocky10
+        - kayobe-overcloud-rocky10-podman
         - kayobe-overcloud-rocky9
         - kayobe-overcloud-rocky9-podman
+        - kayobe-overcloud-tls-rocky10
         - kayobe-overcloud-tls-rocky9
         - kayobe-overcloud-ubuntu-noble
         - kayobe-overcloud-ubuntu-noble-podman
@@ -30,6 +32,8 @@
         - kayobe-overcloud-upgrade-slurp-rocky9
         - kayobe-overcloud-upgrade-slurp-ubuntu-noble
         - kayobe-overcloud-upgrade-ubuntu-noble
+        - kayobe-seed-rocky10
+        - kayobe-seed-rocky10-podman
         - kayobe-seed-rocky9
         - kayobe-seed-rocky9-podman
         - kayobe-seed-ubuntu-noble
@@ -53,10 +57,12 @@
         - kayobe-infra-vm-ubuntu-noble
         - kayobe-overcloud-host-configure-rocky10
         - kayobe-overcloud-host-configure-rocky9
-        - kayobe-overcloud-host-configure-rocky10
         - kayobe-overcloud-host-configure-ubuntu-noble
+        - kayobe-overcloud-rocky10
+        - kayobe-overcloud-rocky10-podman
         - kayobe-overcloud-rocky9
         - kayobe-overcloud-rocky9-podman
+        - kayobe-overcloud-tls-rocky10
         - kayobe-overcloud-tls-rocky9
         - kayobe-overcloud-ubuntu-noble
         - kayobe-overcloud-ubuntu-noble-podman
@@ -64,6 +70,8 @@
         - kayobe-overcloud-upgrade-slurp-rocky9
         - kayobe-overcloud-upgrade-slurp-ubuntu-noble
         - kayobe-overcloud-upgrade-ubuntu-noble
+        - kayobe-seed-rocky10
+        - kayobe-seed-rocky10-podman
         - kayobe-seed-rocky9
         - kayobe-seed-rocky9-podman
         - kayobe-seed-ubuntu-noble
@@ -84,9 +92,12 @@
         - kayobe-infra-vm-rocky10-cloud-image
         - kayobe-infra-vm-rocky9-cloud-image
         - kayobe-infra-vm-ubuntu-noble-cloud-image
+        - kayobe-overcloud-centos10s
         - kayobe-overcloud-centos9s
         - kayobe-overcloud-host-configure-centos10s
         - kayobe-overcloud-host-configure-centos9s
+        - kayobe-overcloud-tls-centos10s
+        - kayobe-seed-centos10s
         - kayobe-seed-images-centos10s
         - kayobe-seed-images-centos9s
         - kayobe-seed-images-rocky10
