@@ -128,6 +128,12 @@
     voting: false
 
 - job:
+    name: kayobe-overcloud-centos10s
+    parent: kayobe-overcloud-base
+    nodeset: kayobe-centos10s
+    voting: false
+
+- job:
     name: kayobe-overcloud-rocky9
     parent: kayobe-overcloud-base
     vars:
@@ -138,6 +144,20 @@
     name: kayobe-overcloud-rocky9-podman
     parent: kayobe-overcloud-base
     nodeset: kayobe-rocky9
+    vars:
+      container_engine: podman
+
+- job:
+    name: kayobe-overcloud-rocky10
+    parent: kayobe-overcloud-base
+    vars:
+      kayobe_control_host_become: false
+    nodeset: kayobe-rocky10
+
+- job:
+    name: kayobe-overcloud-rocky10-podman
+    parent: kayobe-overcloud-base
+    nodeset: kayobe-rocky10
     vars:
       container_engine: podman
 
@@ -168,9 +188,20 @@
     voting: false
 
 - job:
+    name: kayobe-overcloud-tls-centos10s
+    parent: kayobe-overcloud-tls-base
+    nodeset: kayobe-centos10s
+    voting: false
+
+- job:
     name: kayobe-overcloud-tls-rocky9
     parent: kayobe-overcloud-tls-base
     nodeset: kayobe-rocky9
+
+- job:
+    name: kayobe-overcloud-tls-rocky10
+    parent: kayobe-overcloud-tls-base
+    nodeset: kayobe-rocky10
 
 - job:
     name: kayobe-overcloud-upgrade-base
@@ -224,6 +255,12 @@
     voting: false
 
 - job:
+    name: kayobe-seed-centos10s
+    parent: kayobe-seed-base
+    nodeset: kayobe-centos10s
+    voting: false
+
+- job:
     name: kayobe-seed-rocky9
     parent: kayobe-seed-base
     nodeset: kayobe-rocky9
@@ -232,6 +269,18 @@
     name: kayobe-seed-rocky9-podman
     parent: kayobe-seed-base
     nodeset: kayobe-rocky9
+    vars:
+      container_engine: podman
+
+- job:
+    name: kayobe-seed-rocky10
+    parent: kayobe-seed-base
+    nodeset: kayobe-rocky10
+
+- job:
+    name: kayobe-seed-rocky10-podman
+    parent: kayobe-seed-base
+    nodeset: kayobe-rocky10
     vars:
       container_engine: podman
 
