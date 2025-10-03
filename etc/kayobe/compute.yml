@@ -209,7 +209,7 @@
 #compute_libvirt_ceph_repo_install:
 
 # Ceph package repository release to install on CentOS and Rocky hosts when
-# compute_libvirt_ceph_repo_install is true. Default is 'pacific'.
+# compute_libvirt_ceph_repo_install is true. Default is 'squid'.
 #compute_libvirt_ceph_repo_release:
 
 ###############################################################################

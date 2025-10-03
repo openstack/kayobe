@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    Bumps Ceph package repository to Squid. This repository is only configured
+    when using host libvirt.

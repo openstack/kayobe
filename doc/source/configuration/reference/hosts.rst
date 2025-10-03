@@ -1237,7 +1237,7 @@ are relevant only when using the libvirt daemon rather than the
     Default is ``true``.
 ``compute_libvirt_ceph_repo_release``
     Ceph package repository release to install on CentOS and Rocky hosts when
-    ``compute_libvirt_ceph_repo_install`` is ``true``. Default is ``pacific``.
+    ``compute_libvirt_ceph_repo_install`` is ``true``. Default is ``squid``.
 
 Example: custom libvirtd.conf
 -----------------------------
