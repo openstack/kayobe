@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    Bumps the ``stackhpc.libvirt-host`` role to v1.14.0 which fixes
+    compatibility with CentOS Stream 10 and Rocky Linux 10.
