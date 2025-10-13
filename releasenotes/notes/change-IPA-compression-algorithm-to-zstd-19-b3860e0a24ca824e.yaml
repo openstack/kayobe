@@ -1,0 +1,14 @@
+---
+features:
+  - |
+    Changes the IPA (Ironic Python Agent) image compression algorithm from
+    the default ``gzip`` to ``zstd``. This improves provisioning
+    performance by reducing the size of the IPA boot ISO transferred from
+    the Ironic conductor to the bare metal nodes.
+upgrade:
+  - |
+    Changes the IPA (Ironic Python Agent) image compression algorithm from
+    default ``gzip`` to ``zstd``. The ``ipa_build_dib_env_default`` dictionary
+    now includes ``DIB_IPA_COMPRESS_CMD`` set to ``zstd -19``.
+    The default ``ipa_build_dib_host_packages_extra`` has been changed from
+    none to ``['zstd']``.

@@ -45,8 +45,7 @@ image build``.
 ``ipa_builder_source_version``
     Version of IPA builder source repository. Default is ``master``.
 ``ipa_build_dib_host_packages_extra``
-    List of additional build host packages to install. Default is an empty
-    list.
+    List of additional build host packages to install. Default is ``[ 'zstd' ]``.
 ``ipa_build_dib_elements_default``
     List of default Diskimage Builder (DIB) elements to use when building IPA
     images. Default is ``["centos", "dynamic-login", "enable-serial-console",
