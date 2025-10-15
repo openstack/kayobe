@@ -1,0 +1,12 @@
+---
+upgrade:
+  - |
+    The inspection_store container has been removed since it was tied to the
+    standalone Ironic Inspector implementation and support for deploying that
+    service has been dropped. The new inspection implemenation built into
+    Ironic stores a similar set of data in the database.  Prior to upgrading,
+    you may wish to dump any data with the ``kayobe overcloud introspection data
+    save`` command. After the upgrade the container should be manually removed
+    from the first controller using either ``docker stop inspection store &&
+    docker rm inspection_store`` or ``sudo podman stop inspection_store && sudo
+    podman rm inspection_store``
