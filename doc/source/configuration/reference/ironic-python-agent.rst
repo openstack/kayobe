@@ -161,12 +161,12 @@ Bifrost can be configured to use ``dynamic-login`` with the
 The updated configuration is applied with ``kayobe seed service deploy``.
 
 Overcloud Ironic can be configured with the
-``kolla_ironic_pxe_append_params_extra`` variable:
+``kolla_ironic_kernel_append_params_extra`` variable:
 
 .. code-block:: yaml
    :caption: ``ironic.yml``
 
-   kolla_ironic_pxe_append_params_extra:
+   kolla_ironic_kernel_append_params_extra:
      - sshkey="ssh-rsa BBA1..."
 
 The updated configuration is applied with ``kayobe overcloud service deploy``.

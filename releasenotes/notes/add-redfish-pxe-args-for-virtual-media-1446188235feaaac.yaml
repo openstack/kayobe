@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    Adds support for Redfish virtual media and
+    PXE boot using a common set of variables.
+    Migration to using
+    ``kolla_ironic_kernel_append_params`` is
+    advised.
+    New boot variables are:
+    kolla_ironic_kernel_append_params,
+    kolla_ironic_kernel_append_params_default,
+    kolla_ironic_kernel_append_params_extra.

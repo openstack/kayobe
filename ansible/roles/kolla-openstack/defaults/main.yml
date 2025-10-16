@@ -553,7 +553,10 @@ kolla_ironic_inspection_network:
 # Name or UUID of the Neutron network to use for provisioning.
 kolla_ironic_provisioning_network:
 
-# List of additional append parameters for baremetal PXE boot.
+# List of additional append parameters for baremetal boot.
+kolla_ironic_kernel_append_params: []
+
+#List of additional append parameters for baremetal PXE boot.
 kolla_ironic_pxe_append_params: []
 
 # Deprecated:
