@@ -68,8 +68,8 @@ kolla_bifrost_deploy_image_filename: "deployment_image.qcow2"
 # UUID of the root filesystem contained within the deployment image.
 # See below URL for instructions on how to extract it:
 # https://docs.openstack.org/ironic/latest/admin/raid.html#image-requirements
-# Default is none.
-kolla_bifrost_deploy_image_rootfs:
+# Default is an empty string.
+kolla_bifrost_deploy_image_rootfs: ''
 
 # Custom cloud-init user-data passed to deploy of the deployment image.
 # Default is an empty string.
