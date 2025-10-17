@@ -5,6 +5,12 @@ collections:
     version: master
   - name: community.docker
     version: 3.11.0
+  - name: community.network
+    version: 5.1.0
+  - name: dellemc.os6
+    version: 1.0.7
+  - name: dellemc.os9
+    version: 1.0.4
   - name: dellemc.os10
     version: 1.2.7
   - name: nvidia.nvue

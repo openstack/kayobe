@@ -16,8 +16,8 @@
 # NOTE(priteau): Exclude comments from ssh-keyscan output because they break
 # known_hosts on centos/rocky 10.
 - name: Scan for SSH keys
-  local_action:
-    module: shell ssh-keyscan {{ item }} | grep -v '^#'
+  delegate_to: localhost
+  shell: ssh-keyscan {{ item }} | grep -v '^#'
   with_items:
     - "{{ ansible_host | default(inventory_hostname) }}"
   register: keyscan_result
@@ -27,8 +27,8 @@
 # concurrently, and some keys can end up being dropped. For more details see
 # https://github.com/ansible/proposals/issues/113
 - name: Ensure SSH keys are in known hosts
-  local_action:
-    module: known_hosts
+  delegate_to: localhost
+  known_hosts:
     host: "{{ item[0].item }}"
     key: "{{ item[1] }}"
   with_subelements:

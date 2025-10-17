@@ -20,27 +20,27 @@
     dump_hosts: all
   tasks:
     - name: Create configuration dump directory
-      local_action:
-        module: file
+      delegate_to: localhost
+      file:
         path: "{{ dump_path }}"
         state: directory
 
     - name: Write host config to file
-      local_action:
-        module: copy
+      delegate_to: localhost
+      copy:
         content: "{{ hostvars[inventory_hostname] | to_nice_yaml }}"
         dest: "{{ dump_path }}/{{ inventory_hostname }}.yml"
       when: dump_var_name is not defined
 
     - name: Write host variable to file
-      local_action:
-        module: copy
+      delegate_to: localhost
+      copy:
         content: "{{ hostvars[inventory_hostname][dump_var_name] | to_nice_yaml }}"
         dest: "{{ dump_path }}/{{ inventory_hostname }}.yml"
       when: dump_var_name is defined
 
 #    - name: Write merged config to file
-#      local_action:
-#        module: copy
+#      delegate_to: localhost
+#      copy:
 #        content: "{{ hostvars | merge_config | to_nice_yaml }}"
 #        dest: "{{ dump_path }}/merged.yml

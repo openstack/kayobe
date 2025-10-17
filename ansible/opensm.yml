@@ -12,4 +12,4 @@
     - opensm
   roles:
     - role: opensm
-      opensm_action: "{{ kayobe_action }}"
+      opensm_action: "{{ kayobe_action | default('deploy') }}"

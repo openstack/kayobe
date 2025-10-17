@@ -38,14 +38,14 @@
       become: "{{ container_engine == 'podman' }}"
 
     - name: Ensure introspection data output directory exists
-      local_action:
-        module: file
+      delegate_to: localhost
+      file:
         path: "{{ output_dir }}"
         state: directory
 
     - name: Ensure introspection data is saved locally
-      local_action:
-        module: copy
+      delegate_to: localhost
+      copy:
         content: "{{ introspection_data_map[output_format | lower] }}"
         dest: "{{ output_dir }}/{{ inventory_hostname }}.{{ output_format | lower }}"
       when: save_result.rc == 0

@@ -124,8 +124,8 @@
           console_log_enabled: true
   tasks:
     - name: Wait for SSH access to the seed VM
-      local_action:
-        module: wait_for
+      delegate_to: localhost
+      wait_for:
         host: "{{ hostvars[seed_host].ansible_host }}"
         port: 22
         state: started

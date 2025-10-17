@@ -221,8 +221,8 @@
         - final_provision_state != 'active'
 
     - name: Wait for SSH access to the nodes
-      local_action:
-        module: wait_for
+      delegate_to: localhost
+      wait_for:
         host: "{{ ansible_host }}"
         port: 22
         state: started
