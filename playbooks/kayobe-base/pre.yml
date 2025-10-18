@@ -15,7 +15,7 @@
       callbacks_enabled = ansible.posix.profile_tasks
 
       # Improve readability of ansible output.
-      stdout_callback = yaml
+      callback_result_format = yaml
 
       [ssh_connection]
       # NOTE(wszusmki): Disable pipelining due to:
@@ -36,7 +36,7 @@
       callbacks_enabled = ansible.posix.profile_tasks
 
       # Improve readability of ansible output.
-      stdout_callback = yaml
+      callback_result_format = yaml
 
       [ssh_connection]
       # NOTE(wszusmki): Disable pipelining due to:
