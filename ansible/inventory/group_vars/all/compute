@@ -240,8 +240,8 @@ compute_libvirt_enable_tls: false
 compute_libvirt_ceph_repo_install: true
 
 # Ceph package repository release to install on CentOS and Rocky hosts when
-# compute_libvirt_ceph_repo_install is true. Default is 'pacific'.
-compute_libvirt_ceph_repo_release: pacific
+# compute_libvirt_ceph_repo_install is true. Default is 'squid'.
+compute_libvirt_ceph_repo_release: squid
 
 ###############################################################################
 # Compute node swap configuration.
