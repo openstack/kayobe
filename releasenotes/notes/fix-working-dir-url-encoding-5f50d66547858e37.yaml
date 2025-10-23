@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Fixes a issue where the working directory contains symbols such
+    as @.
+    The previous behaviour tries to load files with url encoded symbols.
+    `LP#2129687 <https://bugs.launchpad.net/kayobe/+bug/2129687>`__
