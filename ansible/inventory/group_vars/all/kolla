@@ -208,7 +208,7 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_multipathd | bool }}"
   - regex: "neutron-\\(server\\|metadata-agent\\)"
     enabled: "{{ kolla_enable_neutron | bool }}"
-  - regex: "neutron-\\(dhcp\\|l3\\|linuxbridge\\|openvswitch\\)-agent"
+  - regex: "neutron-\\(dhcp\\|l3\\|openvswitch\\)-agent"
     enabled: "{{ kolla_build_neutron_ovs | default(kolla_enable_neutron | bool and not kolla_enable_ovn | bool) }}"
   - regex: neutron-bgp-dragent
     enabled: "{{ kolla_enable_neutron_bgp_dragent | bool }}"
