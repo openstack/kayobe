@@ -24,6 +24,8 @@ import os
 import shutil
 import subprocess
 import sys
+from urllib.parse import unquote
+from urllib.parse import urlparse
 
 from ansible.parsing.yaml.loader import AnsibleLoader
 import yaml
@@ -67,7 +69,7 @@ def _get_direct_url_if_editable(dist):
                 url = direct_url_content['url']
                 prefix = 'file://'
                 if url.startswith(prefix):
-                    return url[len(prefix):]
+                    return unquote(urlparse(url).path)
 
     return None
 
