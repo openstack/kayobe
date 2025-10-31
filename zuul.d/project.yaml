@@ -77,9 +77,9 @@
         - kayobe-overcloud-tls-rocky9
         - kayobe-overcloud-upgrade-rocky9
         - kayobe-seed-centos10s
-        - kayobe-seed-images-centos9s
-        - kayobe-seed-images-rocky9
-        - kayobe-seed-images-rocky9-podman
+        - kayobe-seed-images-centos10s
+        - kayobe-seed-images-rocky10
+        - kayobe-seed-images-rocky10-podman
         - kayobe-seed-images-ubuntu-noble
         - kayobe-seed-images-ubuntu-noble-podman
         - kayobe-seed-rocky9
