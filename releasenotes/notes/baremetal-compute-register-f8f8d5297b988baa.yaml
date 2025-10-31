@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    ``kayobe baremetal compute register`` now uses the
+    ``openstack.cloud.baremetal_node`` module to register nodes with Ironic.
+    This supports configuring more node fields, such as hardware interfaces.
+    Existing nodes are not updated. Newly enrolled nodes are still moved into
+    the ``manageable`` provision state. Defaults for the Ironic node
+    variables are provided, and ``ironic_driver_info_extra`` and
+    ``ironic_properties_extra`` may be used to extend them. See
+    ``etc/kayobe/baremetal.yml`` for details.
