@@ -5,7 +5,7 @@
 
 - name: Setup OpenStack Environment
   hosts: controllers[0]
-  gather_facts: False
+  gather_facts: True
   vars:
     venv: "{{ virtualenv_path }}/openstack-cli"
   pre_tasks:
@@ -16,6 +16,7 @@
           - python-openstackclient
           - python-ironicclient
         state: latest
+        virtualenv_command: "python3.{{ ansible_facts.python.version.minor }} -m venv"
         extra_args: "{% if pip_upper_constraints_file %}-c {{ pip_upper_constraints_file }}{% endif %}"
 
     - block:

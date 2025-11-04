@@ -8,11 +8,11 @@
     - name: Set up openstack cli virtualenv
       pip:
         virtualenv: "{{ venv }}"
-        virtualenv_command: python3 -m venv
         name:
           - python-openstackclient
           - python-ironic-inspector-client
         state: latest
+        virtualenv_command: python3.{{ ansible_facts.python.version.minor }} -m venv
         extra_args: "{% if pip_upper_constraints_file %}-c {{ pip_upper_constraints_file }}{% endif %}"
 
 - name: Ensure the baremetal compute nodes' hardware introspection data is saved

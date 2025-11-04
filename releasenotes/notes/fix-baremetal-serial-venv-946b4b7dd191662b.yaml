@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Call virtualenv as a Python module during baremetal compute serial console
+    setup to fix ``executable not found`` error on Rocky Linux.
