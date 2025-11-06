@@ -3,9 +3,11 @@
   vars:
     testinfra_venv: ~/testinfra-venv
   tasks:
-    - name: Ensure python3 is installed
+    - name: Ensure python3 and setuptools are installed
       package:
-        name: python3
+        name:
+          - python3
+          - python3-setuptools
       become: true
 
     - name: Install Python3.12 on RHEL derivatives
