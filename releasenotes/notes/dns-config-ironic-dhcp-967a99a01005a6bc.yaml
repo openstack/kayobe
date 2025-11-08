@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Configure inspection network DNS servers to enable Ironic inspection
+    when ``kolla_internal_fqdn`` is set.

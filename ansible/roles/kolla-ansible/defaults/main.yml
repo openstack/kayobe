@@ -200,6 +200,9 @@ kolla_inspector_netmask:
 # Default gateway to use for inspection network.
 kolla_inspector_default_gateway:
 
+# DNS servers for inspection network.
+kolla_inspector_dns_servers: []
+
 # List of extra kernel parameters for the inspector default PXE configuration.
 kolla_inspector_extra_kernel_options: []
 

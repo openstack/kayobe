@@ -39,6 +39,8 @@ supported:
     IP address of the gateway for the hardware introspection network.
 ``neutron_gateway``
     IP address of the gateway for a neutron subnet based on this network.
+``inspection_dns_servers``
+    List of DNS servers used during hardware introspection.
 ``vlan``
     VLAN ID.
 ``mtu``
@@ -828,19 +830,22 @@ If using the overcloud to inspect bare metal workload (compute) hosts, it is
 necessary to define a DHCP allocation pool for the overcloud's ironic inspector
 DHCP server using the ``inspection_allocation_pool_start`` and
 ``inspection_allocation_pool_end`` attributes of the workload provisioning
-network.
+network. If ``kolla_internal_fqdn`` is set, it is mandatory to also supply one
+or more DNS servers using ``inspection_dns_servers``.
 
 .. note::
 
    This example assumes that the ``example`` network is mapped to
    ``provision_wl_net_name``.
 
-To configure a network called ``example`` with an inspection allocation pool:
+To configure a network called ``example`` with an inspection allocation pool
+and inspection DNS servers:
 
 .. code-block:: yaml
 
    example_inspection_allocation_pool_start: 10.0.1.196
    example_inspection_allocation_pool_end: 10.0.1.254
+   example_inspection_dns_servers: [10.0.1.10, 10.0.1.11]
 
 .. note::
 

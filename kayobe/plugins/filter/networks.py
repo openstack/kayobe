@@ -247,6 +247,12 @@ net_inspection_gateway = _make_attr_filter('inspection_gateway')
 
 
 @jinja2.pass_context
+def net_inspection_dns_servers(context, name, inventory_hostname=None):
+    return net_attr(context, name, 'inspection_dns_servers',
+                    inventory_hostname)
+
+
+@jinja2.pass_context
 def net_neutron_allocation_pool_start(context, name, inventory_hostname=None):
     return net_attr(context, name, 'neutron_allocation_pool_start',
                     inventory_hostname)
@@ -791,6 +797,7 @@ def get_filters():
         'net_inspection_allocation_pool_end': (
             net_inspection_allocation_pool_end),
         'net_inspection_gateway': net_inspection_gateway,
+        'net_inspection_dns_servers': net_inspection_dns_servers,
         'net_neutron_allocation_pool_start': net_neutron_allocation_pool_start,
         'net_neutron_allocation_pool_end': net_neutron_allocation_pool_end,
         'net_neutron_gateway': net_neutron_gateway,

@@ -401,6 +401,9 @@ ironic_dnsmasq_dhcp_ranges:
 {% if kolla_inspector_default_gateway %}
     routers: "{{ kolla_inspector_default_gateway }}"
 {% endif %}
+{% if kolla_inspector_dns_servers %}
+    dns_servers: "{{ kolla_inspector_dns_servers | join(',') }}"
+{% endif %}
 {% endif %}
 {% if kolla_inspector_extra_kernel_options %}
 ironic_inspector_kernel_cmdline_extras:
