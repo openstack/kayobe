@@ -312,6 +312,12 @@
     nodeset: kayobe-centos9s
     voting: false
 
+- job:
+    name: kayobe-seed-images-centos10s
+    parent: kayobe-seed-images-base
+    nodeset: kayobe-centos10s
+    voting: false
+
 # Build only the base container image in the kayobe-seed-images-rocky9 job
 # which always runs. Use `check experimental` to run the other jobs which build
 # more images.
@@ -328,6 +334,20 @@
     name: kayobe-seed-images-rocky9-podman
     parent: kayobe-seed-images-base
     nodeset: kayobe-rocky9
+    vars:
+      container_engine: podman
+
+- job:
+    name: kayobe-seed-images-rocky10
+    parent: kayobe-seed-images-base
+    nodeset: kayobe-rocky10
+    vars:
+      kayobe_control_host_become: false
+
+- job:
+    name: kayobe-seed-images-rocky10-podman
+    parent: kayobe-seed-images-base
+    nodeset: kayobe-rocky10
     vars:
       container_engine: podman
 

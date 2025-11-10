@@ -1,4 +1,13 @@
 ---
+{% if ansible_facts.os_family == 'RedHat' and ansible_facts.distribution_major_version == '10' %}
+# Configure EPEL repository. Necessary for gdisk to be available.
+# dnf_install_epel and dnf_use_local_mirror are both necessary to trigger
+# templating of epel.repo. We use the official EPEL repository because there is
+# no OpenDev mirror for EL10.
+dnf_install_epel: true
+dnf_use_local_mirror: true
+{% endif %}
+
 docker_daemon_debug: true
 # Use alternative registry image to avoid Docker Hub pull rate limit.
 docker_registry_image_full: "quay.io/libpod/registry:2.8.2"
@@ -40,7 +49,9 @@ ipa_build_images: {{ build_images }}
 ipa_build_dib_elements_extra:
   # extra-hardware is currently failing on Ubuntu
   - "{% raw %}{{ 'extra-hardware' if os_distribution != 'ubuntu' else '' }}{% endraw %}"
-  - "openstack-ci-mirrors"
+  # Broken openstack-ci-mirrors for CentOS Stream 10. TODO(priteau): Remove
+  # conditional once https://review.opendev.org/965344 is released.
+  - "{% raw %}{{ 'openstack-ci-mirrors' if os_distribution != 'centos' else '' }}{% endraw %}"
 
 # Workaround for limited tmpfs space in CI
 ipa_build_dib_env_extra:
@@ -49,10 +60,12 @@ ipa_build_dib_env_extra:
 # Build overcloud host image.
 overcloud_dib_build_host_images: {{ build_images }}
 overcloud_dib_elements_extra:
-  - "openstack-ci-mirrors"
+  # Broken openstack-ci-mirrors for CentOS Stream 10. TODO(priteau): Remove
+  # conditional once https://review.opendev.org/965344 is released.
+  - "{% raw %}{{ 'openstack-ci-mirrors' if os_distribution != 'centos' else '' }}{% endraw %}"
 
-# NOTE(bbezak): Kolla does not build CentOS Stream 9 container images.
-# Using Rocky Linux 9 images on CentOS Stream 9 in CI.
+# NOTE(bbezak): Kolla does not build CentOS Stream 10 container images.
+# Using Rocky Linux 10 images on CentOS Stream 10 in CI.
 kolla_base_distro: "{% raw %}{{ 'rocky' if os_distribution == 'centos' else os_distribution }}{% endraw %}"
 
 # Support overriding container_engine
