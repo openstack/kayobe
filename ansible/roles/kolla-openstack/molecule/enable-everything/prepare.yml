@@ -4,8 +4,8 @@
   gather_facts: false
   tasks:
     - name: Ensure ironic inspector kernel and ramdisk image directory exists
-      local_action:
-        module: file
+      delegate_to: localhost
+      file:
         path: "{{ item | dirname }}"
         state: directory
         recurse: true
@@ -18,8 +18,8 @@
     # versions of docker. Using non-empty files seems to resolve the issue.
     # See https://github.com/ansible/ansible/issues/36725.
     - name: Ensure ironic inspector kernel and ramdisk images exist
-      local_action:
-        module: copy
+      delegate_to: localhost
+      copy:
         content: fake image
         dest: "{{ item }}"
       with_items:
@@ -117,8 +117,8 @@
         label: "{{ item.dest }}"
 
     - name: Ensure nova libvirt certificates directory exists
-      local_action:
-        module: file
+      delegate_to: localhost
+      file:
         path: "{{ kolla_nova_libvirt_certificates_src }}"
         state: directory
 
@@ -127,8 +127,8 @@
     # versions of docker. Using non-empty files seems to resolve the issue.
     # See https://github.com/ansible/ansible/issues/36725.
     - name: Ensure nova libvirt certificates exist
-      local_action:
-        module: copy
+      delegate_to: localhost
+      copy:
         content: fake cert
         dest: "{{ kolla_nova_libvirt_certificates_src }}/{{ item }}"
       with_items:

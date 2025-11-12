@@ -6,8 +6,8 @@
     # NOTE(mgoddard): 0.6.7 includes a fix for host key checking:
     # https://github.com/ncclient/ncclient/issues/302.
     ncclient_version: ">=0.6.7,<0.7.0"
-  local_action:
-    module: pip
+  delegate_to: localhost
+  pip:
     name: "ncclient{{ ncclient_version }}"
     virtualenv: "{{ lookup('env', 'VIRTUAL_ENV') | default(omit, true) }}"
   become: "{{ lookup('env', 'VIRTUAL_ENV') == None }}"

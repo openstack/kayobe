@@ -4,8 +4,8 @@
     # NOTE(mgoddard): Use the Python interpreter used to run ansible-playbook,
     # since this has Python dependencies available to it (PyYAML).
     ansible_python_interpreter: "{{ ansible_playbook_python }}"
-  local_action:
-    module: ip_allocation
+  delegate_to: localhost
+  ip_allocation:
     allocation_file: "{{ ip_allocation_filename }}"
     hostname: "{{ ip_allocation_hostname }}"
     net_name: "{{ item.net_name }}"

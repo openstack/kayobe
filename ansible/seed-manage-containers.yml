@@ -1,10 +1,10 @@
 ---
-- name: "Ensure defined container images are {{ kayobe_action }}ed on seed node"
+- name: "Ensure defined container images are {{ kayobe_action | default('deploy') }}ed on seed node"
   hosts: seed
   tags:
     - seed-deploy-containers
     - seed-manage-containers
   vars:
-    manage_containers_action: "{{ kayobe_action }}"
+    manage_containers_action: "{{ kayobe_action | default('deploy') }}"
   roles:
     - role: manage-containers

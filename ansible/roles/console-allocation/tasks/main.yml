@@ -35,8 +35,8 @@
     # NOTE(mgoddard): Use the Python interpreter used to run ansible-playbook,
     # since this has Python dependencies available to it (PyYAML).
     ansible_python_interpreter: "{{ ansible_playbook_python }}"
-  local_action:
-    module: console_allocation
+  delegate_to: localhost
+  console_allocation:
     allocation_file: "{{ console_allocation_filename }}"
     nodes: "{{ console_allocation_ironic_nodes }}"
     allocation_pool_start: "{{ console_allocation_pool_start }}"
