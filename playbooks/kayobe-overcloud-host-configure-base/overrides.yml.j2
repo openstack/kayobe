@@ -164,21 +164,6 @@ apt_auth:
 {% endif %}
 
 {% if ansible_facts.os_family == 'RedHat' %}
-# NOTE: There are OpenDev mirrors only for centos-stream/9-stream and epel/9.
-{% if ansible_facts.distribution_major_version == "9" %}
-# Use a local DNF mirror.
-dnf_use_local_mirror: true
-{% if ansible_facts.distribution == 'CentOS' %}
-# Mirror FQDN for DNF repos.
-dnf_centos_mirror_host: "{{ zuul_site_mirror_fqdn }}"
-# Mirror directory for DNF CentOS repos.
-dnf_centos_mirror_directory: 'centos-stream'
-{% endif %}
-# Mirror FQDN for DNF EPEL repos.
-dnf_epel_mirror_host: "{{ zuul_site_mirror_fqdn }}"
-# Mirror directory for DNF EPEL repos.
-dnf_epel_mirror_directory: 'epel'
-{% endif %}
 # Configure a custom DNF repository.
 dnf_custom_repos:
   fluent-package:

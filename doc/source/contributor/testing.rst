@@ -18,7 +18,7 @@ running kayobe's tests.
 
       sudo apt-get install build-essential python3-dev libssl-dev python3-pip git
 
-* Fedora or CentOS Stream 9/Rocky 9/RHEL 9::
+* Fedora or CentOS Stream 10/Rocky 10/RHEL 10::
 
       sudo dnf install python3-devel openssl-devel python3-pip git gcc
 

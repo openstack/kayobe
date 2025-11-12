@@ -122,30 +122,10 @@
     timeout: 7200
 
 - job:
-    name: kayobe-overcloud-centos9s
-    parent: kayobe-overcloud-base
-    nodeset: kayobe-centos9s
-    voting: false
-
-- job:
     name: kayobe-overcloud-centos10s
     parent: kayobe-overcloud-base
     nodeset: kayobe-centos10s
     voting: false
-
-- job:
-    name: kayobe-overcloud-rocky9
-    parent: kayobe-overcloud-base
-    vars:
-      kayobe_control_host_become: false
-    nodeset: kayobe-rocky9
-
-- job:
-    name: kayobe-overcloud-rocky9-podman
-    parent: kayobe-overcloud-base
-    nodeset: kayobe-rocky9
-    vars:
-      container_engine: podman
 
 - job:
     name: kayobe-overcloud-rocky10
@@ -182,21 +162,10 @@
       ironic_boot_mode: "uefi"
 
 - job:
-    name: kayobe-overcloud-tls-centos9s
-    parent: kayobe-overcloud-tls-base
-    nodeset: kayobe-centos9s
-    voting: false
-
-- job:
     name: kayobe-overcloud-tls-centos10s
     parent: kayobe-overcloud-tls-base
     nodeset: kayobe-centos10s
     voting: false
-
-- job:
-    name: kayobe-overcloud-tls-rocky9
-    parent: kayobe-overcloud-tls-base
-    nodeset: kayobe-rocky9
 
 - job:
     name: kayobe-overcloud-tls-rocky10
@@ -216,9 +185,9 @@
     timeout: 10800
 
 - job:
-    name: kayobe-overcloud-upgrade-rocky9
+    name: kayobe-overcloud-upgrade-rocky10
     parent: kayobe-overcloud-upgrade-base
-    nodeset: kayobe-rocky9
+    nodeset: kayobe-rocky10
 
 - job:
     name: kayobe-overcloud-upgrade-ubuntu-noble
@@ -226,9 +195,9 @@
     nodeset: kayobe-ubuntu-noble
 
 - job:
-    name: kayobe-overcloud-upgrade-slurp-rocky9
+    name: kayobe-overcloud-upgrade-slurp-rocky10
     parent: kayobe-overcloud-upgrade-base
-    nodeset: kayobe-rocky9
+    nodeset: kayobe-rocky10
 
 - job:
     name: kayobe-overcloud-upgrade-slurp-ubuntu-noble
@@ -249,28 +218,10 @@
       build_images: false
 
 - job:
-    name: kayobe-seed-centos9s
-    parent: kayobe-seed-base
-    nodeset: kayobe-centos9s
-    voting: false
-
-- job:
     name: kayobe-seed-centos10s
     parent: kayobe-seed-base
     nodeset: kayobe-centos10s
     voting: false
-
-- job:
-    name: kayobe-seed-rocky9
-    parent: kayobe-seed-base
-    nodeset: kayobe-rocky9
-
-- job:
-    name: kayobe-seed-rocky9-podman
-    parent: kayobe-seed-base
-    nodeset: kayobe-rocky9
-    vars:
-      container_engine: podman
 
 - job:
     name: kayobe-seed-rocky10
@@ -307,35 +258,10 @@
       build_images: true
 
 - job:
-    name: kayobe-seed-images-centos9s
-    parent: kayobe-seed-images-base
-    nodeset: kayobe-centos9s
-    voting: false
-
-- job:
     name: kayobe-seed-images-centos10s
     parent: kayobe-seed-images-base
     nodeset: kayobe-centos10s
     voting: false
-
-# Build only the base container image in the kayobe-seed-images-rocky9 job
-# which always runs. Use `check experimental` to run the other jobs which build
-# more images.
-- job:
-    name: kayobe-seed-images-rocky9
-    parent: kayobe-seed-images-base
-    nodeset: kayobe-rocky9
-    vars:
-      overcloud_container_image_regex: "^base"
-      seed_container_image_regex: "^base"
-      kayobe_control_host_become: false
-
-- job:
-    name: kayobe-seed-images-rocky9-podman
-    parent: kayobe-seed-images-base
-    nodeset: kayobe-rocky9
-    vars:
-      container_engine: podman
 
 - job:
     name: kayobe-seed-images-rocky10
@@ -378,21 +304,10 @@
     timeout: 7200
 
 - job:
-    name: kayobe-overcloud-host-configure-centos9s
-    parent: kayobe-overcloud-host-configure-base
-    nodeset: kayobe-centos9s
-    voting: false
-
-- job:
     name: kayobe-overcloud-host-configure-centos10s
     parent: kayobe-overcloud-host-configure-base
     nodeset: kayobe-centos10s
     voting: false
-
-- job:
-    name: kayobe-overcloud-host-configure-rocky9
-    parent: kayobe-overcloud-host-configure-base
-    nodeset: kayobe-rocky9
 
 - job:
     name: kayobe-overcloud-host-configure-rocky10
@@ -417,9 +332,9 @@
     timeout: 5400
 
 - job:
-    name: kayobe-seed-upgrade-rocky9
+    name: kayobe-seed-upgrade-rocky10
     parent: kayobe-seed-upgrade-base
-    nodeset: kayobe-rocky9
+    nodeset: kayobe-rocky10
 
 - job:
     name: kayobe-seed-upgrade-ubuntu-noble
@@ -427,9 +342,9 @@
     nodeset: kayobe-ubuntu-noble
 
 - job:
-    name: kayobe-seed-upgrade-slurp-rocky9
+    name: kayobe-seed-upgrade-slurp-rocky10
     parent: kayobe-seed-upgrade-base
-    nodeset: kayobe-rocky9
+    nodeset: kayobe-rocky10
 
 - job:
     name: kayobe-seed-upgrade-slurp-ubuntu-noble
@@ -449,21 +364,10 @@
     timeout: 5400
 
 - job:
-    name: kayobe-seed-vm-centos9s
-    parent: kayobe-seed-vm-base
-    nodeset: kayobe-centos9s
-    voting: false
-
-- job:
     name: kayobe-seed-vm-centos10s
     parent: kayobe-seed-vm-base
     nodeset: kayobe-centos10s
     voting: false
-
-- job:
-    name: kayobe-seed-vm-rocky9
-    parent: kayobe-seed-vm-base
-    nodeset: kayobe-rocky9
 
 - job:
     name: kayobe-seed-vm-rocky10
@@ -478,25 +382,10 @@
       kayobe_control_host_become: false
 
 - job:
-    name: kayobe-seed-vm-centos9s-cloud-image
-    parent: kayobe-seed-vm-base
-    nodeset: kayobe-centos9s
-    voting: false
-    vars:
-      seed_vm_use_cirros: false
-
-- job:
     name: kayobe-seed-vm-centos10s-cloud-image
     parent: kayobe-seed-vm-base
     nodeset: kayobe-centos10s
     voting: false
-    vars:
-      seed_vm_use_cirros: false
-
-- job:
-    name: kayobe-seed-vm-rocky9-cloud-image
-    parent: kayobe-seed-vm-base
-    nodeset: kayobe-rocky9
     vars:
       seed_vm_use_cirros: false
 
@@ -524,23 +413,10 @@
       seed_vm_machine: q35
 
 - job:
-    name: kayobe-seed-vm-centos9s-q35
-    parent: kayobe-seed-vm-q35-base
-    nodeset: kayobe-centos9s
-    voting: false
-
-- job:
     name: kayobe-seed-vm-centos10s-q35
     parent: kayobe-seed-vm-q35-base
     nodeset: kayobe-centos10s
     voting: false
-
-- job:
-    name: kayobe-seed-vm-rocky9-q35
-    parent: kayobe-seed-vm-q35-base
-    nodeset: kayobe-rocky9
-    vars:
-      kayobe_control_host_become: false
 
 - job:
     name: kayobe-seed-vm-rocky10-q35
@@ -567,23 +443,10 @@
     timeout: 5400
 
 - job:
-    name: kayobe-infra-vm-centos9s
-    parent: kayobe-infra-vm-base
-    nodeset: kayobe-centos9s
-    voting: false
-
-- job:
     name: kayobe-infra-vm-centos10s
     parent: kayobe-infra-vm-base
     nodeset: kayobe-centos10s
     voting: false
-
-- job:
-    name: kayobe-infra-vm-rocky9
-    parent: kayobe-infra-vm-base
-    nodeset: kayobe-rocky9
-    vars:
-      kayobe_control_host_become: false
 
 - job:
     name: kayobe-infra-vm-rocky10
@@ -598,25 +461,10 @@
     nodeset: kayobe-ubuntu-noble
 
 - job:
-    name: kayobe-infra-vm-centos9s-cloud-image
-    parent: kayobe-infra-vm-base
-    nodeset: kayobe-centos9s
-    voting: false
-    vars:
-      infra_vm_use_cirros: false
-
-- job:
     name: kayobe-infra-vm-centos10s-cloud-image
     parent: kayobe-infra-vm-base
     nodeset: kayobe-centos10s
     voting: false
-    vars:
-      infra_vm_use_cirros: false
-
-- job:
-    name: kayobe-infra-vm-rocky9-cloud-image
-    parent: kayobe-infra-vm-base
-    nodeset: kayobe-rocky9
     vars:
       infra_vm_use_cirros: false
 
