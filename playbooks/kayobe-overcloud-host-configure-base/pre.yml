@@ -10,25 +10,14 @@
           - python3-setuptools
       become: true
 
-    - name: Install Python3.12 on RHEL derivatives
-      dnf:
-        name:
-          - python3.12
-          - python3.12-devel
-        state: latest
-      when: ansible_facts.os_family == 'RedHat'
-      become: true
-
     - name: Ensure testinfra is installed
-      vars:
-        cmd: "{{ 'python3.12' if ansible_facts.os_family == 'RedHat' else 'python3' }} -m venv"
       pip:
         name:
           - distro
           - pytest-testinfra
           - pytest-html
         virtualenv: "{{ testinfra_venv }}"
-        virtualenv_command: "{{ cmd }}"
+        virtualenv_command: python3 -m venv
 
     # NOTE(mgoddard): Use the name zz-30-overrides.yml to ensure this takes
     # precedence over the standard config files and zz-20-overrides.yml from

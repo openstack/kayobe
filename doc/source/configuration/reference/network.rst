@@ -302,8 +302,7 @@ String format rules (CentOS Stream/Rocky Linux only)
 
 The string format of a rule is the string which would be appended to ``ip rule
 <add|del>`` to create or delete the rule. Note that when using NetworkManager
-(the default since Zed and in Yoga when using Rocky Linux 9) the table must be
-specified by ID.
+(the default when using Rocky Linux 10) the table must be specified by ID.
 
 To configure a network called ``example`` with an IP routing policy rule to
 handle traffic from the subnet ``10.1.0.0/24`` using the routing table with ID
@@ -396,9 +395,9 @@ The following attributes are supported:
 ``bridge_stp``
     .. note::
 
-       For Rocky Linux 9, the ``bridge_stp`` attribute is set to false to preserve
-       backwards compatibility with network scripts. This is because the Network
-       Manager sets STP to true by default on bridges.
+       For Rocky Linux 10, the ``bridge_stp`` attribute is set to false to
+       preserve backwards compatibility with network scripts. This is because
+       the Network Manager sets STP to true by default on bridges.
 
     Enable or disable the Spanning Tree Protocol (STP) on this bridge. Should be
     set to a boolean value. The default is not set on Ubuntu systems.

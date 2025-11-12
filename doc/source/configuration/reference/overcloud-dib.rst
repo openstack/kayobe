@@ -34,7 +34,7 @@ how these images are built. Consult the
 information on building disk images.
 
 The default configuration builds a whole disk (partitioned) image using the
-selected :ref:`OS distribution <os-distribution>` (Rocky Linux 9 by default)
+selected :ref:`OS distribution <os-distribution>` (Rocky Linux 10 by default)
 with serial console enabled, and SELinux disabled if CentOS Stream or Rocky
 Linux is used.
 `Cloud-init <https://cloudinit.readthedocs.io/en/latest/>`__ is used to process

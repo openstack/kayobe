@@ -283,9 +283,9 @@ def net_macaddress(context, name, inventory_hostname=None):
 def net_bridge_stp(context, name, inventory_hostname=None):
     """Return the Spanning Tree Protocol (STP) state for a bridge.
 
-    On RL9 if STP is not defined, default it to 'false' to preserve
-    compatibility with network scripts. STP is 'true' in NetworkManager
-    by default, so we set it to 'false' here.
+    On RL10 if STP is not defined, default it to 'false' to preserve
+    compatibility with network scripts. STP is 'true' in NetworkManager by
+    default, so we set it to 'false' here.
 
     :param context: Jinja2 Context object.
     :param name: The name of the network.

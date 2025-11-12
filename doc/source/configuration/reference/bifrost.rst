@@ -77,7 +77,7 @@ information on building disk images.
 
 The default configuration builds a whole disk (partitioned) image using the
 selected :ref:`OS distribution <os-distribution>` with serial console enabled,
-and SELinux disabled if CentOS Stream is used. Rocky Linux 9 users should use
+and SELinux disabled if CentOS Stream is used. Rocky Linux 10 users should use
 the default method of building images with
 :ref:`Diskimage builder directly <overcloud-dib>`.
 

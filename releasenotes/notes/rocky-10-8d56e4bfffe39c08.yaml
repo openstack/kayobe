@@ -1,0 +1,14 @@
+---
+features:
+  - |
+    Adds support for CentOS Stream 10 and Rocky Linux 10 as host operating
+    systems and base container images. These are the only major versions of
+    CentOS Stream and Rocky Linux supported from the 2025.2 Flamingo release.
+    The 2025.1 Epoxy release will support both Rocky Linux 9 and 10 hosts to
+    provide a route for migration.
+upgrade:
+  - |
+    CentOS Stream 9 and Rocky Linux 9 are no longer supported as host operating
+    systems or base container images. Users should migrate to CentOS Stream 10
+    or Rocky Linux 10. The 2025.1 Epoxy release will support both Rocky Linux 9
+    and 10 hosts to provide a route for migration.

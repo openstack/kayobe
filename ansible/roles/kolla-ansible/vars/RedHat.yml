@@ -5,6 +5,6 @@ kolla_ansible_package_dependencies:
   - git
   - libffi-devel
   - openssl-devel
-  - "{{ 'python3.12' if ansible_facts.distribution_major_version == '9' else 'python3' }}"
-  - "{{ 'python3.12-devel' if ansible_facts.distribution_major_version == '9' else 'python3-devel' }}"
+  - python3
+  - python3-devel
   - rsync
