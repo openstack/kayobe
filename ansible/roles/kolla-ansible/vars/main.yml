@@ -136,7 +136,6 @@ kolla_feature_flags:
   - horizon_octavia
   - horizon_tacker
   - horizon_trove
-  - horizon_venus
   - horizon_watcher
   - horizon_zun
   - influxdb
@@ -144,6 +143,7 @@ kolla_feature_flags:
   - ironic_dnsmasq
   - ironic_neutron_agent
   - ironic_prometheus_exporter
+  - ironic_pxe_filter
   - iscsid
   - keepalived
   - keystone
@@ -227,12 +227,11 @@ kolla_feature_flags:
   - prometheus_server
   - proxysql
   - rabbitmq
-  - redis
   - skyline
   - tacker
   - telegraf
   - trove
   - trove_singletenant
-  - venus
+  - valkey
   - watcher
   - zun
