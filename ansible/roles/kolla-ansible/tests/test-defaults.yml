@@ -11,7 +11,7 @@
     - block:
         - name: Test the kolla-ansible role with default values
           include_role:
-            name: ../../kolla-ansible
+            name: "{{ playbook_dir }}/.."
           vars:
             kolla_ansible_source_path: "{{ temp_path }}/src"
             kolla_ansible_ctl_install_type: "source"

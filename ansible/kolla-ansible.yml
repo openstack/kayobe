@@ -93,7 +93,7 @@
         kolla_ansible_passwords_path: "{{ kayobe_env_config_path }}/kolla/passwords.yml"
         kolla_overcloud_inventory_search_paths_static:
           - "{{ kayobe_config_path }}"
-        kolla_overcloud_inventory_search_paths: "{{ kolla_overcloud_inventory_search_paths_static + kayobe_env_search_paths }}"
+        kolla_overcloud_inventory_search_paths: "{{ kolla_overcloud_inventory_search_paths_static + kayobe_env_search_paths | default([]) }}"
         kolla_ansible_certificates_path: "{{ kayobe_env_config_path }}/kolla/certificates"
         kolla_inspector_dhcp_pool_start: "{{ inspection_net_name | net_inspection_allocation_pool_start }}"
         kolla_inspector_dhcp_pool_end: "{{ inspection_net_name | net_inspection_allocation_pool_end }}"
@@ -103,7 +103,7 @@
         kolla_libvirt_tls: "{{ compute_libvirt_enable_tls | bool }}"
         kolla_globals_paths_static:
           - "{{ kayobe_config_path }}"
-        kolla_globals_paths_extra: "{{ kolla_globals_paths_static + kayobe_env_search_paths }}"
+        kolla_globals_paths_extra: "{{ kolla_globals_paths_static + kayobe_env_search_paths | default([]) }}"
         kolla_ironic_inspector_host: "{{ groups[controller_ironic_inspector_group][0] if groups[controller_ironic_inspector_group] | length > 0 else '' }}"
 
 - name: Generate Kolla Ansible host vars for the seed host

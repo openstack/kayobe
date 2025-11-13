@@ -141,7 +141,7 @@
       - "{{ kolla_ansible_venv_ansible_core }}"
       - "{{ kolla_ansible_venv_ansible }}"
   pip:
-    name: "{{ (kolla_ansible_packages + kolla_ansible_venv_extra_requirements) | select | list }}"
+    name: "{{ (kolla_ansible_packages | default([]) + kolla_ansible_venv_extra_requirements | default([])) | select | list }}"
     state: latest
     extra_args: "{% if kolla_upper_constraints_file %}-c {{ kolla_upper_constraints_file }}{% endif %}"
     virtualenv: "{{ kolla_ansible_venv }}"

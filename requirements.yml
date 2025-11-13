@@ -29,9 +29,9 @@ roles:
     version: 1.3.1
   - src: giovtorres.tuned
     version: 1.2.0
-  - src: jriguera.configdrive
-    # There are no versioned releases of this role.
-    version: 71ddface5540ee0ff9e35bcc4334c766ed5d5d3f
+  - src: git+https://github.com/stackhpc/ansible-role-configdrive.git
+    name: jriguera.configdrive
+    version: fb199247333e72e38a9d414cf7b6144daa645477
   - src: MichaelRigart.interfaces
     version: v1.15.6
   - src: mrlesmithjr.chrony
@@ -46,8 +46,9 @@ roles:
     version: 1.1.6
   - src: stackhpc.drac-facts
     version: 1.0.0
-  - src: stackhpc.libvirt-host
-    version: v1.14.0
+  - src: git+https://github.com/stackhpc/ansible-role-libvirt-host.git
+    name: stackhpc.libvirt-host
+    version: 9a947f74abdcd2e0d4e3371162f8299aef259271
   - src: stackhpc.libvirt-vm
     version: v1.16.3
   - src: stackhpc.luks

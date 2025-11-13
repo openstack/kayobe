@@ -9,6 +9,9 @@
       - release-notes-jobs-python3
     check:
       jobs:
+        - openstack-tox-py310:
+            #NOTE(wszumski): We have dropped python3.10 support, so disable this job.
+            files: THIS-JOB-IS-DISABLED
         - kayobe-tox-ansible-syntax
         - kayobe-tox-ansible
         - kayobe-tox-molecule
@@ -31,6 +34,9 @@
         - kayobe-seed-vm-ubuntu-noble
     gate:
       jobs:
+        - openstack-tox-py310:
+            #NOTE(wszumski): We have dropped python3.10 support, so disable this job.
+            files: THIS-JOB-IS-DISABLED
         - kayobe-tox-ansible-syntax
         - kayobe-tox-ansible
         - kayobe-tox-molecule

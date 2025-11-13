@@ -189,7 +189,8 @@ def read_config_dump_yaml_file(path):
         sys.exit(1)
     try:
         # AnsibleLoader supports loading vault encrypted variables.
-        return AnsibleLoader(content).get_single_data()
+        data = AnsibleLoader(content).get_single_data()
+        return data
     except yaml.YAMLError as e:
         print("Failed to decode config dump YAML file %s: %s" %
               (path, repr(e)))

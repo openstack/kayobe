@@ -14,6 +14,16 @@
 
 from ansible.plugins.action import ActionBase
 
+# TODO(dougszu): From Ansible 12 onwards we must explicitly trust templates.
+# Since this feature is not supported in previous releases, we define a
+# noop method here for backwards compatibility. This can be removed in the
+# G cycle.
+try:
+    from ansible.template import trust_as_template
+except ImportError:
+    def trust_as_template(template):
+        return template
+
 
 class ConfigError(Exception):
     pass
@@ -27,6 +37,11 @@ class ActionModule(ActionBase):
     """
 
     TRANSFERS_FILES = False
+
+    def trusted_template(self, input):
+        # Mark all input as trusted.
+        trusted_input = trust_as_template(input)
+        return self._templar.template(trusted_input)
 
     def run(self, tmp=None, task_vars=None):
         if task_vars is None:
@@ -97,11 +112,11 @@ class ActionModule(ActionBase):
     def _get_interface_fact(self, net_name, required, description):
         # Check whether the network is mapped to this host.
         condition = "{{ '%s' in network_interfaces }}" % net_name
-        condition = self._templar.template(condition)
+        condition = self.trusted_template(condition)
         if condition:
             # Get the network interface for this network.
             iface = ("{{ '%s' | net_interface }}" % net_name)
-            iface = self._templar.template(iface)
+            iface = self.trusted_template(iface)
             if required and not iface:
                 msg = ("Required network '%s' (%s) does not have an interface "
                        "configured for this host" % (net_name, description))
@@ -114,20 +129,20 @@ class ActionModule(ActionBase):
 
     def _get_external_interface(self, net_name, required):
         condition = "{{ '%s' in network_interfaces }}" % net_name
-        condition = self._templar.template(condition)
+        condition = self.trusted_template(condition)
         if condition:
-            iface = self._templar.template("{{ '%s' | net_interface }}" %
-                                           net_name)
+            iface = self.trusted_template("{{ '%s' | net_interface }}" %
+                                          net_name)
             if iface:
                 # When these networks are VLANs, we need to use the
                 # underlying tagged bridge interface rather than the
                 # untagged interface. We therefore strip the .<vlan> suffix
                 # of the interface name. We use a union here as a single
                 # tagged interface may be shared between these networks.
-                vlan = self._templar.template("{{ '%s' | net_vlan }}" %
-                                              net_name)
-                parent = self._templar.template("{{ '%s' | net_parent }}" %
-                                                net_name)
+                vlan = self.trusted_template("{{ '%s' | net_vlan }}" %
+                                             net_name)
+                parent = self.trusted_template("{{ '%s' | net_parent }}" %
+                                               net_name)
                 if vlan and parent:
                     iface = parent
                 elif vlan and iface.endswith(".%s" % vlan):
@@ -146,15 +161,15 @@ class ActionModule(ActionBase):
         neutron_external_interfaces = []
         neutron_physical_networks = []
         missing_physical_networks = []
-        bridge_suffix = self._templar.template(
+        bridge_suffix = self.trusted_template(
             "{{ network_bridge_suffix_ovs }}")
-        patch_prefix = self._templar.template("{{ network_patch_prefix }}")
-        patch_suffix = self._templar.template("{{ network_patch_suffix_ovs }}")
+        patch_prefix = self.trusted_template("{{ network_patch_prefix }}")
+        patch_suffix = self.trusted_template("{{ network_patch_suffix_ovs }}")
         for interface, iface_networks in external_interfaces.items():
             is_bridge = ("{{ '%s' in (network_interfaces |"
                          "net_select_bridges |"
                          "map('net_interface')) }}" % interface)
-            is_bridge = self._templar.template(is_bridge)
+            is_bridge = self.trusted_template(is_bridge)
             neutron_bridge_names.append(interface + bridge_suffix)
             # For a bridge, use a veth pair connected to the bridge. Otherwise
             # use the interface directly.
@@ -171,7 +186,7 @@ class ActionModule(ActionBase):
             # attribute set, and if so, whether they are consistent.
             iface_physical_networks = []
             for iface_network in iface_networks:
-                physical_network = self._templar.template(
+                physical_network = self.trusted_template(
                     "{{ '%s' | net_physical_network }}" % iface_network)
                 if (physical_network and
                         physical_network not in iface_physical_networks):
