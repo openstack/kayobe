@@ -51,7 +51,6 @@
 # OS release. Valid options are "10-stream" when os_distribution is "centos",
 # "10" when os_distribution is "rocky", or "noble" when os_distribution is
 # "ubuntu".
-# os_distribution is "ubuntu".
 #os_release:
 
 ###############################################################################
