@@ -1,0 +1,26 @@
+---
+upgrade:
+  - |
+    ``inspector_processing_hooks`` has been removed.  A new variable named
+    ``inspector_hooks`` has been introduced to to replace it since the names of
+    the hooks differ between standalone and built-in implementations. See
+    :ironic-doc:`Ironic documentation <admin/inspection/migration.html>` for
+    more details.
+  - |
+    Support for standalone inspector has been removed. All Ironic nodes will
+    need to be migrated from the ``inspector`` inspect-interface to ``agent``.
+    It is recommended that you do this after upgrading, but you will need to
+    ensure that you add ``inspector`` and ``agent`` to
+    ``kolla_ironic_enabled_inspect_interfaces`` for the upgrade.  Check that
+    ``kolla_ironic_default_inspect_interface`` is not set to ``inspector``.
+    See :ironic-doc:`Ironic documentation <admin/inspection/migration.html>` for
+    more details.
+  - |
+    The format of inspection rules has changed. Any custom rules will need
+    to be updated to the new format. See
+    :ironic-doc:`Ironic documentation <admin/inspection/index.html#inspection-rules>`
+    for more details.
+  - |
+    The format of the data output from ``kayobe baremetal compute introspection
+    data save`` and ``kayobe overcloud introspection data save`` has changed.
+    You may need to update any tooling that is using this data.

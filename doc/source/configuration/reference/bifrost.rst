@@ -268,9 +268,9 @@ Ironic Inspector configuration
 The following options configure the Ironic Inspector service in the
 ``bifrost-deploy`` container.
 
-``kolla_bifrost_inspector_processing_hooks``
+``kolla_bifrost_inspector_hooks``
     List of of inspector processing plugins. Default is ``{{
-    inspector_processing_hooks }}``, defined in
+    inspector_hooks }}``, defined in
     ``${KAYOBE_CONFIG_PATH}/inspector.yml``.
 ``kolla_bifrost_inspector_port_addition``
     Which MAC addresses to add as ports during introspection. One of ``all``,

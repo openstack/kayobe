@@ -31,40 +31,47 @@ inspector_ipa_ramdisk_checksum_url: "{{ ipa_ramdisk_checksum_url }}"
 inspector_ipa_ramdisk_checksum_algorithm: "{{ ipa_ramdisk_checksum_algorithm }}"
 
 ###############################################################################
-# Ironic inspector processing configuration.
+# Ironic inspector processing configuration for the inspector implementation
+# built-in to Ironic.
 
-# List of of default inspector processing plugins.
-inspector_processing_hooks_default:
-  - ramdisk_error
-  - scheduler
-  - validate_interfaces
-  - capabilities
-  - pci_devices
-  - lldp_basic
-  - local_link_connection
+# List of hooks to enable for inspection. Default is [$default_hooks, memory,
+# boot-mode, cpu-capabilities, pci-devices, parse-lldp].
+inspector_hooks_default:
+  - $default_hooks
+  - memory
+  - boot-mode
+  - cpu-capabilities
+  - pci-devices
+  - parse-lldp
 
-# List of of additional inspector processing plugins.
-inspector_processing_hooks_extra: []
+# List of extra inspection hooks to enable. Default is an empty list.
+inspector_hooks_extra: []
 
-# List of of additional inspector processing plugins.
-inspector_processing_hooks: >
-  {{ inspector_processing_hooks_default + inspector_processing_hooks_extra }}
+# List of of additional inspector hooks to enable. Default is
+# {{ inspector_hooks_default + inspector_hooks_extra }}.
+inspector_hooks: >
+  {{ inspector_hooks_default + inspector_hooks_extra }}
+
+###############################################################################
+# Common Ironic Inspector processing configuration.
 
 # Which MAC addresses to add as ports during introspection. One of 'all',
-# 'active' or 'pxe'.
+# 'active' or 'pxe'. Default is 'pxe'.
 inspector_add_ports: "pxe"
 
 # Which ports to keep after introspection. One of 'all', 'present', or 'added'.
+# Default is 'added'.
 inspector_keep_ports: "added"
 
-# Whether to enable discovery of nodes not managed by Ironic.
+# Whether to enable discovery of nodes not managed by Ironic. Default is true.
 inspector_enable_discovery: True
 
-# The Ironic driver with which to register newly discovered nodes.
+# The Ironic driver with which to register newly discovered nodes. Default is
+# 'ipmi'.
 inspector_discovery_enroll_node_driver: "ipmi"
 
 ###############################################################################
-# Ironic inspector configuration.
+# Ironic inspector introspection rules configuration.
 
 # Ironic inspector IPMI username to set.
 inspector_ipmi_username: "{{ ipmi_username }}"
@@ -85,9 +92,6 @@ inspector_lldp_switch_port_interface_default: eth0
 # Ironic inspector map from hostname to network interface name on which to
 # check for an LLDP switch port description to use as the node's name.
 inspector_lldp_switch_port_interface_map: {}
-
-###############################################################################
-# Ironic inspector introspection rules configuration.
 
 # Enable IPMI rules:
 inspector_rules_ipmi_enabled: True
@@ -114,17 +118,24 @@ inspector_rule_var_redfish_verify_ca: True
 inspector_rule_ipmi_credentials:
   description: "Set IPMI driver_info if no credentials"
   conditions:
-    - field: "node://driver_info.ipmi_username"
-      op: "is-empty"
-    - field: "node://driver_info.ipmi_password"
-      op: "is-empty"
+    - args:
+        value: "{node.driver_info.ipmi_username}"
+        regex: '\\{node\\.driver_info\\.ipmi_username\\}'
+      op: "matches"
+    - args:
+        value: "{node.driver_info.ipmi_password}"
+        regex: '\\{node\\.driver_info\\.ipmi_password\\}'
+      op: "matches"
+  sensitive: "true"
   actions:
-    - action: "set-attribute"
-      path: "driver_info/ipmi_username"
-      value: "{{ inspector_rule_var_ipmi_username }}"
-    - action: "set-attribute"
-      path: "driver_info/ipmi_password"
-      value: "{{ inspector_rule_var_ipmi_password }}"
+    - op: "set-attribute"
+      args:
+        path: "driver_info/ipmi_username"
+        value: "{{ inspector_rule_var_ipmi_username }}"
+    - op: "set-attribute"
+      args:
+        path: "driver_info/ipmi_password"
+        value: "{{ inspector_rule_var_ipmi_password }}"
 
 # Deployment kernel referenced by inspector rule.
 inspector_rule_var_deploy_kernel:
@@ -133,12 +144,15 @@ inspector_rule_var_deploy_kernel:
 inspector_rule_deploy_kernel:
   description: "Set deploy kernel"
   conditions:
-    - field: "node://driver_info.deploy_kernel"
-      op: "is-empty"
+    - args:
+        value: "{node.driver_info.deploy_kernel}"
+        regex: '\\{node\\.driver_info\\.deploy_kernel\\}'
+      op: "matches"
   actions:
-    - action: "set-attribute"
-      path: "driver_info/deploy_kernel"
-      value: "{{ inspector_rule_var_deploy_kernel }}"
+    - op: "set-attribute"
+      args:
+        path: "driver_info/deploy_kernel"
+        value: "{{ inspector_rule_var_deploy_kernel }}"
 
 # Deployment ramdisk referenced by inspector rule.
 inspector_rule_var_deploy_ramdisk:
@@ -147,55 +161,53 @@ inspector_rule_var_deploy_ramdisk:
 inspector_rule_deploy_ramdisk:
   description: "Set deploy ramdisk"
   conditions:
-    - field: "node://driver_info.deploy_ramdisk"
-      op: "is-empty"
+    - args:
+        value: "{node.driver_info.deploy_ramdisk}"
+        regex: '\\{node\\.driver_info\\.deploy_ramdisk\\}'
+      op: "matches"
   actions:
-    - action: "set-attribute"
-      path: "driver_info/deploy_ramdisk"
-      value: "{{ inspector_rule_var_deploy_ramdisk }}"
-
-# Ironic inspector rule to initialise root device hints.
-inspector_rule_root_hint_init:
-  description: "Initialise root device hint"
-  conditions:
-    - field: "node://properties.root_device"
-      op: "is-empty"
-  actions:
-    # Inspector can't combine references to introspection data with non-string
-    # types, see https://bugs.launchpad.net/ironic-inspector/+bug/1670768. We
-    # must therefore first set the root_device property to an empty dict, then
-    # update the fields within it.
-    - action: "set-attribute"
-      path: "properties/root_device"
-      value: {}
+    - op: "set-attribute"
+      args:
+        path: "driver_info/deploy_ramdisk"
+        value: "{{ inspector_rule_var_deploy_ramdisk }}"
 
 # Ironic inspector rule to set serial root device hint.
 inspector_rule_root_hint_serial:
   description: "Set serial root device hint"
   conditions:
-    - field: "data://root_disk.serial"
-      op: "is-empty"
-      invert: True
+    - args:
+        value: "{node.properties[root_device]}"
+        regex: "\\{node\\.properties\\[root_device\\]\\}"
+      op: "matches"
   actions:
-    - action: "set-attribute"
-      path: "properties/root_device/serial"
-      value: "{data[root_disk][serial]}"
+    - op: "set-attribute"
+      args:
+        path: "properties/root_device/name"
+        value: "{plugin_data[root_disk][by_path]}"
+
 
 # Ironic inspector rule to set the interface on which the node PXE booted.
 inspector_rule_set_pxe_interface_mac:
   description: "Set node PXE interface MAC address"
   conditions:
-    - field: "data://boot_interface"
-      op: "is-empty"
-      invert: True
+    - args:
+        value: "{plugin_data[boot_interface]}"
+        regex: "'\\{plugin_data\\[boot_interface\\]\\}'"
+      op: "!matches"
   actions:
-    - action: "set-attribute"
-      path: "extra/pxe_interface_mac"
-      value: "{data[boot_interface]}"
+    - op: "set-attribute"
+      args:
+        path: "extra/pxe_interface_mac"
+        value: "{plugin_data[boot_interface]}"
 
 # Name of network interface to use for LLDP referenced by switch port
 # description rule.
 inspector_rule_var_lldp_switch_port_interface:
+
+# Internal variables. Not meant for use externally.
+_inspector_rule_interface_path: "{all_interfaces.{{ inspector_rule_var_lldp_switch_port_interface }}}"
+_inspector_rule_lldp_processed_path: "{all_interfaces.{{ inspector_rule_var_lldp_switch_port_interface }}.lldp_processed}"
+_inspector_rule_switch_port_description_path: "{all_interfaces.{{inspector_rule_var_lldp_switch_port_interface}}.lldp_processed.switch_port_description}"
 
 # Ironic inspector rule to set the node's name from an interface's LLDP switch
 # port description.
@@ -203,164 +215,179 @@ inspector_rule_lldp_switch_port_desc_to_name:
   description: "Set node name from {{ inspector_rule_var_lldp_switch_port_interface }} LLDP switch port description"
   conditions:
     # Check for the existence of the switch_port_description field.
-    - field: "data://all_interfaces.{{ inspector_rule_var_lldp_switch_port_interface }}"
-      op: "is-empty"
-      invert: True
-    - field: "data://all_interfaces.{{ inspector_rule_var_lldp_switch_port_interface }}.lldp_processed"
-      op: "is-empty"
-      invert: True
-    - field: "data://all_interfaces.{{ inspector_rule_var_lldp_switch_port_interface }}.lldp_processed.switch_port_description"
-      op: "is-empty"
-      invert: True
+    - args:
+        value: "{{ _inspector_rule_interface_path }}"
+        regex: "{{ _inspector_rule_interface_path | regex_escape }}"
+      op: "!matches"
+    - args:
+        value: "{{ _inspector_rule_lldp_processed_path }}"
+        regex: "{{ _inspector_rule_lldp_processed_path | regex_escape }}"
+      op: "!matches"
+    - args:
+        value: "{{ _inspector_rule_switch_port_description_path }}"
+        regex: "{{ _inspector_rule_switch_port_description_path | regex_escape }}"
+      op: "!matches"
     # Filter out switch port descriptions using the switch's interface names.
     # On some switches (including Dell Network OS 9.10(0.1) and some Ruckus
     # switches), the port description TLV is sent but contains the interface
     # name rather than the interface's description. Dell switches use a space
     # character between port type and port number, while Ruckus switches don't.
-    - field: "data://all_interfaces.{{inspector_rule_var_lldp_switch_port_interface}}.lldp_processed.switch_port_description"
-      op: "matches"
-      value: "^GigabitEthernet ?([0-9/]*)$"
-      invert: True
-    - field: "data://all_interfaces.{{inspector_rule_var_lldp_switch_port_interface}}.lldp_processed.switch_port_description"
-      op: "matches"
-      value: "^TenGigabitEthernet ?([0-9/]*)$"
-      invert: True
-    - field: "data://all_interfaces.{{inspector_rule_var_lldp_switch_port_interface}}.lldp_processed.switch_port_description"
-      op: "matches"
-      value: "^twentyFiveGigE ?([0-9/]*)$"
-      invert: True
-    - field: "data://all_interfaces.{{inspector_rule_var_lldp_switch_port_interface}}.lldp_processed.switch_port_description"
-      op: "matches"
-      value: "^fortyGigE ?([0-9/]*)$"
-      invert: True
-    - field: "data://all_interfaces.{{inspector_rule_var_lldp_switch_port_interface}}.lldp_processed.switch_port_description"
-      op: "matches"
-      value: "^Port-channel ?([0-9/]*)$"
-      invert: True
+    - op: "!matches"
+      args:
+        value: "{{ _inspector_rule_switch_port_description_path }}"
+        regex: "^GigabitEthernet ?([0-9/]*)$"
+    - op: "!matches"
+      args:
+        value: "{{ _inspector_rule_switch_port_description_path }}"
+        regex: "^TenGigabitEthernet ?([0-9/]*)$"
+    - op: "!matches"
+      args:
+        value: "{{ _inspector_rule_switch_port_description_path }}"
+        regex: "^twentyFiveGigE ?([0-9/]*)$"
+    - op: "!matches"
+      args:
+        value: "{{ _inspector_rule_switch_port_description_path }}"
+        regex: "^fortyGigE ?([0-9/]*)$"
+    - op: "!matches"
+      args:
+        value: "{{ _inspector_rule_switch_port_description_path }}"
+        regex: "^Port-channel ?([0-9/]*)$"
   actions:
-    - action: "set-attribute"
-      path: "name"
-      value: "{data[all_interfaces][{{ inspector_rule_var_lldp_switch_port_interface }}][lldp_processed][switch_port_description]}"
-
-# Ironic inspector rule to initialise system vendor data in the node's metadata.
-inspector_rule_save_system_vendor_init:
-  description: "Initialise system vendor data in Ironic node metadata"
-  conditions:
-    - field: "data://inventory.system_vendor"
-      op: "is-empty"
-      invert: True
-    - field: "node://extra.system_vendor"
-      op: "is-empty"
-  actions:
-    - action: "set-attribute"
-      path: "extra/system_vendor"
-      value: {}
+    - op: "set-attribute"
+      args:
+        path: "name"
+        value: "{{ _inspector_rule_switch_port_description_path }}"
 
 # Ironic inspector rule to save system vendor manufacturer data in the node's
 # metadata.
 inspector_rule_save_system_vendor_manufacturer:
   description: "Save system vendor manufacturer data in Ironic node metadata"
   conditions:
-    - field: "data://inventory.system_vendor"
-      op: "is-empty"
-      invert: True
-    - field: "data://inventory.system_vendor.manufacturer"
-      op: "is-empty"
-      invert: True
+    - args:
+        value: "{inventory.system_vendor}"
+        regex: "\\{inventory\\.system_vendor\\}"
+      op: "!matches"
+    - args:
+        value: "{inventory.system_vendor.manufacturer}"
+        regex: "\\{inventory\\.system_vendor\\.manufacturer\\}"
+      op: "!matches"
   actions:
-    - action: "set-attribute"
-      path: "extra/system_vendor/manufacturer"
-      value: "{data[inventory][system_vendor][manufacturer]}"
+    - op: "set-attribute"
+      args:
+        path: "extra/system_vendor/manufacturer"
+        value: "{inventory[system_vendor][manufacturer]}"
 
 # Ironic inspector rule to save system vendor serial number in the node's
 # metadata.
 inspector_rule_save_system_vendor_serial_number:
   description: "Save system vendor serial number in Ironic node metadata"
   conditions:
-    - field: "data://inventory.system_vendor"
-      op: "is-empty"
-      invert: True
-    - field: "data://inventory.system_vendor.serial_number"
-      op: "is-empty"
-      invert: True
+    - args:
+        value: "{inventory.system_vendor}"
+        regex: "\\{inventory\\.system_vendor\\}"
+      op: "!matches"
+    - args:
+        value: "{inventory.system_vendor.serial_number}"
+        regex: "\\{inventory\\.system_vendor\\.serial_number\\}"
+      op: "!matches"
   actions:
-    - action: "set-attribute"
-      path: "extra/system_vendor/serial_number"
-      value: "{data[inventory][system_vendor][serial_number]}"
+    - op: "set-attribute"
+      args:
+        path: "extra/system_vendor/serial_number"
+        value: "{inventory[system_vendor][serial_number]}"
 
 # Ironic inspector rule to save system vendor product name in the node's
 # metadata.
 inspector_rule_save_system_vendor_product_name:
   description: "Save system vendor product name in Ironic node metadata"
   conditions:
-    - field: "data://inventory.system_vendor"
-      op: "is-empty"
-      invert: True
-    - field: "data://inventory.system_vendor.product_name"
-      op: "is-empty"
-      invert: True
+    - args:
+        value: "{inventory.system_vendor}"
+        regex: "\\{inventory\\.system_vendor\\}"
+      op: "!matches"
+    - args:
+       value: "{inventory.system_vendor.product_name}"
+       regex: "\\{inventory\\.system_vendor\\.product_name\\}"
+      op: "!matches"
   actions:
-    - action: "set-attribute"
-      path: "extra/system_vendor/product_name"
-      value: "{data[inventory][system_vendor][product_name]}"
+    - op: "set-attribute"
+      args:
+        path: "extra/system_vendor/product_name"
+        value: "{inventory[system_vendor][product_name]}"
 
 # Ironic inspector rule to save introspection data to the node.
 inspector_rule_save_data:
   description: "Save introspection data to Ironic node"
   conditions: []
   actions:
-    - action: "set-attribute"
-      path: "extra/introspection_data"
-      value: "{data}"
+    - op: "set-attribute"
+      args:
+        path: "extra/introspection_data/inventory"
+        value: "{inventory}"
+    - op: "set-attribute"
+      args:
+        path: "extra/introspection_data/plugin_data"
+        value: "{plugin_data}"
 
 # Redfish rules
 # Ironic inspector rule to set Redfish credentials.
 inspector_rule_redfish_credentials:
   description: "Set Redfish driver_info if no credentials"
   conditions:
-    - field: "node://driver_info.redfish_username"
-      op: "is-empty"
-    - field: "node://driver_info.redfish_password"
-      op: "is-empty"
+    - args:
+        value: "{node.driver_info.redfish_username}"
+        regex: "\\{node\\.driver_info\\.redfish_username\\}"
+      op: "matches"
+    - args:
+        value: "{node.driver_info.redfish_password}"
+        regex: "\\{node\\.driver_info\\.redfish_password\\}"
+      op: "matches"
+  sensitive: true
   actions:
-    - action: "set-attribute"
-      path: "driver_info/redfish_username"
-      value: "{{ inspector_rule_var_redfish_username }}"
-    - action: "set-attribute"
-      path: "driver_info/redfish_password"
-      value: "{{ inspector_rule_var_redfish_password }}"
+    - op: "set-attribute"
+      args:
+        path: "driver_info/redfish_username"
+        value: "{{ inspector_rule_var_redfish_username }}"
+    - op: "set-attribute"
+      args:
+        path: "driver_info/redfish_password"
+        value: "{{ inspector_rule_var_redfish_password }}"
 
 # Ironic inspector rule to set Redfish address.
 inspector_rule_redfish_address:
   description: "Set Redfish address"
   conditions:
-    - field: "node://driver_info.redfish_address"
-      op: "is-empty"
+    - args:
+        value: "{node.driver_info.redfish_address}"
+        regex: "\\{node\\.driver_info\\.redfish_address\\}"
+      op: "matches"
   actions:
-    - action: "set-attribute"
-      path: "driver_info/redfish_address"
-      value: "{data[inventory][bmc_address]}"
+    - op: "set-attribute"
+      args:
+        path: "driver_info/redfish_address"
+        value: "{inventory[bmc_address]}"
 
 # Ironic inspector rule to set Redfish certificate authority.
 inspector_rule_redfish_verify_ca:
   description: "Set Redfish Verify CA"
   conditions:
-    - field: "node://driver_info.redfish_verify_ca"
-      op: "is-empty"
+    - args:
+        value: "{node.driver_info.redfish_verify_ca}"
+        regex: "\\{node\\.driver_info\\.redfish_verify_ca\\}"
+      op: "matches"
   actions:
-    - action: "set-attribute"
-      path: "driver_info/redfish_verify_ca"
-      value: "{{ inspector_rule_var_redfish_verify_ca }}"
+    - op: "set-attribute"
+      args:
+        path: "driver_info/redfish_verify_ca"
+        value: "{{ inspector_rule_var_redfish_verify_ca }}"
 
 # List of default ironic inspector rules.
 inspector_rules_default:
   - "{{ inspector_rule_deploy_kernel }}"
   - "{{ inspector_rule_deploy_ramdisk }}"
-  - "{{ inspector_rule_root_hint_init }}"
   - "{{ inspector_rule_root_hint_serial }}"
   - "{{ inspector_rule_set_pxe_interface_mac }}"
   - "{{ inspector_rule_lldp_switch_port_desc_to_name }}"
-  - "{{ inspector_rule_save_system_vendor_init }}"
   - "{{ inspector_rule_save_system_vendor_manufacturer }}"
   - "{{ inspector_rule_save_system_vendor_serial_number }}"
   - "{{ inspector_rule_save_system_vendor_product_name }}"

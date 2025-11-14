@@ -563,9 +563,9 @@ function overcloud_test_init {
     environment_setup
 
     if [[ ! -z "$UPPER_CONSTRAINTS_FILE" ]]; then
-        pip install python-openstackclient -c "$UPPER_CONSTRAINTS_FILE"
+        pip install python-openstackclient python-ironicclient -c "$UPPER_CONSTRAINTS_FILE"
     else
-        pip install python-openstackclient
+        pip install python-openstackclient python-ironicclient
     fi
     source "${KOLLA_CONFIG_PATH:-/etc/kolla}/admin-openrc.sh"
 

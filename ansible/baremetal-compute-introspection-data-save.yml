@@ -10,7 +10,7 @@
         virtualenv: "{{ venv }}"
         name:
           - python-openstackclient
-          - python-ironic-inspector-client
+          - python-ironicclient
         state: latest
         virtualenv_command: python3.{{ ansible_facts.python.version.minor }} -m venv
         extra_args: "{% if pip_upper_constraints_file %}-c {{ pip_upper_constraints_file }}{% endif %}"
@@ -31,7 +31,7 @@
   tasks:
     - name: Query baremetal compute nodes' hardware introspection data
       command: >
-        {{ venv }}/bin/openstack baremetal introspection data save {{ inventory_hostname }}
+        {{ venv }}/bin/openstack baremetal node inventory save {{ inventory_hostname }}
       register: save_result
       changed_when: False
       # Ignore errors, log a message later.

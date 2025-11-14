@@ -403,7 +403,7 @@ ironic_dnsmasq_dhcp_ranges:
 {% endif %}
 {% endif %}
 {% if kolla_inspector_extra_kernel_options %}
-ironic_inspector_kernel_cmdline_extras:
+ironic_kernel_cmdline_extras:
 {{ kolla_inspector_extra_kernel_options | to_nice_yaml }}
 {% endif %}
 # PXE bootloader file for Ironic Inspector, relative to /var/lib/ironic/tftpboot.

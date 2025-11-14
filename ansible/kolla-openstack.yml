@@ -131,7 +131,7 @@
   roles:
     - role: kolla-openstack
       # Ironic inspector configuration.
-      kolla_inspector_processing_hooks: "{{ inspector_processing_hooks }}"
+      kolla_inspector_hooks: "{{ inspector_hooks }}"
       kolla_inspector_add_ports: "{{ inspector_add_ports }}"
       kolla_inspector_keep_ports: "{{ inspector_keep_ports }}"
       kolla_inspector_enable_discovery: "{{ inspector_enable_discovery }}"

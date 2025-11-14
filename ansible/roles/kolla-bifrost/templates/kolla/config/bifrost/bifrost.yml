@@ -28,9 +28,9 @@ dnsmasq_dns_servers: "{{ kolla_bifrost_dnsmasq_dns_servers | join(',') }}"
 domain: "{{ kolla_bifrost_domain }}"
 {% endif %}
 
-{% if kolla_bifrost_inspector_processing_hooks %}
+{% if kolla_bifrost_inspector_hooks %}
 # Comma-separated list of inspector processing plugins.
-inspector_processing_hooks: "{{ kolla_bifrost_inspector_processing_hooks | join(',') }}"
+inspector_hooks: "{{ kolla_bifrost_inspector_hooks | join(',') }}"
 {% endif %}
 
 {% if kolla_bifrost_inspector_port_addition %}
