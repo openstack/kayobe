@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    Python 3.10 and 3.11 are no longer supported on the control host. Use
+    Python 3.12 as a minimum version for the Kayobe virtualenv.
