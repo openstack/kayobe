@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Bumps version of ``nvidia.nvue`` Ansible collection from ``1.2.6`` to
+    ``1.2.9``.  This fixes an issue where switch configuration could not be
+    applied to switches running Cumulus Linux 5.13. See `LP#2131677
+    <https://bugs.launchpad.net/kayobe/+bug/2131677>`__ for more details.
