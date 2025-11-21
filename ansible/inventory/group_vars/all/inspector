@@ -119,22 +119,24 @@ inspector_rule_ipmi_credentials:
   description: "Set IPMI driver_info if no credentials"
   conditions:
     - args:
-        value: "{node.driver_info.ipmi_username}"
-        regex: '\\{node\\.driver_info\\.ipmi_username\\}'
+        # If value matches itself as a regex, this is becaused interpolation
+        # failed which means the ipmi_username key was not set.
+        value: "{node.driver_info[ipmi_username]}"
+        regex: "{node\\.driver_info\\[ipmi_username\\]}"
       op: "matches"
     - args:
-        value: "{node.driver_info.ipmi_password}"
-        regex: '\\{node\\.driver_info\\.ipmi_password\\}'
+        value: "{node.driver_info[ipmi_password]}"
+        regex: "{node\\.driver_info\\[ipmi_password\\]}"
       op: "matches"
   sensitive: "true"
   actions:
     - op: "set-attribute"
       args:
-        path: "driver_info/ipmi_username"
+        path: "/driver_info/ipmi_username"
         value: "{{ inspector_rule_var_ipmi_username }}"
     - op: "set-attribute"
       args:
-        path: "driver_info/ipmi_password"
+        path: "/driver_info/ipmi_password"
         value: "{{ inspector_rule_var_ipmi_password }}"
 
 # Deployment kernel referenced by inspector rule.
@@ -145,13 +147,13 @@ inspector_rule_deploy_kernel:
   description: "Set deploy kernel"
   conditions:
     - args:
-        value: "{node.driver_info.deploy_kernel}"
-        regex: '\\{node\\.driver_info\\.deploy_kernel\\}'
+        value: "{node.driver_info[deploy_kernel]}"
+        regex: "{node\\.driver_info\\[deploy_kernel\\]}"
       op: "matches"
   actions:
     - op: "set-attribute"
       args:
-        path: "driver_info/deploy_kernel"
+        path: "/driver_info/deploy_kernel"
         value: "{{ inspector_rule_var_deploy_kernel }}"
 
 # Deployment ramdisk referenced by inspector rule.
@@ -162,13 +164,13 @@ inspector_rule_deploy_ramdisk:
   description: "Set deploy ramdisk"
   conditions:
     - args:
-        value: "{node.driver_info.deploy_ramdisk}"
-        regex: '\\{node\\.driver_info\\.deploy_ramdisk\\}'
+        value: "{node.driver_info[deploy_ramdisk]}"
+        regex: "{node\\.driver_info\\[deploy_ramdisk\\]}"
       op: "matches"
   actions:
     - op: "set-attribute"
       args:
-        path: "driver_info/deploy_ramdisk"
+        path: "/driver_info/deploy_ramdisk"
         value: "{{ inspector_rule_var_deploy_ramdisk }}"
 
 # Ironic inspector rule to set serial root device hint.
@@ -177,14 +179,16 @@ inspector_rule_root_hint_serial:
   conditions:
     - args:
         value: "{node.properties[root_device]}"
-        regex: "\\{node\\.properties\\[root_device\\]\\}"
+        regex: "{node\\.properties\\[root_device\\]}"
       op: "matches"
+    - args:
+        value: "{plugin_data[root_disk][serial]}"
+      op: "!is-empty"
   actions:
     - op: "set-attribute"
       args:
-        path: "properties/root_device/name"
-        value: "{plugin_data[root_disk][by_path]}"
-
+        path: "/properties/root_device/serial"
+        value: "{plugin_data[root_disk][serial]}"
 
 # Ironic inspector rule to set the interface on which the node PXE booted.
 inspector_rule_set_pxe_interface_mac:
@@ -192,12 +196,12 @@ inspector_rule_set_pxe_interface_mac:
   conditions:
     - args:
         value: "{plugin_data[boot_interface]}"
-        regex: "'\\{plugin_data\\[boot_interface\\]\\}'"
+        regex: "{plugin_data\\[boot_interface\\]}"
       op: "!matches"
   actions:
     - op: "set-attribute"
       args:
-        path: "extra/pxe_interface_mac"
+        path: "/extra/pxe_interface_mac"
         value: "{plugin_data[boot_interface]}"
 
 # Name of network interface to use for LLDP referenced by switch port
@@ -255,7 +259,7 @@ inspector_rule_lldp_switch_port_desc_to_name:
   actions:
     - op: "set-attribute"
       args:
-        path: "name"
+        path: "/name"
         value: "{{ _inspector_rule_switch_port_description_path }}"
 
 # Ironic inspector rule to save system vendor manufacturer data in the node's
@@ -264,17 +268,17 @@ inspector_rule_save_system_vendor_manufacturer:
   description: "Save system vendor manufacturer data in Ironic node metadata"
   conditions:
     - args:
-        value: "{inventory.system_vendor}"
-        regex: "\\{inventory\\.system_vendor\\}"
+        value: "{inventory[system_vendor]}"
+        regex: "{inventory\\[system_vendor\\]}"
       op: "!matches"
     - args:
-        value: "{inventory.system_vendor.manufacturer}"
-        regex: "\\{inventory\\.system_vendor\\.manufacturer\\}"
+        value: "{inventory[system_vendor][manufacturer]}"
+        regex: "{inventory\\[system_vendor\\]\\[manufacturer\\]}"
       op: "!matches"
   actions:
     - op: "set-attribute"
       args:
-        path: "extra/system_vendor/manufacturer"
+        path: "/extra/system_vendor/manufacturer"
         value: "{inventory[system_vendor][manufacturer]}"
 
 # Ironic inspector rule to save system vendor serial number in the node's
@@ -283,17 +287,17 @@ inspector_rule_save_system_vendor_serial_number:
   description: "Save system vendor serial number in Ironic node metadata"
   conditions:
     - args:
-        value: "{inventory.system_vendor}"
-        regex: "\\{inventory\\.system_vendor\\}"
+        value: "{inventory[system_vendor]}"
+        regex: "{inventory\\[system_vendor\\]}"
       op: "!matches"
     - args:
-        value: "{inventory.system_vendor.serial_number}"
-        regex: "\\{inventory\\.system_vendor\\.serial_number\\}"
+        value: "{inventory[system_vendor][serial_number]}"
+        regex: "{inventory\\[system_vendor\\]\\[serial_number\\]}"
       op: "!matches"
   actions:
     - op: "set-attribute"
       args:
-        path: "extra/system_vendor/serial_number"
+        path: "/extra/system_vendor/serial_number"
         value: "{inventory[system_vendor][serial_number]}"
 
 # Ironic inspector rule to save system vendor product name in the node's
@@ -302,17 +306,17 @@ inspector_rule_save_system_vendor_product_name:
   description: "Save system vendor product name in Ironic node metadata"
   conditions:
     - args:
-        value: "{inventory.system_vendor}"
-        regex: "\\{inventory\\.system_vendor\\}"
+        value: "{inventory[system_vendor]}"
+        regex: "{inventory\\[system_vendor\\]}"
       op: "!matches"
     - args:
-       value: "{inventory.system_vendor.product_name}"
-       regex: "\\{inventory\\.system_vendor\\.product_name\\}"
+       value: "{inventory[system_vendor][product_name]}"
+       regex: "{inventory\\[system_vendor\\]\\[product_name\\]}"
       op: "!matches"
   actions:
     - op: "set-attribute"
       args:
-        path: "extra/system_vendor/product_name"
+        path: "/extra/system_vendor/product_name"
         value: "{inventory[system_vendor][product_name]}"
 
 # Ironic inspector rule to save introspection data to the node.
@@ -322,11 +326,11 @@ inspector_rule_save_data:
   actions:
     - op: "set-attribute"
       args:
-        path: "extra/introspection_data/inventory"
+        path: "/extra/introspection_data/inventory"
         value: "{inventory}"
     - op: "set-attribute"
       args:
-        path: "extra/introspection_data/plugin_data"
+        path: "/extra/introspection_data/plugin_data"
         value: "{plugin_data}"
 
 # Redfish rules
@@ -335,22 +339,22 @@ inspector_rule_redfish_credentials:
   description: "Set Redfish driver_info if no credentials"
   conditions:
     - args:
-        value: "{node.driver_info.redfish_username}"
-        regex: "\\{node\\.driver_info\\.redfish_username\\}"
+        value: "{node.driver_info[redfish_username]}"
+        regex: "{node\\.driver_info\\[redfish_username\\]}"
       op: "matches"
     - args:
-        value: "{node.driver_info.redfish_password}"
-        regex: "\\{node\\.driver_info\\.redfish_password\\}"
+        value: "{node.driver_info[redfish_password]}"
+        regex: "{node\\.driver_info\\[redfish_password\\]}"
       op: "matches"
   sensitive: true
   actions:
     - op: "set-attribute"
       args:
-        path: "driver_info/redfish_username"
+        path: "/driver_info/redfish_username"
         value: "{{ inspector_rule_var_redfish_username }}"
     - op: "set-attribute"
       args:
-        path: "driver_info/redfish_password"
+        path: "/driver_info/redfish_password"
         value: "{{ inspector_rule_var_redfish_password }}"
 
 # Ironic inspector rule to set Redfish address.
@@ -358,13 +362,13 @@ inspector_rule_redfish_address:
   description: "Set Redfish address"
   conditions:
     - args:
-        value: "{node.driver_info.redfish_address}"
-        regex: "\\{node\\.driver_info\\.redfish_address\\}"
+        value: "{node.driver_info[redfish_address]}"
+        regex: "{node\\.driver_info\\[redfish_address\\]}"
       op: "matches"
   actions:
     - op: "set-attribute"
       args:
-        path: "driver_info/redfish_address"
+        path: "/driver_info/redfish_address"
         value: "{inventory[bmc_address]}"
 
 # Ironic inspector rule to set Redfish certificate authority.
@@ -372,13 +376,13 @@ inspector_rule_redfish_verify_ca:
   description: "Set Redfish Verify CA"
   conditions:
     - args:
-        value: "{node.driver_info.redfish_verify_ca}"
-        regex: "\\{node\\.driver_info\\.redfish_verify_ca\\}"
+        value: "{node.driver_info[redfish_verify_ca]}"
+        regex: "{node\\.driver_info\\[redfish_verify_ca\\]}"
       op: "matches"
   actions:
     - op: "set-attribute"
       args:
-        path: "driver_info/redfish_verify_ca"
+        path: "/driver_info/redfish_verify_ca"
         value: "{{ inspector_rule_var_redfish_verify_ca }}"
 
 # List of default ironic inspector rules.
@@ -421,4 +425,3 @@ inspector_rules: "{{ inspector_rules_default + inspector_rules_extra + (inspecto
 # Ansible group containing switch hosts to which the workaround should be
 # applied.
 inspector_dell_switch_lldp_workaround_group:
-
