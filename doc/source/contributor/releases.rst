@@ -242,3 +242,21 @@ Stable Releases
 
 Stable branch releases should be made periodically for each supported stable
 branch, no less than once every 45 days.
+
+Transitioning to Unmaintained
+=============================
+
+When an OpenStack release transitions to `Unmaintained
+<https://docs.openstack.org/project-team-guide/stable-branches.html#maintenance-phases>`__,
+all references to ``stable/<openstack_release>`` need to be changed to
+``unmaintained/<openstack_release>``. This change needs to be made on the new
+unmaintained branch. For example, see
+https://review.opendev.org/c/openstack/kayobe/+/968298.
+
+Transitioning to End of Life (EOL)
+==================================
+
+When an OpenStack release transitions to `End of Life (EOL)
+<https://docs.openstack.org/project-team-guide/stable-branches.html#maintenance-phases>`__,
+upgrade jobs in later releases need to be removed. For example, see
+https://review.opendev.org/c/openstack/kayobe/+/968296.
