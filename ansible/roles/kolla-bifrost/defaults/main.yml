@@ -48,6 +48,9 @@ kolla_bifrost_inspector_hooks:
 # 'active' or 'pxe'.
 kolla_bifrost_inspector_port_addition:
 
+# Which ports to keep after introspection. One of 'all', 'present', or 'added'.
+kolla_bifrost_inspector_keep_ports:
+
 # List of extra kernel parameters for the inspector default PXE configuration.
 kolla_bifrost_inspector_extra_kernel_options:
 
