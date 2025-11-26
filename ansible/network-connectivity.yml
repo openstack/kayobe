@@ -69,7 +69,7 @@
         ping {{ remote_ip }} -c1 -M do {% if mtu %} -s {{ mtu | int - icmp_overhead_bytes }}{% endif %}
       with_items: "{{ network_interfaces }}"
       loop_control:
-        label: "{{ remote_host }} on {{ item }}"
+        label: "{{ remote_host | default('none', true) }} on {{ item }}"
       when:
         - remote_hosts | length > 0
         - remote_ip | length > 0
@@ -90,6 +90,6 @@
         # when check: remote_ip | length > 0, would pass, but remote_ip was ''
         # in the command.  Assumption was that this was being evaluated once
         # for the when clause and then again for the command. Bug?
-        remote_host: "{{ remote_hosts | random(seed=ansible_facts.date_time.iso8601) }}"
+        remote_host: "{{ remote_hosts | random(seed=ansible_facts.date_time.iso8601) if remote_hosts | length > 0 else '' }}"
         remote_ip: "{{ lookup('cached', 'vars', item ~ '_ips', default={})[remote_host] | default('', true) }}"
         mtu: "{{ item | net_mtu }}"
