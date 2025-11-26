@@ -106,7 +106,7 @@
           become: True
       when: virtualenv is not defined
 
-    - name: Ensure kolla-ansible virtualenv has docker SDK for python installed
+    - name: Ensure kayobe virtualenv has docker SDK for python installed
       pip:
         name: docker
         state: latest
