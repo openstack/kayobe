@@ -172,3 +172,22 @@ def update_environment(parsed_args, env):
 
     if vault_password is not None:
         env[VAULT_PASSWORD_ENV] = vault_password
+
+
+def view_passwords(parsed_args):
+    """View passwords stored in the Ansible Vault.
+
+    :param parsed_args: Parsed command line arguments.
+    """
+    env_path = utils.get_kayobe_environment_path(
+        parsed_args.config_path, parsed_args.environment)
+    path = env_path if env_path else parsed_args.config_path
+    passwords_path = os.path.join(path, 'kolla', 'passwords.yml')
+    cmd = ["ansible-vault", "view", passwords_path]
+    cmd += ["--vault-password-file", _get_vault_password_helper()]
+    try:
+        utils.run_command(cmd)
+    except subprocess.CalledProcessError as e:
+        LOG.error("Failed to view passwords via ansible-vault "
+                  "returncode %d", e.returncode)
+        sys.exit(e.returncode)

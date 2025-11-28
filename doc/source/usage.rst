@@ -48,6 +48,16 @@ Environment variable: ``ANSIBLE_VAULT_PASSWORD_FILE``
     password from a (plain text) file, with the path to that file being read
     from the environment.
 
+Whilst the kolla passwords file ``kolla/passwords.yml`` should remain encrypted
+at all times it can be useful to view the contents of this file to acquire a
+password for a given service.
+This can be done with ``ansible-vault view`` however if an absolute path is not
+provided it will cause the command to fail.
+Therefore, to make reading the contents of this file easier for administrators
+it is possible to use ``kayobe overcloud passwords view`` which will
+temporarily decrypt and display the contents of ``kolla/passwords.yml`` for the
+active kayobe environment.
+
 Limiting Hosts
 --------------
 

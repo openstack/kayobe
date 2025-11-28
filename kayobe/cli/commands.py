@@ -1579,6 +1579,14 @@ class OvercloudServicePrechecks(KollaAnsibleMixin, KayobeAnsibleMixin,
         self.run_kolla_ansible_overcloud(parsed_args, "prechecks")
 
 
+class OvercloudServicePasswordsView(KayobeAnsibleMixin, VaultMixin, Command):
+    """View Passwords."""
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Displaying Passwords")
+        vault.view_passwords(parsed_args)
+
+
 class OvercloudServiceReconfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
                                   VaultMixin, Command):
     """Reconfigure the overcloud services.
