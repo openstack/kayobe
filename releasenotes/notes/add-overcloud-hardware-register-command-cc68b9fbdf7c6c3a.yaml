@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds a new ``kayobe overcloud hardware register`` command to enroll
+    overcloud hosts in Bifrost based on nodes defined in the Kayobe
+    inventory.

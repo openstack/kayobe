@@ -1303,6 +1303,16 @@ class OvercloudBIOSRAIDConfigure(KayobeAnsibleMixin, VaultMixin, Command):
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
 
+class OvercloudHardwareRegister(KayobeAnsibleMixin, VaultMixin, Command):
+    """Register overcloud hosts in Bifrost"""
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Registering overcloud hosts in Bifrost")
+        playbooks = _build_playbook_list("kolla-bifrost-hostvars",
+                                         "overcloud-hardware-register")
+        self.run_kayobe_playbooks(parsed_args, playbooks)
+
+
 class OvercloudHardwareInspect(KayobeAnsibleMixin, VaultMixin, Command):
     """Inspect the overcloud hardware using ironic inspector.
 

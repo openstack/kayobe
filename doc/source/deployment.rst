@@ -468,6 +468,52 @@ to add them to the Kayobe and Kolla-Ansible inventories::
    naming Ironic nodes via switch port descriptions, Ironic Inspector and
    LLDP.
 
+Registration
+------------
+
+This workflow acts as an alternative to enrolling nodes through discovery where
+nodes can be registered in Bifrost via Kayobe given these nodes are defined in
+the Kayobe inventory.
+
+A group_vars file for the `overcloud` group should be created which contains the Ironic
+variables, this should be in ``etc/kayobe/inventory/group_vars/overcloud/ironic_vars`` or
+in the environment you are using.
+
+.. code-block:: yaml
+
+    ironic_driver: redfish
+
+    ironic_driver_info:
+        redfish_system_id: "{{ ironic_redfish_system_id }}"
+        redfish_address: "{{ ironic_redfish_address }}"
+        redfish_username: "{{ ironic_redfish_username }}"
+        redfish_password: "{{ ironic_redfish_password }}"
+        redfish_verify_ca: "{{ ironic_redfish_verify_ca }}"
+        ipmi_address: "{{ ipmi_address }}"
+
+    ironic_properties:
+        capabilities: "{{ ironic_capabilities }}"
+
+    ironic_resource_class: "example_resouce_class"
+    ironic_redfish_system_id: "/redfish/v1/Systems/System.Embedded.1"
+    ironic_redfish_verify_ca: "{{ inspector_rule_var_redfish_verify_ca }}"
+    ironic_redfish_address: "{{ ipmi_address }}"
+    ironic_redfish_username: "{{ inspector_redfish_username }}"
+    ironic_redfish_password: "{{ inspector_redfish_password }}"
+    ironic_capabilities: "boot_option:local,boot_mode:uefi"
+
+It's essential that the Ironic username and password match the BMC username
+and password for your nodes, if the username and password combination is
+not the same for the entire group you will need to adjust your configuration
+accordingly. The IPMI address should also match the BMC address for your node.
+Once this has been completed you can begin enrolling the Ironic nodes::
+
+    (kayobe) $ kayobe overcloud hardware register
+
+Inspector is not used to discover nodes and no node inspection will take place on
+enrollment, nodes will automatically be placed into ``manageable`` state. To inspect,
+you should use ``kayobe overcloud hardware inspect`` following enrollment.
+
 Saving Hardware Introspection Data
 ----------------------------------
 
