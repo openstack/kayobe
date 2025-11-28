@@ -618,6 +618,47 @@ function overcloud_test_bounce_interface {
     run_kayobe overcloud host configure -t network
 }
 
+function overcloud_inspection_rule_dump {
+   echo "Listing inspection rules ..."
+   openstack baremetal inspection rule list
+   echo "Dumping inspection rules ..."
+   openstack baremetal inspection rule list -c UUID -f value | xargs -L 1 openstack baremetal inspection rule show
+}
+
+function overcloud_test_inspect {
+  set -eu
+  node=$1
+
+  environment_setup
+
+  source "${KOLLA_CONFIG_PATH:-/etc/kolla}/admin-openrc-system.sh"
+
+  overcloud_inspection_rule_dump
+
+  echo "Baremetal node: $node before inspection"
+  openstack baremetal node show "$node"
+
+  # NOTE(wszumski): Switch to using kayobe playbooks to manage and inspect
+  # when we switch to node registration
+
+  if [ "$(openstack baremetal node show -c provision_state -f value $node)"  != "manageable" ]; then
+      openstack baremetal node manage "$node" --wait
+  fi
+
+  # Run inspection
+  openstack baremetal node inspect "$node" --wait
+
+  echo "Baremetal node: $node after inspection"
+  openstack baremetal node show $node
+  openstack baremetal node inventory save $node
+
+  # Use Kayobe to save introspection data
+  run_kayobe baremetal compute introspection data save --limit "baremetal-compute,controllers[0]" --output-dir /tmp/baremetal-compute-inspection-data
+
+  # Move back to available
+  openstack baremetal node provide "$node" --wait
+}
+
 function overcloud_test {
     set -eu
 
