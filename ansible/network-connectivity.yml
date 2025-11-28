@@ -6,6 +6,8 @@
        default(kayobe_max_fail_percentage) |
        default(100) }}
   vars:
+    # Skip external connectivity check when behind a proxy.
+    nc_skip_external_net: "{{ http_proxy | truthy }}"
     # Set this to an external IP address to check.
     nc_external_ip: 8.8.8.8
     # Set this to an external hostname to check.
@@ -14,27 +16,29 @@
     # (20 bytes) headers.
     icmp_overhead_bytes: 28
   tasks:
-    - name: "Display next action: external IP address check"
-      debug:
-        msg: >
-          Checking whether hosts have access to an external IP address,
-          {{ nc_external_ip }}.
-      run_once: True
+    - block:
+        - name: "Display next action: external IP address check"
+          debug:
+            msg: >
+              Checking whether hosts have access to an external IP address,
+              {{ nc_external_ip }}.
+          run_once: True
 
-    - name: Ensure an external IP is reachable
-      command: ping -c1 {{ nc_external_ip }}
-      changed_when: False
+        - name: Ensure an external IP is reachable
+          command: ping -c1 {{ nc_external_ip }}
+          changed_when: False
 
-    - name: "Display next action: external hostname check"
-      debug:
-        msg: >
-          Checking whether hosts have access to an external hostname,
-          {{ nc_external_hostname }}.
-      run_once: True
+        - name: "Display next action: external hostname check"
+          debug:
+            msg: >
+              Checking whether hosts have access to an external hostname,
+              {{ nc_external_hostname }}.
+          run_once: True
 
-    - name: Ensure an external host is reachable
-      command: ping -c1 {{ nc_external_hostname }}
-      changed_when: False
+        - name: Ensure an external host is reachable
+          command: ping -c1 {{ nc_external_hostname }}
+          changed_when: False
+      when: not nc_skip_external_net
 
     - name: "Display next action: gateway check"
       debug:
