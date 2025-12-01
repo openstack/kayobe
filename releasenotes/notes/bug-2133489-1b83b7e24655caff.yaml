@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fixes generation of Bifrost host variable files when ``ipv4_gateway`` is
+    undefined. `LP#2133489 <https://bugs.launchpad.net/kayobe/+bug/2133489>`__
