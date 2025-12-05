@@ -27,15 +27,15 @@
         - kayobe-overcloud-ubuntu-noble
         - kayobe-overcloud-ubuntu-noble-podman
         - kayobe-overcloud-upgrade-rocky9
-        #- kayobe-overcloud-upgrade-slurp-rocky9
-        #- kayobe-overcloud-upgrade-slurp-ubuntu-noble
+        - kayobe-overcloud-upgrade-slurp-rocky9
+        - kayobe-overcloud-upgrade-slurp-ubuntu-noble
         - kayobe-overcloud-upgrade-ubuntu-noble
         - kayobe-seed-rocky9
         - kayobe-seed-rocky9-podman
         - kayobe-seed-ubuntu-noble
         - kayobe-seed-ubuntu-noble-podman
         - kayobe-seed-upgrade-rocky9
-        #- kayobe-seed-upgrade-slurp-rocky9
+        - kayobe-seed-upgrade-slurp-rocky9
         - kayobe-seed-upgrade-ubuntu-noble
         - kayobe-seed-vm-rocky10
         - kayobe-seed-vm-rocky9
@@ -61,15 +61,15 @@
         - kayobe-overcloud-ubuntu-noble
         - kayobe-overcloud-ubuntu-noble-podman
         - kayobe-overcloud-upgrade-rocky9
-        #- kayobe-overcloud-upgrade-slurp-rocky9
-        #- kayobe-overcloud-upgrade-slurp-ubuntu-noble
+        - kayobe-overcloud-upgrade-slurp-rocky9
+        - kayobe-overcloud-upgrade-slurp-ubuntu-noble
         - kayobe-overcloud-upgrade-ubuntu-noble
         - kayobe-seed-rocky9
         - kayobe-seed-rocky9-podman
         - kayobe-seed-ubuntu-noble
         - kayobe-seed-ubuntu-noble-podman
         - kayobe-seed-upgrade-rocky9
-        #- kayobe-seed-upgrade-slurp-rocky9
+        - kayobe-seed-upgrade-slurp-rocky9
         - kayobe-seed-upgrade-ubuntu-noble
         - kayobe-seed-vm-rocky10
         - kayobe-seed-vm-rocky9
