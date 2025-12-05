@@ -2,7 +2,7 @@
 collections:
   - name: https://opendev.org/openstack/ansible-collection-kolla
     type: git
-    version: stable/2025.2
+    version: master
   - name: community.docker
     version: 3.11.0
   - name: community.network
