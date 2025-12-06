@@ -253,6 +253,12 @@ all references to ``stable/<openstack_release>`` need to be changed to
 unmaintained branch. For example, see
 https://review.opendev.org/c/openstack/kayobe/+/968298.
 
+More recent releases which include upgrade jobs from the unmaintained release
+should update their CI configuration to use the
+``unmaintained/<openstack_release>`` branch. For example, see
+https://review.opendev.org/c/openstack/kayobe/+/969411 and
+https://review.opendev.org/c/openstack/kayobe/+/970016.
+
 Transitioning to End of Life (EOL)
 ==================================
 
