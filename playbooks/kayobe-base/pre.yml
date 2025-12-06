@@ -82,7 +82,9 @@
         kayobe_galaxy_requirements_src_dir: "{{ kolla_ansible_src_dir }}"
         kayobe_galaxy_requirements_dest_path: "/tmp/kolla-ansible-requirements.yml"
 
-    - block:
+    - vars:
+        branch_prefix: "{{ 'unmaintained' if previous_release | lower == '2024.1' else 'stable' }}"
+      block:
         - name: Ensure previous kayobe directory exists
           file:
             path: "{{ previous_kayobe_src_dir }}"
@@ -90,7 +92,7 @@
 
         - name: Ensure previous kayobe repository is cloned
           command: >-
-            git clone {{ kayobe_src_dir }} {{ previous_kayobe_src_dir }} -b stable/{{ previous_release | lower }}
+            git clone {{ kayobe_src_dir }} {{ previous_kayobe_src_dir }} -b {{ branch_prefix }}/{{ previous_release | lower }}
 
         - name: Ensure previous kayobe-config directory exists
           file:
@@ -99,7 +101,7 @@
 
         - name: Ensure kayobe-config repository is cloned
           command: >-
-            git clone {{ kayobe_config_src_dir }} {{ previous_kayobe_config_src_dir }} -b stable/{{ previous_release | lower }}
+            git clone {{ kayobe_config_src_dir }} {{ previous_kayobe_config_src_dir }} -b {{ branch_prefix }}/{{ previous_release | lower }}
 
         - name: Ensure previous kolla-ansible directory exists
           file:
@@ -108,7 +110,7 @@
 
         - name: Ensure previous kolla-ansible repository is cloned
           command: >-
-            git clone {{ kolla_ansible_src_dir }} {{ previous_kolla_ansible_src_dir }} -b stable/{{ previous_release | lower }}
+            git clone {{ kolla_ansible_src_dir }} {{ previous_kolla_ansible_src_dir }} -b {{ branch_prefix }}/{{ previous_release | lower }}
 
         - name: Ensure previous kayobe is executed in verbose mode
           lineinfile:
@@ -131,14 +133,14 @@
             name: kayobe-galaxy-requirements
           vars:
             kayobe_galaxy_requirements_src_dir: "{{ previous_kayobe_src_dir }}"
-            kayobe_galaxy_requirements_branch: "stable/{{ previous_release | lower }}"
+            kayobe_galaxy_requirements_branch: "{{ branch_prefix }}/{{ previous_release | lower }}"
 
         - name: Update kolla-ansible requirements.yml
           include_role:
             name: kayobe-galaxy-requirements
           vars:
             kayobe_galaxy_requirements_src_dir: "{{ previous_kolla_ansible_src_dir }}"
-            kayobe_galaxy_requirements_branch: "stable/{{ previous_release | lower }}"
+            kayobe_galaxy_requirements_branch: "{{ branch_prefix }}/{{ previous_release | lower }}"
             kayobe_galaxy_requirements_dest_path: "/tmp/previous-kolla-ansible-requirements.yml"
 
       when: is_upgrade
