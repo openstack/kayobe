@@ -41,3 +41,9 @@
       become: true
       loop: "{{ range(2, 8) | list }}"
       when: ansible_facts.os_family == 'Debian'
+
+    - name: Ensure firewalld is unmasked
+      ansible.builtin.systemd_service:
+        name: firewalld
+        masked: false
+      become: true
