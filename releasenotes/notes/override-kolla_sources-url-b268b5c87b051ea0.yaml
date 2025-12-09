@@ -1,0 +1,7 @@
+---
+feature:
+  - |
+    Adds support for ``url`` sources in ``kolla_sources``. Previously the
+    ``version`` and ``sha256`` attributes would not be generated in
+    ``kolla-build.conf``, preventing the override for sources with ``url``
+    type. Only ``git`` and ``local`` types worked.

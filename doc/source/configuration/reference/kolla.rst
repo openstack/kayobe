@@ -247,7 +247,7 @@ default is to specify the URL and version of Bifrost, as defined in
 ``${KAYOBE_CONFIG_PATH}/bifrost.yml``.
 
 For example, to specify a custom source location for the ``ironic-base``
-package:
+package and a custom version of cadvisor:
 
 .. code-block:: yaml
    :caption: ``kolla.yml``
@@ -261,6 +261,11 @@ package:
        type: "git"
        location: https://git.example.com/ironic
        reference: downstream
+     prometheus-cadvisor:
+       version: "0.54.1"
+       sha256:
+         amd64: xxxx
+         arm64: yyyy
 
 This will result in Kayobe adding the following configuration to
 ``kolla-build.conf``:
@@ -278,8 +283,16 @@ This will result in Kayobe adding the following configuration to
    location = https://git.example.com/ironic
    reference = downstream
 
+   [prometheus-cadvisor]
+   version = 0.54.1
+   sha256 = amd64:xxxx,arm64:yyyy
+
 Note that it is currently necessary to include the Bifrost source location if
 using a seed.
+
+Note that it is not necessary to specify the prometheus-cadvisor ``type: url``
+and ``location: https://github.com/...`` because they are inherited from kolla
+(``kolla/common/sources.py``).
 
 Plugins & additions
 -------------------
