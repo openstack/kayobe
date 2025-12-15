@@ -39,6 +39,11 @@ inspector_hooks: "{{ kolla_bifrost_inspector_hooks | join(',') }}"
 inspector_port_addition: "{{ kolla_bifrost_inspector_port_addition }}"
 {% endif %}
 
+{% if kolla_bifrost_inspector_keep_ports %}
+# Which ports to keep after introspection. One of 'all', 'present', or 'added'.
+inspector_keep_ports: "{{ kolla_bifrost_inspector_keep_ports }}"
+{% endif %}
+
 {% if kolla_bifrost_inspector_extra_kernel_options %}
 # Extra kernel parameters for the inspector default PXE configuration.
 inspector_extra_kernel_options: "{{ kolla_bifrost_inspector_extra_kernel_options if kolla_bifrost_inspector_extra_kernel_options is string else kolla_bifrost_inspector_extra_kernel_options | join(' ') }}"

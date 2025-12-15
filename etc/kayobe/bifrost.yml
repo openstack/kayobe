@@ -96,6 +96,10 @@
 # 'active' or 'pxe'.
 #kolla_bifrost_inspector_port_addition:
 
+# Which ports to keep after introspection. One of 'all', 'present', or 'added'.
+# Default follows Bifrost's default of 'present'.
+#kolla_bifrost_inspector_keep_ports:
+
 # List of extra kernel parameters for the inspector default PXE configuration.
 # Default is {{ inspector_extra_kernel_options }}, defined in inspector.yml.
 # When customising this variable, the default extra kernel parameters should be

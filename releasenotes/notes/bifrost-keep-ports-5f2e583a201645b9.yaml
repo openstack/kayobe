@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Allows configuring ``inspector_keep_ports`` for Bifrost via
+    ``kolla_bifrost_inspector_keep_ports`` (defaults to ``present`` to match
+    Bifrost).
