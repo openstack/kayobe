@@ -16,7 +16,9 @@ Currently Kayobe supports the following Operating Systems on the Ansible
 control host:
 
 - CentOS Stream 9 (since Zed 13.0.0 release)
+- CentOS Stream 10 (since Epoxy 18.3.0 release)
 - Rocky Linux 9 (since Zed 13.0.0 release)
+- Rocky Linux 10 (since Epoxy 18.3.0 release)
 - Ubuntu Noble 24.04 (since Dalmatian 17.0.0 release)
 
 See the :doc:`support matrix <support-matrix>` for details of supported
