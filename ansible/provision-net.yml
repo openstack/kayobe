@@ -28,6 +28,7 @@
       subnets:
         - name: "{{ kolla_ironic_inspection_network }}"
           cidr: "{{ inspection_net_name | net_cidr }}"
+          dns_nameservers: "{{ inspection_net_name | net_neutron_dns_servers | default(omit, True) }}"
           gateway_ip: "{{ inspection_net_name | net_neutron_gateway or provision_wl_net_name | net_gateway | default(omit, True) }}"
           allocation_pool_start: "{{ inspection_net_name | net_neutron_allocation_pool_start }}"
           allocation_pool_end: "{{ inspection_net_name | net_neutron_allocation_pool_end }}"
@@ -42,6 +43,7 @@
       subnets:
         - name: "{{ kolla_ironic_provisioning_network }}"
           cidr: "{{ provision_wl_net_name | net_cidr }}"
+          dns_nameservers: "{{ provision_wl_net_name | net_neutron_dns_servers | default(omit, True) }}"
           gateway_ip: "{{ provision_wl_net_name | net_neutron_gateway or provision_wl_net_name | net_gateway | default(omit, True) }}"
           allocation_pool_start: "{{ provision_wl_net_name | net_neutron_allocation_pool_start }}"
           allocation_pool_end: "{{ provision_wl_net_name | net_neutron_allocation_pool_end }}"
@@ -56,6 +58,7 @@
       subnets:
         - name: "{{ kolla_ironic_cleaning_network }}"
           cidr: "{{ cleaning_net_name | net_cidr }}"
+          dns_nameservers: "{{ cleaning_net_name | net_neutron_dns_servers | default(omit, True) }}"
           gateway_ip: "{{ cleaning_net_name | net_neutron_gateway or cleaning_net_name | net_gateway | default(omit, True) }}"
           allocation_pool_start: "{{ cleaning_net_name | net_neutron_allocation_pool_start }}"
           allocation_pool_end: "{{ cleaning_net_name | net_neutron_allocation_pool_end }}"
