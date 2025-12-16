@@ -19,14 +19,13 @@ therefore users need to build them by themselves.
 .. note::
 
    CentOS Stream 9 is no longer supported as a host OS. The 2025.1 Epoxy
-   release will in future support both CentOS Stream 9 and 10 to provide a
-   route for migration.
+   release supports both CentOS Stream 9 and 10 to provide a route for
+   migration.
 
 .. note::
 
    Rocky Linux 9 is no longer supported as a host OS. The 2025.1 Epoxy release
-   will in future support both CentOS Stream 9 and 10 to provide a route for
-   migration.
+   supports both CentOS Stream 9 and 10 to provide a route for migration.
 
 Supported container images
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
