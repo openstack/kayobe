@@ -8,8 +8,8 @@ driver:
 lint: |
   yamllint .
 platforms:
-  - name: centos-stream9
-    image: quay.io/centos/centos:stream9
+  - name: ubuntu-noble
+    image: quay.io/opendevmirror/ubuntu:24.04
     network_mode: host
 provisioner:
   name: ansible
