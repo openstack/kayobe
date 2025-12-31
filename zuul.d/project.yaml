@@ -24,11 +24,13 @@
         #- kayobe-overcloud-tls-rocky10
         - kayobe-overcloud-ubuntu-noble
         - kayobe-overcloud-ubuntu-noble-podman
+        - kayobe-overcloud-upgrade-rocky10
         - kayobe-overcloud-upgrade-ubuntu-noble
         - kayobe-seed-rocky10
         - kayobe-seed-rocky10-podman
         - kayobe-seed-ubuntu-noble
         - kayobe-seed-ubuntu-noble-podman
+        - kayobe-seed-upgrade-rocky10
         - kayobe-seed-upgrade-ubuntu-noble
         - kayobe-seed-vm-rocky10
         - kayobe-seed-vm-ubuntu-noble
@@ -49,11 +51,13 @@
         #- kayobe-overcloud-tls-rocky10
         - kayobe-overcloud-ubuntu-noble
         - kayobe-overcloud-ubuntu-noble-podman
+        - kayobe-overcloud-upgrade-rocky10
         - kayobe-overcloud-upgrade-ubuntu-noble
         - kayobe-seed-rocky10
         - kayobe-seed-rocky10-podman
         - kayobe-seed-ubuntu-noble
         - kayobe-seed-ubuntu-noble-podman
+        - kayobe-seed-upgrade-rocky10
         - kayobe-seed-upgrade-ubuntu-noble
         - kayobe-seed-vm-rocky10
         - kayobe-seed-vm-ubuntu-noble
@@ -66,14 +70,12 @@
         - kayobe-infra-vm-ubuntu-noble-cloud-image
         - kayobe-overcloud-centos10s
         - kayobe-overcloud-tls-centos10s
-        - kayobe-overcloud-upgrade-rocky10
         - kayobe-seed-centos10s
         - kayobe-seed-images-centos10s
         - kayobe-seed-images-rocky10
         - kayobe-seed-images-rocky10-podman
         - kayobe-seed-images-ubuntu-noble
         - kayobe-seed-images-ubuntu-noble-podman
-        - kayobe-seed-upgrade-rocky10
         - kayobe-seed-vm-centos10s
         - kayobe-seed-vm-centos10s-cloud-image
         - kayobe-seed-vm-centos10s-q35
