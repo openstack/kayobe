@@ -21,7 +21,7 @@
         - kayobe-overcloud-host-configure-ubuntu-noble
         - kayobe-overcloud-rocky10
         - kayobe-overcloud-rocky10-podman
-        #- kayobe-overcloud-tls-rocky10
+        - kayobe-overcloud-tls-rocky10
         - kayobe-overcloud-ubuntu-noble
         - kayobe-overcloud-ubuntu-noble-podman
         - kayobe-overcloud-upgrade-ubuntu-noble
@@ -46,7 +46,7 @@
         - kayobe-overcloud-host-configure-ubuntu-noble
         - kayobe-overcloud-rocky10
         - kayobe-overcloud-rocky10-podman
-        #- kayobe-overcloud-tls-rocky10
+        - kayobe-overcloud-tls-rocky10
         - kayobe-overcloud-ubuntu-noble
         - kayobe-overcloud-ubuntu-noble-podman
         - kayobe-overcloud-upgrade-ubuntu-noble

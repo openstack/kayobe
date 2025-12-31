@@ -231,6 +231,11 @@ function upgrade_kayobe_venv {
 
 # Deployment
 
+function is_compute_libvirt_enabled {
+    compute_libvirt_enabled=$(kayobe configuration dump --host localhost --var-name compute_libvirt_enabled)
+    to_bool "$compute_libvirt_enabled"
+}
+
 function is_deploy_image_built_locally {
     ipa_build_images=$(kayobe configuration dump --host localhost --var-name ipa_build_images)
     to_bool "$ipa_build_images"
@@ -431,26 +436,23 @@ function overcloud_deploy {
 
     control_host_bootstrap
 
+    # NOTE(mgoddard): There is a chicken and egg when generating libvirt TLS
+    # certificates using the kolla-ansible certificates command, and host
+    # libvirt. The certificates command needs to be able to gather facts for
+    # all hosts, but if the host configure step hasn't been run, we don't have
+    # SSH or the kolla user configured yet. However, we can't run host
+    # configure without the libvirt TLS certificates.
+    # Workaround: skip libvirt-host tag until later
+    echo "Configuring the controller host"
+    run_kayobe overcloud host configure --skip-tags libvirt-host
+
     if [[ ${KAYOBE_OVERCLOUD_GENERATE_CERTIFICATES} = 1 ]]; then
         echo "Generate TLS certificates"
         run_kayobe playbook run $KAYOBE_SOURCE_PATH/ansible/kolla-ansible.yml -t config
-        # NOTE(mgoddard): There is a chicken and egg when generating libvirt
-        # TLS certificates using the kolla-ansible certificates command, and
-        # host libvirt. The certificates command needs to be able to gather
-        # facts for all hosts, but since the host configure step hasn't been
-        # run, we don't have SSH or the kolla user configured yet. However, we
-        # can't run host configure without the libvirt TLS certificates.
-        # Workaround: add the host to SSH known hosts and SSH as $USER.
-        run_kayobe playbook run $KAYOBE_SOURCE_PATH/ansible/ssh-known-host.yml -l overcloud
 
-        # Avoid populating the fact cache with this weird setup.
-        export ANSIBLE_CACHE_PLUGIN=memory
         run_kayobe kolla ansible run certificates \
           --kolla-extra kolla_certificates_dir=${KAYOBE_CONFIG_PATH}/kolla/certificates \
-          --kolla-extra ansible_user=$USER \
-          --kolla-extra ansible_python_interpreter=/usr/bin/python3 \
           --skip-tags kolla-openstack
-        unset ANSIBLE_CACHE_PLUGIN
 
         # Add CA cert to trust store.
         ca_cert=${KAYOBE_CONFIG_PATH}/kolla/certificates/ca/root.crt
@@ -465,8 +467,10 @@ function overcloud_deploy {
         fi
     fi
 
-    echo "Configuring the controller host"
-    run_kayobe overcloud host configure
+    if is_compute_libvirt_enabled; then
+        echo "Configuring libvirt daemon"
+        run_kayobe overcloud host configure --tags libvirt-host
+    fi
 
     # FIXME(mgoddard): Perform host upgrade workarounds to ensure hostname
     # resolves to IP address of API interface for RabbitMQ. This seems to be
