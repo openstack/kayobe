@@ -85,6 +85,7 @@ seed
 seed
 seed-hypervisor
 overcloud
+infra-vms
 
 ###############################################################################
 # Baremetal compute node groups.
