@@ -1,0 +1,7 @@
+---
+issues:
+  - |
+    NTP configuration was missing from infrastructure VMs because ``infra-vms``
+    was not present under the ``[ntp]`` group. Operators should ensure the most
+    recent upstream ``kayobe-config`` is merged into their local configuration
+    to resolve this issue.
