@@ -40,6 +40,8 @@ roles:
     version: v0.2.13
   - src: mrlesmithjr.mdadm
     version: v0.1.9
+  - src: robertdebock.fail2ban
+    version: 5.0.6
   - src: singleplatform-eng.users
     version: v1.2.6
   - src: stackhpc.drac

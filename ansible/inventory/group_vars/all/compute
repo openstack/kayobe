@@ -186,6 +186,26 @@ compute_firewalld_default_zone:
 compute_firewalld_rules: []
 
 ###############################################################################
+# Compute node fail2ban configuration.
+
+# Whether to install and enable fail2ban.
+compute_fail2ban_enabled: false
+
+# List of fail2ban jails for the compute node.
+compute_fail2ban_jail_configuration: >-
+  {{ compute_fail2ban_jail_configuration_default +
+     compute_fail2ban_jail_configuration_extra }}
+
+# List of default fail2ban jails for the compute node.
+compute_fail2ban_jail_configuration_default:
+  - option: enabled
+    value: "true"
+    section: sshd
+
+# List of extra fail2ban jails for the compute node.
+compute_fail2ban_jail_configuration_extra: []
+
+###############################################################################
 # Compute node host libvirt configuration.
 
 # Whether to enable a host libvirt daemon. Default is true if kolla_enable_nova

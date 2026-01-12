@@ -225,6 +225,26 @@ controller_firewalld_default_zone:
 controller_firewalld_rules: []
 
 ###############################################################################
+# Controller node fail2ban configuration.
+
+# Whether to install and enable fail2ban.
+controller_fail2ban_enabled: false
+
+# List of fail2ban jails for the controller node.
+controller_fail2ban_jail_configuration: >-
+  {{ controller_fail2ban_jail_configuration_default +
+     controller_fail2ban_jail_configuration_extra }}
+
+# List of default fail2ban jails for the controller node.
+controller_fail2ban_jail_configuration_default:
+  - option: enabled
+    value: "true"
+    section: sshd
+
+# List of extra fail2ban jails for the controller node.
+controller_fail2ban_jail_configuration_extra: []
+
+###############################################################################
 # Controller node swap configuration.
 
 # List of swap devices. Each item is a dict containing a 'device' item.

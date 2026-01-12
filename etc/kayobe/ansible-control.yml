@@ -112,6 +112,21 @@
 #ansible_control_firewalld_rules:
 
 ###############################################################################
+# Ansible control host fail2ban configuration.
+
+# Whether to install and enable fail2ban.
+#ansible_control_fail2ban_enabled:
+
+# List of fail2ban jails for the Ansible control host.
+#ansible_control_fail2ban_jail_configuration:
+
+# List of default fail2ban jails for the Ansible control host.
+#ansible_control_fail2ban_jail_configuration_default:
+
+# List of extra fail2ban jails for the Ansible control host.
+#ansible_control_fail2ban_jail_configuration_extra:
+
+###############################################################################
 # Ansible control host swap configuration.
 
 # List of swap devices. Each item is a dict containing a 'device' item.

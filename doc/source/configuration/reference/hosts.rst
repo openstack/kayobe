@@ -691,6 +691,45 @@ follows:
 Note that despite the name, this will not actively enable UFW. It may do so in
 the future.
 
+Fail2Ban
+========
+@tags:
+  | ``fail2ban``
+
+Fail2Ban can be used to ban IP addresses that show malicious signs, such as
+ones that conduct too many failed login attempts. Kayobe can install and configure
+Fail2Ban on hosts.
+
+In order to use fail2ban, it is important to note that the user should enable
+``dnf_install_epel`` in their configuration when using Rocky Linux or CentOS.
+
+The following variables can be used to set whether to enable fail2ban:
+
+* ``ansible_control_fail2ban_enabled``
+* ``seed_hypervisor_fail2ban_enabled``
+* ``seed_fail2ban_enabled``
+* ``infra_vm_fail2ban_enabled``
+* ``compute_fail2ban_enabled``
+* ``controller_fail2ban_enabled``
+* ``monitoring_fail2ban_enabled``
+* ``storage_fail2ban_enabled``
+
+The following example demonstrates how to enable fail2ban on controllers.
+
+.. code-block:: yaml
+
+   controller_fail2ban_enabled: true
+
+The following should be added in the configuration file to set the default
+fail2ban sshd jail:
+
+.. code-block:: yaml
+
+   fail2ban_jail_configuration:
+      - option: enabled
+        value: "true"
+        section: sshd
+
 .. _configuration-hosts-tuned:
 
 Tuned

@@ -1,0 +1,6 @@
+---
+# Whether to install and enable fail2ban
+fail2ban_enabled: "{{ seed_fail2ban_enabled }}"
+
+# List of fail2ban jails for the seed node.
+fail2ban_jail_configuration: "{{ seed_fail2ban_jail_configuration }}"

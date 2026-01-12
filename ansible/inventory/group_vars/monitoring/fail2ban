@@ -1,0 +1,6 @@
+---
+# Whether to install and enable fail2ban
+fail2ban_enabled: "{{ monitoring_fail2ban_enabled }}"
+
+# List of fail2ban jails for the monitoring node.
+fail2ban_jail_configuration: "{{ monitoring_fail2ban_jail_configuration }}"

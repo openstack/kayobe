@@ -313,11 +313,15 @@
     name: kayobe-overcloud-host-configure-rocky10
     parent: kayobe-overcloud-host-configure-base
     nodeset: kayobe-rocky10
+    vars:
+      fail2ban_enabled: true
 
 - job:
     name: kayobe-overcloud-host-configure-ubuntu-noble
     parent: kayobe-overcloud-host-configure-base
     nodeset: kayobe-ubuntu-noble
+    vars:
+      fail2ban_enabled: true
 
 - job:
     name: kayobe-seed-upgrade-base
