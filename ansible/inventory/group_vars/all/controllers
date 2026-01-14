@@ -162,6 +162,7 @@ controller_lvm_group_data_lv_docker_volumes:
   mount: True
   mntp: "{{ docker_volumes_path }}"
 
+# Podman volumes LVM backing volume.
 controller_lvm_group_data_lv_podman_volumes:
   lvname: podman-volumes
   size: "{{ controller_lvm_group_data_lv_podman_volumes_size }}"

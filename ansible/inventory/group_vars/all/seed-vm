@@ -62,7 +62,20 @@ seed_vm_data_capacity: 100G
 # Format of the seed VM data volume.
 seed_vm_data_format: qcow2
 
-# List of network interfaces to attach to the seed VM.
+# List of network interfaces to attach to the seed VM. Format is as accepted by
+# the stackhpc.libvirt-vm role's libvirt_vms.interfaces variable. Default is
+# one interface for each network in 'network_interfaces'.
+#
+# Example with one interface connected to a libvirt network called
+# 'libvirt-net', and another interface directly plugged into a host device
+# called 'eth1':
+#
+# seed_vm_interfaces:
+#   - network: libvirt-net
+#   - type: direct
+#     source:
+#       dev: eth1
+#
 seed_vm_interfaces: "{{ network_interfaces | sort | map('net_libvirt_vm_network') | list }}"
 
 # Boot firmware. Possible values are 'bios' or 'efi'. Default is 'efi'.
