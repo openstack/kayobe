@@ -1,4 +1,4 @@
-libpcre3-dev [platform:dpkg test]
+libpcre3-dev [platform:ubuntu test]
 pcre-devel [platform:rpm test]
 
 # PDF Docs package dependencies

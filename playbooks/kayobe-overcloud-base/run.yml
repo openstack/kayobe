@@ -42,7 +42,7 @@
         chdir: "{{ kayobe_src_dir }}"
         executable: /bin/bash
       # TODO(priteau): Fix baremetal inspect issues with UEFI
-      when: ironic_boot_mode == 'bios'
+      when: ironic_boot_mode == 'bios' and false # TODO(priteau): Re-enable when working
 
     - name: Perform testing of the baremetal machines
       shell:
