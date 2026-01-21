@@ -148,5 +148,11 @@
 #storage_firewalld_rules:
 
 ###############################################################################
+# Storage node swap configuration.
+
+# List of swap devices. Each item is a dict containing a 'device' item.
+#storage_swap:
+
+###############################################################################
 # Dummy variable to allow Ansible to accept this file.
 workaround_ansible_issue_8743: yes
