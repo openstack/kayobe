@@ -21,4 +21,5 @@
 - import_playbook: "mdadm.yml"
 - import_playbook: "luks.yml"
 - import_playbook: "lvm.yml"
+- import_playbook: "swap.yml"
 - import_playbook: "seed-hypervisor-libvirt-host.yml"
