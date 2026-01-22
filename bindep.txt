@@ -1,5 +1,6 @@
-libpcre3-dev [platform:ubuntu test]
-pcre-devel [platform:rpm test]
+# whereto dependencies
+libpcre2-dev [platform:dpkg test]
+pcre2-devel [platform:rpm test]
 
 # PDF Docs package dependencies
 tex-gyre [platform:dpkg doc]
