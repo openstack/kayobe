@@ -6,13 +6,31 @@
         label: centos-10-stream-8GB
 
 - nodeset:
+    name: kayobe-centos10s-16GB
+    nodes:
+      - name: primary
+        label: centos-10-stream-16GB
+
+- nodeset:
     name: kayobe-rocky10
     nodes:
       - name: primary
         label: rockylinux-10-8GB
 
 - nodeset:
+    name: kayobe-rocky10-16GB
+    nodes:
+      - name: primary
+        label: rockylinux-10-16GB
+
+- nodeset:
     name: kayobe-ubuntu-noble
     nodes:
       - name: primary
         label: ubuntu-noble
+
+- nodeset:
+    name: kayobe-ubuntu-noble-16GB
+    nodes:
+      - name: primary
+        label: ubuntu-noble-16GB
