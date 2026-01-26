@@ -108,6 +108,7 @@
       previous_release: "{{ '2025.1' if is_slurp else '2025.2' }}"
       tls_enabled: false
       container_engine: 'docker'
+      ci_network_engine: default
       ironic_boot_mode: "bios"
 
 - job:
@@ -140,6 +141,7 @@
     nodeset: kayobe-rocky10-16GB
     vars:
       container_engine: podman
+      ci_network_engine: nmstate
 
 - job:
     name: kayobe-overcloud-ubuntu-noble
@@ -315,6 +317,7 @@
     nodeset: kayobe-rocky10
     vars:
       fail2ban_enabled: true
+      ci_network_engine: nmstate
 
 - job:
     name: kayobe-overcloud-host-configure-ubuntu-noble

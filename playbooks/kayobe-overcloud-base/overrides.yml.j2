@@ -1,4 +1,10 @@
 ---
+{% set overcloud_network_engine = ci_network_engine | default('default') %}
+
+{% if overcloud_network_engine != 'default' %}
+network_engine: {{ overcloud_network_engine }}
+{% endif %}
+
 docker_daemon_debug: true
 # Use the OpenStack infra's Dockerhub mirror.
 docker_registry_mirrors:

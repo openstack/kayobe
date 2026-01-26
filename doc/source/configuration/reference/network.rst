@@ -71,14 +71,14 @@ supported:
 ``rules``
     List of IP routing rules.
 
-    On CentOS or Rocky, each item should be a string describing an ``iproute2``
-    IP routing rule.
+    The required format depends on the network engine:
 
-    On Ubuntu, each item should be a dict containing optional items ``from``,
-    ``to``, ``priority`` and ``table``. ``from`` is the source address prefix
-    to match with optional prefix. ``to`` is the destination address prefix to
-    match with optional prefix. ``priority`` is the priority of the rule.
-    ``table`` is the routing table ID.
+    * ``nmstate`` engine: each rule must be a dict.
+    * ``default`` engine on CentOS/Rocky: each rule may be a string or dict.
+    * ``default`` engine on Ubuntu (systemd-networkd): each rule must be a dict.
+
+    Dict rules support optional keys ``from``, ``to``, ``priority``, and
+    ``table``.
 ``physical_network``
     Name of the physical network on which this network exists. This aligns with
     the physical network concept in neutron. This may be used to customise the
@@ -90,6 +90,160 @@ supported:
 ``no_ip``
     Whether to allocate an IP address for this network. If set to ``true``, an
     IP address will not be allocated.
+
+.. _configuration-network-engines:
+
+Network Configuration Engines
+==============================
+
+Kayobe supports multiple network configuration engines to manage networking on
+bare metal hosts.
+
+Available Engines
+-----------------
+
+``default`` (default)
+    Uses OS-specific networking tools:
+
+    - RedHat/Rocky Linux: ``MichaelRigart.interfaces`` role with ifcfg files
+    - Debian/Ubuntu: systemd-networkd with .network files
+
+``nmstate``
+    Uses NetworkManager and nmstate for unified, declarative network
+    configuration. **Supported on Rocky Linux only.**
+
+Configuring the Network Engine
+------------------------------
+
+Set the engine in ``${KAYOBE_CONFIG_PATH}/globals.yml``:
+
+.. code-block:: yaml
+   :caption: ``globals.yml``
+
+   network_engine: nmstate  # Valid: "default" (default) or "nmstate"
+
+.. note::
+
+   The nmstate engine is only supported on Rocky Linux.
+   For Ubuntu Noble, use the ``default`` engine (default).
+
+Nmstate Engine Features
+-------------------------
+
+**Structured ethtool configuration** via ``<network>_ethtool_config``:
+
+.. code-block:: yaml
+   :caption: ``networks.yml``
+
+   tenant_ethtool_config:
+     ring:
+       rx: 4096
+       tx: 2048
+     feature:
+       rx: true          # rx-checksum
+       gso: false        # tx-generic-segmentation
+       hw-tc-offload: true
+
+Supported ethtool features:
+
+- **Ring**: ``rx``, ``tx``, ``rx-max``, ``tx-max``, ``rx-jumbo``, ``rx-mini``
+- **Hardware offloads**: ``rx-checksum`` (alias: ``rx``), ``tx-checksum-ip-generic``,
+  ``rx-gro`` (alias: ``gro``), ``tx-generic-segmentation`` (alias: ``gso``),
+  ``rx-lro`` (alias: ``lro``), ``hw-tc-offload``
+
+**Breaking change**: nmstate uses structured YAML instead of
+``<network>_ethtool_opts`` command strings. Default engine preserves existing
+behavior.
+
+**Multiple IP addresses** on a single physical interface are natively supported.
+
+Advanced: Configuring Interface Types
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+By default, nmstate automatically determines interface types based on
+configuration: bridges are ``linux-bridge``, bonds are ``bond``, VLANs are
+``vlan``, and interfaces matching ``dummy.*`` are ``dummy``. Other standalone
+interfaces default to ``ethernet``.
+
+For testing or advanced scenarios, you can explicitly configure interface
+types using the following attributes. Explicit type settings override
+automatic inference.
+
+``<network>_type``
+    Explicit interface type for the network's main interface.
+    Default: ``dummy`` for interface names matching ``dummy.*``, otherwise
+    ``ethernet``.
+
+    Supported values: ``ethernet``, ``dummy``, ``veth``, and other interface types
+    supported by nmstate. Use ``dummy`` for virtual test interfaces.
+
+    .. code-block:: yaml
+       :caption: ``inventory/group_vars/<group>/network-interfaces``
+
+       # Example: Configure a dummy interface for testing
+       test_net_interface: dummy2
+       test_net_type: dummy
+
+``<network>_port_type_<portname>``
+    Explicit type for a specific bridge port.
+    Default: ``dummy`` for port names matching ``dummy.*``, otherwise
+    ``ethernet``.
+
+    Used when a bridge port should be a non-ethernet interface type (e.g., ``dummy``,
+    ``veth``). The ``<portname>`` must match a port listed in ``<network>_bridge_ports``.
+
+    .. code-block:: yaml
+       :caption: ``inventory/group_vars/<group>/network-interfaces``
+
+       # Example: Bridge with dummy ports for testing
+       admin_interface: br0
+       admin_bridge_ports:
+         - dummy3
+         - dummy4
+       admin_port_type_dummy3: dummy
+       admin_port_type_dummy4: dummy
+
+``<network>_slave_type_<slavename>``
+    Explicit type for a specific bond slave.
+    Default: ``dummy`` for slave names matching ``dummy.*``, otherwise
+    ``ethernet``.
+
+    Used when a bond slave should be a non-ethernet interface type (e.g., ``dummy``,
+    ``veth``). The ``<slavename>`` must match a slave listed in ``<network>_bond_slaves``.
+
+    .. code-block:: yaml
+       :caption: ``inventory/group_vars/<group>/network-interfaces``
+
+       # Example: Bond with dummy slaves for testing
+       internal_interface: bond0
+       internal_bond_slaves:
+         - dummy5
+         - dummy6
+       internal_slave_type_dummy5: dummy
+       internal_slave_type_dummy6: dummy
+
+.. note::
+
+   These options are primarily used for testing environments with virtual interfaces.
+   Production environments typically use physical ethernet interfaces and do not require
+   explicit type configuration.
+
+Prerequisites
+-------------
+
+**Operating System Support:**
+
+The nmstate engine is **only supported on Rocky Linux**.
+
+Ubuntu Noble is **not supported** because the required system packages
+(nmstate, python3-libnmstate) are not available in Ubuntu repositories.
+For Ubuntu Noble, use the ``default`` network engine which provides
+robust networking configuration via systemd-networkd.
+
+**Dependencies:**
+
+- NetworkManager service running and enabled
+- nmstate and python3-libnmstate packages (automatically installed on Rocky Linux)
 
 Configuring an IP Subnet
 ------------------------
@@ -275,9 +429,12 @@ Configuring IP Routing Policy Rules
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 IP routing policy rules may be configured by setting the ``rules`` attribute
-for a network to a list of rules. Two formats are supported for defining rules:
-string format and dict format. String format rules are only supported on
-CentOS Stream and Rocky Linux systems.
+for a network to a list of rules. Two formats are available (dict and string),
+but support depends on the network engine:
+
+* ``nmstate`` engine: dict format only.
+* ``default`` engine on CentOS Stream/Rocky Linux: dict and string format.
+* ``default`` engine on Ubuntu (systemd-networkd): dict format only.
 
 Dict format rules
 """""""""""""""""
@@ -299,8 +456,8 @@ handle traffic from the subnet ``10.1.0.0/24`` using the routing table
 
 These rules will be configured on all hosts to which the network is mapped.
 
-String format rules (CentOS Stream/Rocky Linux only)
-""""""""""""""""""""""""""""""""""""""""""""""""""""
+String format rules (default engine on CentOS Stream/Rocky Linux only)
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 The string format of a rule is the string which would be appended to ``ip rule
 <add|del>`` to create or delete the rule. Note that when using NetworkManager
@@ -404,7 +561,23 @@ The following attributes are supported:
     Enable or disable the Spanning Tree Protocol (STP) on this bridge. Should be
     set to a boolean value. The default is not set on Ubuntu systems.
 ``bond_mode``
-    For bond interfaces, the bond's mode, e.g. 802.3ad.
+    For bond interfaces, the bond's mode, e.g. ``802.3ad``, ``balance-rr``,
+    ``active-backup``.
+
+    **nmstate engine**: If not specified, defaults to ``balance-rr`` (round-robin
+    load balancing). This mode works without special switch configuration and is
+    suitable for most development/test environments.
+
+    **Production recommendation**: Explicitly configure bond mode based on your
+    network requirements. Common modes:
+
+    - ``802.3ad``: IEEE 802.3ad LACP (requires switch configuration)
+    - ``balance-rr``: Round-robin (no switch config needed)
+    - ``active-backup``: Active-backup failover
+    - ``balance-xor``: XOR hash-based load balancing
+
+    See `Linux bonding documentation <https://www.kernel.org/doc/Documentation/networking/bonding.txt>`_
+    for complete mode descriptions.
 ``bond_ad_select``
     For bond interfaces, the 802.3ad aggregation selection logic to use. Valid
     values are ``stable`` (default selection logic if not configured),

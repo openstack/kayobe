@@ -43,4 +43,4 @@
 
     - name: Configure the network
       include_role:
-        name: "network-{{ ansible_facts.os_family | lower }}"
+        name: "{{ 'network-nmstate' if network_engine | default('default') == 'nmstate' else 'network-' + ansible_facts.os_family | lower }}"

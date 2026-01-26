@@ -1,0 +1,204 @@
+---
+- name: Validate nmstate is supported on this OS
+  ansible.builtin.assert:
+    that:
+      - ansible_facts.os_family == "RedHat"
+    fail_msg: >-
+      The nmstate network engine is not supported on {{ ansible_facts.distribution }}
+      {{ ansible_facts.distribution_version }}. nmstate requires system packages
+      (nmstate, python3-libnmstate) which are not available in {{ ansible_facts.distribution }}
+      repositories. The nmstate engine is only supported on Rocky Linux.
+      For Ubuntu Noble, use the default network engine (network_engine: default)
+      which provides robust networking via systemd-networkd.
+
+- name: Include nmstate role variables
+  include_vars: RedHat.yml
+
+- import_role:
+    name: ahuffman.resolv
+  when: resolv_is_managed | bool
+  become: true
+
+- name: Ensure /etc/iproute2 directory exists
+  ansible.builtin.file:
+    path: /etc/iproute2
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  become: true
+  when:
+    - (network_route_tables | default([])) | length > 0
+
+- name: Ensure IP routing tables are defined
+  blockinfile:
+    create: true
+    dest: /etc/iproute2/rt_tables
+    owner: root
+    group: root
+    mode: '0644'
+    block: |
+      {% for table in network_route_tables %}
+      {{ table.id }} {{ table.name }}
+      {% endfor %}
+  become: true
+  when:
+    - (network_route_tables | default([])) | length > 0
+
+- name: Ensure nmstate packages are installed
+  package:
+    name: "{{ network_nmstate_packages }}"
+    state: present
+  become: true
+  when:
+    - network_nmstate_install_packages | bool
+    - network_nmstate_packages | length > 0
+
+- name: Ensure NetworkManager is enabled and running
+  service:
+    name: NetworkManager
+    state: started
+    enabled: true
+  become: true
+
+- name: Ensure NetworkManager DNS config is present only if required
+  become: true
+  community.general.ini_file:
+    path: /etc/NetworkManager/NetworkManager.conf
+    section: main
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+    state: "{{ 'present' if resolv_is_managed | bool else 'absent' }}"
+  loop:
+    - option: dns
+      value: none
+    - option: rc-manager
+      value: unmanaged
+  when:
+    - ansible_facts.os_family == "RedHat" and ansible_facts.distribution_major_version | int >= 9
+  register: dns_config_task
+
+- name: Reload NetworkManager with DNS config
+  become: true
+  systemd:
+    name: NetworkManager
+    state: reloaded
+    daemon_reload: true
+  when: dns_config_task is changed
+
+- name: Generate nmstate desired state
+  set_fact:
+    network_nmstate_desired_state: "{{ network_interfaces | nmstate_config }}"
+
+- name: Apply nmstate configuration using module
+  nmstate_apply:
+    state: "{{ network_nmstate_desired_state }}"
+  register: nmstate_apply_result
+  become: true
+  vars:
+    ansible_python_interpreter: "{{ ansible_facts.python.executable }}"
+
+- name: Initialise nmstate firewalld interface-zone map
+  set_fact:
+    network_nmstate_zone_map: {}
+
+- name: Build nmstate firewalld interface-zone map
+  set_fact:
+    network_nmstate_zone_map: >-
+      {{ network_nmstate_zone_map
+         | combine({ (item | net_interface): (item | net_zone) }) }}
+  loop: "{{ network_interfaces | default([]) }}"
+  when:
+    - item | net_zone
+    - item | net_interface
+
+- name: Build nmstate firewalld interface-zone items
+  set_fact:
+    network_nmstate_zone_items: >-
+      {{ network_nmstate_zone_map
+         | dict2items(key_name='interface', value_name='zone') }}
+
+- block:
+    - name: Ensure firewalld package is installed for nmstate zone sync
+      package:
+        name: firewalld
+        state: present
+
+    - name: Ensure firewalld service is enabled and running for nmstate zone sync
+      service:
+        name: firewalld
+        state: started
+        enabled: true
+
+    # TODO(gkoper): replace temporary nmcli profile zone sync with native
+    # zone handling in the nmstate filter/module path.
+    - name: Gather NetworkManager connection firewalld zones for nmstate interfaces
+      command:
+        argv:
+          - nmcli
+          - -g
+          - connection.zone
+          - connection
+          - show
+          - "{{ item.interface }}"
+      changed_when: false
+      loop: "{{ network_nmstate_zone_items }}"
+      register: network_nmstate_nm_zone_result
+
+    - name: Ensure NetworkManager connection firewalld zones are set for nmstate interfaces
+      command:
+        argv:
+          - nmcli
+          - connection
+          - modify
+          - "{{ item.item.interface }}"
+          - connection.zone
+          - "{{ item.item.zone }}"
+      loop: "{{ network_nmstate_nm_zone_result.results }}"
+      when:
+        - (item.stdout | default('') | trim) != item.item.zone
+
+    # Keep permanent firewalld configuration in sync first. Runtime state is
+    # refreshed separately below from permanent config.
+    - name: Ensure firewalld zones exist for nmstate interfaces
+      firewalld:
+        offline: true
+        permanent: true
+        state: present
+        zone: "{{ item }}"
+      loop: "{{ network_nmstate_zone_items | map(attribute='zone') | unique | list }}"
+      register: network_nmstate_zones_result
+
+    - name: Ensure permanent firewalld zones are set for nmstate interfaces
+      firewalld:
+        interface: "{{ item.interface }}"
+        offline: true
+        permanent: true
+        state: enabled
+        zone: "{{ item.zone }}"
+      loop: "{{ network_nmstate_zone_items }}"
+      register: network_nmstate_perm_result
+
+    - name: Reload firewalld runtime from permanent config before nmstate zone sync
+      ansible.builtin.service:
+        name: firewalld
+        state: reloaded
+      changed_when: false
+      when:
+        - network_nmstate_zones_result is changed or network_nmstate_perm_result is changed
+
+    # TODO(gkoper): investigate NM profile zone mapping to avoid explicit
+    # firewalld sync in nmstate path.
+    - name: Ensure runtime firewalld zones are set for nmstate interfaces
+      firewalld:
+        interface: "{{ item.interface }}"
+        immediate: true
+        permanent: false
+        state: enabled
+        zone: "{{ item.zone }}"
+      loop: "{{ network_nmstate_zone_items }}"
+  become: true
+  when:
+    - ansible_facts.os_family == "RedHat"
+    - firewalld_enabled | default(false) | bool
+    - network_nmstate_zone_items | length > 0

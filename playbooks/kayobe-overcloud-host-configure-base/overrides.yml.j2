@@ -1,6 +1,7 @@
 ---
 # The following configuration aims to test some of the 'host configure'
 # command.
+{% set host_configure_network_engine = ci_network_engine | default('default') %}
 
 # Additional users.
 controller_users:
@@ -9,6 +10,12 @@ controller_users:
     password: kayobe-test-user-password
     groups:
       - stack
+
+# Exercise nmstate networking engine in CI host configure jobs where
+# required packages are available.
+{% if host_configure_network_engine == "nmstate" %}
+network_engine: {{ host_configure_network_engine }}
+{% endif %}
 
 # Additional network interfaces, testing a variety of interface configurations.
 controller_extra_network_interfaces:
@@ -28,7 +35,7 @@ network_route_tables:
   - id: 2
     name: kayobe-test-route-table
 
-# dummy2: Ethernet interface.
+# dummy2: Dummy interface for testing.
 test_net_eth_cidr: 192.168.34.0/24
 test_net_eth_routes:
   - cidr: 192.168.40.0/24
@@ -44,7 +51,12 @@ test_net_eth_vlan_routes:
     gateway: 192.168.35.254
     table: kayobe-test-route-table
 test_net_eth_vlan_rules:
-{% if ansible_facts.os_family == 'RedHat' %}
+{% if ansible_facts.os_family == 'RedHat' and host_configure_network_engine == 'nmstate' %}
+  - from: 192.168.35.0/24
+    table: kayobe-test-route-table
+  - to: 192.168.35.0/24
+    table: kayobe-test-route-table
+{% elif ansible_facts.os_family == 'RedHat' %}
   - from 192.168.35.0/24 table 2
   - to: 192.168.35.0/24
     table: kayobe-test-route-table
@@ -73,6 +85,7 @@ test_net_bridge_vlan_zone: test-zone3
 test_net_bond_cidr: 192.168.38.0/24
 test_net_bond_interface: bond0
 test_net_bond_bond_slaves: [dummy5, dummy6]
+test_net_bond_bond_mode: balance-rr
 test_net_bond_zone: test-zone3
 
 # bond0.44: VLAN subinterface of bond0.
