@@ -1,0 +1,4 @@
+---
+network_nmstate_packages:
+  - nmstate
+  - python3-libnmstate
