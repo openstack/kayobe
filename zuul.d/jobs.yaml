@@ -124,7 +124,7 @@
 - job:
     name: kayobe-overcloud-centos10s
     parent: kayobe-overcloud-base
-    nodeset: kayobe-centos10s
+    nodeset: kayobe-centos10s-16GB
     voting: false
 
 - job:
@@ -132,24 +132,24 @@
     parent: kayobe-overcloud-base
     vars:
       kayobe_control_host_become: false
-    nodeset: kayobe-rocky10
+    nodeset: kayobe-rocky10-16GB
 
 - job:
     name: kayobe-overcloud-rocky10-podman
     parent: kayobe-overcloud-base
-    nodeset: kayobe-rocky10
+    nodeset: kayobe-rocky10-16GB
     vars:
       container_engine: podman
 
 - job:
     name: kayobe-overcloud-ubuntu-noble
     parent: kayobe-overcloud-base
-    nodeset: kayobe-ubuntu-noble
+    nodeset: kayobe-ubuntu-noble-16GB
 
 - job:
     name: kayobe-overcloud-ubuntu-noble-podman
     parent: kayobe-overcloud-base
-    nodeset: kayobe-ubuntu-noble
+    nodeset: kayobe-ubuntu-noble-16GB
     vars:
       container_engine: podman
       kayobe_control_host_become: false
@@ -164,13 +164,13 @@
 - job:
     name: kayobe-overcloud-tls-centos10s
     parent: kayobe-overcloud-tls-base
-    nodeset: kayobe-centos10s
+    nodeset: kayobe-centos10s-16GB
     voting: false
 
 - job:
     name: kayobe-overcloud-tls-rocky10
     parent: kayobe-overcloud-tls-base
-    nodeset: kayobe-rocky10
+    nodeset: kayobe-rocky10-16GB
 
 - job:
     name: kayobe-overcloud-upgrade-base
@@ -187,22 +187,22 @@
 - job:
     name: kayobe-overcloud-upgrade-rocky10
     parent: kayobe-overcloud-upgrade-base
-    nodeset: kayobe-rocky10
+    nodeset: kayobe-rocky10-16GB
 
 - job:
     name: kayobe-overcloud-upgrade-ubuntu-noble
     parent: kayobe-overcloud-upgrade-base
-    nodeset: kayobe-ubuntu-noble
+    nodeset: kayobe-ubuntu-noble-16GB
 
 - job:
     name: kayobe-overcloud-upgrade-slurp-rocky10
     parent: kayobe-overcloud-upgrade-base
-    nodeset: kayobe-rocky10
+    nodeset: kayobe-rocky10-16GB
 
 - job:
     name: kayobe-overcloud-upgrade-slurp-ubuntu-noble
     parent: kayobe-overcloud-upgrade-base
-    nodeset: kayobe-ubuntu-noble
+    nodeset: kayobe-ubuntu-noble-16GB
 
 - job:
     name: kayobe-seed-base
