@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fixes swap configuration for the seed hypervisor, seed and infra VM hosts.
+    `LP#2138800 <https://bugs.launchpad.net/kayobe/+bug/2138800>`__
