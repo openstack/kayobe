@@ -69,6 +69,7 @@
         - kayobe-infra-vm-rocky10-cloud-image
         - kayobe-infra-vm-ubuntu-noble-cloud-image
         - kayobe-overcloud-centos10s
+        - kayobe-overcloud-host-configure-centos10s
         - kayobe-overcloud-tls-centos10s
         - kayobe-seed-centos10s
         - kayobe-seed-images-centos10s
