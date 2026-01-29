@@ -48,4 +48,4 @@
   become: true
   command: "udevadm trigger --verbose --subsystem-match=net --action=add"
   changed_when: false
-  when: network_interfaces | networkd_links | length
+  when: network_interfaces | networkd_links | length > 0
