@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an issue with systemd-networkd-wait-online.service failing when some
+    interfaces were not configured with an IP address. This affected systemd
+    units depending on network-online.target.
