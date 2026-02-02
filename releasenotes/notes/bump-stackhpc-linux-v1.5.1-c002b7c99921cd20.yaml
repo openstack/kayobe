@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Bumps ``stackhpc.linux`` Ansible collection to v1.5.1. This adds
+    support for configuring MIG devices without creating vGPUs.
+fixes:
+  - |
+    Bumps ``stackhpc.linux`` Ansible collection to v1.5.1. This fixes
+    race conditions in setup of vGPU SR-IOV devices.
