@@ -18,15 +18,7 @@ import subprocess
 import unittest
 from unittest import mock
 
-# TODO(dougszu): Backwards compatibility for Ansible 11. This exception
-# handler can be removed in the G cycle.
-try:
-    from ansible.parsing.vault import EncryptedString
-except ImportError:
-    # Ansible 11
-    from ansible.parsing.yaml.objects import AnsibleVaultEncryptedUnicode
-    EncryptedString = AnsibleVaultEncryptedUnicode
-
+from ansible.parsing.vault import EncryptedString
 import yaml
 
 from kayobe import exception
