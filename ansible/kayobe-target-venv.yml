@@ -26,9 +26,9 @@
         filter: "{{ kayobe_ansible_setup_filter }}"
         gather_subset: "{{ kayobe_ansible_setup_gather_subset }}"
       when:
-        - ansible_facts is undefined or not ansible_facts
+        - ansible_facts is undefined or ansible_facts is falsy
         - kayobe_virtualenv is defined
-      register: gather_facts
+      register: gather_facts_result
       # Before any facts are gathered, ansible doesn't know about
       # python virtualenv.
       # Use default python3 to be safe for this task.
@@ -104,7 +104,7 @@
         gather_subset: "{{ kayobe_ansible_setup_gather_subset }}"
       when:
         - kayobe_virtualenv is defined
-        - gather_facts is not skipped
+        - gather_facts_result is not skipped
         - lookup('config', 'DEFAULT_GATHERING') != 'implicit'
 
     - block:
