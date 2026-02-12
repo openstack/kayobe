@@ -1,0 +1,30 @@
+# rocky-devel.repo
+#
+# devel and no-package-left-behind
+
+[devel]
+name=Rocky Linux $releasever - Devel WARNING! FOR BUILDROOT ONLY DO NOT LEAVE ENABLED
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=devel-$releasever$rltype
+baseurl=http://{{ dnf_rocky_mirror_host }}/{{ dnf_rocky_mirror_directory }}/$releasever/devel/$basearch/os/
+gpgcheck=1
+enabled=0
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+
+[devel-debuginfo]
+name=Rocky Linux $releasever - Devel Debug WARNING! FOR BUILDROOT ONLY DO NOT LEAVE ENABLED
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=devel-$releasever-debug$rltype
+baseurl=http://{{ dnf_rocky_mirror_host }}/{{ dnf_rocky_mirror_directory }}/$releasever/devel/$basearch/debug/tree/
+gpgcheck=1
+enabled=0
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+
+[devel-source]
+name=Rocky Linux $releasever - Devel Source WARNING! FOR BUILDROOT ONLY DO NOT LEAVE ENABLED
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=devel-$releasever-source$rltype
+baseurl=http://{{ dnf_rocky_mirror_host }}/{{ dnf_rocky_mirror_directory }}/$releasever/devel/source/tree/
+gpgcheck=1
+enabled=0
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10

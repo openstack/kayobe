@@ -9,9 +9,12 @@
     group: root
     mode: 0664
   become: True
+  when: (role_path ~ '/templates/' ~ item ~ '.j2') is exists
   loop:
     - "{{ repo_file_prefix }}.repo"
     - "{{ repo_file_prefix }}-extras.repo"
+    - "{{ repo_file_prefix }}-addons.repo"
+    - "{{ repo_file_prefix }}-devel.repo"
 
 - name: Update cache
   dnf:

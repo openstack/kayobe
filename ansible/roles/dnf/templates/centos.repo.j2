@@ -1,25 +1,83 @@
-# centos.repo
-#
-# The mirrorlist system uses the connecting IP address of the client and the
-# update status of each mirror to pick current mirrors that are geographically
-# close to the client.  You should use this for CentOS updates unless you are
-# manually picking other mirrors.
-#
-# If the mirrorlist does not work for you, you can try the commented out
-# baseurl line instead.
-
 [baseos]
 name=CentOS Stream $releasever - BaseOS
 baseurl=http://{{ dnf_centos_mirror_host }}/{{ dnf_centos_mirror_directory }}/$stream/BaseOS/$basearch/os/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
 gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+countme=1
 enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-fastestmirror=0
+
+[baseos-debuginfo]
+name=CentOS Stream $releasever - BaseOS - Debug
+baseurl=http://{{ dnf_centos_mirror_host }}/{{ dnf_centos_mirror_directory }}/$stream/BaseOS/debug/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+enabled=0
+
+[baseos-source]
+name=CentOS Stream $releasever - BaseOS - Source
+baseurl=http://{{ dnf_centos_mirror_host }}/{{ dnf_centos_mirror_directory }}/$stream/BaseOS/source/tree/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+enabled=0
 
 [appstream]
 name=CentOS Stream $releasever - AppStream
 baseurl=http://{{ dnf_centos_mirror_host }}/{{ dnf_centos_mirror_directory }}/$stream/AppStream/$basearch/os/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
 gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+countme=1
 enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
-fastestmirror=0
+
+[appstream-debuginfo]
+name=CentOS Stream $releasever - AppStream - Debug
+baseurl=http://{{ dnf_centos_mirror_host }}/{{ dnf_centos_mirror_directory }}/$stream/AppStream/debug/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+enabled=0
+
+[appstream-source]
+name=CentOS Stream $releasever - AppStream - Source
+baseurl=http://{{ dnf_centos_mirror_host }}/{{ dnf_centos_mirror_directory }}/$stream/AppStream/source/tree/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+enabled=0
+
+[crb]
+name=CentOS Stream $releasever - CRB
+baseurl=http://{{ dnf_centos_mirror_host }}/{{ dnf_centos_mirror_directory }}/$stream/CRB/$basearch/os/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+countme=1
+enabled=0
+
+[crb-debuginfo]
+name=CentOS Stream $releasever - CRB - Debug
+baseurl=http://{{ dnf_centos_mirror_host }}/{{ dnf_centos_mirror_directory }}/$stream/CRB/debug/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+enabled=0
+
+[crb-source]
+name=CentOS Stream $releasever - CRB - Source
+baseurl=http://{{ dnf_centos_mirror_host }}/{{ dnf_centos_mirror_directory }}/$stream/CRB/source/tree/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+enabled=0
