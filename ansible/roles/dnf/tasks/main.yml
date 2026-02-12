@@ -13,3 +13,12 @@
   when: dnf_use_local_mirror | bool
 
 - import_tasks: custom-repo.yml
+
+- name: Configure repository overrides
+  become: true
+  community.general.dnf_config_manager:
+    name: "{{ item }}"
+    state: "{{ dnf_repo_state_overrides[item] }}"
+  # NOTE(wszumski): Ignore repos managed with dnf_custom_repos as enabled state
+  # is set in definition.
+  loop: "{{ dnf_repo_state_overrides.keys() | difference(dnf_custom_repos.keys()) }}"

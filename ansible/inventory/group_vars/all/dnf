@@ -42,6 +42,13 @@ dnf_custom_repos: {}
 # systems only. Default value is 'false'.
 dnf_install_epel: false
 
+# Override the state of repositories. Expected to be used with repositories not
+# managed by dnf_custom_repos. For example:
+# dnf_repo_state_overrides:
+#   crb: enabled
+# Default value is {}.
+dnf_repo_state_overrides: {}
+
 ###############################################################################
 # DNF Automatic configuration.
 
