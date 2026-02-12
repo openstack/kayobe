@@ -4,7 +4,7 @@ collections:
     type: git
     version: master
   - name: community.docker
-    version: 3.11.0
+    version: 5.0.5
   - name: community.network
     version: 5.1.0
   - name: dellemc.os6
@@ -22,37 +22,36 @@ collections:
   - name: stackhpc.network
     version: 1.0.0
   - name: stackhpc.openstack
-    version: 0.6.0
+    version: 0.9.0
 
 roles:
   - src: ahuffman.resolv
-    version: 1.3.1
+    version: 1.3.2
   - src: giovtorres.tuned
-    version: 1.2.0
+    version: 2.0.2
   - src: git+https://github.com/stackhpc/ansible-role-configdrive.git
     name: jriguera.configdrive
     version: fb199247333e72e38a9d414cf7b6144daa645477
   - src: MichaelRigart.interfaces
-    version: v1.15.6
+    version: v1.16.1
   - src: mrlesmithjr.chrony
     version: v0.1.6
   - src: mrlesmithjr.manage_lvm
-    version: v0.2.8
+    version: v0.2.13
   - src: mrlesmithjr.mdadm
-    version: v0.1.1
+    version: v0.1.9
   - src: singleplatform-eng.users
-    version: v1.2.5
+    version: v1.2.6
   - src: stackhpc.drac
     version: 1.1.6
   - src: stackhpc.drac-facts
-    version: 1.0.0
-  - src: git+https://github.com/stackhpc/ansible-role-libvirt-host.git
-    name: stackhpc.libvirt-host
-    version: 9a947f74abdcd2e0d4e3371162f8299aef259271
+    version: v1.0.1
+  - src: stackhpc.libvirt-host
+    version: v1.15.0
   - src: stackhpc.libvirt-vm
     version: v1.16.3
   - src: stackhpc.luks
-    version: 0.4.2
+    version: 0.4.4
   - src: stackhpc.os-ironic-state
     version: v1.3.1
   - src: stackhpc.timezone
