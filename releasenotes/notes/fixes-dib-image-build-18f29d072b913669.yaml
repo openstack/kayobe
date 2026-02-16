@@ -1,0 +1,10 @@
+---
+fixes:
+  - |
+    Fixes an issue building diskimage-builder images when EPEL is disabled.
+    See `LP#2141684 <https://bugs.launchpad.net/kayobe/+bug/2141684>`_ for more
+    details.
+  - |
+    Fixes an issue building diskimage-builder images when using the podman
+    container engine, See `LP#2142501
+    <https://bugs.launchpad.net/kayobe/+bug/2142501>`_ for more details.
