@@ -54,7 +54,7 @@ password for a given service.
 This can be done with ``ansible-vault view`` however if an absolute path is not
 provided it will cause the command to fail.
 Therefore, to make reading the contents of this file easier for administrators
-it is possible to use ``kayobe overcloud passwords view`` which will
+it is possible to use ``kayobe overcloud service passwords view`` which will
 temporarily decrypt and display the contents of ``kolla/passwords.yml`` for the
 active kayobe environment.
 
