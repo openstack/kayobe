@@ -122,3 +122,7 @@
 
 # Whether a container engine should be configured. Default is false.
 #ansible_control_container_engine_enabled:
+
+###############################################################################
+# Dummy variable to allow Ansible to accept this file.
+workaround_ansible_issue_8743: yes
