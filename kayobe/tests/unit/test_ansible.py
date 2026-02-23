@@ -184,6 +184,92 @@ class TestCase(unittest.TestCase):
         parsed_args = parser.parse_args(args)
         ansible.run_playbooks(parsed_args, ["playbook1.yml", "playbook2.yml"])
 
+    def test_build_long_opts(self):
+        # Ensure build_long_opts handles different types correctly.
+        opts = ansible.build_long_opts({
+            "foo": "bar",
+            "baz": True,
+            "quux": False,
+            "items": ["a", "b"],
+            "none": None,
+        })
+        self.assertIn("--foo", opts)
+        self.assertIn("bar", opts)
+        self.assertIn("--baz", opts)
+        self.assertNotIn("--quux", opts)
+        # ensure list items appear correctly as repeated flags
+        # exact expected output including list entries and bool flag.
+        expected = ["--foo", "bar", "--baz", "--items", "a",
+                    "--items", "b"]
+        self.assertEqual(expected, opts)
+        self.assertNotIn("--none", opts)
+
+    @mock.patch.object(os, "execvpe")
+    @mock.patch.object(ansible, "_get_inventories_paths")
+    @mock.patch.object(ansible, "_get_vars_files")
+    @mock.patch.object(vault, "build_args")
+    @mock.patch.object(ansible, "_get_environment")
+    def test_run_ansible_inventory_basic(self, mock_env, mock_vault_args,
+                                         mock_vars_files, mock_inventories,
+                                         mock_exec):
+        parser = argparse.ArgumentParser()
+        ansible.add_inventory_args(parser)
+        args = [
+            "--config-path", "/etc/kayobe",
+            "--environment", "foo",
+            "--inventory", "/inv1",
+            "--inventory", "/inv2",
+            "--list",
+        ]
+        parsed_args = parser.parse_args(args)
+        mock_inventories.return_value = ["/inv1", "/inv2"]
+        mock_vars_files.return_value = ["/vars1.yml"]
+        mock_vault_args.return_value = ["--vault-password-file", "/pw"]
+        mock_env.return_value = {"FOO": "bar"}
+        ansible.run_ansible_inventory(parsed_args)
+        expected_cmd = [
+            "ansible-inventory",
+            "--inventory", "/inv1",
+            "--inventory", "/inv2",
+            "-e", "@/vars1.yml",
+            "--vault-password-file", "/pw",
+            "--list",
+        ]
+        mock_exec.assert_called_once_with(
+            expected_cmd[0], expected_cmd, {"FOO": "bar"}
+        )
+
+    @mock.patch.object(os, "execvpe")
+    @mock.patch.object(ansible, "_get_inventories_paths")
+    @mock.patch.object(ansible, "_get_vars_files")
+    @mock.patch.object(vault, "build_args")
+    @mock.patch.object(ansible, "_get_environment")
+    def test_run_ansible_inventory_with_group(self, mock_env, mock_vault_args,
+                                              mock_vars_files,
+                                              mock_inventories, mock_exec):
+        parser = argparse.ArgumentParser()
+        ansible.add_inventory_args(parser)
+        args = [
+            "--inventory", "/inv",
+            "--graph",
+            "web",
+        ]
+        parsed_args = parser.parse_args(args)
+        mock_inventories.return_value = ["/inv"]
+        mock_vars_files.return_value = []
+        mock_vault_args.return_value = []
+        mock_env.return_value = {}
+        ansible.run_ansible_inventory(parsed_args)
+        expected_cmd = [
+            "ansible-inventory",
+            "--inventory", "/inv",
+            "--graph",
+            "web",
+        ]
+        mock_exec.assert_called_once_with(
+            expected_cmd[0], expected_cmd, {}
+        )
+
     @mock.patch.object(utils, "run_command")
     @mock.patch.object(ansible, "_get_vars_files")
     @mock.patch.object(ansible, "_validate_args")

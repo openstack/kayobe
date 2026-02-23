@@ -58,6 +58,20 @@ We can use the ``--var-name`` argument to inspect a particular variable or the
 ``--host`` or ``--hosts`` arguments to view a variable or variables for a
 specific host or set of hosts.
 
+Viewing the Kayobe inventory
+============================
+
+In some cases you may want to examine the full inventory that Kayobe will
+pass to Ansible.  The ``kayobe inventory`` command wraps
+``ansible-inventory`` and automatically assembles the list of inventory
+paths (shared config plus any environment-specific directories).  It can
+be used exactly like ``ansible-inventory``; for example::
+
+    (kayobe) $ kayobe inventory --graph
+
+Any other flags supported by ``ansible-inventory`` are also accepted.
+
+
 Checking Network Connectivity
 =============================
 
