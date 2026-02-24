@@ -4,6 +4,9 @@
 ###############################################################################
 # Local path configuration (Ansible control host).
 
+# Path to Kayobe data files
+kayobe_path: "{{ lookup('cached', 'kayobe_path') }}"
+
 # Path to Kayobe configuration directory on Ansible control host.
 kayobe_config_path: "{{ lookup('env', 'KAYOBE_CONFIG_PATH') | default('/etc/kayobe', true) }}"
 
