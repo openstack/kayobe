@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an issue where internal kayobe lookup plugins could not be used in
+    external playbooks.
+    `LP#2142876 <https://bugs.launchpad.net/kayobe/+bug/2142876>`__
