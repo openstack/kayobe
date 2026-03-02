@@ -79,11 +79,11 @@
           fail:
             msg: >-
               In order to use the serial console you must set the console_interface to ipmitool-socat.
-          when: node["Console Interface"] != "ipmitool-socat"
+          when: node["console_interface"] != "ipmitool-socat"
 
         - name: Set IPMI serial console terminal port
           vars:
-            name: "{{ node['Name'] }}"
+            name: "{{ node['name'] }}"
             port: "{{ hostvars[controller_host].console_allocation_result.ports[name] }}"
             # NOTE: Without this, the controller's ansible_host variable will not
             # be respected when using delegate_to.
@@ -93,8 +93,8 @@
           delegate_to: "{{ controller_host }}"
           environment: "{{ openstack_auth_env }}"
           when: >-
-            node['Driver Info'].ipmi_terminal_port is not defined or
-            node['Driver Info'].ipmi_terminal_port | int != port | int
+            node['driver_info'].ipmi_terminal_port is not defined or
+            node['driver_info'].ipmi_terminal_port | int != port | int
 
         - name: Enable the IPMI socat serial console
           vars:
@@ -102,14 +102,14 @@
             # be respected when using delegate_to.
             ansible_host: "{{ hostvars[controller_host].ansible_host | default(controller_host) }}"
           command: >
-            {{ venv }}/bin/openstack baremetal node console enable {{ node['Name'] }}
+            {{ venv }}/bin/openstack baremetal node console enable {{ node['name'] }}
           delegate_to: "{{ controller_host }}"
           environment: "{{ openstack_auth_env }}"
-          when: not node['Console Enabled']
+          when: not node['console_enabled']
       vars:
         matching_nodes: >-
-          {{ (nodes.stdout | from_json) | selectattr('Name', 'defined') |
-          selectattr('Name', 'equalto', inventory_hostname) | list }}
+          {{ (nodes.stdout | from_json) | selectattr('name', 'defined') |
+          selectattr('name', 'equalto', inventory_hostname) | list }}
         node: "{{ matching_nodes | first }}"
       when:
         - cmd == "enable"
@@ -122,14 +122,14 @@
             # be respected when using delegate_to.
             ansible_host: "{{ hostvars[controller_host].ansible_host | default(controller_host) }}"
           command: >
-            {{ venv }}/bin/openstack baremetal node console disable {{ node['Name'] }}
+            {{ venv }}/bin/openstack baremetal node console disable {{ node['name'] }}
           delegate_to: "{{ controller_host }}"
           environment: "{{ openstack_auth_env }}"
-          when: node['Console Enabled']
+          when: node['console_enabled']
       vars:
         matching_nodes: >-
-          {{ (nodes.stdout | from_json) | selectattr('Name', 'defined') |
-          selectattr('Name', 'equalto', inventory_hostname) | list }}
+          {{ (nodes.stdout | from_json) | selectattr('name', 'defined') |
+          selectattr('name', 'equalto', inventory_hostname) | list }}
         node: "{{ matching_nodes | first }}"
       when:
         - cmd == "disable"

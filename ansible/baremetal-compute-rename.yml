@@ -54,7 +54,7 @@
 
     - name: Rename baremetal compute nodes
       command: >
-        {{ venv }}/bin/openstack baremetal node set --name "{{ inventory_hostname }}" "{{ node['UUID'] }}"
+        {{ venv }}/bin/openstack baremetal node set --name "{{ inventory_hostname }}" "{{ node['uuid'] }}"
       delegate_to: "{{ controller_host }}"
       environment: "{{ openstack_auth_env }}"
       vars:
@@ -62,8 +62,8 @@
         # be respected when using delegate_to.
         ansible_host: "{{ hostvars[controller_host].ansible_host | default(controller_host) }}"
         ipmi_address: "{{ hostvars[inventory_hostname].ipmi_address }}"
-        matching_nodes: "{{ (nodes.stdout | from_json) | selectattr('Driver Info.ipmi_address', 'defined') | selectattr('Driver Info.ipmi_address', 'equalto', ipmi_address) | list }}"
+        matching_nodes: "{{ (nodes.stdout | from_json) | selectattr('driver_info.ipmi_address', 'defined') | selectattr('driver_info.ipmi_address', 'equalto', ipmi_address) | list }}"
         node: "{{ matching_nodes | first }}"
       when:
         - matching_nodes | length > 0
-        - node['Name'] != inventory_hostname
+        - node['name'] != inventory_hostname
