@@ -98,6 +98,9 @@
 # Redfish CA setting. Set to 'True' by default
 #inspector_rule_var_redfish_verify_ca:
 
+# Log Ironic inspector rules marked sensitive. Set to 'True' by default
+#ironic_inspector_sensitive_rule_no_log:
+
 # Ironic inspector rule to set IPMI credentials.
 #inspector_rule_ipmi_credentials:
 

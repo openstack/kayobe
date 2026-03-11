@@ -16,4 +16,9 @@
     state: present
   loop_control:
     label: "{{ ironic_inspector_rules[item].description }}"
+  no_log: >-
+    {{
+      (ironic_inspector_rules[item].sensitive | default(False))
+      and ironic_inspector_sensitive_rule_no_log
+    }}
   with_items: "{{ range(0, ironic_inspector_rules | length) | list }}"

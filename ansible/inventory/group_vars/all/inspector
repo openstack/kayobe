@@ -114,6 +114,9 @@ inspector_rule_var_redfish_password:
 # Redfish CA setting.
 inspector_rule_var_redfish_verify_ca: True
 
+# Log Ironic inspector rules marked sensitive.
+ironic_inspector_sensitive_rule_no_log: True
+
 # Ironic inspector rule to set IPMI credentials.
 inspector_rule_ipmi_credentials:
   description: "Set IPMI driver_info if no credentials"
