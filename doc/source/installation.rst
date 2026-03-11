@@ -15,9 +15,9 @@ Prerequisites
 Currently Kayobe supports the following Operating Systems on the Ansible
 control host:
 
-- CentOS Stream 9 (since Zed 13.0.0 release)
+- CentOS Stream 9 (since Zed 13.0.0 release), using Python 3.12
 - CentOS Stream 10 (since Epoxy 18.3.0 release)
-- Rocky Linux 9 (since Zed 13.0.0 release)
+- Rocky Linux 9 (since Zed 13.0.0 release), using Python 3.12
 - Rocky Linux 10 (since Epoxy 18.3.0 release)
 - Ubuntu Noble 24.04 (since Dalmatian 17.0.0 release)
 
@@ -30,9 +30,13 @@ it is recommended to install Kayobe in a virtualenv. Ensure that the
 necessary to install the GCC compiler chain in order to build the extensions of
 some of kayobe's python dependencies.
 
-On CentOS/Rocky::
+On CentOS Stream/Rocky Linux 10::
 
     $ dnf install -y python3-devel gcc libffi-devel
+
+On CentOS Stream/Rocky Linux 9::
+
+    $ dnf install -y python3.12-devel gcc libffi-devel
 
 On Ubuntu::
 
@@ -99,6 +103,10 @@ Create a virtualenv for Kayobe::
 
     $ python3 -m venv <base_path>/venvs/kayobe
 
+Or, using Python 3.12 on CentOS Stream/Rocky Linux 9::
+
+    $ python3.12 -m venv <base_path>/venvs/kayobe
+
 Activate the virtualenv and update pip::
 
     $ source <base_path>/venvs/kayobe/bin/activate
@@ -139,6 +147,10 @@ Next, obtain the Kayobe source code. For example:
 Create a virtualenv for Kayobe::
 
     $ python3 -m venv <base_path>/venvs/kayobe
+
+Or, using Python 3.12 on CentOS Stream/Rocky Linux 9::
+
+    $ python3.12 -m venv <base_path>/venvs/kayobe
 
 Activate the virtualenv and update pip::
 

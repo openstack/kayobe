@@ -9,13 +9,18 @@ Supported Operating Systems
 
 Kayobe supports the following host Operating Systems (OS):
 
-* Rocky Linux 9 (since Zed 13.0.0 release)
+* Rocky Linux 9 (since Zed 13.0.0 release), using Python 3.12
 * Rocky Linux 10 (since Epoxy 18.3.0 release)
 * Ubuntu Noble 24.04 (since Dalmatian 17.0.0 release)
 
 In addition to that CentOS Stream 9/10 host OS is functional, but not
 officially supported. Kolla does not publish CentOS Stream 9/10 images to
 Docker Hub/Quay.io, therefore users need to build them by themselves.
+
+.. note::
+
+   This release of Kayobe requires Python 3.10 or above. On CentOS Stream 9 or
+   Rocky Linux 9, use Python 3.12 instead of the default Python 3.9.
 
 .. note::
 
