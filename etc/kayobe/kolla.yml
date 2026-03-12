@@ -442,6 +442,7 @@
 #kolla_enable_trove:
 #kolla_enable_trove_singletenant:
 #kolla_enable_venus:
+#kolla_enable_valkey:
 #kolla_enable_watcher:
 #kolla_enable_zun:
 
