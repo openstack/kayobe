@@ -47,7 +47,7 @@
     zone: "{{ item | net_zone }}"
   become: true
   loop: "{{ network_interfaces }}"
-  when: item | net_zone
+  when: item | net_zone is truthy
   notify: Restart firewalld
 
 - name: Ensure firewalld rules are applied
