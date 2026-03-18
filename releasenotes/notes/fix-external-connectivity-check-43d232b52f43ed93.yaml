@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    Skip external connectivity check behind a proxy.

@@ -106,6 +106,9 @@
 ###############################################################################
 # Network connectivity check configuration.
 
+# Whether to skip the external network connectivity check. Default is false.
+#nc_skip_external_net:
+
 # External IP address to check. Default is 8.8.8.8.
 #nc_external_ip:
 
