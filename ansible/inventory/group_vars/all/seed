@@ -170,6 +170,26 @@ seed_firewalld_default_zone:
 seed_firewalld_rules: []
 
 ###############################################################################
+# Seed node fail2ban configuration.
+
+# Whether to install and enable fail2ban.
+seed_fail2ban_enabled: false
+
+# List of fail2ban jails for the seed node.
+seed_fail2ban_jail_configuration: >-
+  {{ seed_fail2ban_jail_configuration_default +
+     seed_fail2ban_jail_configuration_extra }}
+
+# List of default fail2ban jails for the seed node.
+seed_fail2ban_jail_configuration_default:
+  - option: enabled
+    value: "true"
+    section: sshd
+
+# List of extra fail2ban jails for the seed node.
+seed_fail2ban_jail_configuration_extra: []
+
+###############################################################################
 # Seed node swap configuration.
 
 # List of swap devices. Each item is a dict containing a 'device' item.

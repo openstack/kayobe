@@ -212,3 +212,9 @@ controller_swap:
 
 # Generate a password for libvirt SASL authentication.
 compute_libvirt_sasl_password: "{% raw %}{{ lookup('password', '/tmp/libvirt-sasl-password') }}{% endraw %}"
+
+# Test fail2ban configuration
+{% if fail2ban_enabled | bool %}
+dnf_use_local_mirror: true
+controller_fail2ban_enabled: true
+{% endif %}

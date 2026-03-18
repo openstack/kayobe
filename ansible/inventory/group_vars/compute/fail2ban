@@ -1,0 +1,6 @@
+---
+# Whether to install and enable fail2ban
+fail2ban_enabled: "{{ compute_fail2ban_enabled }}"
+
+# List of fail2ban jails for the compute node.
+fail2ban_jail_configuration: "{{ compute_fail2ban_jail_configuration }}"

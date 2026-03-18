@@ -186,6 +186,21 @@
 #controller_firewalld_rules:
 
 ###############################################################################
+# Controller node fail2ban configuration.
+
+# Whether to install and enable fail2ban.
+#controller_fail2ban_enabled:
+
+# List of fail2ban jails for the controller node.
+#controller_fail2ban_jail_configuration:
+
+# List of default fail2ban jails for the controller node.
+#controller_fail2ban_jail_configuration_default:
+
+# List of extra fail2ban jails for the controller node.
+#controller_fail2ban_jail_configuration_extra:
+
+###############################################################################
 # Controller node swap configuration.
 
 # List of swap devices. Each item is a dict containing a 'device' item.

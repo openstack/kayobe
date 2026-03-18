@@ -344,6 +344,16 @@ def test_firewalld_rules(host):
             assert expected_line in info
             assert expected_line in perm_info
 
+def test_fail2ban_running(host):
+    assert host.package("fail2ban").is_installed
+    assert host.service("fail2ban.service").is_enabled
+    assert host.service("fail2ban.service").is_running
+
+def test_fail2ban_default_jail_config(host):
+   # verify that sshd jail is enabled by default
+    status = host.check_output("sudo fail2ban-client status sshd")
+    status = status.splitlines()
+    assert "Status for the jail: sshd" in status
 
 @pytest.mark.skipif(not _is_dnf(),
                     reason="SELinux only supported on CentOS/Rocky")

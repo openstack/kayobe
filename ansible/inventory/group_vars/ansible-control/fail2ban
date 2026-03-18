@@ -1,0 +1,6 @@
+---
+# Whether to install and enable fail2ban
+fail2ban_enabled: "{{ ansible_control_fail2ban_enabled }}"
+
+# List of fail2ban jails for the Ansible control host.
+fail2ban_jail_configuration: "{{ ansible_control_fail2ban_jail_configuration }}"

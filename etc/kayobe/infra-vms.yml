@@ -189,6 +189,21 @@
 #infra_vm_firewalld_rules:
 
 ###############################################################################
+# Infrastructure VM node fail2ban configuration.
+
+# Whether to install and enable fail2ban.
+#infra_vm_fail2ban_enabled:
+
+# List of fail2ban jails for the infrastructure VM node.
+#infra_vm_fail2ban_jail_configuration:
+
+# List of default fail2ban jails for the infrastructure VM node.
+#infra_vm_fail2ban_jail_configuration_default:
+
+# List of extra fail2ban jails for the infrastructure VM node.
+#infra_vm_fail2ban_jail_configuration_extra:
+
+###############################################################################
 # Infrastructure VM node swap configuration.
 
 # List of swap devices. Each item is a dict containing a 'device' item.

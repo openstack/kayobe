@@ -13,6 +13,7 @@
 - import_playbook: "selinux.yml"
 - import_playbook: "network.yml"
 - import_playbook: "firewall.yml"
+- import_playbook: "fail2ban.yml"
 - import_playbook: "tuned.yml"
 - import_playbook: "sysctl.yml"
 - import_playbook: "disable-glean.yml"

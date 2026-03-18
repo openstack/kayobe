@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds support for installing and configuring fail2ban. See the docs
+    http://docs.openstack.org/kayobe/latest/configuration/reference/hosts.html#fail2ban
+    for more information.
