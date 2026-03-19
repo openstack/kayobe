@@ -15,7 +15,7 @@ necessary to update these prior to running a package update. To do this, update
 the configuration in ``${KAYOBE_CONFIG_PATH}/dnf.yml`` and run the following
 command::
 
-    (kayobe) $ kayobe overcloud host configure --tags dnf --kolla-tags none
+    (kayobe) $ kayobe overcloud host configure --tags dnf
 
 Package Update
 --------------
@@ -80,10 +80,9 @@ improved by specifying Ansible tags to limit the tasks run in kayobe and/or
 kolla-ansible's playbooks.  This may require knowledge of the inner workings of
 these tools but in general, kolla-ansible tags the play used to configure each
 service by the name of that service.  For example: ``nova``, ``neutron`` or
-``ironic``.  Use ``-t`` or ``--tags`` to specify kayobe tags and ``-kt`` or
-``--kolla-tags`` to specify kolla-ansible tags.  For example::
+``ironic``.  Use ``-t`` or ``--tags`` to specify tags.  For example::
 
-    (kayobe) $ kayobe overcloud service reconfigure --tags config --kolla-tags nova,ironic
+    (kayobe) $ kayobe overcloud service reconfigure --tags nova,ironic
 
 Deploying Updated Container Images
 ==================================
@@ -105,10 +104,9 @@ improved by specifying Ansible tags to limit the tasks run in kayobe and/or
 kolla-ansible's playbooks.  This may require knowledge of the inner workings of
 these tools but in general, kolla-ansible tags the play used to configure each
 service by the name of that service.  For example: ``nova``, ``neutron`` or
-``ironic``.  Use ``-t`` or ``--tags`` to specify kayobe tags and ``-kt`` or
-``--kolla-tags`` to specify kolla-ansible tags.  For example::
+``ironic``.  Use ``-t`` or ``--tags`` to specify tags.  For example::
 
-    (kayobe) $ kayobe overcloud service deploy containers --kolla-tags nova,ironic
+    (kayobe) $ kayobe overcloud service deploy containers --tags nova,ironic
 
 Upgrading Containerised Services
 ================================
@@ -126,9 +124,9 @@ To upgrade the containerised control plane services::
     (kayobe) $ kayobe overcloud service upgrade
 
 As for the reconfiguration command, it is possible to specify tags for Kayobe
-and/or kolla-ansible::
+and kolla-ansible::
 
-    (kayobe) $ kayobe overcloud service upgrade --tags config --kolla-tags keystone
+    (kayobe) $ kayobe overcloud service upgrade --tags keystone
 
 Running Prechecks
 =================
@@ -137,10 +135,10 @@ Sometimes it may be useful to run prechecks without deploying services::
 
     (kayobe) $ kayobe overcloud service prechecks
 
-As for other similar commands, it is possible to specify tags for Kayobe and/or
+As for other similar commands, it is possible to specify tags for Kayobe and
 kolla-ansible::
 
-    (kayobe) $ kayobe overcloud service upgrade --tags config --kolla-tags keystone
+    (kayobe) $ kayobe overcloud service upgrade --tags keystone
 
 Stopping the Overcloud Services
 ===============================
@@ -156,12 +154,11 @@ To stop the overcloud services::
 It should be noted that this state is persistent - containers will remain
 stopped after a reboot of the host on which they are running.
 
-It is possible to limit the operation to particular hosts via
-``--kolla-limit``, or to particular services via ``--kolla-tags``.  It is also
-possible to avoid stopping the common containers via ``--kolla-skip-tags
-common``. For example:
+It is possible to limit the operation to particular hosts via ``--limit``, or
+to particular services via ``--tags``.  It is also possible to avoid stopping
+the common containers via ``--skip-tags common``. For example:
 
-    (kayobe) $ kayobe overcloud service stop --kolla-tags glance,nova --kolla-skip-tags common
+    (kayobe) $ kayobe overcloud service stop --tags glance,nova --skip-tags common
 
 Destroying the Overcloud Services
 =================================

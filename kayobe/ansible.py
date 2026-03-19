@@ -213,6 +213,8 @@ def build_args(parsed_args, playbooks,
         cmd += ["--skip-tags", parsed_args.skip_tags]
     if parsed_args.tags or tags:
         all_tags = [t for t in [parsed_args.tags, tags] if t]
+        # Always run kayobe-generate-config (unless the tag is skipped).
+        all_tags += ["kayobe-generate-config"]
         cmd += ["--tags", ",".join(all_tags)]
     cmd += playbooks
     return cmd

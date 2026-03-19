@@ -217,9 +217,10 @@ After this command has completed the seed services will be active.
 
 .. note::
 
-    Bifrost deployment behaviour is split between Kayobe and Kolla-Ansible. As
-    such, you should use both ``--tags kolla-bifrost`` and ``--kolla-tags
-    bifrost`` if you want to limit to Bifrost deployment.
+    You can use ``--tags bifrost`` if you want to limit to just the Bifrost
+    deployment. Note however that using tags is not tested in either Kayobe or
+    Kolla-Ansible CI, and as such should only be used if you know what you're
+    doing. Proceed with caution.
 
 .. seealso::
 

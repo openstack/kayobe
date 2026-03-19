@@ -226,7 +226,7 @@ To apply the configuration to Nova:
 
 .. code:: shell
 
-   (kayobe) $ kayobe overcloud service deploy -kt nova
+   (kayobe) $ kayobe overcloud service deploy -t nova
 
 OpenStack flavors
 =================
@@ -307,4 +307,4 @@ Reconfigure nova to match the change:
 
 .. code:: shell
 
-   (kayobe) $ kayobe overcloud service reconfigure -kt nova --kolla-limit computegpu000 --skip-prechecks
+   (kayobe) $ kayobe overcloud service reconfigure -t nova --limit computegpu000 --skip-prechecks
