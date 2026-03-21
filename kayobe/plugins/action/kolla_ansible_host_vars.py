@@ -13,16 +13,7 @@
 # under the License.
 
 from ansible.plugins.action import ActionBase
-
-# TODO(dougszu): From Ansible 12 onwards we must explicitly trust templates.
-# Since this feature is not supported in previous releases, we define a
-# noop method here for backwards compatibility. This can be removed in the
-# G cycle.
-try:
-    from ansible.template import trust_as_template
-except ImportError:
-    def trust_as_template(template):
-        return template
+from ansible.template import trust_as_template
 
 
 class ConfigError(Exception):
