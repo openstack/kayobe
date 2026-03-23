@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    Added a feature that allows operators to install custom CA certificates
+    into the system trust store. Operators can drop CA files into
+    ``$KAYOBE_CONFIG_PATH/trust-store/`` or into ``trust-store/``
+    subdirectories of environment search paths. See :kayobe-doc:`Kayobe
+    documentation on custom CA certificates
+    <configuration/reference/hosts.html#custom-ca-certificates>` for more
+    details.

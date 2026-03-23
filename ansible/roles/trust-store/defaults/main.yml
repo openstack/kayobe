@@ -1,0 +1,8 @@
+---
+trust_store_ca_certificates: []
+trust_store_ca_path_debian: /usr/local/share/ca-certificates
+trust_store_ca_path_redhat: /etc/pki/ca-trust/source/anchors
+trust_store_ca_path: "{{ lookup('vars', 'trust_store_ca_path_' ~ ansible_facts.os_family | lower) }}"
+trust_store_update_cmd_debian: update-ca-certificates
+trust_store_update_cmd_redhat: update-ca-trust
+trust_store_update_cmd: "{{ lookup('vars', 'trust_store_update_cmd_' ~ ansible_facts.os_family | lower) }}"

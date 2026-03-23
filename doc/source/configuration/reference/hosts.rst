@@ -1430,6 +1430,40 @@ applying the change to the seed hypervisor. For example, to install the
    libvirt_host_extra_daemon_packages:
      - trousers
 
+Custom CA certificates
+======================
+*tags:*
+  | ``trust-store``
+
+Kayobe can install custom CA certificates on configured hosts using the
+``trust-store`` role.
+
+By default, all files in ``$KAYOBE_CONFIG_PATH/trust-store/`` and in
+``trust-store/`` subdirectories of ``kayobe_env_search_paths`` are installed
+on hosts targeted by the host configure playbooks. In the common case, users
+can simply drop CA certificate files into ``etc/kayobe/trust-store/`` or an
+environment-specific ``trust-store/`` directory and allow Kayobe to distribute
+them.
+
+It is also possible to modify the certificate list for specific host classes.
+To add host class-specific certificates, set
+``trust_store_ca_certificates_extra`` in group variables under
+``inventory/group_vars/<group>/trust-store``.
+
+Example: adding a custom CA certificate for compute hosts
+----------------------------------------------------------
+
+To install an additional CA certificate on compute hosts:
+
+.. code-block:: yaml
+   :caption: ``inventory/group_vars/compute/trust-store``
+
+   trust_store_ca_certificates_extra:
+     - "{{ kayobe_env_config_path }}/kolla/certificates/ca/vault.crt"
+
+In this example, all other files discovered via the default trust-store search
+paths continue to be installed on compute hosts.
+
 Swap
 ====
 

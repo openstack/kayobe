@@ -1,0 +1,16 @@
+---
+- name: Copy custom CA to system trust store ({{ trust_store_ca_path }})
+  copy:
+    src: "{{ item }}"
+    dest: "{{ trust_store_ca_path }}/{{ item | basename }}"
+    owner: root
+    group: root
+    mode: "0660"
+  loop: "{{ trust_store_ca_certificates }}"
+  register: trust_store_copy_result
+  become: true
+
+- name: Update system trust store
+  command: "{{ trust_store_update_cmd }}"
+  become: true
+  when: trust_store_copy_result is changed

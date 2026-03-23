@@ -1,0 +1,21 @@
+---
+- name: Add custom CAs to system trust store
+  hosts: seed-hypervisor:seed:overcloud:infra-vms:ansible-control
+  gather_facts: true
+  max_fail_percentage: >-
+    {{ trust_store_max_fail_percentage |
+       default(host_configure_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
+  vars:
+    ansible_user: "{{ bootstrap_user }}"
+    # We can't assume that a virtualenv exists at this point, so use the
+    # system python interpreter.
+    ansible_python_interpreter: /usr/bin/python3
+  tags:
+    - config
+    - trust-store
+  tasks:
+    - name: Include trust-store role
+      include_role:
+        name: trust-store

@@ -1,0 +1,26 @@
+---
+###############################################################################
+# Trust store configuration.
+
+# List of CA certificate file paths discovered in
+# $KAYOBE_CONFIG_PATH/trust-store/ and in trust-store/ subdirectories of
+# kayobe_env_search_paths.
+trust_store_ca_certificates_default: >-
+  {{ query(
+    'ansible.builtin.fileglob',
+    *((([kayobe_config_path] +
+     (kayobe_env_search_paths | default([]) | list))
+    | unique
+    | map('regex_replace', '$', '/trust-store/*')
+    | list)))
+  | unique | list }}
+
+# List of additional CA certificate file paths to install on the current host.
+# This can be set in inventory group_vars to add host class-specific CAs.
+trust_store_ca_certificates_extra: []
+
+# List of CA certificate file paths to install on the current host.
+trust_store_ca_certificates: >-
+  {{ (trust_store_ca_certificates_default +
+      (trust_store_ca_certificates_extra | default([]) | list))
+     | unique | list }}
