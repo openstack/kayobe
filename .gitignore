@@ -65,6 +65,7 @@ ansible/collections/
 # Virtualenvs
 ansible/kolla-venv/
 venvs
+.agents/workdir/
 
 # Vagrant
 .vagrant
