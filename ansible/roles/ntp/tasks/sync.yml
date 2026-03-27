@@ -23,4 +23,13 @@
 
     - name: Force hardware clock synchronisation
       command: hwclock --systohc
+
+    - name: Wait for system clock to be synchronized (up to 10 minutes)
+      become: True
+      ansible.builtin.command: timedatectl show --property=NTPSynchronized --value
+      register: sync_check
+      until: sync_check.stdout | trim == "yes"
+      retries: 60
+      delay: 10
+      failed_when: sync_check.rc != 0
   when: ntp_force_sync | bool
