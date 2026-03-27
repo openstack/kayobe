@@ -1,0 +1,9 @@
+---
+fixes:
+  - |
+    Reduces clock synchronisation race conditions before running Kolla by
+    waiting for ``timedatectl`` to report ``NTPSynchronized=yes`` when
+    ``ntp_force_sync`` is enabled.
+
+    This improves reliability of deployments where services are sensitive to
+    clock skew immediately after NTP configuration.
