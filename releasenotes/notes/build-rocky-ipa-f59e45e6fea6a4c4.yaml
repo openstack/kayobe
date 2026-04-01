@@ -1,0 +1,11 @@
+---
+upgrade:
+  - |
+    Rocky Linux based Ironic Python Agent images are now built in Rocky Linux
+    based deployments rather than CentOS Stream:
+    ``ipa_build_dib_elements_default`` uses ``rocky-container`` element;
+    ``ipa_build_dib_packages`` includes the ``python3-yaml`` package;
+    ``ipa_build_dib_env_default`` uses specified ``os_release``;
+    and container runtime is set to ``container_engine``.
+  - |
+    ``baremetal`` element now included in ``ipa_build_dib_elements_default``
