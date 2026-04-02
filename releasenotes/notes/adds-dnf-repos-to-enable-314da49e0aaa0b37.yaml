@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds variable ``dnf_repo_state_overrides`` to enable repositories that are
+    defined but not enabled by default. This only works on RHEL-based
+    distributions that use ``dnf``.

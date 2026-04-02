@@ -301,6 +301,25 @@ however this is no longer the case.
 It is possible to enable or disable the EPEL DNF repository by setting
 ``dnf_install_epel`` to ``true`` or ``false`` respectively.
 
+Enabling or disabling additional repositories
+---------------------------------------------
+
+The variable ``dnf_repo_state_overrides`` allows you to enable or disable
+repositories. It should be defined as a dictionary where each key corresponds
+to a repository identifier (i.e. the section label in the repository
+definition), and each value specifies the desired state of that repository.
+This variable is useful for enabling additional repositories defined in the
+default repository files. Repositories defined in ``dnf_custom_repos`` are
+ignored, as their state is already managed through this variable.
+
+For example, to enable the CodeReady Linux Builder (CRB) repository:
+
+.. code-block:: yaml
+   :caption: ``dnf.yml``
+
+   dnf_repo_state_overrides:
+     crb: enabled
+
 DNF Automatic
 -------------
 
