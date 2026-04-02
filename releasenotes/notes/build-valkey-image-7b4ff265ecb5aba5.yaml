@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    ``valkey`` images are now built when ``kolla_enable_valkey`` is set to
+    ``true``.
