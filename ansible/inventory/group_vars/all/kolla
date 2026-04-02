@@ -256,6 +256,8 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_cinder | bool or kolla_enable_ironic | bool }}"
   - regex: ^trove
     enabled: "{{ kolla_enable_trove | bool }}"
+  - regex: ^valkey
+    enabled: "{{ kolla_enable_valkey | bool }}"
   - regex: ^watcher
     enabled: "{{ kolla_enable_watcher | bool }}"
   - regex: ^zun
@@ -580,6 +582,7 @@ kolla_enable_swift: "no"
 kolla_enable_tacker: "no"
 kolla_enable_telegraf: "no"
 kolla_enable_trove: "no"
+kolla_enable_valkey: "no"
 kolla_enable_vitrage: "no"
 kolla_enable_watcher: "no"
 kolla_enable_zun: "no"
