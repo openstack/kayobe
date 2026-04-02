@@ -1,0 +1,149 @@
+# rocky-addons.repo
+#
+# The mirrorlist system uses the connecting IP address of the client and the
+# update status of each mirror to pick current mirrors that are geographically
+# close to the client.  You should use this for Rocky updates unless you are
+# manually picking other mirrors.
+#
+# If the mirrorlist does not work for you, you can try the commented out
+# baseurl line instead.
+
+[highavailability]
+name=Rocky Linux $releasever - High Availability
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=HighAvailability-$releasever$rltype
+baseurl=http://{{ dnf_rocky_mirror_host }}/{{ dnf_rocky_mirror_directory }}/$releasever/HighAvailability/$basearch/os/
+gpgcheck=1
+enabled=0
+countme=1
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+
+[highavailability-debuginfo]
+name=Rocky Linux $releasever - High Availability - Debug
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=HighAvailability-$releasever-debug$rltype
+baseurl=http://{{ dnf_rocky_mirror_host }}/{{ dnf_rocky_mirror_directory }}/$releasever/HighAvailability/$basearch/debug/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+
+[highavailability-source]
+name=Rocky Linux $releasever - High Availability - Source
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=HighAvailability-$releasever-source$rltype
+baseurl=http://{{ dnf_rocky_mirror_host }}/{{ dnf_rocky_mirror_directory }}/$releasever/HighAvailability/source/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+
+[nfv]
+name=Rocky Linux $releasever - NFV
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=NFV-$releasever$rltype
+baseurl=http://{{ dnf_rocky_mirror_host }}/{{ dnf_rocky_mirror_directory }}/$releasever/NFV/$basearch/os/
+gpgcheck=1
+enabled=0
+countme=1
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+
+[nfv-debuginfo]
+name=Rocky Linux $releasever - NFV Debug
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=RT-$releasever-debug$rltype
+baseurl=http://{{ dnf_rocky_mirror_host }}/{{ dnf_rocky_mirror_directory }}/$releasever/NFV/$basearch/debug/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+
+[nfv-source]
+name=Rocky Linux $releasever - NFV Source
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=RT-$releasever-source$rltype
+baseurl=http://{{ dnf_rocky_mirror_host }}/{{ dnf_rocky_mirror_directory }}/$releasever/NFV/source/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+
+[rt]
+name=Rocky Linux $releasever - Realtime
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=RT-$releasever$rltype
+baseurl=http://{{ dnf_rocky_mirror_host }}/{{ dnf_rocky_mirror_directory }}/$releasever/RT/$basearch/os/
+gpgcheck=1
+enabled=0
+countme=1
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+
+[rt-debuginfo]
+name=Rocky Linux $releasever - Realtime Debug
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=RT-$releasever-debug$rltype
+baseurl=http://{{ dnf_rocky_mirror_host }}/{{ dnf_rocky_mirror_directory }}/$releasever/RT/$basearch/debug/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+
+[rt-source]
+name=Rocky Linux $releasever - Realtime Source
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=RT-$releasever-source$rltype
+baseurl=http://{{ dnf_rocky_mirror_host }}/{{ dnf_rocky_mirror_directory }}/$releasever/RT/source/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+
+[sap]
+name=Rocky Linux $releasever - SAP
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=SAP-$releasever$rltype
+baseurl=http://{{ dnf_rocky_mirror_host }}/{{ dnf_rocky_mirror_directory }}/$releasever/SAP/$basearch/os/
+gpgcheck=1
+enabled=0
+countme=1
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+
+[sap-debuginfo]
+name=Rocky Linux $releasever - SAP Debug
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=SAP-$releasever-debug$rltype
+baseurl=http://{{ dnf_rocky_mirror_host }}/{{ dnf_rocky_mirror_directory }}/$releasever/SAP/$basearch/debug/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+
+[sap-source]
+name=Rocky Linux $releasever - SAP Source
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=SAP-$releasever-source$rltype
+baseurl=http://{{ dnf_rocky_mirror_host }}/{{ dnf_rocky_mirror_directory }}/$releasever/SAP/source/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+
+[saphana]
+name=Rocky Linux $releasever - SAPHANA
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=SAPHANA-$releasever$rltype
+baseurl=http://{{ dnf_rocky_mirror_host }}/{{ dnf_rocky_mirror_directory }}/$releasever/SAPHANA/$basearch/os/
+gpgcheck=1
+enabled=0
+countme=1
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+
+[saphana-debuginfo]
+name=Rocky Linux $releasever - SAPHANA Debug
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=SAPHANA-$releasever-debug$rltype
+baseurl=http://{{ dnf_rocky_mirror_host }}/{{ dnf_rocky_mirror_directory }}/$releasever/SAPHANA/$basearch/debug/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+
+[saphana-source]
+name=Rocky Linux $releasever - SAPHANA Source
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=SAPHANA-$releasever-source$rltype
+baseurl=http://{{ dnf_rocky_mirror_host }}/{{ dnf_rocky_mirror_directory }}/$releasever/SAPHANA/source/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10

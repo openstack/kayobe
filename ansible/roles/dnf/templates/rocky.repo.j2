@@ -10,14 +10,84 @@
 
 [baseos]
 name=Rocky Linux $releasever - BaseOS
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=BaseOS-$releasever$rltype
 baseurl=http://{{ dnf_rocky_mirror_host }}/{{ dnf_rocky_mirror_directory }}/$releasever/BaseOS/$basearch/os/
 gpgcheck=1
 enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+countme=1
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+
+[baseos-debuginfo]
+name=Rocky Linux $releasever - BaseOS - Debug
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=BaseOS-$releasever-debug$rltype
+baseurl=http://{{ dnf_rocky_mirror_host }}/{{ dnf_rocky_mirror_directory }}/$releasever/BaseOS/$basearch/debug/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+
+[baseos-source]
+name=Rocky Linux $releasever - BaseOS - Source
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=BaseOS-$releasever-source$rltype
+baseurl=http://{{ dnf_rocky_mirror_host }}/{{ dnf_rocky_mirror_directory }}/$releasever/BaseOS/source/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
 
 [appstream]
 name=Rocky Linux $releasever - AppStream
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=AppStream-$releasever$rltype
 baseurl=http://{{ dnf_rocky_mirror_host }}/{{ dnf_rocky_mirror_directory }}/$releasever/AppStream/$basearch/os/
 gpgcheck=1
 enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial
+countme=1
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+
+[appstream-debuginfo]
+name=Rocky Linux $releasever - AppStream - Debug
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=AppStream-$releasever-debug$rltype
+baseurl=http://{{ dnf_rocky_mirror_host }}/{{ dnf_rocky_mirror_directory }}/$releasever/AppStream/$basearch/debug/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+
+[appstream-source]
+name=Rocky Linux $releasever - AppStream - Source
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=AppStream-$releasever-source$rltype
+baseurl=http://{{ dnf_rocky_mirror_host }}/{{ dnf_rocky_mirror_directory }}/$releasever/AppStream/source/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+
+[crb]
+name=Rocky Linux $releasever - CRB
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=CRB-$releasever$rltype
+baseurl=http://{{ dnf_rocky_mirror_host }}/{{ dnf_rocky_mirror_directory }}/$releasever/CRB/$basearch/os/
+gpgcheck=1
+enabled=0
+countme=1
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+
+[crb-debuginfo]
+name=Rocky Linux $releasever - CRB - Debug
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=CRB-$releasever-debug$rltype
+baseurl=http://{{ dnf_rocky_mirror_host }}/{{ dnf_rocky_mirror_directory }}/$releasever/CRB/$basearch/debug/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+
+[crb-source]
+name=Rocky Linux $releasever - CRB - Source
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=CRB-$releasever-source$rltype
+baseurl=http://{{ dnf_rocky_mirror_host }}/{{ dnf_rocky_mirror_directory }}/$releasever/CRB/source/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10

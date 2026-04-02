@@ -1,0 +1,130 @@
+[highavailability]
+name=CentOS Stream $releasever - HighAvailability
+baseurl=http://{{ dnf_centos_mirror_host }}/{{ dnf_centos_mirror_directory }}/$stream/HighAvailability/$basearch/os/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+countme=1
+enabled=0
+
+[highavailability-debuginfo]
+name=CentOS Stream $releasever - HighAvailability - Debug
+baseurl=http://{{ dnf_centos_mirror_host }}/{{ dnf_centos_mirror_directory }}/$stream/HighAvailability/debug/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+enabled=0
+
+[highavailability-source]
+name=CentOS Stream $releasever - HighAvailability - Source
+baseurl=http://{{ dnf_centos_mirror_host }}/{{ dnf_centos_mirror_directory }}/$stream/HighAvailability/source/tree/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+enabled=0
+
+[nfv]
+name=CentOS Stream $releasever - NFV
+baseurl=http://{{ dnf_centos_mirror_host }}/{{ dnf_centos_mirror_directory }}/$stream/NFV/$basearch/os/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+countme=1
+enabled=0
+
+[nfv-debuginfo]
+name=CentOS Stream $releasever - NFV - Debug
+baseurl=http://{{ dnf_centos_mirror_host }}/{{ dnf_centos_mirror_directory }}/$stream/NFV/debug/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+enabled=0
+
+[nfv-source]
+name=CentOS Stream $releasever - NFV - Source
+baseurl=http://{{ dnf_centos_mirror_host }}/{{ dnf_centos_mirror_directory }}/$stream/NFV/source/tree/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+enabled=0
+
+[rt]
+name=CentOS Stream $releasever - RT
+baseurl=http://{{ dnf_centos_mirror_host }}/{{ dnf_centos_mirror_directory }}/$stream/RT/$basearch/os/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+countme=1
+enabled=0
+
+[rt-debuginfo]
+name=CentOS Stream $releasever - RT - Debug
+baseurl=http://{{ dnf_centos_mirror_host }}/{{ dnf_centos_mirror_directory }}/$stream/RT/debug/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+enabled=0
+
+[rt-source]
+name=CentOS Stream $releasever - RT - Source
+baseurl=http://{{ dnf_centos_mirror_host }}/{{ dnf_centos_mirror_directory }}/$stream/RT/source/tree/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+enabled=0
+
+[resilientstorage]
+name=CentOS Stream $releasever - ResilientStorage
+baseurl=http://{{ dnf_centos_mirror_host }}/{{ dnf_centos_mirror_directory }}/$stream/ResilientStorage/$basearch/os/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+countme=1
+enabled=0
+
+[resilientstorage-debuginfo]
+name=CentOS Stream $releasever - ResilientStorage - Debug
+baseurl=http://{{ dnf_centos_mirror_host }}/{{ dnf_centos_mirror_directory }}/$stream/ResilientStorage/debug/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+enabled=0
+
+[resilientstorage-source]
+name=CentOS Stream $releasever - ResilientStorage - Source
+baseurl=http://{{ dnf_centos_mirror_host }}/{{ dnf_centos_mirror_directory }}/$stream/ResilientStorage/source/tree/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+enabled=0
+
+[extras-common]
+name=CentOS Stream $releasever - Extras packages
+baseurl=http://{{ dnf_centos_mirror_host }}/{{ dnf_centos_mirror_directory }}/SIGs/$stream/extras/$basearch/extras-common/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Extras-SHA512
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+countme=1
+enabled=1
+
+[extras-common-source]
+name=CentOS Stream $releasever - Extras packages - Source
+baseurl=http://{{ dnf_centos_mirror_host }}/{{ dnf_centos_mirror_directory }}/SIGs/$stream/extras/source/extras-common/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Extras-SHA512
+gpgcheck=1
+repo_gpgcheck=0
+metadata_expire=6h
+enabled=0
