@@ -2,5 +2,9 @@
 libpcre2-dev [platform:dpkg test]
 pcre2-devel [platform:rpm test]
 
+# Sphinx graphviz extension requires the dot binary.
+graphviz [platform:dpkg test doc]
+graphviz [platform:rpm test doc]
+
 # PDF Docs package dependencies
 tex-gyre [platform:dpkg doc]

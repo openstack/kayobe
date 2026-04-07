@@ -56,6 +56,7 @@ extensions = [
     'openstackdocstheme',
     #'sphinx.ext.autodoc',
     #'sphinx.ext.intersphinx',
+    'sphinx.ext.graphviz',
     'sphinxcontrib.rsvgconverter',
 ]
 

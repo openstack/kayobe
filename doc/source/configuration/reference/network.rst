@@ -10,6 +10,13 @@ that define the network's attributes.  For example, to configure the ``cidr``
 attribute of a network named ``arpanet``, we would use a variable named
 ``arpanet_cidr``.
 
+Real World Examples
+===================
+
+* :doc:`../examples/real-world-bridges-and-bonds-configuration-a-virtualised-case-study`:
+    End-to-end example covering bridges, bonds, and seed hypervisor network
+    layout.
+
 .. _configuration-network-global:
 
 Global Network Configuration
@@ -1203,6 +1210,11 @@ are attached may be defined in a host or group variables file.  See
 
 Complete Example
 ================
+
+.. note::
+
+   For a more comprehensive real-world example, see
+   :doc:`../examples/real-world-bridges-and-bonds-configuration-a-virtualised-case-study`.
 
 The following example combines the complete network configuration into a single
 system configuration.  In our example cloud we have three networks:
