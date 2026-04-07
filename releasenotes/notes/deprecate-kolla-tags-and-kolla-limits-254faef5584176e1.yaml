@@ -1,0 +1,22 @@
+---
+features:
+  - |
+    Added the tag ``bifrost`` to ``kolla-bifrost.yml`` so that we can easily
+    limit to Bifrost in ``kayobe seed service deploy``.
+  - |
+    Deprecated the options ``--kolla-tags`` and ``kolla-limit`` for all
+    commands. Regular ``--tags`` and ``--limit`` will now be passed directly to
+    the Kolla-Ansible invocations. Added the tag ``kayobe-generate-config`` to
+    ``kolla-ansible.yml`` and ``kolla-openstack.yml``. This tag is now always
+    called, to allow for limiting to OpenStack services with just one tag, e.g.
+    ``kayobe overcloud service deploy -t nova``. You can still skip this with
+    ``--skip-tags kayobe-generate-config``.
+upgrade:
+  - |
+    Deprecated the options ``--kolla-tags`` and ``kolla-limit`` for all
+    commands. Regular ``--tags`` and ``--limit`` will now be passed directly to
+    the Kolla-Ansible invocations. Added the tag ``kayobe-generate-config`` to
+    ``kolla-ansible.yml`` and ``kolla-openstack.yml``. This tag is now always
+    called, to allow for limiting to OpenStack services with just one tag, e.g.
+    ``kayobe overcloud service deploy -t nova``. You can still skip this with
+    ``--skip-tags kayobe-generate-config``.
