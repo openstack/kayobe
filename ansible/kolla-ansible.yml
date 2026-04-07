@@ -90,6 +90,10 @@
       vars:
         kolla_ansible_control_host_become: "{{ kayobe_control_host_become | bool }}"
         kolla_ansible_install_epel: "{{ dnf_install_epel }}"
+        kolla_ansible_custom_requirements_search_paths_static:
+          - "{{ kayobe_config_path }}"
+        kolla_ansible_custom_requirements_search_paths: "{{ kolla_ansible_custom_requirements_search_paths_static + kayobe_env_search_paths | default([]) }}"
+        kolla_ansible_custom_requirements_paths: "{{ kolla_ansible_custom_requirements_search_paths | map('regex_replace', '$', '/kolla/requirements.yml') | list }}"
         kolla_external_fqdn_cert: "{{ kolla_config_path }}/certificates/haproxy.pem"
         kolla_internal_fqdn_cert: "{{ kolla_config_path }}/certificates/haproxy-internal.pem"
         kolla_ansible_passwords_path: "{{ kayobe_env_config_path }}/kolla/passwords.yml"
