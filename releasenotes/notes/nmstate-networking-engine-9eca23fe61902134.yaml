@@ -4,46 +4,37 @@ features:
     Adds an opt-in ``nmstate`` network engine
     (``network_engine: nmstate``) for host network configuration via
     NetworkManager/libnmstate.
-  - |
+
     Supports Ethernet, VLAN, bond, bridge, routes, and routing rules,
     and adds OVS patch-link veth generation for overcloud bridge-to-OVS
     connectivity.
-  - |
+
     Adds structured ethtool configuration via
     ``<network>_ethtool_config`` for ring parameters and selected
     offload features.
-  - |
+
     The nmstate network engine is only supported on Rocky Linux. Ubuntu Noble
     is not supported because the required system packages (nmstate,
     python3-libnmstate) are not available in Ubuntu repositories. Attempting
     to use nmstate on Ubuntu will fail with a clear error message directing
-    users to use the ``legacy`` network engine.
+    users to use the ``default`` network engine.
 
 upgrade:
   - |
-    Introduces ``network_engine`` in ``globals.yml``:
-    ``legacy`` (default) and ``nmstate``.
+    Introduces ``network_engine`` in ``globals.yml`` to control which
+    engine is used to configure network interfaces. The options are ``default``,
+    which uses ``MichaelRigart.interfaces`` on Enterprise Linux and
+    systemd-networkd on Ubuntu, and ``nmstate``.
   - |
     With ``nmstate``, ethtool settings use structured YAML in
-    ``<network>_ethtool_config``. ``legacy`` engine behavior is
+    ``<network>_ethtool_config``. ``default`` engine behavior is
     unchanged.
   - |
     With ``network_engine: nmstate``, ``<network>_rules`` entries must use
     dict format (keys such as ``from``, ``to``, ``priority``, ``table``).
-    String-format rules are rejected on the ``nmstate`` path. ``legacy``
+    String-format rules are rejected on the ``nmstate`` path. ``default``
     engine behavior is unchanged.
   - |
     Switching to ``nmstate`` may reconfigure host networking and cause
     temporary connectivity disruption.
 
-fixes:
-  - |
-    Fixes host configure regressions when using ``network_engine: nmstate`` on
-    Rocky Linux. Kayobe now ensures named route tables from
-    ``network_route_tables`` are defined in ``/etc/iproute2/rt_tables`` for
-    nmstate-managed hosts. These fixes apply only to the ``nmstate`` engine
-    path; ``legacy`` engine behavior is unchanged.
-  - |
-    When using ``network_engine: nmstate`` with firewalld enabled, Kayobe now
-    reconciles interface-to-zone mappings in both permanent and runtime
-    firewalld configuration for interfaces that define ``<network>_zone``.
