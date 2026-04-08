@@ -462,6 +462,20 @@ class ControlHostUpgrade(KayobeAnsibleMixin, VaultMixin, Command):
                                   ignore_limit=True, check=False)
 
 
+class ControlHostServiceDeploy(KayobeAnsibleMixin, VaultMixin, Command):
+    """Deploy the Ansible control host services."""
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Running no-op control host service deploy")
+
+
+class ControlHostServiceDestroy(KayobeAnsibleMixin, VaultMixin, Command):
+    """Destroy the Ansible control host services."""
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Running no-op control host service destroy")
+
+
 class ConfigurationDump(KayobeAnsibleMixin, VaultMixin, Command):
     """Dump Kayobe configuration.
 

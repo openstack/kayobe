@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds two new commands,  ``kayobe control host service deploy`` and
+    ``kayobe control host service destroy``. This is currently a
+    no-op, but can be used for hooks.
