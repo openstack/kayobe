@@ -1202,10 +1202,22 @@ class InfraVMHostUpgrade(KayobeAnsibleMixin, VaultMixin, Command):
 
 class InfraVMServiceDeploy(KayobeAnsibleMixin, VaultMixin,
                            Command):
-    """Run hooks for infra structure services."""
+    """Run hooks for infra VM services."""
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Running no-op Infra VM service deploy")
+
+
+class InfraVMServiceDestroy(KayobeAnsibleMixin, VaultMixin,
+                            Command):
+    """Destroy the infra VM services.
+
+    Permanently destroy the infra VM containers, container images, and
+    container volumes.
+    """
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Running no-op Infra VM service destroy")
 
 
 class OvercloudInventoryDiscover(KayobeAnsibleMixin, VaultMixin, Command):

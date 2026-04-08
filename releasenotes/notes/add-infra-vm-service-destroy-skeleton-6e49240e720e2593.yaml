@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Adds new command ``kayobe infra vm service destroy``. This is currently a
+    no-op, but can be used for hooks.
