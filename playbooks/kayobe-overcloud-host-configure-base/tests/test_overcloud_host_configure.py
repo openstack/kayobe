@@ -374,3 +374,10 @@ def test_swap(host):
     assert len(swapon) > 1
     swap_devs = [swap.split()[0] for swap in swapon[1:]]
     assert "/swapfile" in swap_devs
+
+
+def test_etc_hosts(host):
+    hosts_entries = host.check_output("cat /etc/hosts")
+    assert "127.0.0.88 foo.example.com" in hosts_entries
+    ping_result = host.check_output("ping -c 1 foo.example.com")
+    assert "1 received" in ping_result

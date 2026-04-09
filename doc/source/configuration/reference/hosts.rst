@@ -1553,6 +1553,15 @@ follows:
 
    etc_hosts_gather_facts: false
 
+Custom entries can be added to the ``custom_etc_hosts_entries`` dictionary.
+Each key is treated as a hostname and each value is the IP, for example:
+
+.. code-block:: yaml
+
+   custom_etc_hosts_entries:
+     foo.exaple.com: 1.2.3.4
+     bar.exaple.com: 5.6.7.8
+
 Installing packages required by Kolla Ansible
 =============================================
 *tags:*
