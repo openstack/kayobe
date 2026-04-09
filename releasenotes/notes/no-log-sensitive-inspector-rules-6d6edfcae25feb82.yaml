@@ -1,0 +1,4 @@
+---
+security:
+  - |
+    Prevents sensitive inspector rules from appearing in ansible output.
