@@ -201,7 +201,6 @@
     name: kayobe-overcloud-upgrade-slurp-rocky10
     parent: kayobe-overcloud-upgrade-base
     nodeset: kayobe-rocky10-16GB
-    voting: false
 
 - job:
     name: kayobe-overcloud-upgrade-slurp-ubuntu-noble
@@ -355,7 +354,6 @@
     name: kayobe-seed-upgrade-slurp-rocky10
     parent: kayobe-seed-upgrade-base
     nodeset: kayobe-rocky10
-    voting: false
 
 - job:
     name: kayobe-seed-upgrade-slurp-ubuntu-noble
