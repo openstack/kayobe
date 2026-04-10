@@ -1,4 +1,10 @@
 ---
+- name: Set Rocky Linux mirror to download.rockylinux.org
+  become: true
+  ansible.builtin.shell:
+    cmd: sed -i 's/mirrorlist/#mirrorlist/g; s/#baseurl/baseurl/g' /etc/yum.repos.d/rocky.repo
+  when: ansible_facts.distribution == "Rocky"
+
 - block:
     - name: Install dbus for debian system
       apt:
@@ -25,7 +31,7 @@
         name: dnf-plugins-core
         state: present
 
-    - name: Enable the EPEL repository
+    - name: Disable the EPEL repository
       command: dnf config-manager --disable epel
 
     - name: Install packages needed for unprivileged mode
