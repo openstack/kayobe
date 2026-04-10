@@ -190,6 +190,7 @@
     name: kayobe-overcloud-upgrade-rocky10
     parent: kayobe-overcloud-upgrade-base
     nodeset: kayobe-rocky10-16GB
+    voting: false
 
 - job:
     name: kayobe-overcloud-upgrade-ubuntu-noble
@@ -343,6 +344,7 @@
     name: kayobe-seed-upgrade-rocky10
     parent: kayobe-seed-upgrade-base
     nodeset: kayobe-rocky10
+    voting: false
 
 - job:
     name: kayobe-seed-upgrade-ubuntu-noble
