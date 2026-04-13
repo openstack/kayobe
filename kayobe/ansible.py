@@ -308,6 +308,19 @@ def _get_environment(parsed_args, external_playbook=False):
 
     env.setdefault("ANSIBLE_TEST_PLUGINS", ":".join(test_plugins))
 
+    if external_playbook:
+        lookup_plugins = [
+            os.path.join(parsed_args.config_path, "ansible", "lookup_plugins"),
+            utils.get_data_files_path("ansible", "lookup_plugins"),
+        ]
+    else:
+        lookup_plugins = [
+            utils.get_data_files_path("ansible", "lookup_plugins"),
+            os.path.join(parsed_args.config_path, "ansible", "lookup_plugins"),
+        ]
+
+    env.setdefault("ANSIBLE_LOOKUP_PLUGINS", ":".join(lookup_plugins))
+
     return env
 
 
