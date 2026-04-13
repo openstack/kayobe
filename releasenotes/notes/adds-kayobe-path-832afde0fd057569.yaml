@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Adds a new variable: ``kayobe_path``, which is set to the path of the git
+    repository where the Kayobe source code is located for editable installs,
+    or the installation path in the virtualenv where the ansible folder is
+    located, in the case of a regular install.
