@@ -34,6 +34,7 @@
       command: "{{ testinfra_venv }}/bin/py.test {{ test_path }} --html={{ logs_dir }}/test-results.html --self-contained-html"
       environment:
         SITE_MIRROR_FQDN: "{{ zuul_site_mirror_fqdn }}"
+        FAIL2BAN_ENABLED: "{{ fail2ban_enabled | default(false) }}"
 
     - name: Test bouncing interfaces
       shell:
