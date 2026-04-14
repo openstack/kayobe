@@ -4,7 +4,7 @@ collections:
     type: git
     version: master
   - name: community.docker
-    version: 5.0.5
+    version: 5.1.0
   - name: community.network
     version: 5.1.0
   - name: dellemc.os6
@@ -29,13 +29,13 @@ roles:
     version: 1.3.2
   - src: giovtorres.tuned
     version: 2.0.2
-  - src: git+https://github.com/stackhpc/ansible-role-configdrive.git
-    name: jriguera.configdrive
-    version: fb199247333e72e38a9d414cf7b6144daa645477
+  - src: jriguera.configdrive
+    # There are no versioned releases of this role.
+    version: 17d9f7e76942012e9d09490ecb119066d16aad3d
   - src: MichaelRigart.interfaces
     version: v1.16.1
   - src: mrlesmithjr.chrony
-    version: v0.1.6
+    version: v0.2.0
   - src: mrlesmithjr.manage_lvm
     version: v0.2.13
   - src: mrlesmithjr.mdadm
