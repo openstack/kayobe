@@ -1,0 +1,6 @@
+---
+# Which hosts to add to /etc/hosts
+etc_hosts_hosts: "{{ groups['overcloud'] }}"
+
+# Which network to use for the IP address in /etc/hosts
+etc_hosts_network: "{{ internal_net_name }}"
