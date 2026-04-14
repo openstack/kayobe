@@ -93,7 +93,7 @@ inspector_lldp_switch_port_interface_default: eth0
 # check for an LLDP switch port description to use as the node's name.
 inspector_lldp_switch_port_interface_map: {}
 
-# Enable IPMI rules:
+# Enable IPMI rules. Default is true.
 inspector_rules_ipmi_enabled: True
 
 # IPMI username referenced by inspector rule.
@@ -102,7 +102,7 @@ inspector_rule_var_ipmi_username:
 # IPMI password referenced by inspector rule.
 inspector_rule_var_ipmi_password:
 
-# Enable Redfish rules
+# Enable Redfish rules. Default is false.
 inspector_rules_redfish_enabled: False
 
 # Redfish username referenced by inspector rule.
@@ -111,10 +111,10 @@ inspector_rule_var_redfish_username:
 # Redfish password referenced by inspector rule.
 inspector_rule_var_redfish_password:
 
-# Redfish CA setting.
+# Redfish CA setting. Default is true.
 inspector_rule_var_redfish_verify_ca: True
 
-# Log Ironic inspector rules marked sensitive.
+# Log Ironic inspector rules marked sensitive. Default is true.
 ironic_inspector_sensitive_rule_no_log: True
 
 # Ironic inspector rule to set IPMI credentials.
