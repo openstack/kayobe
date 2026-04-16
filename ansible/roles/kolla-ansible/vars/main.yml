@@ -235,5 +235,6 @@ kolla_feature_flags:
   - trove
   - trove_singletenant
   - venus
+  - valkey
   - watcher
   - zun
