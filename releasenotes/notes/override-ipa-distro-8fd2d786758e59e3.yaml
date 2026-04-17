@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    The OS distribution and release used to build IPA images can now
+    be customised using the `ipa_build_distro` and `ipa_build_release`
+    overrides.
