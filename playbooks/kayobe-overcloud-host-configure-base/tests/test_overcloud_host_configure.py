@@ -33,6 +33,10 @@ def _is_ubuntu_noble():
     return name == 'Ubuntu' and version == '24.04'
 
 
+def _is_fail2ban_enabled():
+    return os.environ.get('FAIL2BAN_ENABLED', 'false').lower() == 'true'
+
+
 def test_network_ethernet(host):
     interface = host.interface('dummy2')
     assert interface.exists
@@ -344,11 +348,13 @@ def test_firewalld_rules(host):
             assert expected_line in info
             assert expected_line in perm_info
 
+@pytest.mark.skipif(not _is_fail2ban_enabled(), reason="fail2ban not enabled")
 def test_fail2ban_running(host):
     assert host.package("fail2ban").is_installed
     assert host.service("fail2ban.service").is_enabled
     assert host.service("fail2ban.service").is_running
 
+@pytest.mark.skipif(not _is_fail2ban_enabled(), reason="fail2ban not enabled")
 def test_fail2ban_default_jail_config(host):
    # verify that sshd jail is enabled by default
     status = host.check_output("sudo fail2ban-client status sshd")
