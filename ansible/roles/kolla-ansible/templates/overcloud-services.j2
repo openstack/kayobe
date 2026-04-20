@@ -129,6 +129,9 @@ control
 compute
 network
 
+[neutron-ovn-vpn-agent:children]
+neutron
+
 # Cinder
 [cinder-api:children]
 cinder
@@ -409,6 +412,10 @@ monitoring
 
 [prometheus-libvirt-exporter:children]
 compute
+
+[prometheus-openstack-network-exporter:children]
+compute
+network
 
 [prometheus-valkey-exporter:children]
 valkey
