@@ -39,8 +39,13 @@ supported:
     IP address of the gateway for the hardware introspection network.
 ``neutron_gateway``
     IP address of the gateway for a neutron subnet based on this network.
+``neutron_dns_servers``
+    List of DNS servers to be configured when registering the network in Neutron.
 ``inspection_dns_servers``
-    List of DNS servers used during hardware introspection.
+    List of DNS servers used for :ironic-doc:`unmanaged inspection <admin/drivers>`.
+    These are configured as options on the standalone dnsmasq instance that hands
+    out IP addresses during auto-discovery (as opposed to the neutron controlled DHCP server
+    used for managed introspection).
 ``vlan``
     VLAN ID.
 ``mtu``
@@ -998,6 +1003,24 @@ allocation pool:
 Workload Inspection Network
 ---------------------------
 
+The configuration of the inspection network depends on whether or not you are
+using :ironic-doc:`unmanaged or managed inspection
+<admin/inspection/managed.html>`.
+
+Unmanaged inspection is the default when auto-discovery is enabled with
+``kolla_inspector_enable_discovery``.  In this mode of operation, a standalone
+dnsmasq instance is configured to hand out DHCP leases to any unknown devices
+that show up on the network.  The network properties starting with the
+``inspection_`` prefix , e.g ``inspection_allocation_pool_start`` control configuration of this service.
+
+Managed inspection uses Neutron to hand out the DHCP leases. The properties
+used to configure the network registered in Neutron use the prefix:
+``neutron_`` e.g ``neutron_allocation_pool_start``. The variables prefixed with
+``inspection_`` have no effect in this mode of operation.
+
+Unmanaged Inspeciton
+^^^^^^^^^^^^^^^^^^^^
+
 If using the overcloud to inspect bare metal workload (compute) hosts, it is
 necessary to define a DHCP allocation pool for the overcloud's ironic inspector
 DHCP server using the ``inspection_allocation_pool_start`` and
@@ -1018,6 +1041,41 @@ and inspection DNS servers:
    example_inspection_allocation_pool_start: 10.0.1.196
    example_inspection_allocation_pool_end: 10.0.1.254
    example_inspection_dns_servers: [10.0.1.10, 10.0.1.11]
+
+.. note::
+
+   This pool should not overlap with a kayobe or neutron allocation pool on the
+   same network.
+
+Managed Inspection
+^^^^^^^^^^^^^^^^^^
+
+.. note::
+
+    Using managed inspection requires that the Ironic ports
+    are created either via: out-of-band inspection or manually.
+
+The allocation pool used for the neutron network is configured via the
+``neutron_allocation_pool_start`` and ``neutron_allocation_pool_end``
+variables.
+
+When using managed inspection, ``neutron_dns_servers`` can be used to control
+the DNS servers handed out by DHCP. This can be helpful to resolve the ironic
+callback url, if for example, ``kolla_internal_fqdn`` has been set.
+
+.. note::
+
+   This example assumes that the ``example`` network is mapped to
+   ``provision_wl_net_name``.
+
+To configure a network called ``example`` with an inspection allocation pool
+and inspection DNS servers:
+
+.. code-block:: yaml
+
+   example_neutron_allocation_pool_start: 10.0.1.196
+   example_neutron_allocation_pool_end: 10.0.1.254
+   example_neutron_dns_servers: [10.0.1.10, 10.0.1.11]
 
 .. note::
 

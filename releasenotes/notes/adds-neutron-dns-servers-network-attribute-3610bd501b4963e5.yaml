@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Adds ``neutron_dns_servers`` network attribute to configure DNS on the
+    networks registered in OpenStack. See :kayobe-doc:`Kayobe
+    documentation on network configuration
+    <configuration/reference/network.html>` for more
+    details.
