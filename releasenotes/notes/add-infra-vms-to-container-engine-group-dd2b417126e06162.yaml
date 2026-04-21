@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Adds ``infra-vms`` to ``container-engine`` group to allow for Docker/Podman
+    to be installed.
