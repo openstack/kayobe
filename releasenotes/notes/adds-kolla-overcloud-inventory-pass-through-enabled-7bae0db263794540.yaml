@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    The internal network is no longer required on hosts that are not mapped
+    to the Kolla Ansible inventory. Hosts can be excluded from the Kolla
+    Ansible inventory by not mapping their groups in
+    ``kolla_overcloud_inventory_top_level_group_map``. This allows provisioning
+    of infrastructure hosts such as external storage nodes without requiring
+    OpenStack-specific network configuration.

@@ -1,4 +1,15 @@
 ---
+- name: Collect hosts to map through to kolla-ansible
+  hosts: overcloud
+  gather_facts: false
+  tags:
+    - always
+  tasks:
+    - name: Group by kolla_overcloud_inventory_pass_through_enabled
+      ansible.builtin.group_by:
+        key: "kolla_mapped_overcloud_host_{{ kolla_overcloud_inventory_pass_through_enabled }}"
+      changed_when: false
+
 - name: Gather facts for localhost
   hosts: localhost
   gather_facts: true
@@ -68,6 +79,7 @@
       when:
         - groups[controller_loadbalancer_group] | length > 0
         - item.required | bool
+        - groups['kolla_mapped_overcloud_host_True'] | length > 0
       with_items:
         - var_name: "kolla_internal_vip_address"
           description: "Internal API VIP address"
@@ -140,7 +152,7 @@
         kolla_ansible_inventory_path: "{{ kolla_config_path }}/inventory/seed"
 
 - name: Generate Kolla Ansible host vars for overcloud hosts
-  hosts: overcloud
+  hosts: kolla_mapped_overcloud_host_True
   tags:
     - config
     - config-validation
@@ -175,11 +187,11 @@
           - var_name: "kolla_network_interface"
             description: "Default network"
             network: "{{ internal_net_name }}"
-            required: True
+            required: "{{ kolla_overcloud_inventory_pass_through_enabled | bool }}"
           - var_name: "kolla_api_interface"
             description: "API network"
             network: "{{ internal_net_name }}"
-            required: True
+            required: "{{ kolla_overcloud_inventory_pass_through_enabled | bool }}"
           - var_name: "kolla_storage_interface"
             description: "Storage network"
             network: "{{ storage_net_name }}"

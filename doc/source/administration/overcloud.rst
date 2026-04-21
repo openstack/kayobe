@@ -63,6 +63,118 @@ For example::
 To execute the command with root privileges, add the ``--become`` argument.
 Adding the ``--verbose`` argument allows the output of the command to be seen.
 
+Provisioning Hosts Without Kolla Services
+==========================================
+
+Sometimes it may be necessary to provision hosts that are not included in the
+Kolla Ansible inventory - for example, external storage nodes such as Lustre
+fileservers, or other infrastructure nodes that require network configuration
+and system setup but should not run OpenStack services.
+
+By default, hosts in groups mapped by ``kolla_overcloud_inventory_top_level_group_map``
+are automatically included in the Kolla Ansible inventory. To exclude a group of
+hosts from the Kolla Ansible inventory, do not map that group in
+``kolla_overcloud_inventory_top_level_group_map``.
+
+When a group is excluded from the Kolla Ansible inventory, the following
+variables are not required for hosts in that group:
+
+- ``kolla_internal_vip_address``
+- ``kolla_internal_fqdn``
+- ``kolla_network_interface``
+- ``kolla_api_interface``
+
+The hosts can still be provisioned and configured via Kayobe playbooks, allowing
+you to use Kayobe for complete infrastructure provisioning while selectively
+excluding certain hosts from Kolla Ansible deployments.
+
+Example: Provision an external storage group
+----------------------------------------------
+
+If you are using bifrost, follow the regular process to enroll the servers.
+Configure ``overcloud_group_hosts_map`` to map the hosts into an appropriate
+group:
+
+.. code-block:: yaml
+   :caption: ``$KAYOBE_CONFIG_PATH/overcloud.yml``
+
+   overcloud_group_hosts_map:
+     lustre-servers:
+       - lustre-server-01
+       - lustre-server-02
+
+These hosts must also be configured to be members of the ``overcloud`` group:
+
+.. code-block:: ini
+   :caption: ``$KAYOBE_CONFIG_PATH/inventory/groups``
+
+   # Empty group declaration. kayobe overcloud inventory discover will
+   # populate this group from bifrost inventory.
+   [lustre-servers]
+
+   # The hosts must be members of the overcloud group
+   [overcloud:children]
+   lustre-servers
+
+You can then run  ``kayobe overcloud inventory discover`` to automatically
+populate the ``lustre-servers`` group.
+
+Alternatively, you can provision these hosts by some other means: either
+manually or by using an alternative provisioning tool. You would then manually
+add these to your inventory.
+
+.. code-block:: ini
+   :caption: ``$KAYOBE_CONFIG_PATH/inventory/groups``
+
+   # This example demonstrates how you can add hosts that are not provisioned
+   # by bifrost e.g deployed by some external provisioning tool.
+
+   [lustre-servers]
+   lustre-server-01
+   lustre-server-02
+
+   # The hosts must be members of the overcloud group
+   [overcloud:children]
+   lustre-servers
+
+Ensuring that the IPs used to access these servers are correctly set in
+``network-allocations.yml``.
+
+Ensure the hosts are not mapped through to the kolla inventory:
+
+  .. code-block:: yaml
+   :caption: ``$KAYOBE_CONFIG_PATH/kolla.yml``
+
+   # Define the Kolla group mapping without including lustre-servers
+   kolla_overcloud_inventory_top_level_group_map:
+     control:
+       groups:
+         - controllers
+     network:
+       groups:
+         - network
+     compute:
+       groups:
+         - compute
+     compute-vgpu:
+       groups:
+         - compute-vgpu
+     monitoring:
+       groups:
+         - monitoring
+     storage:
+       groups:
+         - storage
+     # lustre-servers group is intentionally not mapped
+
+The hosts can then be configured using::
+
+    (kayobe) $ kayobe overcloud host configure --limit lustre-servers
+
+This will apply host configuration and network setup. ``kayobe overcloud service
+deploy`` will be a no-op for these hosts as they will not be mapped to the
+Kolla Ansible inventory.
+
 .. _overcloud-administration-reconfigure:
 
 Reconfiguring Containerised Services

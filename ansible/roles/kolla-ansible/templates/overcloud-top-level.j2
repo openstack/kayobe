@@ -9,7 +9,9 @@
 [{{ group }}]
 # These hostnames must be resolvable from your deployment host
 {% for host in groups.get(group, []) %}
+{%- if hostvars[host].kolla_overcloud_inventory_pass_through_enabled | default(true) | bool -%}
 {{ host }}
+{%- endif -%}
 {% endfor %}
 
 {% endfor %}

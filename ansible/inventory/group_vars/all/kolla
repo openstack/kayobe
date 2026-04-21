@@ -339,6 +339,16 @@ kolla_seed_inventory_pass_through_host_vars_map: >-
 # hosts.
 kolla_overcloud_inventory_custom_top_level:
 
+# Flag indicating whether host will be included in the generated kolla
+# inventory.  True if inventory_hostname is in any of the groups defined in
+# kolla_overcloud_inventory_top_level_group_map, false otherwise.
+kolla_overcloud_inventory_pass_through_enabled: >-
+  {{ kolla_overcloud_inventory_top_level_group_map.values() |
+       map(attribute='groups') |
+       flatten |
+       intersect(group_names) is truthy
+  }}
+
 # Custom overcloud inventory containing a mapping from components to top level
 # groups.
 kolla_overcloud_inventory_custom_components:
