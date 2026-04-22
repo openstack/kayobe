@@ -35,6 +35,7 @@
       environment:
         SITE_MIRROR_FQDN: "{{ zuul_site_mirror_fqdn }}"
         FAIL2BAN_ENABLED: "{{ fail2ban_enabled | default(false) }}"
+        CI_NETWORK_ENGINE: "{{ ci_network_engine | default('default') }}"
 
     - name: Test bouncing interfaces
       shell:
