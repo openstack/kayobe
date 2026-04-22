@@ -7,6 +7,14 @@
 # Whether to build IPA images from source.
 ipa_build_images: False
 
+# Override the OS distribution used to build IPA images. Default is 'centos'
+# if the host OS is Rocky, otherwise the default is the host OS distribution.
+ipa_build_distro: "{{ 'centos' if os_distribution == 'rocky' else os_distribution }}"
+
+# Override the OS release used to build IPA images. Default is '9-stream' if
+# the host OS is Rocky, otherwise the default is the host OS release.
+ipa_build_release: "{{ '9-stream' if os_distribution == 'rocky' else os_release }}"
+
 # URL of IPA source repository.
 ipa_build_source_url: "https://opendev.org/openstack/ironic-python-agent"
 
@@ -23,16 +31,16 @@ ipa_builder_source_version: "{{ openstack_branch }}"
 ipa_build_dib_host_packages_extra: []
 
 # List of default Diskimage Builder (DIB) elements to use when building IPA
-# images. Default is ["centos", "dynamic-login", "enable-serial-console",
-# "ironic-python-agent-ramdisk"] when os_distribution is "rocky", and
-# ["ubuntu", "dynamic-login", "enable-serial-console",
-# "ironic-python-agent-ramdisk"] otherwise.
+# images. Default is ["rocky-container", "dynamic-login",
+# "enable-serial-console", "ironic-python-agent-ramdisk", "baremetal"] when
+# ipa_build_distro is "rocky", and [ipa_build_distro, "dynamic-login",
+# "enable-serial-console", "ironic-python-agent-ramdisk"] otherwise.
 ipa_build_dib_elements_default:
-  # TODO(mattcrees): Use {{ os_distribution }} here when Rocky IPA builds work.
-  - "{{ 'centos' if os_distribution == 'rocky' else os_distribution }}"
+  - "{{ 'rocky-container' if ipa_build_distro == 'rocky' else ipa_build_distro }}"
   - dynamic-login
   - enable-serial-console
   - ironic-python-agent-ramdisk
+  - "{{ 'baremetal' if ipa_build_distro == 'rocky' else '' }}"
 
 # List of additional Diskimage Builder (DIB) elements to use when building IPA
 # images. Default is none.
@@ -48,8 +56,9 @@ ipa_build_dib_elements: >
 # Dictionary of default environment variables to provide to Diskimage Builder
 # (DIB) during IPA image build.
 ipa_build_dib_env_default:
-  # TODO(mattcrees): Use {{ os_release }} here when Rocky IPA builds work.
-  DIB_RELEASE: "{{ '9-stream' if os_distribution == 'rocky' else os_release }}"
+  DIB_RELEASE: "{{ ipa_build_release }}"
+  DIB_CONTAINERFILE_RUNTIME: "{{ container_engine }}"
+  DIB_CONTAINERFILE_RUNTIME_ROOT: "{{ (container_engine == 'podman') | int }}"
   DIB_REPOLOCATION_ironic_python_agent: "{{ ipa_build_source_url }}"
   DIB_REPOREF_ironic_python_agent: "{{ ipa_build_source_version }}"
   DIB_REPOREF_requirements: "{{ ipa_build_source_version }}"
@@ -83,8 +92,10 @@ ipa_build_dib_git_elements_extra: []
 ipa_build_dib_git_elements: >-
   {{ ipa_build_dib_git_elements_default + ipa_build_dib_git_elements_extra }}
 
-# List of DIB packages to install. Default is none.
-ipa_build_dib_packages: []
+# List of DIB packages to install. Default is ["python3-yaml"] when
+# when ipa_build_distro is "rocky", otherwise [].
+ipa_build_dib_packages: >-
+  {{ ["python3-yaml"] if ipa_build_distro == 'rocky' else [] }}
 
 # Upper constraints file for installing packages in the virtual environment
 # used for building IPA images. Default is {{ pip_upper_constraints_file }}.
