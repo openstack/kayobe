@@ -111,6 +111,8 @@
       container_engine: 'docker'
       ci_network_engine: default
       ironic_boot_mode: "bios"
+    roles:
+      - zuul: openstack/kolla
 
 - job:
     name: kayobe-overcloud-base

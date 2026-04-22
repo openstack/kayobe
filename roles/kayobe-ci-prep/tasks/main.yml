@@ -1,4 +1,14 @@
 ---
+- name: Configure secondary storage drive
+  #NOTE(wszumski) Some instances provide a smaller 40G root disk with a
+  #secondary storage drive. This kolla-ansible provided role sets up the
+  #secondary drive for docker/podman storage.
+  # see: https://docs.opendev.org/opendev/infra-manual/latest/testing.html#unprivileged-single-use-vms
+  include_role:
+    name: configure-ephemeral
+  vars:
+    configure_ephemeral_mountpoint: "{{ '/var/lib/containers' if container_engine | default('docker') == 'podman' else '/var/lib/docker' }}"
+
 - name: Set Rocky Linux mirror to download.rockylinux.org
   become: true
   ansible.builtin.shell:
