@@ -494,6 +494,61 @@ class TestNMStateFilter(unittest.TestCase):
             if i["name"] == "bond0")
         self.assertEqual(bond_iface["state"], "up")
 
+    def test_vlan_interface_qos_map_structured(self):
+        context = self._make_context(
+            {
+                "inventory_hostname": "test-host",
+                "ansible_facts": {"os_family": "RedHat"},
+                "vlan_interface": "eth0.123",
+                "vlan_ingress_qos_map": [
+                    {"from": 7, "to": 254},
+                    {"from": 3, "to": 12},
+                ],
+                "vlan_egress_qos_map": [
+                    {"from": 130, "to": 6},
+                    {"from": 129, "to": 7},
+                ],
+            }
+        )
+
+        result = nmstate.nmstate_config(context, ["vlan"])
+        vlan_iface = next(
+            iface for iface in result["interfaces"]
+            if iface["name"] == "eth0.123"
+        )
+        self.assertEqual(
+            vlan_iface["vlan"]["ingress-qos-map"],
+            [{"from": 3, "to": 12}, {"from": 7, "to": 254}],
+        )
+        self.assertEqual(
+            vlan_iface["vlan"]["egress-qos-map"],
+            [{"from": 129, "to": 7}, {"from": 130, "to": 6}],
+        )
+
+    def test_vlan_interface_qos_map_invalid_input(self):
+        test_cases = [
+            ("non-list input", {"vlan_ingress_qos_map": ""}),
+            ("missing required key", {"vlan_ingress_qos_map": [{"from": 1}]}),
+            ("wrong entry type", {"vlan_ingress_qos_map": ["1:2"]}),
+            (
+                "invalid numeric bound",
+                {"vlan_egress_qos_map": [{"from": 129, "to": 8}]},
+            ),
+        ]
+
+        for test_case, qos_map in test_cases:
+            variables = {
+                "inventory_hostname": "test-host",
+                "ansible_facts": {"os_family": "RedHat"},
+                "vlan_interface": "eth0.123",
+            }
+            variables.update(qos_map)
+            context = self._make_context(variables)
+
+            with self.subTest(test_case=test_case):
+                with self.assertRaises(ValueError):
+                    nmstate.nmstate_config(context, ["vlan"])
+
     def test_bridge_stp_unset(self):
         """Test bridge with unset bridge_stp does not configure STP."""
         variables = {
