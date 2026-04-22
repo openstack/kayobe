@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Fixes an issue in the ``stackhpc.luks`` role where the directory on the
+    control host was created with insufficent permissions causing the Ansible
+    ``synchronize`` module to fail when copying the keys to the control host.
+

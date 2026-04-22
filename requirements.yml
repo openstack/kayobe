@@ -41,7 +41,7 @@ roles:
   - src: stackhpc.libvirt-vm
     version: v1.16.3
   - src: stackhpc.luks
-    version: 0.4.2
+    version: 0.4.4
   - src: stackhpc.os-ironic-state
     version: v1.3.1
   - src: stackhpc.timezone
