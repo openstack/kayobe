@@ -65,6 +65,9 @@ SUPPORTED_RING_PARAMS = {
     'rx', 'tx', 'rx-max', 'tx-max', 'rx-jumbo', 'rx-mini'
 }
 
+MAX_U32 = 2**32 - 1
+MAX_VLAN_PRIORITY = 7
+
 
 def _resolve_ethtool_feature_aliases(features):
     """Convert ethtool feature aliases to canonical names.
@@ -288,6 +291,79 @@ def _get_bond_options(context, name, inventory_hostname):
             bond_options[option_name] = value
 
     return bond_options
+
+
+def _validate_vlan_qos_map_int(value, network_name, direction, field):
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise ValueError(
+            f"Network '{network_name}' has invalid {direction} QoS map "
+            f"'{field}' value '{value}'. Expected an integer.")
+
+    if value < 0 or value > MAX_U32:
+        raise ValueError(
+            f"Network '{network_name}' has invalid {direction} QoS map "
+            f"'{field}' value '{value}'. Expected a value in range "
+            f"0..{MAX_U32}.")
+
+    if direction == "ingress" and field == "from" \
+            and value > MAX_VLAN_PRIORITY:
+        raise ValueError(
+            f"Network '{network_name}' has invalid ingress QoS map "
+            f"'from' value '{value}'. Maximum VLAN priority is "
+            f"{MAX_VLAN_PRIORITY}.")
+
+    if direction == "egress" and field == "to" \
+            and value > MAX_VLAN_PRIORITY:
+        raise ValueError(
+            f"Network '{network_name}' has invalid egress QoS map "
+            f"'to' value '{value}'. Maximum VLAN priority is "
+            f"{MAX_VLAN_PRIORITY}.")
+
+    return value
+
+
+def _validate_vlan_qos_map_entry(entry, network_name, direction):
+    if not isinstance(entry, dict):
+        raise ValueError(
+            f"Network '{network_name}' has invalid {direction} QoS map "
+            "entry format. Expected a dict with keys 'from' and 'to'.")
+
+    if "from" not in entry or "to" not in entry:
+        raise ValueError(
+            f"Network '{network_name}' has invalid {direction} QoS map "
+            "entry. Required keys are 'from' and 'to'.")
+
+    return {
+        "from": _validate_vlan_qos_map_int(
+            entry["from"], network_name, direction, "from"),
+        "to": _validate_vlan_qos_map_int(
+            entry["to"], network_name, direction, "to")
+    }
+
+
+def _validate_and_sort_vlan_qos_map(raw_map, network_name, direction):
+    if raw_map is None:
+        return None
+
+    if not isinstance(raw_map, list):
+        raise ValueError(
+            f"Network '{network_name}' has invalid {direction} QoS map "
+            f"format '{type(raw_map).__name__}'. Expected a list of dicts "
+            "with keys 'from' and 'to'.")
+
+    normalized = []
+    for entry in raw_map:
+        normalized.append(_validate_vlan_qos_map_entry(
+            entry, network_name, direction))
+
+    normalized.sort(key=lambda item: (item["from"], item["to"]))
+    return normalized
+
+
+def _get_vlan_qos_map(context, name, inventory_hostname, direction):
+    qos_map = networks.net_attr(
+        context, name, f"{direction}_qos_map", inventory_hostname)
+    return _validate_and_sort_vlan_qos_map(qos_map, name, direction)
 
 
 @jinja2.pass_context
@@ -514,6 +590,17 @@ def nmstate_config(context, names, inventory_hostname=None):
                 "base-iface": parent,
                 "id": int(vlan_id)
             }
+
+            ingress_qos_map = _get_vlan_qos_map(
+                context, name, inventory_hostname, "ingress")
+            if ingress_qos_map is not None:
+                iface["vlan"]["ingress-qos-map"] = ingress_qos_map
+
+            egress_qos_map = _get_vlan_qos_map(
+                context, name, inventory_hostname, "egress")
+            if egress_qos_map is not None:
+                iface["vlan"]["egress-qos-map"] = egress_qos_map
+
             # Ensure parent is initialized
             get_iface(parent)
 
