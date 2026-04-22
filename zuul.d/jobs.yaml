@@ -109,6 +109,8 @@
       tls_enabled: false
       container_engine: 'docker'
       ironic_boot_mode: "bios"
+    roles:
+      - zuul: openstack/kolla
 
 - job:
     name: kayobe-overcloud-base

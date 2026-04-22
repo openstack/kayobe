@@ -114,6 +114,8 @@ copy_logs() {
 
     iptables-save > ${LOG_DIR}/system_logs/iptables.txt
 
+    lsblk | tee ${LOG_DIR}/system_logs/lsblk.txt
+
     if [ `command -v dpkg` ]; then
         dpkg -l > ${LOG_DIR}/system_logs/dpkg-l.txt
     fi
