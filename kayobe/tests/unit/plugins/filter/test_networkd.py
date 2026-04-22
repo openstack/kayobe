@@ -508,8 +508,9 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                 {
                     "Match": [
                         {"Name": "eth0.2"}
-                    ]
+                    ],
                 },
+                {'Link': [{'RequiredForOnline': 'false'}]},
             ]
         }
         self.assertEqual(expected, nets)
@@ -541,6 +542,7 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                         {"Name": "eth0.2"}
                     ]
                 },
+                {'Link': [{'RequiredForOnline': 'false'}]},
             ],
             "50-kayobe-eth0.3": [
                 {
@@ -548,6 +550,7 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                         {"Name": "eth0.3"}
                     ]
                 },
+                {'Link': [{'RequiredForOnline': 'false'}]},
             ]
         }
         self.assertEqual(expected, nets)
@@ -577,6 +580,7 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                         {"Name": "eth0.2"}
                     ]
                 },
+                {'Link': [{'RequiredForOnline': 'false'}]},
             ],
             "50-kayobe-vlan.5": [
                 {
@@ -584,6 +588,7 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                         {"Name": "vlan.5"}
                     ]
                 },
+                {'Link': [{'RequiredForOnline': 'false'}]},
             ],
             "50-kayobe-vlan6": [
                 {
@@ -591,6 +596,7 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                         {"Name": "vlan6"}
                     ]
                 },
+                {'Link': [{'RequiredForOnline': 'false'}]},
             ]
         }
         self.assertEqual(expected, nets)
@@ -609,6 +615,7 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                         {"Name": "br0"}
                     ]
                 },
+                {'Link': [{'RequiredForOnline': 'false'}]},
             ],
             "50-kayobe-eth0": [
                 {
@@ -652,6 +659,7 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                         {"Name": "br0"}
                     ]
                 },
+                {'Link': [{'RequiredForOnline': 'false'}]},
             ],
             "50-kayobe-eth0": [
                 {
@@ -667,6 +675,7 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                 {
                     "Link": [
                         {"MTUBytes": 1400},
+                        {'RequiredForOnline': 'false'},
                     ]
                 },
             ],
@@ -698,6 +707,7 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                         {"Name": "br0"}
                     ]
                 },
+                {'Link': [{'RequiredForOnline': 'false'}]},
             ],
             "50-kayobe-eth0": [
                 {
@@ -730,6 +740,7 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                         {"Name": "eth1.2"}
                     ]
                 },
+                {'Link': [{'RequiredForOnline': 'false'}]},
             ],
         }
         self.assertEqual(expected, nets)
@@ -747,8 +758,9 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                 {
                     "Match": [
                         {"Name": "br0"}
-                    ]
+                    ],
                 },
+                {'Link': [{'RequiredForOnline': 'false'}]},
             ],
             "50-kayobe-eth0": [
                 {
@@ -762,19 +774,21 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                         {"VLAN": "eth0.2"}
                     ]
                 },
+                {'Link': [{'RequiredForOnline': 'false'}]},
             ],
             "50-kayobe-eth0.2": [
                 {
                     "Match": [
                         {"Name": "eth0.2"}
-                    ]
+                    ],
                 },
+                {'Link': [{'RequiredForOnline': 'false'}]},
             ],
             "50-kayobe-eth1": [
                 {
                     "Match": [
                         {"Name": "eth1"}
-                    ]
+                    ],
                 },
                 {
                     "Network": [
@@ -799,6 +813,7 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                         {"Name": "bond0"}
                     ]
                 },
+                {'Link': [{'RequiredForOnline': 'false'}]},
             ],
             "50-kayobe-eth0": [
                 {
@@ -842,6 +857,9 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                         {"Name": "bond0"}
                     ]
                 },
+                {
+                    "Link": [{'RequiredForOnline': 'false'}]
+                },
             ],
             "50-kayobe-eth0": [
                 {
@@ -857,6 +875,7 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                 {
                     "Link": [
                         {"MTUBytes": 1400},
+                        {'RequiredForOnline': 'false'},
                     ]
                 },
             ],
@@ -888,6 +907,7 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                         {"Name": "bond0"}
                     ]
                 },
+                {'Link': [{'RequiredForOnline': 'false'}]},
             ],
             "50-kayobe-eth0": [
                 {
@@ -920,6 +940,7 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                         {"Name": "eth1.2"}
                     ]
                 },
+                {'Link': [{'RequiredForOnline': 'false'}]},
             ],
         }
         self.assertEqual(expected, nets)
@@ -937,7 +958,10 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                 {
                     "Match": [
                         {"Name": "bond0"}
-                    ]
+                    ],
+                },
+                {
+                    "Link": [{'RequiredForOnline': 'false'}]
                 },
             ],
             "50-kayobe-eth0": [
@@ -952,6 +976,9 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                         {"VLAN": "eth0.2"},
                     ]
                 },
+                {
+                    "Link": [{'RequiredForOnline': 'false'}]
+                },
             ],
             "50-kayobe-eth0.2": [
                 {
@@ -959,6 +986,10 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                         {"Name": "eth0.2"}
                     ]
                 },
+                {
+                    "Link": [{'RequiredForOnline': 'false'}]
+                },
+
             ],
             "50-kayobe-eth1": [
                 {
@@ -991,6 +1022,7 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                         {"Name": "br0"}
                     ]
                 },
+                {'Link': [{'RequiredForOnline': 'false'}]},
             ],
             "50-kayobe-p-br0-phy": [
                 {
@@ -1034,6 +1066,7 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                 {
                     "Link": [
                         {"MTUBytes": 1400},
+                        {'RequiredForOnline': 'false'},
                     ]
                 },
             ],
@@ -1095,14 +1128,16 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                     "Network": [
                         {"VLAN": "br0.42"}
                     ]
-                }
+                },
+                {'Link': [{'RequiredForOnline': 'false'}]},
             ],
             "50-kayobe-br0.42": [
                 {
                     "Match": [
                         {"Name": "br0.42"}
-                    ]
+                    ],
                 },
+                {'Link': [{'RequiredForOnline': 'false'}]},
             ],
             "50-kayobe-p-br0-phy": [
                 {
@@ -1180,8 +1215,9 @@ class TestNetworkdNetworks(BaseNetworkdTest):
                 {
                     "Match": [
                         {"Name": "eth0.2"}
-                    ]
+                    ],
                 },
+                {'Link': [{'RequiredForOnline': 'false'}]},
             ]
         }
         self.assertEqual(expected, nets)
