@@ -152,6 +152,10 @@ kolla_openstack_custom_config_include_globs_default:
     glob: swift/**
   - enabled: '{{ kolla_enable_telegraf | bool }}'
     glob: telegraf/**
+  - enabled: '{{ kolla_enable_watcher | bool }}'
+    glob: watcher.conf
+  - enabled: '{{ kolla_enable_watcher | bool }}'
+    glob: watcher/**
 
 # Extra items to add to kolla_openstack_custom_config_include_globs_default
 # to produce kolla_openstack_custom_config_include_globs.
@@ -818,3 +822,9 @@ kolla_enable_swift: false
 
 # Whether to enable telegraf
 kolla_enable_telegraf: true
+
+###############################################################################
+# Watcher configuration.
+
+# Whether to enable watcher
+kolla_enable_watcher: false

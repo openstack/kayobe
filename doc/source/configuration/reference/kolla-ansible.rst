@@ -747,6 +747,8 @@ which files are supported.
    ``prometheus/*``                Prometheus configuration.
    ``swift/*``                     Extended swift configuration.
    ``telegraf/*``                  Extended Telegraf configuration.
+   ``watcher.conf``                Watcher configuration.
+   ``watcher/*``                   Extended Watcher configuration.
    =============================== =======================================================
 
 Configuring an OpenStack Component
