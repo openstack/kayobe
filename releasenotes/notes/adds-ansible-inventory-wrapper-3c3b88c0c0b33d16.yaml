@@ -1,0 +1,5 @@
+---
+feature:
+  - |
+    Adds a `kayobe inventory` command which wraps `ansible-inventory` to
+    display the Kayobe Ansible inventory.

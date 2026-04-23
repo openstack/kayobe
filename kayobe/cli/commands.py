@@ -1172,6 +1172,20 @@ class InfraVMHostCommandRun(KayobeAnsibleMixin, VaultMixin, Command):
                                   extra_vars=extra_vars)
 
 
+class Inventory(VaultMixin, Command):
+    """Wrapper for ansible-inventory showing Kayobe inventory."""
+
+    def get_parser(self, prog_name):
+        parser = super(Inventory, self).get_parser(prog_name)
+        group = parser.add_argument_group("Inventory")
+        ansible.add_inventory_args(group)
+        return parser
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Running ansible-inventory")
+        ansible.run_ansible_inventory(parsed_args)
+
+
 class InfraVMHostUpgrade(KayobeAnsibleMixin, VaultMixin, Command):
     """Upgrade the infra VM host services.
 

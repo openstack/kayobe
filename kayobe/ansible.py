@@ -83,6 +83,169 @@ def add_args(parser):
                              "specific playbooks. \"all\" skips all playbooks")
 
 
+def add_inventory_args(parser):
+    """Add arguments required for running Ansible playbooks to a parser."""
+
+    # Kayobe configuration options
+    default_config_path = os.getenv(CONFIG_PATH_ENV, DEFAULT_CONFIG_PATH)
+    default_environment = os.getenv(ENVIRONMENT_ENV)
+    parser.add_argument(
+        "--config-path",
+        default=default_config_path,
+        help="path to Kayobe configuration. (default=$%s or %s)"
+        % (CONFIG_PATH_ENV, DEFAULT_CONFIG_PATH),
+    )
+    parser.add_argument(
+        "--environment",
+        default=default_environment,
+        help=("specify environment name "
+              "(default=$%s or None)" % ENVIRONMENT_ENV),
+    )
+    parser.add_argument(
+        "-i",
+        "--inventory",
+        metavar="INVENTORY",
+        action="append",
+        help=(
+            "specify inventory host path "
+            "(default=$%s/inventory or %s/inventory) "
+        )
+        % (CONFIG_PATH_ENV, DEFAULT_CONFIG_PATH),
+    )
+    # Positional argument
+    parser.add_argument(
+        "group",
+        nargs="?",
+        help=(
+            "The name of a group in the inventory, relevant when using --graph"
+        ),
+    )
+
+    # Standard options
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="count",
+        help=(
+            "Causes Ansible to print more debug messages. Adding multiple -v"
+            " will increase the verbosity, the builtin plugins currently"
+            " evaluate up to -vvvvvv. A reasonable level to start is -vvv,"
+            " connection debugging might require -vvvv."
+        ),
+    )
+    parser.add_argument(
+        "-l",
+        "--limit",
+        metavar="SUBSET",
+        help="further limit selected hosts to an additional pattern",
+    )
+    parser.add_argument(
+        "--flush-cache",
+        action="store_true",
+        help="clear the fact cache for every host in inventory",
+    )
+    parser.add_argument(
+        "--vault-id",
+        metavar="VAULT_IDS",
+        action="append",
+        help=(
+            "the vault identity to use. This argument may be specified "
+            "multiple times."
+        ),
+    )
+    parser.add_argument(
+        "--playbook-dir",
+        metavar="BASEDIR",
+        help=(
+            "Since this tool does not use playbooks, use this as a substitute"
+            "playbook directory. This sets the relative path for many "
+            "features including roles/ group_vars/ etc."
+        ),
+    )
+    parser.add_argument(
+        "-e",
+        "--extra-vars",
+        metavar="EXTRA_VARS",
+        action="append",
+        dest="extra_vars",
+        help=(
+            "set additional variables as key=value or YAML/JSON, if filename"
+            " prepend with @. This argument may be specified multiple times."
+        ),
+    )
+
+    # Format options
+    parser.add_argument(
+        "-y",
+        "--yaml",
+        action="store_true",
+        help="Use YAML format instead of default JSON, ignored for --graph",
+    )
+    parser.add_argument(
+        "--toml",
+        action="store_true",
+        help="Use TOML format instead of default JSON, ignored for --graph",
+    )
+
+    # Other options
+    parser.add_argument(
+        "--export",
+        action="store_true",
+        help=(
+            "When doing --list, represent in a way that is optimized for"
+            " export,not as an accurate representation of how Ansible has"
+            " processed it"
+        ),
+    )
+    parser.add_argument(
+        "--output",
+        metavar="OUTPUT_FILE",
+        help=(
+            "When doing --list, send the inventory to a file instead of to the"
+            " screen"
+        ),
+    )
+    parser.add_argument(
+        "--vars",
+        action="store_true",
+        help="Add vars to graph display, ignored unless used with --graph",
+    )
+    parser.add_argument(
+        "--version",
+        action="version",
+        version="%(prog)s 2.15.0 (example version)",
+        help=(
+            "show program's version number, config file location, configured"
+            "module search path, module location, executable location "
+            "and exit"
+        ),
+    )
+
+    # Actions: mutually exclusive
+    action_group = parser.add_mutually_exclusive_group(required=True)
+    action_group.add_argument(
+        "--list",
+        action="store_true",
+        help="Output all hosts info, works as inventory script",
+    )
+    action_group.add_argument(
+        "--host",
+        metavar="HOST",
+        help=(
+            "Output specific host info, works as inventory script. It will"
+            " ignore limit"
+        ),
+    )
+    action_group.add_argument(
+        "--graph",
+        action="store_true",
+        help=(
+            "create inventory graph, if supplying pattern it must be a valid"
+            " group name. It will ignore limit"
+        ),
+    )
+
+
 def _get_inventories_paths(parsed_args, env_paths):
     """Return the paths to the Kayobe inventories."""
     default_inventory = utils.get_data_files_path("ansible", "inventory")
@@ -349,6 +512,70 @@ def run_playbooks(parsed_args, playbooks,
         if check_output:
             LOG.error("The output was:\n%s", e.output)
         sys.exit(e.returncode)
+
+
+def build_long_opts(arg_dict):
+    """Convert dict to flat ['--flag', 'value', ...] list."""
+    cmd = []
+    for key, value in arg_dict.items():
+        if value is None or value is False:
+            continue
+        flag = f'--{key.replace("_", "-")}'
+        if isinstance(value, bool):
+            if value:
+                cmd.append(flag)
+        elif isinstance(value, list):
+            for v in value:
+                cmd.extend([flag, str(v)])
+        else:
+            cmd.extend([flag, str(value)])
+
+    return cmd
+
+
+def run_ansible_inventory(parsed_args):
+    """Run the Ansible inventory command."""
+
+    cmd = ["ansible-inventory"]
+    environment_finder = utils.EnvironmentFinder(
+        parsed_args.config_path, parsed_args.environment
+    )
+    env_paths = environment_finder.ordered_paths()
+    inventories = _get_inventories_paths(parsed_args, env_paths)
+    for inventory in inventories:
+        cmd += ["--inventory", inventory]
+    vars_paths = [parsed_args.config_path]
+    for env_path in env_paths:
+        vars_paths.append(env_path)
+    vars_files = _get_vars_files(vars_paths)
+    for vars_file in vars_files:
+        cmd += ["-e", "@%s" % vars_file]
+    cmd += vault.build_args(parsed_args, "--vault-password-file")
+
+    env = _get_environment(parsed_args, external_playbook=False)
+
+    passthrough_args = vars(parsed_args)
+
+    # Remove arguments that are not passthrough args.
+    passthrough_args.pop("inventory", None)
+    passthrough_args.pop("environment", None)
+    passthrough_args.pop("config_path", None)
+
+    # Remove positional argument 'group' from passthrough args
+    # prior to building inventory args, as we don't pass it as a long option.
+    # We do want to use it as a positional argument at the end of the
+    # command.
+    group = passthrough_args.pop("group", None)
+
+    cmd += build_long_opts(passthrough_args)
+
+    # Add positional args at the end, as required by ansible-inventory.
+    if group:
+        cmd += [group]
+
+    LOG.debug("Running: %s" % " ".join(cmd))
+
+    os.execvpe(cmd[0], cmd, env)
 
 
 def run_playbook(parsed_args, playbook, *args, **kwargs):
