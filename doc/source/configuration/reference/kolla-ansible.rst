@@ -829,6 +829,8 @@ which files are supported.
    ``placement/*``                 Extended Placement configuration.
    ``prometheus/*``                Prometheus configuration.
    ``swift/*``                     Extended swift configuration.
+   ``watcher.conf``                Watcher configuration.
+   ``watcher/*``                   Extended Watcher configuration.
    =============================== =======================================================
 
 Configuring an OpenStack Component

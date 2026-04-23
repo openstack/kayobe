@@ -148,6 +148,10 @@ kolla_openstack_custom_config_include_globs_default:
     glob: prometheus/**
   - enabled: '{{ kolla_enable_swift | bool }}'
     glob: swift/**
+  - enabled: '{{ kolla_enable_watcher | bool }}'
+    glob: watcher.conf
+  - enabled: '{{ kolla_enable_watcher | bool }}'
+    glob: watcher/**
 
 # Extra items to add to kolla_openstack_custom_config_include_globs_default
 # to produce kolla_openstack_custom_config_include_globs.
@@ -795,3 +799,9 @@ kolla_enable_prometheus: false
 
 # Whether to enable swift.
 kolla_enable_swift: false
+
+###############################################################################
+# Watcher configuration.
+
+# Whether to enable watcher
+kolla_enable_watcher: false
