@@ -1,0 +1,189 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg viewBox="0 0 912 1164" xmlns="http://www.w3.org/2000/svg" xmlns:inkspace="http://www.inkscape.org/namespaces/inkscape" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs id="defs_block">
+    <filter height="1.504" id="filter_blur" inkspace:collect="always" width="1.1575" x="-0.07875" y="-0.252">
+      <feGaussianBlur id="feGaussianBlur3780" inkspace:collect="always" stdDeviation="4.2" />
+    </filter>
+  </defs>
+  <title>blockdiag</title>
+  <desc>nwdiag {
+   // Node labels keep names concise while preserving readable host group
+   // names in the rendered diagram.
+   seed_hv [label = "Seed Hypervisor"];
+   seed [label = "Seed"];
+   controllers [label = "Controllers"];
+   computes [label = "Computes"];
+   storage [label = "Storage"];
+
+   network external_admin_net {
+      address = "203.0.113.0/24";
+      color = "#93c5fd";
+      seed_hv;
+      seed;
+   }
+
+   network power_mgmt_net {
+      address = "10.0.1.0/24";
+      color = "#fca5a5";
+      seed_hv;
+      seed;
+   }
+
+   network provision_ctl_net {
+      address = "10.0.2.0/24";
+      color = "#86efac";
+      seed_hv;
+      seed;
+      controllers;
+      computes;
+      storage;
+   }
+
+   network internal_net {
+      address = "172.20.10.0/26";
+      color = "#fcd34d";
+      controllers;
+      computes;
+      storage;
+   }
+
+   network storage_net {
+      address = "172.20.20.0/25";
+      color = "#c4b5fd";
+      controllers;
+      computes;
+      storage;
+   }
+
+   network storage_mgmt_net {
+      address = "172.20.10.64/26";
+      color = "#fdba74";
+      storage;
+   }
+
+   network tenant_tunnel_net {
+      address = "10.0.4.0/25";
+      color = "#67e8f9";
+      controllers;
+      computes;
+   }
+
+   network external_user_net {
+      address = "172.31.50.0/24";
+      color = "#f9a8d4";
+      controllers;
+   }
+}</desc>
+  <rect fill="rgb(0,0,0)" height="40" stroke="rgb(0,0,0)" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="104" x="155" y="162" />
+  <rect fill="rgb(0,0,0)" height="40" stroke="rgb(0,0,0)" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="104" x="307" y="162" />
+  <rect fill="rgb(0,0,0)" height="40" stroke="rgb(0,0,0)" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="104" x="459" y="450" />
+  <rect fill="rgb(0,0,0)" height="40" stroke="rgb(0,0,0)" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="104" x="611" y="450" />
+  <rect fill="rgb(0,0,0)" height="40" stroke="rgb(0,0,0)" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="104" x="763" y="450" />
+  <path d="M 131 103 L 435 103 A2,4 0 0 1 435 111 L 131 111 A2,4 0 0 1 131 103" fill="rgb(0,0,0)" style="filter:url(#filter_blur)" />
+  <path d="M 131 247 L 435 247 A2,4 0 0 1 435 255 L 131 255 A2,4 0 0 1 131 247" fill="rgb(0,0,0)" style="filter:url(#filter_blur)" />
+  <path d="M 131 391 L 891 391 A2,4 0 0 1 891 399 L 131 399 A2,4 0 0 1 131 391" fill="rgb(0,0,0)" style="filter:url(#filter_blur)" />
+  <path d="M 435 535 L 891 535 A2,4 0 0 1 891 543 L 435 543 A2,4 0 0 1 435 535" fill="rgb(0,0,0)" style="filter:url(#filter_blur)" />
+  <path d="M 435 679 L 891 679 A2,4 0 0 1 891 687 L 435 687 A2,4 0 0 1 435 679" fill="rgb(0,0,0)" style="filter:url(#filter_blur)" />
+  <path d="M 739 823 L 891 823 A2,4 0 0 1 891 831 L 739 831 A2,4 0 0 1 739 823" fill="rgb(0,0,0)" style="filter:url(#filter_blur)" />
+  <path d="M 435 967 L 739 967 A2,4 0 0 1 739 975 L 435 975 A2,4 0 0 1 435 967" fill="rgb(0,0,0)" style="filter:url(#filter_blur)" />
+  <path d="M 435 1111 L 587 1111 A2,4 0 0 1 587 1119 L 435 1119 A2,4 0 0 1 435 1111" fill="rgb(0,0,0)" style="filter:url(#filter_blur)" />
+  <path d="M 128 100 L 432 100 A2,4 0 0 1 432 108 L 128 108 A2,4 0 0 1 128 100" fill="rgb(147,197,253)" stroke="rgb(0,0,0)" />
+  <path d="M 432 108 A2,4 0 0 1 432 100" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 128 100 L 432 100" fill="none" stroke="none" />
+  <path d="M 280 35 L 280 100" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 128 244 L 432 244 A2,4 0 0 1 432 252 L 128 252 A2,4 0 0 1 128 244" fill="rgb(252,165,165)" stroke="rgb(0,0,0)" />
+  <path d="M 432 252 A2,4 0 0 1 432 244" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 128 244 L 432 244" fill="none" stroke="none" />
+  <path d="M 128 388 L 888 388 A2,4 0 0 1 888 396 L 128 396 A2,4 0 0 1 128 388" fill="rgb(134,239,172)" stroke="rgb(0,0,0)" />
+  <path d="M 888 396 A2,4 0 0 1 888 388" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 128 388 L 888 388" fill="none" stroke="none" />
+  <path d="M 432 532 L 888 532 A2,4 0 0 1 888 540 L 432 540 A2,4 0 0 1 432 532" fill="rgb(252,211,77)" stroke="rgb(0,0,0)" />
+  <path d="M 888 540 A2,4 0 0 1 888 532" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 432 532 L 888 532" fill="none" stroke="none" />
+  <path d="M 432 676 L 888 676 A2,4 0 0 1 888 684 L 432 684 A2,4 0 0 1 432 676" fill="rgb(196,181,253)" stroke="rgb(0,0,0)" />
+  <path d="M 888 684 A2,4 0 0 1 888 676" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 432 676 L 888 676" fill="none" stroke="none" />
+  <path d="M 736 820 L 888 820 A2,4 0 0 1 888 828 L 736 828 A2,4 0 0 1 736 820" fill="rgb(253,186,116)" stroke="rgb(0,0,0)" />
+  <path d="M 888 828 A2,4 0 0 1 888 820" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 736 820 L 888 820" fill="none" stroke="none" />
+  <path d="M 432 964 L 736 964 A2,4 0 0 1 736 972 L 432 972 A2,4 0 0 1 432 964" fill="rgb(103,232,249)" stroke="rgb(0,0,0)" />
+  <path d="M 736 972 A2,4 0 0 1 736 964" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 432 964 L 736 964" fill="none" stroke="none" />
+  <path d="M 432 1108 L 584 1108 A2,4 0 0 1 584 1116 L 432 1116 A2,4 0 0 1 432 1108" fill="rgb(249,168,212)" stroke="rgb(0,0,0)" />
+  <path d="M 584 1116 A2,4 0 0 1 584 1108" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 432 1108 L 584 1108" fill="none" stroke="none" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="110" x="65.0" y="104">external_admin_net</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="84" x="78.0" y="118">203.0.113.0/24</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="97" x="71.5" y="248">power_mgmt_net</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="66" x="85.0" y="262">10.0.1.0/24</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="95" x="72.5" y="392">provision_ctl_net</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="66" x="74.5" y="406">10.0.2.0/24</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="68" x="390.0" y="536">internal_net</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="84" x="382.0" y="550">172.20.10.0/26</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="66" x="391.0" y="680">storage_net</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="84" x="382.0" y="694">172.20.20.0/25</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="104" x="676.0" y="824">storage_mgmt_net</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="91" x="682.5" y="838">172.20.10.64/26</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="101" x="373.5" y="968">tenant_tunnel_net</text>
+   <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="70" x="375.0" y="982">10.0.4.0/25</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="100" x="374.0" y="1112">external_user_net</text>
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="84" x="382.0" y="1126">172.31.50.0/24</text>
+  <path d="M 204 108 L 204 156" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 212 196 L 212 244" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 196 196 L 196 240" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 196.0 240.0 A8.0,8.0 0 0 1 196.0 256.0" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 196 256 L 196 388" fill="none" stroke="rgb(0,0,0)" />
+  <rect fill="rgb(255,255,255)" height="40" stroke="rgb(0,0,0)" width="104" x="152" y="156" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="94" x="204.0" y="183">Seed Hypervisor</text>
+  <path d="M 356 108 L 356 156" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 364 196 L 364 244" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 348 196 L 348 240" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 348.0 240.0 A8.0,8.0 0 0 1 348.0 256.0" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 348 256 L 348 388" fill="none" stroke="rgb(0,0,0)" />
+  <rect fill="rgb(255,255,255)" height="40" stroke="rgb(0,0,0)" width="104" x="304" y="156" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="28" x="356.0" y="182">Seed</text>
+  <path d="M 508 396 L 508 444" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 532 484 L 532 532" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 516 484 L 516 528" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 516.0 528.0 A8.0,8.0 0 0 1 516.0 544.0" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 516 544 L 516 676" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 500 484 L 500 528" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 500.0 528.0 A8.0,8.0 0 0 1 500.0 544.0" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 500 544 L 500 672" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 500.0 672.0 A8.0,8.0 0 0 1 500.0 688.0" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 500 688 L 500 964" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 484 484 L 484 528" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 484.0 528.0 A8.0,8.0 0 0 1 484.0 544.0" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 484 544 L 484 672" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 484.0 672.0 A8.0,8.0 0 0 1 484.0 688.0" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 484 688 L 484 960" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 484.0 960.0 A8.0,8.0 0 0 1 484.0 976.0" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 484 976 L 484 1108" fill="none" stroke="rgb(0,0,0)" />
+  <rect fill="rgb(255,255,255)" height="40" stroke="rgb(0,0,0)" width="104" x="456" y="444" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="63" x="508.5" y="470">Controllers</text>
+  <path d="M 660 396 L 660 444" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 676 484 L 676 532" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 660 484 L 660 528" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 660.0 528.0 A8.0,8.0 0 0 1 660.0 544.0" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 660 544 L 660 676" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 644 484 L 644 528" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 644.0 528.0 A8.0,8.0 0 0 1 644.0 544.0" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 644 544 L 644 672" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 644.0 672.0 A8.0,8.0 0 0 1 644.0 688.0" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 644 688 L 644 964" fill="none" stroke="rgb(0,0,0)" />
+  <rect fill="rgb(255,255,255)" height="40" stroke="rgb(0,0,0)" width="104" x="608" y="444" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="57" x="660.5" y="471">Computes</text>
+  <path d="M 812 396 L 812 444" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 828 484 L 828 532" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 812 484 L 812 528" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 812.0 528.0 A8.0,8.0 0 0 1 812.0 544.0" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 812 544 L 812 676" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 796 484 L 796 528" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 796.0 528.0 A8.0,8.0 0 0 1 796.0 544.0" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 796 544 L 796 672" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 796.0 672.0 A8.0,8.0 0 0 1 796.0 688.0" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 796 688 L 796 820" fill="none" stroke="rgb(0,0,0)" />
+  <rect fill="rgb(255,255,255)" height="40" stroke="rgb(0,0,0)" width="104" x="760" y="444" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="44" x="812.0" y="471">Storage</text>
+</svg>

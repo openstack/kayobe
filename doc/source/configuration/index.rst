@@ -11,4 +11,5 @@ Kayobe's configuration options.
    :maxdepth: 2
 
    scenarios/index
+   examples/index
    reference/index
