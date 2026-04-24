@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fixes network connectivity check failing when using ansible>=2.19.  See
+    `LP#2138614 <https://bugs.launchpad.net/kayobe/+bug/2138614>`_.
