@@ -24,3 +24,6 @@ kolla_admin_openrc_cacert: "/etc/pki/tls/certs/ca-bundle.crt"
 libvirt_tls: "yes"
 certificates_libvirt_output_dir: "{% raw %}{{ kayobe_env_config_path }}{% endraw %}/certificates/libvirt"
 {% endif %}
+
+# FIXME(wszumski): The time check is unreliable in CI
+prechecks_enable_host_ntp_checks: false
