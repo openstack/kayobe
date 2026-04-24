@@ -86,6 +86,82 @@ and tasks.
     Using tags is not tested in either Kayobe or Kolla-Ansible CI, and as such
     should only be used if you know what you're doing. Proceed with caution.
 
+Kolla Ansible Playbook
+----------------------
+
+Some commands that invoke Kolla Ansible support replacing the default
+``site.yml`` playbook with a custom one via ``--kolla-playbook``.  This may be
+used to specify a playbook that replaces or extends the default playbook, and
+needs to execute in the Kolla Ansible context.  For example::
+
+    (kayobe) $ kayobe overcloud service deploy --kolla-playbook /path/to/playbook.yml
+
+The playbook can be called multiple times with different ``kolla_action`` values. You must make the playbook resistant to this, for example by using the ``kolla_action`` variable to conditionally execute tasks. Examples of kolla_action values include:
+
+- ``backup``
+- ``bootstrap-servers``
+- ``check``
+- ``certificates``
+- ``config``
+- ``config_validate``
+- ``deploy``
+- ``deploy-containers``
+- ``deploy-servers``
+- ``destroy``
+- ``gather-facts``
+- ``migrate-container-engine``
+- ``nova-libvirt-cleanup``
+- ``octavia-certificates``
+- ``post-deploy``
+- ``precheck``
+- ``prune-images``
+- ``pull``
+- ``rabbitmq-reset-state``
+- ``reconfigure``
+- ``stop``
+- ``upgrade``
+
+For example, when running ``kayobe overcloud service deploy`` the playbook will be run with ``kolla_action`` set to
+
+- ``precheck``
+- ``deploy``
+- ``post-deploy``
+
+An example of a task only running against a specific kolla_action value is shown below:
+
+.. code-block:: yaml
+
+    ---
+    - name: Example custom playbook with precheck and deploy tasks
+      hosts: all
+      tasks:
+        - name: Assert something during precheck
+          assert:
+            that:
+              - some_variable is defined
+          when: kolla_action == 'precheck'
+
+        - name: Do something during deploy
+          debug:
+            msg: "This will only run during deploy"
+          when: kolla_action == 'deploy'
+
+Alternatively, you can make the playbook exit if the kolla_action value is not one that the playbook is designed to handle, removing the need for ``when`` conditions on individual tasks:
+
+.. code-block:: yaml
+
+    ---
+    - name: Example guarded custom playbook
+      hosts: all
+      tasks:
+        - name: End play if not deploying
+          meta: end_play
+          when: kolla_action != 'deploy'
+
+        - name: Do something during deploy
+          debug:
+            msg: "This will only run during deploy"
+
 Check and diff mode
 -------------------
 
