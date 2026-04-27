@@ -105,9 +105,9 @@ class ActionModule(action.ActionBase):
                 os.path.join(self._loader._basedir, 'templates'),
                 os.path.dirname(source),
             ]
-            self._templar.environment.loader.searchpath = searchpath
 
-            template_data = self._templar.template(template_data)
+            templar = self._templar.copy_with_new_env(searchpath=searchpath)
+            template_data = templar.template(template_data)
             result = yaml.safe_load(template_data)
         return result or {}
 
@@ -119,7 +119,7 @@ class ActionModule(action.ActionBase):
 
         # save template args.
         extra_vars = self._task.args.get('vars', list())
-        old_vars = self._templar._available_variables
+        old_vars = self._templar.available_variables
 
         temp_vars = task_vars.copy()
         temp_vars.update(extra_vars)

@@ -165,9 +165,9 @@ class ActionModule(action.ActionBase):
                 os.path.join(self._loader._basedir, 'templates'),
                 os.path.dirname(source),
             ]
-            self._templar.environment.loader.searchpath = searchpath
 
-            result = self._templar.template(template_data)
+            templar = self._templar.copy_with_new_env(searchpath=searchpath)
+            result = templar.template(template_data)
             fakefile = StringIO(result)
             config.parse(fakefile)
             fakefile.close()
