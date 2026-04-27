@@ -97,6 +97,17 @@
 #network_patch_suffix_ovs:
 
 ###############################################################################
+# OpenStack Network configuration
+
+# Whether to register networks in OpenStack. The following networks are
+# registered:
+# - Ironic provisioning network (defined by provision_wl_net_name)
+# - Ironic inspection network (defined by inspection_net_name)
+# - Ironic cleaning network (defined by cleaning_net_name)
+# Default is true.
+#openstack_network_registration_enabled:
+
+###############################################################################
 # Network routing table configuration.
 
 # List of IP routing tables. Each item should be a dict containing 'id' and

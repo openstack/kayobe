@@ -926,6 +926,27 @@ consideration:
   lookup the interface for the cloud-init network configuration that occurs
   during bifrost provisioning of the overcloud.
 
+
+Registration of networks in OpenStack
+--------------------------------------
+
+By default, Kayobe will register the following networks:
+
+* :ref:`workload-cleaning-network`
+* :ref:`workload-provisioning-network`
+* :ref:`workload-inspection-network`
+
+as part of ``kayobe overcloud post configure``. You can change this behaviour
+for all networks with the ``openstack_network_registration_enabled`` variable:
+
+.. code-block:: yaml
+   :caption: ``networks.yml``
+
+   # Disabling registration of OpenStack networks
+   openstack_network_registration_enabled: false
+
+This can be useful if you define you networks by some other means e.g OpenTofu.
+
 Overcloud Provisioning Network
 ------------------------------
 
@@ -950,6 +971,8 @@ To configure a network called ``example`` with an inspection allocation pool:
 
    This pool should not overlap with a kayobe allocation pool on the same
    network.
+
+.. _workload-cleaning-network:
 
 Workload Cleaning Network
 -------------------------
@@ -980,6 +1003,8 @@ allocation pool:
    This pool should not overlap with a kayobe or inspection allocation pool on
    the same network.
 
+.. _workload-provisioning-network:
+
 Workload Provisioning Network
 -----------------------------
 
@@ -1006,6 +1031,8 @@ allocation pool:
 
    This pool should not overlap with a kayobe or inspection allocation pool on
    the same network.
+
+.. _workload-inspection-network:
 
 Workload Inspection Network
 ---------------------------

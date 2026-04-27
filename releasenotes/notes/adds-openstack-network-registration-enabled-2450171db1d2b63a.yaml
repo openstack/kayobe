@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds a new feature flag, ``openstack_network_registration_enabled``,
+    to control whether or not networks defined in Kayobe are registered
+    as Neutron networks in OpenStack.
