@@ -109,8 +109,8 @@
          | combine({ (item | net_interface): (item | net_zone) }) }}
   loop: "{{ network_interfaces | default([]) }}"
   when:
-    - item | net_zone
-    - item | net_interface
+    - item | net_zone is truthy
+    - item | net_interface is truthy
 
 - name: Build nmstate firewalld interface-zone items
   set_fact:
