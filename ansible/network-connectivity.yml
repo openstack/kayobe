@@ -51,8 +51,8 @@
         ping {{ item | net_gateway }} -c1 -M do {% if mtu %} -s {{ mtu | int - icmp_overhead_bytes }}{% endif %}
       with_items: "{{ network_interfaces }}"
       when:
-        - item | net_ip
-        - item | net_gateway
+        - item | net_ip is truthy
+        - item | net_gateway is truthy
       changed_when: False
       vars:
         mtu: "{{ item | net_mtu }}"
@@ -77,7 +77,7 @@
       when:
         - remote_hosts | length > 0
         - remote_ip | length > 0
-        - item | net_ip
+        - item | net_ip is truthy
       changed_when: False
       vars:
         # Select other hosts targeted by this play which have this network
