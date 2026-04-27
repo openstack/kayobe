@@ -1,4 +1,4 @@
-# {{ ansible_managed }}
+# {{ kayobe_managed }}
 
 {% for line in (admin_openrc.content | b64decode).splitlines() %}
 {% if "export OS_AUTH_URL" in line %}
