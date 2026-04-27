@@ -84,7 +84,7 @@
         # interface (item).
         remote_hosts: >
           {{ hostvars.values() |
-             selectattr('inventory_hostname', 'is_in', play_hosts) |
+             selectattr('inventory_hostname', 'is_in', ansible_play_batch) |
              selectattr('network_interfaces', 'defined') |
              selectattr('network_interfaces', 'issuperset', [item]) |
              rejectattr('inventory_hostname', 'equalto', inventory_hostname) |
