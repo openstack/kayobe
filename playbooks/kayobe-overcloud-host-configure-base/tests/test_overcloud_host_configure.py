@@ -4,6 +4,7 @@
 # Uses py.test and TestInfra.
 
 import ipaddress
+import json
 import os
 
 import distro
@@ -37,6 +38,24 @@ def _is_fail2ban_enabled():
     return os.environ.get('FAIL2BAN_ENABLED', 'false').lower() == 'true'
 
 
+def _is_nmstate_enabled():
+    return os.environ.get('CI_NETWORK_ENGINE', 'default').lower() == 'nmstate'
+
+
+def _get_vlan_info_data(host, interface_name):
+    output = host.check_output(
+        '/sbin/ip -d -j link show dev %s' % interface_name)
+    link_data = json.loads(output)
+    assert len(link_data) == 1
+    linkinfo = link_data[0].get('linkinfo', {})
+    assert linkinfo.get('info_kind') == 'vlan'
+    return linkinfo.get('info_data', {})
+
+
+def _normalize_qos_map(qos_map):
+    return {(entry['from'], entry['to']) for entry in qos_map}
+
+
 def test_network_ethernet(host):
     interface = host.interface('dummy2')
     assert interface.exists
@@ -59,6 +78,15 @@ def test_network_ethernet_vlan(host):
     expected_to = 'to 192.168.35.0/24 lookup kayobe-test-route-table'
     assert expected_from in rules
     assert expected_to in rules
+    vlan_info_data = _get_vlan_info_data(host, 'dummy2.42')
+    assert vlan_info_data['id'] == 42
+    if _is_nmstate_enabled():
+        ingress_qos = _normalize_qos_map(vlan_info_data['ingress_qos'])
+        egress_qos = _normalize_qos_map(vlan_info_data['egress_qos'])
+        assert (3, 12) in ingress_qos
+        assert (7, 254) in ingress_qos
+        assert (129, 7) in egress_qos
+        assert (130, 6) in egress_qos
 
 
 def test_network_bridge(host):

@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Adds native nmstate support for structured VLAN QoS mapping in Kayobe via
+    ``<network>_ingress_qos_map`` and ``<network>_egress_qos_map``.
+    These are rendered to nmstate VLAN keys
+    ``ingress-qos-map`` and ``egress-qos-map``.

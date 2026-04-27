@@ -67,6 +67,18 @@ test_net_eth_vlan_rules:
     table: kayobe-test-route-table
 {% endif %}
 test_net_eth_vlan_zone: test-zone1
+{% if host_configure_network_engine == "nmstate" %}
+test_net_eth_vlan_ingress_qos_map:
+  - from: 3
+    to: 12
+  - from: 7
+    to: 254
+test_net_eth_vlan_egress_qos_map:
+  - from: 129
+    to: 7
+  - from: 130
+    to: 6
+{% endif %}
 
 # br0: bridge with ports dummy3, dummy4.
 test_net_bridge_cidr: 192.168.36.0/24
