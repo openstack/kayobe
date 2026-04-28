@@ -49,6 +49,11 @@ inspector_keep_ports: "{{ kolla_bifrost_inspector_keep_ports }}"
 inspector_extra_kernel_options: "{{ kolla_bifrost_inspector_extra_kernel_options if kolla_bifrost_inspector_extra_kernel_options is string else kolla_bifrost_inspector_extra_kernel_options | join(' ') }}"
 {% endif %}
 
+{% if kolla_bifrost_inspector_default_node_driver %}
+# Node driver to use for auto-discovered nodes.
+inspector_default_node_driver: "{{ kolla_bifrost_inspector_default_node_driver }}"
+{% endif %}
+
 # Whether to download Ironic Python Agent (IPA) images.
 download_ipa: "{{ kolla_bifrost_download_ipa }}"
 

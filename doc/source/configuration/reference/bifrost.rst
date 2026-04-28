@@ -279,6 +279,12 @@ The following options configure the Ironic Inspector service in the
 ``kolla_bifrost_inspector_keep_ports``
     Which ports to keep after introspection. One of ``all``, ``present`` or
     ``added``. Default is ``present`` to align with Bifrost's defaults.
+``kolla_bifrost_inspector_default_node_driver``
+    Node driver to use for auto-discovered nodes. Default is
+    ``{{ inspector_discovery_enroll_node_driver }}``, defined in
+    ``${KAYOBE_CONFIG_PATH}/inspector.yml``. Set to ``redfish`` for modern BMC
+    implementations. Corresponds to ``[auto_discover] driver`` in
+    ``ironic.conf``.
 ``kolla_bifrost_inspector_extra_kernel_options``
     List of extra kernel parameters for the inspector default PXE
     configuration. Default is ``{{ inspector_extra_kernel_options }}``, defined

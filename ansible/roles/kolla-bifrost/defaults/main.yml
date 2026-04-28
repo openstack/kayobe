@@ -54,6 +54,10 @@ kolla_bifrost_inspector_keep_ports:
 # List of extra kernel parameters for the inspector default PXE configuration.
 kolla_bifrost_inspector_extra_kernel_options:
 
+# Node driver to use for auto-discovered nodes. Default is unset, which uses
+# Bifrost's default of 'ipmi'.
+kolla_bifrost_inspector_default_node_driver:
+
 # Whether to download the Ironic Python Agent (IPA) images.
 kolla_bifrost_download_ipa: true
 
