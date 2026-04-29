@@ -1,0 +1,9 @@
+---
+deprecations:
+  - |
+    Kayobe currently ships with ``ANSIBLE_ALLOW_BROKEN_CONDITIONALS` enabled by
+    default. This will be removed in the 2026.2 cycle. Please check the Ansible
+    output of any custom playbooks for deprecation warnings related to this
+    setting and update the playbooks accordingly. You can set
+    ``ANSIBLE_ALLOW_BROKEN_CONDITIONALS=false`` in your shell environment to
+    surface these issues more explicitly.
