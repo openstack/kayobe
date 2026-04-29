@@ -143,6 +143,11 @@
             description: "Bifrost provisioning network"
             network: "{{ provision_oc_net_name }}"
             required: "{{ kolla_enable_bifrost | bool }}"
+      register: kolla_host_vars_result
+
+    - name: Set Kolla Ansible host variable facts
+      set_fact:
+      args: "{{ kolla_host_vars_result.kolla_ansible_host_vars }}"
 
     - import_role:
         name: kolla-ansible-host-vars
@@ -229,6 +234,11 @@
             network: "{{ public_net_name }}"
             required: "{{ inventory_hostname in groups[controller_loadbalancer_group] }}"
         external_networks: "{{ ironic_networks + provider_networks }}"
+      register: kolla_host_vars_result
+
+    - name: Set Kolla Ansible host variable facts
+      set_fact:
+      args: "{{ kolla_host_vars_result.kolla_ansible_host_vars }}"
 
     - import_role:
         name: kolla-ansible-host-vars

@@ -95,3 +95,7 @@ docker_registry_volumes:
 
 docker_registry_restart_policy: "unless-stopped"
 #docker_registry_restart_retries:
+
+# Owner and group for docker registry configuration files.
+docker_registry_ansible_user_uid: "{{ ansible_user }}"
+docker_registry_ansible_user_gid: "{{ ansible_user }}"
