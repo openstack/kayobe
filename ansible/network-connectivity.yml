@@ -7,7 +7,7 @@
        default(100) }}
   vars:
     # Skip external connectivity check when behind a proxy.
-    nc_skip_external_net: "{{ http_proxy | truthy }}"
+    nc_skip_external_net: "{{ http_proxy is truthy }}"
     # Set this to an external IP address to check.
     nc_external_ip: 8.8.8.8
     # Set this to an external hostname to check.
