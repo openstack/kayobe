@@ -55,6 +55,17 @@ kayobe_ansible_user: "stack"
 # is "rocky".
 os_distribution: "rocky"
 
+# Mapping from OS distribution name to OS family. Supported keys are
+# "centos", "rocky", and "ubuntu".
+os_family_map:
+  centos: RedHat
+  rocky: RedHat
+  ubuntu: Debian
+
+# OS family. Valid options are "RedHat" and "Debian". Default depends on
+# os_distribution.
+os_family: "{{ os_family_map[os_distribution | lower] }}"
+
 # OS release. Valid options are "10-stream" when os_distribution is "centos",
 # "10" when os_distribution is "rocky", or "noble" when os_distribution is
 # "ubuntu".

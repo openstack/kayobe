@@ -48,6 +48,14 @@
 # is "rocky".
 #os_distribution:
 
+# Mapping from OS distribution name to OS family. Supported keys are
+# "centos", "rocky", and "ubuntu".
+#os_family_map:
+
+# OS family. Valid options are "RedHat" and "Debian". Default depends on
+# os_distribution.
+#os_family:
+
 # OS release. Valid options are "10-stream" when os_distribution is "centos",
 # "10" when os_distribution is "rocky", or "noble" when os_distribution is
 # "ubuntu".
