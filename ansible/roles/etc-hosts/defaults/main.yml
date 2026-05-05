@@ -3,7 +3,10 @@
 customize_etc_hosts: true
 
 # List of hosts to add to /etc/hosts.
-etc_hosts_hosts: "{{ groups['overcloud'] }}"
+etc_hosts_hosts: []
+
+# Which network to use for host entries in /etc/hosts
+etc_hosts_network: "{{ undef() }}"
 
 # Dictionary of custom /etc/hosts entries.
 # Each key is added as a hostname,

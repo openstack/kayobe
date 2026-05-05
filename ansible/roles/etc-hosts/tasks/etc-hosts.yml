@@ -1,4 +1,15 @@
 ---
+# NOTE(mgoddard): Need to ensure that all hosts have facts available.
+- include_role:
+    name: gather-facts-delegated
+  tags:
+    - gather-facts-delegated
+  vars:
+    gather_facts_delegated_limit_hosts: "{{ etc_hosts_hosts }}"
+  when:
+    - etc_hosts_gather_facts | default(true)
+    - etc_hosts_hosts | length > 0
+
 - name: Ensure localhost in /etc/hosts
   lineinfile:
     dest: /etc/hosts
@@ -26,18 +37,28 @@
     marker: "# {mark} ANSIBLE GENERATED HOSTS"
     block: |
         {% for host in etc_hosts_hosts %}
-        {% if hostvars[host].internal_net_name in hostvars[host].network_interfaces %}
+        {% if hostvars[host]['etc_hosts_network'] in hostvars[host].network_interfaces %}
         {% set hostnames = [hostvars[host].ansible_facts.nodename, hostvars[host].ansible_facts.hostname] %}
-        {{ hostvars[host].internal_net_name | net_ip(inventory_hostname=host) }} {{ hostnames | unique | join(' ') }}
+        {{ hostvars[host]['etc_hosts_network'] | net_ip(inventory_hostname=host) }} {{ hostnames | unique | join(' ') }}
         {% endif %}
         {% endfor %}
+  become: True
+  when:
+    - etc_hosts_hosts | length > 0
+    - etc_hosts_network | mandatory is truthy
+    # Skip hosts that do not have a valid internal network interface.
+    - etc_hosts_network in network_interfaces
+
+- name: Add custom entries to /etc/hosts
+  blockinfile:
+    dest: /etc/hosts
+    marker: "# {mark} ANSIBLE GENERATED CUSTOM HOSTS"
+    block: |
         {% for item in custom_etc_hosts_entries | dict2items %}
         {{ item.value }} {{ item.key }}
         {% endfor %}
   become: True
-  when:
-    # Skip hosts that do not have a valid internal network interface.
-    - internal_net_name in network_interfaces
+  when: custom_etc_hosts_entries | length > 0
 
 # NOTE(osmanlicilegi): The distribution might come with cloud-init installed, and manage_etc_hosts
 # configuration enabled. If so, it will override the file /etc/hosts from cloud-init templates at
