@@ -7,5 +7,6 @@ ROOT=$(readlink -fn $(dirname $0)/.. )
 # https://bugs.launchpad.net/bash8/+bug/1895102
 find $ROOT -not -wholename \*.tox/\* -and -not -wholename \*.test/\* \
     -and -not -wholename \*.ansible/\* -and -not -wholename \*venv\* \
+    -and -not -wholename \*/ansible/collections/\* \
     -and -not -wholename \*/ansible/roles/\*.\*/\* \
     -and -name \*.sh -print0 | xargs -0 bashate -v --ignore E006,E010
