@@ -1557,6 +1557,9 @@ class OvercloudServiceConfigurationGenerate(KayobeAnsibleMixin,
                                 "the remote node (required)")
         group.add_argument("--skip-prechecks", action='store_true',
                            help="skip the kolla-ansible prechecks command")
+        group.add_argument("--use-test-images", action="store_true",
+                           help="Allow use of test images "
+                                "(i.e. quay.io/openstack.kolla)")
         return parser
 
     def take_action(self, parsed_args):
@@ -1569,7 +1572,11 @@ class OvercloudServiceConfigurationGenerate(KayobeAnsibleMixin,
 
         # Run kolla-ansible prechecks before deployment.
         if not parsed_args.skip_prechecks:
-            self.run_kolla_ansible_overcloud(parsed_args, "prechecks")
+            extra_vars = {}
+            if parsed_args.use_test_images:
+                extra_vars["kolla_test_images"] = "yes"
+            self.run_kolla_ansible_overcloud(parsed_args, "prechecks",
+                                             extra_vars=extra_vars)
 
         # Generate the configuration.
         extra_vars = {}
@@ -1669,6 +1676,9 @@ class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
         group = parser.add_argument_group("Service Deployment")
         group.add_argument("--skip-prechecks", action='store_true',
                            help="skip the kolla-ansible prechecks command")
+        group.add_argument("--use-test-images", action="store_true",
+                           help="Allow use of test images "
+                                "(i.e. quay.io/openstack.kolla)")
         return parser
 
     def take_action(self, parsed_args):
@@ -1681,7 +1691,11 @@ class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 
         # Run kolla-ansible prechecks before deployment.
         if not parsed_args.skip_prechecks:
-            self.run_kolla_ansible_overcloud(parsed_args, "prechecks")
+            extra_vars = {}
+            if parsed_args.use_test_images:
+                extra_vars["kolla_test_images"] = "yes"
+            self.run_kolla_ansible_overcloud(parsed_args, "prechecks",
+                                             extra_vars=extra_vars)
 
         # Perform the kolla-ansible deployment.
         self.run_kolla_ansible_overcloud(parsed_args, "deploy")
@@ -1721,6 +1735,9 @@ class OvercloudServiceDeployContainers(KollaAnsibleMixin, KayobeAnsibleMixin,
         group = parser.add_argument_group("Service Deployment")
         group.add_argument("--skip-prechecks", action='store_true',
                            help="skip the kolla-ansible prechecks command")
+        group.add_argument("--use-test-images", action="store_true",
+                           help="Allow use of test images "
+                                "(i.e. quay.io/openstack.kolla)")
         return parser
 
     def take_action(self, parsed_args):
@@ -1733,7 +1750,11 @@ class OvercloudServiceDeployContainers(KollaAnsibleMixin, KayobeAnsibleMixin,
 
         # Run kolla-ansible prechecks before deployment.
         if not parsed_args.skip_prechecks:
-            self.run_kolla_ansible_overcloud(parsed_args, "prechecks")
+            extra_vars = {}
+            if parsed_args.use_test_images:
+                extra_vars["kolla_test_images"] = "yes"
+            self.run_kolla_ansible_overcloud(parsed_args, "prechecks",
+                                             extra_vars=extra_vars)
 
         # Perform the kolla-ansible deployment.
         self.run_kolla_ansible_overcloud(parsed_args, "manage-containers")
@@ -1758,6 +1779,14 @@ class OvercloudServicePrechecks(KollaAnsibleMixin, KayobeAnsibleMixin,
     services.
     """
 
+    def get_parser(self, prog_name):
+        parser = super(OvercloudServicePrechecks, self).get_parser(prog_name)
+        group = parser.add_argument_group("Service Prechecks")
+        group.add_argument("--use-test-images", action="store_true",
+                           help="Allow use of test images "
+                                "(i.e. quay.io/openstack.kolla)")
+        return parser
+
     def take_action(self, parsed_args):
         self.app.LOG.debug("Running overcloud prechecks")
 
@@ -1767,7 +1796,11 @@ class OvercloudServicePrechecks(KollaAnsibleMixin, KayobeAnsibleMixin,
         self.generate_kolla_ansible_config(parsed_args)
 
         # Run the kolla-ansible prechecks.
-        self.run_kolla_ansible_overcloud(parsed_args, "prechecks")
+        extra_vars = {}
+        if parsed_args.use_test_images:
+            extra_vars["kolla_test_images"] = "yes"
+        self.run_kolla_ansible_overcloud(parsed_args, "prechecks",
+                                         extra_vars=extra_vars)
 
 
 class OvercloudServicePasswordsView(KayobeAnsibleMixin, VaultMixin, Command):
@@ -1799,6 +1832,9 @@ class OvercloudServiceReconfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
         group = parser.add_argument_group("Service Reconfiguration")
         group.add_argument("--skip-prechecks", action='store_true',
                            help="skip the kolla-ansible prechecks command")
+        group.add_argument("--use-test-images", action="store_true",
+                           help="Allow use of test images "
+                                "(i.e. quay.io/openstack.kolla)")
         return parser
 
     def take_action(self, parsed_args):
@@ -1811,7 +1847,11 @@ class OvercloudServiceReconfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
 
         # Run kolla-ansible prechecks before reconfiguration.
         if not parsed_args.skip_prechecks:
-            self.run_kolla_ansible_overcloud(parsed_args, "prechecks")
+            extra_vars = {}
+            if parsed_args.use_test_images:
+                extra_vars["kolla_test_images"] = "yes"
+            self.run_kolla_ansible_overcloud(parsed_args, "prechecks",
+                                             extra_vars=extra_vars)
 
         # Perform the kolla-ansible reconfiguration.
         self.run_kolla_ansible_overcloud(parsed_args, "reconfigure")
@@ -1899,6 +1939,9 @@ class OvercloudServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin,
         group = parser.add_argument_group("Service Upgrade")
         group.add_argument("--skip-prechecks", action='store_true',
                            help="skip the kolla-ansible prechecks command")
+        group.add_argument("--use-test-images", action="store_true",
+                           help="Allow use of test images "
+                                "(i.e. quay.io/openstack.kolla)")
         return parser
 
     def take_action(self, parsed_args):
@@ -1911,7 +1954,11 @@ class OvercloudServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin,
 
         # Run kolla-ansible prechecks before upgrade.
         if not parsed_args.skip_prechecks:
-            self.run_kolla_ansible_overcloud(parsed_args, "prechecks")
+            extra_vars = {}
+            if parsed_args.use_test_images:
+                extra_vars["kolla_test_images"] = "yes"
+            self.run_kolla_ansible_overcloud(parsed_args, "prechecks",
+                                             extra_vars=extra_vars)
 
         # Perform the kolla-ansible upgrade.
         self.run_kolla_ansible_overcloud(parsed_args, "upgrade")

@@ -1752,6 +1752,7 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 "prechecks",
+                extra_vars={}
             ),
             mock.call(
                 mock.ANY,
@@ -1812,6 +1813,7 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 "prechecks",
+                extra_vars={}
             ),
             mock.call(
                 mock.ANY,
@@ -1856,6 +1858,7 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 "prechecks",
+                extra_vars={}
             ),
         ]
         self.assertListEqual(expected_calls, mock_kolla_run.call_args_list)
@@ -1914,6 +1917,7 @@ class TestCase(unittest.TestCase):
             mock.call(
                 mock.ANY,
                 "prechecks",
+                extra_vars={}
             ),
             mock.call(
                 mock.ANY,
@@ -2046,7 +2050,8 @@ class TestCase(unittest.TestCase):
         expected_calls = [
             mock.call(
                 mock.ANY,
-                "prechecks"
+                "prechecks",
+                extra_vars={}
             ),
             mock.call(
                 mock.ANY,

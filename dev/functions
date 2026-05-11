@@ -63,6 +63,9 @@ function config_defaults {
     # Whether to perform overcloud post configuration.
     export KAYOBE_OVERCLOUD_POST_CONFIGURE=${KAYOBE_OVERCLOUD_POST_CONFIGURE:-1}
 
+    # Whether to use Kolla test images.
+    export KAYOBE_USE_KOLLA_TEST_IMAGES=${KAYOBE_USE_KOLLA_TEST_IMAGES:-1}
+
     # Additional arguments to pass to kayobe commands.
     export KAYOBE_EXTRA_ARGS=${KAYOBE_EXTRA_ARGS:-}
 
@@ -514,7 +517,7 @@ function overcloud_deploy {
             cp ${KOLLA_CONFIG_PATH:-/etc/kolla}/config/octavia/*.pem ${KAYOBE_CONFIG_PATH}/kolla/config/octavia/
         fi
         echo "Deploying containerised overcloud services"
-        run_kayobe overcloud service deploy
+	run_kayobe overcloud service deploy $( ((KAYOBE_USE_KOLLA_TEST_IMAGES)) && echo "--use-test-images" )
     fi
 
     if [[ ${KAYOBE_OVERCLOUD_POST_CONFIGURE} = 1 ]]; then
@@ -566,7 +569,7 @@ function overcloud_upgrade {
     run_kayobe overcloud service configuration save --exclude 'ironic-agent.*'
 
     echo "Deploying containerised overcloud services"
-    run_kayobe overcloud service upgrade
+    run_kayobe overcloud service upgrade $( ((KAYOBE_USE_KOLLA_TEST_IMAGES)) && echo "--use-test-images" )
 
     echo "Control plane upgrade complete"
 }

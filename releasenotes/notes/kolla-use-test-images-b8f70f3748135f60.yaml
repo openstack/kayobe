@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Adds the ``--use-test-images`` option to commands running kolla-ansible
+    prechecks to allow use of test images (i.e. ``quay.io/openstack.kolla``).
