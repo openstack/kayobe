@@ -1,0 +1,37 @@
+# rocky-security.repo
+#
+# The mirrorlist system uses the connecting IP address of the client and the
+# update status of each mirror to pick current mirrors that are geographically
+# close to the client.  You should use this for Rocky updates unless you are
+# manually picking other mirrors.
+#
+# If the mirrorlist does not work for you, you can try the commented out
+# baseurl line instead.
+
+[security]
+name=Rocky Linux $releasever - Security
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=security-$releasever$rltype
+baseurl=http://{{ dnf_rocky_mirror_host }}/{{ dnf_rocky_mirror_directory }}/$releasever/security/$basearch/os/
+gpgcheck=1
+enabled=0
+countme=1
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+
+[security-debuginfo]
+name=Rocky Linux $releasever - Security Debug
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=security-$releasever-debug$rltype
+baseurl=http://{{ dnf_rocky_mirror_host }}/{{ dnf_rocky_mirror_directory }}/$releasever/security/$basearch/debug/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+
+[security-source]
+name=Rocky Linux $releasever - Security Source
+#mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=security-$releasever-source$rltype
+baseurl=http://{{ dnf_rocky_mirror_host }}/{{ dnf_rocky_mirror_directory }}/$releasever/security/source/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
