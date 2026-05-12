@@ -1,0 +1,61 @@
+---
+- name: Ensure overcloud hosts are registered in Bifrost
+  hosts: overcloud
+  gather_facts: false
+  vars:
+    seed_host: "{{ groups['seed'][0] }}"
+  # Try to reduce contention on Bifrost and resolve db lock errors
+  serial: 10
+  tasks:
+    - name: Fail when no supported drivers are available
+      ansible.builtin.fail:
+        msg: This node uses an unsupported or undefined driver, only Redfish is supported.
+      when:
+        - ironic_driver | default ('') not in ['redfish']
+
+    - name: List baremetal nodes
+      command: >
+        {{ container_engine }} exec bifrost_deploy
+        bash -c '
+        export OS_CLOUD=bifrost &&
+        openstack baremetal node show {{ inventory_hostname }}'
+      register: node_show
+      failed_when: false
+      changed_when: false
+      delegate_to: "{{ seed_host }}"
+      vars:
+        ansible_host: "{{ hostvars[seed_host].ansible_host | default(seed_host) }}"
+
+    - name: Create baremetal nodes
+      command: >
+        {{ container_engine }} exec bifrost_deploy
+        bash -c '
+        export OS_CLOUD=bifrost &&
+        openstack baremetal node create
+        --driver {{ ironic_driver }}
+        {% for key, value in ironic_driver_info.items() %}
+        --driver-info {{ key }}={{ value }}
+        {% endfor %}
+        {% for key, value in ironic_properties.items() %}
+        --property {{ key }}={{ value }}
+        {% endfor %}
+        --name {{ inventory_hostname }}'
+      delegate_to: "{{ seed_host }}"
+      vars:
+        ansible_host: "{{ hostvars[seed_host].ansible_host | default(seed_host) }}"
+      when:
+        - node_show.rc != 0
+
+    - name: Manage baremetal nodes
+      command: >
+        {{ container_engine }} exec bifrost_deploy
+        bash -c '
+        export OS_CLOUD=bifrost &&
+        openstack baremetal node manage
+        {{ inventory_hostname }}
+        --wait'
+      delegate_to: "{{ seed_host }}"
+      vars:
+        ansible_host: "{{ hostvars[seed_host].ansible_host | default(seed_host) }}"
+      when:
+        - node_show.rc != 0
