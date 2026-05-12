@@ -58,6 +58,15 @@
           kayobe baremetal compute register &> {{ logs_dir }}/ansible/baremetal-compute-register
         executable: /bin/bash
 
+    - name: Run network connectivity check
+      shell:
+        # NOTE(wszumski): Limit to overcloud as we have hosts in our inventory
+        # that aren't deployed in this scenario.
+        cmd: >
+          source {{ kayobe_src_dir }}/dev/environment-setup.sh &&
+          kayobe network connectivity check --limit overcloud
+        executable: /bin/bash
+
     - name: Perform database backup
       shell:
         cmd: >
