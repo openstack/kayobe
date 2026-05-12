@@ -115,6 +115,33 @@
       - zuul: openstack/kolla
 
 - job:
+    name: kayobe-ansible-control-host-configure-base
+    parent: kayobe-base
+    description: |
+      Base job for testing Ansible control host configuration.
+
+      Configures the primary VM as an Ansible control host.
+    pre-run: playbooks/kayobe-ansible-control-host-configure-base/pre.yml
+    run: playbooks/kayobe-ansible-control-host-configure-base/run.yml
+    timeout: 7200
+
+- job:
+    name: kayobe-ansible-control-host-configure-centos10s
+    parent: kayobe-ansible-control-host-configure-base
+    nodeset: kayobe-centos10s
+    voting: false
+
+- job:
+    name: kayobe-ansible-control-host-configure-rocky10
+    parent: kayobe-ansible-control-host-configure-base
+    nodeset: kayobe-rocky10
+
+- job:
+    name: kayobe-ansible-control-host-configure-ubuntu-noble
+    parent: kayobe-ansible-control-host-configure-base
+    nodeset: kayobe-ubuntu-noble
+
+- job:
     name: kayobe-overcloud-base
     parent: kayobe-base
     description: |

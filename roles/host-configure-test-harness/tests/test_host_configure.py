@@ -11,6 +11,11 @@ import distro
 import pytest
 
 
+def _is_ansible_control_host(host):
+    interface = host.interface('breth1')
+    return '192.168.33.7' in interface.addresses
+
+
 def _is_apt():
     info = distro.id()
     return info == 'ubuntu'
@@ -180,6 +185,8 @@ def test_sysctls(host):
 
 
 def test_cloud_init_is_disabled(host):
+    if _is_ansible_control_host(host):
+      pytest.skip("cloud-init not disabled on Ansible control host")
     assert host.file("/etc/cloud/cloud-init.disabled").exists
 
 
@@ -191,12 +198,16 @@ def test_docker_storage_driver_is_overlay2(host):
 
 @pytest.mark.parametrize('user', ['kolla', 'stack'])
 def test_docker_image_download(host, user):
+    if _is_ansible_control_host(host) and user == 'kolla':
+      pytest.skip("User kolla not configured on Ansible control host")
     with host.sudo(user):
         host.check_output("docker pull quay.io/podman/hello")
 
 
 @pytest.mark.parametrize('user', ['kolla', 'stack'])
 def test_docker_container_run(host, user):
+    if _is_ansible_control_host(host) and user == 'kolla':
+      pytest.skip("User kolla not configured on Ansible control host")
     with host.sudo(user):
         host.check_output("docker run --rm quay.io/podman/hello")
 

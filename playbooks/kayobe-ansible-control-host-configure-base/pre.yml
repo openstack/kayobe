@@ -1,18 +1,30 @@
 ---
 - hosts: primary
+  environment:
+    KAYOBE_CONFIG_SOURCE_PATH: "{{ kayobe_config_src_dir }}"
   tasks:
     - name: Ensure host-configure test harness dependencies are installed
       include_role:
         name: host-configure-test-harness
         tasks_from: pre
 
-    # NOTE(mgoddard): Use the name zz-30-overrides.yml to ensure this takes
-    # precedence over the standard config files and zz-20-overrides.yml from
-    # kayobe-overcloud-base.
+    # NOTE(mgoddard): The kayobe dev config by default expects a bridge -
+    # breth1 - to exist with an IP address of 192.168.33.7.
+    - import_role:
+        name: kayobe-network-bootstrap
+      vars:
+        bridge_interface: breth1
+        bridge_ip: 192.168.33.7
+        bridge_prefix: 24
+        bridge_port_interface: dummy1
+
+    # NOTE(mgoddard): Use the name zz-20-overrides.yml to ensure this takes
+    # precedence over the standard config files, but can control order with the
+    # priority (number after zz).
     - name: Ensure kayobe-config override config file exists
       template:
         src: overrides.yml.j2
-        dest: "{{ kayobe_config_src_dir }}/etc/kayobe/zz-30-overrides.yml"
+        dest: "{{ kayobe_config_src_dir }}/etc/kayobe/zz-20-overrides.yml"
 
     # NOTE(mgoddard): Create two loopback devices backed by files. These will
     # be added to a software RAID volume, then added to an LVM volume group.
@@ -36,3 +48,15 @@
         name: firewalld
         masked: false
       become: true
+
+    - name: Ensure kayobe is installed
+      shell:
+        cmd: dev/install.sh &> {{ logs_dir }}/ansible/install
+        chdir: "{{ kayobe_src_dir }}"
+        executable: /bin/bash
+
+    - name: Configure the firewall
+      shell:
+        cmd: dev/configure-firewall.sh
+        chdir: "{{ kayobe_src_dir }}"
+        executable: /bin/bash

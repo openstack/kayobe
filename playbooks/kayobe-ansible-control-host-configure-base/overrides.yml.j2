@@ -1,0 +1,267 @@
+---
+pip_upper_constraints_file: "/tmp/upper-constraints.txt"
+
+# Use the CI infra's PyPI mirror.
+pip_local_mirror: true
+pip_index_url: "http://{{ zuul_site_mirror_fqdn }}/pypi/simple"
+pip_trusted_hosts:
+  - "{{ zuul_site_mirror_fqdn }}"
+
+# NOTE(mgoddard): CentOS 8 removes interfaces from their bridge during ifdown,
+# and removes the bridge if there are no interfaces left. When Kayobe bounces
+# veth links plugged into the bridge, it causes the bridge which has the IP we
+# are using for SSH to be removed. Use a dummy interface.
+aio_bridge_ports:
+  - dummy1
+
+# The following configuration aims to test some of the 'host configure'
+# command.
+{% set host_configure_network_engine = ci_network_engine | default('default') %}
+
+# Additional users.
+ansible_control_users:
+  - username: kayobe-test-user
+    name: Kayobe test user
+    password: kayobe-test-user-password
+    groups:
+      - stack
+
+# Exercise nmstate networking engine in CI host configure jobs where
+# required packages are available.
+{% if host_configure_network_engine == "nmstate" %}
+network_engine: {{ host_configure_network_engine }}
+{% endif %}
+
+# Additional network interfaces, testing a variety of interface configurations.
+ansible_control_extra_network_interfaces:
+  - test_net_eth
+  - test_net_eth_vlan
+  - test_net_bridge
+  - test_net_bridge_vlan
+  - test_net_bond
+  - test_net_bond_vlan
+  - test_net_bridge_noip
+{% if ansible_os_family == "Debian" %}
+  - test_net_systemd_vlan
+{% endif %}
+
+# Custom IP routing tables.
+network_route_tables:
+  - id: 2
+    name: kayobe-test-route-table
+
+# dummy2: Dummy interface for testing.
+test_net_eth_cidr: 192.168.34.0/24
+test_net_eth_routes:
+  - cidr: 192.168.40.0/24
+    gateway: 192.168.34.254
+test_net_eth_interface: dummy2
+
+# dummy2.42: VLAN subinterface of dummy2.
+test_net_eth_vlan_cidr: 192.168.35.0/24
+test_net_eth_vlan_interface: "{% raw %}{{ test_net_eth_interface }}.{{ test_net_eth_vlan_vlan }}{% endraw %}"
+test_net_eth_vlan_vlan: 42
+test_net_eth_vlan_routes:
+  - cidr: 192.168.40.0/24
+    gateway: 192.168.35.254
+    table: kayobe-test-route-table
+test_net_eth_vlan_rules:
+{% if ansible_facts.os_family == 'RedHat' and host_configure_network_engine == 'nmstate' %}
+  - from: 192.168.35.0/24
+    table: kayobe-test-route-table
+  - to: 192.168.35.0/24
+    table: kayobe-test-route-table
+{% elif ansible_facts.os_family == 'RedHat' %}
+  - from 192.168.35.0/24 table 2
+  - to: 192.168.35.0/24
+    table: kayobe-test-route-table
+{% else %}
+  - from: 192.168.35.0/24
+    table: kayobe-test-route-table
+  - to: 192.168.35.0/24
+    table: kayobe-test-route-table
+{% endif %}
+test_net_eth_vlan_zone: test-zone1
+{% if host_configure_network_engine == "nmstate" %}
+test_net_eth_vlan_ingress_qos_map:
+  - from: 3
+    to: 12
+  - from: 7
+    to: 254
+test_net_eth_vlan_egress_qos_map:
+  - from: 129
+    to: 7
+  - from: 130
+    to: 6
+{% endif %}
+
+# br0: bridge with ports dummy3, dummy4.
+test_net_bridge_cidr: 192.168.36.0/24
+test_net_bridge_interface: br0
+test_net_bridge_bridge_ports: [dummy3, dummy4]
+test_net_bridge_bridge_stp: false
+test_net_bridge_zone: test-zone2
+
+# br0.43: VLAN subinterface of br0.
+test_net_bridge_vlan_cidr: 192.168.37.0/24
+test_net_bridge_vlan_interface: "{% raw %}{{ test_net_bridge_interface }}.{{ test_net_bridge_vlan_vlan }}{% endraw %}"
+test_net_bridge_vlan_vlan: 43
+test_net_bridge_vlan_zone: test-zone3
+
+# bond0: bond with slaves dummy5, dummy6.
+test_net_bond_cidr: 192.168.38.0/24
+test_net_bond_interface: bond0
+test_net_bond_bond_slaves: [dummy5, dummy6]
+test_net_bond_bond_mode: balance-rr
+test_net_bond_zone: test-zone3
+
+# bond0.44: VLAN subinterface of bond0.
+test_net_bond_vlan_cidr: 192.168.39.0/24
+test_net_bond_vlan_interface: "{% raw %}{{ test_net_bond_interface }}.{{ test_net_bond_vlan_vlan }}{% endraw %}"
+test_net_bond_vlan_vlan: 44
+test_net_bond_vlan_zone: public
+
+# br1: Bridge interface without IP address.
+test_net_bridge_noip_cidr: 192.168.40.0/24
+test_net_bridge_noip_interface: br1
+test_net_bridge_noip_bridge_ports: [dummy7]
+test_net_bridge_noip_bridge_stp: true
+test_net_bridge_noip_no_ip: true
+
+{% if ansible_os_family == "Debian" %}
+# vlan45: VLAN interface of bond0 using systemd-networkd style
+test_net_systemd_vlan_cidr: 192.168.41.0/24
+test_net_systemd_vlan_interface: "vlan{% raw %}{{ test_net_systemd_vlan_vlan }}{% endraw %}"
+test_net_systemd_vlan_parent: "{% raw %}{{ test_net_bond_interface }}{% endraw %}"
+test_net_systemd_vlan_vlan: 45
+test_net_systemd_vlan_zone: public
+{% endif %}
+
+# Define a software RAID device consisting of two loopback devices.
+ansible_control_mdadm_arrays:
+  - name: md0
+    devices:
+      - /dev/loop0
+      - /dev/loop1
+    level: '1'
+    state: present
+
+# Layer LUKS encryption on top of the software RAID
+ansible_control_luks_devices:
+  - name: loopback-crypt
+    device: /dev/md0
+
+# Create an LVM volume group for Docker volumes.
+ansible_control_lvm_groups:
+  - "{% raw %}{{ ansible_control_lvm_group_data }}{% endraw %}"
+
+# Provide a disk for use by LVM. Uses the LUKS encrypted device created above.
+ansible_control_lvm_group_data_disks:
+  - /dev/mapper/loopback-crypt
+
+# Set a sysctl.
+ansible_control_sysctl_parameters:
+  fs.mount-max: 99999
+
+# Disable cloud-init.
+disable_cloud_init: true
+
+# Set Honolulu time.
+timezone: Pacific/Honolulu
+
+{% if ansible_facts.os_family == "Debian" %}
+apt_config:
+  - content: |
+      Acquire::Retries 1;
+    filename: 99retries
+apt_keys:
+  - url: https://packages.treasuredata.com/GPG-KEY-td-agent
+    filename: td-agent.asc
+apt_repositories:
+  # Ubuntu noble repositories.
+  - url: "http://{{ zuul_site_mirror_fqdn }}/ubuntu/"
+    suites: noble noble-updates
+    components: main universe
+  - url: "http://{{ zuul_site_mirror_fqdn }}/ubuntu/"
+    suites: noble-security
+    components: main universe
+  # Treasuredata repository.
+  - url: https://packages.treasuredata.com/lts/5/ubuntu/noble
+    components: contrib
+    signed_by: td-agent.asc
+apt_preferences:
+  - content: |
+      Package: fake-package
+      Pin: origin fake.repo.url
+      Pin-Priority: 1
+    filename: 99fakepackage
+apt_disable_sources_list: true
+apt_auth:
+  - machine: https://apt.example.com
+    login: foo
+    password: bar
+    filename: test.conf
+{% endif %}
+
+{% if ansible_facts.os_family == 'RedHat' %}
+# Configure a custom DNF repository.
+dnf_custom_repos:
+  fluent-package:
+    baseurl: https://fluentd.cdn.cncf.io/lts/6/redhat/$releasever/$basearch
+    gpgkey: https://fluentd.cdn.cncf.io/GPG-KEY-fluent-package
+    gpgcheck: yes
+# The EPEL repository is missing from zuul images. Using local mirror makes
+# sure it is defined.
+dnf_use_local_mirror: true
+# Install EPEL local mirror.
+dnf_install_epel: true
+# Enable DNF Automatic.
+dnf_automatic_enabled: true
+{% endif %}
+
+# Override the default NTP pool
+chrony_ntp_servers:
+  - server: time.cloudflare.com
+    type: pool
+    options:
+      - option: maxsources
+        val: 2
+
+# Force system clock synchronisation
+ntp_force_sync: True
+
+# Enable firewalld
+ansible_control_firewalld_enabled: true
+ansible_control_firewalld_zones:
+  - zone: test-zone1
+  - zone: test-zone2
+  - zone: test-zone3
+ansible_control_firewalld_default_zone:
+ansible_control_firewalld_rules:
+  - port: 8080/tcp
+    zone: test-zone1
+  - service: http
+    zone: test-zone2
+  - icmp_block: echo-request
+    zone: test-zone3
+  - service: cockpit
+    state: disabled
+    zone: public
+
+# Configure a swap file.
+ansible_control_swap:
+  - path: /swapfile
+    size_mb: 256
+
+# Generate a password for libvirt SASL authentication.
+compute_libvirt_sasl_password: "{% raw %}{{ lookup('password', '/tmp/libvirt-sasl-password') }}{% endraw %}"
+
+# Configure container engine.
+ansible_control_container_engine_enabled: true
+
+# Test fail2ban configuration
+ansible_control_fail2ban_enabled: true
+
+# Add a custom entry to /etc/hosts.
+custom_etc_hosts_entries:
+  foo.example.com: 127.0.0.88
