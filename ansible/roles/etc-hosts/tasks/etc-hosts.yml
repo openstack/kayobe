@@ -30,6 +30,7 @@
     regexp: "^127.0.1.1\\b.*\\s{{ ansible_facts.hostname }}\\b"
     state: absent
   become: True
+  when: inventory_hostname in etc_hosts_hosts
 
 - name: Generate /etc/hosts for all of the nodes
   blockinfile:
