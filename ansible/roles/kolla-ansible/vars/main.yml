@@ -137,8 +137,6 @@ kolla_feature_flags:
   - horizon_tacker
   - horizon_trove
   - horizon_watcher
-  - horizon_zun
-  - influxdb
   - ironic
   - ironic_dnsmasq
   - ironic_neutron_agent
@@ -149,7 +147,6 @@ kolla_feature_flags:
   - keystone
   - keystone_federation
   - keystone_horizon_policy_file
-  - kuryr
   - letsencrypt
   - loadbalancer
   - magnum
@@ -222,16 +219,16 @@ kolla_feature_flags:
   - prometheus_node_exporter
   - prometheus_openstack_exporter
   - prometheus_openstack_exporter_external
+  - prometheus_openstack_network_exporter
   - prometheus_proxysql_exporter
   - prometheus_rabbitmq_exporter
   - prometheus_server
+  - prometheus_valkey_exporter
   - proxysql
   - rabbitmq
   - skyline
   - tacker
-  - telegraf
   - trove
   - trove_singletenant
   - valkey
   - watcher
-  - zun

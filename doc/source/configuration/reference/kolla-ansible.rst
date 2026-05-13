@@ -764,7 +764,6 @@ which files are supported.
    ``heat.conf``                   Heat configuration.
    ``heat/*``                      Extended heat configuration.
    ``horizon/*``                   Extended horizon configuration.
-   ``influx*``                     InfluxDB configuration.
    ``ironic.conf``                 Ironic configuration.
    ``ironic/*``                    Extended ironic configuration.
    ``keepalived/*``                Extended keepalived configuration.
@@ -790,7 +789,6 @@ which files are supported.
    ``placement/*``                 Extended Placement configuration.
    ``prometheus/*``                Prometheus configuration.
    ``swift/*``                     Extended swift configuration.
-   ``telegraf/*``                  Extended Telegraf configuration.
    =============================== =======================================================
 
 Configuring an OpenStack Component

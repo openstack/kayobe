@@ -74,8 +74,6 @@ docker_namespace: "{{ kolla_docker_namespace }}"
 docker_registry_username: "{{ kolla_docker_registry_username }}"
 {% endif %}
 
-#docker_configure_for_zun: "no"
-
 ###################
 # Messaging options
 ###################

@@ -90,8 +90,6 @@ kolla_openstack_custom_config_include_globs_default:
     glob: heat/**
   - enabled: '{{ kolla_enable_horizon | bool }}'
     glob: horizon/**
-  - enabled: '{{ kolla_enable_influxdb | bool }}'
-    glob: influx*
   - enabled: '{{ kolla_enable_ironic | bool }}'
     glob: ironic.conf
   - enabled: '{{ kolla_enable_ironic | bool }}'
@@ -150,8 +148,6 @@ kolla_openstack_custom_config_include_globs_default:
     glob: prometheus/**
   - enabled: '{{ kolla_enable_swift | bool }}'
     glob: swift/**
-  - enabled: '{{ kolla_enable_telegraf | bool }}'
-    glob: telegraf/**
 
 # Extra items to add to kolla_openstack_custom_config_include_globs_default
 # to produce kolla_openstack_custom_config_include_globs.
@@ -249,9 +245,6 @@ kolla_openstack_custom_config_rules_default:
   - glob: "**/*httpd.conf"
     strategy: template
     priority: 1000
-  - glob: "**/influxdb.conf"
-    strategy: template
-    priority: 1000
   - glob: "**/keepalived.conf"
     strategy: template
     priority: 1000
@@ -262,10 +255,6 @@ kolla_openstack_custom_config_rules_default:
     strategy: template
     priority: 1000
   - glob: "**/*wsgi*.conf"
-    strategy: template
-    priority: 1000
-  # NOTE(wszumksi): Telegraf uses toml for its configuration files
-  - glob: telegraf/**
     strategy: template
     priority: 1000
   # INI files
@@ -442,12 +431,6 @@ kolla_extra_heat:
 
 # Whether to enable Horizon.
 kolla_enable_horizon: false
-
-###############################################################################
-# InfluxDB configuration.
-
-# Whether to enable InfluxDB.
-kolla_enable_influxdb: false
 
 ###############################################################################
 # Ironic configuration.
@@ -812,9 +795,3 @@ kolla_enable_prometheus: false
 
 # Whether to enable swift.
 kolla_enable_swift: false
-
-###############################################################################
-# Telegraf configuration.
-
-# Whether to enable telegraf
-kolla_enable_telegraf: true

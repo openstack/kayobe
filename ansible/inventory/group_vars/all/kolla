@@ -174,8 +174,6 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_heat | bool }}"
   - regex: ^horizon
     enabled: "{{ kolla_enable_horizon | bool }}"
-  - regex: ^influxdb
-    enabled: "{{ kolla_enable_influxdb | bool }}"
   - regex: ^ironic
     enabled: "{{ kolla_enable_ironic | bool }}"
   - regex: ironic-neutron-agent
@@ -188,8 +186,6 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_keystone | bool }}"
   - regex: kolla-toolbox
     enabled: True
-  - regex: ^kuryr
-    enabled: "{{ kolla_enable_kuryr | bool }}"
   - regex: ^letsencrypt
     enabled: "{{ kolla_enable_letsencrypt | bool }}"
   - regex: ^magnum
@@ -250,8 +246,6 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_swift | bool }}"
   - regex: ^tacker
     enabled: "{{ kolla_enable_tacker | bool }}"
-  - regex: ^telegraf
-    enabled: "{{ kolla_enable_telegraf | bool }}"
   - regex: ^tgtd
     enabled: "{{ kolla_enable_cinder | bool or kolla_enable_ironic | bool }}"
   - regex: ^trove
@@ -260,8 +254,6 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_valkey | bool }}"
   - regex: ^watcher
     enabled: "{{ kolla_enable_watcher | bool }}"
-  - regex: ^zun
-    enabled: "{{ kolla_enable_zun | bool }}"
 
 # List of regular expressions matching names of container images to build for
 # overcloud hosts.
@@ -558,13 +550,11 @@ kolla_enable_grafana: "no"
 kolla_enable_hacluster: "no"
 kolla_enable_heat: "{{ kolla_enable_openstack_core | bool }}"
 kolla_enable_horizon: "{{ kolla_enable_openstack_core | bool }}"
-kolla_enable_influxdb: "{{ kolla_enable_cloudkitty | bool }}"
 kolla_enable_ironic: "no"
 kolla_enable_ironic_dnsmasq: "{{ kolla_enable_ironic | bool and kolla_inspector_enable_discovery | bool }}"
 kolla_enable_ironic_pxe_filter: "{{ kolla_enable_ironic | bool and kolla_inspector_enable_discovery | bool }}"
 kolla_enable_ironic_neutron_agent: "{{ kolla_enable_neutron | bool and kolla_enable_ironic | bool }}"
 kolla_enable_iscsid: "{{ kolla_enable_cinder | bool and kolla_enable_cinder_backend_iscsi | bool }}"
-kolla_enable_kuryr: "no"
 kolla_enable_letsencrypt: "no"
 kolla_enable_magnum: "no"
 kolla_enable_manila: "no"
@@ -583,19 +573,17 @@ kolla_enable_ovs_dpdk: "no"
 kolla_enable_opensearch: "{{ kolla_enable_central_logging | bool or kolla_enable_osprofiler | bool }}"
 kolla_enable_opensearch_dashboards: "{{ kolla_enable_opensearch | bool }}"
 kolla_enable_osprofiler: "no"
-kolla_enable_placement: "{{ kolla_enable_nova | bool or kolla_enable_zun | bool }}"
+kolla_enable_placement: "{{ kolla_enable_nova | bool }}"
 kolla_enable_prometheus: "no"
 kolla_enable_qdrouterd: "no"
 kolla_enable_redis: "no"
 kolla_enable_skyline: "no"
 kolla_enable_swift: "no"
 kolla_enable_tacker: "no"
-kolla_enable_telegraf: "no"
 kolla_enable_trove: "no"
 kolla_enable_valkey: "no"
 kolla_enable_vitrage: "no"
 kolla_enable_watcher: "no"
-kolla_enable_zun: "no"
 
 ###############################################################################
 # Kolla custom config generation.
