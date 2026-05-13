@@ -31,7 +31,7 @@ roles:
     version: 2.0.2
   - src: jriguera.configdrive
     # There are no versioned releases of this role.
-    version: 17d9f7e76942012e9d09490ecb119066d16aad3d
+    version: c6da1f29d6c1d8d5e0f9f0d2dd2d4dfb1973e62d
   - src: MichaelRigart.interfaces
     version: v1.16.1
   - src: mrlesmithjr.chrony
@@ -49,7 +49,7 @@ roles:
   - src: stackhpc.drac-facts
     version: v1.0.1
   - src: stackhpc.libvirt-host
-    version: v1.15.0
+    version: v1.15.1
   - src: stackhpc.libvirt-vm
     version: v1.16.3
   - src: stackhpc.luks
