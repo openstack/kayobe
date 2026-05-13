@@ -61,10 +61,10 @@
             --name {{ inventory_hostname }} \
             --driver {{ ironic_driver }} \
             {% for key, value in ironic_driver_info.items() %}
-            --driver-info {{ key }}={{ value }} \
+            --driver-info {{ (key ~ '=' ~ value) | quote }} \
             {% endfor %}
             {% for key, value in ironic_properties.items() %}
-            --property {{ key }}={{ value }} \
+            --property {{ (key ~ '=' ~ value) | quote }} \
             {% endfor %}
             --resource-class {{ ironic_resource_class }}
         when:
