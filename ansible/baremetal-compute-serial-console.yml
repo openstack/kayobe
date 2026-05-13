@@ -83,18 +83,18 @@
 
         - name: Set IPMI serial console terminal port
           vars:
-            name: "{{ node['name'] }}"
-            port: "{{ hostvars[controller_host].console_allocation_result.ports[name] }}"
+            node_name: "{{ node['name'] }}"
+            node_port: "{{ hostvars[controller_host].console_allocation_result.ports[node_name] }}"
             # NOTE: Without this, the controller's ansible_host variable will not
             # be respected when using delegate_to.
             ansible_host: "{{ hostvars[controller_host].ansible_host | default(controller_host) }}"
           command: >
-            {{ venv }}/bin/openstack baremetal node set {{ name }} --driver-info ipmi_terminal_port={{ port }}
+            {{ venv }}/bin/openstack baremetal node set {{ node_name }} --driver-info ipmi_terminal_port={{ node_port }}
           delegate_to: "{{ controller_host }}"
           environment: "{{ openstack_auth_env }}"
           when: >-
             node['driver_info'].ipmi_terminal_port is not defined or
-            node['driver_info'].ipmi_terminal_port | int != port | int
+            node['driver_info'].ipmi_terminal_port | int != node_port | int
 
         - name: Enable the IPMI socat serial console
           vars:
