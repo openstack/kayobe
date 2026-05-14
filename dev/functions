@@ -94,6 +94,12 @@ function config_defaults {
 
     # Log directory in case of errors
     export LOGDIR=${LOGDIR:-}
+
+    # Test with broken conditionals support disabled. We do not want to allow
+    # new upstream code to add broken conditionals, but want to continue to
+    # enable ANSIBLE_ALLOW_BROKEN_CONDITIONALS by default for a period of time
+    # so that users have a chance to update their playbooks.
+    export ANSIBLE_ALLOW_BROKEN_CONDITIONALS=${ANSIBLE_ALLOW_BROKEN_CONDITIONALS:-false}
 }
 
 function config_set {
