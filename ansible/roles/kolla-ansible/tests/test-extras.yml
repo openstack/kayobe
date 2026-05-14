@@ -163,10 +163,8 @@
             kolla_enable_haproxy: True
             kolla_enable_heat: True
             kolla_enable_horizon: True
-            kolla_enable_influxdb: True
             kolla_enable_ironic: True
             kolla_enable_ironic_neutron_agent: True
-            kolla_enable_kuryr: True
             kolla_enable_magnum: True
             kolla_enable_manila: True
             kolla_enable_manila_backend_generic: True
@@ -189,10 +187,8 @@
             kolla_enable_skyline: True
             kolla_enable_swift: True
             kolla_enable_tacker: True
-            kolla_enable_telegraf: True
             kolla_enable_trove: True
             kolla_enable_watcher: True
-            kolla_enable_zun: True
             kolla_globals_paths_extra:
               - "{{ tempfile_result.path ~ '/etc/kayobe/' }}"
             kolla_ansible_custom_passwords:
@@ -278,10 +274,8 @@
               #enable_haproxy: True
               #enable_heat: True
               #enable_horizon: True
-              #enable_influxdb: True
               #enable_ironic: True
               #enable_ironic_neutron_agent: True
-              #enable_kuryr: True
               #enable_magnum: True
               #enable_manila: True
               #enable_manila_backend_generic: True
@@ -304,10 +298,8 @@
               #enable_skyline: True
               #enable_swift: True
               #enable_tacker: True
-              #enable_telegraf: True
               #enable_trove: True
               #enable_watcher: True
-              #enable_zun: True
               extra-global-1: "extra-val-1"
               extra-global-2: "extra-val-2"
 

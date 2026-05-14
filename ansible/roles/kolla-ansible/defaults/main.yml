@@ -228,9 +228,7 @@ kolla_openstack_logging_debug:
 #kolla_enable_grafana:
 #kolla_enable_heat:
 #kolla_enable_horizon:
-#kolla_enable_influxdb:
 #kolla_enable_ironic:
-#kolla_enable_kuryr:
 #kolla_enable_magnum:
 #kolla_enable_manila:
 #kolla_enable_mistral:
@@ -241,7 +239,6 @@ kolla_openstack_logging_debug:
 #kolla_enable_neutron_vpnaas:
 #kolla_enable_prometheus:
 #kolla_enable_swift:
-#kolla_enable_telegraf:
 #kolla_enable_watcher:
 
 #######################

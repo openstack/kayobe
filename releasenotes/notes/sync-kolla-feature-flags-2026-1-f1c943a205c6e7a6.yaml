@@ -1,0 +1,18 @@
+---
+upgrade:
+  - |
+    Synchronises Kayobe feature flags with Kolla Ansible 2026.1. The
+    following services have been removed and are no longer supported:
+
+    - InfluxDB (``kolla_enable_influxdb``)
+    - Kuryr (``kolla_enable_kuryr``)
+    - Telegraf (``kolla_enable_telegraf``)
+    - Zun (``kolla_enable_zun``, ``kolla_enable_horizon_zun``)
+
+    References to these services have been removed from the overcloud
+    container image regex map, the inventory defaults, the kolla-openstack
+    role custom config include globs and rules, and the operator example
+    configuration in ``etc/kayobe/kolla.yml``.
+
+    The ``kolla_enable_placement`` default no longer depends on
+    ``kolla_enable_zun``; it now depends only on ``kolla_enable_nova``.
