@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Adds support for templating configuration for the new Rocky Linux security
+    repository.

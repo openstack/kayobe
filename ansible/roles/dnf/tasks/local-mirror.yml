@@ -12,9 +12,10 @@
   when: (role_path ~ '/templates/' ~ item ~ '.j2') is exists
   loop:
     - "{{ repo_file_prefix }}.repo"
-    - "{{ repo_file_prefix }}-extras.repo"
     - "{{ repo_file_prefix }}-addons.repo"
     - "{{ repo_file_prefix }}-devel.repo"
+    - "{{ repo_file_prefix }}-extras.repo"
+    - "{{ repo_file_prefix }}-security.repo"
 
 - name: Update cache
   dnf:
