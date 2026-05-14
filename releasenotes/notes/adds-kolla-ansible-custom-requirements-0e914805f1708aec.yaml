@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    Adds support for installing extra Kolla Ansible collections from
+    ``kolla/requirements.yml`` files discovered in
+    ``${KAYOBE_CONFIG_PATH}`` and ``kayobe_env_search_paths``.
+    This can be used to provide custom collections, including filter plugins
+    used by Kolla configuration templates. See :kayobe-doc:`Kayobe
+    documentation <configuration/reference/kolla-ansible.html>` for more
+    details.

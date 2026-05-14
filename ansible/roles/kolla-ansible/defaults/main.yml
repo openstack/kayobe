@@ -34,6 +34,11 @@ kolla_ansible_requirements_yml: "{{ kolla_ansible_venv }}/share/kolla-ansible/re
 # Path to a an additional requirements.yml file for Ansible collections when using ansible-core.
 kolla_ansible_core_requirements_yml: "{{ kolla_ansible_venv }}/share/kolla-ansible/requirements-core.yml"
 
+# List of optional paths to custom requirements.yml files for Ansible
+# collections. Files that exist will be installed in order.
+# If None, custom collections are not installed.
+kolla_ansible_custom_requirements_paths:
+
 # Virtualenv directory where Kolla-ansible's ansible modules will execute
 # remotely on the target nodes. If None, no virtualenv will be used.
 kolla_ansible_target_venv:

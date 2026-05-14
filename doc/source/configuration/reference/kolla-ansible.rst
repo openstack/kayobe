@@ -77,6 +77,46 @@ For example, to use the `hashi_vault Ansible lookup plugin
    kolla_ansible_venv_extra_requirements:
      - "hvac"
 
+Custom Ansible Collections Requirements
+---------------------------------------
+
+Kayobe can install additional Ansible collections for Kolla Ansible from
+custom requirements files.
+
+By default, Kayobe looks for ``kolla/requirements.yml`` in
+``${KAYOBE_CONFIG_PATH}`` and each path in ``kayobe_env_search_paths``.
+
+Example custom collections requirements file:
+
+.. code-block:: yaml
+     :caption: ``$KAYOBE_CONFIG_PATH/kolla/requirements.yml``
+
+     ---
+     collections:
+         - name: git+https://git.example.com/myorg/ansible-collection-kolla-filters.git
+             type: git
+             version: main
+
+Any files that exist are installed in order with
+``ansible-galaxy collection install`` after the default Kolla Ansible
+collections are installed. Missing files are skipped.
+
+Use case: custom filter plugins in Kolla templates
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+One use case is shipping site-specific Jinja2 filter plugins in a private
+Ansible collection, then using those filters in Kolla service configuration
+templates under ``${KAYOBE_CONFIG_PATH}/kolla/config``.
+
+If a custom collection provides a filter named
+``myorg.kolla_filters.to_backend_name``, reference the filter in a Kolla
+custom template, for example:
+
+.. code-block:: jinja
+    :caption: ``$KAYOBE_CONFIG_PATH/kolla/config/haproxy/haproxy.cfg``
+
+    backend {{ inventory_hostname | myorg.kolla_filters.to_backend_name }}
+
 Local environment
 =================
 

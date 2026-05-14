@@ -160,3 +160,29 @@
     ANSIBLE_COLLECTIONS_SCAN_SYS_PATH: "False"
     # NOTE(wszumski): Don't use path configured for kayobe
     ANSIBLE_COLLECTIONS_PATH: ''
+
+- name: Check for custom Ansible collections requirements files
+  stat:
+    path: "{{ item }}"
+    get_checksum: False
+    mime: False
+  with_items: "{{ kolla_ansible_custom_requirements_paths }}"
+  register: kolla_ansible_custom_requirements_file
+  when: kolla_ansible_custom_requirements_paths is not none
+
+- name: Ensure custom Ansible collections are installed
+  command:
+    cmd: >-
+      ansible-galaxy collection install --force
+      -r {{ item.item }}
+      -p {{ kolla_ansible_venv }}/share/kolla-ansible/ansible/collections/
+  with_items: "{{ kolla_ansible_custom_requirements_file.results }}"
+  environment:
+    # NOTE(wszumski): Ignore collections shipped with ansible, so that we can install
+    # newer versions.
+    ANSIBLE_COLLECTIONS_SCAN_SYS_PATH: "False"
+    # NOTE(wszumski): Don't use path configured for kayobe
+    ANSIBLE_COLLECTIONS_PATH: ''
+  when:
+    - kolla_ansible_custom_requirements_paths is not none
+    - item.stat.exists
