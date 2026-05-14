@@ -2,19 +2,15 @@
 - hosts: primary
   environment:
     KAYOBE_CONFIG_SOURCE_PATH: "{{ kayobe_config_src_dir }}"
-    # Don't run container deployment.
-    KAYOBE_OVERCLOUD_CONTAINER_IMAGE_PULL: 0
-    KAYOBE_OVERCLOUD_SERVICE_DEPLOY: 0
-    KAYOBE_OVERCLOUD_POST_CONFIGURE: 0
   tasks:
     - name: Prevent NetworkManager from managing default interface
       command: 'nmcli dev set {{ ansible_facts.default_ipv4.interface }} managed no'
       become: true
       when: ansible_facts.os_family == 'RedHat'
 
-    - name: Ensure overcloud is deployed
+    - name: Ensure Ansible control host is configured
       shell:
-        cmd: "{{ kayobe_src_dir }}/dev/overcloud-deploy.sh &> {{ logs_dir }}/ansible/overcloud-deploy"
+        cmd: "{{ kayobe_src_dir }}/dev/ansible-control-host-configure.sh &> {{ logs_dir }}/ansible/ansible-control-host-configure"
         executable: /bin/bash
 
     - name: Run host-configure test harness
@@ -24,8 +20,3 @@
       environment:
         FAIL2BAN_ENABLED: "{{ fail2ban_enabled | default(false) }}"
         CI_NETWORK_ENGINE: "{{ ci_network_engine | default('default') }}"
-
-    - name: Test bouncing interfaces
-      shell:
-        cmd: "{{ kayobe_src_dir }}/dev/overcloud-test-bounce-interface.sh controllers br1 &> {{ logs_dir }}/ansible/overcloud-test-bounce-interface"
-        executable: /bin/bash

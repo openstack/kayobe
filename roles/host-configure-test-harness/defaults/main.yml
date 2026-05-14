@@ -1,0 +1,5 @@
+---
+host_configure_testinfra_venv: ~/testinfra-venv
+host_configure_test_path: "{{ kayobe_src_dir }}/roles/host-configure-test-harness/tests/"
+host_configure_test_results_path: "{{ logs_dir }}/test-results.html"
+host_configure_site_mirror_fqdn: "{{ zuul_site_mirror_fqdn }}"

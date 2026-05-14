@@ -15,6 +15,8 @@
         - kayobe-tox-ansible-syntax
         - kayobe-tox-ansible
         - kayobe-tox-molecule
+        - kayobe-ansible-control-host-configure-rocky10
+        - kayobe-ansible-control-host-configure-ubuntu-noble
         - kayobe-infra-vm-rocky10
         - kayobe-infra-vm-ubuntu-noble
         - kayobe-overcloud-host-configure-rocky10
@@ -46,6 +48,8 @@
         - kayobe-tox-ansible-syntax
         - kayobe-tox-ansible
         - kayobe-tox-molecule
+        - kayobe-ansible-control-host-configure-rocky10
+        - kayobe-ansible-control-host-configure-ubuntu-noble
         - kayobe-infra-vm-rocky10
         - kayobe-infra-vm-ubuntu-noble
         - kayobe-overcloud-host-configure-rocky10
@@ -72,6 +76,7 @@
 
     experimental:
       jobs:
+        - kayobe-ansible-control-host-configure-centos10s
         - kayobe-infra-vm-centos10s
         - kayobe-infra-vm-centos10s-cloud-image
         - kayobe-infra-vm-rocky10-cloud-image
