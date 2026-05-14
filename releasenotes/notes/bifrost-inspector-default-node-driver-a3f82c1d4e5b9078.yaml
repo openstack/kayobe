@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    Adds support for configuring the Ironic auto-discovery node driver used
+    by Bifrost via the new ``kolla_bifrost_inspector_default_node_driver``
+    variable. This corresponds to ``[auto_discover] driver`` in
+    ``ironic.conf``. The default is ``{{ inspector_discovery_enroll_node_driver }}``,
+    defined in ``inspector.yml``, which itself defaults to ``ipmi``. Set to
+    ``redfish`` for modern BMC implementations.
+    See `bug 2137417 <https://bugs.launchpad.net/kayobe/+bug/2137417>`_ for
+    details.
