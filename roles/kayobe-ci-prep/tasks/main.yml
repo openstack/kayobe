@@ -9,10 +9,20 @@
   vars:
     configure_ephemeral_mountpoint: "{{ '/var/lib/containers' if container_engine | default('docker') == 'podman' else '/var/lib/docker' }}"
 
+- name: Find YUM repo files
+  become: true
+  ansible.builtin.find:
+    paths: /etc/yum.repos.d
+    patterns: "*.repo"
+    file_type: file
+  register: repo_files
+  when: ansible_facts.distribution == "Rocky"
+
 - name: Set Rocky Linux mirror to download.rockylinux.org
   become: true
   ansible.builtin.shell:
-    cmd: sed -i 's/mirrorlist/#mirrorlist/g; s/#baseurl/baseurl/g' /etc/yum.repos.d/rocky.repo
+    cmd: sed -i 's/mirrorlist/#mirrorlist/g; s/#baseurl/baseurl/g' {{ item }}
+  loop: "{{ repo_files.files | map(attribute='path') | list }}"
   when: ansible_facts.distribution == "Rocky"
 
 - block:
