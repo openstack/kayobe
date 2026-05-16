@@ -20,6 +20,17 @@ is set to ``rocky`` it may be set to ``10``, and this is its default value.
 When ``os_distribution`` is set to ``ubuntu`` it may be set to ``noble``, and
 this is its default value.
 
+The ``os_family_map`` variable in ``etc/kayobe/globals.yml`` maps
+``os_distribution`` values to OS families. The default mapping is:
+
+* ``centos`` -> ``RedHat``
+* ``rocky`` -> ``RedHat``
+* ``ubuntu`` -> ``Debian``
+
+The ``os_family`` variable in ``etc/kayobe/globals.yml`` defaults to
+``{{ os_family_map[os_distribution | lower] }}``, and may be used by
+configuration defaults that only need to distinguish between OS families.
+
 These variables are used to set various defaults, including:
 
 * Bootstrap users
