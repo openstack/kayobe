@@ -64,6 +64,10 @@
 ###############################################################################
 # Ansible configuration.
 
+# String used as the header comment in files managed by Kayobe. Default is
+# "Ansible managed".
+#kayobe_managed:
+
 # Filter to apply to the setup module when gathering facts. Default is to not
 # specify a filter.
 #kayobe_ansible_setup_filter:
