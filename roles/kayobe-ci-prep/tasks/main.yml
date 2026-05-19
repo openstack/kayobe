@@ -17,5 +17,20 @@
 
     - name: Enable the EPEL repository
       command: dnf config-manager --disable epel
+
+    # NOTE(priteau): Remove me when newer docker-ce package is out
+    - name: Install python3-dnf-plugin-versionlock
+      become: true
+      ansible.builtin.dnf:
+        name: python3-dnf-plugin-versionlock
+        state: present
+
+    - name: Pin docker-ce to 29.5.0
+      become: true
+      community.general.dnf_versionlock:
+        name: "docker-ce-3:29.5.1-1.el{{ ansible_facts.distribution_major_version }}"
+        state: excluded
+        raw: true
+
   when: ansible_facts.os_family == 'RedHat'
   become: true
