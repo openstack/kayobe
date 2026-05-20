@@ -78,6 +78,7 @@ def test_service_ini_file(host, path):
      'nova.conf',
      'octavia.conf',
      'placement.conf',
+     'watcher.conf',
      'backup.my.cnf'])
 def test_service_ini_file_extra_confs(host, path):
     # Tests config added via extra config files
@@ -92,7 +93,8 @@ def test_service_ini_file_extra_confs(host, path):
      'ironic/ironic-agent.kernel',
      'nova/nova-libvirt/cacert.pem',
      'nova/nova-libvirt/clientcert.pem',
-     'nova/nova-libvirt/clientkey.pem'])
+     'nova/nova-libvirt/clientkey.pem',
+     'watcher/policy.yaml'])
 def test_service_non_ini_file(host, path):
     # TODO(mgoddard): Check config file contents.
     path = os.path.join('/etc/kolla/config', path)

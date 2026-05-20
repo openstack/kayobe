@@ -137,6 +137,7 @@ provisioner:
         kolla_enable_prometheus: true
         kolla_enable_swift: true
         kolla_enable_telegraf: true
+        kolla_enable_watcher: true
   lint:
     name: ansible-lint
 scenario:
