@@ -41,11 +41,11 @@ copy_bifrost_logs() {
 }
 
 copy_logs() {
-    cp -rnL /var/log/kolla/* ${LOG_DIR}/kolla/
+    cp -rL --update=none /var/log/kolla/* ${LOG_DIR}/kolla/
     if [[ -d ${CONFIG_DIR} ]]; then
-        cp -rnL ${CONFIG_DIR}/etc/kayobe/* ${LOG_DIR}/kayobe_configs
-        cp -rnL ${CONFIG_DIR}/etc/kolla/* ${LOG_DIR}/kolla_configs
-        cp -rnL /etc/kolla/* ${LOG_DIR}/kolla_node_configs
+        cp -rL --update=none ${CONFIG_DIR}/etc/kayobe/* ${LOG_DIR}/kayobe_configs
+        cp -rL --update=none ${CONFIG_DIR}/etc/kolla/* ${LOG_DIR}/kolla_configs
+        cp -rL --update=none /etc/kolla/* ${LOG_DIR}/kolla_node_configs
         # Don't save the IPA images.
         rm ${LOG_DIR}/kayobe_configs/kolla/config/ironic/ironic-agent.{kernel,initramfs}
         rm ${LOG_DIR}/kolla_configs/config/ironic/ironic-agent.{kernel,initramfs}
@@ -54,8 +54,8 @@ copy_logs() {
     fi
     if [[ -n ${PREVIOUS_CONFIG_DIR} ]] && [[ -d ${PREVIOUS_CONFIG_DIR} ]]; then
         mkdir -p ${LOG_DIR}/previous_{kayobe,kolla}_configs
-        cp -rnL ${PREVIOUS_CONFIG_DIR}/etc/kayobe/* ${LOG_DIR}/previous_kayobe_configs
-        cp -rnL ${PREVIOUS_CONFIG_DIR}/etc/kolla/* ${LOG_DIR}/previous_kolla_configs
+        cp -rL --update=none ${PREVIOUS_CONFIG_DIR}/etc/kayobe/* ${LOG_DIR}/previous_kayobe_configs
+        cp -rL --update=none ${PREVIOUS_CONFIG_DIR}/etc/kolla/* ${LOG_DIR}/previous_kolla_configs
         # NOTE: we can't save node configs in /etc/kolla for the pervious
         # release since they'll have been overwritten at this point.
         # Don't save the IPA images.
@@ -64,10 +64,10 @@ copy_logs() {
     fi
 
     if [[ -d /opt/kayobe/etc/kolla ]]; then
-        cp -rnL /opt/kayobe/etc/kolla/* ${LOG_DIR}/kolla_build_configs/
+        cp -rL --update=none /opt/kayobe/etc/kolla/* ${LOG_DIR}/kolla_build_configs/
     fi
 
-    cp -rvnL /var/log/* ${LOG_DIR}/system_logs/
+    cp -rvL --update=none /var/log/* ${LOG_DIR}/system_logs/
 
     if [[ -x "$(command -v journalctl)" ]]; then
         journalctl --no-pager > ${LOG_DIR}/system_logs/syslog.txt
