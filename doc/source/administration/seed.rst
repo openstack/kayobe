@@ -20,7 +20,7 @@ Destroying all services on the seed
 
    This step will destroy all containers, container images, and volumes that were deployed by
    Kayobe and Kolla. To destroy volumes and images associated with
-   :ref:`custom containers <configuration-seed-custom-containers>`, you must configure the
+   :ref:`custom containers <configuration-custom-containers>`, you must configure the
    ``post_destroy`` and ``pre_destroy`` hooks to do the clean up manually as Kayobe will not
    automatically clean these up. It is generally only advised to run this command when
    you have no important data on the system.

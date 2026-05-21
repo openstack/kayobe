@@ -916,8 +916,10 @@ class TestCase(unittest.TestCase):
         expected_calls = [
             mock.call(
                 mock.ANY,
-                [utils.get_data_files_path("ansible", "seed-manage-containers.yml")],  # noqa
-                extra_vars={'kayobe_action': 'deploy'}
+                [utils.get_data_files_path("ansible", "manage-containers.yml")],  # noqa
+                limit="seed",
+                extra_vars={'kayobe_action': 'deploy',
+                            'manage_containers_target_hosts': 'seed'}
             ),
             mock.call(
                 mock.ANY,
@@ -942,7 +944,8 @@ class TestCase(unittest.TestCase):
                     utils.get_data_files_path(
                         "ansible", "dell-switch-bmp.yml"),
                 ],
-                extra_vars={'kayobe_action': 'deploy'}
+                extra_vars={'kayobe_action': 'deploy',
+                            'manage_containers_target_hosts': 'seed'}
             ),
         ]
         self.assertListEqual(expected_calls, mock_run.call_args_list)
@@ -970,8 +973,10 @@ class TestCase(unittest.TestCase):
         expected_calls = [
             mock.call(
                 mock.ANY,
-                [utils.get_data_files_path("ansible", "seed-manage-containers.yml")],  # noqa
-                extra_vars={'kayobe_action': 'deploy'}
+                [utils.get_data_files_path("ansible", "manage-containers.yml")],  # noqa
+                limit="seed",
+                extra_vars={'kayobe_action': 'deploy',
+                            'manage_containers_target_hosts': 'seed'}
             ),
             mock.call(
                 mock.ANY,
@@ -1195,7 +1200,7 @@ class TestCase(unittest.TestCase):
         self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
-                       "run_kayobe_playbook")
+                       "run_kayobe_playbooks")
     def test_infra_vm_service_deploy(self, mock_run):
         command = commands.InfraVMServiceDeploy(TestApp(), [])
         parser = command.get_parser("test")
@@ -1204,7 +1209,16 @@ class TestCase(unittest.TestCase):
         result = command.run(parsed_args)
         self.assertEqual(0, result)
 
-        expected_calls = []
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [utils.get_data_files_path(
+                    "ansible", "manage-containers.yml")],
+                limit="infra-vms",
+                extra_vars={'kayobe_action': 'deploy',
+                            'manage_containers_target_hosts': 'infra-vms'}
+            ),
+        ]
         self.assertListEqual(expected_calls, mock_run.call_args_list)
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
@@ -1759,6 +1773,7 @@ class TestCase(unittest.TestCase):
                 limit="overcloud",
                 extra_vars={
                     "kayobe_action": "deploy",
+                    "manage_containers_target_hosts": "overcloud",
                 },
             ),
             mock.call(
@@ -1827,6 +1842,7 @@ class TestCase(unittest.TestCase):
                 limit="overcloud",
                 extra_vars={
                     "kayobe_action": "deploy",
+                    "manage_containers_target_hosts": "overcloud",
                 },
             ),
         ]
@@ -1924,6 +1940,7 @@ class TestCase(unittest.TestCase):
                 limit="overcloud",
                 extra_vars={
                     "kayobe_action": "reconfigure",
+                    "manage_containers_target_hosts": "overcloud",
                 },
             ),
             mock.call(
@@ -1991,6 +2008,7 @@ class TestCase(unittest.TestCase):
                 limit="overcloud",
                 extra_vars={
                     "kayobe_action": "stop",
+                    "manage_containers_target_hosts": "overcloud",
                 },
             ),
         ]
@@ -2057,6 +2075,7 @@ class TestCase(unittest.TestCase):
                 limit="overcloud",
                 extra_vars={
                     "kayobe_action": "upgrade",
+                    "manage_containers_target_hosts": "overcloud",
                 }
             ),
             mock.call(

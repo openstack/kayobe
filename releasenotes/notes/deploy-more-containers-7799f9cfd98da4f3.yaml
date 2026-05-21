@@ -1,0 +1,21 @@
+---
+features:
+  - |
+    Extends the seed's "custom containers" feature to support deploying
+    containers on infrastructure VMs, overcloud and Ansible control hosts.
+deprecations:
+  - |
+    The tags ``seed-deploy-containers`` and ``seed-manage-containers`` are
+    deprecated in favour of the more universal ``manage-containers``. They have
+    been kept for backward compatibility, but will be removed in the Hibiscus
+    release.
+  - |
+    The variable ``seed_deploy_containers_registry_attempt_login`` has
+    been renamed to ``seed_manage_containers_registry_attempt_login`` and the
+    deprecated variable will subsequently be removed in the Hibiscus release.
+  - |
+    The variables ``deploy_containers_registry_attempt_login`` and
+    ``deploy_containers_docker_api_timeout`` have been renamed to
+    ``manage_containers_registry_attempt_login`` and
+    ``manage_containers_docker_api_timeout`` respectively. The old variable
+    names are deprecated and will be removed in the Hibiscus release.

@@ -16,7 +16,9 @@
         - kayobe-tox-ansible
         - kayobe-tox-molecule
         - kayobe-ansible-control-host-configure-rocky10
+        - kayobe-ansible-control-host-configure-rocky10-podman
         - kayobe-ansible-control-host-configure-ubuntu-noble
+        - kayobe-ansible-control-host-configure-ubuntu-noble-podman
         - kayobe-infra-vm-rocky10
         - kayobe-infra-vm-ubuntu-noble
         - kayobe-overcloud-host-configure-rocky10

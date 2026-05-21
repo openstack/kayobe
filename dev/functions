@@ -66,6 +66,9 @@ function config_defaults {
     # Whether to use Kolla test images.
     export KAYOBE_USE_KOLLA_TEST_IMAGES=${KAYOBE_USE_KOLLA_TEST_IMAGES:-1}
 
+    # Whether to deploy a custom container.
+    export KAYOBE_DEPLOY_CUSTOM_CONTAINER=${KAYOBE_DEPLOY_CUSTOM_CONTAINER:-0}
+
     # Additional arguments to pass to kayobe commands.
     export KAYOBE_EXTRA_ARGS=${KAYOBE_EXTRA_ARGS:-}
 
@@ -337,6 +340,12 @@ function ansible_control_host_configure {
 
     echo "Configuring the Ansible control host"
     run_kayobe control host configure
+
+    # Deploy a custom container on the Ansible control host.
+    if [[ ${KAYOBE_DEPLOY_CUSTOM_CONTAINER} = 1 ]]; then
+        echo "Deploying custom container"
+        run_kayobe control host service deploy
+    fi
 }
 
 function seed_hypervisor_deploy {

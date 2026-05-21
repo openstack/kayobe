@@ -1,0 +1,9 @@
+---
+- name: Pull custom container images
+  kayobe_container_image:
+    name: "{{ item.value.image }}"
+    source: pull
+    state: present
+  with_dict: "{{ manage_custom_containers }}"
+  when: kayobe_action != 'destroy'
+  become: "{{ container_engine == 'podman' }}"

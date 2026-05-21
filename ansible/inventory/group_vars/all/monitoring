@@ -104,6 +104,24 @@ monitoring_tuned_active_builtin_profile: "throughput-performance"
 monitoring_users: "{{ controller_users }}"
 
 ###############################################################################
+# Monitoring node additional containers configuration
+
+# Dict of containers to deploy.
+# Example:
+# monitoring_containers:
+#   squid:
+#     image: "docker.io/stackhpc/squid"
+#     pre: "{{ kayobe_env_config_path }}/containers/squid/pre.yml"
+#     post: "{{ kayobe_env_config_path }}/containers/squid/post.yml"
+#     tag: "3.5.20-1"
+#
+monitoring_containers: {}
+
+# Whether to attempt a basic authentication login to a registry when
+# deploying monitoring node containers
+monitoring_manage_containers_registry_attempt_login: "{{ kolla_docker_registry_username is truthy and kolla_docker_registry_password is truthy }}"
+
+###############################################################################
 # Monitoring node firewalld configuration.
 
 # Whether to install and enable firewalld.

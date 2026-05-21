@@ -107,7 +107,7 @@
 ###############################################################################
 # Seed node additional containers configuration
 
-# Dict of container images to start
+# Dict of containers to deploy.
 # Example:
 # seed_containers:
 #   squid:
@@ -119,8 +119,8 @@
 #seed_containers:
 
 # Whether to attempt a basic authentication login to a registry when
-# deploying seed containers
-#seed_deploy_containers_registry_attempt_login:
+# deploying seed containers.
+#seed_manage_containers_registry_attempt_login:
 
 ###############################################################################
 # Seed node firewalld configuration.

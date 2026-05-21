@@ -97,6 +97,23 @@
 #monitoring_users:
 
 ###############################################################################
+# Monitoring node additional containers configuration
+
+# Dict of containers to deploy.
+# Example:
+# monitoring_containers:
+#   squid:
+#     image: "stackhpc/squid:3.5.20-1"
+#     pre: "{{ kayobe_env_config_path }}/containers/squid/pre.yml"
+#     post: "{{ kayobe_env_config_path }}/containers/squid/post.yml"
+#
+#monitoring_containers:
+
+# Whether to attempt a basic authentication login to a registry when
+# deploying monitoring containers
+#monitoring_manage_containers_registry_attempt_login:
+
+###############################################################################
 # Monitoring node firewalld configuration.
 
 # Whether to install and enable firewalld.

@@ -28,7 +28,7 @@
     restart_policy: "{{ container_config.restart_policy | default(deploy_containers_defaults.restart_policy) }}"
     shm_size: "{{ container_config.shm_size | default(omit) }}"
     sysctls: "{{ container_config.sysctls | default(omit) }}"
-    timeout: "{{ deploy_containers_docker_api_timeout }}"
+    timeout: "{{ manage_containers_docker_api_timeout }}"
     ulimits: "{{ container_config.ulimits | default(omit) }}"
     user: "{{ container_config.user | default(omit) }}"
     volumes: "{{ container_config.volumes | default(omit) }}"

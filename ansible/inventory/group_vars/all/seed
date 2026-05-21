@@ -133,7 +133,7 @@ seed_users: "{{ users_default }}"
 ###############################################################################
 # Seed node additional containers configuration
 
-# Dict of container images to start
+# Dict of containers to deploy.
 # Example:
 # seed_containers:
 #   squid:
@@ -144,9 +144,15 @@ seed_users: "{{ users_default }}"
 #
 seed_containers: {}
 
-# Whether to attempt a basic authentication login to a registry when
-# deploying seed containers
+# (Deprecated) Whether to attempt a basic authentication login to a registry when
+# deploying seed containers.
+# TODO(mattcrees): remove seed_deploy_containers_registry_attempt_login in the
+# Hibiscus cycle.
 seed_deploy_containers_registry_attempt_login: "{{ kolla_docker_registry_username is truthy and kolla_docker_registry_password is truthy }}"
+
+# Whether to attempt a basic authentication login to a registry when
+# deploying seed containers.
+seed_manage_containers_registry_attempt_login: "{{ seed_deploy_containers_registry_attempt_login }}"
 
 ###############################################################################
 # Seed node firewalld configuration.

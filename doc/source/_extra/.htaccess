@@ -16,3 +16,7 @@ redirectmatch 301 ^/([^/]+/[^/]+)/configuration/seed-custom-containers.html$	/$1
 # The following redirects were added when development/* was moved to
 # contributor/*.
 redirectmatch 301 ^/([^/]+/[^/]+)/development/([^/]+).html$ /$1/contributor/$2.html
+
+# The following redirect was added when the seed-custom-containers feature was
+# generalised for other hosts.
+redirectmatch 301 ^/([^/]+/[^/]+)/configuration/reference/seed-custom-containers.html$	/$1/configuration/reference/custom-containers.html

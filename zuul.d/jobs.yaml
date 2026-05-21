@@ -143,11 +143,31 @@
     name: kayobe-ansible-control-host-configure-rocky10
     parent: kayobe-ansible-control-host-configure-base
     nodeset: kayobe-rocky10
+    vars:
+      deploy_custom_container: true
+
+- job:
+    name: kayobe-ansible-control-host-configure-rocky10-podman
+    parent: kayobe-ansible-control-host-configure-base
+    nodeset: kayobe-rocky10
+    vars:
+      deploy_custom_container: true
+      container_engine: podman
 
 - job:
     name: kayobe-ansible-control-host-configure-ubuntu-noble
     parent: kayobe-ansible-control-host-configure-base
     nodeset: kayobe-ubuntu-noble
+    vars:
+      deploy_custom_container: true
+
+- job:
+    name: kayobe-ansible-control-host-configure-ubuntu-noble-podman
+    parent: kayobe-ansible-control-host-configure-base
+    nodeset: kayobe-ubuntu-noble
+    vars:
+      deploy_custom_container: true
+      container_engine: podman
 
 - job:
     name: kayobe-overcloud-base
@@ -356,6 +376,7 @@
     vars:
       fail2ban_enabled: true
       ci_network_engine: nmstate
+      deploy_custom_container: true
 
 - job:
     name: kayobe-overcloud-host-configure-ubuntu-noble
@@ -363,6 +384,7 @@
     nodeset: kayobe-ubuntu-noble
     vars:
       fail2ban_enabled: true
+      deploy_custom_container: true
 
 - job:
     name: kayobe-seed-upgrade-base

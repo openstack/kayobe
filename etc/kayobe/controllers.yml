@@ -165,6 +165,24 @@
 #controller_users:
 
 ###############################################################################
+# Controller node additional containers configuration
+
+# Dict of containers to deploy.
+# Example:
+# controller_containers:
+#   squid:
+#     image: "stackhpc/squid:3.5.20-1"
+#     pre: "{{ kayobe_env_config_path }}/containers/squid/pre.yml"
+#     post: "{{ kayobe_env_config_path }}/containers/squid/post.yml"
+#
+#controller_containers:
+
+
+# Whether to attempt a basic authentication login to a registry when
+# deploying controller containers
+#controller_manage_containers_registry_attempt_login:
+
+###############################################################################
 # Controller node firewalld configuration.
 
 # Whether to install and enable firewalld.
