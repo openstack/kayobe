@@ -96,8 +96,7 @@ class ActionModule(ActionBase):
             result['failed'] = True
             result['msg'] = "; ".join(errors)
         else:
-            result['ansible_facts'] = facts
-            result['_ansible_facts_cacheable'] = False
+            result['kolla_ansible_host_vars'] = facts
         return result
 
     def _get_interface_fact(self, net_name, required, description):

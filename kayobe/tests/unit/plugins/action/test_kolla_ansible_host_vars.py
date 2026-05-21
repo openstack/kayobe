@@ -96,8 +96,7 @@ class TestCase(unittest.TestCase):
         result = module._run([], [])
         expected = {
             "changed": False,
-            "ansible_facts": {},
-            "_ansible_facts_cacheable": False,
+            "kolla_ansible_host_vars": {},
         }
         self.assertEqual(expected, result)
 
@@ -112,10 +111,9 @@ class TestCase(unittest.TestCase):
         result = module._run(interfaces, [])
         expected = {
             "changed": False,
-            "ansible_facts": {
+            "kolla_ansible_host_vars": {
                 "kolla_foo_interface": "eth0",
             },
-            "_ansible_facts_cacheable": False,
         }
         self.assertEqual(expected, result)
 
@@ -135,11 +133,10 @@ class TestCase(unittest.TestCase):
         result = module._run(interfaces, [])
         expected = {
             "changed": False,
-            "ansible_facts": {
+            "kolla_ansible_host_vars": {
                 "kolla_foo_interface": "eth0",
                 "kolla_bar_interface": "eth1",
             },
-            "_ansible_facts_cacheable": False,
         }
         self.assertEqual(expected, result)
 
@@ -171,8 +168,7 @@ class TestCase(unittest.TestCase):
         result = module._run(interfaces, [])
         expected = {
             "changed": False,
-            "ansible_facts": {},
-            "_ansible_facts_cacheable": False,
+            "kolla_ansible_host_vars": {},
         }
         self.assertEqual(expected, result)
 
@@ -208,8 +204,7 @@ class TestCase(unittest.TestCase):
         result = module._run(interfaces, [])
         expected = {
             "changed": False,
-            "ansible_facts": {},
-            "_ansible_facts_cacheable": False,
+            "kolla_ansible_host_vars": {},
         }
         self.assertEqual(expected, result)
 
@@ -247,11 +242,10 @@ class TestCase(unittest.TestCase):
         result = module._run([], external_networks)
         expected = {
             "changed": False,
-            "ansible_facts": {
+            "kolla_ansible_host_vars": {
                 "kolla_neutron_bridge_names": "eth0-ovs",
                 "kolla_neutron_external_interfaces": "eth0",
             },
-            "_ansible_facts_cacheable": False,
         }
         self.assertEqual(expected, result)
 
@@ -266,12 +260,11 @@ class TestCase(unittest.TestCase):
         result = module._run([], external_networks)
         expected = {
             "changed": False,
-            "ansible_facts": {
+            "kolla_ansible_host_vars": {
                 "kolla_neutron_bridge_names": "eth0-ovs",
                 "kolla_neutron_external_interfaces": "eth0",
                 "kolla_neutron_physical_networks": "custom1",
             },
-            "_ansible_facts_cacheable": False,
         }
         self.assertEqual(expected, result)
 
@@ -287,11 +280,10 @@ class TestCase(unittest.TestCase):
         result = module._run([], external_networks)
         expected = {
             "changed": False,
-            "ansible_facts": {
+            "kolla_ansible_host_vars": {
                 "kolla_neutron_bridge_names": "eth0-ovs,eth1-ovs",
                 "kolla_neutron_external_interfaces": "eth0,eth1",
             },
-            "_ansible_facts_cacheable": False,
         }
         self.assertEqual(expected, result)
 
@@ -310,12 +302,11 @@ class TestCase(unittest.TestCase):
         result = module._run([], external_networks)
         expected = {
             "changed": False,
-            "ansible_facts": {
+            "kolla_ansible_host_vars": {
                 "kolla_neutron_bridge_names": "eth0-ovs,eth1-ovs",
                 "kolla_neutron_external_interfaces": "eth0,eth1",
                 "kolla_neutron_physical_networks": "custom1,custom2",
             },
-            "_ansible_facts_cacheable": False,
         }
         self.assertEqual(expected, result)
 
@@ -353,11 +344,10 @@ class TestCase(unittest.TestCase):
         result = module._run([], external_networks)
         expected = {
             "changed": False,
-            "ansible_facts": {
+            "kolla_ansible_host_vars": {
                 "kolla_neutron_bridge_names": "eth0-ovs",
                 "kolla_neutron_external_interfaces": "eth0",
             },
-            "_ansible_facts_cacheable": False,
         }
         self.assertEqual(expected, result)
 
@@ -376,12 +366,11 @@ class TestCase(unittest.TestCase):
         result = module._run([], external_networks)
         expected = {
             "changed": False,
-            "ansible_facts": {
+            "kolla_ansible_host_vars": {
                 "kolla_neutron_bridge_names": "eth0-ovs",
                 "kolla_neutron_external_interfaces": "eth0",
                 "kolla_neutron_physical_networks": "custom1",
             },
-            "_ansible_facts_cacheable": False,
         }
         self.assertEqual(expected, result)
 
@@ -424,11 +413,10 @@ class TestCase(unittest.TestCase):
         result = module._run([], external_networks)
         expected = {
             "changed": False,
-            "ansible_facts": {
+            "kolla_ansible_host_vars": {
                 "kolla_neutron_bridge_names": "eth0-ovs",
                 "kolla_neutron_external_interfaces": "eth0",
             },
-            "_ansible_facts_cacheable": False,
         }
         self.assertEqual(expected, result)
 
@@ -443,11 +431,10 @@ class TestCase(unittest.TestCase):
         result = module._run([], external_networks)
         expected = {
             "changed": False,
-            "ansible_facts": {
+            "kolla_ansible_host_vars": {
                 "kolla_neutron_bridge_names": "breth0-ovs",
                 "kolla_neutron_external_interfaces": "p-breth0-ovs",
             },
-            "_ansible_facts_cacheable": False,
         }
         self.assertEqual(expected, result)
 
@@ -463,11 +450,10 @@ class TestCase(unittest.TestCase):
         result = module._run([], external_networks)
         expected = {
             "changed": False,
-            "ansible_facts": {
+            "kolla_ansible_host_vars": {
                 "kolla_neutron_bridge_names": "breth0-ovs",
                 "kolla_neutron_external_interfaces": "p-breth0-ovs",
             },
-            "_ansible_facts_cacheable": False,
         }
         self.assertEqual(expected, result)
 
@@ -495,8 +481,7 @@ class TestCase(unittest.TestCase):
         result = module._run([], external_networks)
         expected = {
             "changed": False,
-            "ansible_facts": {},
-            "_ansible_facts_cacheable": False,
+            "kolla_ansible_host_vars": {},
         }
         self.assertEqual(expected, result)
 
@@ -528,8 +513,7 @@ class TestCase(unittest.TestCase):
         result = module._run([], external_networks)
         expected = {
             "changed": False,
-            "ansible_facts": {},
-            "_ansible_facts_cacheable": False,
+            "kolla_ansible_host_vars": {},
         }
         self.assertEqual(expected, result)
 
