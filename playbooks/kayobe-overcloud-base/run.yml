@@ -71,7 +71,7 @@
         # that aren't deployed in this scenario.
         cmd: >
           source {{ kayobe_src_dir }}/dev/environment-setup.sh &&
-          kayobe network connectivity check --limit overcloud
+          KAYOBE_ENVIRONMENT=aio-network-connectivity kayobe network connectivity check --limit overcloud &> {{ logs_dir }}/ansible/network-connectivity-check
         executable: /bin/bash
 
     - name: Perform database backup
