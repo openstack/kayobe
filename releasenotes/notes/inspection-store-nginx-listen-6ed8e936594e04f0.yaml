@@ -1,0 +1,6 @@
+---
+security:
+  - |
+    Fixes nginx configuration of the ``inspection_store`` container to listen
+    on the internal network instead of binding to all interfaces.
+    `LP#2153801 <https://bugs.launchpad.net/kayobe/+bug/2153801>`__
