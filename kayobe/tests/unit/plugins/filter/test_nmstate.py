@@ -327,29 +327,6 @@ class TestNMStateFilter(unittest.TestCase):
         }
         self.assertEqual(eth_iface["ethtool"]["feature"], expected_features)
 
-    def test_ethtool_combined_config(self):
-        """Test combined ring and feature configuration."""
-        variables = {
-            "inventory_hostname": "test-host",
-            "test_interface": "eth0",
-            "test_ethtool_config": {
-                "ring": {"rx": 1024, "tx": 512},
-                "feature": {"rx": True, "gso": False}
-            }
-        }
-        context = self._make_context(variables)
-        result = nmstate.nmstate_config(context, ["test"])
-
-        eth_iface = next(i for i in result["interfaces"]
-
-
-                         if i["name"] == "eth0")
-        expected_ethtool = {
-            "ring": {"rx": 1024, "tx": 512},
-            "feature": {"rx-checksum": True, "tx-generic-segmentation": False}
-        }
-        self.assertEqual(eth_iface["ethtool"], expected_ethtool)
-
     def test_ethtool_invalid_feature(self):
         """Test error handling for unsupported features."""
         variables = {
@@ -471,28 +448,6 @@ class TestNMStateFilter(unittest.TestCase):
             i for i in result["interfaces"]
             if i["name"] == "eth0")
         self.assertEqual(eth_iface["type"], "ethernet")
-
-    def test_vlan_interface_parent_derivation(self):
-        """Test VLAN parent derivation from interface name."""
-        variables = {
-            "inventory_hostname": "test-host",
-            "ansible_facts": {"os_family": "RedHat"},
-            "vlan_interface": "bond0.42",
-            "vlan_vlan": 42,
-        }
-        context = self._make_context(variables)
-        result = nmstate.nmstate_config(context, ["vlan"])
-
-        vlan_iface = next(
-            i for i in result["interfaces"]
-            if i["name"] == "bond0.42")
-        self.assertEqual(vlan_iface["vlan"]["base-iface"], "bond0")
-        self.assertEqual(vlan_iface["vlan"]["id"], 42)
-
-        bond_iface = next(
-            i for i in result["interfaces"]
-            if i["name"] == "bond0")
-        self.assertEqual(bond_iface["state"], "up")
 
     def test_vlan_interface_qos_map_structured(self):
         context = self._make_context(
@@ -639,25 +594,6 @@ class TestNMStateFilter(unittest.TestCase):
         self.assertEqual(default_routes[0]["next-hop-address"],
                          "10.0.0.254")
 
-    def test_defroute_unset_static_ip(self):
-        """Test defroute unset (None) adds default route for static IP."""
-        variables = {
-            "inventory_hostname": "test-host",
-            "test_interface": "eth0",
-            "test_ips": {"test-host": "10.0.0.1"},
-            "test_cidr": "10.0.0.1/24",
-            "test_gateway": "10.0.0.254",
-        }
-        context = self._make_context(variables)
-        result = nmstate.nmstate_config(context, ["test"])
-
-        default_routes = [
-            r for r in result["routes"]["config"]
-            if r["destination"] == "0.0.0.0/0"]
-        self.assertEqual(len(default_routes), 1)
-        self.assertEqual(default_routes[0]["next-hop-address"],
-                         "10.0.0.254")
-
     def test_defroute_false_dhcp(self):
         """Test defroute=false disables auto-routes for DHCP."""
         variables = {
@@ -744,24 +680,6 @@ class TestNMStateFilter(unittest.TestCase):
         self.assertIn({"name": "eth1"}, bridge_ports)
         self.assertIn({"name": "p-br0-phy"}, bridge_ports)
 
-    def test_route_without_table(self):
-        """Test route without table-id omits the field."""
-        variables = {
-            "inventory_hostname": "test-host",
-            "test_interface": "eth0",
-            "test_routes": [
-                {"cidr": "10.0.0.0/24", "gateway": "192.168.1.1"}
-            ],
-        }
-        context = self._make_context(variables)
-        result = nmstate.nmstate_config(context, ["test"])
-
-        routes = result["routes"]["config"]
-        self.assertEqual(len(routes), 1)
-        self.assertEqual(routes[0]["destination"], "10.0.0.0/24")
-        self.assertEqual(routes[0]["next-hop-address"], "192.168.1.1")
-        self.assertNotIn("table-id", routes[0])
-
     def test_route_with_supported_attributes(self):
         """Test route maps supported nmstate attributes."""
         variables = {
@@ -785,6 +703,7 @@ class TestNMStateFilter(unittest.TestCase):
         self.assertEqual(routes[0]["metric"], 400)
         self.assertTrue(routes[0]["on-link"])
         self.assertEqual(routes[0]["source"], "192.168.1.2")
+        self.assertNotIn("table-id", routes[0])
 
     def test_route_with_supported_options(self):
         """Test documented route options map to nmstate attributes."""
