@@ -34,6 +34,12 @@ image build``.
 
 ``ipa_build_images``
     Whether to build IPA images from source. Default is ``False``.
+``ipa_build_distro``
+    Override the OS distribution used to build IPA images. Default is the host
+    distribution.
+``ipa_build_release``
+    Override the OS release used to build IPA images. Default is the host
+    release.
 ``ipa_build_source_url``
     URL of IPA source repository. Default is
     https://opendev.org/openstack/ironic-python-agent
@@ -43,15 +49,16 @@ image build``.
     URL of IPA builder source repository. Default is
     https://opendev.org/openstack/ironic-python-agent-builder
 ``ipa_builder_source_version``
-    Version of IPA builder source repository. Default is ``master``.
+    Version of IPA builder source repository. Default is ``{{ openstack_branch }}``.
 ``ipa_build_dib_host_packages_extra``
     List of additional build host packages to install. Default is ``[ 'zstd' ]``.
 ``ipa_build_dib_elements_default``
     List of default Diskimage Builder (DIB) elements to use when building IPA
-    images. Default is ``["centos", "dynamic-login", "enable-serial-console",
-    "ironic-python-agent-ramdisk"]`` when ``os_distribution`` is ``"rocky"``, and
-    ``["ubuntu", "dynamic-login", "enable-serial-console",
-    "ironic-python-agent-ramdisk"]`` otherwise.
+    images. Default is ``["rocky-container", "dynamic-login",
+    "enable-serial-console", "ironic-python-agent-ramdisk", "baremetal"]`` when
+    ``ipa_build_distro`` is ``"rocky"``, and ``[ipa_build_distro,
+    "dynamic-login", "enable-serial-console", "ironic-python-agent-ramdisk",
+    "baremetal"]`` otherwise.
 ``ipa_build_dib_elements_extra``
     List of additional Diskimage Builder (DIB) elements to use when building IPA
     images. Default is empty.
@@ -61,14 +68,13 @@ image build``.
     ``ipa_build_dib_elements_extra``.
 ``ipa_build_dib_env_default``
     Dictionary of default environment variables to provide to Diskimage Builder
-    (DIB) during IPA image build. Default is ``{"DIB_RELEASE": "9-stream",
-    "DIB_REPOLOCATION_ironic_python_agent": "{{ ipa_build_source_url }}",
-    "DIB_REPOREF_ironic_python_agent": "{{ ipa_build_source_version }}",
-    "DIB_REPOREF_requirements": "{{ ipa_build_source_version }}"}`` if
-    ``os_distribution`` is ``"rocky"`` else ``{"DIB_RELEASE": "{{ os_release
-    }}", "DIB_REPOLOCATION_ironic_python_agent": "{{ ipa_build_source_url }}",
-    "DIB_REPOREF_ironic_python_agent": "{{ ipa_build_source_version }}",
-    "DIB_REPOREF_requirements": "{{ ipa_build_source_version }}"}``.
+    (DIB) during IPA image build. Default is ``{"DIB_RELEASE": "{{
+    ipa_build_release }}", "DIB_CONTAINERFILE_RUNTIME": "{{ container_engine
+    }}", "DIB_CONTAINERFILE_RUNTIME_ROOT": "{{ (container_engine == 'podman') |
+    int }}", "DIB_REPOLOCATION_ironic_python_agent": "{{ ipa_build_source_url
+    }}", "DIB_REPOREF_ironic_python_agent": "{{ ipa_build_source_version }}",
+    "DIB_REPOREF_requirements": "{{ ipa_build_source_version }}",
+    "DIB_IPA_COMPRESS_CMD": 'zstd -19'}``
 ``ipa_build_dib_env_extra``
     Dictionary of additional environment variables to provide to Diskimage
     Builder (DIB) during IPA image build. Default is empty.
@@ -92,11 +98,15 @@ image build``.
     role for usage. Default is combination of ``ipa_build_dib_git_elements_default``
     and ``ipa_build_dib_git_elements_extra``.
 ``ipa_build_dib_packages``
-    List of DIB packages to install. Default is none.
+    List of DIB packages to install. Default is ``["python3-yaml"]`` when
+    ``ipa_build_distro`` is ``"rocky"``, otherwise none.
 ``ipa_build_upper_constraints_file``
     Upper constraints file for installing packages in the virtual environment
     used for building IPA images. Default is ``{{ pip_upper_constraints_file
     }}``.
+``ipa_build_dib_upper_constraints_file``
+    Upper constraints file for installation of DIB to build IPA images.
+    Default is an empty string.
 
 Example: Building IPA images locally
 ------------------------------------
@@ -304,7 +314,7 @@ inspection.
     ``ipa_collectors_default`` and ``ipa_collectors_extra``.
 ``ipa_benchmarks_default``
     List of default inspection benchmarks to run. Default is ``["cpu", "disk",
-    "ram"]``.
+    "mem"]``.
 ``ipa_benchmarks_extra``
     List of extra inspection benchmarks to run. Default is none.
 ``ipa_benchmarks``
