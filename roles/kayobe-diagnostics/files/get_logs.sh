@@ -147,6 +147,11 @@ copy_logs() {
         cp /opt/kayobe/images/ipa/ipa.stderr /opt/kayobe/images/ipa/ipa.stdout ${LOG_DIR}/kayobe/
     fi
 
+    # Inspection store
+    if [[ -d /opt/kayobe/etc/inspection-store ]]; then
+        cp -rnL /opt/kayobe/etc/inspection-store ${LOG_DIR}/kayobe/
+    fi
+
     # Overcloud host image build logs
     if [[ -f /opt/kayobe/images/deployment_image/deployment_image.stderr ]] || [[ -f /opt/kayobe/images/deployment_image/deployment_image.stdout ]]; then
         mkdir -p ${LOG_DIR}/kayobe
