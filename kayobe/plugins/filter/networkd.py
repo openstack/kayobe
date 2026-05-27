@@ -303,7 +303,7 @@ def _network(context, name, inventory_hostname, bridge, bond, vlan_interfaces):
         {
             'Link': [
                 {'MTUBytes': mtu},
-            ]
+            ] + ([{'RequiredForOnline': "false"}] if not ip else [])
         },
     ]
 
