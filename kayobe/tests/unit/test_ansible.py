@@ -81,6 +81,10 @@ class TestCase(unittest.TestCase):
                 "/etc/kayobe/ansible/test_plugins",
                 utils.get_data_files_path("ansible", "test_plugins"),
             ]),
+            "ANSIBLE_LOOKUP_PLUGINS": ":".join([
+                "/etc/kayobe/ansible/lookup_plugins",
+                utils.get_data_files_path("ansible", "lookup_plugins"),
+            ]),
         }
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
@@ -131,6 +135,10 @@ class TestCase(unittest.TestCase):
             "ANSIBLE_TEST_PLUGINS": ":".join([
                 utils.get_data_files_path("ansible", "test_plugins"),
                 "/etc/kayobe/ansible/test_plugins",
+            ]),
+            "ANSIBLE_LOOKUP_PLUGINS": ":".join([
+                utils.get_data_files_path("ansible", "lookup_plugins"),
+                "/etc/kayobe/ansible/lookup_plugins",
             ]),
         }
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
@@ -251,6 +259,10 @@ class TestCase(unittest.TestCase):
                 "/path/to/config/ansible/test_plugins",
                 utils.get_data_files_path("ansible", "test_plugins"),
             ]),
+            "ANSIBLE_LOOKUP_PLUGINS": ":".join([
+                "/path/to/config/ansible/lookup_plugins",
+                utils.get_data_files_path("ansible", "lookup_plugins"),
+            ]),
         }
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
@@ -314,6 +326,7 @@ class TestCase(unittest.TestCase):
             "ANSIBLE_ACTION_PLUGINS": mock.ANY,
             "ANSIBLE_FILTER_PLUGINS": mock.ANY,
             "ANSIBLE_TEST_PLUGINS": mock.ANY,
+            "ANSIBLE_LOOKUP_PLUGINS": mock.ANY,
         }
         expected_calls = [
             mock.call(["which", "kayobe-vault-password-helper"],
@@ -356,6 +369,7 @@ class TestCase(unittest.TestCase):
             "ANSIBLE_ACTION_PLUGINS": mock.ANY,
             "ANSIBLE_FILTER_PLUGINS": mock.ANY,
             "ANSIBLE_TEST_PLUGINS": mock.ANY,
+            "ANSIBLE_LOOKUP_PLUGINS": mock.ANY,
         }
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
@@ -395,6 +409,7 @@ class TestCase(unittest.TestCase):
             "ANSIBLE_ACTION_PLUGINS": mock.ANY,
             "ANSIBLE_FILTER_PLUGINS": mock.ANY,
             "ANSIBLE_TEST_PLUGINS": mock.ANY,
+            "ANSIBLE_LOOKUP_PLUGINS": mock.ANY,
         }
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
@@ -462,6 +477,7 @@ class TestCase(unittest.TestCase):
             "ANSIBLE_ACTION_PLUGINS": mock.ANY,
             "ANSIBLE_FILTER_PLUGINS": mock.ANY,
             "ANSIBLE_TEST_PLUGINS": mock.ANY,
+            "ANSIBLE_LOOKUP_PLUGINS": mock.ANY,
         }
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
@@ -500,6 +516,7 @@ class TestCase(unittest.TestCase):
             "ANSIBLE_ACTION_PLUGINS": mock.ANY,
             "ANSIBLE_FILTER_PLUGINS": mock.ANY,
             "ANSIBLE_TEST_PLUGINS": mock.ANY,
+            "ANSIBLE_LOOKUP_PLUGINS": mock.ANY,
         }
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
@@ -538,6 +555,7 @@ class TestCase(unittest.TestCase):
             "ANSIBLE_ACTION_PLUGINS": mock.ANY,
             "ANSIBLE_FILTER_PLUGINS": mock.ANY,
             "ANSIBLE_TEST_PLUGINS": mock.ANY,
+            "ANSIBLE_LOOKUP_PLUGINS": mock.ANY,
         }
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
@@ -571,6 +589,7 @@ class TestCase(unittest.TestCase):
             "ANSIBLE_ACTION_PLUGINS": mock.ANY,
             "ANSIBLE_FILTER_PLUGINS": mock.ANY,
             "ANSIBLE_TEST_PLUGINS": mock.ANY,
+            "ANSIBLE_LOOKUP_PLUGINS": mock.ANY,
         }
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
@@ -606,6 +625,7 @@ class TestCase(unittest.TestCase):
             "ANSIBLE_ACTION_PLUGINS": mock.ANY,
             "ANSIBLE_FILTER_PLUGINS": mock.ANY,
             "ANSIBLE_TEST_PLUGINS": mock.ANY,
+            "ANSIBLE_LOOKUP_PLUGINS": mock.ANY,
         }
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
@@ -976,6 +996,7 @@ key1:
             "ANSIBLE_ACTION_PLUGINS": mock.ANY,
             "ANSIBLE_FILTER_PLUGINS": mock.ANY,
             "ANSIBLE_TEST_PLUGINS": mock.ANY,
+            "ANSIBLE_LOOKUP_PLUGINS": mock.ANY,
         }
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
@@ -1021,6 +1042,7 @@ key1:
             "ANSIBLE_ACTION_PLUGINS": mock.ANY,
             "ANSIBLE_FILTER_PLUGINS": mock.ANY,
             "ANSIBLE_TEST_PLUGINS": mock.ANY,
+            "ANSIBLE_LOOKUP_PLUGINS": mock.ANY,
         }
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
@@ -1064,6 +1086,7 @@ key1:
             "ANSIBLE_ACTION_PLUGINS": mock.ANY,
             "ANSIBLE_FILTER_PLUGINS": mock.ANY,
             "ANSIBLE_TEST_PLUGINS": mock.ANY,
+            "ANSIBLE_LOOKUP_PLUGINS": mock.ANY,
         }
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
@@ -1108,6 +1131,7 @@ key1:
             "ANSIBLE_ACTION_PLUGINS": mock.ANY,
             "ANSIBLE_FILTER_PLUGINS": mock.ANY,
             "ANSIBLE_TEST_PLUGINS": mock.ANY,
+            "ANSIBLE_LOOKUP_PLUGINS": mock.ANY,
         }
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
@@ -1157,6 +1181,7 @@ key1:
             "ANSIBLE_ACTION_PLUGINS": mock.ANY,
             "ANSIBLE_FILTER_PLUGINS": mock.ANY,
             "ANSIBLE_TEST_PLUGINS": mock.ANY,
+            "ANSIBLE_LOOKUP_PLUGINS": mock.ANY,
         }
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
@@ -1238,6 +1263,7 @@ key1:
             "ANSIBLE_ACTION_PLUGINS": mock.ANY,
             "ANSIBLE_FILTER_PLUGINS": mock.ANY,
             "ANSIBLE_TEST_PLUGINS": mock.ANY,
+            "ANSIBLE_LOOKUP_PLUGINS": mock.ANY,
         }
         mock_run.assert_called_once_with(expected_cmd, check_output=False,
                                          quiet=False, env=expected_env)
