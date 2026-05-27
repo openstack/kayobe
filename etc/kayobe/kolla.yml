@@ -383,7 +383,6 @@
 #kolla_enable_neutron_dvr:
 #kolla_enable_neutron_fwaas:
 #kolla_enable_neutron_horizon_policy_file:
-#kolla_enable_neutron_infoblox_ipam_agent:
 #kolla_enable_neutron_metering:
 #kolla_enable_neutron_mlnx:
 #kolla_enable_neutron_packet_logging:
