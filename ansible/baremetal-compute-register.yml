@@ -28,6 +28,7 @@
   vars:
     venv: "{{ virtualenv_path }}/openstack-cli"
     controller_host: "{{ groups['controllers'][0] }}"
+    openstack_cli_cache_home: "{{ hostvars[controller_host].ansible_facts.env.HOME }}/.cache/kayobe-openstack-{{ inventory_hostname }}"
   tasks:
     - name: Check Ironic variables are defined
       ansible.builtin.assert:
@@ -80,4 +81,8 @@
         # NOTE: Without this, the controller's ansible_host variable will not
         # be respected when using delegate_to.
         ansible_host: "{{ hostvars[controller_host].ansible_host | default(controller_host) }}"
-      environment: "{{ openstack_auth_env }}"
+      # Avoid concurrent access to python-ironicclient dbm cache when
+      # registration tasks are delegated to a single controller.
+      environment: >-
+        {{ openstack_auth_env |
+           combine({'XDG_CACHE_HOME': openstack_cli_cache_home}) }}

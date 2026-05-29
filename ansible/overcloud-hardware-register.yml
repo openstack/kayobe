@@ -4,6 +4,7 @@
   gather_facts: false
   vars:
     seed_host: "{{ groups['seed'][0] }}"
+    openstack_cli_cache_home: "~/.cache/kayobe-openstack-{{ inventory_hostname }}"
   # Try to reduce contention on Bifrost and resolve db lock errors
   serial: 10
   tasks:
@@ -18,6 +19,7 @@
         {{ container_engine }} exec bifrost_deploy
         bash -c '
         export OS_CLOUD=bifrost &&
+        export XDG_CACHE_HOME={{ openstack_cli_cache_home }} &&
         openstack baremetal node show {{ inventory_hostname }}'
       register: node_show
       failed_when: false
@@ -31,6 +33,7 @@
         {{ container_engine }} exec bifrost_deploy
         bash -c '
         export OS_CLOUD=bifrost &&
+        export XDG_CACHE_HOME={{ openstack_cli_cache_home }} &&
         openstack baremetal node create
         --driver {{ ironic_driver }}
         {% for key, value in ironic_driver_info.items() %}
@@ -51,6 +54,7 @@
         {{ container_engine }} exec bifrost_deploy
         bash -c '
         export OS_CLOUD=bifrost &&
+        export XDG_CACHE_HOME={{ openstack_cli_cache_home }} &&
         openstack baremetal node manage
         {{ inventory_hostname }}
         --wait'
