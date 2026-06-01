@@ -224,7 +224,7 @@ infra_vm_users: "{{ users_default }}"
 infra_vm_containers: {}
 
 # Whether to attempt a basic authentication login to a registry when
-# deploying Infrastructure VM node containers
+# deploying infrastructure VM node containers
 infra_vm_manage_containers_registry_attempt_login: "{{ kolla_docker_registry_username is truthy and kolla_docker_registry_password is truthy }}"
 
 ###############################################################################
