@@ -181,7 +181,7 @@
 #infra_vm_containers:
 
 # Whether to attempt a basic authentication login to a registry when
-# deploying controller containers
+# deploying infrastructure VM node containers
 #infra_vm_manage_containers_registry_attempt_login:
 
 ###############################################################################
