@@ -171,7 +171,6 @@ kolla_feature_flags:
   - neutron_dvr
   - neutron_fwaas
   - neutron_horizon_policy_file
-  - neutron_infoblox_ipam_agent
   - neutron_metering
   - neutron_mlnx
   - neutron_packet_logging

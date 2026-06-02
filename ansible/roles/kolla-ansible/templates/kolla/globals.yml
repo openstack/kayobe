@@ -120,7 +120,7 @@ docker_registry_username: "{{ kolla_docker_registry_username }}"
 # Valid options are [ openvswitch, ovn ]
 neutron_plugin_agent: "{% if kolla_enable_ovn | default(False) | bool %}ovn{% else %}openvswitch{% endif %}"
 
-# Valid options are [ internal, infoblox ]
+# Valid option is [ internal ]
 #neutron_ipam_driver: "internal"
 
 # Configure Neutron upgrade option, currently Kolla support
