@@ -95,7 +95,7 @@
 
 # Dict of containers to deploy.
 # Example:
-# seed_containers:
+# ansible_control_containers:
 #   squid:
 #     image: "docker.io/stackhpc/squid"
 #     pre: "{{ kayobe_env_config_path }}/containers/squid/pre.yml"
