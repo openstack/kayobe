@@ -15,7 +15,7 @@
 
     - name: Check that hello-world custom container was deployed
       shell:
-        cmd: "sudo {{ container_engine | default('docker') }} ps -a | grep hello-world"
+        cmd: "sudo {{ container_engine | default('docker') }} ps -a | grep node-exporter"
         executable: /bin/bash
       when: deploy_custom_container | default(false)
 
