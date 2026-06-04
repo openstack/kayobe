@@ -10,7 +10,7 @@ vgpu_driver_url: ""
 # Flag to control whether the vGPU playbook should automatically reboot the
 # hypervisor. Note: this is necessary for the driver to be loaded correctly.
 # Caution should be used when changing this option.
-vgpu_do_reboot: true
+vgpu_do_reboot: "{{ kayobe_do_reboot | bool }}"
 
 # Time to wait when rebooting the host before failing.
 vgpu_reboot_timeout: 600
