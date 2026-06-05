@@ -266,8 +266,8 @@ ansible_control_fail2ban_enabled: true
 custom_etc_hosts_entries:
   foo.example.com: 127.0.0.88
 
-# Deploy a hello-world container.
+# Deploy a test container.
 ansible_control_containers:
-  hello-world:
-    image: docker.io/library/hello-world
-    tag: latest
+  node_exporter:
+    image: "quay.io/prometheus/node-exporter"
+    tag: "latest"
