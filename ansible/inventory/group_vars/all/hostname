@@ -1,0 +1,9 @@
+---
+###############################################################################
+# Kayobe custom hostname configuration.
+
+# Whether to set custom hostnames. Default is false.
+kayobe_customize_hostnames: false
+
+# Custom hostname to set. Default is "{{ inventory_hostname }}".
+kayobe_custom_hostname: "{{ inventory_hostname }}"

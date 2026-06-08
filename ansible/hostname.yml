@@ -1,0 +1,18 @@
+---
+- name: Ensure hostname is configured
+  hosts: seed-hypervisor:seed:overcloud:infra-vms:ansible-control
+  max_fail_percentage: >-
+    {{ hostname_max_fail_percentage |
+       default(host_configure_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
+  tags:
+    - hostname
+  tasks:
+    - name: Ensure hostname is set
+      become: true
+      hostname:
+        name: "{{ kayobe_custom_hostname }}"
+        use: "systemd"
+      when:
+        - kayobe_customize_hostnames | bool

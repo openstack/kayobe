@@ -1551,6 +1551,29 @@ AppArmor for the libvirt container
 On Ubuntu systems running the ``nova_libvirt`` Kolla container, AppArmor rules
 for libvirt are disabled.
 
+Setting the hostname of kayobe-managed hosts
+============================================
+
+*tags:*
+  | ``hostname``
+
+Kayobe can configure the hostname of the hosts it manages via systemd. By
+default, this will configure the hostname to match the name in the Ansible
+inventory. This can be customised further with the variable
+``kayobe_custom_hostname``. This feature is disabled by default, but can be
+enabled with the variable ``kayobe_customize_hostnames``.
+
+.. note::
+
+   Setting hostnames is intended to be a global feature, rather than per host.
+   As such, ``kayobe_custom_hostname`` should be set as an extra var instead
+   of a host var.
+
+.. code-block:: yaml
+
+   kayobe_customize_hostnames: true
+   kayobe_custom_hostname: "{{ inventory_hostname }}"
+
 Adding entries to /etc/hosts
 ============================
 *tags:*
@@ -1586,6 +1609,14 @@ follows:
 .. code-block:: yaml
 
    etc_hosts_gather_facts: false
+
+Alternatively, if you are configuring hostnames via Kayobe then this task will
+skip gathering facts and directly populate ``/etc/hosts`` files based on
+``kayobe_custom_hostname``.
+
+.. code-block:: yaml
+
+   kayobe_customize_hostnames: true
 
 Custom entries can be added to the ``custom_etc_hosts_entries`` dictionary.
 Each key is treated as a hostname and each value is the IP, for example:

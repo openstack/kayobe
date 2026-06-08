@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Adds support for configuring hostnames via Kayobe. This is disabled by
+    default; it can be enabled by setting ``kayobe_customize_hostnames`` to
+    ``true``. By default, Kayobe will use the Ansible inventory hostname. This
+    can be overriden by setting ``kayobe_custom_hostname``.
