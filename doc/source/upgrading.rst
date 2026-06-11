@@ -459,4 +459,3 @@ scope of the upgrade::
 
     Using tags is not tested in either Kayobe or Kolla-Ansible CI, and as such
     should only be used if you know what you're doing. Proceed with caution.
-

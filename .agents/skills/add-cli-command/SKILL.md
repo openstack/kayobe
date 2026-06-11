@@ -51,16 +51,11 @@ class MyNewKollaCommand(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin, Comma
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Running my new kolla command")
-        self.handle_kolla_tags_limits_deprecation(parsed_args)
         playbooks = _build_playbook_list("my-new-playbook")
         self.run_kayobe_playbooks(parsed_args, playbooks)
         # Run kolla-ansible steps as needed, e.g.:
         # self.run_kolla_ansible_overcloud(parsed_args, "deploy")
 ```
-
-`handle_kolla_tags_limits_deprecation(parsed_args)` **must** be called first in
-every `KollaAnsibleMixin` command. It enforces warnings and mutual-exclusion
-checks for `--kolla-limit`, `--kolla-tags`, and `--kolla-skip-tags`.
 
 Key helpers:
 - `_build_playbook_list("name1", "name2")` builds absolute paths to `ansible/<name>.yml`
