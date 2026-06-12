@@ -29,10 +29,7 @@
         - kayobe-overcloud-ubuntu-noble
         - kayobe-overcloud-ubuntu-noble-podman
         - kayobe-overcloud-upgrade-rocky10
-        # TODO(priteau): Enable when
-        # https://review.opendev.org/c/openstack/kolla-ansible/+/992397 is
-        # merged
-        #- kayobe-overcloud-upgrade-ubuntu-noble
+        - kayobe-overcloud-upgrade-ubuntu-noble
         - kayobe-seed-rocky10
         - kayobe-seed-rocky10-podman
         - kayobe-seed-ubuntu-noble
@@ -61,10 +58,7 @@
         - kayobe-overcloud-ubuntu-noble
         - kayobe-overcloud-ubuntu-noble-podman
         - kayobe-overcloud-upgrade-rocky10
-        # TODO(priteau): Enable when
-        # https://review.opendev.org/c/openstack/kolla-ansible/+/992397 is
-        # merged
-        #- kayobe-overcloud-upgrade-ubuntu-noble
+        - kayobe-overcloud-upgrade-ubuntu-noble
         - kayobe-seed-rocky10
         - kayobe-seed-rocky10-podman
         - kayobe-seed-ubuntu-noble
