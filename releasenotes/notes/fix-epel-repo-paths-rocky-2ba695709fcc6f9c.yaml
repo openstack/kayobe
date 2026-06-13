@@ -1,0 +1,9 @@
+---
+fixes:
+  - |
+    Fixes paths to EPEL repositories on Rocky Linux. Previously, they were only
+    using the major version ``$releasever`` which could point to an
+    incompatible repository. They now use both major and minor versions, e.g.
+    ``10.2`` instead of ``10``. There is no change on CentOS Stream which uses
+    only the major version.
+    `LP#2156407 <https://bugs.launchpad.net/kayobe/+bug/2156407>`__
