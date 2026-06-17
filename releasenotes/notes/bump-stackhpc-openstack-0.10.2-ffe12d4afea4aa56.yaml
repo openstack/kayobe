@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Bumps the ``stackhpc.openstack`` collection to version 0.10.2. This fixes a
+    broken conditional causing IPA and overcloud image build failures when
+    ``ALLOW_BROKEN_CONDITIONALS`` is disabled.
+    `LP#2157021 <https://bugs.launchpad.net/kayobe/+bug/2157021>`__
