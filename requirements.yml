@@ -22,7 +22,7 @@ collections:
   - name: stackhpc.network
     version: 1.0.0
   - name: stackhpc.openstack
-    version: 0.10.1
+    version: 0.10.2
 
 roles:
   - src: ahuffman.resolv
