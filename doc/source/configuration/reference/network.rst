@@ -894,10 +894,9 @@ Public network (``public_net_name``)
 Tunnel network (``tunnel_net_name``)
     Name of the network used by Neutron to carry tenant overlay network
     traffic.
-External networks (``external_net_names``, deprecated: ``external_net_name``)
+External networks (``external_net_names``)
     List of names of networks used to provide external network access via
-    Neutron. If ``external_net_name`` is defined, ``external_net_names``
-    defaults to a list containing only that network.
+    Neutron.
 Storage network (``storage_net_name``)
     Name of the network used to carry storage data traffic.
 Storage management network (``storage_mgmt_net_name``)
@@ -1388,7 +1387,8 @@ We could describe such a network as follows:
    provision_wl_net_name: cloud
    internal_net_name: cloud
    public_net_name: external
-   external_net_name: external
+   external_net_names:
+     - external
    storage_net_name: cloud
    storage_mgmt_net_name: cloud
    inspection_net_name: cloud

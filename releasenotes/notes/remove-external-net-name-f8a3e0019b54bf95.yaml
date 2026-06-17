@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    Removes the deprecated configuration variable ``external_net_name``.
+    Users should use ``external_net_names`` instead.

@@ -26,13 +26,7 @@ internal_net_name: 'internal_net'
 
 # List of names of networks used to provide external network access via
 # Neutron.
-# Deprecated name: external_net_name
-# If external_net_name is defined, external_net_names will default to a list
-# containing one item, external_net_name.
-external_net_names: >
-  {{ [external_net_name]
-     if external_net_name is defined else
-     ['external_net'] }}
+external_net_names: ['external_net']
 
 # Name of the network used to expose the public OpenStack API endpoints.
 public_net_name: >-

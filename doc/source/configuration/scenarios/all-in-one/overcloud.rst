@@ -132,9 +132,6 @@ the name of the default controller networks to ``aio``:
 
    # List of names of networks used to provide external network access via
    # Neutron.
-   # Deprecated name: external_net_name
-   # If external_net_name is defined, external_net_names will default to a list
-   # containing one item, external_net_name.
    #external_net_names:
    external_net_names:
      - aio
