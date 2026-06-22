@@ -122,15 +122,11 @@ inspector_rule_ipmi_credentials:
   description: "Set IPMI driver_info if no credentials"
   conditions:
     - args:
-        # If value matches itself as a regex, this is becaused interpolation
-        # failed which means the ipmi_username key was not set.
         value: "{node.driver_info[ipmi_username]}"
-        regex: "{node\\.driver_info\\[ipmi_username\\]}"
-      op: "matches"
+      op: "is-empty"
     - args:
         value: "{node.driver_info[ipmi_password]}"
-        regex: "{node\\.driver_info\\[ipmi_password\\]}"
-      op: "matches"
+      op: "is-empty"
   sensitive: "true"
   actions:
     - op: "set-attribute"
@@ -151,8 +147,7 @@ inspector_rule_deploy_kernel:
   conditions:
     - args:
         value: "{node.driver_info[deploy_kernel]}"
-        regex: "{node\\.driver_info\\[deploy_kernel\\]}"
-      op: "matches"
+      op: "is-empty"
   actions:
     - op: "set-attribute"
       args:
@@ -168,8 +163,7 @@ inspector_rule_deploy_ramdisk:
   conditions:
     - args:
         value: "{node.driver_info[deploy_ramdisk]}"
-        regex: "{node\\.driver_info\\[deploy_ramdisk\\]}"
-      op: "matches"
+      op: "is-empty"
   actions:
     - op: "set-attribute"
       args:
@@ -182,8 +176,7 @@ inspector_rule_root_hint_serial:
   conditions:
     - args:
         value: "{node.properties[root_device]}"
-        regex: "{node\\.properties\\[root_device\\]}"
-      op: "matches"
+      op: "is-empty"
     - args:
         value: "{plugin_data[root_disk][serial]}"
       op: "!is-empty"
@@ -343,12 +336,10 @@ inspector_rule_redfish_credentials:
   conditions:
     - args:
         value: "{node.driver_info[redfish_username]}"
-        regex: "{node\\.driver_info\\[redfish_username\\]}"
-      op: "matches"
+      op: "is-empty"
     - args:
         value: "{node.driver_info[redfish_password]}"
-        regex: "{node\\.driver_info\\[redfish_password\\]}"
-      op: "matches"
+      op: "is-empty"
   sensitive: true
   actions:
     - op: "set-attribute"
@@ -366,8 +357,7 @@ inspector_rule_redfish_address:
   conditions:
     - args:
         value: "{node.driver_info[redfish_address]}"
-        regex: "{node\\.driver_info\\[redfish_address\\]}"
-      op: "matches"
+      op: "is-empty"
   actions:
     - op: "set-attribute"
       args:
@@ -380,8 +370,7 @@ inspector_rule_redfish_verify_ca:
   conditions:
     - args:
         value: "{node.driver_info[redfish_verify_ca]}"
-        regex: "{node\\.driver_info\\[redfish_verify_ca\\]}"
-      op: "matches"
+      op: "is-empty"
   actions:
     - op: "set-attribute"
       args:
