@@ -9,6 +9,16 @@
       register: tempfile_result
 
     - block:
+        - name: Install dependencies
+          include_role:
+            name: "{{ playbook_dir }}/.."
+            tasks_from: install.yml
+          vars:
+            kolla_ansible_source_path: "{{ temp_path }}/src"
+            kolla_ansible_ctl_install_type: "source"
+            kolla_ansible_source_url: "http://github.com/openstack/kolla-ansible"
+            kolla_ansible_source_version: "{{ openstack_branch }}"
+            kolla_ansible_venv: "{{ temp_path }}/venv"
 
         - name: Ensure directories exists
           file:
@@ -74,7 +84,6 @@
               - "{{ tempfile_result.path ~ '/etc/kayobe/' }}"
               - "{{ tempfile_result.path ~ '/etc/kayobe/environments/level1/' }}"
               - "{{ tempfile_result.path ~ '/etc/kayobe/environments/level2/' }}"
-            apt_cache_valid_time: 3600
 
         - name: Verify kolla-ansible installation
           shell: ". {{ temp_path }}/venv/bin/activate && kolla-ansible -h"

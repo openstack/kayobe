@@ -44,7 +44,7 @@
       package:
         name: "{{ packages }}"
         state: present
-        cache_valid_time: "{{ apt_cache_valid_time if ansible_facts.os_family == 'Debian' else omit }}"
+        cache_valid_time: "{{ apt_cache_valid_time | default(3600) if ansible_facts.os_family == 'Debian' else omit }}"
         update_cache: "{{ True if ansible_facts.os_family == 'Debian' else omit }}"
       become: True
       when: missing_packages is truthy

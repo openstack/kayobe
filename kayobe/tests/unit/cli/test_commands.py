@@ -38,6 +38,54 @@ class TestCase(unittest.TestCase):
 
     maxDiff = None
 
+    @mock.patch.dict(os.environ, {}, clear=True)
+    def test_control_host_bootstrap_install_only_default_false(self):
+        command = commands.ControlHostBootstrap(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+        self.assertFalse(parsed_args.install_only)
+
+    @mock.patch.dict(os.environ, {"KAYOBE_INSTALL_ONLY": "false"},
+                     clear=True)
+    def test_control_host_bootstrap_install_only_default_false_from_env(self):
+        command = commands.ControlHostBootstrap(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+        self.assertFalse(parsed_args.install_only)
+
+    @mock.patch.dict(os.environ, {}, clear=True)
+    def test_control_host_bootstrap_no_install_default_false(self):
+        command = commands.ControlHostBootstrap(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+        self.assertFalse(parsed_args.no_install)
+
+    @mock.patch.dict(os.environ, {"KAYOBE_NO_INSTALL": "false"},
+                     clear=True)
+    def test_control_host_bootstrap_no_install_default_false_from_env(self):
+        command = commands.ControlHostBootstrap(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+        self.assertFalse(parsed_args.no_install)
+
+    @mock.patch.dict(os.environ, {"KAYOBE_NO_INSTALL": "true"},
+                     clear=True)
+    def test_control_host_bootstrap_no_install_default_true_from_env(self):
+        command = commands.ControlHostBootstrap(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+        self.assertTrue(parsed_args.no_install)
+
+    def test_control_host_bootstrap_install_only_no_install_mutually_exclusive(
+            self):
+        command = commands.ControlHostBootstrap(TestApp(), [])
+        parser = command.get_parser("test")
+        self.assertRaises(
+            SystemExit,
+            parser.parse_args,
+            ["--install-only", "--no-install"],
+        )
+
     @mock.patch.object(ansible, "install_galaxy_roles", autospec=True)
     @mock.patch.object(ansible, "install_galaxy_collections", autospec=True)
     @mock.patch.object(ansible, "passwords_yml_exists", autospec=True)
@@ -55,6 +103,11 @@ class TestCase(unittest.TestCase):
         mock_install_roles.assert_called_once_with(parsed_args)
         mock_install_collections.assert_called_once_with(parsed_args)
         expected_calls = [
+            mock.call(
+                mock.ANY,
+                [utils.get_data_files_path("ansible", "install.yml")],
+                ignore_limit=True,
+            ),
             mock.call(
                 mock.ANY,
                 [utils.get_data_files_path("ansible", "bootstrap.yml")],
@@ -75,6 +128,54 @@ class TestCase(unittest.TestCase):
     @mock.patch.object(ansible, "passwords_yml_exists", autospec=True)
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
+    def test_control_host_bootstrap_no_install(self, mock_run,
+                                               mock_passwords,
+                                               mock_install_collections,
+                                               mock_install_roles):
+        mock_passwords.return_value = False
+        command = commands.ControlHostBootstrap(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args(["--no-install"])
+        result = command.run(parsed_args)
+        self.assertEqual(0, result)
+        mock_install_roles.assert_not_called()
+        mock_install_collections.assert_not_called()
+        expected_calls = [
+            mock.call(
+                mock.ANY,
+                [utils.get_data_files_path("ansible", "bootstrap.yml")],
+                ignore_limit=True,
+            ),
+            mock.call(
+                mock.ANY,
+                [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
+                tags="install",
+                ignore_limit=True,
+                check=False,
+            ),
+        ]
+        self.assertListEqual(expected_calls, mock_run.call_args_list)
+
+    @mock.patch.dict(os.environ, {"KAYOBE_INSTALL_ONLY": "true",
+                                  "KAYOBE_NO_INSTALL": "true"},
+                     clear=True)
+    @mock.patch.object(ansible, "install_galaxy_roles", autospec=True)
+    @mock.patch.object(ansible, "install_galaxy_collections", autospec=True)
+    def test_control_host_bootstrap_install_only_no_install_env_conflict(
+            self, mock_install_collections, mock_install_roles):
+        command = commands.ControlHostBootstrap(TestApp(), [])
+        parser = command.get_parser("test")
+        parsed_args = parser.parse_args([])
+
+        self.assertRaises(SystemExit, command.run, parsed_args)
+        mock_install_roles.assert_not_called()
+        mock_install_collections.assert_not_called()
+
+    @mock.patch.object(ansible, "install_galaxy_roles", autospec=True)
+    @mock.patch.object(ansible, "install_galaxy_collections", autospec=True)
+    @mock.patch.object(ansible, "passwords_yml_exists", autospec=True)
+    @mock.patch.object(commands.KayobeAnsibleMixin,
+                       "run_kayobe_playbooks")
     @mock.patch.object(commands.KollaAnsibleMixin,
                        "run_kolla_ansible_overcloud")
     def test_control_host_bootstrap_with_passwords(
@@ -89,6 +190,11 @@ class TestCase(unittest.TestCase):
         mock_install_roles.assert_called_once_with(parsed_args)
         mock_install_collections.assert_called_once_with(parsed_args)
         expected_calls = [
+            mock.call(
+                mock.ANY,
+                [utils.get_data_files_path("ansible", "install.yml")],
+                ignore_limit=True,
+            ),
             mock.call(
                 mock.ANY,
                 [utils.get_data_files_path("ansible", "bootstrap.yml")],
@@ -244,15 +350,13 @@ class TestCase(unittest.TestCase):
         expected_calls = [
             mock.call(
                 mock.ANY,
-                [utils.get_data_files_path("ansible", "bootstrap.yml")],
+                [utils.get_data_files_path("ansible", "install.yml")],
                 ignore_limit=True,
             ),
             mock.call(
                 mock.ANY,
-                [utils.get_data_files_path("ansible", "kolla-ansible.yml")],
-                tags="install",
+                [utils.get_data_files_path("ansible", "bootstrap.yml")],
                 ignore_limit=True,
-                check=False,
             ),
         ]
         self.assertListEqual(expected_calls, mock_run.call_args_list)
