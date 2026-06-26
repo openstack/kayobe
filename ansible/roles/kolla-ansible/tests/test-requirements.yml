@@ -11,7 +11,8 @@
     - block:
         - name: Test the kolla-ansible role with extra Python requirements
           include_role:
-            name: ../../kolla-ansible
+            name: "{{ playbook_dir }}/.."
+            tasks_from: install.yml
           vars:
             kolla_ansible_source_path: "{{ temp_path }}/src"
             kolla_ansible_ctl_install_type: "source"
@@ -39,7 +40,6 @@
             kolla_openstack_logging_debug: False
             kolla_globals_paths_extra:
               - "{{ tempfile_result.path ~ '/etc/kayobe/' }}"
-            apt_cache_valid_time: 3600
 
         - name: List Python packages installed in virtualenv
           command: "{{ temp_path }}/venv/bin/pip list"

@@ -29,6 +29,30 @@ To bootstrap the Ansible control host::
 
     (kayobe) $ kayobe control host bootstrap
 
+The bootstrap process now supports splitting dependency installation from
+configuration. This is useful when building a container image for your
+execution environment, where packages and Python dependencies are installed at
+build time, and runtime-specific configuration is generated later.
+
+To install dependencies only (without running later bootstrap steps)::
+
+    (kayobe) $ kayobe control host bootstrap --install-only
+
+To skip installation and run only later bootstrap steps::
+
+    (kayobe) $ kayobe control host bootstrap --no-install
+
+These modes are mutually exclusive.
+
+Environment variables may be used to set defaults:
+
+- ``KAYOBE_INSTALL_ONLY=true`` enables ``--install-only``
+- ``KAYOBE_NO_INSTALL=true`` enables ``--no-install``
+
+For example, a container image build may run ``--install-only``, then at
+container runtime execute ``--no-install`` to complete control host bootstrap
+once environment-specific configuration is available.
+
 Since the Gazpacho 20.0.0 release it is possible to manage the Ansible control
 host's configuration in the same way as other hosts. If using this feature, the
 Ansible control host should be added to the Kayobe inventory in the
