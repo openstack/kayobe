@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fix all hostnames in a group being merged into a single line in the kolla
+    overcloud hosts inventory file.
+    `LP#2158773 <https://bugs.launchpad.net/kayobe/+bug/2158773>`__
