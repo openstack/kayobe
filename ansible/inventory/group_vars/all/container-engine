@@ -12,8 +12,9 @@ container_engine_volumes_path: "{{ podman_volumes_path if container_engine == 'p
 ###############################################################################
 # Docker configuration.
 
-# Name of the docker storage driver. Default is 'overlay2'.
-docker_storage_driver: overlay2
+# Name of the docker storage driver. Default is "", which defers to the
+# Docker runtime default.
+docker_storage_driver: ""
 
 # URL of docker registry
 docker_registry:

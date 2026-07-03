@@ -190,10 +190,20 @@ def test_cloud_init_is_disabled(host):
     assert host.file("/etc/cloud/cloud-init.disabled").exists
 
 
-def test_docker_storage_driver_is_overlay2(host):
+def test_docker_storage_driver_is_configured(host):
     with host.sudo("stack"):
-        info = host.check_output("docker info")
-    assert "overlay2" in info
+        driver_status_json = host.check_output(
+            "docker info --format '{{json .DriverStatus}}'")
+
+    driver_status = json.loads(driver_status_json)
+    status_map = {
+        entry[0]: entry[1]
+        for entry in driver_status
+        if isinstance(entry, list) and len(entry) == 2
+    }
+
+    driver_type = status_map.get("driver-type", "")
+    assert driver_type.startswith("io.containerd.snapshotter.")
 
 
 @pytest.mark.parametrize('user', ['kolla', 'stack'])

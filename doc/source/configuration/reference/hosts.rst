@@ -1253,9 +1253,10 @@ insecure (HTTP) registry, set ``podman_registry_insecure`` to ``true``.
 Docker
 ------
 
-The ``docker_storage_driver`` variable sets the Docker storage driver, and by
-default the ``overlay2`` driver is used. See :ref:`configuration-hosts-lvm` for
-information about configuring LVM for Docker.
+The ``docker_storage_driver`` variable sets the Docker storage driver. By
+default it is unset, which defers to Docker's runtime default. See
+:ref:`configuration-hosts-lvm` for information about configuring LVM for
+Docker.
 
 If using an insecure (HTTP) registry, set ``docker_registry_insecure`` to
 ``true``.
