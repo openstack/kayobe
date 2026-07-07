@@ -10,6 +10,9 @@ source "${PARENT}/functions"
 
 function main {
     config_init
+    # Test Redfish as well
+    overcloud_test_inspect red0
+
     overcloud_test_inspect tk0
 }
 
