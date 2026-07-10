@@ -164,6 +164,9 @@ def update_environment(parsed_args, env):
     if VAULT_PASSWORD_FILE_ENV in os.environ:
         vault_password = _read_vault_password_file(
             os.environ[VAULT_PASSWORD_FILE_ENV])
+        # Remove ANSIBLE_VAULT_PASSWORD_FILE from environment to avoid
+        # conflicts when ansible-vault is called with --vault-password-file
+        env.pop(VAULT_PASSWORD_FILE_ENV, None)
     elif parsed_args.ask_vault_pass:
         vault_password = _ask_vault_pass()
     elif parsed_args.vault_password_file:
