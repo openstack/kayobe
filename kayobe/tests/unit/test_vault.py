@@ -143,6 +143,6 @@ class TestCase(unittest.TestCase):
         parsed_args = parser.parse_args([])
         env = {"ANSIBLE_VAULT_PASSWORD_FILE": "/path/to/file"}
         vault.update_environment(parsed_args, env)
-        self.assertEqual({"KAYOBE_VAULT_PASSWORD": "test-pass",
-                          "ANSIBLE_VAULT_PASSWORD_FILE": "/path/to/file"}, env)
+        # ANSIBLE_VAULT_PASSWORD_FILE should be removed to avoid conflicts
+        self.assertEqual({"KAYOBE_VAULT_PASSWORD": "test-pass"}, env)
         mock_read.assert_called_once_with("/path/to/file")
