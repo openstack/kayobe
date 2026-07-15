@@ -1,0 +1,9 @@
+---
+fixes:
+  - |
+    Fixes an issue where seed service deployment could fail with a
+    ``DiscoveryFailure`` error when an HTTP proxy is configured. The seed's
+    provisioning IP address is now included in the default ``no_proxy`` list,
+    preventing the proxy from intercepting requests to seed services such as
+    Ironic.
+    `LP#2154438 <https://bugs.launchpad.net/kayobe/+bug/2154438>`__
