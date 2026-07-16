@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an error in the manage-containers role that occurred when running
+    ``kayobe overcloud service reconfigure``.
+    `LP#2160941 <https://bugs.launchpad.net/kayobe/+bug/2160941>`__
