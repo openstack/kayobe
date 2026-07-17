@@ -38,7 +38,7 @@
     systemd_networkd_netdev: "{{ network_interfaces | networkd_netdevs }}"
     systemd_networkd_network: "{{ network_interfaces | networkd_networks }}"
     systemd_networkd_apply_config: true
-    systemd_networkd_enable_resolved: false
+    systemd_networkd_enable_resolved: true
     systemd_networkd_symlink_resolv_conf: false
     systemd_networkd_cleanup: true
     systemd_networkd_cleanup_patterns:
