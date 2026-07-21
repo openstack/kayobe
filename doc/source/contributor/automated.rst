@@ -144,6 +144,13 @@ plane::
 
 Upon successful completion of this script, the control plane will be active.
 
+.. note::
+
+   When running Kayobe commands, such as ``kayobe overcloud service deploy``, it
+   is important to use the ``--use-test-images`` flag to enable the use of Kolla
+   test images. This is due to the fact that the Kolla images used are from the
+   quay.io/openstack.kolla namespace, which are meant for testing purposes only.
+
 Testing
 -------
 
