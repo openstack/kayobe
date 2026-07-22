@@ -23,15 +23,12 @@
       register: docker_images
 
     - name: Build an Ansible compatible image
-      docker_image:
+      community.docker.docker_image_build:
         name: "molecule_local/{{ item.item.image }}"
-        source: build
-        build:
-          path: "{{ molecule_ephemeral_directory }}"
-          dockerfile: "{{ item.item.dockerfile | default(item.invocation.module_args.dest) }}"
-          network: host
-        force_source: "{{ item.item.force | default(true) }}"
-        force_tag: "{{ item.item.force | default(true) }}"
+        path: "{{ molecule_ephemeral_directory }}"
+        dockerfile: "{{ item.item.dockerfile | default(item.dest) }}"
+        network: host
+        rebuild: "{{ 'always' if item.item.force | default(true) else 'never' }}"
       with_items: "{{ platforms.results }}"
       when: platforms.changed or docker_images.results | map(attribute='images') | select('equalto', []) | list | count >= 0
 
