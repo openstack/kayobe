@@ -1,0 +1,12 @@
+---
+fixes:
+  - |
+    Fixes a bug where the httpd image does not get built with ``kayobe
+    overcloud container image build``.
+    `LP#2161615 <https://bugs.launchpad.net/kayobe/+bug/2161615>`__
+
+    This image was introduced in Kolla from `change 954707
+    <https://review.opendev.org/c/openstack/kolla/+/954707>`__.
+
+    The httpd image will be built by default when ``kolla_enable_keystone``
+    is set to true.

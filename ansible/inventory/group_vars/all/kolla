@@ -176,6 +176,8 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_horizon | bool }}"
   - regex: ^influxdb
     enabled: "{{ kolla_enable_influxdb | bool }}"
+  - regex: ^httpd
+    enabled: "{{ kolla_enable_keystone | bool }}"
   - regex: ^ironic
     enabled: "{{ kolla_enable_ironic | bool }}"
   - regex: ironic-neutron-agent
