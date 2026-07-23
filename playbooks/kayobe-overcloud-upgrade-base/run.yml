@@ -90,6 +90,12 @@
             cmd: "{{ kayobe_src_dir }}/dev/overcloud-upgrade.sh &> {{ logs_dir }}/ansible/overcloud-upgrade"
             executable: /bin/bash
 
+        # Upgrading restarts libvirt, which breaks sushy-emulator.
+        - name: Restart sushy-emulator
+          shell:
+            cmd: "systemctl restart sushy_emulator.service"
+          become: true
+
         # Remove unused Docker images to avoid reaching full disk
         - name: Remove unused Docker images
           shell:
