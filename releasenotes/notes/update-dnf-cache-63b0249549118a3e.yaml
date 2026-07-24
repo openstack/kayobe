@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Adds support for updating cache during host package update on all
+    supported systems.
