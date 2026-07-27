@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes a bug found when trying to assign a multi-word description
+    to a Dell OS switch with ``kayobe physical network configure``.
+    `LP#2161899 <https://bugs.launchpad.net/kayobe/+bug/2161899>`__
