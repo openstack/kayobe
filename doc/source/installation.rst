@@ -5,9 +5,9 @@ Installation
 ============
 
 Kayobe can be installed via the released Python packages on PyPI, or from
-source. Installing from PyPI ensures the use of well used and tested software,
-whereas installing from source allows for the use of unreleased or patched
-code.  Installing from a Python package is supported from Kayobe 5.0.0 onwards.
+source. Installing from source using stable branches is recommended over PyPI
+packages, as it provides access to bug fixes that have been merged to stable
+branches since the last PyPI release.
 
 Prerequisites
 =============
