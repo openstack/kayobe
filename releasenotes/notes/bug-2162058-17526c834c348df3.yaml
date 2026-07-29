@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fixes displaying the error when a failure to retrieve an inspection rule
+    occurs. `LP#2162058 <https://bugs.launchpad.net/kayobe/+bug/2162058>`__
