@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Resolves an issue that prevented Arista switch interface configuration from
+    being applied.
+    `LP#2162130 <https://bugs.launchpad.net/kayobe/+bug/2162130>`__
