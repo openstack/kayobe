@@ -239,10 +239,10 @@ CentOS/Rocky and EPEL mirrors can be enabled by setting
 ``dnf_use_local_mirror`` to ``true``. CentOS repository mirrors are configured
 via the following variables:
 
-* ``dnf_centos_mirror_host`` (default ``mirror.centos.org``) is the mirror
-  hostname.
-* ``dnf_centos_mirror_directory`` (default ``centos``) is a directory on the
-  mirror in which repositories may be accessed.
+* ``dnf_centos_mirror_host`` (default ``mirror.stream.centos.org``) is the
+  mirror hostname.
+* ``dnf_centos_mirror_directory`` (default ``''``) is a directory on the mirror
+  in which repositories may be accessed.
 
 Rocky repository mirrors are configured via the following variables:
 
