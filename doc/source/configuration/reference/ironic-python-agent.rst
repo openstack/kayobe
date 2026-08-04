@@ -327,9 +327,10 @@ inspection.
     ``ipa_benchmarks_default`` and ``ipa_benchmarks_extra``.
 ``ipa_kernel_options_default``
     List of default kernel parameters for Ironic python agent. Default includes
-    ``ipa-collect-lldp``, ``ipa-inspection-collectors`` and
-    ``ipa-inspection-benchmarks``, with arguments taken from
-    ``ipa_collect_lldp``, ``ipa_collectors`` and ``ipa_benchmarks``.
+    ``ipa-collect-lldp``, ``ipa-inspection-collectors`` (if ``ipa_collectors``
+    is not empty) and ``ipa-inspection-benchmarks`` (if ``ipa_benchmarks`` is
+    not empty), with arguments taken from ``ipa_collect_lldp``,
+    ``ipa_collectors`` and ``ipa_benchmarks``.
 ``ipa_kernel_options_extra``
     List of additional kernel parameters for Ironic python agent. Default is
     none.
