@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes Bifrost deployment by ensuring that extra kernel parameters are
+    successfully parsed by Ironic.
+    `LP#2162755 <https://bugs.launchpad.net/kayobe/+bug/2162755>`__

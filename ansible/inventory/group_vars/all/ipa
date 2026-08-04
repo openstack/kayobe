@@ -178,8 +178,8 @@ ipa_benchmarks: >
 # List of default kernel parameters for Ironic python agent.
 ipa_kernel_options_default: >
   {{ ['ipa-collect-lldp=' ~ ('1' if ipa_collect_lldp | bool else '0')] +
-     ['ipa-inspection-collectors=' ~ ipa_collectors | join(',')] +
-     ['ipa-inspection-benchmarks=' ~ ipa_benchmarks | join(',')] }}
+     (['ipa-inspection-collectors=' ~ ipa_collectors | join(',')] if ipa_collectors else []) +
+     (['ipa-inspection-benchmarks=' ~ ipa_benchmarks | join(',')] if ipa_benchmarks else []) }}
 
 # List of additional kernel parameters for Ironic python agent.
 ipa_kernel_options_extra: []
