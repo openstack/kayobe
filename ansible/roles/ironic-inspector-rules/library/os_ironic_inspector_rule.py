@@ -88,7 +88,7 @@ def _ensure_rule_present(module, client):
         if not response.ok:
             if response.status_code != 404:
                 module.fail_json(msg="Failed retrieving Inspector rule %s: %s"
-                                 % (module.params['uuid'], repr(e)))
+                                 % (module.params['uuid'], response.text))
         else:
             rule = response.json()
             # Check whether the rule differs from the request.
