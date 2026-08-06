@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Adds support for QoS egress/ingress settings in systemd-networkd for
+    Debian-family distributions. Use ``ingress_qos_map`` and ``egress_qos_map``
+    variables to configure QoS maps for incoming and outgoing packets
+    respectively.

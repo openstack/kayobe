@@ -118,7 +118,17 @@ class TestNetworkdNetDevs(BaseNetworkdTest):
         self.assertEqual(expected, devs)
 
     def test_vlan_all_options(self):
-        self._update_context({"net2_mtu": 1400})
+        self._update_context({
+            "net2_mtu": 1400,
+            "net2_egress_qos_map": [
+                {"from": 129, "to": 7},
+                {"from": 130, "to": 6},
+            ],
+            "net2_ingress_qos_map": [
+                {"from": 3, "to": 12},
+                {"from": 7, "to": 254},
+            ],
+            })
         devs = networkd.networkd_netdevs(self.context, ["net2"])
         expected = {
             "50-kayobe-eth0.2": [
@@ -132,6 +142,8 @@ class TestNetworkdNetDevs(BaseNetworkdTest):
                 {
                     "VLAN": [
                         {"Id": 2},
+                        {"IngressQOSMaps": "3-12 7-254"},
+                        {"EgressQOSMaps": "129-7 130-6"},
                     ]
                 },
             ]
