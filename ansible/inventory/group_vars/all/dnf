@@ -1,10 +1,15 @@
 ---
-# Yum configuration. Dict mapping Yum config option names to their values.
+# DNF configuration.
+
+###############################################################################
+# DNF repository configuration.
+
+# DNF configuration. Dict mapping DNF config option names to their values.
 # dnf_config:
 #   proxy: http://proxy.example.com
 dnf_config: {}
 
-# Whether or not to use a local Yum mirror. Default value is 'false'.
+# Whether or not to use a local DNF mirror. Default value is 'false'.
 dnf_use_local_mirror: false
 
 # Mirror FQDN for DNF CentOS repos. Default value is 'mirror.stream.centos.org'.
