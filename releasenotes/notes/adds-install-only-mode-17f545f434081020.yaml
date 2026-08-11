@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Adds the ``--install-only`` and ``--no-install`` command line options to
+    ``kayobe control host bootstrap``. In ``install-only`` mode, only the
+    dependencies are installed, but the rest of the host configuration is
+    skipped. In ``no-install`` mode, install is skipped, but the rest of the
+    tasks are executed.

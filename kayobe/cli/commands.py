@@ -18,6 +18,7 @@ import logging
 import os
 import re
 import sys
+import yaml
 
 from cliff.command import Command
 from cliff.hooks import CommandHook
@@ -301,13 +302,48 @@ class ControlHostBootstrap(KayobeAnsibleMixin, KollaAnsibleMixin, VaultMixin,
         group = parser.add_argument_group("Host Bootstrap")
         group.add_argument("--add-known-hosts", action='store_true',
                            help="add SSH known hosts entries for each host")
+        install_group = group.add_mutually_exclusive_group()
+        install_group.add_argument(
+            "--no-install",
+            action='store_true',
+            default=yaml.safe_load(os.getenv("KAYOBE_NO_INSTALL", "false")),
+            help=("skip dependency installation and run later bootstrap "
+                  "steps only (default from KAYOBE_NO_INSTALL env var)"),
+        )
+        install_group.add_argument(
+            "--install-only",
+            action='store_true',
+            default=yaml.safe_load(os.getenv("KAYOBE_INSTALL_ONLY", "false")),
+            help=("only install dependencies "
+                  "(default from KAYOBE_INSTALL_ONLY env var)"),
+        )
         return parser
 
     def take_action(self, parsed_args):
         self.app.LOG.debug("Bootstrapping Kayobe Ansible control host")
         self.handle_kolla_tags_limits_deprecation(parsed_args)
-        ansible.install_galaxy_roles(parsed_args)
-        ansible.install_galaxy_collections(parsed_args)
+
+        if parsed_args.install_only and parsed_args.no_install:
+            self.app.LOG.error("--install-only and --no-install are "
+                               "mutually exclusive")
+            sys.exit(1)
+
+        if parsed_args.no_install:
+            self.app.LOG.debug("Skipping dependency and Galaxy installation "
+                               "due to --no-install")
+        else:
+            ansible.install_galaxy_roles(parsed_args)
+            ansible.install_galaxy_collections(parsed_args)
+
+            playbooks = _build_playbook_list("install")
+            self.run_kayobe_playbooks(parsed_args, playbooks,
+                                      ignore_limit=True)
+
+            if parsed_args.install_only:
+                self.app.LOG.debug("Skipping reset of bootstrap due to "
+                                   "--install-only")
+                return
+
         playbooks = _build_playbook_list("bootstrap")
         self.run_kayobe_playbooks(parsed_args, playbooks, ignore_limit=True)
 
@@ -455,11 +491,11 @@ class ControlHostUpgrade(KayobeAnsibleMixin, VaultMixin, Command):
         # Use force to upgrade roles and collections.
         ansible.install_galaxy_roles(parsed_args, force=True)
         ansible.install_galaxy_collections(parsed_args, force=True)
+        playbooks = _build_playbook_list("install")
+        self.run_kayobe_playbooks(parsed_args, playbooks, ignore_limit=True)
+
         playbooks = _build_playbook_list("bootstrap")
         self.run_kayobe_playbooks(parsed_args, playbooks, ignore_limit=True)
-        playbooks = _build_playbook_list("kolla-ansible")
-        self.run_kayobe_playbooks(parsed_args, playbooks, tags="install",
-                                  ignore_limit=True, check=False)
 
 
 class ControlHostServiceDeploy(KayobeAnsibleMixin, VaultMixin, Command):

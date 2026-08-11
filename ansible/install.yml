@@ -1,0 +1,24 @@
+---
+- name: Ensure dependencies are installed
+  hosts: localhost
+  gather_facts: true
+  tags:
+    - kolla-ansible
+    - install
+    - bootstrap
+  vars:
+    kolla_ansible_install_epel: "{{ dnf_install_epel }}"
+    kolla_ansible_custom_requirements_search_paths_static:
+      - "{{ kayobe_config_path }}"
+    kolla_ansible_custom_requirements_search_paths: "{{ kolla_ansible_custom_requirements_search_paths_static + kayobe_env_search_paths | default([]) }}"
+    kolla_ansible_custom_requirements_paths: "{{ kolla_ansible_custom_requirements_search_paths | map('regex_replace', '$', '/kolla/requirements.yml') | list }}"
+  tasks:
+    - name: Install Kayobe dependencies
+      import_role:
+        name: bootstrap
+        tasks_from: install.yml
+
+    - name: Install kolla-ansible
+      import_role:
+        name: kolla-ansible
+        tasks_from: install.yml
