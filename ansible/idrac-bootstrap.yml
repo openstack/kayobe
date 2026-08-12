@@ -116,7 +116,6 @@
     # interfaces to it.
     - role: dell-switch
       dell_switch_type: "{{ switch_type }}"
-      dell_switch_provider: "{{ switch_dellos_provider }}"
       dell_switch_config:
         - "vlan {{ idrac_bootstrap_vlan }}"
       dell_switch_interface_config: "{{ switch_interface_config_bootstrap }}"
@@ -147,7 +146,6 @@
       include_tasks: idrac-bootstrap-one.yml
       vars:
         dell_switch_type: "{{ switch_type }}"
-        dell_switch_provider: "{{ switch_dellos_provider }}"
         switch_interface_name: "{{ item.key }}"
         idrac_port_description: "{{ item.value.description }}"
         idrac_network_ip: "{{ idrac_network_ips[idrac_port_description] }}"
@@ -181,7 +179,6 @@
     # interfaces from it.
     - role: dell-switch
       dell_switch_type: "{{ switch_type }}"
-      dell_switch_provider: "{{ switch_dellos_provider }}"
       dell_switch_config:
         - "no vlan {{ idrac_bootstrap_vlan }}"
       dell_switch_interface_config: "{{ switch_interface_config_bootstrap }}"
