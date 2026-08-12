@@ -45,12 +45,10 @@
 - block:
     - name: Ensure DellOS6 switch interface is a member of the bootstrap VLAN
       dellos6_config:
-        provider: "{{ dell_switch_provider }}"
         lines:
           - "switchport access vlan {{ idrac_bootstrap_vlan }}"
         parents:
           - "interface {{ switch_interface_name }}"
-      delegate_to: localhost
       when: switch_type == 'dellos6'
 
     # The tasks in this block are delegated to the controller.
@@ -170,12 +168,10 @@
   always:
     - name: Ensure DellOS6 switch iDRAC interface is a member of the management VLAN
       dellos6_config:
-        provider: "{{ dell_switch_provider }}"
         lines:
           - "switchport access vlan {{ idrac_network_vlan }}"
         parents:
           - "interface {{ switch_interface_name }}"
-      delegate_to: localhost
       when: switch_type == 'dellos6'
 
   when: idrac_bootstrap_required
