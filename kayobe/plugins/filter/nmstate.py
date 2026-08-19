@@ -519,6 +519,8 @@ def nmstate_config(context, names, inventory_hostname=None):
             # <network>_port_type_<portname>.
             for port in br_ports or []:
                 port_iface = get_iface(port)
+                if mtu:
+                    port_iface.setdefault("mtu", mtu)
                 if "type" not in port_iface:
                     # Check for explicit type configuration
                     port_type = networks.net_attr(
