@@ -586,6 +586,22 @@ def nmstate_config(context, names, inventory_hostname=None):
                 parent = re.sub(
                     r'\.{}$'.format(vlan_id), '', iface_name)
 
+            # NOTE(bbezak): Do not pass MTU for VLAN interfaces on bridges when
+            # it is identical to the parent bridge, to work around a
+            # NetworkManager bug.
+            bridge_mtus = {}
+            for bridge in networks.net_select_bridges(
+                    context, names, inventory_hostname):
+                bridge_interface = networks.net_interface(
+                    context, bridge, inventory_hostname)
+                bridge_mtus[bridge_interface] = networks.net_mtu(
+                    context, bridge, inventory_hostname)
+
+            if parent in bridge_mtus:
+                parent_mtu = bridge_mtus[parent]
+                if mtu and mtu == parent_mtu:
+                    del iface["mtu"]
+
             iface["vlan"] = {
                 "base-iface": parent,
                 "id": int(vlan_id)
