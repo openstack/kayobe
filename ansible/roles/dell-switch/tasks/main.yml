@@ -1,24 +1,18 @@
 ---
 - name: Ensure DellOS6 switches are configured
-  delegate_to: localhost
-  dellemc.os6.os6:
-    provider: "{{ dell_switch_provider }}"
-    src: "{{ lookup('template', 'dellos6-config.j2') }}"
+  dellemc.os6.os6_config:  # noqa fqcn[canonical]
+    src: "../templates/dellos6-config.j2"
     save: "{{ dell_switch_save | bool }}"
   when: dell_switch_type == 'dellos6'
 
 - name: Ensure DellOS9 switches are configured
-  delegate_to: localhost
-  dellemc.os9.os9:
-    provider: "{{ dell_switch_provider }}"
-    src: "{{ lookup('template', 'dellos9-config.j2') }}"
+  dellemc.os9.os9_config:  # noqa fqcn[canonical]
+    src: "../templates/dellos9-config.j2"
     save: "{{ dell_switch_save | bool }}"
   when: dell_switch_type == 'dellos9'
 
 - name: Ensure DellOS10 switches are configured
-  delegate_to: localhost
-  dellemc.os10.os10:
-    provider: "{{ dell_switch_provider }}"
-    src: "{{ lookup('template', 'dellos10-config.j2') }}"
+  dellemc.os10.os10_config:  # noqa fqcn[canonical]
+    src: "../templates/dellos10-config.j2"
     save: "{{ dell_switch_save | bool }}"
   when: dell_switch_type == 'dellos10'

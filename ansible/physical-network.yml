@@ -138,7 +138,6 @@
 
     - role: dell-switch
       dell_switch_type: "{{ switch_type }}"
-      dell_switch_provider: "{{ switch_dellos_provider }}"
       dell_switch_config: "{{ switch_config }}"
       dell_switch_interface_config: "{{ switch_interface_config }}"
       dell_switch_save: "{{ switch_config_save }}"
