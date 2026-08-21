@@ -44,6 +44,7 @@ class TestNMStateFilter(unittest.TestCase):
         "net3_interface": "br0",
         "net3_bridge_ports": ['eth1'],
         "net3_bridge_stp": True,
+        "net3_mtu": 9000,
         # net4: bond on bond0 with slaves eth2 and eth3.
         "net4_interface": "bond0",
         "net4_bond_slaves": ['eth2', 'eth3'],
@@ -123,6 +124,7 @@ class TestNMStateFilter(unittest.TestCase):
         result = nmstate.nmstate_config(self.context, ["net3"])
         br_iface = next(i for i in result["interfaces"] if i["name"] == "br0")
         self.assertEqual(br_iface["type"], "linux-bridge")
+        self.assertEqual(br_iface["mtu"], 9000)
         self.assertEqual(br_iface["bridge"]["port"], [{"name": "eth1"}])
         self.assertTrue(br_iface["bridge"]["options"]["stp"]["enabled"])
 
@@ -130,6 +132,7 @@ class TestNMStateFilter(unittest.TestCase):
         eth1_iface = next(i for i in result["interfaces"]
                           if i["name"] == "eth1")
         self.assertEqual(eth1_iface["type"], "ethernet")
+        self.assertEqual(eth1_iface["mtu"], 9000)
 
     def test_nmstate_config_bond(self):
         result = nmstate.nmstate_config(self.context, ["net4"])
