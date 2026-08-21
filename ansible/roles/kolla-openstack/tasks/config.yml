@@ -117,12 +117,15 @@
 - name: "Ensure extra configuration files exist (strategy: concat)"
   vars:
     params:
-      content: |
-        {%- for path in item.sources -%}
-        {{ lookup('file', path) }}
-        {%- endfor -%}
+      # join() guarantees exactly one newline between sources, regardless
+      # of whether a source file ends with one - lookup('file') rstrips
+      # trailing whitespace from each source, so concatenating without an
+      # explicit separator can glue the last line of one file to the first
+      # line of the next.
+      content: "{{ query('file', *item.sources) | join('\n') }}\n"
       dest: "{{ item.dest }}"
       mode: 0640
+      lstrip_blocks: true
   template_content: "{{ params | combine(item.params) }}"
   with_items: "{{ kolla_custom_config_info.concat }}"
 
