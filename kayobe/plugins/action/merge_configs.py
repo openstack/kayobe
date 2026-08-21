@@ -167,7 +167,11 @@ class ActionModule(action.ActionBase):
             ]
 
             templar = self._templar.copy_with_new_env(searchpath=searchpath)
-            result = templar.template(template_data)
+
+            # lstrip_blocks avoids Jinja2 block tags (e.g. {% if %}) leaving
+            # behind leading whitespace that glues adjacent lines together.
+            result = templar.template(
+                template_data, overrides=dict(lstrip_blocks=True))
             fakefile = StringIO(result)
             config.parse(fakefile)
             fakefile.close()
