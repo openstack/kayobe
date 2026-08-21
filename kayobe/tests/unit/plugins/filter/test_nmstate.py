@@ -434,6 +434,44 @@ class TestNMStateFilter(unittest.TestCase):
         self.assertEqual(vlan_iface["vlan"]["base-iface"], "eth0")
         self.assertEqual(vlan_iface["vlan"]["id"], 100)
 
+    def test_vlan_on_bridge_inherits_matching_mtu(self):
+        variables = {
+            "inventory_hostname": "test-host",
+            "ansible_facts": {"os_family": "RedHat"},
+            "vlan_interface": "br0.6",
+            "vlan_vlan": 6,
+            "vlan_mtu": 9150,
+            "bridge_interface": "br0",
+            "bridge_bridge_ports": ["eth0"],
+            "bridge_mtu": 9150,
+        }
+        context = self._make_context(variables)
+        result = nmstate.nmstate_config(context, ["vlan", "bridge"])
+
+        vlan_iface = next(
+            i for i in result["interfaces"]
+            if i["name"] == "br0.6")
+        self.assertNotIn("mtu", vlan_iface)
+
+    def test_vlan_on_bridge_keeps_different_mtu(self):
+        variables = {
+            "inventory_hostname": "test-host",
+            "ansible_facts": {"os_family": "RedHat"},
+            "vlan_interface": "br0.6",
+            "vlan_vlan": 6,
+            "vlan_mtu": 9000,
+            "bridge_interface": "br0",
+            "bridge_bridge_ports": ["eth0"],
+            "bridge_mtu": 9150,
+        }
+        context = self._make_context(variables)
+        result = nmstate.nmstate_config(context, ["vlan", "bridge"])
+
+        vlan_iface = next(
+            i for i in result["interfaces"]
+            if i["name"] == "br0.6")
+        self.assertEqual(vlan_iface["mtu"], 9000)
+
     def test_vlan_interface_invalid_name(self):
         """Test VLAN with invalid interface name is skipped gracefully."""
         variables = {
