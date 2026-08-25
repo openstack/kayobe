@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Fixes Kayobe's Ansible user setup in check mode by ensuring that the
+    Python availability check runs. This allows the following task to
+    correctly determine whether Python needs to be installed.
+    `LP#2165042 <https://bugs.launchpad.net/kayobe/+bug/2165042>`__
