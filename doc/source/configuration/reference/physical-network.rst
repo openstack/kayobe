@@ -241,27 +241,22 @@ by Ansible:
 Dell OS6, OS9, and OS10
 -----------------------
 
-Configuration for these devices is applied using the ``dellos6_config``,
-``dellos9_config``, and ``dellos10_config`` Ansible modules.
+Configuration for these devices is applied using the
+``dellemc.os6.os6_config``, ``dellemc.os9.os9_config``, and
+``dellemc.os10.os10_config`` Ansible modules.
 
 ``switch_type`` should be set to ``dellos6``, ``dellos9``, or ``dellos10``.
 
 ``switch_config_save`` may be set to ``true`` to enable saving configuration
 after it has been applied.
 
-Provider
-^^^^^^^^
-
 * ``ansible_host`` is the hostname or IP address.  Optional.
-
 * ``ansible_user`` is the SSH username.
-
 * ``ansible_ssh_pass`` is the SSH password.
-
 * ``switch_auth_pass`` is the 'enable' password.
-
-Alternatively, set ``switch_dellos_provider`` to the value to be passed as the
-``provider`` argument to the ``dellos*_config`` module.
+* ``ansible_connection`` should be ``ansible.netcommon.network_cli``.
+* ``ansible_network_os`` should be ``dellemc.os6.os6``, ``dellemc.os9.os9`` or
+  ``dellemc.os10.os10`` depending on the switch type.
 
 Dell PowerConnect
 -----------------

@@ -1,9 +1,9 @@
 Dell Switch
 ===========
 
-This role configures Dell switches using the `dellos6`, `dellos9`, or
-`dellos10` Ansible modules.  It provides a fairly minimal abstraction of the
-configuration interface provided by the `dellos` modules, allowing for
+This role configures Dell switches using the `dellemc.os6`, `dellemc.os9`, or
+`dellemc.os10` Ansible collections. It provides a fairly minimal abstraction of
+the configuration interface provided by the collections, allowing for
 application of arbitrary switch configuration options.
 
 Requirements
@@ -16,9 +16,6 @@ Role Variables
 
 `dell_switch_type` is the type of Dell switch. One of `dellos6`, `dellos9`, or
 `dellos10`.
-
-`dell_switch_provider` is authentication provider information passed as the
-`provider` argument to the `dellos` modules.
 
 `dell_switch_config` is a list of configuration lines to apply to the switch,
 and defaults to an empty list.
@@ -50,12 +47,6 @@ passwords.  It applies global configuration for LLDP, and enables two
       roles:
         - role: dell-switch
           dell_switch_type: "dellos9"
-          dell_switch_provider:
-            host: "{{ switch_host }}"
-            username: "{{ switch_user }}"
-            password: "{{ switch_password }}"
-            authorize: yes
-            auth_pass: "{{ switch_auth_pass }}"
           dell_switch_config:
             - "protocol lldp"
             - " advertise dot3-tlv max-frame-size"

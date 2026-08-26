@@ -1,0 +1,13 @@
+---
+upgrade:
+  - |
+    Deployments using Dell OS6, OS9 and OS10 switches are required to update
+    their configuration according to `Dell OS6, OS9, and OS10 documentation
+    <https://docs.openstack.org/kayobe/latest/configuration/reference/physical-network.html#dell-os6-os9-and-os10>`_.
+fixes:
+  - |
+    Fixes physical network configuration for Dell OS6, OS9 and OS10 switches.
+    Note that users are required to update their configuration according to
+    `Dell OS6, OS9, and OS10 documentation
+    <https://docs.openstack.org/kayobe/latest/configuration/reference/physical-network.html#dell-os6-os9-and-os10>`_.
+    `LP#2137705 <https://bugs.launchpad.net/kayobe/+bug/2137705>`__
