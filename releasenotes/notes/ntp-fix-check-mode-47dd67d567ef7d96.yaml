@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    The ``ntp`` role now explicitly skips the ``command`` based clock
+    synchronisation tasks when running in check mode.
