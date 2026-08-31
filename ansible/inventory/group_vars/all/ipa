@@ -95,7 +95,7 @@ ipa_build_dib_git_elements: >-
   {{ ipa_build_dib_git_elements_default + ipa_build_dib_git_elements_extra }}
 
 # List of DIB packages to install. Default is ["python3-yaml"] when
-# when ipa_build_distro is "rocky", otherwise [].
+# ipa_build_distro is "rocky", otherwise [].
 ipa_build_dib_packages: >-
   {{ ["python3-yaml"] if ipa_build_distro == 'rocky' else [] }}
 
