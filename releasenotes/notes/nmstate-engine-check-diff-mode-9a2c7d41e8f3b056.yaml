@@ -1,0 +1,17 @@
+---
+features:
+  - |
+    The nmstate network engine now supports Ansible check and diff modes.
+    Running for example ``kayobe overcloud host configure --check --diff``
+    reports whether network changes are required and shows the computed
+    differences without modifying the host.
+fixes:
+  - |
+    The nmstate network engine reported ``changed`` on every run for hosts
+    whose runtime state contains volatile data (for example Linux bridges,
+    whose bridge ageing timers such as ``gc-timer`` change over time),
+    because it compared full ``libnmstate.show()`` snapshots taken before
+    and after applying the state. Change detection now uses
+    ``libnmstate.generate_differences()``, which only compares the desired
+    state against the runtime state.
+    `LP#2164642 <https://bugs.launchpad.net/kayobe/+bug/2164642>`__

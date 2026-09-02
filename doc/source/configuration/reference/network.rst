@@ -139,6 +139,13 @@ Set the engine in ``${KAYOBE_CONFIG_PATH}/globals.yml``:
    The nmstate engine is only supported on Rocky Linux.
    For Ubuntu Noble, use the ``default`` engine (default).
 
+.. note::
+
+   The nmstate engine supports Ansible check and diff modes. Running for
+   example ``kayobe overcloud host configure --check --diff`` reports
+   whether network changes are required and shows the proposed changes
+   without modifying the host.
+
 Nmstate Engine Features
 -------------------------
 
