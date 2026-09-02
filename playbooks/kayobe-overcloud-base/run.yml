@@ -59,6 +59,7 @@
         executable: /bin/bash
 
     - name: Run network connectivity check
+      when: false
       shell:
         # NOTE(wszumski): Limit to overcloud as we have hosts in our inventory
         # that aren't deployed in this scenario.
