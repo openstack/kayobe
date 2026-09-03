@@ -132,31 +132,72 @@
 
     # TODO(gkoper): replace temporary nmcli profile zone sync with native
     # zone handling in the nmstate filter/module path.
-    - name: Gather NetworkManager connection firewalld zones for nmstate interfaces
-      command:
-        argv:
-          - nmcli
-          - -g
-          - connection.zone
-          - connection
-          - show
-          - "{{ item.interface }}"
-      changed_when: false
-      loop: "{{ network_nmstate_zone_items }}"
-      register: network_nmstate_nm_zone_result
+    - name: Sync NetworkManager connection firewalld zones for nmstate interfaces
+      block:
+        # Cloud-init can create a profile whose ID is prefixed with
+        # "cloud-init", while its active device is still the nmstate interface.
+        # `nmcli connection show` accepts a profile UUID, so get the active
+        # profile UUID from the device before reading or updating its zone.
+        - name: Gather NetworkManager connection profiles for nmstate interfaces
+          command:
+            argv:
+              - nmcli
+              - -g
+              - GENERAL.CON-UUID
+              - device
+              - show
+              - "{{ zone_item.interface }}"
+          changed_when: false
+          loop: "{{ network_nmstate_zone_items }}"
+          loop_control:
+            loop_var: zone_item
+            label: "{{ zone_item.interface }}"
+          register: network_nmstate_nm_connection_result
 
-    - name: Ensure NetworkManager connection firewalld zones are set for nmstate interfaces
-      command:
-        argv:
-          - nmcli
-          - connection
-          - modify
-          - "{{ item.item.interface }}"
-          - connection.zone
-          - "{{ item.item.zone }}"
-      loop: "{{ network_nmstate_nm_zone_result.results }}"
-      when:
-        - (item.stdout | default('') | trim) != item.item.zone
+        - name: Validate NetworkManager connections for nmstate interfaces
+          ansible.builtin.assert:
+            that:
+              - (connection_item.stdout | trim) not in ['', '--']
+            fail_msg: >-
+              No active NetworkManager connection found for nmstate interface
+              {{ connection_item.zone_item.interface }}
+          loop: "{{ network_nmstate_nm_connection_result.results }}"
+          loop_control:
+            loop_var: connection_item
+            label: "{{ connection_item.zone_item.interface }}"
+
+        - name: Gather NetworkManager connection firewalld zones for nmstate interfaces
+          command:
+            argv:
+              - nmcli
+              - -g
+              - connection.zone
+              - connection
+              - show
+              - "{{ connection_item.stdout | trim }}"
+          changed_when: false
+          loop: "{{ network_nmstate_nm_connection_result.results }}"
+          loop_control:
+            loop_var: connection_item
+            label: "{{ connection_item.zone_item.interface }}"
+          register: network_nmstate_nm_zone_result
+
+        - name: Ensure NetworkManager connection firewalld zones are set for nmstate interfaces
+          command:
+            argv:
+              - nmcli
+              - connection
+              - modify
+              - "{{ zone_result.connection_item.stdout | trim }}"
+              - connection.zone
+              - "{{ zone_result.connection_item.zone_item.zone }}"
+          loop: "{{ network_nmstate_nm_zone_result.results }}"
+          loop_control:
+            loop_var: zone_result
+            label: "{{ zone_result.connection_item.zone_item.interface }}"
+          when:
+            - (zone_result.stdout | default('') | trim) != zone_result.connection_item.zone_item.zone
+      when: not ansible_check_mode
 
     # Keep permanent firewalld configuration in sync first. Runtime state is
     # refreshed separately below from permanent config.
