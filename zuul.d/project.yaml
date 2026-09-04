@@ -29,7 +29,8 @@
         - kayobe-overcloud-ubuntu-noble
         - kayobe-overcloud-ubuntu-noble-podman
         - kayobe-overcloud-upgrade-rocky10
-        - kayobe-overcloud-upgrade-ubuntu-noble
+        # TODO(priteau): Re-enable before release
+        #- kayobe-overcloud-upgrade-ubuntu-noble:
         - kayobe-seed-rocky10
         - kayobe-seed-rocky10-podman
         - kayobe-seed-ubuntu-noble
@@ -58,7 +59,6 @@
         - kayobe-overcloud-ubuntu-noble
         - kayobe-overcloud-ubuntu-noble-podman
         - kayobe-overcloud-upgrade-rocky10
-        - kayobe-overcloud-upgrade-ubuntu-noble
         - kayobe-seed-rocky10
         - kayobe-seed-rocky10-podman
         - kayobe-seed-ubuntu-noble
