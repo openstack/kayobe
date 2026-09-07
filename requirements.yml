@@ -13,6 +13,8 @@ collections:
     version: 1.0.4
   - name: dellemc.os10
     version: 1.2.7
+  - name: junipernetworks.junos
+    version: 11.1.1
   - name: nvidia.nvue
     version: 1.2.9
   - name: openstack.cloud
