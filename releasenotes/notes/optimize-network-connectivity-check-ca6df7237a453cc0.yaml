@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Optimize network connectivity check by mapping of network name
+    to hosts on that network only once per play, instead of once per host.

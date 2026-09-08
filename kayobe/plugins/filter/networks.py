@@ -184,6 +184,28 @@ def net_ip(context, name, inventory_hostname=None):
 
 
 @jinja2.pass_context
+def net_hosts_by_network(context, hostnames):
+    """Return a mapping of network name to hosts with that network.
+
+    :param context: a Jinja2 Context object.
+    :param hostnames: list of inventory hostnames to consider.
+    :returns: a dict mapping network name to a list of inventory hostnames
+              from hostnames whose network_interfaces includes that network.
+    """
+    hostvars = context['hostvars']
+    result = {}
+    for hostname in hostnames:
+        if hostname not in hostvars:
+            continue
+        interfaces = hostvars[hostname].get('network_interfaces')
+        if not interfaces:
+            continue
+        for name in interfaces:
+            result.setdefault(name, []).append(hostname)
+    return result
+
+
+@jinja2.pass_context
 def net_interface(context, name, inventory_hostname=None):
     return net_attr(context, name, 'interface', inventory_hostname)
 
@@ -798,6 +820,7 @@ def get_filters():
         'net_attr': net_attr,
         'net_vip_address': net_vip_address,
         'net_fqdn': _make_attr_filter('fqdn'),
+        'net_hosts_by_network': net_hosts_by_network,
         'net_ip': net_ip,
         'net_interface': net_interface,
         'net_parent': net_parent,
