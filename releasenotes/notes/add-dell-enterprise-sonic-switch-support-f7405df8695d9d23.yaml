@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds support for configuring Dell Enterprise SONiC switches using
+    ``sonic-cli``, via the ``dellemc.enterprise_sonic`` Ansible collection.
+    This is integrated into the ``kayobe physical network configure`` command.
