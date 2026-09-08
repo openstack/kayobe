@@ -1,0 +1,5 @@
+---
+- name: Ensure Dell SONiC switches are configured
+  dellemc.enterprise_sonic.sonic_config:  # noqa fqcn[canonical]
+    src: "../templates/dell-sonic-config.j2"
+    save: "{{ dell_switch_sonic_save | bool }}"

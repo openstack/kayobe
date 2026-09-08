@@ -7,6 +7,8 @@ collections:
     version: 3.11.0
   - name: community.network
     version: 5.1.0
+  - name: dellemc.enterprise_sonic
+    version: 4.1.0
   - name: dellemc.os6
     version: 1.0.7
   - name: dellemc.os9
