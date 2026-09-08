@@ -68,6 +68,11 @@
           network.
       run_once: True
 
+    - name: Compute a mapping of network name to hosts on that network
+      run_once: True
+      set_fact:
+        network_hosts_map: "{{ ansible_play_batch | net_hosts_by_network }}"
+
     - name: Ensure hosts on the same network are reachable
       command: >
         ping {{ remote_ip }} -c1 -M do {% if mtu %} -s {{ mtu | int - icmp_overhead_bytes }}{% endif %}
@@ -82,13 +87,9 @@
       vars:
         # Select other hosts targeted by this play which have this network
         # interface (item).
-        remote_hosts: >
-          {{ hostvars.values() |
-             selectattr('inventory_hostname', 'is_in', ansible_play_batch) |
-             selectattr('network_interfaces', 'defined') |
-             selectattr('network_interfaces', 'issuperset', [item]) |
-             rejectattr('inventory_hostname', 'equalto', inventory_hostname) |
-             map(attribute='inventory_hostname') |
+        remote_hosts: >-
+          {{ (network_hosts_map[item] | default([])) |
+             reject('equalto', inventory_hostname) |
              list }}
         # NOTE(wszumski): Needed to fix random choice for the run otherwise the
         # when check: remote_ip | length > 0, would pass, but remote_ip was ''
