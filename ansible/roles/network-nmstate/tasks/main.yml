@@ -50,6 +50,7 @@
     name: "{{ network_nmstate_packages }}"
     state: present
   become: true
+  register: network_nmstate_package_result
   when:
     - network_nmstate_install_packages | bool
     - network_nmstate_packages | length > 0
@@ -97,6 +98,9 @@
   become: true
   vars:
     ansible_python_interpreter: "{{ ansible_facts.python.executable }}"
+  when: >-
+    not (ansible_check_mode and
+         network_nmstate_package_result is changed)
 
 - name: Initialise nmstate firewalld interface-zone map
   set_fact:
