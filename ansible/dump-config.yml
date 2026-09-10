@@ -28,14 +28,18 @@
     - name: Write host config to file
       delegate_to: localhost
       copy:
-        content: "{{ hostvars[inventory_hostname] | to_nice_yaml }}"
+        content: >-
+          {{ hostvars[inventory_hostname] | kayobe_config_dump
+             | to_nice_yaml }}
         dest: "{{ dump_path }}/{{ inventory_hostname }}.yml"
       when: dump_var_name is not defined
 
     - name: Write host variable to file
       delegate_to: localhost
       copy:
-        content: "{{ hostvars[inventory_hostname][dump_var_name] | to_nice_yaml }}"
+        content: >-
+          {{ hostvars[inventory_hostname]
+             | kayobe_config_dump(dump_var_name) | to_nice_yaml }}
         dest: "{{ dump_path }}/{{ inventory_hostname }}.yml"
       when: dump_var_name is defined
 
