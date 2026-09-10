@@ -1,0 +1,6 @@
+---
+- name: Install kayobe-packages
+  ansible.builtin.import_playbook: dev-tools.yml
+
+- name: Install kolla-packages
+  ansible.builtin.import_playbook: kolla-packages.yml
