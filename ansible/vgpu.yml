@@ -1,4 +1,24 @@
 ---
+- name: Precheck that reboot is enabled for VGPU configuration
+  hosts: iommu:vgpu
+  max_fail_percentage: >-
+    {{ vgpu_max_fail_percentage |
+       default(host_configure_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
+  tags:
+    - reboot
+    - iommu
+    - vgpu
+  tasks:
+    - name: Abort VGPU configuration because reboot is disabled
+      ansible.builtin.fail:
+        msg: >
+          VGPU configuration requires a reboot, but vgpu_do_reboot is
+          false. Please run again with vgpu_do_reboot set to true to reboot.
+      when:
+        - not vgpu_do_reboot | bool
+
 - name: Configure IOMMU
   hosts: iommu
   max_fail_percentage: >-
@@ -12,6 +32,8 @@
   tasks:
     - import_role:
         name: stackhpc.linux.iommu
+      vars:
+        iommu_do_reboot: "{{ vgpu_do_reboot | bool }}"
   handlers:
     - name: Register that a reboot is required
       set_fact:

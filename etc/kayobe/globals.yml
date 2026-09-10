@@ -85,6 +85,11 @@
 # user would not normally have permission to create. Default is true.
 #kayobe_control_host_become:
 
+# Global variable to choose whether or not to reboot hosts when required by
+# host configuration playbooks, including VGPU and SELinux playbooks. Default
+# is false.
+#kayobe_do_reboot:
+
 ###############################################################################
 # Networking configuration.
 

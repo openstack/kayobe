@@ -6,7 +6,7 @@ selinux_policy: targeted
 selinux_state: permissive
 
 # Whether to reboot to apply SELinux config changes.
-selinux_do_reboot: false
+selinux_do_reboot: "{{ kayobe_do_reboot | bool }}"
 
 # Number of seconds to wait for hosts to become accessible via SSH after being
 # rebooted.

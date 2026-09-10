@@ -93,3 +93,8 @@ kayobe_ansible_setup_gather_subset: "{{ omit }}"
 # This allows us to install packages and create arbitrary directories that our
 # user would not normally have permission to create. Default is true.
 kayobe_control_host_become: true
+
+# Global variable to choose whether or not to reboot hosts when required by
+# host configuration playbooks, including VGPU and SELinux playbooks. Default
+# is false.
+kayobe_do_reboot: false
