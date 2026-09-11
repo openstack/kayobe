@@ -1,0 +1,8 @@
+---
+fixes:
+  - |
+    Fixes the nmstate network engine when cloud-init creates a
+    NetworkManager connection whose profile ID differs from the interface
+    name (`LP#2165006 <https://bugs.launchpad.net/kayobe/+bug/2165006>`__).
+    Firewalld zone synchronisation now resolves the active profile from the
+    interface before reading or updating its connection zone.
