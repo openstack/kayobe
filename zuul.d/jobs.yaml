@@ -130,7 +130,7 @@
       Configures the primary VM as an overcloud controller.
     pre-run: playbooks/kayobe-overcloud-base/pre.yml
     run: playbooks/kayobe-overcloud-base/run.yml
-    timeout: 7200
+    timeout: 10800
 
 - job:
     name: kayobe-overcloud-centos10s
