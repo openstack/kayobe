@@ -1,0 +1,14 @@
+---
+fixes:
+  - |
+    Fixes a bug where a dedicated Ironic inspection network was never
+    registered in Neutron.
+  - |
+    Fixes the Ironic inspection subnet using the provisioning network's
+    gateway when ``neutron_gateway`` is not set.
+upgrade:
+  - |
+    ``kayobe overcloud post configure`` now registers the Ironic inspection
+    network when ``inspection_net_name`` differs from the provisioning and
+    cleaning networks. As ``inspection_net_name`` defaults to
+    ``inspection_net``, ensure this network is defined before upgrading.
