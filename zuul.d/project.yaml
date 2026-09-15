@@ -22,8 +22,6 @@
         - kayobe-ansible-control-host-configure-rocky10-podman
         - kayobe-ansible-control-host-configure-ubuntu-noble
         - kayobe-ansible-control-host-configure-ubuntu-noble-podman
-        - kayobe-infra-vm-rocky10
-        - kayobe-infra-vm-ubuntu-noble
         - kayobe-overcloud-host-configure-rocky10
         - kayobe-overcloud-host-configure-ubuntu-noble
         - kayobe-overcloud-rocky10
@@ -41,8 +39,6 @@
         - kayobe-seed-upgrade-slurp-rocky10
         - kayobe-seed-upgrade-slurp-ubuntu-noble
         - kayobe-seed-upgrade-ubuntu-noble
-        - kayobe-seed-vm-rocky10
-        - kayobe-seed-vm-ubuntu-noble
     gate:
       jobs:
         - openstack-tox-py310:
@@ -56,8 +52,6 @@
         - kayobe-tox-molecule
         - kayobe-ansible-control-host-configure-rocky10
         - kayobe-ansible-control-host-configure-ubuntu-noble
-        - kayobe-infra-vm-rocky10
-        - kayobe-infra-vm-ubuntu-noble
         - kayobe-overcloud-host-configure-rocky10
         - kayobe-overcloud-host-configure-ubuntu-noble
         - kayobe-overcloud-rocky10
@@ -75,8 +69,6 @@
         - kayobe-seed-upgrade-slurp-rocky10
         - kayobe-seed-upgrade-slurp-ubuntu-noble
         - kayobe-seed-upgrade-ubuntu-noble
-        - kayobe-seed-vm-rocky10
-        - kayobe-seed-vm-ubuntu-noble
 
     experimental:
       jobs:
