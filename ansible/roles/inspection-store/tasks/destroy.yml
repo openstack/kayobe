@@ -14,9 +14,6 @@
     - "{{ inspection_store_services }}"
     - volumes
   when: "'/' not in volume"
-  failed_when:
-    - volume_result.rc != 0
-    - "'no such volume' not in volume_result.stderr | lower"
   vars:
     volume: "{{ item.1.split(':')[0] }}"
   become: "{{ container_engine == 'podman' }}"
