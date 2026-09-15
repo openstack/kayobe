@@ -26,6 +26,7 @@
     description: |
       Tox job that runs native Ansible role tests.
     parent: openstack-tox-with-sudo
+    timeout: 3600
     vars:
       tox_envlist: ansible
     required-projects:
