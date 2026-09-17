@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Adds support for Cisco NX-OS switches in the Neutron ``genericswitch`` ML2
+    mechanism driver configuration generated from
+    ``kolla_neutron_ml2_generic_switch_hosts``. Set ``switch_type`` to
+    ``cisco-nxos`` to use the ``netmiko_cisco_nxos`` device type.
