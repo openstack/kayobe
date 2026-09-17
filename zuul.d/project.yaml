@@ -29,7 +29,6 @@
         - kayobe-overcloud-ubuntu-noble
         - kayobe-overcloud-ubuntu-noble-podman
         - kayobe-overcloud-upgrade-rocky10
-        - kayobe-overcloud-upgrade-ubuntu-noble
         - kayobe-seed-rocky10
         - kayobe-seed-rocky10-podman
         - kayobe-seed-ubuntu-noble
@@ -58,7 +57,6 @@
         - kayobe-overcloud-ubuntu-noble
         - kayobe-overcloud-ubuntu-noble-podman
         - kayobe-overcloud-upgrade-rocky10
-        - kayobe-overcloud-upgrade-ubuntu-noble
         - kayobe-seed-rocky10
         - kayobe-seed-rocky10-podman
         - kayobe-seed-ubuntu-noble
@@ -91,3 +89,6 @@
         - kayobe-seed-vm-rocky10-q35
         - kayobe-seed-vm-ubuntu-noble-cloud-image
         - kayobe-seed-vm-ubuntu-noble-q35
+    periodic:
+      jobs:
+        - kayobe-overcloud-upgrade-ubuntu-noble
