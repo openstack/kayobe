@@ -1,0 +1,8 @@
+---
+fixes:
+  - |
+    Fixes an issue where ``kayobe configuration dump`` would fail with
+    ansible-core 2.19 or later. Variables that reference ``hostvars`` or
+    undefined variables are now resolved correctly, and variables that cannot
+    be resolved are included in the dump in their raw form. `LP#2166964
+    <https://bugs.launchpad.net/kayobe/+bug/2166964>`__
