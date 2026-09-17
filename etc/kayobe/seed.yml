@@ -4,7 +4,7 @@
 
 # User with which to access the seed via SSH during bootstrap, in order to
 # setup the Kayobe user account. Default is 'cloud-user' if os_distribution is
-# set to centos, otherwise 'os_distribution'.
+# set to centos, otherwise {{ os_distribution }}.
 #seed_bootstrap_user:
 
 ###############################################################################
