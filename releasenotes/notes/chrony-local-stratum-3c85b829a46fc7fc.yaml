@@ -1,0 +1,8 @@
+---
+fixes:
+  - |
+    Fixes an issue where the ``local stratum`` directive was not rendered in
+    the chrony configuration when using the ``mrlesmithjr.chrony`` Ansible
+    role. The role is updated to v0.2.0 so the configured local stratum is
+    applied correctly.
+    `LP#2165047 <https://bugs.launchpad.net/kayobe/+bug/2165047>`__
