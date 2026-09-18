@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Adds a new boolean variable, ``kolla_ansible_version_check_enabled``
+    (default ``true``), which checks that the installed version of
+    Kolla Ansible matches ``kolla_ansible_source_version`` before Kolla
+    Ansible configuration is generated. This is only applicable when
+    ``kolla_ansible_ctl_install_type`` is ``source``.

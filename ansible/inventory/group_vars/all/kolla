@@ -43,6 +43,9 @@ kolla_ansible_venv: "{{ lookup('env', 'KOLLA_VENV_PATH') | default(lookup('env',
 # Extra requirements to install inside the kolla-ansible virtualenv.
 kolla_ansible_venv_extra_requirements: []
 
+# Check if the installed kolla-ansible version is the expected version.
+kolla_ansible_version_check_enabled: true
+
 # Path to Kolla-ansible configuration directory.
 kolla_config_path: "{{ lookup('env', 'KOLLA_CONFIG_PATH') | default('/etc/kolla', true) }}"
 

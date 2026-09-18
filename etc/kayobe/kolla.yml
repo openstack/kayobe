@@ -55,6 +55,9 @@
 # tested code. Changes to this limit should be tested.
 #kolla_ansible_venv_ansible:
 
+# Check if the installed kolla-ansible version is the expected version.
+#kolla_ansible_version_check_enabled:
+
 # Path to Kolla-ansible configuration directory. Default is $KOLLA_CONFIG_PATH
 # or /etc/kolla if $KOLLA_CONFIG_PATH is not set.
 #kolla_config_path:

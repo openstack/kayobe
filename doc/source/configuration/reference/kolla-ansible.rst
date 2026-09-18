@@ -29,7 +29,7 @@ Kolla Ansible Installation
 
 Prior to deploying containers, Kolla Ansible and its dependencies will be
 installed on the Ansible control host. The following variables affect the
-installation of Kolla Ansible:
+installation and verification of Kolla Ansible:
 
 ``kolla_ansible_ctl_install_type``
     Type of Kolla Ansible control installation. One of ``binary`` (PyPI) or
@@ -40,6 +40,11 @@ installation of Kolla Ansible:
 ``kolla_ansible_source_version``
     Version (branch, tag, etc.) of Kolla Ansible source code repository if type
     is ``source``. Default is the same as the Kayobe upstream branch.
+``kolla_ansible_version_check_enabled``
+    Whether to check that the installed version of Kolla Ansible matches
+    ``kolla_ansible_source_version`` before Kolla Ansible configuration is
+    generated. Only applicable when ``kolla_ansible_ctl_install_type`` is
+    ``source``. Default is ``true``.
 ``kolla_ansible_venv_extra_requirements``
     Extra requirements to install inside the Kolla Ansible virtualenv. Default
     is an empty list.
@@ -58,6 +63,40 @@ To install Kolla Ansible from a custom git repository:
 
    kolla_ansible_source_url: https://git.example.com/kolla-ansible
    kolla_ansible_source_version: downstream
+
+Version Check
+-------------
+
+When ``kolla_ansible_ctl_install_type`` is ``source``, Kayobe checks that the
+Kolla Ansible installation on the Ansible control host matches
+``kolla_ansible_source_version`` before generating Kolla Ansible
+configuration. Two things are compared against the expected version:
+
+* the commit checked out in ``kolla_ansible_source_path``, and
+* the commit that the Kolla Ansible package installed in
+  ``kolla_ansible_venv`` was built from, as recorded by `pbr
+  <https://docs.openstack.org/pbr/latest/>`__.
+
+Both of these paths are configured in the local environment, described below.
+The second comparison catches the case where the source code checkout has been
+updated but the package has not been reinstalled from it, leaving a stale
+Kolla Ansible in the virtual environment.
+
+If either does not match, the command fails with a message showing the
+expected and actual versions. The control host can be brought back into line
+using:
+
+.. code-block:: console
+
+   kayobe control host upgrade
+
+The check may be disabled, for example when working from a locally modified
+Kolla Ansible checkout:
+
+.. code-block:: yaml
+   :caption: ``$KAYOBE_CONFIG_PATH/kolla.yml``
+
+   kolla_ansible_version_check_enabled: false
 
 Virtual Environment Extra Requirements
 --------------------------------------
