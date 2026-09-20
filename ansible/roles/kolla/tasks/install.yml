@@ -13,7 +13,7 @@
 
 - name: Ensure required packages are installed
   package:
-    name: "{{ kolla_package_dependencies }}"
+    name: "{{ kolla_package_dependencies | select | list }}"
     state: present
     cache_valid_time: "{{ apt_cache_valid_time if ansible_facts.os_family == 'Debian' else omit }}"
     update_cache: "{{ True if ansible_facts.os_family == 'Debian' else omit }}"

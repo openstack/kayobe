@@ -1,6 +1,7 @@
 ---
 # List of packages to install.
 kolla_package_dependencies:
+  - "{{ 'docker-buildx-plugin' if container_engine == 'docker' }}"
   - gcc
   - git
   - libffi-devel
