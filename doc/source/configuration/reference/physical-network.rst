@@ -19,6 +19,7 @@ The following switch operating systems are currently supported:
   <https://docs.nvidia.com/networking-ethernet-software/cumulus-linux-44/System-Configuration/Network-Command-Line-Utility-NCLU/>`__)
 * Cumulus Linux (via `NVIDIA User Experience command line utility (NVUE)
   <https://docs.nvidia.com/networking-ethernet-software/cumulus-linux/System-Configuration/NVIDIA-User-Experience-NVUE/>`__)
+* Dell Enterprise SONiC
 * Dell OS 6
 * Dell OS 9
 * Dell OS 10
@@ -237,6 +238,24 @@ by Ansible:
 * ``ansible_host`` is the hostname or IP address.  Optional.
 
 * ``ansible_user`` is the SSH username.
+
+Dell Enterprise SONiC
+---------------------
+
+Configuration for these devices is applied using the
+``dellemc.enterprise_sonic`` Ansible module.
+
+``switch_type`` should be set to ``dell-sonic``.
+
+``switch_config_save`` may be set to ``true`` to enable saving configuration
+after it has been applied.
+
+* ``ansible_host`` is the hostname or IP address.  Optional.
+* ``ansible_user`` is the SSH username.
+* ``ansible_ssh_pass`` is the SSH password.
+* ``switch_auth_pass`` is the 'enable' password.
+* ``ansible_connection`` should be ``ansible.netcommon.network_cli``.
+* ``ansible_network_os`` should be ``dellemc.enterprise_sonic.sonic``.
 
 Dell OS6, OS9, and OS10
 -----------------------

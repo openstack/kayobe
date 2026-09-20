@@ -33,6 +33,7 @@
       - dellos9
       - dellos10
       - dell-powerconnect
+      - dell-sonic
       - junos
       - mellanox
       - nclu
@@ -158,6 +159,23 @@
       dell_powerconnect_switch_provider: "{{ switch_dell_powerconnect_provider }}"
       dell_powerconnect_switch_config: "{{ switch_config }}"
       dell_powerconnect_switch_interface_config: "{{ switch_interface_config }}"
+
+- name: Ensure Dell SONiC physical switches are configured
+  hosts: switches_of_type_dell-sonic:&switches_in_display_mode_False
+  gather_facts: no
+  max_fail_percentage: >-
+    {{ physical_network_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
+  roles:
+    - role: ssh-known-host
+      when: not switch_skip_keyscan | bool
+
+    - role: dell-switch-sonic
+      dell_switch_sonic_type: "{{ switch_type }}"
+      dell_switch_sonic_config: "{{ switch_config }}"
+      dell_switch_sonic_interface_config: "{{ switch_interface_config }}"
+      dell_switch_sonic_save: "{{ switch_config_save }}"
 
 - name: Ensure Juniper physical switches are configured
   hosts: switches_of_type_junos:&switches_in_display_mode_False
