@@ -77,6 +77,10 @@ When changing behavior, prefer to preserve the existing split between code, defa
 - Use the body to explain *what* and *why*, not *how*.
 - A `Change-Id` trailer is added automatically by a git hook. Always preserve it when amending a commit.
 - Reference bugs with a `Closes-Bug: #<id>` trailer (Launchpad) or `Related-Bug: #<id>` if the commit does not fully fix the bug.
+- Mark AI-assisted commits per the [OpenInfra AI policy](https://openinfra.org/legal/ai-policy):
+  - `Assisted-By: <tool> [model-version]` for predictive tools or minor generative edits/suggestions.
+  - `Generated-By: <tool> [model-version]` when a generative tool produced a substantial portion of the patch, even if later reworked.
+  - Include the model name or version when known, e.g. `Assisted-By: opencode deepseek-v4-pro`.
 
 ### Release Notes
 
