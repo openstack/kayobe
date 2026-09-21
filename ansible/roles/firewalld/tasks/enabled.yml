@@ -13,6 +13,23 @@
     state: started
   become: true
 
+# NOTE: The firewalld Ansible module decides whether to use online or offline
+# (on-disk only) operations when it is imported, based on whether the firewalld
+# D-Bus interface is available. Starting the service does not guarantee that
+# the interface is ready yet, so if the first zone is created too early it is
+# written to disk only and is not loaded into the running daemon. A subsequent
+# attempt to assign an interface to that zone then fails with
+# 'INVALID_ZONE'. Wait until firewalld can be queried before configuring it.
+- name: Wait for firewalld to be ready
+  command:
+    cmd: firewall-cmd --state
+  register: firewalld_state
+  until: firewalld_state.rc == 0
+  retries: 30
+  delay: 1
+  changed_when: false
+  become: true
+
 - block:
     - name: Get firewalld current default zone
       command:
