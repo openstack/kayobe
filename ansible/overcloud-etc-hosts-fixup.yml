@@ -7,8 +7,19 @@
 # which it is listening. As a workaround, we remove the stale entries from
 # /etc/hosts.  See https://github.com/stackhpc/kayobe/issues/14.
 
-- name: Ensure overcloud hosts' /etc/hosts does not contain incorrect IPs
+- name: Collect hosts to map through to kolla-ansible
   hosts: overcloud
+  gather_facts: false
+  tags:
+    - etc-hosts-fixup
+  tasks:
+    - name: Group by kolla_overcloud_inventory_pass_through_enabled
+      ansible.builtin.group_by:
+        key: "kolla_mapped_overcloud_host_{{ kolla_overcloud_inventory_pass_through_enabled }}"
+      changed_when: false
+
+- name: Ensure overcloud hosts' /etc/hosts does not contain incorrect IPs
+  hosts: kolla_mapped_overcloud_host_True
   max_fail_percentage: >-
     {{ overcloud_etc_hosts_fixup_max_fail_percentage |
        default(kayobe_max_fail_percentage) |
@@ -28,7 +39,7 @@
       become: True
 
 - name: Ensure rabbitmq containers' /etc/hosts does not contain incorrect IPs
-  hosts: overcloud
+  hosts: kolla_mapped_overcloud_host_True
   max_fail_percentage: >-
     {{ overcloud_etc_hosts_fixup_max_fail_percentage |
        default(kayobe_max_fail_percentage) |
