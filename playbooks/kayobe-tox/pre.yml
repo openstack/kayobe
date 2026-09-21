@@ -1,0 +1,8 @@
+---
+- hosts: all
+  gather_facts: true
+  tasks:
+    - name: Render CI ansible.cfg using the site mirror
+      template:
+        src: ansible-ci.cfg.j2
+        dest: "{{ ansible_env.PWD }}/ansible-ci.cfg"

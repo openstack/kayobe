@@ -22,6 +22,17 @@
       # https://github.com/ansible/ansible/issues/81777
       pipelining = False
       retries = 3
+
+      [galaxy]
+      # Prefer the site's OpenDev Ansible Galaxy mirror, falling back to the
+      # public Galaxy server.
+      server_list = opendev, galaxy
+
+      [galaxy_server.opendev]
+      url = https://{{ zuul_site_mirror_fqdn }}:4448/api/
+
+      [galaxy_server.galaxy]
+      url = https://galaxy.ansible.com/
     ansible_cfg_kolla: |
       [defaults]
       # Ensure that facts are referenced via ansible_facts.<fact>.
@@ -43,6 +54,17 @@
       # https://github.com/ansible/ansible/issues/81777
       pipelining = False
       retries = 3
+
+      [galaxy]
+      # Prefer the site's OpenDev Ansible Galaxy mirror, falling back to the
+      # public Galaxy server.
+      server_list = opendev, galaxy
+
+      [galaxy_server.opendev]
+      url = https://{{ zuul_site_mirror_fqdn }}:4448/api/
+
+      [galaxy_server.galaxy]
+      url = https://galaxy.ansible.com/
   roles:
     - role: kayobe-diagnostics
       kayobe_diagnostics_phase: "pre"

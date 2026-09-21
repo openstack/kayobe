@@ -1,0 +1,14 @@
+# CI-only Ansible configuration. This file is intentionally not named
+# ansible.cfg so that it is not auto-discovered by Ansible on a developer's
+# machine. CI renders it from this template via a Zuul pre-run playbook, then
+# points ANSIBLE_CONFIG at it for the tox jobs.
+[galaxy]
+# Prefer the site's OpenDev Ansible Galaxy mirror, falling back to the public
+# Galaxy server. This speeds up and stabilises role/collection installs in CI.
+server_list = opendev, galaxy
+
+[galaxy_server.opendev]
+url = https://{{ zuul_site_mirror_fqdn }}:4448/api/
+
+[galaxy_server.galaxy]
+url = https://galaxy.ansible.com/
