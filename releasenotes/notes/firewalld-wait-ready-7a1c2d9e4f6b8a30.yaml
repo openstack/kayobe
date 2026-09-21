@@ -1,0 +1,9 @@
+---
+fixes:
+  - |
+    Fixes a race when configuring firewalld that could cause host
+    configuration to fail with ``INVALID_ZONE`` for a zone that was created
+    while firewalld was still starting up. The firewalld role now waits until
+    the firewalld D-Bus interface is ready before creating zones, ensuring
+    that they are applied to the running daemon rather than only to the
+    on-disk configuration.
