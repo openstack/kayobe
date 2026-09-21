@@ -837,6 +837,47 @@ key1:
             mock.call(os.path.join(dump_dir, "host2.yml")),
         ])
 
+    @mock.patch.object(utils, 'is_readable_file', autospec=True)
+    def test_get_galaxy_environment_ansible_cfg(self, mock_is_readable):
+        parser = argparse.ArgumentParser()
+        ansible.add_args(parser)
+        parsed_args = parser.parse_args([])
+        mock_is_readable.return_value = {"result": True}
+
+        with mock.patch.dict(os.environ, {}, clear=True):
+            env = ansible._get_galaxy_environment(parsed_args)
+
+        self.assertEqual(env["ANSIBLE_CONFIG"], "/etc/kayobe/ansible.cfg")
+        mock_is_readable.assert_called_once_with("/etc/kayobe/ansible.cfg")
+
+    @mock.patch.object(utils, 'is_readable_file', autospec=True)
+    def test_get_galaxy_environment_no_ansible_cfg(self, mock_is_readable):
+        parser = argparse.ArgumentParser()
+        ansible.add_args(parser)
+        parsed_args = parser.parse_args([])
+        mock_is_readable.return_value = {"result": False}
+
+        with mock.patch.dict(os.environ, {}, clear=True):
+            env = ansible._get_galaxy_environment(parsed_args)
+
+        self.assertNotIn("ANSIBLE_CONFIG", env)
+        mock_is_readable.assert_called_once_with("/etc/kayobe/ansible.cfg")
+
+    @mock.patch.object(utils, 'is_readable_file', autospec=True)
+    def test_get_galaxy_environment_existing_ansible_cfg(
+            self, mock_is_readable):
+        parser = argparse.ArgumentParser()
+        ansible.add_args(parser)
+        parsed_args = parser.parse_args([])
+        mock_is_readable.return_value = {"result": True}
+
+        with mock.patch.dict(
+                os.environ, {"ANSIBLE_CONFIG": "/path/to/ansible.cfg"}):
+            env = ansible._get_galaxy_environment(parsed_args)
+
+        self.assertEqual(env["ANSIBLE_CONFIG"], "/path/to/ansible.cfg")
+        mock_is_readable.assert_called_once_with("/etc/kayobe/ansible.cfg")
+
     @mock.patch.object(utils, 'galaxy_role_install', autospec=True)
     @mock.patch.object(utils, 'is_readable_file', autospec=True)
     @mock.patch.object(os, 'makedirs', autospec=True)
@@ -849,11 +890,14 @@ key1:
 
         ansible.install_galaxy_roles(parsed_args)
 
-        mock_install.assert_called_once_with(utils.get_data_files_path(
-            "requirements.yml"), utils.get_data_files_path(
-            "ansible", "roles"), force=False)
-        mock_is_readable.assert_called_once_with(
-            "/etc/kayobe/ansible/requirements.yml")
+        mock_install.assert_called_once_with(
+            utils.get_data_files_path("requirements.yml"),
+            utils.get_data_files_path("ansible", "roles"),
+            force=False, env=mock.ANY)
+        mock_is_readable.assert_has_calls([
+            mock.call("/etc/kayobe/ansible.cfg"),
+            mock.call("/etc/kayobe/ansible/requirements.yml"),
+        ])
         self.assertFalse(mock_mkdirs.called)
 
     @mock.patch.object(utils, 'galaxy_role_install', autospec=True)
@@ -871,12 +915,15 @@ key1:
         expected_calls = [
             mock.call(utils.get_data_files_path("requirements.yml"),
                       utils.get_data_files_path("ansible", "roles"),
-                      force=False),
+                      force=False, env=mock.ANY),
             mock.call("/etc/kayobe/ansible/requirements.yml",
-                      "/etc/kayobe/ansible/roles", force=False)]
+                      "/etc/kayobe/ansible/roles",
+                      force=False, env=mock.ANY)]
         self.assertListEqual(expected_calls, mock_install.call_args_list)
-        mock_is_readable.assert_called_once_with(
-            "/etc/kayobe/ansible/requirements.yml")
+        mock_is_readable.assert_has_calls([
+            mock.call("/etc/kayobe/ansible.cfg"),
+            mock.call("/etc/kayobe/ansible/requirements.yml"),
+        ])
         mock_mkdirs.assert_called_once_with("/etc/kayobe/ansible/roles")
 
     @mock.patch.object(utils, 'galaxy_role_install', autospec=True)
@@ -894,12 +941,15 @@ key1:
         expected_calls = [
             mock.call(utils.get_data_files_path("requirements.yml"),
                       utils.get_data_files_path("ansible", "roles"),
-                      force=True),
+                      force=True, env=mock.ANY),
             mock.call("/etc/kayobe/ansible/requirements.yml",
-                      "/etc/kayobe/ansible/roles", force=True)]
+                      "/etc/kayobe/ansible/roles",
+                      force=True, env=mock.ANY)]
         self.assertListEqual(expected_calls, mock_install.call_args_list)
-        mock_is_readable.assert_called_once_with(
-            "/etc/kayobe/ansible/requirements.yml")
+        mock_is_readable.assert_has_calls([
+            mock.call("/etc/kayobe/ansible.cfg"),
+            mock.call("/etc/kayobe/ansible/requirements.yml"),
+        ])
         mock_mkdirs.assert_called_once_with("/etc/kayobe/ansible/roles")
 
     @mock.patch.object(utils, 'galaxy_role_install', autospec=True)
@@ -916,11 +966,14 @@ key1:
         self.assertRaises(exception.Error,
                           ansible.install_galaxy_roles, parsed_args)
 
-        mock_install.assert_called_once_with(utils.get_data_files_path(
-            "requirements.yml"), utils.get_data_files_path("ansible", "roles"),
-            force=False)
-        mock_is_readable.assert_called_once_with(
-            "/etc/kayobe/ansible/requirements.yml")
+        mock_install.assert_called_once_with(
+            utils.get_data_files_path("requirements.yml"),
+            utils.get_data_files_path("ansible", "roles"),
+            force=False, env=mock.ANY)
+        mock_is_readable.assert_has_calls([
+            mock.call("/etc/kayobe/ansible.cfg"),
+            mock.call("/etc/kayobe/ansible/requirements.yml"),
+        ])
         mock_mkdirs.assert_called_once_with("/etc/kayobe/ansible/roles")
 
     @mock.patch.object(utils, 'galaxy_collection_install', autospec=True)
@@ -935,11 +988,14 @@ key1:
 
         ansible.install_galaxy_collections(parsed_args)
 
-        mock_install.assert_called_once_with(utils.get_data_files_path(
-            "requirements.yml"), utils.get_data_files_path(
-            "ansible", "collections"), force=False)
-        mock_is_readable.assert_called_once_with(
-            "/etc/kayobe/ansible/requirements.yml")
+        mock_install.assert_called_once_with(
+            utils.get_data_files_path("requirements.yml"),
+            utils.get_data_files_path("ansible", "collections"),
+            force=False, env=mock.ANY)
+        mock_is_readable.assert_has_calls([
+            mock.call("/etc/kayobe/ansible.cfg"),
+            mock.call("/etc/kayobe/ansible/requirements.yml"),
+        ])
         self.assertFalse(mock_mkdirs.called)
 
     @mock.patch.object(utils, 'galaxy_collection_install', autospec=True)
@@ -957,12 +1013,15 @@ key1:
         expected_calls = [
             mock.call(utils.get_data_files_path("requirements.yml"),
                       utils.get_data_files_path("ansible", "collections"),
-                      force=False),
+                      force=False, env=mock.ANY),
             mock.call("/etc/kayobe/ansible/requirements.yml",
-                      "/etc/kayobe/ansible/collections", force=False)]
+                      "/etc/kayobe/ansible/collections",
+                      force=False, env=mock.ANY)]
         self.assertListEqual(expected_calls, mock_install.call_args_list)
-        mock_is_readable.assert_called_once_with(
-            "/etc/kayobe/ansible/requirements.yml")
+        mock_is_readable.assert_has_calls([
+            mock.call("/etc/kayobe/ansible.cfg"),
+            mock.call("/etc/kayobe/ansible/requirements.yml"),
+        ])
         mock_mkdirs.assert_called_once_with("/etc/kayobe/ansible/collections")
 
     @mock.patch.object(utils, 'galaxy_collection_install', autospec=True)
@@ -980,12 +1039,15 @@ key1:
         expected_calls = [
             mock.call(utils.get_data_files_path("requirements.yml"),
                       utils.get_data_files_path("ansible", "collections"),
-                      force=True),
+                      force=True, env=mock.ANY),
             mock.call("/etc/kayobe/ansible/requirements.yml",
-                      "/etc/kayobe/ansible/collections", force=True)]
+                      "/etc/kayobe/ansible/collections",
+                      force=True, env=mock.ANY)]
         self.assertListEqual(expected_calls, mock_install.call_args_list)
-        mock_is_readable.assert_called_once_with(
-            "/etc/kayobe/ansible/requirements.yml")
+        mock_is_readable.assert_has_calls([
+            mock.call("/etc/kayobe/ansible.cfg"),
+            mock.call("/etc/kayobe/ansible/requirements.yml"),
+        ])
         mock_mkdirs.assert_called_once_with("/etc/kayobe/ansible/collections")
 
     @mock.patch.object(utils, 'galaxy_collection_install', autospec=True)
@@ -1004,9 +1066,12 @@ key1:
 
         mock_install.assert_called_once_with(
             utils.get_data_files_path("requirements.yml"),
-            utils.get_data_files_path("ansible", "collections"), force=False)
-        mock_is_readable.assert_called_once_with(
-            "/etc/kayobe/ansible/requirements.yml")
+            utils.get_data_files_path("ansible", "collections"),
+            force=False, env=mock.ANY)
+        mock_is_readable.assert_has_calls([
+            mock.call("/etc/kayobe/ansible.cfg"),
+            mock.call("/etc/kayobe/ansible/requirements.yml"),
+        ])
         mock_mkdirs.assert_called_once_with("/etc/kayobe/ansible/collections")
 
     @mock.patch.object(utils, 'galaxy_remove', autospec=True)
