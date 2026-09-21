@@ -2412,26 +2412,6 @@ class TestCase(unittest.TestCase):
 
     @mock.patch.object(commands.KayobeAnsibleMixin,
                        "run_kayobe_playbooks")
-    def test_overcloud_swift_rings_generate(self, mock_run):
-        command = commands.OvercloudSwiftRingsGenerate(TestApp(), [])
-        parser = command.get_parser("test")
-        parsed_args = parser.parse_args([])
-
-        result = command.run(parsed_args)
-        self.assertEqual(0, result)
-
-        expected_calls = [
-            mock.call(
-                mock.ANY,
-                [
-                    utils.get_data_files_path("ansible", "swift-rings.yml"),
-                ],
-            ),
-        ]
-        self.assertListEqual(expected_calls, mock_run.call_args_list)
-
-    @mock.patch.object(commands.KayobeAnsibleMixin,
-                       "run_kayobe_playbooks")
     def test_baremetal_compute_register(self, mock_run):
         command = commands.BaremetalComputeRegister(TestApp(), [])
         parser = command.get_parser("test")

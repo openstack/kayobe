@@ -554,8 +554,6 @@ defined for a host, it is ignored.
          - "kolla_api_interface"
          - "kolla_storage_interface"
          - "kolla_cluster_interface"
-         - "kolla_swift_storage_interface"
-         - "kolla_swift_replication_interface"
          - "kolla_provision_interface"
          - "kolla_inspector_dnsmasq_interface"
          - "kolla_dns_interface"
@@ -581,8 +579,6 @@ defined for a host, it is ignored.
          kolla_api_interface: "api_interface"
          kolla_storage_interface: "storage_interface"
          kolla_cluster_interface: "cluster_interface"
-         kolla_swift_storage_interface: "swift_storage_interface"
-         kolla_swift_replication_interface: "swift_replication_interface"
          kolla_provision_interface: "provision_interface"
          kolla_inspector_dnsmasq_interface: "ironic_dnsmasq_interface"
          kolla_dns_interface: "dns_interface"
@@ -741,7 +737,7 @@ A common task is enabling a new OpenStack service. This may be done via the
    :caption: ``$KAYOBE_CONFIG_PATH/kolla.yml``
 
    ---
-   kolla_enable_swift: true
+   kolla_enable_barbican: true
 
 Note that in some cases additional configuration may be required to
 successfully deploy a service - check the :kolla-ansible-doc:`Kolla Ansible
@@ -828,7 +824,6 @@ which files are supported.
    ``placement.conf``              Placement configuration.
    ``placement/*``                 Extended Placement configuration.
    ``prometheus/*``                Prometheus configuration.
-   ``swift/*``                     Extended swift configuration.
    ``watcher.conf``                Watcher configuration.
    ``watcher/*``                   Extended Watcher configuration.
    =============================== =======================================================

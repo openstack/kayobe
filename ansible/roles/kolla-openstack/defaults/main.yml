@@ -146,8 +146,6 @@ kolla_openstack_custom_config_include_globs_default:
     glob: placement/**
   - enabled: '{{ kolla_enable_prometheus | bool }}'
     glob: prometheus/**
-  - enabled: '{{ kolla_enable_swift | bool }}'
-    glob: swift/**
   - enabled: '{{ kolla_enable_watcher | bool }}'
     glob: watcher.conf
   - enabled: '{{ kolla_enable_watcher | bool }}'
@@ -213,12 +211,6 @@ kolla_openstack_custom_config_rules_default:
     strategy: copy
     priority: 1000
   - glob: ironic/ironic-agent.kernel
-    strategy: copy
-    priority: 1000
-  - glob: swift/*.builder
-    strategy: copy
-    priority: 1000
-  - glob: swift/*.ring.gz
     strategy: copy
     priority: 1000
   - glob: '**/*.pem'
@@ -608,13 +600,6 @@ kolla_inspector_ipa_ramdisk_path:
 # kolla_inspector_ipa_ramdisk_path is set.
 kolla_inspector_ipa_host:
 
-# Whether to enable the Swift introspection data store.
-kolla_inspector_enable_swift:
-
-# Dict of authentication parameters for accessing the Swift introspection data
-# store.
-kolla_inspector_swift_auth: {}
-
 # Deprecated:
 # Free form extra configuration to append to ironic-inspector.conf.
 kolla_extra_inspector:
@@ -793,12 +778,6 @@ kolla_extra_placement:
 
 # Whether to enable Prometheus.
 kolla_enable_prometheus: false
-
-###############################################################################
-# Swift configuration.
-
-# Whether to enable swift.
-kolla_enable_swift: false
 
 ###############################################################################
 # Watcher configuration.

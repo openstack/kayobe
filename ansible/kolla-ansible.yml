@@ -204,14 +204,6 @@
             description: "Cluster network"
             network: "{{ storage_mgmt_net_name }}"
             required: False
-          - var_name: "kolla_swift_storage_interface"
-            description: "Swift storage network"
-            network: "{{ swift_storage_net_name }}"
-            required: False
-          - var_name: "kolla_swift_replication_interface"
-            description: "Swift storage replication network"
-            network: "{{ swift_storage_replication_net_name }}"
-            required: False
           - var_name: "kolla_provision_interface"
             description: "Bare metal provisioning network"
             network: "{{ provision_wl_net_name }}"

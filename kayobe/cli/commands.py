@@ -2225,15 +2225,6 @@ class OvercloudPostConfigure(KayobeAnsibleMixin, VaultMixin, Command):
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
 
-class OvercloudSwiftRingsGenerate(KayobeAnsibleMixin, VaultMixin, Command):
-    """Generate Swift rings."""
-
-    def take_action(self, parsed_args):
-        self.app.LOG.debug("Generating Swift rings")
-        playbooks = _build_playbook_list("swift-rings")
-        self.run_kayobe_playbooks(parsed_args, playbooks)
-
-
 class NetworkConnectivityCheck(KayobeAnsibleMixin, VaultMixin, Command):
     """Check network connectivity between hosts in the control plane.
 

@@ -243,7 +243,6 @@ kolla_openstack_logging_debug:
 #kolla_enable_neutron_agent_ha:
 #kolla_enable_neutron_vpnaas:
 #kolla_enable_prometheus:
-#kolla_enable_swift:
 #kolla_enable_watcher:
 
 #######################

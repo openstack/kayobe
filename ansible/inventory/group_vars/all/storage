@@ -13,11 +13,7 @@ storage_bootstrap_user: "{{ 'cloud-user' if os_distribution == 'centos' else os_
 # List of networks to which storage nodes are attached.
 storage_network_interfaces: >
   {{ (storage_default_network_interfaces +
-      storage_extra_network_interfaces +
-      ([swift_storage_net_name]
-       if storage_needs_swift_network else []) +
-      ([swift_storage_replication_net_name]
-       if storage_needs_swift_replication_network else [])) | select | unique | list }}
+      storage_extra_network_interfaces) | select | unique | list }}
 
 # List of default networks to which storage nodes are attached.
 storage_default_network_interfaces: >
@@ -28,15 +24,6 @@ storage_default_network_interfaces: >
 
 # List of extra networks to which storage nodes are attached.
 storage_extra_network_interfaces: []
-
-# Whether this host requires access to Swift networks.
-storage_needs_swift_network: >-
-  {{ kolla_enable_swift | bool and
-     inventory_hostname in query('inventory_hostnames', swift_hosts) }}
-
-storage_needs_swift_replication_network: >-
-  {{ kolla_enable_swift | bool and
-     inventory_hostname in query('inventory_hostnames', swift_hosts) }}
 
 ###############################################################################
 # Storage node BIOS configuration.

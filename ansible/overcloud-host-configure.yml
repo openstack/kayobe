@@ -31,6 +31,5 @@
 - import_playbook: "kolla-target-venv.yml"
 - import_playbook: "container-engine.yml"
 - import_playbook: "apparmor-libvirt.yml"
-- import_playbook: "swift-block-devices.yml"
 - import_playbook: "compute-libvirt-host.yml"
 - import_playbook: "vgpu.yml"

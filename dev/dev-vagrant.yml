@@ -17,9 +17,6 @@ kayobe_ansible_user: vagrant
 # Set an interface name for LLDP discovery.
 inspector_lldp_switch_port_interface_default: eth0
 
-# Disable swift.
-kolla_enable_swift: False
-
 # Map all networks to the all-in-one network.
 oob_oc_net_name: aio
 provision_oc_net_name: aio

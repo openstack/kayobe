@@ -46,8 +46,7 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
      'masakari',
      'neutron',
      'nova',
-     'prometheus',
-     'swift'])
+     'prometheus'])
 def test_service_config_directory_absent(host, path):
     path = os.path.join('/etc/kolla/config', path)
     utils.test_path_absent(host, path)
