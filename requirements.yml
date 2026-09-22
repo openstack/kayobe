@@ -3,6 +3,8 @@ collections:
   - name: https://opendev.org/openstack/ansible-collection-kolla
     type: git
     version: stable/2026.1
+  - name: cisco.nxos
+    version: 13.0.0
   - name: community.docker
     version: 5.2.0
   - name: community.network
