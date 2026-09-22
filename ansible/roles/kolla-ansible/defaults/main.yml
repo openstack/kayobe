@@ -39,6 +39,17 @@ kolla_ansible_core_requirements_yml: "{{ kolla_ansible_venv }}/share/kolla-ansib
 # If None, custom collections are not installed.
 kolla_ansible_custom_requirements_paths:
 
+# Path to the Ansible configuration file used when installing Ansible
+# collections for Kolla Ansible. Kayobe supports a Kolla Ansible-specific
+# configuration file at $KAYOBE_CONFIG_PATH/kolla/ansible.cfg, falling back
+# to $KAYOBE_CONFIG_PATH/ansible.cfg. If neither exists, the value of the
+# ANSIBLE_CONFIG environment variable is used.
+kolla_ansible_ansible_config: >-
+  {%- set config_path = kayobe_config_path | default('/etc/kayobe') -%}
+  {%- set kolla_config = config_path ~ '/kolla/ansible.cfg' -%}
+  {%- set kayobe_config = config_path ~ '/ansible.cfg' -%}
+  {{ kolla_config if kolla_config is file else (kayobe_config if kayobe_config is file else lookup('env', 'ANSIBLE_CONFIG')) }}
+
 # Virtualenv directory where Kolla-ansible's ansible modules will execute
 # remotely on the target nodes. If None, no virtualenv will be used.
 kolla_ansible_target_venv:

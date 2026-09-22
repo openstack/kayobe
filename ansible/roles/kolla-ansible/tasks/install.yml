@@ -128,6 +128,11 @@
     ANSIBLE_COLLECTIONS_SCAN_SYS_PATH: "False"
     # NOTE(wszumski): Don't use path configured for kayobe
     ANSIBLE_COLLECTIONS_PATH: ''
+    # NOTE(wszumski): Set the Ansible configuration file explicitly. The
+    # ansible-galaxy subprocess does not reliably pick up a custom Galaxy
+    # server list otherwise, since it is run from a different working
+    # directory to the parent ansible-playbook.
+    ANSIBLE_CONFIG: "{{ kolla_ansible_ansible_config }}"
   when: not kolla_ansible_venv_ansible
 
 - name: Ensure Ansible collections are installed
@@ -142,6 +147,9 @@
     ANSIBLE_COLLECTIONS_SCAN_SYS_PATH: "False"
     # NOTE(wszumski): Don't use path configured for kayobe
     ANSIBLE_COLLECTIONS_PATH: ''
+    # NOTE(wszumski): Set the Ansible configuration file explicitly. See the
+    # comment on the core collections task above.
+    ANSIBLE_CONFIG: "{{ kolla_ansible_ansible_config }}"
 
 - name: Check for custom Ansible collections requirements files
   stat:
@@ -165,6 +173,9 @@
     ANSIBLE_COLLECTIONS_SCAN_SYS_PATH: "False"
     # NOTE(wszumski): Don't use path configured for kayobe
     ANSIBLE_COLLECTIONS_PATH: ''
+    # NOTE(wszumski): Set the Ansible configuration file explicitly. See the
+    # comment on the core collections task above.
+    ANSIBLE_CONFIG: "{{ kolla_ansible_ansible_config }}"
   when:
     - kolla_ansible_custom_requirements_paths is not none
     - item.stat.exists
