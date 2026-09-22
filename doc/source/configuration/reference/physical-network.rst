@@ -15,6 +15,7 @@ configure`` command.  See :ref:`physical-network` for details.
 The following switch operating systems are currently supported:
 
 * Arista EOS
+* Cisco NX-OS
 * Cumulus Linux (via `Network Command Line Utility (NCLU)
   <https://docs.nvidia.com/networking-ethernet-software/cumulus-linux-44/System-Configuration/Network-Command-Line-Utility-NCLU/>`__)
 * Cumulus Linux (via `NVIDIA User Experience command line utility (NVUE)
@@ -212,6 +213,44 @@ modules.
 * ``ansible_network_os`` should be ``arista.eos.eos``.
 * ``ansible_become`` should be ``true``.
 * ``ansible_become_method`` should be ``enable``.
+
+Cisco NX-OS
+-----------
+
+Configuration for these devices is applied using the ``cisco-nxos-switch``
+Ansible role in Kayobe. The role configures Cisco NX-OS switches using the
+``cisco.nxos.nxos_config`` Ansible module.
+
+``switch_type`` should be set to ``cisco-nxos``.
+
+``switch_config_save`` may be set to ``true`` to save the running configuration
+to the startup configuration when they differ, including any previously unsaved
+changes.
+
+* ``ansible_host`` is the hostname or IP address.  Optional.
+* ``ansible_user`` is the SSH username.
+* ``ansible_ssh_pass`` is the SSH password, if using password authentication.
+* ``ansible_connection`` should be ``ansible.netcommon.network_cli``.
+* ``ansible_network_os`` should be ``cisco.nxos.nxos``.
+
+The SSH user must have permission to configure the switch.
+
+For example, the following host variables enable LLDP and configure a
+switchport:
+
+.. code-block:: yaml
+
+   switch_type: cisco-nxos
+   ansible_connection: ansible.netcommon.network_cli
+   ansible_network_os: cisco.nxos.nxos
+   switch_config:
+     - "feature lldp"
+   switch_interface_config:
+     Ethernet1/1:
+       description: server-1
+       config:
+         - "switchport"
+         - "switchport mode access"
 
 Cumulus Linux (with NCLU)
 -------------------------

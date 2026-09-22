@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Adds support for configuring Cisco NX-OS switches with
+    ``kayobe physical network configure``. Set ``switch_type`` to
+    ``cisco-nxos`` to use this support.
