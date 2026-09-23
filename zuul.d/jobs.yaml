@@ -12,6 +12,7 @@
       ansible_collection_kolla_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/ansible-collection-kolla'].src_dir }}"
       kayobe_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/kayobe'].src_dir }}"
     irrelevant-files:
+      - ^.*\.md$
       - ^.*\.rst$
       - ^doc/.*
       - ^kayobe/tests/
@@ -32,6 +33,7 @@
     required-projects:
       - name: openstack/requirements
     irrelevant-files:
+      - ^.*\.md$
       - ^.*\.rst$
       - ^doc/.*
       - ^kayobe/tests/
@@ -53,6 +55,7 @@
     vars:
       tox_envlist: molecule
     irrelevant-files:
+      - ^.*\.md$
       - ^.*\.rst$
       - ^doc/.*
       - ^kayobe/tests/
@@ -80,6 +83,7 @@
       - name: openstack/tenks
     irrelevant-files:
       - ^\..+
+      - ^.*\.md$
       - ^.*\.rst$
       - ^doc/.*
       - ^kayobe/tests/
