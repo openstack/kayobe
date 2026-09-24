@@ -46,25 +46,7 @@ Whiteboard (etherpad)
 Contacting the Core Team
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-The list in alphabetical order (on first name):
-
-+-----------------------+---------------+------------------------------------+
-| Name                  | IRC nick      | Email address                      |
-+=======================+===============+====================================+
-| Doug Szumski          | dougsz        | doug@stackhpc.com                  |
-+-----------------------+---------------+------------------------------------+
-| John Garbutt          | johnthetubaguy| john@johngarbutt.com               |
-+-----------------------+---------------+------------------------------------+
-| Kevin Tibi            | ktibi         | kevintibi@hotmail.com              |
-+-----------------------+---------------+------------------------------------+
-| Mark Goddard          | mgoddard      | mark@stackhpc.com                  |
-+-----------------------+---------------+------------------------------------+
-| Pierre Riteau         | priteau       | pierre@stackhpc.com                |
-+-----------------------+---------------+------------------------------------+
-| Will Szumski          | jovial        | will@stackhpc.com                  |
-+-----------------------+---------------+------------------------------------+
-
-The current effective list is also available from Gerrit:
+The current effective list is available from Gerrit:
 https://review.opendev.org/#/admin/groups/1875,members
 
 New Feature Planning
