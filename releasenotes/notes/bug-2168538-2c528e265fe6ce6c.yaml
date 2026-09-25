@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Fixes Dell switch configuration tasks always reporting as ``changed`` when
+    saving switch configuration was enabled. Switch configuration is now saved
+    only when changes have been made.
+    `LP#2168538 <https://bugs.launchpad.net/kayobe/+bug/2168538>`__
