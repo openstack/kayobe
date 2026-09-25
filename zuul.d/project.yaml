@@ -68,23 +68,12 @@
 
     experimental:
       jobs:
-        - kayobe-ansible-control-host-configure-centos10s
-        - kayobe-infra-vm-centos10s
-        - kayobe-infra-vm-centos10s-cloud-image
         - kayobe-infra-vm-rocky10-cloud-image
         - kayobe-infra-vm-ubuntu-noble-cloud-image
-        - kayobe-overcloud-centos10s
-        - kayobe-overcloud-host-configure-centos10s
-        - kayobe-overcloud-tls-centos10s
-        - kayobe-seed-centos10s
-        - kayobe-seed-images-centos10s
         - kayobe-seed-images-rocky10
         - kayobe-seed-images-rocky10-podman
         - kayobe-seed-images-ubuntu-noble
         - kayobe-seed-images-ubuntu-noble-podman
-        - kayobe-seed-vm-centos10s
-        - kayobe-seed-vm-centos10s-cloud-image
-        - kayobe-seed-vm-centos10s-q35
         - kayobe-seed-vm-rocky10-cloud-image
         - kayobe-seed-vm-rocky10-q35
         - kayobe-seed-vm-ubuntu-noble-cloud-image

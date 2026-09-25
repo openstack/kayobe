@@ -15,7 +15,7 @@
         state: present
       when:
         - compute_libvirt_enabled | bool
-        - ansible_facts.distribution in ['CentOS', 'Rocky']
+        - ansible_facts.distribution == 'Rocky'
         - compute_libvirt_ceph_repo_install | bool
       become: true
 

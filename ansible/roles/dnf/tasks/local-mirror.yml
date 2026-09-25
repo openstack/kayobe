@@ -1,5 +1,5 @@
 ---
-- name: Copy Rocky/CentOS repo templates
+- name: Copy Rocky Linux repo templates
   vars:
     repo_file_prefix: "{{ ansible_facts.distribution | lower }}"
   template:

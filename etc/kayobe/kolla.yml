@@ -70,8 +70,8 @@
 # Default is "{{ ansible_facts.architecture }}"
 #kolla_base_arch:
 
-# Kolla base container image distribution. Options are "centos", "debian",
-# "rocky", "ubuntu". Default is {{ os_distribution }}.
+# Kolla base container image distribution. Options are "debian", "rocky",
+# "ubuntu". Default is {{ os_distribution }}.
 #kolla_base_distro:
 
 # Kolla base container image distribution version default map.

@@ -76,10 +76,7 @@ configure how this image is built.  Consult the
 information on building disk images.
 
 The default configuration builds a whole disk (partitioned) image using the
-selected :ref:`OS distribution <os-distribution>` with serial console enabled,
-and SELinux disabled if CentOS Stream is used. Rocky Linux 10 users should use
-the default method of building images with
-:ref:`Diskimage builder directly <overcloud-dib>`.
+selected :ref:`OS distribution <os-distribution>` with serial console enabled.
 
 ``kolla_bifrost_dib_os_element``
     DIB base OS element. Default is ``{{ os_distribution }}``.

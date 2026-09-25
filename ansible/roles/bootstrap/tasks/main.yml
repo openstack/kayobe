@@ -16,7 +16,7 @@
     key: "{{ lookup('file', bootstrap_ssh_private_key_path ~ '.pub') }}"
 
 # NOTE(priteau): Exclude comments from ssh-keyscan output because they break
-# known_hosts on centos/rocky 10.
+# known_hosts on Rocky Linux 10.
 - name: Scan for SSH keys
   shell: ssh-keyscan {{ item }} | grep -v '^#'
   with_items:

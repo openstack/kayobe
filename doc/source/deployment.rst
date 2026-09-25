@@ -155,10 +155,10 @@ VM Provisioning
    bare metal host or a VM provisioned outside of Kayobe, this step may be
    skipped.  Ensure that the Ansible inventory contains a host for the seed.
 
-The seed hypervisor should have CentOS or Rocky or Ubuntu with ``libvirt``
-installed. It should have ``libvirt`` networks configured for all networks
-that the seed VM needs access to and a ``libvirt`` storage pool available
-for the seed VM's volumes.  To provision the seed VM::
+The seed hypervisor should have Rocky Linux or Ubuntu with ``libvirt``
+installed. It should have ``libvirt`` networks configured for all networks that
+the seed VM needs access to and a ``libvirt`` storage pool available for the
+seed VM's volumes. To provision the seed VM::
 
     (kayobe) $ kayobe seed vm provision
 
@@ -354,12 +354,11 @@ VM Provisioning
 
 The hypervisor used to host a VM is controlled via the ``infra_vm_hypervisor``
 variable. It defaults to use the seed hypervisor. All hypervisors should have
-CentOS or Ubuntu with ``libvirt`` installed. It should have ``libvirt`` networks
-configured for all networks that the VM needs access to and a ``libvirt``
-storage pool available for the VM's volumes. The steps needed for for the
-:ref:`seed<deployment-seed-host-configure>` and the
-:ref:`seed hypervisor<deployment-seed-hypervisor-host-configure>` can be found
-above.
+Rocky Linux or Ubuntu with ``libvirt`` installed. It should have ``libvirt``
+networks configured for all networks that the VM needs access to and a
+``libvirt`` storage pool available for the VM's volumes. The steps needed for
+the :ref:`seed<deployment-seed-host-configure>` and the :ref:`seed
+hypervisor<deployment-seed-hypervisor-host-configure>` can be found above.
 
 To provision the infra VMs::
 

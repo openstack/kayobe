@@ -127,7 +127,7 @@ kolla_overcloud_inventory_kolla_top_level_groups: []
 ###############################################################################
 # Kolla-ansible global configuration options.
 
-# Valid options are [ centos, debian, rocky, ubuntu ]
+# Valid options are [ debian, rocky, ubuntu ]
 kolla_base_distro:
 
 # Kolla base container image distribution version.

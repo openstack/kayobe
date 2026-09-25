@@ -10,20 +10,17 @@ for a list of supported OS distributions. The same OS distribution should be
 used throughout the system.
 
 The ``os_distribution`` variable in ``etc/kayobe/globals.yml`` can be used to
-set the OS distribution to use.  It may be set to either ``centos`` or
-or ``rocky`` or ``ubuntu``, and defaults to ``rocky``.
+set the OS distribution to use.  It may be set to either ``rocky`` or
+``ubuntu``, and defaults to ``rocky``.
 
 The ``os_release`` variable in ``etc/kayobe/globals.yml`` can be used to set
-the release of the OS. When ``os_distribution`` is set to ``centos`` it may be
-set to ``10-stream``, and this is its default value. When ``os_distribution``
-is set to ``rocky`` it may be set to ``10``, and this is its default value.
-When ``os_distribution`` is set to ``ubuntu`` it may be set to ``noble``, and
-this is its default value.
+the release of the OS. When ``os_distribution`` is set to ``rocky`` it may be
+set to ``10``, and this is its default value. When ``os_distribution`` is set
+to ``ubuntu`` it may be set to ``noble``, and this is its default value.
 
 The ``os_family_map`` variable in ``etc/kayobe/globals.yml`` maps
 ``os_distribution`` values to OS families. The default mapping is:
 
-* ``centos`` -> ``RedHat``
 * ``rocky`` -> ``RedHat``
 * ``ubuntu`` -> ``Debian``
 

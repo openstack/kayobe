@@ -419,7 +419,7 @@ def _validate_rules(rules):
         if not isinstance(rule, str) and not isinstance(rule, dict):
             raise errors.AnsibleFilterError(
                 "Routing policy rules must be defined in string or dict "
-                "format for CentOS Stream and Rocky Linux")
+                "format for Rocky Linux")
 
 
 @jinja2.pass_context

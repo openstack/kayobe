@@ -86,7 +86,7 @@ supported:
     The required format depends on the network engine:
 
     * ``nmstate`` engine: each rule must be a dict.
-    * ``default`` engine on CentOS/Rocky: each rule may be a string or dict.
+    * ``default`` engine on Rocky Linux: each rule may be a string or dict.
     * ``default`` engine on Ubuntu (systemd-networkd): each rule must be a dict.
 
     Dict rules support optional keys ``from``, ``to``, ``priority``, and
@@ -452,7 +452,7 @@ for a network to a list of rules. Two formats are available (dict and string),
 but support depends on the network engine:
 
 * ``nmstate`` engine: dict format only.
-* ``default`` engine on CentOS Stream/Rocky Linux: dict and string format.
+* ``default`` engine on Rocky Linux: dict and string format.
 * ``default`` engine on Ubuntu (systemd-networkd): dict format only.
 
 Dict format rules
@@ -475,7 +475,7 @@ handle traffic from the subnet ``10.1.0.0/24`` using the routing table
 
 These rules will be configured on all hosts to which the network is mapped.
 
-String format rules (default engine on CentOS Stream/Rocky Linux only)
+String format rules (default engine on Rocky Linux only)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 The string format of a rule is the string which would be appended to ``ip rule

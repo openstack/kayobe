@@ -42,18 +42,14 @@ infra_vm_root_format: qcow2
 
 # Base image for the infra VM root volume. Default is
 # "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
-# when os_distribution is "ubuntu",
+# when os_distribution is "ubuntu", or
 # "https://dl.rockylinux.org/pub/rocky/10/images/x86_64/Rocky-10-GenericCloud-Base.latest.x86_64.qcow2"
-# when os_distribution is "rocky", or
-# "https://cloud.centos.org/centos/10-stream/x86_64/images/CentOS-Stream-GenericCloud-x86_64-10-latest.x86_64.qcow2"
 # otherwise.
 infra_vm_root_image: >-
   {%- if os_distribution == 'ubuntu' %}
   https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img
-  {%- elif os_distribution == 'rocky' %}
-  https://dl.rockylinux.org/pub/rocky/10/images/x86_64/Rocky-10-GenericCloud-Base.latest.x86_64.qcow2
   {%- else -%}
-  https://cloud.centos.org/centos/10-stream/x86_64/images/CentOS-Stream-GenericCloud-x86_64-10-latest.x86_64.qcow2
+  https://dl.rockylinux.org/pub/rocky/10/images/x86_64/Rocky-10-GenericCloud-Base.latest.x86_64.qcow2
   {%- endif %}
 
 # Capacity of the infra VM data volume.
@@ -73,7 +69,7 @@ infra_vm_hypervisor: "{{ groups['seed-hypervisor'] | first }}"
 infra_vm_wait_connection_ssh_extra_args: '-o StrictHostKeyChecking=no'
 
 # OS family. Needed for config drive generation.
-infra_vm_os_family: "{{ 'RedHat' if os_distribution in ['centos', 'rocky'] else 'Debian' }}"
+infra_vm_os_family: "{{ 'RedHat' if os_distribution == 'rocky' else 'Debian' }}"
 
 # Boot firmware. Possible values are 'bios' or 'efi'. Default is 'efi'.
 infra_vm_boot_firmware: "efi"
@@ -85,9 +81,8 @@ infra_vm_machine:
 # Infrastructure VM node configuration.
 
 # User with which to access the infrastructure vm via SSH during bootstrap, in
-# order to setup the Kayobe user account. Default is 'cloud-user' if
-# os_distribution is set to centos, otherwise {{ os_distribution }}.
-infra_vm_bootstrap_user: "{{ 'cloud-user' if os_distribution == 'centos' else os_distribution }}"
+# order to setup the Kayobe user account. Default is {{ os_distribution }}.
+infra_vm_bootstrap_user: "{{ os_distribution }}"
 
 ###############################################################################
 # Infrastructure VM network interface configuration.

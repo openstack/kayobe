@@ -56,14 +56,13 @@ kolla_node_custom_config_path: "{{ kolla_config_path }}/config"
 # Default is "{{ ansible_facts.architecture }}"
 kolla_base_arch: "{{ ansible_facts.architecture }}"
 
-# Kolla base container image distribution. Options are "centos", "debian",
-# "rocky", "ubuntu". Default is {{ os_distribution }}.
+# Kolla base container image distribution. Options are "debian", "rocky",
+# "ubuntu". Default is {{ os_distribution }}.
 kolla_base_distro: "{{ os_distribution }}"
 
 # Kolla base container image distribution version default map.
 # Defines default versions for each distribution.
 kolla_base_distro_version_default_map: {
-  "centos": "stream10",
   "debian": "bookworm",
   "rocky": "10",
   "ubuntu": "noble",

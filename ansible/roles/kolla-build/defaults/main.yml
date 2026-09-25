@@ -15,7 +15,7 @@ kolla_build_config_paths: "{{ kolla_build_config_paths_default + kolla_build_con
 # Valid options are [ x86_64, aarch64 ]
 kolla_base_arch:
 
-# Valid options are [ centos, debian, rocky, ubuntu ]
+# Valid options are [ debian, rocky, ubuntu ]
 kolla_base_distro:
 
 # Kolla base container image tag.

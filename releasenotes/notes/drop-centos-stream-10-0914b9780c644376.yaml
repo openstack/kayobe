@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    Drops support for CentOS Stream 10. Rocky Linux 10 can be used in its place.

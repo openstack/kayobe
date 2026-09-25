@@ -11,7 +11,7 @@
 # Valid options are [ COPY_ONCE, COPY_ALWAYS ]
 config_strategy: "COPY_ALWAYS"
 
-# Valid options are ['centos', 'debian', 'rocky', 'ubuntu']
+# Valid options are ['debian', 'rocky', 'ubuntu']
 kolla_base_distro: "{{ kolla_base_distro }}"
 
 kolla_base_distro_version: "{{ kolla_base_distro_version }}"

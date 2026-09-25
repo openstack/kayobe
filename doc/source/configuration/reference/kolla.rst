@@ -76,8 +76,8 @@ affect :ref:`Kolla Ansible configuration <configuration-kolla-ansible-global>`.
     Kolla base container image architecture. Options are ``x86_64``,
     ``aarch64``. Default is ``{{ ansible_facts.architecture }}``.
 ``kolla_base_distro``
-    Kolla base container image distribution. Options are ``centos``,
-    ``debian``, ``rocky`` or ``ubuntu``. Default is ``{{ os_distribution }}``.
+    Kolla base container image distribution. Options are ``debian``, ``rocky``
+    or ``ubuntu``. Default is ``{{ os_distribution }}``.
 ``kolla_base_distro_version``
     Kolla base container image distribution version. Default is dependent on
     ``kolla_base_distro``.
