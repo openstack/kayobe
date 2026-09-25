@@ -14,6 +14,7 @@
 # under the License.
 
 import importlib
+import json
 
 from ansible.module_utils.basic import AnsibleModule
 
@@ -25,7 +26,8 @@ author: "StackHPC"
 short_description: Apply network state using nmstate
 description:
     - "This module allows applying a network state using nmstate library.
-       Provides idempotency by comparing desired and current states."
+       Provides idempotency by comparing desired and current states.
+       Supports check and diff modes."
 options:
   state:
     description:
@@ -39,7 +41,7 @@ options:
     default: False
     type: bool
 requirements:
-    - libnmstate
+    - libnmstate (nmstate 2.x)
 """
 
 EXAMPLES = """
@@ -66,7 +68,15 @@ changed:
 state:
     description: Current network state after applying desired state
     type: dict
-    returned: always
+    returned: when not in check mode
+differences:
+    description: Computed differences between the current and desired states
+    type: dict
+    returned: when changed
+diff:
+    description: Prepared diff of the computed differences
+    type: dict
+    returned: when changed
 previous_state:
     description: Network state before applying (when debug=true)
     type: dict
@@ -78,6 +88,14 @@ desired_state:
 """
 
 
+def _is_empty(value):
+    if isinstance(value, dict):
+        return all(_is_empty(item) for item in value.values())
+    if isinstance(value, (list, tuple)):
+        return all(_is_empty(item) for item in value)
+    return value is None
+
+
 def run_module():
     argument_spec = dict(
         state=dict(required=True, type="dict"),
@@ -86,7 +104,7 @@ def run_module():
 
     module = AnsibleModule(
         argument_spec=argument_spec,
-        supports_check_mode=False,
+        supports_check_mode=True,
     )
 
     try:
@@ -101,26 +119,54 @@ def run_module():
             ) % repr(e)
         )
 
-    previous_state = libnmstate.show()
+    if not hasattr(libnmstate, "generate_differences"):
+        module.fail_json(
+            msg=(
+                "The installed libnmstate does not provide "
+                "generate_differences(). The nmstate_apply module requires "
+                "nmstate 2.x (for example python3-libnmstate 2.x)."
+            )
+        )
+
+    current_state = libnmstate.show()
     desired_state = module.params["state"]
     debug = module.params["debug"]
 
-    result = {"changed": False}
+    differences = libnmstate.generate_differences(
+        desired_state, current_state)
+    changed = not _is_empty(differences)
 
+    result = {"changed": changed}
+    if changed:
+        # "prepared" is a special Ansible diff key whose content is
+        # printed as-is, keeping --diff output to the changed properties.
+        if module._diff:
+            result["diff"] = {
+                "prepared": json.dumps(
+                    differences, indent=1, sort_keys=True),
+            }
+        result["differences"] = differences
+
+    if debug:
+        result["previous_state"] = current_state
+        result["desired_state"] = desired_state
+
+    if module.check_mode:
+        module.exit_json(**result)
+        return
+
+    # generate_differences() compares against the runtime state, not
+    # the config persisted by NetworkManager, so apply unconditionally
+    # to re-persist the config and prevent drift after a reboot.
     try:
         libnmstate.apply(desired_state)
     except Exception as e:
-        module.fail_json(msg="Failed to apply nmstate state: %s" % repr(e))
+        # A failed apply must not claim changed: nmstate verifies the
+        # applied state and rolls back on failure.
+        module.fail_json(msg="Failed to apply nmstate state: %s" % repr(e),
+                         differences=differences)
 
-    current_state = libnmstate.show()
-
-    if current_state != previous_state:
-        result["changed"] = True
-        if debug:
-            result["previous_state"] = previous_state
-            result["desired_state"] = desired_state
-
-    result["state"] = current_state
+    result["state"] = libnmstate.show()
 
     module.exit_json(**result)
 
