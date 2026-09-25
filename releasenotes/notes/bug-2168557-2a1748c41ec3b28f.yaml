@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes regression causing DellOS10 switch config tasks to always change
+    description strings if there are not whitespace characters.
+    `LP#2168557 <https://bugs.launchpad.net/kayobe/+bug/2168557>`__
