@@ -63,6 +63,14 @@ function config_defaults {
     # Whether to perform overcloud post configuration.
     export KAYOBE_OVERCLOUD_POST_CONFIGURE=${KAYOBE_OVERCLOUD_POST_CONFIGURE:-1}
 
+    # Whether to run overcloud host configure a second time, as an
+    # idempotency test.
+    export KAYOBE_OVERCLOUD_HOST_CONFIGURE_IDEMPOTENCY_TEST=${KAYOBE_OVERCLOUD_HOST_CONFIGURE_IDEMPOTENCY_TEST:-0}
+
+    # Whether to run overcloud host configure again with --check --diff
+    # after the initial host configure, as a diff check test.
+    export KAYOBE_OVERCLOUD_HOST_CONFIGURE_DIFF_CHECK_TEST=${KAYOBE_OVERCLOUD_HOST_CONFIGURE_DIFF_CHECK_TEST:-0}
+
     # Whether to use Kolla test images.
     export KAYOBE_USE_KOLLA_TEST_IMAGES=${KAYOBE_USE_KOLLA_TEST_IMAGES:-1}
 
@@ -498,6 +506,16 @@ function overcloud_deploy {
     if is_compute_libvirt_enabled; then
         echo "Configuring libvirt daemon"
         run_kayobe overcloud host configure --tags libvirt-host
+    fi
+
+    if [[ ${KAYOBE_OVERCLOUD_HOST_CONFIGURE_IDEMPOTENCY_TEST} = 1 ]]; then
+        echo "Configuring the controller host again as an idempotency test"
+        run_kayobe overcloud host configure
+    fi
+
+    if [[ ${KAYOBE_OVERCLOUD_HOST_CONFIGURE_DIFF_CHECK_TEST} = 1 ]]; then
+        echo "Configuring the controller host again with --check --diff as a diff check test"
+        run_kayobe overcloud host configure --check --diff
     fi
 
     # FIXME(mgoddard): Perform host upgrade workarounds to ensure hostname

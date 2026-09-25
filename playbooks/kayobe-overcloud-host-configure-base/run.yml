@@ -6,6 +6,8 @@
     KAYOBE_OVERCLOUD_CONTAINER_IMAGE_PULL: 0
     KAYOBE_OVERCLOUD_SERVICE_DEPLOY: 0
     KAYOBE_OVERCLOUD_POST_CONFIGURE: 0
+    KAYOBE_OVERCLOUD_HOST_CONFIGURE_IDEMPOTENCY_TEST: 1
+    KAYOBE_OVERCLOUD_HOST_CONFIGURE_DIFF_CHECK_TEST: 1
   tasks:
     - name: Prevent NetworkManager from managing default interface
       command: 'nmcli dev set {{ ansible_facts.default_ipv4.interface }} managed no'
