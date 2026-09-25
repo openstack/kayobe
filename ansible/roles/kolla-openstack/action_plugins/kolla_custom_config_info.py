@@ -34,12 +34,12 @@ class ConfigCollector(object):
                  rules):
         # This variable groups together files in the search paths with
         # the same relative path, for example if the search paths were:
-        # - {{ kayobe_config_env_path }}/
+        # - {{ kayobe_env_config_path }}/
         # - {{ kayobe_config_path }}/
         # - {{ role_path }}/templates/
         # and one of the include_globs matched nova.conf. You'd end up
         # with the following files grouped together:
-        # - {{ kayobe_env_path }}/etc/kolla/nova.conf
+        # - {{ kayobe_env_config_path }}/etc/kolla/nova.conf
         # - {{ kayobe_config_path }}/etc/kolla/nova.conf
         # - {{ role_path }}/templates/etc/kolla/nova.conf
         # The key in the dictionary is the relative path of the file. The
