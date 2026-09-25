@@ -32,4 +32,6 @@
       retries: 60
       delay: 10
       failed_when: sync_check.rc != 0
+      # NOTE(wszumski): Need to explitly skip due to retries checking stdout/rc
+      when: not ansible_check_mode | bool
   when: ntp_force_sync | bool
