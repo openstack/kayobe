@@ -61,6 +61,7 @@
       changed_when: false
       failed_when: false
       register: check_python
+      check_mode: false
 
     - name: Ensure Python is installed
       raw: "(test -e /usr/bin/apt && sudo apt {{ apt_options | select | join(' ') }} update && sudo apt install {{ apt_options | select | join(' ') }} python3-minimal) || (test -e /usr/bin/dnf && sudo dnf {{ dnf_options | select | join(' ') }} install python3)"
