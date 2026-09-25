@@ -7,7 +7,7 @@
 {% for interface, config in dell_switch_interface_config.items() %}
 interface {{ interface }}
 {% if config.description is defined %}
-description {{ config.description }}
+description "{{ config.description }}"
 {% endif %}
 {% for line in config.config %}
 {{ line }}
