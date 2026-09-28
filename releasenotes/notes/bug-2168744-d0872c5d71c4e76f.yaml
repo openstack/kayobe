@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fixes Dell OS9 switch config.
+    `LP#2168744 <https://bugs.launchpad.net/kayobe/+bug/2168744>`__
