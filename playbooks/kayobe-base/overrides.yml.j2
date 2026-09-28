@@ -1,3 +1,7 @@
 ---
 # Test support for not escalating privileges
 kayobe_control_host_become: "{{ kayobe_control_host_become }}"
+
+# Disable external network connectivity check in CI. We see random failures
+# pinging 8.8.8.8.
+nc_skip_external_net: true
