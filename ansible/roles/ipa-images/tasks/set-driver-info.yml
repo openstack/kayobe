@@ -64,6 +64,6 @@
     --driver-info deploy_ramdisk={{ ipa_images_ramdisk_uuid }}
   with_items: "{{ ipa_images_ironic_nodes }}"
   when:
-    item["driver_info"].deploy_kernel != ipa_images_kernel_uuid or
-    item["driver_info"].deploy_ramdisk != ipa_images_ramdisk_uuid
+    item["driver_info"].deploy_kernel | default("UNSET") != ipa_images_kernel_uuid or
+    item["driver_info"].deploy_ramdisk | default("UNSET") != ipa_images_ramdisk_uuid
   environment: "{{ ipa_images_ironic_openstack_auth_env }}"

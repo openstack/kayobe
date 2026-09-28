@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes deployment image updates failing when an Ironic node is missing
+    deployment image IDs. `LP#2165045
+    <https://bugs.launchpad.net/kayobe/+bug/2165045>`__
