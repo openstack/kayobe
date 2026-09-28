@@ -10,7 +10,7 @@
 {% if 'vlan' in interface %}
 interface {{ interface }}
 {% if config.description is defined %}
- description "{{ config.description }}"
+ description {{ ('"' ~ config.description ~ '"') if ' ' in config.description else config.description }}
 {% endif %}
 {% for line in config.config %}
  {{ line }}
@@ -22,7 +22,7 @@ interface {{ interface }}
 {% if 'vlan' not in interface %}
 interface {{ interface }}
 {% if config.description is defined %}
- description "{{ config.description }}"
+ description {{ ('"' ~ config.description ~ '"') if ' ' in config.description else config.description }}
 {% endif %}
 {% for line in config.config %}
  {{ line }}
