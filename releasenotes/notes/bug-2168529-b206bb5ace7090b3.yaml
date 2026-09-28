@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Fixes Dell OS10 switch config. Also makes sure that VLAN interfaces are
+    defined first as others might depend on them.
+
+    `LP#2168529 <https://bugs.launchpad.net/kayobe/+bug/2168529>`__
