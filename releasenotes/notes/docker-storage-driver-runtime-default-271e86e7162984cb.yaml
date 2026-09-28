@@ -1,0 +1,13 @@
+---
+upgrade:
+  - |
+    ``docker_storage_driver`` is now unset by default, which defers to the
+    Docker runtime default storage backend.
+
+    On fresh installations of Docker Engine 29.0 and later, Docker uses the
+    containerd image store by default. On existing installations upgraded from
+    earlier Docker versions, Docker continues using the legacy graph drivers
+    (including ``overlay2``) until the containerd image store is explicitly
+    enabled. See the Docker `containerd image store
+    <https://docs.docker.com/engine/storage/containerd/>`__ documentation for
+    details.
