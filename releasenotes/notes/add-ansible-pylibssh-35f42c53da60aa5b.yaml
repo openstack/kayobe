@@ -1,0 +1,13 @@
+---
+features:
+  - |
+    Adds ``ansible-pylibssh`` to Kayobe's Python requirements. It is used by
+    ``kayobe physical network configure`` for switches using the
+    ``ansible.netcommon.network_cli`` connection, as the ``paramiko``
+    transport for ``network_cli`` is deprecated in ``ansible.netcommon``.
+upgrade:
+  - |
+    Switches using the ``ansible.netcommon.network_cli`` connection now use
+    ``libssh`` rather than ``paramiko``. Set
+    ``ansible_network_cli_ssh_type`` to ``paramiko`` to keep the previous
+    behaviour.
