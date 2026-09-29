@@ -1040,8 +1040,6 @@ function configure_iptables {
     # bridge, breth1.
     sudo iptables -A FORWARD -i breth1 -j ACCEPT || true
 
-    # agent ramdisk gets instance image from swift
-    sudo iptables -I INPUT -d $INTERNAL_VIP -p tcp --dport ${SWIFT_DEFAULT_BIND_PORT:-8080} -j ACCEPT || true
     sudo iptables -I INPUT -d $INTERNAL_VIP -p tcp --dport $GLANCE_SERVICE_PORT -j ACCEPT || true
 
     sudo iptables -I INPUT -d $HOST_IP -p tcp --dport $IRONIC_HTTP_PORT -j ACCEPT || true

@@ -244,8 +244,6 @@ overcloud_container_image_regex_map:
     enabled: "{{ kolla_enable_redis | bool }}"
   - regex: ^skyline
     enabled: "{{ kolla_enable_skyline | bool }}"
-  - regex: ^swift
-    enabled: "{{ kolla_enable_swift | bool }}"
   - regex: ^tacker
     enabled: "{{ kolla_enable_tacker | bool }}"
   - regex: ^tgtd
@@ -405,8 +403,6 @@ kolla_overcloud_inventory_pass_through_host_vars_default:
   - "kolla_api_interface"
   - "kolla_storage_interface"
   - "kolla_cluster_interface"
-  - "kolla_swift_storage_interface"
-  - "kolla_swift_replication_interface"
   - "kolla_provision_interface"
   - "kolla_inspector_dnsmasq_interface"
   - "kolla_dns_interface"
@@ -437,8 +433,6 @@ kolla_overcloud_inventory_pass_through_host_vars_map_default:
   kolla_api_interface: "api_interface"
   kolla_storage_interface: "storage_interface"
   kolla_cluster_interface: "cluster_interface"
-  kolla_swift_storage_interface: "swift_storage_interface"
-  kolla_swift_replication_interface: "swift_replication_interface"
   kolla_provision_interface: "provision_interface"
   kolla_inspector_dnsmasq_interface: "ironic_dnsmasq_interface"
   kolla_dns_interface: "dns_interface"
@@ -580,7 +574,6 @@ kolla_enable_prometheus: "no"
 kolla_enable_qdrouterd: "no"
 kolla_enable_redis: "no"
 kolla_enable_skyline: "no"
-kolla_enable_swift: "no"
 kolla_enable_tacker: "no"
 kolla_enable_trove: "no"
 kolla_enable_valkey: "no"

@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    Support for deploying Swift has been removed, following its removal from
+    Kolla Ansible. This includes the ``kayobe overcloud swift rings generate``
+    command, the ``swift-rings`` and ``swift-block-devices`` roles, and the
+    associated ``swift`` inventory and configuration variables.

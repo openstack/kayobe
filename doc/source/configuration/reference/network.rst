@@ -914,12 +914,6 @@ Storage network (``storage_net_name``)
     Name of the network used to carry storage data traffic.
 Storage management network (``storage_mgmt_net_name``)
     Name of the network used to carry storage management traffic.
-Swift storage network (``swift_storage_net_name``)
-    Name of the network used to carry Swift storage data traffic.
-    Defaults to the storage network (``storage_net_name``).
-Swift storage replication network (``swift_storage_replication_net_name``)
-    Name of the network used to carry storage management traffic.
-    Defaults to the storage management network (``storage_mgmt_net_name``)
 Workload inspection network (``inspection_net_name``)
     Name of the network used to perform hardware introspection on the bare
     metal workload hosts.
@@ -956,8 +950,6 @@ To configure network roles in a system with two networks, ``example1`` and
      - example2
    storage_net_name: example2
    storage_mgmt_net_name: example2
-   swift_storage_net_name: example2
-   swift_replication_net_name: example2
    inspection_net_name: example2
    cleaning_net_name: example2
 
@@ -1322,9 +1314,6 @@ By default, the storage hosts are attached to the following networks:
 * internal network
 * storage network
 * storage management network
-
-In addition, if Swift is enabled, they can also be attached to the Swift
-management and replication networks.
 
 Virtualised Compute Hosts
 -------------------------

@@ -20,8 +20,6 @@
         kolla_provision_interface: "eth8"
         kolla_inspector_dnsmasq_interface: "eth9"
         kolla_tunnel_interface: "eth10"
-        kolla_swift_storage_interface: "eth13"
-        kolla_swift_replication_interface: "eth14"
 
     - name: Add a compute host to the inventory
       add_host:
@@ -61,8 +59,6 @@
               - "kolla_api_interface"
               - "kolla_storage_interface"
               - "kolla_cluster_interface"
-              - "kolla_swift_storage_interface"
-              - "kolla_swift_replication_interface"
               - "kolla_provision_interface"
               - "kolla_inspector_dnsmasq_interface"
               - "kolla_dns_interface"
@@ -76,8 +72,6 @@
               kolla_api_interface: "api_interface"
               kolla_storage_interface: "storage_interface"
               kolla_cluster_interface: "cluster_interface"
-              kolla_swift_storage_interface: "swift_storage_interface"
-              kolla_swift_replication_interface: "swift_replication_interface"
               kolla_provision_interface: "provision_interface"
               kolla_inspector_dnsmasq_interface: "ironic_dnsmasq_interface"
               kolla_dns_interface: "dns_interface"
@@ -120,8 +114,6 @@
                 api_interface: "eth2"
                 storage_interface: "eth3"
                 cluster_interface: "eth4"
-                swift_storage_interface: "eth13"
-                swift_replication_interface: "eth14"
                 provision_interface: "eth8"
                 ironic_dnsmasq_interface: "eth9"
                 dns_interface: "eth5"

@@ -726,18 +726,6 @@ rebuilding images, use the ``--force-rebuild`` argument.
    See :ref:`here <configuration-ipa-build>` for information on how to
    configure the IPA image build process.
 
-Building Swift Rings
---------------------
-
-.. note::
-
-   This section can be skipped if Swift is not in use.
-
-Swift uses ring files to control placement of data across a cluster. These
-files can be generated automatically using the following command::
-
-   (kayobe) $ kayobe overcloud swift rings generate
-
 Deploying Containerised Services
 --------------------------------
 
