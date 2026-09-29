@@ -102,15 +102,22 @@ def _get_base_path():
     return os.path.join(os.path.dirname(os.path.realpath(__file__)), "..")
 
 
-def galaxy_role_install(role_file, roles_path, force=False):
-    """Install Ansible roles via Ansible Galaxy."""
+def galaxy_role_install(role_file, roles_path, force=False, env=None):
+    """Install Ansible roles via Ansible Galaxy.
+
+    :param role_file: Path to a file containing role requirements.
+    :param roles_path: Path to a directory in which to install roles.
+    :param force: Whether to force reinstallation of roles.
+    :param env: Optional environment dict to use when invoking
+                ansible-galaxy. If None, the current environment is inherited.
+    """
     cmd = ["ansible-galaxy", "role", "install"]
     cmd += ["--roles-path", roles_path]
     cmd += ["--role-file", role_file]
     if force:
         cmd += ["--force"]
     try:
-        run_command(cmd)
+        run_command(cmd, env=env)
     except subprocess.CalledProcessError as e:
         LOG.error("Failed to install Ansible roles from %s via Ansible "
                   "Galaxy: returncode %d", role_file, e.returncode)
@@ -118,7 +125,17 @@ def galaxy_role_install(role_file, roles_path, force=False):
 
 
 def galaxy_collection_install(requirements_file, collections_path,
-                              force=False):
+                              force=False, env=None):
+    """Install Ansible collections via Ansible Galaxy.
+
+    :param requirements_file: Path to a file containing collection
+                              requirements.
+    :param collections_path: Path to a directory in which to install
+                             collections.
+    :param force: Whether to force reinstallation of collections.
+    :param env: Optional environment dict to use when invoking
+                ansible-galaxy. If None, the current environment is inherited.
+    """
     requirements = read_yaml_file(requirements_file)
     if not isinstance(requirements, dict):
         # Handle legacy role list format, which causes the command to fail.
@@ -131,7 +148,7 @@ def galaxy_collection_install(requirements_file, collections_path,
         # kayobe requirements.yml.
         "ANSIBLE_COLLECTIONS_SCAN_SYS_PATH": "False",
     }
-    env = env_defaults | os.environ
+    env = env_defaults | (env if env is not None else os.environ)
     if force:
         cmd += ["--force"]
     try:

@@ -34,7 +34,18 @@ class TestCase(unittest.TestCase):
         utils.galaxy_role_install("/path/to/role/file", "/path/to/roles")
         mock_run.assert_called_once_with(["ansible-galaxy", "role", "install",
                                           "--roles-path", "/path/to/roles",
-                                          "--role-file", "/path/to/role/file"])
+                                          "--role-file", "/path/to/role/file"],
+                                         env=None)
+
+    @mock.patch.object(utils, "run_command")
+    def test_galaxy_role_install_env(self, mock_run):
+        env = {"ANSIBLE_CONFIG": "/etc/kayobe/ansible.cfg"}
+        utils.galaxy_role_install("/path/to/role/file", "/path/to/roles",
+                                  env=env)
+        mock_run.assert_called_once_with(["ansible-galaxy", "role", "install",
+                                          "--roles-path", "/path/to/roles",
+                                          "--role-file", "/path/to/role/file"],
+                                         env=env)
 
     @mock.patch.object(utils, "run_command")
     def test_galaxy_role_install_failure(self, mock_run):
@@ -56,6 +67,24 @@ class TestCase(unittest.TestCase):
                                           "--requirements-file",
                                           "/path/to/collection/file"],
                                          env=env)
+
+    @mock.patch.object(utils, "run_command")
+    @mock.patch.object(utils, "read_yaml_file")
+    def test_galaxy_collection_install_env(self, mock_read, mock_run):
+        mock_read.return_value = {"collections": []}
+        env = {"ANSIBLE_CONFIG": "/etc/kayobe/ansible.cfg"}
+        utils.galaxy_collection_install("/path/to/collection/file",
+                                        "/path/to/collections", env=env)
+        expected_env = {
+            'ANSIBLE_COLLECTIONS_SCAN_SYS_PATH': 'False',
+            'ANSIBLE_CONFIG': '/etc/kayobe/ansible.cfg',
+        }
+        mock_run.assert_called_once_with(["ansible-galaxy", "collection",
+                                          "install", "--collections-path",
+                                          "/path/to/collections",
+                                          "--requirements-file",
+                                          "/path/to/collection/file"],
+                                         env=expected_env)
 
     @mock.patch.object(utils, "run_command")
     @mock.patch.object(utils, "read_yaml_file")

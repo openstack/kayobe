@@ -1,0 +1,9 @@
+---
+fixes:
+  - |
+    Fixes installation of Ansible roles and collections during ``kayobe
+    control host bootstrap`` to respect a custom ``ansible.cfg`` in the Kayobe
+    configuration path. Previously the ``ansible-galaxy`` commands were run
+    without ``ANSIBLE_CONFIG`` set, so configuration such as a custom Galaxy
+    server list (``server_list``) was ignored and the default public Galaxy
+    server was used instead.
