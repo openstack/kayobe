@@ -1,0 +1,9 @@
+---
+fixes:
+  - |
+    Fixes a bug where ``ansible/overcloud-etc-hosts-fixup.yml``, run as part
+    of ``kayobe overcloud host upgrade``, attempted to run on all overcloud
+    hosts, including those that are not mapped through to the generated
+    kolla-ansible inventory. It is now skipped on hosts that are not mapped
+    through to kolla-ansible.
+    `LP#2167869 <https://bugs.launchpad.net/kayobe/+bug/2167869>`__
