@@ -4,11 +4,17 @@
     description: |
       Tox job that checks Ansible playbook syntax.
     parent: openstack-tox
-    pre-run: playbooks/kayobe-tox-ansible-syntax/pre.yml
+    pre-run:
+      - playbooks/kayobe-tox/pre.yml
+      - playbooks/kayobe-tox-ansible-syntax/pre.yml
     required-projects:
       - name: openstack/ansible-collection-kolla
     vars:
       tox_envlist: ansible-syntax
+      # Use the site's OpenDev Galaxy mirror for role/collection installs.
+      # A pre-run playbook renders ansible-ci.cfg from a template.
+      tox_environment:
+        ANSIBLE_CONFIG: "{{ ansible_env.PWD ~ '/ansible-ci.cfg' }}"
       ansible_collection_kolla_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/ansible-collection-kolla'].src_dir }}"
       kayobe_src_dir: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/kayobe'].src_dir }}"
     irrelevant-files:
@@ -27,9 +33,14 @@
     description: |
       Tox job that runs native Ansible role tests.
     parent: openstack-tox-with-sudo
+    pre-run: playbooks/kayobe-tox/pre.yml
     timeout: 3600
     vars:
       tox_envlist: ansible
+      # Use the site's OpenDev Galaxy mirror for role/collection installs.
+      # A pre-run playbook renders ansible-ci.cfg from a template.
+      tox_environment:
+        ANSIBLE_CONFIG: "{{ ansible_env.PWD ~ '/ansible-ci.cfg' }}"
     required-projects:
       - name: openstack/requirements
     irrelevant-files:
@@ -48,12 +59,18 @@
     description: |
       Tox job that runs molecule-based Ansible role tests.
     parent: openstack-tox-with-sudo
-    pre-run: playbooks/kayobe-tox-molecule/pre.yml
+    pre-run:
+      - playbooks/kayobe-tox/pre.yml
+      - playbooks/kayobe-tox-molecule/pre.yml
     timeout: 3600
     required-projects:
       - openstack/requirements
     vars:
       tox_envlist: molecule
+      # Use the site's OpenDev Galaxy mirror for role/collection installs.
+      # A pre-run playbook renders ansible-ci.cfg from a template.
+      tox_environment:
+        ANSIBLE_CONFIG: "{{ ansible_env.PWD ~ '/ansible-ci.cfg' }}"
     irrelevant-files:
       - ^.*\.md$
       - ^.*\.rst$
