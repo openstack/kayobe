@@ -1,0 +1,15 @@
+---
+- name: Save DellOS6 running-config to startup-config
+  dellemc.os6.os6_config:  # noqa fqcn[canonical]
+    save: true
+  when: dell_switch_save | bool
+
+- name: Save DellOS9 running-config to startup-config
+  dellemc.os9.os9_config:  # noqa fqcn[canonical]
+    save: true
+  when: dell_switch_save | bool
+
+- name: Save DellOS10 running-config to startup-config
+  dellemc.os10.os10_config:  # noqa fqcn[canonical]
+    save: true
+  when: dell_switch_save | bool
