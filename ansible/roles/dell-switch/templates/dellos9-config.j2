@@ -10,14 +10,13 @@
 {% for interface, config in
 dell_switch_interface_config.items() %}
 {% if 'vlan' not in interface %}
- interface {{ interface }}
+interface {{ interface }}
 {% if config.description is defined %}
  description "{{ config.description }}"
 {% endif %}
 {% for line in config.config %}
  {{ line }}
 {% endfor %}
- exit
 {% endif %}
 {% endfor %}
 
@@ -30,6 +29,5 @@ interface {{ interface }}
 {% for line in config.config %}
  {{ line }}
 {% endfor %}
- exit
 {% endif %}
 {% endfor %}
