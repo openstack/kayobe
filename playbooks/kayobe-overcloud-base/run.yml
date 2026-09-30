@@ -74,6 +74,16 @@
           KAYOBE_ENVIRONMENT=aio-network-connectivity kayobe network connectivity check --limit overcloud &> {{ logs_dir }}/ansible/network-connectivity-check
         executable: /bin/bash
 
+    - name: Run configuration dump
+      shell:
+        # Dump the configuration for all hosts in the inventory. This exercises
+        # the kayobe_config_dump filter, including for host variables that
+        # reference hostvars or undefined variables.
+        cmd: >
+          source {{ kayobe_src_dir }}/dev/environment-setup.sh &&
+          kayobe configuration dump &> {{ logs_dir }}/ansible/configuration-dump
+        executable: /bin/bash
+
     - name: Perform database backup
       shell:
         cmd: >
