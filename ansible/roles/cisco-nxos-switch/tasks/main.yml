@@ -1,0 +1,6 @@
+---
+- name: Ensure Cisco NX-OS switches are configured
+  cisco.nxos.nxos_config:
+    content: "{{ lookup('template', 'cisco-nxos-config.j2') }}"
+    save_when: >-
+      {{ cisco_nxos_switch_save | bool | ternary('modified', 'never') }}
