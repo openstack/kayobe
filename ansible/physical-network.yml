@@ -28,6 +28,7 @@
     physical_network_display: False
     # List of supported values for the 'switch_type' variable.
     supported_switch_types:
+      - alliedware-plus
       - arista
       - dellos6
       - dellos9
@@ -108,6 +109,22 @@
     - name: Display the candidate switch interface configuration
       debug:
         var: switch_interface_config
+
+- name: Ensure AlliedWare Plus physical switches are configured
+  hosts: switches_of_type_alliedware-plus:&switches_in_display_mode_False
+  gather_facts: no
+  max_fail_percentage: >-
+    {{ physical_network_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
+  roles:
+    - role: ssh-known-host
+      when: not switch_skip_keyscan | bool
+
+    - role: alliedware-plus-switch
+      alliedware_plus_switch_config: "{{ switch_config }}"
+      alliedware_plus_switch_interface_config: "{{ switch_interface_config }}"
+      alliedware_plus_switch_save: "{{ switch_config_save }}"
 
 - name: Ensure Arista physical switches are configured
   hosts: switches_of_type_arista:&switches_in_display_mode_False
