@@ -14,6 +14,7 @@ configure`` command.  See :ref:`physical-network` for details.
 
 The following switch operating systems are currently supported:
 
+* AlliedWare Plus
 * Arista EOS
 * Cisco NX-OS
 * Cumulus Linux (via `Network Command Line Utility (NCLU)
@@ -196,6 +197,28 @@ hosts file on the Ansible control host will need to be populated manually.
 
 Device-specific Configuration Variables
 =======================================
+
+AlliedWare Plus
+---------------
+
+Configuration for these devices is applied using the ``alliedware-plus-switch``
+Ansible role in Kayobe. The role configures AlliedWare Plus switches using the
+``alliedtelesis.awplus`` Ansible modules.
+
+``switch_type`` should be set to ``alliedware-plus``.
+
+
+``switch_config_save`` may be set to ``true`` to save the running configuration
+to the startup configuration when they differ, including any previously unsaved
+changes.
+
+* ``ansible_host`` is the hostname or IP address.  Optional.
+* ``ansible_user`` is the SSH username.
+* ``ansible_ssh_pass`` is the SSH password.
+* ``ansible_connection`` should be ``ansible.netcommon.network_cli``.
+* ``ansible_network_os`` should be ``alliedtelesis.awplus.awplus``.
+* ``ansible_become`` should be ``true``.
+* ``ansible_become_method`` should be ``enable``.
 
 Arista EOS
 ----------
