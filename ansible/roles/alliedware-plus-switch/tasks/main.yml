@@ -1,6 +1,7 @@
 ---
 - name: Ensure AlliedWare Plus switches are configured
   alliedtelesis.awplus.awplus_config:
+    diff_against: "running"
     lines: "{{ lookup('template', 'alliedware-plus-config.j2') }}"
     save_when: >-
       {{ alliedware_plus_switch_save | bool | ternary('modified', 'never') }}
