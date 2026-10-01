@@ -1,5 +1,7 @@
 ---
 collections:
+  - name: alliedtelesis.awplus
+    version: 1.3.0
   - name: https://opendev.org/openstack/ansible-collection-kolla
     type: git
     version: stable/2025.1
