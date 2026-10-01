@@ -57,7 +57,7 @@ roles:
   - src: stackhpc.libvirt-host
     version: v1.15.1
   - src: stackhpc.libvirt-vm
-    version: v1.16.4
+    version: v1.17.1
   - src: stackhpc.luks
     version: 0.4.4
   - src: stackhpc.os-ironic-state
