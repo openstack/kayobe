@@ -23,14 +23,7 @@ def _is_apt():
 
 def _is_dnf():
     info = distro.id()
-    return info in ['centos', 'rocky']
-
-
-# NOTE: There are OpenDev mirrors only for centos-stream/9-stream and epel/9.
-def _is_dnf_mirror():
-    info = distro.id()
-    version = distro.version()
-    return info == 'centos' and version == '9'
+    return info == 'rocky'
 
 
 def _is_ubuntu_noble():
@@ -249,8 +242,7 @@ def test_ntp_running(host):
 def test_ntp_non_default_time_server(host):
     # Tests that the NTP pool has been changed from pool.ntp.org to
     # time.cloudflare.com
-    if ('centos' in host.system_info.distribution.lower() or
-       'rocky' in host.system_info.distribution.lower()):
+    if 'rocky' in host.system_info.distribution.lower():
         chrony_config = host.file("/etc/chrony.conf")
     else:
         # Debian based distributions use the following path
@@ -299,28 +291,14 @@ def test_apt_auth(host):
     assert "password bar" in auth_lines
 
 
-@pytest.mark.parametrize('repo', ["appstream", "baseos", "extras", "epel"])
-@pytest.mark.skipif(not _is_dnf_mirror(),
-                    reason="DNF OpenDev mirror only for CentOS Stream 9")
-def test_dnf_local_package_mirrors(host, repo):
-    # Depends on SITE_MIRROR_FQDN environment variable.
-    assert os.getenv('SITE_MIRROR_FQDN')
-    # NOTE(mgoddard): Should not require sudo but some files
-    # (/var/cache/dnf/expired_repos.json) can have incorrect permissions.
-    # https://bugzilla.redhat.com/show_bug.cgi?id=1636909
-    with host.sudo():
-        info = host.check_output("dnf repoinfo %s", repo)
-    assert os.getenv('SITE_MIRROR_FQDN') in info
-
-
-@pytest.mark.skipif(not _is_dnf(), reason="DNF only supported on CentOS/Rocky")
+@pytest.mark.skipif(not _is_dnf(), reason="DNF only supported on Rocky Linux")
 def test_dnf_custom_package_repository_is_available(host):
     with host.sudo():
         host.check_output("dnf -y install fluent-package")
     assert host.package("fluent-package").is_installed
 
 
-@pytest.mark.skipif(not _is_dnf(), reason="DNF only supported on CentOS/Rocky")
+@pytest.mark.skipif(not _is_dnf(), reason="DNF only supported on Rocky Linux")
 def test_dnf_automatic(host):
     assert host.package("dnf-automatic").is_installed
     assert host.service("dnf-automatic.timer").is_enabled
@@ -411,7 +389,7 @@ def test_fail2ban_default_jail_config(host):
     assert "Status for the jail: sshd" in status
 
 @pytest.mark.skipif(not _is_dnf(),
-                    reason="SELinux only supported on CentOS/Rocky")
+                    reason="SELinux only supported on Rocky Linux")
 def test_selinux(host):
     selinux = host.check_output("sestatus")
     selinux = selinux.splitlines()

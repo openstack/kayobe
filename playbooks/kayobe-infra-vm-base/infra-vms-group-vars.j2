@@ -2,7 +2,7 @@
 {% if infra_vm_use_cirros | default(true) %}
 aio_interface: eth0
 {% else %}
-# Required for official cloud images (CentOS Stream 10, Rocky Linux 10, Ubuntu)
+# Required for official cloud images (Rocky Linux 10 and Ubuntu)
 aio_interface: ens2
 {% endif %}
 

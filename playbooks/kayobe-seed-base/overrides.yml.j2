@@ -57,10 +57,6 @@ overcloud_dib_build_host_images: {{ build_images }}
 overcloud_dib_elements_extra:
   - "openstack-ci-mirrors"
 
-# NOTE(bbezak): Kolla does not build CentOS Stream 10 container images.
-# Using Rocky Linux 10 images on CentOS Stream 10 in CI.
-kolla_base_distro: "{% raw %}{{ 'rocky' if os_distribution == 'centos' else os_distribution }}{% endraw %}"
-
 # Support overriding container_engine
 container_engine: "{{ container_engine }}"
 

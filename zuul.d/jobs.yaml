@@ -148,12 +148,6 @@
     timeout: 7200
 
 - job:
-    name: kayobe-ansible-control-host-configure-centos10s
-    parent: kayobe-ansible-control-host-configure-base
-    nodeset: kayobe-centos10s
-    voting: false
-
-- job:
     name: kayobe-ansible-control-host-configure-rocky10
     parent: kayobe-ansible-control-host-configure-base
     nodeset: kayobe-rocky10
@@ -195,12 +189,6 @@
     timeout: 10800
 
 - job:
-    name: kayobe-overcloud-centos10s
-    parent: kayobe-overcloud-base
-    nodeset: kayobe-centos10s-16GB
-    voting: false
-
-- job:
     name: kayobe-overcloud-rocky10
     parent: kayobe-overcloud-base
     vars:
@@ -234,12 +222,6 @@
     vars:
       tls_enabled: true
       ironic_boot_mode: "uefi"
-
-- job:
-    name: kayobe-overcloud-tls-centos10s
-    parent: kayobe-overcloud-tls-base
-    nodeset: kayobe-centos10s-16GB
-    voting: false
 
 - job:
     name: kayobe-overcloud-tls-rocky10
@@ -292,12 +274,6 @@
       build_images: false
 
 - job:
-    name: kayobe-seed-centos10s
-    parent: kayobe-seed-base
-    nodeset: kayobe-centos10s
-    voting: false
-
-- job:
     name: kayobe-seed-rocky10
     parent: kayobe-seed-base
     nodeset: kayobe-rocky10
@@ -330,12 +306,6 @@
       Configures the primary VM as a seed.
     vars:
       build_images: true
-
-- job:
-    name: kayobe-seed-images-centos10s
-    parent: kayobe-seed-images-base
-    nodeset: kayobe-centos10s
-    voting: false
 
 - job:
     name: kayobe-seed-images-rocky10
@@ -376,12 +346,6 @@
     pre-run: playbooks/kayobe-overcloud-host-configure-base/pre.yml
     run: playbooks/kayobe-overcloud-host-configure-base/run.yml
     timeout: 7200
-
-- job:
-    name: kayobe-overcloud-host-configure-centos10s
-    parent: kayobe-overcloud-host-configure-base
-    nodeset: kayobe-centos10s
-    voting: false
 
 - job:
     name: kayobe-overcloud-host-configure-rocky10
@@ -445,12 +409,6 @@
     timeout: 5400
 
 - job:
-    name: kayobe-seed-vm-centos10s
-    parent: kayobe-seed-vm-base
-    nodeset: kayobe-centos10s
-    voting: false
-
-- job:
     name: kayobe-seed-vm-rocky10
     parent: kayobe-seed-vm-base
     nodeset: kayobe-rocky10
@@ -461,14 +419,6 @@
     nodeset: kayobe-ubuntu-noble
     vars:
       kayobe_control_host_become: false
-
-- job:
-    name: kayobe-seed-vm-centos10s-cloud-image
-    parent: kayobe-seed-vm-base
-    nodeset: kayobe-centos10s
-    voting: false
-    vars:
-      seed_vm_use_cirros: false
 
 - job:
     name: kayobe-seed-vm-rocky10-cloud-image
@@ -492,12 +442,6 @@
       Base job for testing seed VM provisioning with q35
     vars:
       seed_vm_machine: q35
-
-- job:
-    name: kayobe-seed-vm-centos10s-q35
-    parent: kayobe-seed-vm-q35-base
-    nodeset: kayobe-centos10s
-    voting: false
 
 - job:
     name: kayobe-seed-vm-rocky10-q35
@@ -524,12 +468,6 @@
     timeout: 5400
 
 - job:
-    name: kayobe-infra-vm-centos10s
-    parent: kayobe-infra-vm-base
-    nodeset: kayobe-centos10s
-    voting: false
-
-- job:
     name: kayobe-infra-vm-rocky10
     parent: kayobe-infra-vm-base
     nodeset: kayobe-rocky10
@@ -540,14 +478,6 @@
     name: kayobe-infra-vm-ubuntu-noble
     parent: kayobe-infra-vm-base
     nodeset: kayobe-ubuntu-noble
-
-- job:
-    name: kayobe-infra-vm-centos10s-cloud-image
-    parent: kayobe-infra-vm-base
-    nodeset: kayobe-centos10s
-    voting: false
-    vars:
-      infra_vm_use_cirros: false
 
 - job:
     name: kayobe-infra-vm-rocky10-cloud-image

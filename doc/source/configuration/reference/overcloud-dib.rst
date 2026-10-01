@@ -35,8 +35,7 @@ information on building disk images.
 
 The default configuration builds a whole disk (partitioned) image using the
 selected :ref:`OS distribution <os-distribution>` (Rocky Linux 10 by default)
-with serial console enabled, and SELinux disabled if CentOS Stream or Rocky
-Linux is used.
+with serial console enabled.
 `Cloud-init <https://cloudinit.readthedocs.io/en/latest/>`__ is used to process
 the configuration drive built by Bifrost during provisioning.
 

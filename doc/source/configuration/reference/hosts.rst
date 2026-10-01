@@ -82,8 +82,7 @@ Typically, the image used to provision these hosts will not include this user
 account, so Kayobe performs a bootstrapping step to create it, as a different
 user. In cloud images, there is often a user named after the OS distro, e.g.
 ``rocky`` or ``ubuntu``. This user defaults to the ``os_distribution``
-variable, except for CentOS which uses ``cloud-user``, but may be set via the
-following variables:
+variable, but may be set via the following variables:
 
 * ``ansible_control_bootstrap_user``
 * ``seed_hypervisor_bootstrap_user``
@@ -216,8 +215,8 @@ DNF Package Repositories
 *tags:*
   | ``dnf``
 
-On CentOS and Rocky, Kayobe supports configuration of package repositories via
-DNF, via variables in ``${KAYOBE_CONFIG_PATH}/dnf.yml``.
+On Rocky Linux, Kayobe supports configuration of package repositories via DNF,
+via variables in ``${KAYOBE_CONFIG_PATH}/dnf.yml``.
 
 Configuration of dnf.conf
 -------------------------
@@ -232,19 +231,13 @@ section of the file. For example, to configure DNF to use a proxy server:
    dnf_config:
      proxy: https://proxy.example.com
 
-CentOS/Rocky and EPEL Mirrors
------------------------------
+Rocky Linux and EPEL Mirrors
+----------------------------
 
-CentOS/Rocky and EPEL mirrors can be enabled by setting
-``dnf_use_local_mirror`` to ``true``. CentOS repository mirrors are configured
-via the following variables:
+Rocky Linux and EPEL mirrors can be enabled by setting ``dnf_use_local_mirror``
+to ``true``.
 
-* ``dnf_centos_mirror_host`` (default ``mirror.stream.centos.org``) is the
-  mirror hostname.
-* ``dnf_centos_mirror_directory`` (default ``''``) is a directory on the mirror
-  in which repositories may be accessed.
-
-Rocky repository mirrors are configured via the following variables:
+Rocky Linux repository mirrors are configured via the following variables:
 
 * ``dnf_rocky_mirror_host`` (default ``dl.rockylinux.org``) is the mirror
   hostname
@@ -258,13 +251,13 @@ EPEL repository mirrors are configured via the following variables:
 * ``dnf_epel_mirror_directory`` (default ``pub/epel``) is a directory on the
   mirror in which repositories may be accessed.
 
-For example, to configure CentOS and EPEL mirrors at mirror.example.com:
+For example, to configure Rocky Linux and EPEL mirrors at mirror.example.com:
 
 .. code-block:: yaml
    :caption: ``dnf.yml``
 
    dnf_use_local_mirror: true
-   dnf_centos_mirror_host: mirror.example.com
+   dnf_rocky_mirror_host: mirror.example.com
    dnf_epel_mirror_host: mirror.example.com
 
 Custom DNF Repositories
@@ -575,7 +568,7 @@ SELinux
 *tags:*
   | ``selinux``
 
-.. note:: SELinux applies to CentOS and Rocky systems only.
+.. note:: SELinux applies to Rocky Linux systems only.
 
 SELinux is not supported by Kolla Ansible currently, so it is set to permissive
 by Kayobe. If necessary, it can be configured to disabled by setting
@@ -720,7 +713,7 @@ ones that conduct too many failed login attempts. Kayobe can install and configu
 Fail2Ban on hosts.
 
 In order to use fail2ban, it is important to note that the user should enable
-``dnf_install_epel`` in their configuration when using Rocky Linux or CentOS.
+``dnf_install_epel`` in their configuration when using Rocky Linux.
 
 The following variables can be used to set whether to enable fail2ban:
 
@@ -1333,10 +1326,10 @@ are relevant only when using the libvirt daemon rather than the
 ``compute_libvirt_enable_tls``
     Whether to enable a libvirt TLS listener. Default is false.
 ``compute_libvirt_ceph_repo_install``
-    Whether to install a Ceph package repository on CentOS and Rocky hosts.
+    Whether to install a Ceph package repository on Rocky Linux hosts.
     Default is ``true``.
 ``compute_libvirt_ceph_repo_release``
-    Ceph package repository release to install on CentOS and Rocky hosts when
+    Ceph package repository release to install on Rocky Linux hosts when
     ``compute_libvirt_ceph_repo_install`` is ``true``. Default is ``squid``.
 
 Example: custom libvirtd.conf
@@ -1421,9 +1414,9 @@ Kolla Ansible, for use by the ``nova_compute`` service.
 Example: disabling Ceph repository installation
 -----------------------------------------------
 
-On CentOS and Rocky hosts, a CentOS Storage SIG Ceph repository is installed
-that provides more recent Ceph libraries than those available in CentOS/Rocky
-AppStream.  This may be necessary when using Ceph for Cinder volumes or Nova
+On Rocky Linux hosts, a CentOS Storage SIG Ceph repository is installed that
+provides more recent Ceph libraries than those available in Rocky Linux
+AppStream. This may be necessary when using Ceph for Cinder volumes or Nova
 ephemeral block devices. In some cases, such as when using local package
 mirrors, the upstream repository may not be appropriate. The installation of
 the repository may be disabled as follows:
