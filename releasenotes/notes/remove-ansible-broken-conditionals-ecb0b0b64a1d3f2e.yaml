@@ -1,0 +1,11 @@
+---
+upgrade:
+  - |
+    Kayobe no longer sets ``ANSIBLE_ALLOW_BROKEN_CONDITIONALS=true`` in the
+    environment when executing Ansible playbooks. Custom playbooks that use
+    conditionals which do not evaluate to a boolean value will now fail. These
+    should be updated to use explicit boolean expressions, for example
+    ``when: my_list | length > 0`` rather than ``when: my_list``. As a
+    temporary workaround, ``ANSIBLE_ALLOW_BROKEN_CONDITIONALS=true`` may be set
+    in the shell environment, or ``allow_broken_conditionals = True`` may be
+    set in the ``[defaults]`` section of ``${KAYOBE_CONFIG_PATH}/ansible.cfg``.

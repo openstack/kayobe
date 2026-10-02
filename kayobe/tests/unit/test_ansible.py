@@ -59,7 +59,6 @@ class TestCase(unittest.TestCase):
         ]
 
         expected_env = {
-            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "KAYOBE_CONFIG_PATH": "/etc/kayobe",
             "ANSIBLE_ROLES_PATH": ":".join([
                 "/etc/kayobe/ansible/roles",
@@ -114,7 +113,6 @@ class TestCase(unittest.TestCase):
         ]
 
         expected_env = {
-            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "KAYOBE_CONFIG_PATH": "/etc/kayobe",
             "ANSIBLE_ROLES_PATH": ":".join([
                 utils.get_data_files_path("ansible", "roles"),
@@ -322,7 +320,6 @@ class TestCase(unittest.TestCase):
         ]
 
         expected_env = {
-            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "KAYOBE_CONFIG_PATH": "/path/to/config",
             "KAYOBE_ENVIRONMENT": "test-env",
             "ANSIBLE_ROLES_PATH": ":".join([
@@ -403,7 +400,6 @@ class TestCase(unittest.TestCase):
             "playbook2.yml",
         ]
         expected_env = {
-            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "KAYOBE_CONFIG_PATH": "/path/to/config",
             "KAYOBE_ENVIRONMENT": "test-env",
             "KAYOBE_VAULT_PASSWORD": "test-pass",
@@ -448,7 +444,6 @@ class TestCase(unittest.TestCase):
             "playbook1.yml",
         ]
         expected_env = {
-            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "KAYOBE_CONFIG_PATH": "/etc/kayobe",
             "ANSIBLE_ROLES_PATH": mock.ANY,
             "ANSIBLE_COLLECTIONS_PATH": mock.ANY,
@@ -487,7 +482,6 @@ class TestCase(unittest.TestCase):
             "playbook1.yml",
         ]
         expected_env = {
-            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "KAYOBE_CONFIG_PATH": "/etc/kayobe",
             "KAYOBE_VAULT_PASSWORD": "test-pass",
             "ANSIBLE_ROLES_PATH": mock.ANY,
@@ -556,7 +550,6 @@ class TestCase(unittest.TestCase):
             "playbook2.yml",
         ]
         expected_env = {
-            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "KAYOBE_CONFIG_PATH": "/etc/kayobe",
             "ANSIBLE_ROLES_PATH": mock.ANY,
             "ANSIBLE_COLLECTIONS_PATH": mock.ANY,
@@ -595,7 +588,6 @@ class TestCase(unittest.TestCase):
             "playbook2.yml",
         ]
         expected_env = {
-            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "KAYOBE_CONFIG_PATH": "/etc/kayobe",
             "ANSIBLE_ROLES_PATH": mock.ANY,
             "ANSIBLE_COLLECTIONS_PATH": mock.ANY,
@@ -634,7 +626,6 @@ class TestCase(unittest.TestCase):
             "playbook2.yml",
         ]
         expected_env = {
-            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "KAYOBE_CONFIG_PATH": "/etc/kayobe",
             "ANSIBLE_ROLES_PATH": mock.ANY,
             "ANSIBLE_COLLECTIONS_PATH": mock.ANY,
@@ -669,7 +660,6 @@ class TestCase(unittest.TestCase):
         expected_env = {
             "ANSIBLE_CONFIG": "/etc/kayobe/ansible.cfg",
             "KAYOBE_CONFIG_PATH": "/etc/kayobe",
-            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "ANSIBLE_ROLES_PATH": mock.ANY,
             "ANSIBLE_COLLECTIONS_PATH": mock.ANY,
             "ANSIBLE_ACTION_PLUGINS": mock.ANY,
@@ -703,7 +693,6 @@ class TestCase(unittest.TestCase):
             "playbook1.yml",
         ]
         expected_env = {
-            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "ANSIBLE_CONFIG": "/path/to/ansible.cfg",
             "KAYOBE_CONFIG_PATH": "/etc/kayobe",
             "ANSIBLE_ROLES_PATH": mock.ANY,
@@ -1140,7 +1129,6 @@ key1:
             "playbook2.yml",
         ]
         expected_env = {
-            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "KAYOBE_CONFIG_PATH": "/etc/kayobe",
             "ANSIBLE_ROLES_PATH": mock.ANY,
             "ANSIBLE_COLLECTIONS_PATH": mock.ANY,
@@ -1185,7 +1173,6 @@ key1:
             "playbook2.yml",
         ]
         expected_env = {
-            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "KAYOBE_CONFIG_PATH": "/etc/kayobe",
             "KAYOBE_ENVIRONMENT": "test-env",
             "ANSIBLE_ROLES_PATH": mock.ANY,
@@ -1229,7 +1216,6 @@ key1:
             "playbook2.yml",
         ]
         expected_env = {
-            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "KAYOBE_CONFIG_PATH": "/etc/kayobe",
             "KAYOBE_ENVIRONMENT": "test-env",
             "ANSIBLE_ROLES_PATH": mock.ANY,
@@ -1274,7 +1260,6 @@ key1:
             "playbook2.yml",
         ]
         expected_env = {
-            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "KAYOBE_CONFIG_PATH": "/etc/kayobe",
             "KAYOBE_ENVIRONMENT": "test-env",
             "ANSIBLE_ROLES_PATH": mock.ANY,
@@ -1324,7 +1309,6 @@ key1:
             "playbook2.yml",
         ]
         expected_env = {
-            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "KAYOBE_CONFIG_PATH": "/etc/kayobe",
             "KAYOBE_ENVIRONMENT": "test-env",
             "ANSIBLE_ROLES_PATH": mock.ANY,
@@ -1406,7 +1390,6 @@ key1:
             "playbook2.yml",
         ]
         expected_env = {
-            "ANSIBLE_ALLOW_BROKEN_CONDITIONALS": "true",
             "KAYOBE_CONFIG_PATH": "/etc/kayobe",
             "KAYOBE_ENVIRONMENT": "test-env",
             "ANSIBLE_ROLES_PATH": mock.ANY,

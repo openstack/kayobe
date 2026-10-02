@@ -387,9 +387,6 @@ def _get_environment(parsed_args, external_playbook=False):
     """Return an environment dict for executing an Ansible playbook."""
     env = os.environ.copy()
     vault.update_environment(parsed_args, env)
-    # TODO(wszusmki): Kayobe still uses broken conditions. Work on fixing these
-    # and remove when that work is complete.
-    env.setdefault("ANSIBLE_ALLOW_BROKEN_CONDITIONALS", "true")
     # If the configuration path has been specified via --config-path, ensure
     # the environment variable is set, so that it can be referenced by
     # playbooks.
