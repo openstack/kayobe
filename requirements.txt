@@ -7,6 +7,7 @@ PyYAML>=3.10.0 # MIT
 # INI parsing
 oslo.config>=5.2.0 # Apache-2.0
 paramiko # LGPL
+ansible-pylibssh # LGPL
 jsonschema<5 # MIT
 wcmatch>=8.2,<=9.0 # MIT
 hvac>=0.10.1
