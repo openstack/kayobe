@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an issue with agent-based bare metal inspection, where the collectors
+    were not being configured by Ironic. This was the case when using the
+    managed inspection mode in Ironic.

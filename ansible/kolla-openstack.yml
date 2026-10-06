@@ -140,6 +140,7 @@
       kolla_inspector_keep_ports: "{{ inspector_keep_ports }}"
       kolla_inspector_enable_discovery: "{{ inspector_enable_discovery }}"
       kolla_inspector_discovery_enroll_node_driver: "{{ inspector_discovery_enroll_node_driver }}"
+      kolla_inspector_extra_kernel_options: "{{ inspector_extra_kernel_options }}"
       kolla_inspector_ipa_host: "{{ groups['controllers_with_ironic_enabled_True'][0] }}"
       kolla_openstack_custom_config_paths_extra_multi_env_static:
         - "{{ kayobe_config_path }}"
