@@ -159,7 +159,7 @@
         -e @/etc/bifrost/bifrost.yml
         -e @/etc/bifrost/dib.yml
         --limit {{ bifrost_limit | join(':') }}'
-      when: bifrost_limit
+      when: bifrost_limit | length > 0
       delegate_to: "{{ seed_host }}"
       vars:
         # NOTE: Without this, the seed's ansible_host variable will not be
