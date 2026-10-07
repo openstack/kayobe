@@ -431,7 +431,6 @@
     name: kayobe-seed-vm-ubuntu-noble-cloud-image
     parent: kayobe-seed-vm-base
     nodeset: kayobe-ubuntu-noble
-    voting: false
     vars:
       seed_vm_use_cirros: false
 
@@ -490,6 +489,5 @@
     name: kayobe-infra-vm-ubuntu-noble-cloud-image
     parent: kayobe-infra-vm-base
     nodeset: kayobe-ubuntu-noble
-    voting: false
     vars:
       infra_vm_use_cirros: false
