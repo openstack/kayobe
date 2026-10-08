@@ -278,6 +278,13 @@ Run the ``dev/seed-deploy.sh`` script to deploy the seed services::
     export KAYOBE_SEED_VM_PROVISION=0
     ./dev/seed-deploy.sh
 
+``KAYOBE_SEED_VM_PROVISION=0`` tells the deployment script to skip deploying the
+seed vm. This is because we set up our host's IP as ``192.168.33.5``, which is
+set in ``network-allocation.yml`` as the seed's IP - meaning Kayobe will use our
+host as the seed. If you would prefer to run the seed in a VM on your host,
+you can set your IP as ``192.168.33.4`` to match with ``seed-hypervisor`` in
+``network-allocation.yml``, and ``export KAYOBE_SEED_VM_PROVISION=1``.
+
 Upon successful completion of this script, the seed will be active.
 
 Testing
@@ -318,6 +325,12 @@ It is now possible to discover, inspect and provision the controller VM::
 
 The controller VM is now accessible via SSH as the bootstrap user
 (``cloud-user``, ``rocky`` or ``ubuntu``) at ``192.168.33.3``.
+
+At this point you may wish to continue setting up your development environment with::
+
+    kayobe overcloud host configure
+    kayobe overcloud container image pull
+    kayobe overcloud service deploy
 
 The machines and networking created by Tenks can be cleaned up via
 ``dev/tenks-teardown-overcloud.sh``::
