@@ -261,6 +261,9 @@ The following options configure the source of Ironic Python Agent images for
 inspection and deployment.  Consult the :ironic-python-agent-doc:`Ironic Python
 Agent documentation <>` for full details.
 
+``ipa_images_upstream_os``
+    OS version of upstream Ironic deployment image files. Valid options are
+    ``centos9`` and ``centos10``. Default is ``centos10``.
 ``ipa_images_upstream_url_suffix``
     Suffix of upstream Ironic deployment image files. Default is based on
     ``{{ openstack_branch }}``.
@@ -269,8 +272,8 @@ Agent documentation <>` for full details.
     ``ipa.kernel``.
 ``ipa_kernel_upstream_url``
     URL of Ironic deployment kernel image to download. Default is
-    ``https://tarballs.openstack.org/ironic-python-agent/dib/files/ipa-centos9{{
-    ipa_images_upstream_url_suffix }}.kernel``.
+    ``https://tarballs.openstack.org/ironic-python-agent/dib/files/ipa-{{
+    ipa_images_upstream_os }}{{ ipa_images_upstream_url_suffix }}.kernel``.
 ``ipa_kernel_checksum_url``
     URL of checksum of Ironic deployment kernel image. Default is ``{{
     ipa_kernel_upstream_url }}.{{ ipa_kernel_checksum_algorithm }}``.
@@ -282,8 +285,8 @@ Agent documentation <>` for full details.
     ``ipa.initramfs``.
 ``ipa_ramdisk_upstream_url``
     URL of Ironic deployment ramdisk image to download. Default is
-    ``https://tarballs.openstack.org/ironic-python-agent/dib/files/ipa-centos9{{
-    ipa_images_upstream_url_suffix }}.initramfs``.
+    ``https://tarballs.openstack.org/ironic-python-agent/dib/files/ipa-{{
+    ipa_images_upstream_os }}{{ ipa_images_upstream_url_suffix }}.initramfs``.
 ``ipa_ramdisk_checksum_url``
     URL of checksum of Ironic deployment ramdisk image. Default is ``{{
     ipa_ramdisk_upstream_url }}.{{ ipa_ramdisk_checksum_algorithm }}``.

@@ -88,6 +88,10 @@
 ###############################################################################
 # Ironic Python Agent (IPA) images configuration.
 
+# OS version of upstream Ironic deployment image files. Valid options are
+# "centos9" and "centos10". Default is "centos10".
+#ipa_images_upstream_os:
+
 # Suffix of upstream Ironic deployment image files. Default is based on
 # {{ openstack_branch }}.
 #ipa_images_upstream_url_suffix:

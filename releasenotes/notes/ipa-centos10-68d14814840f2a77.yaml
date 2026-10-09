@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    When not building Ironic Python Agent (IPA) images locally, images are now
+    based on CentOS Stream 10. CentOS Stream 9 images can still be used by
+    setting ``ipa_images_upstream_os`` to ``centos9``.
