@@ -1,0 +1,7 @@
+upgrade:
+  - |
+    Synchronises Kayobe feature flags and inventory with Kolla Ansible
+    2026.2. The ``redis`` inventory group has been removed following
+    completion of the Redis to Valkey migration; use
+    ``kolla_enable_valkey`` instead. Redis references in the Kolla Ansible
+    ``globals.yml`` template have been updated to Valkey to match.

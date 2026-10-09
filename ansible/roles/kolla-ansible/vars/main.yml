@@ -96,6 +96,7 @@ kolla_feature_flags:
   - cinder_backend_pure_nvme_tcp
   - cinder_backend_pure_roce
   - cinder_backend_quobyte
+  - cinder_backend_vast
   - cinder_backup
   - cinder_horizon_policy_file
   - cloudkitty
@@ -157,6 +158,7 @@ kolla_feature_flags:
   - manila_backend_generic
   - manila_backend_glusterfs_nfs
   - manila_backend_hnas
+  - manila_backend_vast
   - mariabackup
   - mariadb
   - masakari

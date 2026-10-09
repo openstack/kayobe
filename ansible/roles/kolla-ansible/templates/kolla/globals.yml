@@ -292,7 +292,7 @@ enable_{{ feature_flag }}: {{ hostvars[inventory_hostname]['kolla_enable_' ~ fea
 ####################
 # Osprofiler options
 ####################
-# valid values: ["elasticsearch", "redis"]
+# valid values: ["elasticsearch", "valkey"]
 #osprofiler_backend: "elasticsearch"
 
 ##################
@@ -308,8 +308,8 @@ enable_{{ feature_flag }}: {{ hostvars[inventory_hostname]['kolla_enable_' ~ fea
 # Valid options are [ file, ceph ]
 #gnocchi_backend_storage: "{% raw %}{{ 'ceph' if enable_ceph|bool else 'file' }}{% endraw %}"
 
-# Valid options are [redis, '']
-#gnocchi_incoming_storage: "{% raw %}{{ 'redis' if enable_redis | bool else '' }}{% endraw %}"
+# Valid options are [valkey, '']
+#gnocchi_incoming_storage: "{% raw %}{{ 'valkey' if enable_valkey | bool else '' }}{% endraw %}"
 
 ################################
 # Cinder - Block Storage Options
@@ -318,8 +318,8 @@ enable_{{ feature_flag }}: {{ hostvars[inventory_hostname]['kolla_enable_' ~ fea
 #cinder_backend_ceph: "{% raw %}{{ enable_ceph }}{% endraw %}"
 #cinder_backend_vmwarevc_vmdk: "no"
 #cinder_volume_group: "cinder-volumes"
-# Valid options are [ '', redis, etcd ]
-#cinder_coordination_backend: "{% raw %}{{ 'redis' if enable_redis|bool else 'etcd' if enable_etcd|bool else '' }}{% endraw %}"
+# Valid options are [ '', valkey, etcd ]
+#cinder_coordination_backend: "{% raw %}{{ 'valkey' if enable_valkey|bool else 'etcd' if enable_etcd|bool else '' }}{% endraw %}"
 
 # Valid options are [ nfs, ceph, s3 ]
 #cinder_backup_driver: "ceph"
@@ -344,8 +344,8 @@ enable_{{ feature_flag }}: {{ hostvars[inventory_hostname]['kolla_enable_' ~ fea
 # Valid options are [ bind9 ]
 #designate_backend: "bind9"
 #designate_ns_record: "sample.openstack.org"
-# Valid options are [ '', redis, etcd ]
-#designate_coordination_backend: "{% raw %}{{ 'redis' if enable_redis|bool else 'etcd' if enable_etcd|bool else '' }}{% endraw %}"
+# Valid options are [ '', valkey ]
+#designate_coordination_backend: "{% raw %}{{ 'valkey' if enable_valkey|bool else '' }}{% endraw %}"
 
 ########################
 # Nova - Compute Options
