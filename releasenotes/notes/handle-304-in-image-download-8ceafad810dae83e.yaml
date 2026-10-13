@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixes an error when downloading already downloaded VM images caused by HTTP
+    304 Not Modified.
+    `LP#2170208 <https://bugs.launchpad.net/kayobe/+bug/2170208>`__
