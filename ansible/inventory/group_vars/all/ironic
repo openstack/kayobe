@@ -100,6 +100,11 @@ kolla_ironic_inspection_network: "{{ kolla_ironic_provisioning_network if inspec
 # Name of the Neutron network to use for provisioning.
 kolla_ironic_provisioning_network: 'provision-net'
 
+# Address of the Ironic Python Agent (IPA) NTP server. The default value maps
+# to the IP address of each controller on the internal API, which should be
+# running chronyd.
+kolla_ironic_ntp_server: "{% raw %}{{ hostvars[inventory_hostname].ansible_facts[api_interface | replace('-', '_')]['ipv4']['address'] }}{% endraw %}"
+
 # List of default kernel parameters to append for baremetal PXE boot.
 kolla_ironic_pxe_append_params_default: "{{ kolla_ironic_kernel_append_params_default }}"
 
@@ -116,6 +121,7 @@ kolla_ironic_kernel_append_params_default:
   - vga=normal
   - console=tty0
   - console=ttyS0,115200n8
+  - ipa-ntp-server={% if kolla_ironic_ntp_server is not none and kolla_ironic_ntp_server | length > 0 %}{{ kolla_ironic_ntp_server }}{% endif %}
 
 # List of additional kernel parameters to append for baremetal boot.
 kolla_ironic_kernel_append_params_extra: []

@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Adds default configuration to Kolla Ansible for the ``ipa-ntp-server``
+    kernel command line argument used by IPA during provisioning and cleaning.
+    Ensures correct system time during certificate creation, preventing issues
+    where Ironic fails to communicate with the Ironic Python Agent due to
+    invalid certificate timestamps. The default NTP server can be overridden by
+    changing ``kolla_ironic_ntp_server``.
