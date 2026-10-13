@@ -56,7 +56,7 @@ roles:
     name: stackhpc.libvirt-host
     version: 9a947f74abdcd2e0d4e3371162f8299aef259271
   - src: stackhpc.libvirt-vm
-    version: v1.16.3
+    version: v1.17.2
   - src: stackhpc.luks
     version: 0.4.4
   - src: stackhpc.os-ironic-state
