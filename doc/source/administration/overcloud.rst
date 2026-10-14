@@ -63,6 +63,59 @@ For example::
 To execute the command with root privileges, add the ``--become`` argument.
 Adding the ``--verbose`` argument allows the output of the command to be seen.
 
+Updating Firmware
+=================
+
+It is possible to update firmware on the overcloud hosts::
+
+    (kayobe) $ kayobe overcloud firmware update
+
+To show the available firmware updates without applying them, run the command
+in Ansible check mode using the ``--check`` argument::
+
+    (kayobe) $ kayobe overcloud firmware update --check
+
+Firmware updates are performed out of band via the host's BMC. Currently only
+Dell servers with iDRACs (``bmc_type: idrac``) are supported.
+
+During the update, the nodes are placed in maintenance mode to prevent Bifrost
+from managing their power states.
+
+By default, firmware is updated on all hosts at once. To update hosts in
+batches, for example one at a time to limit the impact of reboots on clustered
+services, set ``firmware_update_serial``:
+
+.. code-block:: yaml
+   :caption: ``$KAYOBE_CONFIG_PATH/bmc.yml``
+
+   firmware_update_serial: 1
+
+Dell Firmware Updates
+---------------------
+
+Dell firmware updates are performed using the
+``dellemc.openmanage.idrac_firmware`` Ansible module, and require an iDRAC
+Enterprise licence.
+
+The firmware update repository must be configured before running the command.
+Set the network share containing a valid repository of Dell Update Packages
+(DUPs) and a catalog file describing them:
+
+.. code-block:: yaml
+   :caption: ``$KAYOBE_CONFIG_PATH/bmc.yml``
+
+   dell_firmware_update_share_name: "https://downloads.dell.com"
+
+CIFS, NFS, HTTP, HTTPS and FTP share types are supported. For CIFS shares,
+``dell_firmware_update_share_user`` and
+``dell_firmware_update_share_password`` must also be set. Other options
+include the catalog file name, whether to reboot the host to apply the update,
+and whether to ignore certificate warnings for HTTPS shares.
+
+By default the iDRAC SSL certificates are validated. To skip this, for example
+when using self-signed certificates, set
+``dell_firmware_update_validate_certs`` to ``false``.
+
 Provisioning Hosts Without Kolla Services
 ==========================================
 

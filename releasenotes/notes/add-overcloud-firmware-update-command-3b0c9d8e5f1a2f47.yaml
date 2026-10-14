@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    Adds a new ``kayobe overcloud firmware update`` command to update firmware
+    on the overcloud hosts. The firmware update is performed out of band via
+    the hosts' BMCs using the ``dellemc.openmanage.idrac_firmware`` Ansible
+    module, and currently supports Dell servers with iDRACs. The firmware
+    update repository is configured via the ``dell_firmware_update_*``
+    variables in ``bmc.yml``. Use Ansible check mode (``--check``) to show the
+    available firmware updates without applying them.

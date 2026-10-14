@@ -1370,6 +1370,15 @@ class OvercloudBIOSRAIDConfigure(KayobeAnsibleMixin, VaultMixin, Command):
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
 
+class OvercloudFirmwareUpdate(KayobeAnsibleMixin, VaultMixin, Command):
+    """Update firmware for the overcloud hosts."""
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Updating overcloud host firmware")
+        playbooks = _build_playbook_list("overcloud-firmware-update")
+        self.run_kayobe_playbooks(parsed_args, playbooks)
+
+
 class OvercloudHardwareRegister(KayobeAnsibleMixin, VaultMixin, Command):
     """Register overcloud hosts in Bifrost"""
 

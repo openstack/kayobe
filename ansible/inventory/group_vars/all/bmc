@@ -16,3 +16,45 @@ ipmi_password:
 
 # Address to use to access a host's BMC via Redfish.
 redfish_address:
+
+###############################################################################
+# Firmware update configuration.
+
+# Number of hosts to update firmware on in each batch. By default, all hosts
+# are updated at once. Set to 1 to update hosts one at a time. This may be
+# useful to limit the impact of reboots on clustered services.
+firmware_update_serial: 100%
+
+###############################################################################
+# Dell firmware update configuration.
+
+# Network share path of the firmware update repository. CIFS, NFS, HTTP,
+# HTTPS and FTP share types are supported. The share must contain a valid
+# repository of Dell Update Packages (DUPs) and a catalog file describing
+# them. For example, an NFS share:
+# dell_firmware_update_share_name: "192.168.0.1:/share"
+# or an HTTPS share:
+# dell_firmware_update_share_name: "https://downloads.dell.com"
+dell_firmware_update_share_name:
+
+# Username for the firmware update repository. Required for CIFS shares.
+dell_firmware_update_share_user:
+
+# Password for the firmware update repository. Required for CIFS shares.
+dell_firmware_update_share_password:
+
+# Catalog file name relative to dell_firmware_update_share_name. This
+# may be omitted when using the official Dell repository at
+# https://downloads.dell.com.
+dell_firmware_update_catalog_file_name:
+
+# Whether to reboot the host immediately to apply the firmware update. If
+# false, packages are staged and applied on the next reboot. Default is false.
+dell_firmware_update_reboot: false
+
+# Whether to ignore certificate warnings when an HTTPS share is used. Default
+# is false.
+dell_firmware_update_ignore_cert_warning: false
+
+# Whether to validate the iDRAC SSL certificates. Default is true.
+dell_firmware_update_validate_certs: true

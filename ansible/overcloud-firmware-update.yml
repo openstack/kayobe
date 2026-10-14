@@ -1,0 +1,112 @@
+---
+# Perform firmware update of the overcloud nodes. The firmware update is
+# performed out of band via the hosts' BMCs using the
+# dellemc.openmanage.idrac_firmware module. As such, only Dell servers with
+# iDRACs are currently supported. During the update, we set the nodes to
+# maintenance mode to prevent bifrost from managing their power states.
+
+- name: Group overcloud nodes by their BMC type
+  hosts: overcloud
+  gather_facts: no
+  max_fail_percentage: >-
+    {{ overcloud_firmware_update_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
+  tags:
+    - firmware-update
+    - firmware-update-idrac
+  tasks:
+    - name: Group overcloud hosts by their BMC type
+      group_by:
+        key: "overcloud_with_bmcs_of_type_{{ bmc_type | default('unknown') }}"
+      changed_when: false
+
+- name: Update overcloud node firmware - iDRAC
+  hosts: overcloud_with_bmcs_of_type_idrac
+  gather_facts: no
+  max_fail_percentage: >-
+    {{ overcloud_firmware_update_max_fail_percentage |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
+  # Optionally update nodes in batches, for example one at a time. Defaults to
+  # updating all nodes at once.
+  serial: "{{ firmware_update_serial | default('100%') }}"
+  tags:
+    - firmware-update
+    - firmware-update-idrac
+  vars:
+    seed_host: "{{ groups['seed'][0] }}"
+  pre_tasks:
+    - name: Fail if the firmware repository share is not configured
+      fail:
+        msg: >
+          dell_firmware_update_share_name must be set to the network
+          share containing the firmware repository.
+      when: not dell_firmware_update_share_name
+
+    - name: Set the overcloud nodes' maintenance mode
+      command: >
+        {{ container_engine }} exec bifrost_deploy
+        bash -c '
+        export OS_CLOUD=bifrost &&
+        export BIFROST_INVENTORY_SOURCE=ironic &&
+        export BIFROST_NODE_NAMES="{{ inventory_hostname }}" &&
+        ansible baremetal
+        --connection local
+        --inventory /etc/bifrost/inventory/
+        -e @/etc/bifrost/bifrost.yml
+        -e @/etc/bifrost/dib.yml
+        --limit {{ inventory_hostname }}
+        -m command
+        -a "baremetal node maintenance set {% raw %}{{ inventory_hostname }}{% endraw %} --reason firmware-update"'
+      delegate_to: "{{ seed_host }}"
+      vars:
+        # NOTE: Without this, the seed's ansible_host variable will not be
+        # respected when using delegate_to.
+        ansible_host: "{{ hostvars[seed_host].ansible_host | default(seed_host) }}"
+      become: "{{ container_engine == 'podman' }}"
+
+  tasks:
+    - name: Update firmware from the repository
+      dellemc.openmanage.idrac_firmware:
+        idrac_ip: "{{ redfish_address | default(ipmi_address, true) }}"
+        idrac_user: "{{ ipmi_username }}"
+        idrac_password: "{{ ipmi_password }}"
+        share_name: "{{ dell_firmware_update_share_name }}"
+        share_user: "{{ dell_firmware_update_share_user | default(omit, true) }}"
+        share_password: "{{ dell_firmware_update_share_password | default(omit, true) }}"
+        catalog_file_name: "{{ dell_firmware_update_catalog_file_name | default(omit, true) }}"
+        ignore_cert_warning: "{{ dell_firmware_update_ignore_cert_warning | bool }}"
+        validate_certs: "{{ dell_firmware_update_validate_certs | bool }}"
+        apply_update: "{{ not ansible_check_mode }}"
+        reboot: "{{ dell_firmware_update_reboot | bool }}"
+        job_wait: true
+      delegate_to: localhost
+      register: dell_firmware_update_result
+
+    - name: Display firmware update results
+      debug:
+        var: dell_firmware_update_result
+
+  post_tasks:
+    - name: Unset the overcloud nodes' maintenance mode
+      command: >
+        {{ container_engine }} exec bifrost_deploy
+        bash -c '
+        export OS_CLOUD=bifrost &&
+        export BIFROST_INVENTORY_SOURCE=ironic &&
+        export BIFROST_NODE_NAMES="{{ inventory_hostname }}" &&
+        ansible baremetal
+        --connection local
+        --inventory /etc/bifrost/inventory/
+        -e @/etc/bifrost/bifrost.yml
+        -e @/etc/bifrost/dib.yml
+        --limit {{ inventory_hostname }}
+        -m command
+        -a "baremetal node maintenance unset {% raw %}{{ inventory_hostname }}{% endraw %}"'
+      delegate_to: "{{ seed_host }}"
+      vars:
+        # NOTE: Without this, the seed's ansible_host variable will not be
+        # respected when using delegate_to.
+        ansible_host: "{{ hostvars[seed_host].ansible_host | default(seed_host) }}"
+      become: "{{ container_engine == 'podman' }}"
