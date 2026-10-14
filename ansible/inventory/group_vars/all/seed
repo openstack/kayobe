@@ -143,15 +143,9 @@ seed_users: "{{ users_default }}"
 #
 seed_containers: {}
 
-# (Deprecated) Whether to attempt a basic authentication login to a registry when
-# deploying seed containers.
-# TODO(mattcrees): remove seed_deploy_containers_registry_attempt_login in the
-# Hibiscus cycle.
-seed_deploy_containers_registry_attempt_login: "{{ kolla_docker_registry_username is truthy and kolla_docker_registry_password is truthy }}"
-
 # Whether to attempt a basic authentication login to a registry when
 # deploying seed containers.
-seed_manage_containers_registry_attempt_login: "{{ seed_deploy_containers_registry_attempt_login }}"
+seed_manage_containers_registry_attempt_login: "{{ kolla_docker_registry_username is truthy and kolla_docker_registry_password is truthy }}"
 
 ###############################################################################
 # Seed node firewalld configuration.
