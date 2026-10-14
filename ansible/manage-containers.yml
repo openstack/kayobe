@@ -2,10 +2,6 @@
 - name: "Ensure defined container images are {{ kayobe_action | default('deploy') }}ed"
   hosts: "{{ manage_containers_target_hosts | default('seed') }}"
   tags:
-    # Kept for backward compatibility.
-    # TODO(mattcrees): Will be removed in the Hibiscus release.
-    - seed-deploy-containers
-    - seed-manage-containers
     - manage-containers
   tasks:
     - import_role:

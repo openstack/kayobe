@@ -1,0 +1,13 @@
+---
+upgrade:
+  - |
+    The deprecated tags ``seed-deploy-containers`` and
+    ``seed-manage-containers`` have been removed. Use the
+    ``manage-containers`` tag instead.
+  - |
+    The deprecated variables ``deploy_containers_defaults``,
+    ``deploy_containers_docker_api_timeout`` and
+    ``seed_deploy_containers_registry_attempt_login`` have been removed. Use
+    ``manage_containers_defaults``, ``manage_containers_docker_api_timeout``
+    and ``seed_manage_containers_registry_attempt_login`` respectively
+    instead.
