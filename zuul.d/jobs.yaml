@@ -9,6 +9,7 @@
       - playbooks/kayobe-tox-ansible-syntax/pre.yml
     required-projects:
       - name: openstack/ansible-collection-kolla
+    timeout: 3600
     vars:
       tox_envlist: ansible-syntax
       # Use the site's OpenDev Galaxy mirror for role/collection installs.
