@@ -12,6 +12,3 @@
     - role: robertdebock.fail2ban
       become: true
       when: fail2ban_enabled | bool
-  vars:
-    # TODO (L-Chams): Remove fail2ban_sender override when PR https://github.com/robertdebock/ansible-role-fail2ban/pull/18 is merged.
-    fail2ban_sender: root@{{ ansible_facts.fqdn }}
