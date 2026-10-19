@@ -4,11 +4,6 @@
 Multiple Environments
 =====================
 
-.. warning::
-
-    Support for multiple Kayobe environments is considered experimental: its
-    design may change in future versions without a deprecation period.
-
 Sometimes it can be useful to support deployment of multiple environments from
 a single Kayobe configuration. Most commonly this is to support a deployment
 pipeline, such as the traditional development, test, staging and production
@@ -413,11 +408,6 @@ This would configure the external FQDN for the staging environment at
 
 Environment Dependencies
 ------------------------
-
-.. warning::
-
-   This is an experimental feature and is still subject to change whilst
-   the design is finalised.
 
 Since the Antelope 14.0.0 release, multiple environments can be layered on top
 of each of each other by declaring dependencies in a ``.kayobe-environment``

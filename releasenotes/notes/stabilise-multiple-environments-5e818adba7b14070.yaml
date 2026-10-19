@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Support for multiple Kayobe environments, including environment
+    dependencies declared in ``.kayobe-environment`` files, is no longer
+    considered experimental. Future changes to their design will follow the
+    standard deprecation process.
