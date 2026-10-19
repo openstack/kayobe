@@ -165,11 +165,6 @@ Then, to run the ``foo.yml`` playbook::
 Hooks
 =====
 
-.. warning::
-    Hooks are an experimental feature and the design could change in the future.
-    You may have to update your config if there are any changes to the design.
-    This warning will be removed when the design has been stabilised.
-
 Hooks allow you to automatically execute custom playbooks at certain points during
 the execution of a kayobe command. The point at which a hook is run is referred to
 as a ``target``. Please see the :ref:`list of available targets<Hook Targets>`.
