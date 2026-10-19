@@ -339,11 +339,6 @@ Leave the seed VM and return to the shell on the Ansible control host::
 Infrastructure VMs
 ===================
 
-.. warning::
-
-    Support for infrastructure VMs is considered experimental: its
-    design may change in future versions without a deprecation period.
-
 .. note::
 
     It necessary to perform some configuration before these steps
