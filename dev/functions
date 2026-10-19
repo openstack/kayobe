@@ -692,6 +692,34 @@ function overcloud_test_inspect {
   openstack baremetal node provide "$node" --wait
 }
 
+function overcloud_test_wait_for_volume {
+    # Wait for a volume to become available. Arguments:
+    # $1: The name of the volume.
+    set -eu
+
+    local volume="$1"
+    local attempts=30
+    local status
+
+    for i in $(seq 1 $attempts); do
+        status=$(openstack volume show "$volume" -f value -c status)
+        if [[ $status = available ]]; then
+            echo "$volume: Volume is available"
+            return 0
+        elif [[ $status = error ]]; then
+            echo "$volume: Volume is in the error state"
+            openstack volume show "$volume"
+            return 1
+        fi
+        echo "$volume: Volume is $status - retrying"
+        sleep 10
+    done
+
+    echo "$volume: Volume did not become available after $attempts attempts"
+    openstack volume show "$volume"
+    return 1
+}
+
 function overcloud_test {
     set -eu
 
@@ -699,6 +727,8 @@ function overcloud_test {
     name="$1"
     flavor="$2"
     network="$3"
+    # Boot the server from a Cinder volume rather than from the image.
+    boot_from_volume="${4:-false}"
 
     node_config="{ 'name': '$name', 'flavor': '$flavor', 'network': '$network' }"
 
@@ -708,7 +738,14 @@ function overcloud_test {
     echo "Performing a simple smoke test with node config: $node_config"
 
     echo "$name: Creating a server"
-    openstack server create --wait --image cirros --flavor "$flavor" --key-name mykey --network "$network" "$name"
+    if [[ $boot_from_volume = true ]]; then
+        echo "$name: Creating a bootable volume from the cirros image"
+        openstack volume create --image cirros --size 1 "${name}-volume"
+        overcloud_test_wait_for_volume "${name}-volume"
+        openstack server create --wait --volume "${name}-volume" --flavor "$flavor" --key-name mykey --network "$network" "$name"
+    else
+        openstack server create --wait --image cirros --flavor "$flavor" --key-name mykey --network "$network" "$name"
+    fi
     echo "$name: Server created"
     openstack server show "$name"
     status=$(openstack server show "$name" -f value -c status)
@@ -760,6 +797,12 @@ function overcloud_test {
 
     echo "$name: Deleting the Node"
     openstack server delete --wait "$name"
+
+    if [[ $boot_from_volume = true ]]; then
+        echo "$name: Deleting the volume"
+        overcloud_test_wait_for_volume "${name}-volume"
+        openstack volume delete "${name}-volume"
+    fi
 }
 
 function write_bifrost_clouds_yaml {

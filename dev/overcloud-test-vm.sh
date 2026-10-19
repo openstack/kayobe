@@ -11,6 +11,10 @@ source "${PARENT}/functions"
 function main {
     config_init
     overcloud_test vm1 m1.tiny demo-net
+    if is_cinder_enabled; then
+        # Boot a server from a Cinder volume to test the block storage backend.
+        overcloud_test vm2 m1.tiny demo-net true
+    fi
 }
 
 main
