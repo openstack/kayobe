@@ -48,6 +48,13 @@ kolla_enable_horizon: false
 # Enable Mariabackup for testing database backups
 kolla_enable_mariabackup: true
 
+# Enable Cinder with an NFS backend to test block storage.
+kolla_enable_cinder: true
+kolla_enable_cinder_backend_nfs: true
+
+# Cinder backup defaults to the Ceph driver, and no Ceph cluster is deployed.
+kolla_enable_cinder_backup: false
+
 {% if tls_enabled %}
 kolla_enable_nova_libvirt_container: false
 compute_libvirt_enable_tls: true

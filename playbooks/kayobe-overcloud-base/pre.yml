@@ -26,6 +26,47 @@
         src: globals.yml.j2
         dest: "{{ kayobe_config_src_dir }}/etc/kayobe/kolla/globals.yml"
 
+    # Export an NFS share from this node for Cinder's NFS backend to use.
+    - name: Ensure the NFS server package is installed
+      package:
+        name: "{{ 'nfs-kernel-server' if ansible_facts.os_family == 'Debian' else 'nfs-utils' }}"
+        state: present
+      become: true
+
+    - name: Ensure the Cinder NFS export directory exists
+      file:
+        path: /export/cinder
+        state: directory
+        mode: "0755"
+      become: true
+
+    - name: Ensure the Cinder NFS share is exported
+      # Kolla sets nas_secure_file_operations=false, so Cinder writes as root.
+      copy:
+        content: "/export/cinder 192.168.33.0/24(rw,sync,no_subtree_check,no_root_squash)\n"
+        dest: /etc/exports
+        mode: "0644"
+      become: true
+
+    - name: Ensure the NFS server is running
+      service:
+        name: "{{ 'nfs-kernel-server' if ansible_facts.os_family == 'Debian' else 'nfs-server' }}"
+        state: started
+        enabled: true
+      become: true
+
+    - name: Ensure the Cinder NFS share is active
+      command: exportfs -ra
+      become: true
+
+    # The share is reached over the storage network, which is the flat aio
+    # network in this environment.
+    - name: Ensure the Cinder NFS shares file exists
+      copy:
+        content: "192.168.33.3:/export/cinder\n"
+        dest: "{{ kayobe_config_src_dir }}/etc/kayobe/kolla/config/nfs_shares"
+        mode: "0644"
+
     - name: Configure Tenks to use UEFI boot mode
       replace:
         path: "{{ kayobe_src_dir }}/dev/tenks-deploy-config-compute.yml"
