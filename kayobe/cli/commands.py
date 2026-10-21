@@ -265,8 +265,7 @@ class ControlHostBootstrap(KayobeAnsibleMixin, KollaAnsibleMixin, VaultMixin,
     * Downloads and installs Ansible roles from Galaxy.
     * Generates an SSH key for the Ansible control host, if one does not exist.
     * Installs kolla-ansible on the Ansible control host.
-    * Generates admin-openrc.sh and public-openrc.sh files when passwords.yml
-      exists.
+    * Generates openrc files when passwords.yml exists.
     """
 
     def get_parser(self, prog_name):
@@ -330,15 +329,9 @@ class ControlHostBootstrap(KayobeAnsibleMixin, KollaAnsibleMixin, VaultMixin,
 
         if passwords_exist:
             # If we are bootstrapping a control host for an existing
-            # environment, we should also generate the admin-openrc.sh and
-            # public-openrc.sh scripts that provide admin credentials.
-
+            # environment, we should also generate the openrc scripts that
+            # provide admin credentials.
             self.run_kolla_ansible_overcloud(parsed_args, "post-deploy")
-            # Create an environment file for accessing the public API as the
-            # admin user.
-            playbooks = _build_playbook_list("public-openrc")
-            self.run_kayobe_playbooks(parsed_args, playbooks,
-                                      ignore_limit=True)
 
         if parsed_args.add_known_hosts:
             self.app.LOG.debug("Adding to known_hosts")
@@ -1784,10 +1777,6 @@ class OvercloudServiceDeploy(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
 
         # Post-deployment configuration.
         self.run_kolla_ansible_overcloud(parsed_args, "post-deploy")
-        # Create an environment file for accessing the public API as the admin
-        # user.
-        playbooks = _build_playbook_list("public-openrc")
-        self.run_kayobe_playbooks(parsed_args, playbooks, ignore_limit=True)
 
 
 class OvercloudServiceDeployContainers(KollaAnsibleMixin, KayobeAnsibleMixin,
@@ -1940,10 +1929,6 @@ class OvercloudServiceReconfigure(KollaAnsibleMixin, KayobeAnsibleMixin,
 
         # Post-deployment configuration.
         self.run_kolla_ansible_overcloud(parsed_args, "post-deploy")
-        # Create an environment file for accessing the public API as the admin
-        # user.
-        playbooks = _build_playbook_list("public-openrc")
-        self.run_kayobe_playbooks(parsed_args, playbooks, ignore_limit=True)
 
 
 class OvercloudServiceStop(KollaAnsibleMixin, KayobeAnsibleMixin, VaultMixin,
@@ -2049,10 +2034,6 @@ class OvercloudServiceUpgrade(KollaAnsibleMixin, KayobeAnsibleMixin,
 
         # Post-deployment configuration.
         self.run_kolla_ansible_overcloud(parsed_args, "post-deploy")
-        # Create an environment file for accessing the public API as the admin
-        # user.
-        playbooks = _build_playbook_list("public-openrc")
-        self.run_kayobe_playbooks(parsed_args, playbooks, ignore_limit=True)
 
 
 class OvercloudServiceDestroy(KollaAnsibleMixin, KayobeAnsibleMixin,
