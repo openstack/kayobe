@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Fixed Dell SONiC switch config indentation. Also made sure that VLAN
+    interfaces are defined first as others might depend on them.
+    Related bug:
+    `LP#2168529 <https://bugs.launchpad.net/kayobe/+bug/2168529>`__
