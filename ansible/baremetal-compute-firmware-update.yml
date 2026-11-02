@@ -1,0 +1,110 @@
+---
+# Perform firmware update of the baremetal compute nodes. The firmware update
+# is performed out of band via the hosts' BMCs using the
+# dellemc.openmanage.idrac_firmware module. As such, only Dell servers with
+# iDRACs are currently supported. During the update, we set the nodes to
+# maintenance mode in the overcloud Ironic service to prevent Ironic from
+# managing their power states.
+
+- name: Ensure dependencies are installed
+  hosts: controllers[0]
+  gather_facts: true
+  vars:
+    venv: "{{ virtualenv_path }}/openstack-cli"
+  pre_tasks:
+    - name: Set up openstack cli virtualenv
+      pip:
+        virtualenv: "{{ venv }}"
+        name:
+          - python-openstackclient
+          - python-ironicclient
+        state: latest
+        virtualenv_command: "python3.{{ ansible_facts.python.version.minor }} -m venv"
+        extra_args: "{% if pip_upper_constraints_file %}-c {{ pip_upper_constraints_file }}{% endif %}"
+
+- name: Group baremetal compute nodes by their BMC type
+  hosts: baremetal-compute
+  gather_facts: no
+  max_fail_percentage: >-
+    {{ baremetal_compute_firmware_update_max_fail_percentage |
+       default(baremetal_compute_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
+  tags:
+    - firmware-update
+    - firmware-update-idrac
+  tasks:
+    - name: Group baremetal compute hosts by their BMC type
+      group_by:
+        key: "baremetal_compute_with_bmcs_of_type_{{ bmc_type | default('unknown') }}"
+      changed_when: false
+
+- name: Update baremetal compute node firmware - iDRAC
+  hosts: baremetal_compute_with_bmcs_of_type_idrac
+  gather_facts: no
+  max_fail_percentage: >-
+    {{ baremetal_compute_firmware_update_max_fail_percentage |
+       default(baremetal_compute_max_fail_percentage) |
+       default(kayobe_max_fail_percentage) |
+       default(100) }}
+  # Optionally update nodes in batches, for example one at a time. Defaults to
+  # updating all nodes at once.
+  serial: "{{ firmware_update_serial | default('100%') }}"
+  tags:
+    - firmware-update
+    - firmware-update-idrac
+  vars:
+    venv: "{{ virtualenv_path }}/openstack-cli"
+    controller_host: "{{ groups['controllers'][0] }}"
+  pre_tasks:
+    - name: Fail if the firmware repository share is not configured
+      fail:
+        msg: >
+          dell_firmware_update_share_name must be set to the network
+          share containing the firmware repository.
+      when: not dell_firmware_update_share_name
+
+    - name: Set the baremetal compute nodes' maintenance mode
+      command: >
+        {{ venv }}/bin/openstack baremetal node maintenance set
+        {{ inventory_hostname }} --reason firmware-update
+      delegate_to: "{{ controller_host }}"
+      environment: "{{ openstack_auth_env }}"
+      vars:
+        # NOTE: Without this, the controller's ansible_host variable will not
+        # be respected when using delegate_to.
+        ansible_host: "{{ hostvars[controller_host].ansible_host | default(controller_host) }}"
+
+  tasks:
+    - name: Update firmware from the repository
+      dellemc.openmanage.idrac_firmware:
+        idrac_ip: "{{ redfish_address | default(ipmi_address, true) }}"
+        idrac_user: "{{ ipmi_username }}"
+        idrac_password: "{{ ipmi_password }}"
+        share_name: "{{ dell_firmware_update_share_name }}"
+        share_user: "{{ dell_firmware_update_share_user | default(omit, true) }}"
+        share_password: "{{ dell_firmware_update_share_password | default(omit, true) }}"
+        catalog_file_name: "{{ dell_firmware_update_catalog_file_name | default(omit, true) }}"
+        ignore_cert_warning: "{{ dell_firmware_update_ignore_cert_warning | bool }}"
+        validate_certs: "{{ dell_firmware_update_validate_certs | bool }}"
+        apply_update: "{{ not ansible_check_mode }}"
+        reboot: "{{ dell_firmware_update_reboot | bool }}"
+        job_wait: true
+      delegate_to: localhost
+      register: dell_firmware_update_result
+
+    - name: Display firmware update results
+      debug:
+        var: dell_firmware_update_result
+
+  post_tasks:
+    - name: Unset the baremetal compute nodes' maintenance mode
+      command: >
+        {{ venv }}/bin/openstack baremetal node maintenance unset
+        {{ inventory_hostname }}
+      delegate_to: "{{ controller_host }}"
+      environment: "{{ openstack_auth_env }}"
+      vars:
+        # NOTE: Without this, the controller's ansible_host variable will not
+        # be respected when using delegate_to.
+        ansible_host: "{{ hostvars[controller_host].ansible_host | default(controller_host) }}"

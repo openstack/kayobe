@@ -102,6 +102,36 @@ compute nodes::
 
     (kayobe) $ kayobe baremetal compute inspect
 
+Updating Firmware
+-----------------
+
+It is possible to update firmware on the baremetal compute nodes::
+
+    (kayobe) $ kayobe baremetal compute firmware update
+
+To show the available firmware updates without applying them, run the command
+in Ansible check mode using the ``--check`` argument::
+
+    (kayobe) $ kayobe baremetal compute firmware update --check
+
+Firmware updates are performed out of band via the host's BMC. Currently only
+Dell servers with iDRACs (``bmc_type: idrac``) are supported.
+
+During the update, the nodes are placed in maintenance mode in the overcloud
+Ironic service to prevent Ironic from managing their power states.
+
+By default, firmware is updated on all hosts at once. To update hosts in
+batches, for example one at a time, set ``firmware_update_serial``:
+
+.. code-block:: yaml
+   :caption: ``$KAYOBE_CONFIG_PATH/bmc.yml``
+
+   firmware_update_serial: 1
+
+The firmware update repository is configured using the same
+``dell_firmware_update_*`` variables as for the overcloud. See
+:doc:`overcloud` for details.
+
 Saving Hardware Introspection Data
 ----------------------------------
 
