@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Support for infrastructure VMs is no longer considered experimental.
+    Future changes to its design will follow the standard deprecation
+    process.
