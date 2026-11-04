@@ -319,6 +319,20 @@ after it has been applied.
 * ``ansible_connection`` should be ``ansible.netcommon.network_cli``.
 * ``ansible_network_os`` should be ``dellemc.enterprise_sonic.sonic``.
 
+
+You must include ``sonic`` under the ``network_group_modules`` variable in the
+``[defaults]`` group. This can be done with a custom ``ansible.cfg`` file. Below
+is an example of how to set it for just ``sonic``. If using a system with mixed
+switch types, additional values may be needed. More details can be found in the
+`Ansible documentation
+<https://docs.ansible.com/projects/ansible/latest/reference_appendices/config.html#network-group-modules>`__.
+
+
+.. code-block:: yaml
+
+  [defaults]
+  network_group_modules = sonic
+
 Dell OS6, OS9, and OS10
 -----------------------
 
