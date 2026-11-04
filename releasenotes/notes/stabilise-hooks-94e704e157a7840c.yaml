@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Custom playbook hooks are no longer considered experimental. Future
+    changes to their design will follow the standard deprecation process.
