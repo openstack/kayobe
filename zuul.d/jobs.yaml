@@ -305,6 +305,8 @@
       Base job for testing seed image builds.
 
       Configures the primary VM as a seed.
+    required-projects:
+      - name: openstack/ironic-python-agent-builder
     vars:
       build_images: true
 
