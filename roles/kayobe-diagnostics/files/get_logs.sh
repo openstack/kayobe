@@ -38,6 +38,39 @@ copy_bifrost_logs() {
         $container_engine cp bifrost_deploy:/etc/$d ${LOG_DIR}/kolla_node_configs/bifrost/
     done
     $container_engine cp bifrost_deploy:/var/log/mariadb/mariadb.log ${LOG_DIR}/kolla/mariadb/
+    # Ironic logs, including IPA ramdisk logs, are written to a volume that
+    # is not mounted on the host.
+    $container_engine cp bifrost_deploy:/var/log/kolla/. ${LOG_DIR}/kolla/
+    timeout 120 $container_engine exec bifrost_deploy \
+        bash -c 'export OS_CLOUD=bifrost && baremetal node list --long -f yaml' > ${LOG_DIR}/kolla/ironic/baremetal-node-list.txt
+    # Per-node state, history of failed steps, and inspection inventory.
+    mkdir -p ${LOG_DIR}/kolla/ironic/nodes
+    nodes=$(timeout 120 $container_engine exec bifrost_deploy \
+        bash -c 'export OS_CLOUD=bifrost && baremetal node list -f value -c UUID')
+    for node in $nodes; do
+        for cmd in "show" "history list --long" "inventory save"; do
+            timeout 120 $container_engine exec bifrost_deploy \
+                bash -c "export OS_CLOUD=bifrost && baremetal node $cmd $node" \
+                > ${LOG_DIR}/kolla/ironic/nodes/${node}-${cmd%% *}.txt 2>&1
+        done
+    done
+    # Deployment images served to nodes, including their virtual sizes.
+    timeout 300 $container_engine exec bifrost_deploy \
+        bash -c 'ls -la /httpboot /tftpboot; for image in /httpboot/*.qcow2; do qemu-img info "$image"; sha256sum "$image"; done' \
+        > ${LOG_DIR}/kolla/bifrost-images.txt 2>&1
+}
+
+copy_libvirt_state() {
+    # State of libvirt domains, such as Tenks nodes.
+    mkdir -p ${LOG_DIR}/system_logs/libvirt-state
+    virsh list --all > ${LOG_DIR}/system_logs/libvirt-state/virsh-list.txt
+    for domain in $(virsh list --all --name); do
+        virsh dumpxml $domain > ${LOG_DIR}/system_logs/libvirt-state/${domain}-dumpxml.txt
+        virsh dominfo $domain > ${LOG_DIR}/system_logs/libvirt-state/${domain}-dominfo.txt
+        for disk in $(virsh domblklist $domain | awk '$2 ~ /^\// {print $2}'); do
+            qemu-img info -U $disk
+        done > ${LOG_DIR}/system_logs/libvirt-state/${domain}-disks.txt 2>&1
+    done
 }
 
 copy_logs() {
@@ -51,6 +84,7 @@ copy_logs() {
         rm ${LOG_DIR}/kolla_configs/config/ironic/ironic-agent.{kernel,initramfs}
         rm ${LOG_DIR}/kolla_node_configs/ironic-http/ironic-agent.{kernel,initramfs}
         rm ${LOG_DIR}/kolla_node_configs/ironic-tftp/ironic-agent.{kernel,initramfs}
+        rm ${LOG_DIR}/kolla_node_configs/bifrost/ipa.{kernel,initramfs}
     fi
     if [[ -n ${PREVIOUS_CONFIG_DIR} ]] && [[ -d ${PREVIOUS_CONFIG_DIR} ]]; then
         mkdir -p ${LOG_DIR}/previous_{kayobe,kolla}_configs
@@ -165,6 +199,10 @@ copy_logs() {
     for f in $(find ${LOG_DIR}/{system_logs,kolla,docker_logs,podman_logs} -name "*.log"); do
         mv $f ${f/.log/.txt}
     done
+
+    if [[ -x "$(command -v virsh)" ]]; then
+        copy_libvirt_state
+    fi
 
     chmod -R 777 ${LOG_DIR}
 }
