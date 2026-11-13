@@ -188,6 +188,10 @@
     pre-run: playbooks/kayobe-overcloud-base/pre.yml
     run: playbooks/kayobe-overcloud-base/run.yml
     timeout: 10800
+    vars:
+      # Build container images affected by changes under test, e.g. those
+      # pulled in via Depends-On.
+      kayobe_ci_build_container_images: true
 
 - job:
     name: kayobe-overcloud-rocky10
@@ -349,6 +353,8 @@
     pre-run: playbooks/kayobe-overcloud-host-configure-base/pre.yml
     run: playbooks/kayobe-overcloud-host-configure-base/run.yml
     timeout: 7200
+    vars:
+      kayobe_ci_build_container_images: false
 
 - job:
     name: kayobe-overcloud-host-configure-rocky10

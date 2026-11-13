@@ -10,7 +10,47 @@ docker_daemon_debug: true
 docker_registry_mirrors:
   - "http://{{ zuul_site_mirror_fqdn }}:8082/"
 
+{% if ci_kolla_build_images | bool %}
+# Kolla is installed on the container image builder by the Kayobe Ansible
+# user, so use a copy of the source checkout that it can read.
+kolla_source_url: "{{ ci_kolla_build_src_dir ~ '/' ~ zuul.projects['opendev.org/openstack/kolla'].src_dir }}"
+
+# Build images with the same name as the published images that Kolla Ansible
+# deploys by default, so that it uses the local images rather than pulling.
+kolla_docker_registry: "quay.io"
+{% if not ci_kolla_build_all_images | bool %}
+
+# Only build enabled images affected by the changes under test. Match image
+# names that contain a prefix after a hyphen, such as ironic-neutron-agent for
+# neutron, since these images also install the project.
+overcloud_container_image_sets:
+  - regexes: >-
+      {% raw %}{{ overcloud_container_image_regexes |
+         select('regex', '(^\^?|-)(' ~ ci_kolla_build_image_prefixes | join('|') ~ ')') |
+         join(' ') }}{% endraw %}
+{# NOTE: Keep the blank line below. trim_blocks removes the newline after the
+   endraw tag, so without it the next line joins the folded scalar. #}
+
+ci_kolla_build_image_prefixes: {{ ci_kolla_build_image_prefixes | to_json }}
+{% endif %}
+{% if ci_kolla_build_source_projects | length > 0 %}
+
+# Build the changes under test from local copies of their source checkouts.
+# This replaces the default bifrost-base source, which is only used by seed
+# images.
+kolla_sources:
+{% for project in ci_kolla_build_source_projects %}
+{% set sections = ci_kolla_build_config_defaults.kolla_build_sources[project.name] %}
+{% for section in ([sections] if sections is string else sections) %}
+  {{ section }}:
+    type: "local"
+    location: "{{ ci_kolla_build_src_dir }}/{{ project.src_dir }}"
+{% endfor %}
+{% endfor %}
+{% endif %}
+{% else %}
 kolla_source_url: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/kolla'].src_dir }}"
+{% endif %}
 kolla_source_version: "{{ zuul.projects['opendev.org/openstack/kolla'].checkout }}"
 kolla_ansible_source_url: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/kolla-ansible'].src_dir }}"
 kolla_ansible_source_version: "{{ zuul.projects['opendev.org/openstack/kolla-ansible'].checkout }}"
