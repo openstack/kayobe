@@ -40,7 +40,7 @@
       ansible.builtin.pause:
         prompt: >
           The following hosts will be deprovisioned:
-          {{ play_hosts | join(', ') }}
+          {{ ansible_play_batch | join(', ') }}
           If you want to proceed type: yes
       register: pause_prompt
       delegate_to: localhost

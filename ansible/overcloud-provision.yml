@@ -143,7 +143,7 @@
     - name: Set a fact containing the bifrost host list
       set_fact:
         bifrost_limit: "{{ bifrost_limit + [item] }}"
-      with_items: "{{ play_hosts }}"
+      with_items: "{{ ansible_play_batch }}"
       when: hostvars[item].initial_provision_state != 'active'
       run_once: True
 
