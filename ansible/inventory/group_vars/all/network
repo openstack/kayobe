@@ -54,6 +54,91 @@ inspection_net_name: "{{ 'inspection_net' if kolla_enable_ironic | bool else Non
 cleaning_net_name: "{{ provision_wl_net_name }}"
 
 ###############################################################################
+# Network role mapping.
+
+# Whether the overcloud admin network is mapped to a host. Default is true for
+# all hosts.
+admin_oc_net_required: true
+
+# Whether the overcloud out-of-band network is mapped to a host. Default is
+# true for hosts in the seed and seed-hypervisor groups.
+oob_oc_net_required: "{{ ['seed', 'seed-hypervisor'] | intersect(group_names) | list | length > 0 }}"
+
+# Whether the overcloud provisioning network is mapped to a host. Default is
+# true for hosts in the seed and seed-hypervisor groups.
+provision_oc_net_required: "{{ ['seed', 'seed-hypervisor'] | intersect(group_names) | list | length > 0 }}"
+
+# Whether the workload out-of-band network is mapped to a host. Default is true
+# for hosts in controller_ironic_conductor_group when Ironic is enabled.
+oob_wl_net_required: "{{ kolla_enable_ironic | bool and controller_ironic_conductor_group in group_names }}"
+
+# Whether the workload provisioning network is mapped to a host. Default is
+# true for hosts in controller_ironic_conductor_group when Ironic is enabled.
+provision_wl_net_required: "{{ kolla_enable_ironic | bool and controller_ironic_conductor_group in group_names }}"
+
+# Whether the internal network is mapped to a host. Default is true for hosts
+# in the overcloud group.
+internal_net_required: "{{ 'overcloud' in group_names }}"
+
+# Whether the external networks are mapped to a host. Default is true for hosts
+# in controller_network_group, and for hosts in the compute group when
+# kolla_enable_neutron_provider_networks is true, when Neutron is enabled.
+external_net_required: >-
+  {{ kolla_enable_neutron | bool and
+     (controller_network_group in group_names or
+      (kolla_enable_neutron_provider_networks | bool and 'compute' in group_names)) }}
+
+# Whether the public network is mapped to a host. Default is true for hosts in
+# controller_loadbalancer_group.
+public_net_required: "{{ controller_loadbalancer_group in group_names }}"
+
+# Whether the tunnel network is mapped to a host. Default is true for hosts in
+# the compute group and controller_network_group.
+tunnel_net_required: "{{ ['compute', controller_network_group] | intersect(group_names) | list | length > 0 }}"
+
+# Whether the storage network is mapped to a host. Default is true for hosts in
+# the compute, controllers and storage groups, and for hosts in
+# controller_network_group when Manila is enabled.
+storage_net_required: >-
+  {{ ['compute', 'controllers', 'storage'] | intersect(group_names) | list | length > 0 or
+     (kolla_enable_manila | bool and controller_network_group in group_names) }}
+
+# Whether the storage management network is mapped to a host. Default is true
+# for hosts in the storage group.
+storage_mgmt_net_required: "{{ 'storage' in group_names }}"
+
+# Whether the inspection network is mapped to a host. Default is true for hosts
+# in controller_ironic_inspector_group when Ironic is enabled.
+inspection_net_required: "{{ kolla_enable_ironic | bool and controller_ironic_inspector_group in group_names }}"
+
+# Whether the cleaning network is mapped to a host. Default is true for hosts
+# in controller_ironic_conductor_group when Ironic is enabled.
+cleaning_net_required: "{{ kolla_enable_ironic | bool and controller_ironic_conductor_group in group_names }}"
+
+###############################################################################
+# Default network interfaces.
+
+# List of names of network roles. Each has a corresponding <role>_net_name or
+# <role>_net_names variable, and a <role>_net_required variable.
+network_role_names:
+  - admin_oc
+  - oob_oc
+  - provision_oc
+  - oob_wl
+  - provision_wl
+  - internal
+  - external
+  - public
+  - tunnel
+  - storage
+  - storage_mgmt
+  - inspection
+  - cleaning
+
+# List of default networks to which nodes are attached.
+network_interfaces_default: "{{ network_role_names | net_default_interfaces | select | unique | list }}"
+
+###############################################################################
 # Network virtual patch link configuration.
 
 # Suffix for Open vSwitch bridge names.

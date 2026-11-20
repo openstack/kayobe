@@ -953,6 +953,42 @@ To configure network roles in a system with two networks, ``example1`` and
    inspection_net_name: example2
    cleaning_net_name: example2
 
+Mapping Network Roles to Hosts
+------------------------------
+
+Each network role has a ``<role>_net_required`` flag which determines whether
+that role's network is attached to a host. The flag is evaluated once per
+host, so it may test group membership, enabled services, or any other host
+variable. Roles whose flag is ``true`` are resolved to network names and
+collected in ``network_interfaces_default``, which each group's
+``<group>_default_network_interfaces`` uses by default.
+
+The defaults, listed in ``networks.yml``, map roles to hosts by group and by
+enabled service. For example, the tunnel network is attached to hosts in the
+``compute`` group and ``controller_network_group``:
+
+.. code-block:: yaml
+   :caption: ``networks.yml``
+
+   tunnel_net_required: >-
+     {{ ['compute', controller_network_group] |
+        intersect(group_names) | list | length > 0 }}
+
+Override a flag to change which hosts are attached to a network. For example,
+to attach the ``monitoring`` group to the public network in addition to the
+load balancer hosts:
+
+.. code-block:: yaml
+   :caption: ``networks.yml``
+
+   public_net_required: >-
+     {{ [controller_loadbalancer_group, 'monitoring'] |
+        intersect(group_names) | list | length > 0 }}
+
+To attach a single group to an extra network without changing a role's
+mapping, set that group's ``<group>_extra_network_interfaces`` variable
+instead.
+
 Overcloud Admin Network
 -----------------------
 
@@ -1248,19 +1284,32 @@ Controllers
 By default, controllers are attached to the following networks:
 
 * overcloud admin network
-* workload (compute) out-of-band network
-* workload (compute) provisioning network
-* workload (compute) inspection network
-* workload (compute) cleaning network
 * internal network
 * storage network
 
-In addition, if the controllers are also in the ``network`` group, they are
-attached to the following networks:
+If Ironic is enabled, controllers in ``controller_ironic_conductor_group``
+(by default, the ``controllers`` group) are also attached to the following
+networks:
+
+* workload (compute) out-of-band network
+* workload (compute) provisioning network
+* workload (compute) cleaning network
+
+and controllers in ``controller_ironic_inspector_group`` (by default, the
+``controllers`` group) are also attached to the following network:
+
+* workload (compute) inspection network
+
+In addition, controllers in ``controller_network_group`` (by default, the
+``network`` group) are attached to the following networks:
+
+* tunnel network
+* external network, if Neutron is enabled
+
+and controllers in ``controller_loadbalancer_group`` (by default, the
+``network`` group) are attached to the following network:
 
 * public network
-* external network
-* tunnel network
 
 This list may be extended by setting ``controller_extra_network_interfaces`` to a
 list of names of additional networks to attach.  Alternatively, the list may be
@@ -1272,15 +1321,20 @@ Network Hosts
 
 By default, controllers provide Neutron network services and load balancing.
 If separate network hosts are used (see
-:ref:`control-plane-service-placement-network-hosts`), they are attached to the
-following networks:
+:ref:`control-plane-service-placement-network-hosts`), hosts in
+``controller_network_group`` are attached to the following networks:
 
 * overcloud admin network
 * internal network
-* storage network
-* public network
-* external network
 * tunnel network
+* external network, if Neutron is enabled
+
+If Manila is enabled, they are also attached to the following network:
+
+* storage network
+
+Hosts in ``controller_loadbalancer_group`` are attached to the public network.
+By default, both groups are the ``network`` group.
 
 This list may be extended by setting
 ``controller_network_host_extra_network_interfaces`` to a list of names of
@@ -1298,7 +1352,11 @@ networks by default:
 
 * overcloud admin network
 * internal network
-* public network
+
+Monitoring services are reached via the load balancer, so monitoring hosts
+that are not also load balancers are not attached to the public network.  To
+attach them, override ``public_net_required`` or set
+``monitoring_extra_network_interfaces``.
 
 This list may be extended by setting ``monitoring_extra_network_interfaces`` to
 a list of names of additional networks to attach.  Alternatively, the list may
@@ -1324,6 +1382,9 @@ By default, virtualised compute hosts are attached to the following networks:
 * internal network
 * storage network
 * tunnel network
+
+If Neutron is enabled and ``kolla_enable_neutron_provider_networks`` is
+``true``, they are also attached to the external networks.
 
 This list may be extended by setting ``compute_extra_network_interfaces`` to a
 list of names of additional networks to attach.  Alternatively, the list may be

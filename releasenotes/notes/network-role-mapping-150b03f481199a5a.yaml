@@ -1,0 +1,80 @@
+---
+features:
+  - |
+    Improves network role to host mapping, avoiding networks being mapped to
+    hosts unnecessarily.
+upgrade:
+  - |
+    Modifies the default mapping of networks to hosts.
+
+    Operators upgrading an existing deployment should check whether this
+    change affects their topology before running ``kayobe overcloud host
+    configure``. Deployments using the default inventory, where the
+    ``network``, ``monitoring`` and Ironic conductor and inspector groups
+    all resolve to ``controllers``, are unaffected. Deployments that
+    separate those groups may find that some networks are no longer mapped
+    to some hosts.
+
+    On Ubuntu and Debian, kayobe removes ``systemd-networkd``
+    configuration for networks that are no longer mapped to a host, so the
+    corresponding interface is torn down the next time ``kayobe overcloud
+    host configure`` runs. On Rocky Linux the existing interface
+    configuration is left in place, but is no longer managed by kayobe.
+
+    To review the effect before applying it, compare ``network_interfaces``
+    for each host before and after the upgrade::
+
+        kayobe configuration dump --hosts overcloud \
+          --var-name network_interfaces
+
+    To keep a network mapped to a host, either override the relevant
+    ``<role>_net_required`` flag in ``networks.yml``, or add the network to
+    that group's ``<group>_extra_network_interfaces``.
+
+    * overcloud admin network (``admin_oc_net_name``): unchanged
+    * overcloud out-of-band network (``oob_oc_net_name``): unchanged
+    * overcloud provisioning network (``provision_oc_net_name``): unchanged
+    * workload (compute) out-of-band network (``oob_wl_net_name``): previously
+      mapped to all controllers. Now mapped to
+      ``controller_ironic_conductor_group`` (default ``controllers``), when
+      Ironic is enabled.
+    * workload (compute) provisioning network (``provision_wl_net_name``):
+      previously mapped to all controllers. Now mapped to
+      ``controller_ironic_conductor_group`` (default ``controllers``), when
+      Ironic is enabled.
+    * internal network (``internal_net_name``): previously mapped to
+      ``compute``, ``controllers``, ``monitoring``, ``network``, ``storage``
+      groups. Now mapped to ``overcloud`` group.
+    * external networks (``external_net_names``): previously mapped to
+      ``compute`` group when ``kolla_enable_neutron_provider_networks`` is
+      ``true``, and ``network`` group unconditionally. Now mapped to
+      ``compute`` group when ``kolla_enable_neutron`` is ``true`` and
+      ``kolla_enable_neutron_provider_networks`` is ``true``, and
+      ``controller_network_group`` group when ``kolla_enable_neutron`` is
+      ``true``.
+    * public network (``public_net_name``): previously mapped to the
+      ``network`` and ``monitoring`` groups. Now mapped to
+      ``controller_loadbalancer_group`` (default ``network``) only. Hosts
+      in the ``monitoring`` group that are not also in
+      ``controller_loadbalancer_group`` are no longer attached to the
+      public network, since the services running on them are reached via
+      the load balancer. Set ``public_net_required`` or
+      ``monitoring_extra_network_interfaces`` to restore the previous
+      behaviour.
+    * tunnel network (``tunnel_net_name``): previously mapped to ``compute``
+      and ``network`` groups. Now mapped to ``compute`` and
+      ``controller_network_group`` (default ``network``) groups.
+    * storage network (``storage_net_name``): previously mapped to ``compute``,
+      ``controllers``, ``network`` and ``storage`` groups. Now mapped to
+      ``compute``, ``controllers``, ``storage`` networks unconditionally, and
+      ``controller_network_group`` (default ``network``) group when
+      ``kolla_enable_manila`` is ``true``.
+    * storage management network (``storage_mgmt_net_name``): unchanged.
+    * overcloud inspection network (``inspection_net_name``): previously mapped
+      to ``controllers`` group. Now mapped to
+      ``controller_ironic_inspector_group`` (default ``controllers``) when
+      ``kolla_enable_ironic`` is ``true``.
+    * overcloud cleaning network (``cleaning_net_name``): previously mapped to
+      ``controllers`` group. Now mapped to
+      ``controller_ironic_conductor_group`` (default ``controllers``) when
+      ``kolla_enable_ironic`` is ``true``.

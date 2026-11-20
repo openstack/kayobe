@@ -93,8 +93,7 @@ infra_vm_network_interfaces: >
       infra_vm_extra_network_interfaces) | select | unique | list }}
 
 # List of default networks to which infrastructure vm nodes are attached.
-infra_vm_default_network_interfaces: >
-  {{ [admin_oc_net_name] | select | unique | list }}
+infra_vm_default_network_interfaces: "{{ network_interfaces_default }}"
 
 # List of extra networks to which infrastructure vm nodes are attached.
 infra_vm_extra_network_interfaces: []

@@ -815,6 +815,51 @@ def net_physical_interface(context, name, inventory_hostname=None):
         return [net_attr(context, name, 'interface', inventory_hostname)]
 
 
+@jinja2.pass_context
+def net_default_interfaces(context, network_role_names,
+                           inventory_hostname=None):
+    """Return a list of default networks to assign to a host.
+
+    Takes as input a list of all network role names, filters out any that are
+    not mapped to the host, and maps them to the actual network names. The
+    result may contain duplicates.
+
+    :param context: a Jinja2 Context object.
+    :param network_role_names: a list of network role names.
+    :param inventory_hostname: Ansible inventory hostname.
+    :returns: a list of names of networks mapped to the host.
+    :raises: ansible.errors.AnsibleFilterError
+    """
+    required_nets = []
+    for role in network_role_names:
+        required_var = role + '_net_required'
+        if not utils.hostvar_defined(context, required_var,
+                                     inventory_hostname):
+            raise errors.AnsibleFilterError(
+                "Missing expected %s variable for %s" %
+                (required_var, inventory_hostname))
+        required = utils.get_hostvar(context, required_var,
+                                     inventory_hostname)
+        if not utils.call_bool_filter(context, required):
+            continue
+
+        name_var = role + '_net_name'
+        if utils.hostvar_defined(context, name_var, inventory_hostname):
+            name = utils.get_hostvar(context, name_var, inventory_hostname)
+            if name:
+                required_nets.append(name)
+            continue
+
+        names_var = role + '_net_names'
+        if not utils.hostvar_defined(context, names_var, inventory_hostname):
+            raise errors.AnsibleFilterError(
+                "Missing expected %s or %s variable for %s" %
+                (name_var, names_var, inventory_hostname))
+        names = utils.get_hostvar(context, names_var, inventory_hostname)
+        required_nets.extend(names or [])
+    return required_nets
+
+
 def get_filters():
     return {
         'net_attr': net_attr,
@@ -870,4 +915,5 @@ def get_filters():
         'net_libvirt_vm_network': net_libvirt_vm_network,
         'net_ovs_veths': net_ovs_veths,
         'net_physical_interface': net_physical_interface,
+        'net_default_interfaces': net_default_interfaces,
     }

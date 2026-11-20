@@ -15,11 +15,7 @@ storage_network_interfaces: >
       storage_extra_network_interfaces) | select | unique | list }}
 
 # List of default networks to which storage nodes are attached.
-storage_default_network_interfaces: >
-  {{ [admin_oc_net_name,
-      internal_net_name,
-      storage_mgmt_net_name,
-      storage_net_name] | select | unique | list }}
+storage_default_network_interfaces: "{{ network_interfaces_default }}"
 
 # List of extra networks to which storage nodes are attached.
 storage_extra_network_interfaces: []

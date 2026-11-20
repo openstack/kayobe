@@ -15,9 +15,10 @@
 import copy
 import unittest
 
+from ansible import errors
+from ansible.plugins.filter.core import to_bool
 import jinja2
 
-from ansible import errors
 from kayobe.plugins.filter import networks
 
 
@@ -51,6 +52,7 @@ class BaseNetworksTest(unittest.TestCase):
     def setUp(self):
         # Bandit complains about Jinja2 autoescaping without nosec.
         self.env = jinja2.Environment()  # nosec
+        self.env.filters['bool'] = to_bool
         self.context = self._make_context(self.variables)
 
     def _make_context(self, parent):
@@ -220,3 +222,111 @@ class TestNetworks(BaseNetworksTest):
         interface = networks.net_physical_interface(self.context, "net1")
         expected = ['eth0']
         self.assertEqual(expected, interface)
+
+    def test_net_default_interfaces_one_net(self):
+        role_names = ['role1', 'role2']
+        self._update_context({"role1_net_name": "net1",
+                              "role1_net_required": True,
+                              "role2_net_name": "net1",
+                              "role2_net_required": True})
+        interfaces = networks.net_default_interfaces(self.context, role_names)
+        expected = ["net1", "net1"]
+        self.assertEqual(expected, interfaces)
+
+    def test_net_default_interfaces_two_nets(self):
+        role_names = ['role1', 'role2']
+        self._update_context({"role1_net_name": "net1",
+                              "role1_net_required": True,
+                              "role2_net_name": "net2",
+                              "role2_net_required": True})
+        interfaces = networks.net_default_interfaces(self.context, role_names)
+        expected = ["net1", "net2"]
+        self.assertEqual(expected, interfaces)
+
+    def test_net_default_interfaces_not_required(self):
+        role_names = ['role1', 'role2']
+        self._update_context({"role1_net_name": "net1",
+                              "role1_net_required": False,
+                              "role2_net_name": "net2",
+                              "role2_net_required": False})
+        interfaces = networks.net_default_interfaces(self.context, role_names)
+        expected = []
+        self.assertEqual(expected, interfaces)
+
+    def test_net_default_interfaces_missing_name(self):
+        role_names = ['role1']
+        self._update_context({"role1_net_required": True})
+        self.assertRaises(errors.AnsibleFilterError,
+                          networks.net_default_interfaces, self.context,
+                          role_names)
+
+    def test_net_default_interfaces_missing_required(self):
+        role_names = ['role1']
+        self._update_context({"role1_net_name": "net1"})
+        self.assertRaises(errors.AnsibleFilterError,
+                          networks.net_default_interfaces, self.context,
+                          role_names)
+
+    def test_net_default_interfaces_required_none(self):
+        role_names = ['role1']
+        self._update_context({"role1_net_name": "net1",
+                              "role1_net_required": None})
+        interfaces = networks.net_default_interfaces(self.context, role_names)
+        self.assertEqual([], interfaces)
+
+    def test_net_default_interfaces_required_string(self):
+        role_names = ['role1', 'role2']
+        self._update_context({"role1_net_name": "net1",
+                              "role1_net_required": "True",
+                              "role2_net_name": "net2",
+                              "role2_net_required": "False"})
+        interfaces = networks.net_default_interfaces(self.context, role_names)
+        self.assertEqual(["net1"], interfaces)
+
+    def test_net_default_interfaces_inventory_hostname(self):
+        role_names = ['role1', 'role2']
+        self._update_context({"hostvars": {
+            "other-host": {"role1_net_name": "net1",
+                           "role1_net_required": True,
+                           "role2_net_names": ["net2", "net3"],
+                           "role2_net_required": True}}})
+        interfaces = networks.net_default_interfaces(
+            self.context, role_names, inventory_hostname="other-host")
+        self.assertEqual(["net1", "net2", "net3"], interfaces)
+
+    def test_net_default_interfaces_inventory_hostname_missing(self):
+        role_names = ['role1']
+        self._update_context({"hostvars": {}})
+        self.assertRaises(errors.AnsibleFilterError,
+                          networks.net_default_interfaces, self.context,
+                          role_names, inventory_hostname="other-host")
+
+    def test_net_default_interfaces_net_names_list(self):
+        role_names = ['role1']
+        self._update_context({"role1_net_names": ["net1", "net2"],
+                              "role1_net_required": True})
+        interfaces = networks.net_default_interfaces(self.context,
+                                                     role_names)
+        self.assertEqual(["net1", "net2"], interfaces)
+
+    def test_net_default_interfaces_name_none(self):
+        role_names = ['role1']
+        self._update_context({"role1_net_name": None,
+                              "role1_net_required": True})
+        interfaces = networks.net_default_interfaces(self.context, role_names)
+        self.assertEqual([], interfaces)
+
+    def test_net_default_interfaces_name_none_no_names_fallback(self):
+        role_names = ['role1']
+        self._update_context({"role1_net_name": None,
+                              "role1_net_names": ["net1"],
+                              "role1_net_required": True})
+        interfaces = networks.net_default_interfaces(self.context, role_names)
+        self.assertEqual([], interfaces)
+
+    def test_net_default_interfaces_net_names_empty(self):
+        role_names = ['role1']
+        self._update_context({"role1_net_names": [],
+                              "role1_net_required": True})
+        interfaces = networks.net_default_interfaces(self.context, role_names)
+        self.assertEqual([], interfaces)
