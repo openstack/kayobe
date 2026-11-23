@@ -1,4 +1,9 @@
 ---
+- name: Ensure sonic module is present in network_group_modules
+  ansible.builtin.assert:
+    that:
+      - "'sonic' in lookup('ansible.builtin.config', 'NETWORK_GROUP_MODULES')"
+
 - name: Ensure Dell SONiC switches are configured
   dellemc.enterprise_sonic.sonic_config:  # noqa fqcn[canonical]
     src: "../templates/dell-sonic-config.j2"

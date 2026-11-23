@@ -11,6 +11,15 @@ Requirements
 
 The switches should be configured to allow SSH access.
 
+You must include ``sonic`` under the ``network_group_modules`` variable in the
+``[defaults]`` group. This can be done with a custom ``ansible.cfg`` file. Below
+is an example of how to set it for just sonic. If using a system with mixed
+switch types, additional values may be needed. More detail can be found in the
+[Ansible documentation](https://docs.ansible.com/projects/ansible/latest/reference_appendices/config.html#network-group-modules).
+
+    [defaults]
+    network_group_modules = sonic
+
 Role Variables
 --------------
 
