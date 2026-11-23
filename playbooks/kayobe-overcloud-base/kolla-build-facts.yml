@@ -1,0 +1,71 @@
+---
+# Determine whether container images need to be built for the changes under
+# test, e.g. those pulled in via Depends-On, and which images to build.
+#
+# Only enabled images affected by the changes under test are built. They are
+# tagged with the same name as the published images, so Kolla Ansible uses the
+# local images and pulls any others from the registry.
+
+- name: Set facts about Kolla files used to build container images
+  set_fact:
+    # NOTE: Use the map of project names to kolla-build.conf source sections
+    # maintained in the kolla-build-config role in Kolla.
+    ci_kolla_build_sources_file: "{{ ci_kolla_src_dir }}/roles/kolla-build-config/defaults/main.yml"
+    ci_kolla_build_zuul_vars_file: "{{ ci_kolla_src_dir }}/tests/vars/zuul.yml"
+    ci_kolla_build_repos_yaml_file: "{{ ci_kolla_src_dir }}/tests/templates/repos.yaml.j2"
+  vars:
+    ci_kolla_src_dir: "{{ zuul.executor.work_root }}/{{ zuul.projects['opendev.org/openstack/kolla'].src_dir }}"
+
+- name: Include Kolla build sources map
+  include_vars:
+    file: "{{ ci_kolla_build_sources_file }}"
+    name: ci_kolla_build_config_defaults
+  when: ci_kolla_build_sources_file is file
+
+- name: Set facts about container images to build
+  vars:
+    kolla_build_sources: "{{ ci_kolla_build_config_defaults.kolla_build_sources | default({}) }}"
+    # NOTE: Kolla files may be missing on older branches.
+    kolla_files_present: >-
+      {{ [ci_kolla_build_sources_file, ci_kolla_build_zuul_vars_file, ci_kolla_build_repos_yaml_file] |
+         reject('file') | list | length == 0 }}
+    # NOTE: In a dependent pipeline such as gate, zuul.items includes every
+    # change ahead in the shared queue, not just dependencies. Changes in
+    # other queues must merge before a change can be gated, so only build in
+    # other pipelines.
+    build_enabled: >-
+      {{ kayobe_ci_build_container_images | default(false) | bool and
+         zuul.pipeline != 'gate' and kolla_files_present }}
+    changed_projects: "{{ zuul['items'] | map(attribute='project') | unique(attribute='name') | list }}"
+    changed_project_names: "{{ changed_projects | map(attribute='name') | list }}"
+    # Changes to these projects may affect every image.
+    build_all: "{{ changed_project_names | intersect(['openstack/kolla', 'openstack/requirements']) | length > 0 }}"
+    # Add the image name prefixes affected by each project, derived from its
+    # source sections, for example nova-base -> nova,
+    # neutron-base-plugin-networking-sfc -> neutron.
+    source_projects: >-
+      {%- set projects = [] -%}
+      {%- for project in changed_projects if project.name in kolla_build_sources -%}
+      {%- set sections = kolla_build_sources[project.name] -%}
+      {%- set sections = [sections] if sections is string else sections -%}
+      {%- set prefixes = sections | map('regex_search', '^[^-]+') | unique | list -%}
+      {%- set _ = projects.append(project | combine({'image_prefixes': prefixes})) -%}
+      {%- endfor -%}
+      {{ projects }}
+  set_fact:
+    ci_kolla_build_images: "{{ build_enabled and (build_all or source_projects | length > 0) }}"
+    ci_kolla_build_all_images: "{{ build_enabled and build_all }}"
+    ci_kolla_build_source_projects: "{{ source_projects if build_enabled else [] }}"
+    ci_kolla_build_image_prefixes: "{{ source_projects | map(attribute='image_prefixes') | flatten | unique | list if build_enabled else [] }}"
+    # Source checkouts live in the zuul user's home directory, which the Kayobe
+    # Ansible user cannot read. They are copied here when building images.
+    ci_kolla_build_src_dir: /opt/kayobe-ci-src
+
+- name: Display container images to build
+  debug:
+    msg: >-
+      {% if not ci_kolla_build_images | bool %}Not building container images.
+      {% elif ci_kolla_build_all_images | bool %}Building all enabled overcloud
+      container images.
+      {% else %}Building enabled overcloud container images with name prefixes
+      {{ ci_kolla_build_image_prefixes | join(', ') }}.{% endif %}

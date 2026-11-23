@@ -1,7 +1,13 @@
 ---
 - hosts: primary
+  tasks:
+    - name: Determine which container images to build
+      include_tasks: kolla-build-facts.yml
+
+- hosts: primary
   environment:
     KAYOBE_CONFIG_SOURCE_PATH: "{{ kayobe_config_src_dir }}"
+    KAYOBE_OVERCLOUD_CONTAINER_IMAGE_BUILD: "{{ ci_kolla_build_images | bool | ternary(1, 0) }}"
     KAYOBE_OVERCLOUD_GENERATE_CERTIFICATES: "{{ tls_enabled | ternary(1, 0) }}"
     KAYOBE_VAULT_PASSWORD: 'test-password'
     KAYOBE_DEPLOY_CUSTOM_CONTAINER: "{{ deploy_custom_container | default(false) | ternary(1, 0) }}"
@@ -12,6 +18,97 @@
       shell:
         cmd: "{{ kayobe_src_dir }}/dev/overcloud-deploy.sh &> {{ logs_dir }}/ansible/overcloud-deploy"
         executable: /bin/bash
+
+    # Check that the deployed containers run the code from the changes under
+    # test. pbr records the git commit that a package was built from in
+    # pbr.json.
+    - name: Check that containers include the changes under test
+      when: ci_kolla_build_images | bool
+      block:
+        - name: Collect source commits used to build container images
+          shell:
+            cmd: >-
+              git -C {{ ci_kolla_build_src_dir }}/{{ item.src_dir }} log -5 >
+              {{ logs_dir }}/ansible/kolla-build-source-{{ item.short_name }} &&
+              git -C {{ ci_kolla_build_src_dir }}/{{ item.src_dir }} rev-parse HEAD
+            executable: /bin/bash
+          loop: "{{ [zuul.projects['opendev.org/openstack/kolla']] + ci_kolla_build_source_projects }}"
+          loop_control:
+            label: "{{ item.name }}"
+          register: ci_source_commits
+          changed_when: false
+
+        - name: Collect images of running containers
+          shell:
+            cmd: >-
+              sudo {{ container_engine }} ps --format '{{ '{{' }}.Names{{ '}}' }} {{ '{{' }}.Image{{ '}}' }}' |
+              tee {{ logs_dir }}/ansible/container-images
+            executable: /bin/bash
+          register: ci_running_containers
+          changed_when: false
+
+        - name: Collect pbr.json files from running containers
+          shell:
+            cmd: >-
+              set -o pipefail &&
+              for container in $(sudo {{ container_engine }} ps --format '{{ '{{' }}.Names{{ '}}' }}'); do
+              sudo {{ container_engine }} exec $container sh -c
+              'grep -H . /var/lib/kolla/venv/lib/python3.*/site-packages/*/pbr.json 2>/dev/null' |
+              sed "s|^|$container: |" || true;
+              done | tee {{ logs_dir }}/ansible/container-pbr-versions
+            executable: /bin/bash
+          register: ci_container_pbr_versions
+          changed_when: false
+
+        # NOTE: Kolla and requirements are not installed as packages in the
+        # containers. Projects whose images are not deployed by this job
+        # cannot be checked. Check every running container with the package
+        # installed, to catch any that still run a published image.
+        - name: Assert that containers were built from the changes under test
+          assert:
+            that:
+              - package_lines | length > 0
+              - stale_lines | length == 0
+            fail_msg: >-
+              Expected every running container with the {{ package_name }}
+              package to include commit {{ item.stdout }} of
+              {{ item.item.name }}. Containers with the package:
+              {{ package_lines | map('regex_replace', ':.*$', '') | list }}.
+              Containers without the commit:
+              {{ stale_lines | map('regex_replace', ':.*$', '') | list }}.
+              See container-pbr-versions in the logs.
+            success_msg: >-
+              All {{ package_lines | length }} running containers with the
+              {{ package_name }} package include commit {{ item.stdout }} of
+              {{ item.item.name }}.
+          loop: >-
+            {{ ci_source_commits.results |
+               rejectattr('item.name', 'in', ['openstack/kolla', 'openstack/requirements']) |
+               list }}
+          loop_control:
+            label: "{{ item.item.name }}"
+          when: deployed_images | length > 0
+          vars:
+            # Image names of running containers, without registry or tag.
+            running_images: >-
+              {{ ci_running_containers.stdout_lines |
+                 map('split', ' ') | map('last') |
+                 map('regex_replace', ':[^/]*$', '') | map('basename') | list }}
+            deployed_images: >-
+              {{ running_images |
+                 select('match', '(' ~ item.item.image_prefixes | join('|') ~ ')') | list }}
+            # Python distribution name of the project, as used in the name of
+            # its dist-info directory, e.g. networking_baremetal.
+            package_name: "{{ item.item.short_name | regex_replace('[-_.]+', '_') }}"
+            # Lines of container-pbr-versions for the project's package, of
+            # the form <container>: <path>/pbr.json:<contents>.
+            package_lines: >-
+              {{ ci_container_pbr_versions.stdout_lines |
+                 select('search', '/site-packages/' ~ package_name ~ '-[^/]*[.]dist-info/pbr[.]json:',
+                        ignorecase=True) | list }}
+            stale_lines: >-
+              {{ package_lines |
+                 reject('search', '"git_version": "' ~ item.stdout[:7]) | list }}
 
     - name: Check that hello-world custom container was deployed
       shell:

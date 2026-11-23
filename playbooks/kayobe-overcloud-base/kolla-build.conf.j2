@@ -1,0 +1,16 @@
+# NOTE: Kayobe has no variables for these options, so set them in custom
+# Kolla build configuration, which Kayobe merges with the configuration it
+# generates. Sources for the changes under test are configured using
+# kolla_sources.
+[DEFAULT]
+{% if ansible_facts.os_family == 'Debian' %}
+# Use the CI infra's mirror of the base image.
+base_image = quay.io/opendevmirror/{{ ansible_facts.distribution | lower }}
+{% if ansible_facts.distribution == 'Ubuntu' %}
+# The Ubuntu mirror is tagged by version (e.g. 24.04), not codename.
+base_tag = {{ ansible_facts.distribution_version }}
+{% endif %}
+{% endif %}
+# Use the CI infra's PyPI mirror.
+pip_index_url = {{ nodepool_pypi_mirror }}
+pip_trusted_host = {{ nodepool_mirror_host }}
