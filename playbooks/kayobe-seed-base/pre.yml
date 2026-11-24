@@ -39,6 +39,23 @@
             dest: "{{ kayobe_config_src_dir }}/etc/kayobe/kolla/config/bifrost/dib.yml"
       when: not build_images
 
+    # NOTE: The stack user cannot access the ironic-python-agent-builder source
+    # code, which lives in the zuul user's home directory. Copy it to /tmp. The
+    # stack user does not exist yet, so the copy is owned by root. Mark it as a
+    # safe directory to allow the stack user to clone it. Some git versions
+    # check the path of the .git directory, so use that.
+    - block:
+        - name: Create a copy of ironic-python-agent-builder source code
+          copy:
+            src: "{{ ansible_env.PWD ~ '/' ~ zuul.projects['opendev.org/openstack/ironic-python-agent-builder'].src_dir }}"
+            dest: /tmp
+            remote_src: true
+
+        - name: Mark ironic-python-agent-builder source code as a safe directory
+          command: git config --system --add safe.directory /tmp/ironic-python-agent-builder/.git
+      become: true
+      when: build_images | bool
+
     - name: Ensure kayobe is installed
       shell:
         cmd: dev/install.sh &> {{ logs_dir }}/ansible/install
