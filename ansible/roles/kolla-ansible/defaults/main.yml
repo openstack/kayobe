@@ -21,6 +21,9 @@ kolla_ansible_venv_python: "{{ '/usr/bin/python3.12' if ansible_facts.os_family 
 # Extra requirements to install inside the kolla-ansible virtualenv.
 kolla_ansible_venv_extra_requirements: []
 
+# Check if the installed kolla-ansible version is the expected version.
+kolla_ansible_version_check_enabled: true
+
 # Pip requirement specifier for the ansible package. NOTE: This limits the
 # version of ansible used by kolla-ansible to avoid new releases from breaking
 # tested code. Changes to this limit should be tested. It is possible to only

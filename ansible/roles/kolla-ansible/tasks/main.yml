@@ -1,4 +1,7 @@
 ---
+- import_tasks: check-version.yml
+  tags:
+    - config
 - import_tasks: config.yml
   tags:
     - config

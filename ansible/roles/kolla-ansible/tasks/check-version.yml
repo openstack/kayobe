@@ -1,0 +1,105 @@
+---
+- name: Check Kolla-Ansible version
+  when:
+    - kolla_ansible_version_check_enabled | bool
+    - kolla_ansible_ctl_install_type == 'source'
+  check_mode: false
+  block:
+    - name: Get current Kolla-Ansible tag
+      ansible.builtin.command:
+        cmd: git describe --tags --always --dirty
+        chdir: "{{ kolla_ansible_source_path }}"
+      register: kolla_ansible_current_tag
+      changed_when: false
+      failed_when: false
+
+    - name: Get current Kolla-Ansible commit
+      ansible.builtin.command:
+        cmd: git rev-parse --verify HEAD
+        chdir: "{{ kolla_ansible_source_path }}"
+      register: kolla_ansible_current_commit
+      changed_when: false
+
+    - name: Resolve expected Kolla-Ansible version to a commit
+      vars:
+        expected_ref: "{{ kolla_ansible_source_version }}^{commit}"
+      ansible.builtin.command:
+        cmd: git rev-parse --verify --quiet "{{ expected_ref }}"
+        chdir: "{{ kolla_ansible_source_path }}"
+      register: kolla_ansible_expected_commit
+      changed_when: false
+      failed_when: false
+
+    - name: Get installed Kolla-Ansible commit
+      vars:
+        kolla_ansible_venv_interpreter: >-
+          {{ (kolla_ansible_venv ~ '/bin/python')
+             if kolla_ansible_venv is not none
+             else kolla_ansible_venv_python }}
+      ansible.builtin.command:
+        argv:
+          - "{{ kolla_ansible_venv_interpreter }}"
+          - -c
+          - |
+            import importlib.metadata, json
+            try:
+                dist = importlib.metadata.distribution('kolla-ansible')
+                print(json.loads(dist.read_text('pbr.json'))['git_version'])
+            except Exception:
+                pass
+      register: kolla_ansible_installed_commit
+      changed_when: false
+      failed_when: false
+
+    - name: Resolve installed Kolla-Ansible commit to a full commit ID
+      vars:
+        installed_ref: "{{ kolla_ansible_installed_commit.stdout | trim }}^{commit}"
+      ansible.builtin.command:
+        cmd: git rev-parse --verify --quiet "{{ installed_ref }}"
+        chdir: "{{ kolla_ansible_source_path }}"
+      register: kolla_ansible_installed_commit_full
+      changed_when: false
+      failed_when: false
+      when: kolla_ansible_installed_commit.stdout | trim | length > 0
+
+    - name: Check installed Kolla-Ansible version is the expected version
+      vars:
+        expected_commit: "{{ kolla_ansible_expected_commit.stdout | trim }}"
+        current_commit: "{{ kolla_ansible_current_commit.stdout | trim }}"
+        installed_commit: >-
+          {{ (kolla_ansible_installed_commit_full.stdout | default('', true) | trim) or
+             (kolla_ansible_installed_commit.stdout | trim) }}
+        current_tag: >-
+          {{ kolla_ansible_current_tag.stdout |
+             default('unknown', true) | trim }}
+      ansible.builtin.assert:
+        that:
+          - kolla_ansible_expected_commit.rc == 0
+          - expected_commit == current_commit
+          - installed_commit | length > 0
+          - expected_commit.startswith(installed_commit)
+        fail_msg: |
+          Kolla Ansible is not running the expected version.
+
+          Expected:         {{ kolla_ansible_source_version }}
+          Checkout tag:     {{ current_tag }}
+          Checkout commit:  {{ current_commit }}
+          Installed commit: {{ installed_commit | default('unknown', true) }}
+          {% if kolla_ansible_expected_commit.rc != 0 %}
+
+          Version {{ kolla_ansible_source_version }} was not found in the
+          checkout at {{ kolla_ansible_source_path }}.
+          {% elif installed_commit | length == 0 %}
+
+          Could not determine the version installed in
+          {{ kolla_ansible_venv | default('the Ansible environment', true) }}.
+          {% elif not expected_commit.startswith(installed_commit) %}
+
+          The checkout is at the expected version but the installed package
+          is stale; it was built from a different commit.
+          {% endif %}
+
+          Run: kayobe control host upgrade
+        success_msg: >-
+          Kolla Ansible running at expected version:
+          {{ kolla_ansible_source_version }} ({{ current_commit }})
