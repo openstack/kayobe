@@ -1,0 +1,49 @@
+---
+# Prepare to build container images for the changes under test. Facts are set
+# by kolla-build-facts.yml.
+#
+# Parameters:
+# ci_kolla_build_copy_projects: List of Zuul projects with source checkouts
+#                               used to build images, in addition to kolla.
+
+# NOTE: Kayobe builds images as the Kayobe Ansible user, which cannot read
+# source checkouts in the zuul user's home directory.
+- name: Ensure source checkouts are readable by the Kayobe Ansible user
+  shell:
+    cmd: >-
+      mkdir -p {{ ci_kolla_build_src_dir }}/{{ item.src_dir }} &&
+      cp -a {{ ansible_env.PWD }}/{{ item.src_dir }}/. {{ ci_kolla_build_src_dir }}/{{ item.src_dir }}/ &&
+      chmod -R a+rX {{ ci_kolla_build_src_dir }}
+    executable: /bin/bash
+  become: true
+  loop: "{{ [zuul.projects['opendev.org/openstack/kolla']] + ci_kolla_build_copy_projects }}"
+  loop_control:
+    label: "{{ item.src_dir }}"
+
+# NOTE: Kolla and other sources are cloned from the copied checkouts, which
+# are owned by a different user.
+- name: Ensure git trusts the copied source checkouts
+  command: git config --system --replace-all safe.directory '*' '^\*$'
+  become: true
+
+- name: Include Kolla Zuul vars
+  include_vars:
+    file: "{{ ci_kolla_build_zuul_vars_file }}"
+
+- name: Ensure Kolla build config directory exists
+  file:
+    path: "{{ kayobe_config_src_dir }}/etc/kayobe/kolla"
+    state: directory
+
+- name: Ensure Kolla build config file exists
+  template:
+    src: "{{ playbook_dir }}/../kayobe-base/kolla-build.conf.j2"
+    dest: "{{ kayobe_config_src_dir }}/etc/kayobe/kolla/kolla-build.conf"
+
+# NOTE: Use Kolla's package repository overrides for the CI mirrors.
+- name: Ensure Kolla repos.yaml file exists
+  template:
+    src: "{{ ci_kolla_build_repos_yaml_file }}"
+    dest: "{{ kayobe_config_src_dir }}/etc/kayobe/kolla/repos.yaml"
+  vars:
+    base_distro: "{{ 'rocky' if ansible_facts.distribution == 'Rocky' else ansible_facts.distribution | lower }}"

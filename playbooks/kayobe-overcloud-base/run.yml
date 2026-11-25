@@ -2,7 +2,7 @@
 - hosts: primary
   tasks:
     - name: Determine which container images to build
-      include_tasks: kolla-build-facts.yml
+      include_tasks: ../kayobe-base/kolla-build-facts.yml
 
 - hosts: primary
   environment:

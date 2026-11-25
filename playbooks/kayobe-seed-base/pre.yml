@@ -13,6 +13,15 @@
         bridge_prefix: 24
         bridge_port_interface: dummy1
 
+    - name: Determine which container images to build
+      include_tasks: ../kayobe-base/kolla-build-facts.yml
+
+    - name: Prepare to build seed container images
+      include_tasks: ../kayobe-base/kolla-build-prepare.yml
+      vars:
+        ci_kolla_build_copy_projects: "{{ ci_kolla_build_seed_source_projects }}"
+      when: ci_kolla_build_seed_images | bool
+
     # NOTE(mgoddard): Use the name zz-20-overrides.yml to ensure this takes
     # precedence over the standard config files, but can control order with the
     # priority (number after zz).

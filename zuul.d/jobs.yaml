@@ -277,6 +277,9 @@
     timeout: 7200
     vars:
       build_images: false
+      # Build seed container images affected by changes under test, e.g.
+      # those pulled in via Depends-On.
+      kayobe_ci_build_container_images: true
 
 - job:
     name: kayobe-seed-rocky10

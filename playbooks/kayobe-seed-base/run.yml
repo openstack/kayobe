@@ -1,7 +1,13 @@
 ---
 - hosts: primary
+  tasks:
+    - name: Determine which container images to build
+      include_tasks: ../kayobe-base/kolla-build-facts.yml
+
+- hosts: primary
   environment:
     KAYOBE_CONFIG_SOURCE_PATH: "{{ kayobe_config_src_dir }}"
+    KAYOBE_SEED_CONTAINER_IMAGE_BUILD: "{{ ci_kolla_build_seed_images | bool | ternary(1, 0) }}"
     # Don't provision a seed VM - use the Zuul VM as the seed host.
     KAYOBE_SEED_VM_PROVISION: 0
   tasks:
@@ -9,6 +15,59 @@
       shell:
         cmd: "{{ kayobe_src_dir }}/dev/seed-deploy.sh &> {{ logs_dir }}/ansible/seed-deploy"
         executable: /bin/bash
+
+    # Check that the bifrost container runs the code from the change under
+    # test. pbr records the git commit that a package was built from in
+    # pbr.json.
+    - name: Check that the bifrost container includes the change under test
+      when: ci_kolla_build_seed_source_projects | length > 0
+      block:
+        - name: Collect source commit used to build the bifrost image
+          shell:
+            cmd: >-
+              git -C {{ ci_kolla_build_src_dir }}/{{ item.src_dir }} log -5 >
+              {{ logs_dir }}/ansible/kolla-build-source-{{ item.short_name }} &&
+              git -C {{ ci_kolla_build_src_dir }}/{{ item.src_dir }} rev-parse HEAD
+            executable: /bin/bash
+          loop: "{{ ci_kolla_build_seed_source_projects }}"
+          loop_control:
+            label: "{{ item.name }}"
+          register: ci_seed_source_commits
+          changed_when: false
+
+        # NOTE: Search the whole container, since bifrost may not be
+        # installed in the Kolla virtualenv.
+        - name: Collect bifrost pbr.json from the bifrost container
+          shell:
+            cmd: >-
+              set -o pipefail &&
+              sudo {{ container_engine }} exec bifrost_deploy sh -c
+              'find / -xdev -path "*/site-packages/bifrost-*/pbr.json" -exec grep -H . {} +' |
+              tee {{ logs_dir }}/ansible/container-pbr-versions
+            executable: /bin/bash
+          register: ci_bifrost_pbr_versions
+          changed_when: false
+
+        - name: Assert that the bifrost container was built from the change under test
+          assert:
+            that:
+              - ci_bifrost_pbr_versions.stdout_lines | length > 0
+              - stale_lines | length == 0
+            fail_msg: >-
+              Expected the bifrost package in the bifrost_deploy container to
+              include commit {{ item.stdout }} of {{ item.item.name }}. Found:
+              {{ ci_bifrost_pbr_versions.stdout_lines }}. See
+              container-pbr-versions in the logs.
+            success_msg: >-
+              The bifrost_deploy container includes commit {{ item.stdout }}
+              of {{ item.item.name }}.
+          loop: "{{ ci_seed_source_commits.results }}"
+          loop_control:
+            label: "{{ item.item.name }}"
+          vars:
+            stale_lines: >-
+              {{ ci_bifrost_pbr_versions.stdout_lines |
+                 reject('search', '"git_version": "' ~ item.stdout[:7]) | list }}
 
     - name: Ensure test Tenks cluster is deployed
       shell:
@@ -52,12 +111,15 @@
             group: stack
             remote_src: true
 
+        # NOTE: Seed images are built before deployment when there are
+        # changes under test.
         - name: Ensure seed container images are built
           shell:
             cmd: >
               source {{ kayobe_src_dir }}/dev/environment-setup.sh &&
               kayobe seed container image build {{ seed_container_image_regex | default('') }} &> {{ logs_dir }}/ansible/seed-container-image-build
             executable: /bin/bash
+          when: not ci_kolla_build_seed_images | bool
 
         - name: Ensure overcloud container images are built
           shell:
