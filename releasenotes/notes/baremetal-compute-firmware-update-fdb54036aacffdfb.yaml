@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    Adds a new ``kayobe baremetal compute firmware update`` command to update
+    firmware on the baremetal compute nodes. The firmware update is performed
+    out of band via the hosts' BMCs using the
+    ``dellemc.openmanage.idrac_firmware`` Ansible module, and currently
+    supports Dell servers with iDRACs. The firmware update repository is
+    configured using the same ``dell_firmware_update_*`` variables as for the
+    overcloud. Use Ansible check mode (``--check``) to show the available
+    firmware updates without applying them.

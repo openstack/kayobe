@@ -2248,6 +2248,15 @@ class BaremetalComputeInspect(KayobeAnsibleMixin, VaultMixin, Command):
         self.run_kayobe_playbooks(parsed_args, playbooks)
 
 
+class BaremetalComputeFirmwareUpdate(KayobeAnsibleMixin, VaultMixin, Command):
+    """Update firmware for the baremetal compute nodes."""
+
+    def take_action(self, parsed_args):
+        self.app.LOG.debug("Updating baremetal compute node firmware")
+        playbooks = _build_playbook_list("baremetal-compute-firmware-update")
+        self.run_kayobe_playbooks(parsed_args, playbooks)
+
+
 class BaremetalComputeIntrospectionDataSave(KayobeAnsibleMixin, VaultMixin,
                                             Command):
     """Save hardware introspection data for the baremetal compute nodes.
