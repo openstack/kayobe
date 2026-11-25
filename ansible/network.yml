@@ -19,6 +19,14 @@
           with_items: "{{ ether_interfaces }}"
           when: not item | net_interface
 
+        - name: Validate network interface name length
+          fail:
+            msg: >
+              Network interface validation failed - interface name {{ item |
+              net_interface }} is longer than 15 characters.
+          with_items: "{{ ether_interfaces }}"
+          when: item | net_interface | length > 15
+
         - name: Validate bridge interface configuration
           fail:
             msg: >
@@ -27,6 +35,14 @@
           with_items: "{{ bridge_interfaces }}"
           when: not item | net_interface
 
+        - name: Validate bridge interface name length
+          fail:
+            msg: >
+              Bridge interface validation failed - interface name {{ item |
+              net_interface }} is longer than 15 characters.
+          with_items: "{{ bridge_interfaces }}"
+          when: item | net_interface | length > 15
+
         - name: Validate bond interface configuration
           fail:
             msg: >
@@ -34,6 +50,14 @@
               {{ item }}. This should be configured via '{{ item }}_interface'.
           with_items: "{{ bond_interfaces }}"
           when: not item | net_interface
+
+        - name: Validate bond interface name length
+          fail:
+            msg: >
+              Bond interface validation failed - interface name {{ item |
+              net_interface }} is longer than 15 characters.
+          with_items: "{{ bond_interfaces }}"
+          when: item | net_interface | length > 15
       vars:
         ether_interfaces: "{{ network_interfaces | net_select_ethers | list }}"
         bridge_interfaces: "{{ network_interfaces | net_select_bridges | list }}"
