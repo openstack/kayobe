@@ -134,6 +134,18 @@
         chdir: "{{ kayobe_src_dir }}"
         executable: /bin/bash
 
+    - block:
+      - name: Get redfish node VM UUID
+        shell:
+          cmd: virsh domuuid red0
+        become: true
+        register: redfish_vm_uuid
+
+      - name: Ensure redfish node host_vars exist
+        template:
+          src: red0.j2
+          dest: "{{ kayobe_config_src_dir }}/etc/kayobe/inventory/host_vars/red0"
+
     - name: Perform testing of the virtualized machines
       shell:
         cmd: dev/overcloud-test-vm.sh &> {{ logs_dir }}/ansible/overcloud-test-vm

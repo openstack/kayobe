@@ -1,0 +1,8 @@
+---
+ironic_driver: redfish
+ironic_driver_info:
+  ipmi_address: "http://0.0.0.0:8100"
+  redfish_address: "http://0.0.0.0:8100"
+  redfish_system_id: "/redfish/v1/Systems/{{ redfish_vm_uuid.stdout }}"
+  redfish_username: username
+  redfish_password: password

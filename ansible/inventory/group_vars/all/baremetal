@@ -1,0 +1,74 @@
+---
+###############################################################################
+# Baremetal node configuration.
+
+ironic_bios_interface:
+
+ironic_boot_interface:
+
+ironic_chassis_id:
+
+ironic_console_interface:
+
+ironic_deploy_interface:
+
+ironic_driver: redfish
+
+ironic_system_id:
+ironic_redfish_id_prefix: /redfish/v1/Systems/
+ironic_redfish_id: "{{ (ironic_redfish_id_prefix ~ ironic_system_id) if ironic_system_id else none }}"
+
+ironic_address: "{{ redfish_address | default(ipmi_address, true) }}"
+ironic_username: "{{ inspector_redfish_username }}"
+ironic_password: "{{ inspector_redfish_password }}"
+
+ironic_driver_info_default: >-
+  {{ {'ipmi_address': ironic_address,
+      'redfish_system_id': ironic_redfish_id,
+      'redfish_address': ironic_address,
+      'redfish_username': ironic_username,
+      'redfish_password': ironic_password} |
+     dict2items | selectattr('value') | items2dict }}
+
+ironic_driver_info_extra: {}
+
+ironic_driver_info: "{{ ironic_driver_info_default | combine(ironic_driver_info_extra) }}"
+
+ironic_inspect_interface:
+
+ironic_management_interface:
+
+ironic_network_interface:
+
+ironic_power_interface:
+
+ironic_capabilities: "boot_option:local,boot_mode:uefi"
+
+ironic_properties_default:
+  capabilities: "{{ ironic_capabilities }}"
+
+ironic_properties_extra: {}
+
+ironic_properties: "{{ ironic_properties_default | combine(ironic_properties_extra) }}"
+
+ironic_raid_interface:
+
+ironic_rescue_interface:
+
+ironic_resource_class:
+
+ironic_storage_interface:
+
+# Time to wait for state transition to complete, if ironic_wait is True.
+ironic_timeout: "{{ inspector_inspection_timeout }}"
+# Maintain compatibility with legacy 'baremetal_compute' variables.
+baremetal_compute_timeout: "{{ ironic_timeout }}"
+
+ironic_uuid:
+
+ironic_vendor_interface:
+
+# Whether to wait for the state transition to complete.
+ironic_wait: True
+# Maintain compatibility with legacy 'baremetal_compute' variables.
+baremetal_compute_wait: "{{ ironic_wait }}"

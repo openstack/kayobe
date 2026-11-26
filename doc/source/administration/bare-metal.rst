@@ -37,40 +37,33 @@ are using.
 
 .. code-block:: yaml
 
-   ironic_driver: redfish
-
-   ironic_driver_info:
-     redfish_system_id: "{{ ironic_redfish_system_id }}"
-     redfish_address: "{{ ironic_redfish_address }}"
-     redfish_username: "{{ ironic_redfish_username }}"
-     redfish_password: "{{ ironic_redfish_password }}"
-     redfish_verify_ca: "{{ ironic_redfish_verify_ca }}"
-     ipmi_address: "{{ ipmi_address }}"
-
-   ironic_properties:
-     capabilities: "{{ ironic_capabilities }}"
-
    ironic_resource_class: "example_resource_class"
-   ironic_redfish_system_id: "/redfish/v1/Systems/System.Embedded.1"
-   ironic_redfish_verify_ca: "{{ inspector_rule_var_redfish_verify_ca }}"
-   ironic_redfish_address: "{{ ipmi_address }}"
-   ironic_redfish_username: "{{ inspector_redfish_username }}"
-   ironic_redfish_password: "{{ inspector_redfish_password }}"
-   ironic_capabilities: "boot_option:local,boot_mode:uefi"
 
-It is essential that the Ironic username and password match the BMC username
+   ironic_driver_info_extra:
+     redfish_verify_ca: "{{ inspector_rule_var_redfish_verify_ca }}"
+
+``ironic_resource_class`` must always be set. If the BMC manages more than
+one system, ``ironic_system_id`` must also be set, e.g. to
+``System.Embedded.1``. The other Ironic node variables have defaults,
+defined in ``ansible/inventory/group_vars/all/baremetal``.
+
+It is essential that the Redfish username and password match the BMC username
 and password for your nodes. If the username and password combination is not
 the same for the entire group you will need to adjust your configuration
-accordingly. The IPMI address should also match the BMC address for your node.
+accordingly.
 
 Once this has been completed you can begin enrolling the Ironic nodes::
 
     (kayobe) $ kayobe baremetal compute register
 
-Inspector is not used to discover nodes and no node inspection will take place
-on enrollment, nodes will automatically be placed into ``manageable`` state. To
-inspect, you should use ``kayobe baremetal compute inspect`` following
-enrollment.
+Inspector is not used to discover nodes and no node inspection will take
+place on enrollment. Newly enrolled nodes are automatically moved from the
+``enroll`` state into the ``manageable`` state, ready to be inspected with
+``kayobe baremetal compute inspect``.
+
+Nodes which already exist in Ironic are not updated. To apply configuration
+changes to an existing node using the Kayobe commands, delete it from Ironic
+and enroll it again.
 
 Manage
 ------

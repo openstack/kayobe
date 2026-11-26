@@ -1,0 +1,86 @@
+---
+###############################################################################
+# Baremetal node configuration.
+#
+# These variables configure registration of baremetal nodes with
+# Ironic via 'kayobe baremetal compute register'.
+
+# BIOS interface to use for the node, e.g. 'no-bios'.
+#ironic_bios_interface:
+
+# Boot interface to use for the node, e.g. 'pxe'.
+#ironic_boot_interface:
+
+# ID of a pre-defined chassis to associate the node with.
+#ironic_chassis_id:
+
+# Console interface to use for the node, e.g. 'no-console'.
+#ironic_console_interface:
+
+# Deploy interface to use for the node, e.g. 'iscsi'.
+#ironic_deploy_interface:
+
+# Ironic driver to use for the node.
+#ironic_driver: redfish
+
+# Redfish system ID of the node, e.g. 'System.Embedded.1'. Only required if
+# the BMC manages more than one system.
+#ironic_system_id:
+
+# Default driver info for the node. Do not override this directly - use
+# ironic_driver_info_extra to add or override entries instead.
+#ironic_driver_info_default:
+
+# Extra driver info for the node, added to or overriding
+# ironic_driver_info_default. Use this to add entries which cannot be
+# derived automatically, such as the Redfish system ID.
+#ironic_driver_info_extra:
+
+# Inspect interface to use for the node, e.g. 'no-inspect'.
+#ironic_inspect_interface:
+
+# Management interface to use for the node.
+#ironic_management_interface:
+
+# Network interface to use for the node.
+#ironic_network_interface:
+
+# Power interface to use for the node.
+#ironic_power_interface:
+
+# Capabilities to apply to the node, added to ironic_properties.
+#ironic_capabilities: "boot_option:local,boot_mode:uefi"
+
+# Extra properties for the node, added to or overriding
+# ironic_properties_default.
+#ironic_properties_extra:
+
+# RAID interface to use for the node.
+#ironic_raid_interface:
+
+# Rescue interface to use for the node.
+#ironic_rescue_interface:
+
+# Resource class of the node. This must always be set.
+#ironic_resource_class:
+
+# Storage interface to use for the node.
+#ironic_storage_interface:
+
+# Time in seconds to wait for a state transition to complete, if
+# ironic_wait is True.
+#ironic_timeout:
+
+# UUID to assign to the node. Generated automatically if not set.
+#ironic_uuid:
+
+# Vendor interface to use for the node.
+#ironic_vendor_interface:
+
+# Whether to wait for the state transition to complete when registering a
+# node.
+#ironic_wait: True
+
+###############################################################################
+# Dummy variable to allow Ansible to accept this file.
+workaround_ansible_issue_8743: yes

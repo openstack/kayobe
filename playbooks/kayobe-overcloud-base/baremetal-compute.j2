@@ -1,14 +1,13 @@
 {% raw %}
 ---
 ironic_driver: ipmi
-# Cheating a little here - use the first port of the Tenks VirtualBMC.
 ironic_driver_info:
   ipmi_address: 0.0.0.0
   ipmi_username: username
   ipmi_password: password
-  ipmi_port: 6230
+  ipmi_port: "{{ node_ipmi_port }}"
 ironic_properties:
   capabilities: "{{ ironic_capabilities }}"
 ironic_resource_class: "example_resource_class"
-ironic_capabilities: "boot_option:local,boot_mode:uefi"
 {% endraw %}
+ironic_capabilities: "boot_option:local,boot_mode:{{ ironic_boot_mode }}"

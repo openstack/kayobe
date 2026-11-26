@@ -26,7 +26,7 @@ collections:
   - name: nvidia.nvue
     version: 1.2.9
   - name: openstack.cloud
-    version: '<3'
+    version: '>=2.7.0,<3'
   - name: stackhpc.linux
     version: 1.6.4
   - name: stackhpc.network

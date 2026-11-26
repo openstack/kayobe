@@ -1,19 +1,14 @@
 ---
-
-- name: Register baremetal compute nodes
+- name: Ensure dependencies are installed
   hosts: controllers[0]
+  gather_facts: true
   vars:
-    venv: "{{ virtualenv_path }}/openstack-cli"
-  tasks:
-    - name: Set up openstack cli virtualenv
-      pip:
-        virtualenv: "{{ venv }}"
-        name:
-          - python-openstackclient
-          - python-ironicclient
-        state: latest
-        virtualenv_command: "python3.{{ ansible_facts.python.version.minor }} -m venv"
-        extra_args: "{% if pip_upper_constraints_file %}-c {{ pip_upper_constraints_file }}{% endif %}"
+    venv: "{{ virtualenv_path }}/openstacksdk"
+  roles:
+    - role: stackhpc.openstack.os_openstacksdk
+      os_openstacksdk_venv: "{{ venv }}"
+      os_openstacksdk_install_epel: "{{ dnf_install_epel }}"
+      os_openstacksdk_upper_constraints_file: "{{ openstacksdk_upper_constraints_file }}"
 
 - name: Ensure baremetal compute nodes are registered in ironic
   hosts: baremetal-compute
@@ -26,63 +21,83 @@
   tags:
     - baremetal
   vars:
-    venv: "{{ virtualenv_path }}/openstack-cli"
     controller_host: "{{ groups['controllers'][0] }}"
-    openstack_cli_cache_home: "{{ hostvars[controller_host].ansible_facts.env.HOME }}/.cache/kayobe-openstack-{{ inventory_hostname }}"
+    venv: "{{ virtualenv_path }}/openstacksdk"
+    ansible_python_interpreter: "{{ venv }}/bin/python"
   tasks:
     - name: Check Ironic variables are defined
       ansible.builtin.assert:
         that:
-          - ironic_driver is defined
-          - ironic_driver_info is defined
-          - ironic_properties is defined
-          - ironic_resource_class is defined
+          - ironic_driver | default('', true) | length > 0
+          - ironic_driver_info | length > 0
+          - ironic_properties | length > 0
+          - ironic_resource_class | default('', true) | length > 0
         fail_msg: One or more Ironic variables are undefined.
 
-    - block:
-        - name: Show baremetal node
-          ansible.builtin.command:
-            cmd: "{{ venv }}/bin/openstack baremetal node show {{ inventory_hostname }}"
-          register: node_show
-          failed_when:
-            - '"HTTP 404" not in node_show.stderr'
-            - node_show.rc != 0
-          changed_when: false
-
-        # NOTE: The openstack.cloud.baremetal_node module cannot be used in this
-        # script due to requiring a MAC address pre-defined, instead, this should
-        # be discovered by inpsection following this script.
-        #
-        # NOTE: IPMI address must be passed with Redfish address to ensure existing
-        # Ironic nodes match with new nodes during inspection.
-        - name: Create baremetal nodes
-          ansible.builtin.shell:
-            cmd: |
-              {{ venv }}/bin/openstack baremetal node create \
-              --name {{ inventory_hostname }} \
-              --driver {{ ironic_driver }} \
-              {% for key, value in ironic_driver_info.items() %}
-              --driver-info {{ (key ~ '=' ~ value) | quote }} \
-              {% endfor %}
-              {% for key, value in ironic_properties.items() %}
-              --property {{ (key ~ '=' ~ value) | quote }} \
-              {% endfor %}
-              --resource-class {{ ironic_resource_class }}
-          when:
-            - node_show.rc != 0
-
-        - name: Manage baremetal nodes
-          ansible.builtin.command:
-            cmd: "{{ venv }}/bin/openstack baremetal node manage {{ inventory_hostname }} --wait"
-          when:
-            - node_show.rc != 0
+    - name: Get existing baremetal node from Ironic
+      openstack.cloud.baremetal_node_info:
+        auth_type: "{{ openstack_auth_type }}"
+        auth: "{{ openstack_auth }}"
+        ca_cert: "{{ openstack_cacert | default(omit, true) }}"
+        interface: "{{ openstack_interface | default(omit, true) }}"
+        name: "{{ ironic_uuid | default(inventory_hostname, true) }}"
+      register: baremetal_compute_register_info
       delegate_to: "{{ controller_host }}"
       vars:
         # NOTE: Without this, the controller's ansible_host variable will not
         # be respected when using delegate_to.
         ansible_host: "{{ hostvars[controller_host].ansible_host | default(controller_host) }}"
-      # Avoid concurrent access to python-ironicclient dbm cache when
-      # registration tasks are delegated to a single controller.
-      environment: >-
-        {{ openstack_auth_env |
-           combine({'XDG_CACHE_HOME': openstack_cli_cache_home}) }}
+
+    - name: Enroll baremetal node in Ironic
+      openstack.cloud.baremetal_node:
+        auth_type: "{{ openstack_auth_type }}"
+        auth: "{{ openstack_auth }}"
+        bios_interface: "{{ ironic_bios_interface }}"
+        boot_interface: "{{ ironic_boot_interface }}"
+        ca_cert: "{{ openstack_cacert | default(omit, true) }}"
+        chassis_id: "{{ ironic_chassis_id }}"
+        console_interface: "{{ ironic_console_interface }}"
+        deploy_interface: "{{ ironic_deploy_interface }}"
+        driver: "{{ ironic_driver }}"
+        driver_info: "{{ ironic_driver_info }}"
+        id: "{{ ironic_uuid | default(omit) }}"
+        inspect_interface: "{{ ironic_inspect_interface }}"
+        interface: "{{ openstack_interface | default(omit, true) }}"
+        management_interface: "{{ ironic_management_interface }}"
+        name: "{{ inventory_hostname }}"
+        network_interface: "{{ ironic_network_interface | default(omit) }}"
+        power_interface: "{{ ironic_power_interface }}"
+        properties: "{{ ironic_properties }}"
+        raid_interface: "{{ ironic_raid_interface }}"
+        rescue_interface: "{{ ironic_rescue_interface }}"
+        resource_class: "{{ ironic_resource_class }}"
+        storage_interface: "{{ ironic_storage_interface }}"
+        timeout: "{{ ironic_timeout }}"
+        vendor_interface: "{{ ironic_vendor_interface }}"
+        wait: "{{ ironic_wait }}"
+      register: baremetal_compute_register_result
+      delegate_to: "{{ controller_host }}"
+      vars:
+        # NOTE: Without this, the controller's ansible_host variable will not
+        # be respected when using delegate_to.
+        ansible_host: "{{ hostvars[controller_host].ansible_host | default(controller_host) }}"
+      when: baremetal_compute_register_info.nodes | length == 0
+
+    # The openstack.cloud.baremetal_node module cannot move a newly
+    # enrolled node beyond the 'enroll' provision state without a MAC
+    - name: Manage baremetal nodes
+      include_role:
+        name: stackhpc.os-ironic-state
+      vars:
+        os_ironic_state_auth_type: "{{ openstack_auth_type }}"
+        os_ironic_state_auth: "{{ openstack_auth }}"
+        os_ironic_state_cacert: "{{ openstack_cacert | default(omit, true) }}"
+        os_ironic_state_interface: "{{ openstack_interface | default(omit, true) }}"
+        os_ironic_state_name: "{{ inventory_hostname }}"
+        os_ironic_state_provision_state: manage
+        os_ironic_state_wait: "{{ ironic_wait }}"
+        os_ironic_state_timeout: "{{ ironic_timeout }}"
+        os_ironic_state_delegate_to: "{{ controller_host }}"
+      when: >-
+        (baremetal_compute_register_info.nodes | first |
+         default(baremetal_compute_register_result.node | default({}), true)).provision_state | default(none) == 'enroll'
